@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -44,19 +44,19 @@ public final class ManageFunctionAppSourceControl {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
-        final String app5Name       = azureResourceManager.sdkContext().randomResourceName("webapp5-", 20);
-        final String app6Name       = azureResourceManager.sdkContext().randomResourceName("webapp6-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
+        final String app4Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp4-", 20);
+        final String app5Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp5-", 20);
+        final String app6Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp6-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
         final String app5Url        = app5Name + suffix;
         final String app6Url        = app6Name + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -92,7 +92,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app1Url + "/api/square...");
             Utils.post("http://" + app1Url + "/api/square", "625");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app1Url + "/api/square...");
             System.out.println("Square of 625 is " + Utils.post("http://" + app1Url + "/api/square", "625"));
 
@@ -136,7 +136,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");
             Utils.post("http://" + app2Url + "/api/square", "725");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app2Url + "/api/square...");
             System.out.println("Square of 725 is " + Utils.post("http://" + app2Url + "/api/square", "725"));
 
@@ -160,7 +160,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app3Url + "/api/square...");
             Utils.post("http://" + app3Url + "/api/square", "825");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app3Url + "/api/square...");
             System.out.println("Square of 825 is " + Utils.post("http://" + app3Url + "/api/square", "825"));
 
@@ -187,7 +187,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app4Url + "...");
             Utils.curl("http://" + app4Url);
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app4Url + "...");
             System.out.println(Utils.curl("http://" + app4Url));
 
@@ -213,7 +213,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app5Url + "/api/square...");
             Utils.post("http://" + app5Url + "/api/square", "925");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app5Url + "/api/square...");
             System.out.println("Square of 925 is " + Utils.post("http://" + app5Url + "/api/square", "925"));
 
@@ -239,7 +239,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app6Url + "/api/square...");
             Utils.post("http://" + app6Url + "/api/square", "926");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
             System.out.println("CURLing " + app6Url + "/api/square...");
             System.out.println("Square of 926 is " + Utils.post("http://" + app6Url + "/api/square", "926"));
 

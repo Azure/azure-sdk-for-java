@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PropagatedRouteTable model. */
+/** The list of RouteTables to advertise the routes to. */
 @Fluent
 public final class PropagatedRouteTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PropagatedRouteTable.class);

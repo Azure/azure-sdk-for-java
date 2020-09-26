@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EffectiveNetworkSecurityRule model. */
+/** Effective network security rules. */
 @Fluent
 public final class EffectiveNetworkSecurityRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityRule.class);

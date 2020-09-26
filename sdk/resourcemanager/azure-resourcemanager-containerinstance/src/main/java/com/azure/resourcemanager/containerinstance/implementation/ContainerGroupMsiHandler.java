@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;

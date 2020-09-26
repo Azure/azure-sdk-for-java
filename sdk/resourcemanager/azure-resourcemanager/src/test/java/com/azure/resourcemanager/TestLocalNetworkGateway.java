@@ -5,7 +5,7 @@ package com.azure.resourcemanager;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Local Network Gateway. */
@@ -15,15 +15,15 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
     private String groupName;
     private String lngwName;
 
-    private void initializeResourceNames(SdkContext sdkContext) {
-        testId = sdkContext.randomResourceName("", 8);
+    private void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        testId = internalContext.randomResourceName("", 8);
         groupName = "rg" + testId;
         lngwName = "lngw" + testId;
     }
 
     @Override
     public LocalNetworkGateway createResource(LocalNetworkGateways localNetworkGateways) throws Exception {
-        initializeResourceNames(localNetworkGateways.manager().sdkContext());
+        initializeResourceNames(localNetworkGateways.manager().resourceManager().internalContext());
         LocalNetworkGateway gateway =
             localNetworkGateways
                 .define(lngwName)

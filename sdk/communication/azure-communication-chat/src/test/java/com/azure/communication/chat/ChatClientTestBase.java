@@ -134,9 +134,9 @@ public class ChatClientTestBase extends TestBase {
     }
 
     public String generateRawToken() {
-        String skypeId = "communication:resourceId.userIdentity";
+        String id = "communication:resourceId.userIdentity";
         JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
-        builder.claim("skypeid", skypeId);
+        builder.claim("id", id);
         LocalDateTime expiresOnTimestamp = LocalDateTime.now().plusSeconds(100);
         ZonedDateTime ldtUTC = expiresOnTimestamp.atZone(ZoneId.of("UTC"));
         long expSeconds = ldtUTC.toInstant().toEpochMilli() / 1000;

@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**

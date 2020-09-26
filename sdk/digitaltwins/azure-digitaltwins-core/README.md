@@ -2,7 +2,7 @@
 
 This library provides access to the Azure Digital Twins service for managing twins, models, relationships, etc.
 
-  [Source code][source] | Package (maven) (TODO: Add package information)
+  [Source code][source] | [Package](https://search.maven.org/artifact/com.azure/azure-digitaltwins-core)
 
 ## Getting started
 

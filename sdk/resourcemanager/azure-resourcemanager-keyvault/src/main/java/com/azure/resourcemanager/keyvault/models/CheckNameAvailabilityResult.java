@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.keyvault.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The CheckNameAvailability operation response wrapper. */

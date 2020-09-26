@@ -6,9 +6,9 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
+import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
 import com.azure.resourcemanager.network.models.DhcpOptions;
@@ -291,7 +291,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup =
             manager()
                 .ddosProtectionPlans()
-                .define(this.manager().sdkContext().randomResourceName(name(), 20))
+                .define(this.manager().resourceManager().internalContext().randomResourceName(name(), 20))
                 .withRegion(region());
         if (super.creatableGroup != null && isInCreateMode()) {
             ddosProtectionPlanCreatable = ddosProtectionPlanWithGroup.withNewResourceGroup(super.creatableGroup);

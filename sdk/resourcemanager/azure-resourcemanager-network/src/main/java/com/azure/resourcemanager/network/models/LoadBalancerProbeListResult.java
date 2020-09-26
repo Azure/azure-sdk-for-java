@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoadBalancerProbeListResult model. */
+/** Response for ListProbe API service call. */
 @Fluent
 public final class LoadBalancerProbeListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerProbeListResult.class);

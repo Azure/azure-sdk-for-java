@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LocationListResult model. */
+/** Location list operation response. */
 @Fluent
 public final class LocationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationListResult.class);

@@ -41,8 +41,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
      * @return true if sample runs successfully
      */
     public static boolean runSample(final AzureResourceManager azureResourceManager, int defaultPollingInterval) throws InterruptedException {
-        final String rgPrefix = azureResourceManager.sdkContext().randomResourceName("rgJavaTest", 16);
-        final String deploymentPrefix = azureResourceManager.sdkContext().randomResourceName("javaTest", 16);
+        final String rgPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgJavaTest", 16);
+        final String deploymentPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("javaTest", 16);
         final String sshKey = getSSHPublicKey();
         final int numDeployments = 3;
         final int pollingInterval = defaultPollingInterval < 0 ? 15 : defaultPollingInterval; // in seconds

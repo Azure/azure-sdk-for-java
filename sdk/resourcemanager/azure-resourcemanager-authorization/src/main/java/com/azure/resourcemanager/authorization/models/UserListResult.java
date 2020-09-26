@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UserListResult model. */
+/** Server response for Get tenant users API call. */
 @Fluent
 public final class UserListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserListResult.class);

@@ -33,11 +33,11 @@ public final class ManageFunctionAppBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String rg1Name        = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String rg2Name        = azureResourceManager.sdkContext().randomResourceName("rg2NEMV_", 24);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
+        final String rg1Name        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String rg2Name        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg2NEMV_", 24);
 
         try {
 

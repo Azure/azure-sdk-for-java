@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EncryptionImages model. */
+/**
+ * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
+ */
 @Fluent
 public final class EncryptionImages {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionImages.class);

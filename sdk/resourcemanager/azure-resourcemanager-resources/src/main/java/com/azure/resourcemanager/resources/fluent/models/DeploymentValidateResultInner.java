@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentValidateResult model. */
+/** Information from validate template deployment response. */
 @Fluent
 public final class DeploymentValidateResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentValidateResultInner.class);

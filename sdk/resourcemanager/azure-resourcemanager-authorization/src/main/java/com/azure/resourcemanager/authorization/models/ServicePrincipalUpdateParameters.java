@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ServicePrincipalUpdateParameters model. */
+/** Request parameters for update an existing service principal. */
 @Immutable
 public final class ServicePrincipalUpdateParameters extends ServicePrincipalBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalUpdateParameters.class);

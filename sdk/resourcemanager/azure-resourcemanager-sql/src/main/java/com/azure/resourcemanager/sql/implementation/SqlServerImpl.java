@@ -12,13 +12,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAutomaticTuningInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.IdentityType;
@@ -457,7 +457,9 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress) {
         return this
             .withNewFirewallRule(
-                startIPAddress, endIPAddress, this.manager().sdkContext().randomResourceName("firewall_", 15));
+                startIPAddress,
+                endIPAddress,
+                this.manager().resourceManager().internalContext().randomResourceName("firewall_", 15));
     }
 
     @Override

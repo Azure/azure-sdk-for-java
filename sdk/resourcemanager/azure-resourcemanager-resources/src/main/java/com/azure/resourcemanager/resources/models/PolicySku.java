@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PolicySku model. */
+/** The policy sku. This property is optional, obsolete, and will be ignored. */
 @Fluent
 public final class PolicySku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySku.class);

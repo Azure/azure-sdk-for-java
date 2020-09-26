@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.appplatform.models;
 
-import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 

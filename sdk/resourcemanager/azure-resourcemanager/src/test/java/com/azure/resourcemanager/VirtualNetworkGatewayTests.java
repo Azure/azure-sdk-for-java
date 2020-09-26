@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -52,12 +52,13 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         AzureResourceManager.Authenticated azureAuthed =
-            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+            AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
+        setInternalContext(internalContext, azureResourceManager);
     }
 
     @Override
@@ -132,7 +133,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
             .withSecondVirtualNetworkGateway(vngw1)
             .withSharedKey("MySecretKey")
             .create();
-        SdkContext.sleep(250000);
+        ResourceManagerUtils.InternalRuntimeContext.sleep(250000);
         troubleshooting =
             nw
                 .troubleshoot()
@@ -186,6 +187,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("Service error 'VpnClientRootCertificateDataInvalid' on 'myTest3.cer'")
     public void testVirtualNetworkGatewayPointToSite() throws Exception {
         new TestVirtualNetworkGateway().new PointToSite(azureResourceManager.virtualNetworkGateways().manager())
             .runTest(azureResourceManager.virtualNetworkGateways(), azureResourceManager.resourceGroups());

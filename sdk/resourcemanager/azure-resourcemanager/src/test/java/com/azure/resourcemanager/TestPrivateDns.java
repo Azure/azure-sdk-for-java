@@ -35,7 +35,7 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
     @Override
     public PrivateDnsZone createResource(PrivateDnsZones resources) throws Exception {
         final Region region = Region.US_EAST;
-        final String testId = resources.manager().sdkContext().randomResourceName("", 8);
+        final String testId = resources.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String groupName = "rg" + testId;
         final String topLevelDomain = "www.contoso" + testId + ".com";
 

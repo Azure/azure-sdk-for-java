@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.LocationMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Location model. */
+/** Location information. */
 @Fluent
 public final class LocationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationInner.class);

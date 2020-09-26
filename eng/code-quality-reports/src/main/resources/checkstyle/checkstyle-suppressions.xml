@@ -572,4 +572,8 @@
 
   <!-- Suppress Event Grid checks for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
+
+  <!-- Suppress checks in azure-core-experimental -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
 </suppressions>

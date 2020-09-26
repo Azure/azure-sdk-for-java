@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedDiskParameters model. */
+/** The parameters of a managed disk. */
 @Fluent
 public final class ManagedDiskParameters extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDiskParameters.class);

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, AvailabilitySets> {
     @Override
     public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
-        final String newName = availabilitySets.manager().sdkContext().randomResourceName("as", 10);
+        final String newName = availabilitySets.manager().resourceManager().internalContext().randomResourceName("as", 10);
         AvailabilitySet aset =
             availabilitySets
                 .define(newName)
