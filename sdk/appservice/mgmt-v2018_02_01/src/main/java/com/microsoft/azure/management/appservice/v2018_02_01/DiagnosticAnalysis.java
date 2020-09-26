@@ -13,14 +13,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Diag
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 
 /**
  * Type representing DiagnosticAnalysis.
  */
-public interface DiagnosticAnalysis extends HasInner<DiagnosticAnalysisInner>, Indexable, Refreshable<DiagnosticAnalysis>, HasManager<AppServiceManager> {
+public interface DiagnosticAnalysis extends HasInner<DiagnosticAnalysisInner>, Indexable, Refreshable<DiagnosticAnalysis>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the abnormalTimePeriods value.
      */
