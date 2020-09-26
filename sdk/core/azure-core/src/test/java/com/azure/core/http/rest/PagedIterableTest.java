@@ -263,6 +263,9 @@ public class PagedIterableTest {
 
         Thread.sleep(2000);
 
+        /*
+         * Given that each page contains more than one element we are able to only retrieve a single page.
+         */
         assertEquals(1, pageRetriever.getGetCount());
     }
 
@@ -273,11 +276,14 @@ public class PagedIterableTest {
 
         Thread.sleep(2000);
 
+        /*
+         * Given that each page contains more than one element we are able to only retrieve a single page.
+         */
         assertEquals(1, pageRetriever.getGetCount());
     }
 
     @Test
-    public void streamByPageFindFirstOnlyRetrievesOnePage() throws InterruptedException {
+    public void streamByPageFindFirstOnlyRetrievesTwoPages() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
         OnlyOneContinuablePage page = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever)).streamByPage()
             .findFirst()
@@ -285,11 +291,16 @@ public class PagedIterableTest {
 
         Thread.sleep(2000);
 
-        assertEquals(1, pageRetriever.getGetCount());
+        /*
+         * Given that Reactor maintains an internal buffer, and when it empties it will attempt to fill the buffer,
+         * the best result we can get is only two pages being retrieved. One to satisfy the findFirst operations and
+         * one to refill the buffer.
+         */
+        assertEquals(2, pageRetriever.getGetCount());
     }
 
     @Test
-    public void iterateByPageNextOnlyRetrievesOnePage() throws InterruptedException {
+    public void iterateByPageNextOnlyRetrievesTwoPages() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
         OnlyOneContinuablePage page = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever))
             .iterableByPage()
@@ -298,6 +309,11 @@ public class PagedIterableTest {
 
         Thread.sleep(2000);
 
-        assertEquals(1, pageRetriever.getGetCount());
+        /*
+         * Given that Reactor maintains an internal buffer, and when it empties it will attempt to fill the buffer,
+         * the best result we can get is only two pages being retrieved. One to satisfy the findFirst operations and
+         * one to refill the buffer.
+         */
+        assertEquals(2, pageRetriever.getGetCount());
     }
 }

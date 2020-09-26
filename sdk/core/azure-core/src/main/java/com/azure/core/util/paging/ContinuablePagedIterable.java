@@ -38,9 +38,21 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @param batchSize the bounded capacity to prefetch from the {@link ContinuablePagedFlux}
      */
     public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux, int batchSize) {
-        super(pagedFlux);
-        this.pagedFlux = pagedFlux;
+        super(attemptToConvertToBlocking(pagedFlux));
+        this.pagedFlux = attemptToConvertToBlocking(pagedFlux);
         this.batchSize = batchSize;
+    }
+
+    private static <C, T, P extends ContinuablePage<C, T>> ContinuablePagedFlux<C, T, P> attemptToConvertToBlocking(
+        ContinuablePagedFlux<C, T, P> pagedFlux) {
+        if (pagedFlux instanceof ContinuablePagedFluxCore) {
+            ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
+            return (pagedFluxCore.defaultPageSize == null)
+                ? new BlockingByItemPagedFlux<>(pagedFluxCore.pageRetrieverProvider)
+                : new BlockingByItemPagedFlux<>(pagedFluxCore.pageRetrieverProvider, pagedFluxCore.defaultPageSize);
+        } else {
+            return pagedFlux;
+        }
     }
 
     /**

@@ -8,6 +8,11 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 
 public class OnlyOnePagedIterable extends ContinuablePagedIterable<Integer, Integer, OnlyOneContinuablePage> {
     public OnlyOnePagedIterable(ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux) {
-        super(pagedFlux);
+        this(pagedFlux, 1);
+    }
+
+    public OnlyOnePagedIterable(ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux,
+        int batchSize) {
+        super(pagedFlux, batchSize);
     }
 }
