@@ -1,5 +1,8 @@
 # Release History
 
+## 5.3.0-beta.2 (Unreleased)
+
+
 ## 5.3.0-beta.1 (2020-09-25)
 ### New Features
 - A producer client can be configured to be an idempotent producer. When an event with the
