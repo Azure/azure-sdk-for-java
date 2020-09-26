@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.6.0-beta.1 (Unreleased)
+
+
 ### 4.5.1 (2020-09-25)
 #### Key Bug Fixes
 * Added preview implementation for ChangeFeedProcessor which allows for a more detailed view of the current state.
