@@ -78,10 +78,10 @@ jobs:
       matrix: 
         ${{ insert }}: ${{ parameters.Matrix }}
         ${{ if eq(parameters.TestCanary, 'true') }}:          
-          Linux - Java 8 (AzureCloudCanary):            
-            OSVmImage: 'ubuntu-18.04'            
-            JavaTestVersion: '1.8'            
-            DisplayName: 'Linux - Java 8'            
+          Linux - Java 11 (AzureCloudCanary):            
+            OSVmImage: 'ubuntu-18.04'
+            JavaTestVersion: '1.11'
+            DisplayName: 'Linux - Java 11'          
             SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)            
             Location: ${{ parameters.ResourceGroupLocationCanary }}            
             AZURE_TEST_HTTP_CLIENTS: netty
