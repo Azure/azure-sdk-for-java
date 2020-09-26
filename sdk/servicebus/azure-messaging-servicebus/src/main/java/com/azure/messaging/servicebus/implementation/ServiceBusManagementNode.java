@@ -36,8 +36,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return {@link Void} The successful completion represents the pending cancellation.
      */
-    Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName,
-        ServiceBusTransactionContext transactionContext);
+    Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName);
 
     /**
      * Gets the session state.

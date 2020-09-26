@@ -333,7 +333,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param messages Message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
@@ -402,8 +402,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get(),
-                null));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get()));
     }
 
     /**

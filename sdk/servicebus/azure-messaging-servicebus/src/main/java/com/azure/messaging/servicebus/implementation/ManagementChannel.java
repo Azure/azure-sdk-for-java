@@ -113,8 +113,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName,
-        ServiceBusTransactionContext transactionContext) {
+    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
@@ -126,13 +125,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));
 
-                TransactionalState transactionalState = null;
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                }
-
-                return sendWithVerify(channel, requestMessage, transactionalState);
+                return sendWithVerify(channel, requestMessage, null);
             })).then();
     }
 
