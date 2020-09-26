@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -100,35 +99,18 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName);
 
     /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time. This is an asynchronous method
-     * returning a CompletableFuture which completes when the message is sent to the entity. The CompletableFuture, on
-     * completion, returns the sequence number of the scheduled message which can be used to cancel the scheduling of
-     * the message.
-     *
-     * @param message The message to be sent to the entity.
-     * @param scheduledEnqueueTime The {@link OffsetDateTime} at which the message should be enqueued in the entity.
-     * @param transactionContext to be set on message before sending to Service Bus.
-     *
-     * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
-     *     message. This sequence number can be used to cancel the scheduling of the message.
-     */
-    /*Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxSendLinkSize,
-        String associatedLinkName, ServiceBusTransactionContext transactionContext);*/
-
-    /**
-     * Sends a scheduled {@link ServiceBusMessageBatch} message to the Azure Service Bus entity this sender is
-     * connected to. A scheduled message is enqueued and made available to receivers only at the scheduled enqueue time.
+     * Sends a scheduled {@link List} of messages to the Azure Service Bus entity this sender is connected to.
+     * Scheduled messages are enqueued and made available to receivers only at the scheduled enqueue time.
      * This is an asynchronous method returning a CompletableFuture which completes when the message is sent to the
-     * entity. The CompletableFuture, on completion, returns the sequence number of the scheduled message which can be
+     * entity. The CompletableFuture, on completion, returns the sequence numbers of the scheduled messages which can be
      * used to cancel the scheduling of the message.
      *
      * @param messages The messages to be sent to the entity.
      * @param scheduledEnqueueTime The {@link OffsetDateTime} at which the message should be enqueued in the entity.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
-     * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
-     *     message. This sequence number can be used to cancel the scheduling of the message.
+     * @return The sequence numbers representing the pending send, which returns the sequence numbers of the scheduled
+     *     messages. These sequence numbers can be used to cancel the scheduling of the messages.
      */
     Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime, int maxSendLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);

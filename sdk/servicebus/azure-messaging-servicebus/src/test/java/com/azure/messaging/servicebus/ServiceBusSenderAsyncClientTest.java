@@ -40,6 +40,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -107,6 +108,8 @@ class ServiceBusSenderAsyncClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
     @Captor
     private ArgumentCaptor<ServiceBusMessage> singleSBMessageCaptor;
+    @Captor
+    private ArgumentCaptor<List<ServiceBusMessage>> sbMessagesCaptor;
 
     private final MessageSerializer serializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
@@ -490,15 +493,19 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), isNull()))
-            .thenReturn(just(sequenceNumberReturned));
+        when(managementNode.schedule(anyList(), eq(instant), any(Integer.class), any(), isNull()))
+            .thenReturn(Flux.just(sequenceNumberReturned));
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant))
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES, LINK_NAME, null);
+        verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), isNull());
+        List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
+        Assertions.assertNotNull(actualMessages);
+        Assertions.assertEquals(1, actualMessages.size());
+        Assertions.assertEquals(message, actualMessages.get(0));
     }
 
     @Test
@@ -509,15 +516,19 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))
-            .thenReturn(just(sequenceNumberReturned));
+        when(managementNode.schedule(anyList(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))
+            .thenReturn(Flux.just(sequenceNumberReturned));
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant, transactionContext))
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
+        verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
+        List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
+        Assertions.assertNotNull(actualMessages);
+        Assertions.assertEquals(1, actualMessages.size());
+        Assertions.assertEquals(message, actualMessages.get(0));
     }
 
 
