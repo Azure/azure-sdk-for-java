@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 
 /**
  * Type representing SiteVnetInfo.
  */
-public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshable<SiteVnetInfo>, Updatable<SiteVnetInfo.Update>, HasManager<AppServiceManager> {
+public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshable<SiteVnetInfo>, Updatable<SiteVnetInfo.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the certBlob value.
      */

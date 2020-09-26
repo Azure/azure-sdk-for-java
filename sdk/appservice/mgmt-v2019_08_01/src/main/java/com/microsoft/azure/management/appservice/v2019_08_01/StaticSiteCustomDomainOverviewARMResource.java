@@ -15,13 +15,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing StaticSiteCustomDomainOverviewARMResource.
  */
-public interface StaticSiteCustomDomainOverviewARMResource extends HasInner<StaticSiteCustomDomainOverviewARMResourceInner>, Indexable, Updatable<StaticSiteCustomDomainOverviewARMResource.Update>, HasManager<AppServiceManager> {
+public interface StaticSiteCustomDomainOverviewARMResource extends HasInner<StaticSiteCustomDomainOverviewARMResourceInner>, Indexable, Updatable<StaticSiteCustomDomainOverviewARMResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the createdOn value.
      */

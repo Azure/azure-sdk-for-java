@@ -16,12 +16,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ContainerInfo;
 import com.microsoft.azure.management.appservice.v2019_08_01.SiteRuntimeState;
 
 class WebSiteInstanceStatusImpl extends IndexableRefreshableWrapperImpl<WebSiteInstanceStatus, WebSiteInstanceStatusInner> implements WebSiteInstanceStatus {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String instanceId;
 
-    WebSiteInstanceStatusImpl(WebSiteInstanceStatusInner inner,  AppServiceManager manager) {
+    WebSiteInstanceStatusImpl(WebSiteInstanceStatusInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -31,7 +31,7 @@ class WebSiteInstanceStatusImpl extends IndexableRefreshableWrapperImpl<WebSiteI
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

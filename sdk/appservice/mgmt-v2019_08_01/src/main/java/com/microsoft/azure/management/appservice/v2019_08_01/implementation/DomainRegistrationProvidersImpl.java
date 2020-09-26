@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.appservice.v2019_08_01.CsmOperationDescription;
 
 class DomainRegistrationProvidersImpl extends WrapperImpl<DomainRegistrationProvidersInner> implements DomainRegistrationProviders {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    DomainRegistrationProvidersImpl(AppServiceManager manager) {
+    DomainRegistrationProvidersImpl(CertificateRegistrationManager manager) {
         super(manager.inner().domainRegistrationProviders());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

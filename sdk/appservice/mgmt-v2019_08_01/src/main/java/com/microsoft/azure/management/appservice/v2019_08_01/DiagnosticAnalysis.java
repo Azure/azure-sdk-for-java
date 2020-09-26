@@ -10,7 +10,7 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.DiagnosticAnalysisInner;
 import java.util.List;
 import org.joda.time.DateTime;
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Dete
 /**
  * Type representing DiagnosticAnalysis.
  */
-public interface DiagnosticAnalysis extends HasInner<DiagnosticAnalysisInner>, HasManager<AppServiceManager> {
+public interface DiagnosticAnalysis extends HasInner<DiagnosticAnalysisInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the abnormalTimePeriods value.
      */

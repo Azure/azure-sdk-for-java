@@ -15,14 +15,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.EnabledConfig;
 import com.microsoft.azure.management.appservice.v2019_08_01.HttpLogsConfig;
 
 class SiteLogsConfigImpl extends WrapperImpl<SiteLogsConfigInner> implements SiteLogsConfig {
-    private final AppServiceManager manager;
-    SiteLogsConfigImpl(SiteLogsConfigInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    SiteLogsConfigImpl(SiteLogsConfigInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

@@ -15,14 +15,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ErrorEntity;
 import com.microsoft.azure.management.appservice.v2019_08_01.DnsVerificationTestResult;
 
 class CustomHostnameAnalysisResultImpl extends WrapperImpl<CustomHostnameAnalysisResultInner> implements CustomHostnameAnalysisResult {
-    private final AppServiceManager manager;
-    CustomHostnameAnalysisResultImpl(CustomHostnameAnalysisResultInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    CustomHostnameAnalysisResultImpl(CustomHostnameAnalysisResultInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

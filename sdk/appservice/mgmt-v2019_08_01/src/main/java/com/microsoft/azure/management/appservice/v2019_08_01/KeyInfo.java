@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.KeyI
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing KeyInfo.
  */
-public interface KeyInfo extends HasInner<KeyInfoInner>, Indexable, HasManager<AppServiceManager> {
+public interface KeyInfo extends HasInner<KeyInfoInner>, Indexable, HasManager<CertificateRegistrationManager> {
     /**
      * @return the name value.
      */

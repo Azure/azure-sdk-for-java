@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.PerfMonResponseInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing PerfMonResponse.
  */
-public interface PerfMonResponse extends HasInner<PerfMonResponseInner>, HasManager<AppServiceManager> {
+public interface PerfMonResponse extends HasInner<PerfMonResponseInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the code value.
      */
