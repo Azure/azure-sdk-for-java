@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 
 class HybridConnectionImpl extends IndexableRefreshableWrapperImpl<HybridConnection, HybridConnectionInner> implements HybridConnection {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String namespaceName;
     private String relayName;
 
-    HybridConnectionImpl(HybridConnectionInner inner,  AppServiceManager manager) {
+    HybridConnectionImpl(HybridConnectionInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -30,7 +30,7 @@ class HybridConnectionImpl extends IndexableRefreshableWrapperImpl<HybridConnect
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
