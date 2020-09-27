@@ -11,6 +11,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -3253,14 +3254,22 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-    public static Response<String> curl(String urlString) {
+    public static String curl(String urlString) {
         try {
             Mono<SimpleResponse<Flux<ByteBuffer>>> response =
                 HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
                         .fixedDelay(3, Duration.ofSeconds(30))
-                        .filter(t -> t instanceof TimeoutException));
-            return stringResponse(response).block();
+                        .filter(t -> {
+                            if (t instanceof TimeoutException) {
+                                return true;
+                            } else if (t instanceof HttpResponseException
+                                && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
+                                return true;
+                            }
+                            return false;
+                        }));
+            return stringResponse(response).block().getValue();
         } catch (MalformedURLException e) {
             return null;
         }
