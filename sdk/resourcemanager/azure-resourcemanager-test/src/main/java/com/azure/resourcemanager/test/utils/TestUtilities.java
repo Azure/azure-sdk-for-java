@@ -34,7 +34,7 @@ public class TestUtilities {
      */
     public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-        for (T t : iterable) {
+        for (T ignored : iterable) {
             ++res;
         }
         return res;
