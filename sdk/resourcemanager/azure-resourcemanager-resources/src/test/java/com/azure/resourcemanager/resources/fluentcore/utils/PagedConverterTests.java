@@ -25,21 +25,22 @@ public class PagedConverterTests {
     public void testFlatMapPage() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
         PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
-        StepVerifier.create(convertedPagedFlux.byPage().log())
+        StepVerifier.create(convertedPagedFlux.byPage())
             .expectSubscription()
             .expectNextMatches(p -> p.getValue().size() == 8
                 && p.getValue().get(0).equals("base0")
-                && p.getValue().get(p.getValue().size() - 1).equals("base4#"))
+                && p.getValue().get(p.getValue().size() - 1).equals("base3#"))
             .expectNextMatches(p -> p.getValue().size() == 8)
             .expectNextMatches(p -> p.getValue().size() == 4)
-            .expectComplete();
+            .expectComplete()
+            .verify();
     }
 
     @Test
     public void testMergePagedFlux() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
         PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4));
-        StepVerifier.create(mergedPagedFlux.byPage().log())
+        StepVerifier.create(mergedPagedFlux.byPage())
             .expectSubscription()
             .expectNextMatches(p -> p.getValue().size() == 4
                 && p.getValue().get(0).equals("base0sub0")
@@ -47,7 +48,8 @@ public class PagedConverterTests {
             .expectNextMatches(p -> p.getValue().size() == 4)
             .expectNextMatches(p -> p.getValue().size() == 2)
             .expectNextCount(3 * 2)
-            .expectComplete();
+            .expectComplete()
+            .verify();
     }
 
     private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize) {
