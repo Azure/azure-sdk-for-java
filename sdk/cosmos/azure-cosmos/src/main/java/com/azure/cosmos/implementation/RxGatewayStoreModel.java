@@ -155,7 +155,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                     uri,
                     uri.getPort(),
                     httpHeaders,
-                    byteBufObservable);
+                    byteBufObservable,
+                    request.getOperationType());
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
@@ -254,7 +255,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             return contentObservable
                        .map(content -> {
                                //Adding transport client request timeline to diagnostics
-                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
+                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                                    BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,

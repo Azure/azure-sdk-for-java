@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.OperationType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -22,6 +23,7 @@ public class HttpRequest {
     private HttpHeaders headers;
     private Flux<ByteBuf> body;
     private ReactorNettyRequestRecord reactorNettyRequestRecord;
+    private OperationType operationType;
 
     /**
      * Create a new HttpRequest instance.
@@ -29,12 +31,13 @@ public class HttpRequest {
      * @param httpMethod the HTTP request method
      * @param uri        the target address to send the request to
      */
-    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders httpHeaders) {
+    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders httpHeaders, OperationType operationType) {
         this.httpMethod = httpMethod;
         this.uri = uri;
         this.port = port;
         this.headers = httpHeaders;
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
+        this.operationType = operationType;
     }
 
     /**
@@ -59,13 +62,14 @@ public class HttpRequest {
      * @param headers    the HTTP headers to use with this request
      * @param body       the request content
      */
-    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders headers, Flux<ByteBuf> body) {
+    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders headers, Flux<ByteBuf> body, OperationType operationType) {
         this.httpMethod = httpMethod;
         this.uri = uri;
         this.port = port;
         this.headers = headers;
         this.body = body;
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
+        this.operationType = operationType;
     }
 
     /**
@@ -212,9 +216,11 @@ public class HttpRequest {
      * Sets ReactorNettyRequestRecord for recording request timeline.
      *
      * @param reactorNettyRequestRecord the reactor netty request record
+     * @return this HttpRequest
      */
-    public void setReactorNettyRequestRecord(ReactorNettyRequestRecord reactorNettyRequestRecord) {
+    public HttpRequest withReactorNettyRequestRecord(ReactorNettyRequestRecord reactorNettyRequestRecord) {
         this.reactorNettyRequestRecord = reactorNettyRequestRecord;
+        return this;
     }
 
     /**
@@ -222,8 +228,28 @@ public class HttpRequest {
      *
      * @return reactorNettyRequestRecord the reactor netty request record
      */
-    public ReactorNettyRequestRecord getReactorNettyRequestRecord() {
+    public ReactorNettyRequestRecord reactorNettyRequestRecord() {
         return this.reactorNettyRequestRecord;
+    }
+
+    /**
+     * Gets the operation type of this request
+     *
+     * @return operationType OperationType
+     */
+    public OperationType operationType() {
+        return operationType;
+    }
+
+    /**
+     * Sets the operation type of the request
+     *
+     * @param operationType operationType of the request
+     * @return this HttpRequest
+     */
+    public HttpRequest withOperationType(OperationType operationType) {
+        this.operationType = operationType;
+        return this;
     }
 
     private ReactorNettyRequestRecord createReactorNettyRequestRecord(){

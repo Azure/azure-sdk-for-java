@@ -361,6 +361,9 @@ public class HttpTransportClient extends TransportClient {
                 throw new IllegalStateException();
         }
 
+        // add operation type
+        httpRequestMessage.withOperationType(request.getOperationType());
+
         Map<String, String> documentServiceRequestHeaders = request.getHeaders();
         HttpHeaders httpRequestHeaders = httpRequestMessage.headers();
 

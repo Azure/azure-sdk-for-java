@@ -105,7 +105,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
             0] + "//" + Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.getId() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/";
         URI uri = new URI(resourceUri);
 
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers), request.getOperationType());
         httpRequest.withBody(request.getContentAsByteBufFlux());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
@@ -126,7 +126,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 + createdDatabase.getId() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.getId() + "/" + Paths.DOCUMENTS_PATH_SEGMENT + "/";
         uri = new URI(resourceUri);
 
-        httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
+        httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers), request.getOperationType());
         httpRequest.withBody(request.getContentAsByteBufFlux());
 
         body = httpClient.send(httpRequest).block().bodyAsString().block();

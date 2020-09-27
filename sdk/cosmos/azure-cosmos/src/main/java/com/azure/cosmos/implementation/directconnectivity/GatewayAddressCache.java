@@ -299,7 +299,7 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         Instant addressCallStartTime = Instant.now();
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders, OperationType.AddressRefresh);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
 
@@ -519,7 +519,7 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         HttpRequest httpRequest;
-        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
+        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders, OperationType.AddressRefresh);
         Instant addressCallStartTime = Instant.now();
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
