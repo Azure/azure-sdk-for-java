@@ -109,7 +109,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         webApp =
             webApp1
                 .update()
-                .withBuiltInImage(RuntimeStack.NODEJS_6_6)
+                .withBuiltInImage(RuntimeStack.NODEJS_6_LTS)
                 .defineSourceControl()
                 .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
                 .withBranch("master")
@@ -173,7 +173,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp =
             webApp1
                 .update()
-                .withBuiltInImage(RuntimeStack.NODEJS_6_6)
+                .withBuiltInImage(RuntimeStack.NODEJS_6_LTS)
                 .defineSourceControl()
                 .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
                 .withBranch("master")
