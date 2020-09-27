@@ -253,7 +253,7 @@ public final class QueryMetricsAndActivityLogs {
             blockBlobClient.upload(scriptFileStream, fileSize);
 
             // give sometime for the infrastructure to process the records and fit into time grain.
-            ResourceManagerUtils.InternalRuntimeContext.sleep(6 * 60000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(6));
         }
     }
 }

@@ -55,6 +55,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -1242,7 +1243,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             vmss.virtualMachines().simulateEviction(instance.instanceId());
         }
 
-        ResourceManagerUtils.InternalRuntimeContext.sleep(30 * 60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
 
         for (VirtualMachineScaleSetVM instance: vmInstances) {
             instance.refresh();

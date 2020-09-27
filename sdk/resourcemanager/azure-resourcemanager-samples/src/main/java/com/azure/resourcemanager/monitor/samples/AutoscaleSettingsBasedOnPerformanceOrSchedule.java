@@ -103,7 +103,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
-                ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 Utils.curl(deployedWebAppUrl);
             }
 

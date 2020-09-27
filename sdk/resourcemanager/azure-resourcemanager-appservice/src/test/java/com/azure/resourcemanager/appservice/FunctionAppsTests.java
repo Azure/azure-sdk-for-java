@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -269,7 +270,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // wait for deploy
         if (!isPlaybackMode()) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(180000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
         }
 
         functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
@@ -314,7 +315,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // wait for deploy
         if (!isPlaybackMode()) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(180000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
         }
 
         // verify deploy

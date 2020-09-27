@@ -101,7 +101,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
         SyncPoller<?, NetworkInterface> networkInterfaceSyncPoller = networkInterfaceAccepted.getSyncPoller();
         SyncPoller<?, Disk> diskSyncPoller = diskAccepted.getSyncPoller();
         while (!networkInterfaceLroStatus.isComplete() || !diskLroStatus.isComplete()) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(Duration.ofSeconds(1).toMillis());
+            ResourceManagerUtils.sleep(Duration.ofSeconds(1));
 
             if (!networkInterfaceLroStatus.isComplete()) {
                 logger.info("{} {}", OffsetDateTime.now(), "poll network interface");

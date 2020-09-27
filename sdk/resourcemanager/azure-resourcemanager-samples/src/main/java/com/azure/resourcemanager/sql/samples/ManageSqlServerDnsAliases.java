@@ -20,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 
 /**
  * Azure SQL sample for managing SQL Server DNS Aliases.
@@ -149,7 +150,7 @@ public class ManageSqlServerDnsAliases {
             SqlServerDnsAlias dnsAlias = sqlServerForTest.dnsAliases()
                 .define(sqlServerDnsAlias)
                 .create();
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
             String connectionUrl = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;",
                 dnsAlias.azureDnsRecord(),
@@ -179,7 +180,7 @@ public class ManageSqlServerDnsAliases {
             sqlServerForProd.dnsAliases().acquire(sqlServerDnsAlias, sqlServerForTest.id());
 
             // It takes some time for the DNS alias to reflect the new Server connection
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(10));
 
             // Re-establish the connection.
             try (Connection conDnsAlias = DriverManager.getConnection(connectionUrl);

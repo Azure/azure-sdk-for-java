@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestBase {
             .withSecondVirtualNetworkGateway(vngw1)
             .withSharedKey("MySecretKey")
             .create();
-        ResourceManagerUtils.InternalRuntimeContext.sleep(250000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(250));
         troubleshooting =
             nw
                 .troubleshoot()

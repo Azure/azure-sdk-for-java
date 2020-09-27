@@ -17,6 +17,8 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.models.SqlServer;
 
+import java.time.Duration;
+
 /**
  * Azure SQL sample for managing SQL Failover Groups
  *  - Create a primary SQL Server with a sample database and a secondary SQL Server.
@@ -136,7 +138,7 @@ public class ManageSqlFailoverGroups {
             // ============================================================
             // Get the database from the secondary SQL server.
             System.out.println("Getting the database from the secondary server");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(3 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
 
             db = sqlSecondaryServer.databases().get(dbName);
 

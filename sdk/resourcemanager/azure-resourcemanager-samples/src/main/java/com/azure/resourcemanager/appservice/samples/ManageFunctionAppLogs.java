@@ -20,6 +20,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -83,7 +84,7 @@ public final class ManageFunctionAppLogs {
             // warm up
             System.out.println("Warming up " + appUrl + "/api/square...");
             Utils.post("http://" + appUrl + "/api/square", "625");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             //============================================================
             // Listen to logs synchronously for 30 seconds
@@ -95,9 +96,9 @@ public final class ManageFunctionAppLogs {
             stopWatch.start();
             new Thread(() ->  {
                 Utils.post("http://" + appUrl + "/api/square", "625");
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "725");
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "825");
             }).start();
             while (line != null && stopWatch.getTime() < 90000) {
@@ -110,12 +111,12 @@ public final class ManageFunctionAppLogs {
             // Listen to logs asynchronously until 3 requests are completed
 
             new Thread(() ->  {
-                ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 System.out.println("Starting hitting");
                 Utils.post("http://" + appUrl + "/api/square", "625");
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "725");
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "825");
             }).start();
 

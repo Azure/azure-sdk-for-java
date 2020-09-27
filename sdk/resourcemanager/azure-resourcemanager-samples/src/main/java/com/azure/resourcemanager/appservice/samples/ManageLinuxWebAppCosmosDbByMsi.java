@@ -89,7 +89,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 //                        .attach()
 //                    .create();
 //
-//            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+//            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 //
 //            KeyVaultClient client = new KeyVaultClient(new KeyVaultCredentials() {
 //                @Override

@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ProvidersTests extends ResourceManagementTest {
@@ -28,13 +29,13 @@ public class ProvidersTests extends ResourceManagementTest {
         resourceClient.providers().unregister(provider.namespace());
         provider = resourceClient.providers().getByName(provider.namespace());
         while (provider.registrationState().equals("Unregistering")) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             provider = resourceClient.providers().getByName(provider.namespace());
         }
         resourceClient.providers().register(provider.namespace());
         while (provider.registrationState().equals("Unregistered")
                 || provider.registrationState().equalsIgnoreCase("Registering")) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             provider = resourceClient.providers().getByName(provider.namespace());
         }
         Assertions.assertEquals("Registered", provider.registrationState());
