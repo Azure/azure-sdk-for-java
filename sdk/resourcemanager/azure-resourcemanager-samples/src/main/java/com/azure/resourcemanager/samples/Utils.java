@@ -3255,7 +3255,7 @@ public final class Utils {
     public static Response<String> curl(String urlString) {
         try {
             Mono<SimpleResponse<Flux<ByteBuffer>>> response =
-                httpClient.getString(getHost(urlString), getPathAndQuery(urlString))
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
                         .fixedDelay(3, Duration.ofSeconds(30))
                         .filter(t -> t instanceof TimeoutException));
@@ -3267,7 +3267,7 @@ public final class Utils {
 
     public static String get(String urlString) {
         try {
-            SimpleResponse<String> response = stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            SimpleResponse<String> response = stringResponse(HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))).block();
             if (response != null) {
                 return response.getValue();
             } else {
@@ -3280,7 +3280,7 @@ public final class Utils {
 
     public static String post(String urlString, String body) {
         try {
-            SimpleResponse<String> response = stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
+            SimpleResponse<String> response = stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
             if (response != null) {
                 return response.getValue();
             } else {
@@ -3314,7 +3314,7 @@ public final class Utils {
         return path;
     }
 
-    private static final WebAppTestClient httpClient = RestProxy.create(
+    private static final WebAppTestClient HTTP_CLIENT = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
                     .policies(

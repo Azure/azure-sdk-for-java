@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 public class WarDeployTests extends AppServiceTest {
     private String webappName = "";
 
+    private final File warFile = new File(WarDeployTests.class.getResource("/helloworld.war").getPath());
+
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName = "JAVA" + generateRandomResourceName("webapp-", 20);
@@ -50,7 +52,7 @@ public class WarDeployTests extends AppServiceTest {
                     .create();
             Assertions.assertNotNull(webApp);
 
-            webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
+            webApp.warDeploy(warFile);
 
             if (!isPlaybackMode()) {
                 ResourceManagerUtils.sleep(Duration.ofSeconds(30));
@@ -80,9 +82,9 @@ public class WarDeployTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
 
         if (!isPlaybackMode()) {
-            webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
-            try (InputStream is = new FileInputStream(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()))) {
-                webApp.warDeploy(is, "app2");
+            webApp.warDeploy(warFile);
+            try (InputStream is = new FileInputStream(warFile)) {
+                webApp.warDeploy(is, warFile.length(), "app2");
             }
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(30));

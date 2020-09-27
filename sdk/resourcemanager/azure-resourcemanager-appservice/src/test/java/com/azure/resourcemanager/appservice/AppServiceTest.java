@@ -197,7 +197,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
     protected Response<String> curl(String urlString) throws IOException {
         try {
             Mono<SimpleResponse<Flux<ByteBuffer>>> response =
-                httpClient.getString(getHost(urlString), getPathAndQuery(urlString))
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
                         .fixedDelay(3, Duration.ofSeconds(30))
                         .filter(t -> t instanceof TimeoutException));
@@ -210,7 +210,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body))
+            return stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
                 .block()
                 .getValue();
         } catch (Exception e) {
@@ -248,7 +248,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
                                     response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
-    private static final WebAppTestClient httpClient =
+    private static final WebAppTestClient HTTP_CLIENT =
         RestProxy
             .create(
                 WebAppTestClient.class,
