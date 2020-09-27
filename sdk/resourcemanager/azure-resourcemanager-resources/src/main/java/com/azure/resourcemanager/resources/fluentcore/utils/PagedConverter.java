@@ -103,7 +103,8 @@ public final class PagedConverter {
         return pagedResponse -> {
             List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
                 .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
-            return Flux.concat(fluxList);
+            return Flux.concat(fluxList)
+                .filter(p -> !p.getValue().isEmpty());
         };
     }
 
