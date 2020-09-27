@@ -40,8 +40,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -53,6 +55,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /** The base for app service tests. */
 public class AppServiceTest extends ResourceManagerTestBase {
@@ -193,7 +196,12 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Mono<SimpleResponse<Flux<ByteBuffer>>> response =
+                httpClient.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(3, Duration.ofSeconds(30))
+                        .filter(t -> t instanceof TimeoutException));
+            return stringResponse(response).block();
         } catch (MalformedURLException e) {
             Assertions.fail();
             return null;

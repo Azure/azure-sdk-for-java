@@ -46,6 +46,7 @@ import java.util.Locale;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /** A client which interacts with Kudu service. */
 class KuduClient {
@@ -331,7 +332,7 @@ class KuduClient {
 
     private Mono<Void> withRetry(Mono<Void> observable) {
         return observable
-            .retryWhen(
+            .retryWhen(Retry.withThrowable(
                 flux ->
                     flux
                         .zipWith(
@@ -348,7 +349,7 @@ class KuduClient {
                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                 }
                             })
-                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10))));
+                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10)))));
     }
 
 }
