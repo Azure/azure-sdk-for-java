@@ -78,6 +78,6 @@ public class PagedConverterTests {
                 null);
         };
         return new PagedFlux<>(() -> Mono.just(nextPage.apply(prefix)),
-            continuationToken -> Mono.defer(() -> Mono.just(nextPage.apply(continuationToken))));
+            continuationToken -> Mono.just(nextPage.apply(continuationToken)));
     }
 }

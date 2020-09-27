@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public final class PagedConverter {
 
     private PagedConverter() {
-
     }
 
     /**
@@ -47,7 +46,7 @@ public final class PagedConverter {
     }
 
     /**
-     * Merge PagedFlux in PagedFlux to a single PagedFlux.
+     * Merge collection of all PagedFlux transformed from elements of PagedFlux to a single PagedFlux.
      *
      * @param pagedFlux the input of PagedFlux.
      * @param transformer the transform of element T to PagedFlux of S.
