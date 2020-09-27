@@ -58,7 +58,7 @@ public class WebAppsWebDeployTests extends AppServiceTest {
             webApp1
                 .deploy()
                 .withPackageUri(
-                    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/webapps.zip")
+                    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
                 .withExistingDeploymentsDeleted(true)
                 .execute();
 
