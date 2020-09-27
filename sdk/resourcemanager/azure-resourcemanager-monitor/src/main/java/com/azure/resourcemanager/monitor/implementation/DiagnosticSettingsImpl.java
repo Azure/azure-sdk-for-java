@@ -4,6 +4,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
@@ -12,7 +13,6 @@ import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
-import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
@@ -89,8 +89,9 @@ public class DiagnosticSettingsImpl
                     .manager
                     .serviceClient()
                     .getDiagnosticSettingsCategories()
-                    .listAsync(resourceId)
-                    .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
+                    .listWithResponseAsync(resourceId)
+                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value())))
             .mapPage(DiagnosticSettingsCategoryImpl::new);
     }
 
@@ -123,8 +124,9 @@ public class DiagnosticSettingsImpl
                     .manager()
                     .serviceClient()
                     .getDiagnosticSettings()
-                    .listAsync(resourceId)
-                    .map(DiagnosticSettingsResourceCollectionInner::value))
+                    .listWithResponseAsync(resourceId)
+                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value())))
             .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
     }
 

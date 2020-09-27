@@ -42,7 +42,8 @@ class VirtualMachineExtensionImageTypesImpl
     @Override
     public PagedFlux<VirtualMachineExtensionImageType> listAsync() {
         return PagedConverter
-            .convertListToPagedFlux(client.listTypesAsync(this.publisher.region().toString(), this.publisher.name()))
+            .convertListToPagedFlux(client.listTypesWithResponseAsync(
+                this.publisher.region().toString(), this.publisher.name()))
             .mapPage(this::wrapModel);
     }
 }

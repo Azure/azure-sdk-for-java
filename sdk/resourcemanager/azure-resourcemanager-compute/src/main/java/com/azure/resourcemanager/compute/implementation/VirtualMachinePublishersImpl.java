@@ -58,7 +58,7 @@ public class VirtualMachinePublishersImpl
     @Override
     public PagedFlux<VirtualMachinePublisher> listByRegionAsync(String regionName) {
         return PagedConverter
-            .convertListToPagedFlux(imagesClientCollection.listPublishersAsync(regionName))
+            .convertListToPagedFlux(imagesClientCollection.listPublishersWithResponseAsync(regionName))
             .mapPage(this::wrapModel);
     }
 }
