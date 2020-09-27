@@ -28,10 +28,10 @@ import java.io.IOException;
  * <p>
  * Please note: in order to run this sample, you need to have:
  * - pre-generated root certificate and public key exported to $CERT_PATH file
- * For more details please see https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-certificates-point-to-site for PowerShell instructions
- * and https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-certificates-point-to-site-makecert for Makecert instructions.
+ * For more details please see https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-certificates-point-to-site for PowerShell instructions
+ * and https://docs.microsoft.com/azure/vpn-gateway/vpn-gateway-certificates-point-to-site-makecert for Makecert instructions.
  * - client certificate generated for this root certificate installed on your machine.
- * Please see: https://docs.microsoft.com/en-us/azure/vpn-gateway/point-to-site-how-to-vpn-client-install-azure-cert
+ * Please see: https://docs.microsoft.com/azure/vpn-gateway/point-to-site-how-to-vpn-client-install-azure-cert
  * - thumbprint for client certificate saved to $CLIENT_CERT_THUMBPRINT
  */
 

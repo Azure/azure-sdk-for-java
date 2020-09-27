@@ -22,8 +22,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
-
 
 /**
  * Azure App Service sample for managing web apps.
@@ -124,8 +122,8 @@ public final class ManageLinuxWebAppWithDomainSsl {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageLinuxWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageLinuxWebAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
-            String cerPath = ManageLinuxWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageLinuxWebAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
+            String pfxPath = ManageLinuxWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
+            String cerPath = ManageLinuxWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
