@@ -23,6 +23,7 @@ import com.azure.resourcemanager.sql.models.SqlServerKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                 .withSoftDeleteEnabled()
                 .create();
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(3 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
 
             Key keyBundle = vault.keys().define(keyName)
                 .withKeyTypeToCreate(KeyType.RSA_HSM)

@@ -62,6 +62,7 @@ import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -522,7 +523,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         PagedIterable<VirtualMachineImage> images = azureResourceManager.virtualMachineImages().listByRegion(Region.US_WEST);
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
         // Seems to help avoid connection refused error on subsequent mock test
-        ResourceManagerUtils.InternalRuntimeContext.sleep(2000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(2));
     }
 
     /**

@@ -35,6 +35,8 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
 
+import java.time.Duration;
+
 /**
  * Azure Network sample for managing network watcher.
  * - Create Network Watcher
@@ -242,7 +244,7 @@ public final class ManageNetworkWatcher {
 
             // wait for flow log to log an event
             System.out.println("Waiting for flow log to log an event...");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(250000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(250));
 
             // Disable NSG flow log
             System.out.println("Disabling flow log...");

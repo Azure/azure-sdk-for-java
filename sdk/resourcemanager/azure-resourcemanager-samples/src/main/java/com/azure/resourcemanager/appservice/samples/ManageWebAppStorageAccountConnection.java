@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -119,7 +120,7 @@ public final class ManageWebAppStorageAccountConnection {
             // warm up
             System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
             Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("ResourceManagerUtils.curling " + app1Url + "/azure-samples-blob-traverser...");
             System.out.println(Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/"));
 

@@ -18,6 +18,8 @@ import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.models.ShareFileItem;
 
+import java.time.Duration;
+
 /**
  * Azure Container Instance sample for managing container instances with Azure File Share mount.
  *    - Create an Azure container instance using Docker image "seanmckenna/aci-hellofiles" with a mount to a new file share
@@ -67,7 +69,7 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
             Utils.curl("http://" + containerGroup.ipAddress());
-            ResourceManagerUtils.InternalRuntimeContext.sleep(30000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
             System.out.println("CURLing " + containerGroup.ipAddress());
             System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
 

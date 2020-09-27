@@ -18,6 +18,8 @@ import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.apache.commons.lang.time.StopWatch;
 
+import java.time.Duration;
+
 /**
  * Azure App Service basic sample for managing function apps.
  *  - Create 2 linux function apps.
@@ -75,7 +77,7 @@ public class ManageLinuxFunctionAppSourceControl {
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             }
 
             // call function
@@ -112,7 +114,7 @@ public class ManageLinuxFunctionAppSourceControl {
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             }
 
             // call function

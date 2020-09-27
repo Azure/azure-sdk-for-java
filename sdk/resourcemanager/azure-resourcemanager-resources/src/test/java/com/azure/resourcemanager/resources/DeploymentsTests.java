@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Optional;
 
 public class DeploymentsTests extends ResourceManagementTest {
@@ -256,7 +257,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             ? defaultDelayInMillis
             : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -292,7 +293,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             ? defaultDelayInMillis
             : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -324,7 +325,7 @@ public class DeploymentsTests extends ResourceManagementTest {
                 ? defaultDelayInMillis
                 : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
             while (!pollStatus.isComplete()) {
-                ResourceManagerUtils.InternalRuntimeContext.sleep(delayInMills);
+                ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
                 PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
                 pollStatus = pollResponse.getStatus();

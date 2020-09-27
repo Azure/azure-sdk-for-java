@@ -14,6 +14,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.ByteArrayInputStream;
+import java.time.Duration;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -118,7 +119,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
-            ResourceManagerUtils.InternalRuntimeContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Response<String> response = curl("http://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
@@ -183,7 +184,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
-            ResourceManagerUtils.InternalRuntimeContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Response<String> response = curl("https://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();

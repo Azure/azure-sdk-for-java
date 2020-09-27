@@ -21,6 +21,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
+import java.time.Duration;
+
 /**
  * Azure App Service basic sample for managing web apps.
  *  - Create a Cosmos DB with credentials stored in a Key Vault
@@ -77,7 +79,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
                         .attach()
                     .create();
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
             //============================================================
             // Store Cosmos DB credentials in Key Vault
@@ -138,7 +140,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             // warm up
             System.out.println("Warming up " + appUrl + "...");
             Utils.curl("http://" + appUrl);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             System.out.println("CURLing " + appUrl);
             System.out.println(Utils.curl("http://" + appUrl));
 

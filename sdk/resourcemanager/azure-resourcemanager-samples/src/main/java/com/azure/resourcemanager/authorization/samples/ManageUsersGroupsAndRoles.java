@@ -18,6 +18,8 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.time.Duration;
+
 /**
  * Azure Users, Groups and Roles sample.
  * - Create a user
@@ -95,7 +97,7 @@ public final class ManageUsersGroupsAndRoles {
                     .withNewApplication("http://" + spName)
                     .create();
             // wait till service principal created and propagated
-            ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("Created Service Principal:");
             Utils.print(sp);
             spId = sp.id();
