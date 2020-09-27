@@ -29,18 +29,18 @@ public final class PagedConverter {
      * Applies flatMap transform to elements of PagedFlux.
      *
      * @param pagedFlux the input of PagedFlux.
-     * @param transformer the flatMap transform of element T to Publisher of S.
+     * @param mapper the flatMap transform of element T to Publisher of S.
      * @param <T> input type of PagedFlux.
      * @param <S> return type of PagedFlux.
      * @return the PagedFlux with elements in PagedResponse transformed.
      */
     public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
-            Function<? super T, ? extends Publisher<? extends S>> transformer) {
+            Function<? super T, ? extends Publisher<? extends S>> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                     ? pagedFlux.byPage()
                     : pagedFlux.byPage(continuationToken);
-            return flux.concatMap(PagedConverter.flatMapPagedResponse(transformer));
+            return flux.concatMap(PagedConverter.flatMapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
     }
@@ -70,16 +70,16 @@ public final class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedResponse.
      *
-     * @param transformer the flatMap transform of element T to Publisher of S.
+     * @param mapper the flatMap transform of element T to Publisher of S.
      * @param <T> input type of pagedFlux.
      * @param <S> return type of pagedFlux.
      * @return the lifted transform on PagedResponse.
      */
     private static <T, S> Function<PagedResponse<T>, Mono<PagedResponse<S>>> flatMapPagedResponse(
-            Function<? super T, ? extends Publisher<? extends S>> transformer) {
+            Function<? super T, ? extends Publisher<? extends S>> mapper) {
         return pagedResponse ->
                 Flux.fromIterable(pagedResponse.getValue())
-                        .flatMapSequential(transformer)
+                        .flatMapSequential(mapper)
                         .collectList()
                         .map(values -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
                                 pagedResponse.getStatusCode(),
