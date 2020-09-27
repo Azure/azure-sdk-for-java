@@ -7,6 +7,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.paging.PageRetriever;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -102,25 +103,26 @@ public final class PagedConverter {
         return pagedResponse -> {
             List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
                 .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
-            return Flux.mergeSequential(fluxList);
+            return Flux.concat(fluxList)
+                .filter(p -> !p.getValue().isEmpty());
         };
     }
 
     /**
-     * Converts list to PagedFlux.
+     * Converts Response of List to PagedFlux.
      *
-     * @param <T> type of List in Mono.
-     * @param list the list to convert.
+     * @param <T> type of element.
+     * @param responseMono the Response of List to convert.
      * @return the PagedFlux.
      */
-    public static <T> PagedFlux<T> convertListToPagedFlux(Mono<List<T>> list) {
-        return new PagedFlux<>(() -> list.map(elements -> new PagedResponseBase<HttpRequest, T>(
-                null,
-                200,
-                null,
-                elements,
-                null,
-                null
+    public static <T> PagedFlux<T> convertListToPagedFlux(Mono<Response<List<T>>> responseMono) {
+        return new PagedFlux<>(() -> responseMono.map(response -> new PagedResponseBase<Void, T>(
+            response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            response.getValue(),
+            null,
+            null
         )));
     }
 }

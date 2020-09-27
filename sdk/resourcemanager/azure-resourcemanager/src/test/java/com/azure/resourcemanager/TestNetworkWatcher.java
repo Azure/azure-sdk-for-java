@@ -22,12 +22,13 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Network Watcher. */
 public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatchers> {
     private String testId = "";
-    private static final Region REGION = Region.US_SOUTH_CENTRAL;
+    private static final Region REGION = Region.EUROPE_NORTH;
     private String groupName;
     private String nwName;
 
