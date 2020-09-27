@@ -52,6 +52,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
+
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
@@ -122,6 +124,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             File file = new File(filePath);
             InputStream inputStream = VirtualMachineScaleSetOperationsTests.class
                 .getResourceAsStream("/install_apache.sh");
+            inputStream = new BufferedInputStream(inputStream);
+            inputStream.mark((int) file.length());
 
             BlobServiceClient storageClient = new BlobServiceClientBuilder()
                 .connectionString(storageConnectionString)
@@ -222,7 +226,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = password();
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-compute/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
