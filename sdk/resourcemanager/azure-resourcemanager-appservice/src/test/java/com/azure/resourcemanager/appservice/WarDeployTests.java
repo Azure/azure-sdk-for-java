@@ -13,8 +13,10 @@ import com.azure.core.management.Region;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.time.Duration;
 
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +53,8 @@ public class WarDeployTests extends AppServiceTest {
             webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
 
             if (!isPlaybackMode()) {
+                ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+
                 Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
                 Assertions.assertEquals(200, response.getStatusCode());
                 String body = response.getValue();
@@ -80,6 +84,8 @@ public class WarDeployTests extends AppServiceTest {
             try (InputStream is = new FileInputStream(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()))) {
                 webApp.warDeploy(is, "app2");
             }
+
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());

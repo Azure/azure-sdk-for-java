@@ -5,8 +5,6 @@ package com.azure.resourcemanager.test.utils;
 
 import com.azure.core.http.rest.PagedIterable;
 
-import java.util.Iterator;
-
 /**
  * Common utility functions for the tests.
  */
