@@ -29,10 +29,10 @@ public final class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedFlux.
      *
-     * @param <T> input type of PagedFlux.
-     * @param <S> return type of PagedFlux.
      * @param pagedFlux the input of PagedFlux.
      * @param transformer the flatMap transform of element T to Publisher of S.
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
      * @return the PagedFlux with elements in PagedResponse transformed.
      */
     public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
@@ -49,10 +49,10 @@ public final class PagedConverter {
     /**
      * Merge PagedFlux in PagedFlux to a single PagedFlux.
      *
-     * @param <T> input type of PagedFlux.
-     * @param <S> return type of PagedFlux.
      * @param pagedFlux the input of PagedFlux.
      * @param transformer the transform of element T to PagedFlux of S.
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
      * @return the merged PagedFlux.
      */
     public static <T, S> PagedFlux<S> mergePagedFlux(PagedFlux<T> pagedFlux,
@@ -61,11 +61,7 @@ public final class PagedConverter {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                 ? pagedFlux.byPage()
                 : pagedFlux.byPage(continuationToken);
-            return flux.concatMap(pagedResponse -> {
-                List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
-                    .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
-                return Flux.mergeSequential(fluxList);
-            });
+            return flux.concatMap(PagedConverter.mergePagedFluxPagedResponse(transformer));
         };
         return PagedFlux.create(provider);
     }
@@ -73,16 +69,16 @@ public final class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedResponse.
      *
+     * @param transformer the flatMap transform of element T to Publisher of S.
      * @param <T> input type of pagedFlux.
      * @param <S> return type of pagedFlux.
-     * @param mapper the flatMap transform of element T to Publisher of S.
      * @return the lifted transform on PagedResponse.
      */
     private static <T, S> Function<PagedResponse<T>, Mono<PagedResponse<S>>> flatMapPagedResponse(
-            Function<? super T, ? extends Publisher<? extends S>> mapper) {
+            Function<? super T, ? extends Publisher<? extends S>> transformer) {
         return pagedResponse ->
                 Flux.fromIterable(pagedResponse.getValue())
-                        .flatMapSequential(mapper)
+                        .flatMapSequential(transformer)
                         .collectList()
                         .map(values -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
                                 pagedResponse.getStatusCode(),
@@ -90,6 +86,23 @@ public final class PagedConverter {
                                 values,
                                 pagedResponse.getContinuationToken(),
                                 null));
+    }
+
+    /**
+     * Applies transform of element to PagedFlux, to elements of PagedResponse. Then merge all these PagedFlux.
+     *
+     * @param transformer the transform of element T to PagedFlux of S.
+     * @param <T> input type of pagedFlux.
+     * @param <S> return type of pagedFlux.
+     * @return the the merged PagedFlux.
+     */
+    private static <T, S> Function<PagedResponse<T>, Flux<PagedResponse<S>>> mergePagedFluxPagedResponse(
+        Function<? super T, PagedFlux<S>> transformer) {
+        return pagedResponse -> {
+            List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
+                .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
+            return Flux.mergeSequential(fluxList);
+        };
     }
 
     /**
