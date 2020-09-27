@@ -55,7 +55,6 @@ import com.azure.resourcemanager.storage.models.StorageAccountKey;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
