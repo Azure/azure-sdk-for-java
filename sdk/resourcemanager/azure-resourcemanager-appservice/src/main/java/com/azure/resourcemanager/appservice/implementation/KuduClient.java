@@ -122,16 +122,16 @@ class KuduClient {
         @Get("api/logstream")
         Mono<StreamResponse> streamAllLogs(@HostParam("$host") String host);
 
-        @Headers({
-            "Content-Type: application/octet-stream",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
-            "x-ms-body-logging: false"
-        })
-        @Post("api/wardeploy")
-        Mono<Void> warDeploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") byte[] warFile,
-            @QueryParam("name") String appName);
+//        @Headers({
+//            "Content-Type: application/octet-stream",
+//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
+//            "x-ms-body-logging: false"
+//        })
+//        @Post("api/wardeploy")
+//        Mono<Void> warDeploy(
+//            @HostParam("$host") String host,
+//            @BodyParam("application/octet-stream") byte[] warFile,
+//            @QueryParam("name") String appName);
 
         @Headers({
             "Content-Type: application/octet-stream",
@@ -145,15 +145,15 @@ class KuduClient {
             @HeaderParam("content-length") long size,
             @QueryParam("name") String appName);
 
-        @Headers({
-            "Content-Type: application/octet-stream",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
-            "x-ms-body-logging: false"
-        })
-        @Post("api/zipdeploy")
-        Mono<Void> zipDeploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") byte[] zipFile);
+//        @Headers({
+//            "Content-Type: application/octet-stream",
+//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
+//            "x-ms-body-logging: false"
+//        })
+//        @Post("api/zipdeploy")
+//        Mono<Void> zipDeploy(
+//            @HostParam("$host") String host,
+//            @BodyParam("application/octet-stream") byte[] zipFile);
 
         @Headers({
             "Content-Type: application/octet-stream",

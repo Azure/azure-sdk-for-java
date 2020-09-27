@@ -36,6 +36,8 @@ public interface WebApp extends WebAppBasic, WebAppBase, Updatable<WebApp.Update
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
@@ -44,6 +46,8 @@ public interface WebApp extends WebAppBasic, WebAppBase, Updatable<WebApp.Update
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
@@ -70,6 +74,8 @@ public interface WebApp extends WebAppBasic, WebAppBase, Updatable<WebApp.Update
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
@@ -79,6 +85,8 @@ public interface WebApp extends WebAppBasic, WebAppBase, Updatable<WebApp.Update
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
