@@ -103,7 +103,7 @@ public final class PagedConverter {
         return pagedResponse -> {
             List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
                 .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
-            return Flux.mergeSequential(fluxList);
+            return Flux.concat(fluxList);
         };
     }
 
