@@ -21,9 +21,11 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
 import com.microsoft.azure.telemetry.TelemetrySender;
-
-import java.util.*;
-
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -139,8 +141,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String tenantId = getPropertyValue(normalizedName, Property.TENANT_ID);
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
-        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST) == null ?
-            new IdentityClientOptions().getAuthorityHost() : getPropertyValue(normalizedName, Property.AUTHORITY_HOST);
+        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST) == null ? new IdentityClientOptions().getAuthorityHost() : getPropertyValue(normalizedName, Property.AUTHORITY_HOST);
         if (clientId != null
                 && tenantId != null
                 && clientKey != null
