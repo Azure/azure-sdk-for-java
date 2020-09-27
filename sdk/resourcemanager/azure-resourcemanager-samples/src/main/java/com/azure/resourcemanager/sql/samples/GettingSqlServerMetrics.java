@@ -164,7 +164,7 @@ public class GettingSqlServerMetrics {
                 }
             }
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(6 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(6));
 
 
             // ============================================================

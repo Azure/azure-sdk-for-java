@@ -21,6 +21,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
                         .withRegion(region)
                         .create();
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(45 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(45));
 
             System.out.println("Assigning AAD security group Contributor role to the resource group");
 
@@ -128,7 +129,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             System.out.println("Waiting 15 minutes to MSI extension in the VM to refresh the token");
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(10));
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //

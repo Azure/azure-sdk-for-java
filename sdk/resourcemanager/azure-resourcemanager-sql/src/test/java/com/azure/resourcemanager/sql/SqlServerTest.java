@@ -18,6 +18,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public abstract class SqlServerTest extends ResourceManagerTestBase {
 
     @Override
     protected void cleanUpResources() {
-        ResourceManagerUtils.InternalRuntimeContext.sleep(1000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(1));
         resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

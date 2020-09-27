@@ -15,6 +15,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.time.Duration;
+
 /**
  * Azure Container Instance sample for managing container instances.
  *    - Create an Azure container group with two container instances using Docker images "microsoft/aci-helloworld" and "microsoft/aci-tutorial-sidecar"
@@ -70,7 +72,7 @@ public class ManageContainerInstanceWithMultipleContainerImages {
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
             Utils.curl("http://" + containerGroup.ipAddress());
-            ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
             System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
 

@@ -19,6 +19,7 @@ import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -94,7 +95,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // give sometime for the infrastructure to process the records and fit into time grain.
             // Note: Activity Log alerts could also be configured to route the logs to EventHubs through Monitor diagnostic Settings configuration
             // for near real time monitoring.
-            ResourceManagerUtils.InternalRuntimeContext.sleep(6 * 60000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(6));
 
             OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-08-03T16:34:27.009944500+08:00");
             // get activity logs for the same period.

@@ -20,6 +20,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.time.Duration;
+
 /**
  * Azure Event Hub sample for managing geo disaster recovery pairing -
  *   - Create two event hub namespaces
@@ -87,7 +89,7 @@ public class ManageEventHubGeoDisasterRecovery {
 
             while (pairing.provisioningState() != ProvisioningStateDR.SUCCEEDED) {
                 pairing = pairing.refresh();
-                ResourceManagerUtils.InternalRuntimeContext.sleep(15 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
                     throw new IllegalStateException("Provisioning state of the pairing is FAILED");
                 }
@@ -112,7 +114,7 @@ public class ManageEventHubGeoDisasterRecovery {
             Utils.print(eventHubInPrimaryNamespace);
 
             System.out.println("Waiting for 60 seconds to allow metadata to sync across primary and secondary");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(60 * 1000);    // Wait for syncing to finish
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));    // Wait for syncing to finish
 
             System.out.println("Retrieving the event hubs in secondary namespace");
 

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 
 /**
  * Azure Resource sample for deploying resources using an ARM template and
@@ -73,7 +74,7 @@ public final class DeployUsingARMTemplateWithProgress {
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
-                ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 deployment = azureResourceManager.deployments().getByResourceGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
