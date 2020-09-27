@@ -26,6 +26,7 @@ import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.PublicAccessType;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -193,7 +194,7 @@ public final class ManageWebAppStorageAccountConnection {
     private static void uploadFileToContainer(BlobContainerClient blobContainerClient, String fileName, String filePath) {
         BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
         File file = new File(filePath);
-        try (InputStream is = new FileInputStream(file)) {
+        try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
             blobClient.upload(is, file.length());
         } catch (IOException e) {
             System.out.println(e.getMessage());
