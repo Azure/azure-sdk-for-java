@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The UpdateHistoryProperty model. */
+/** An update history of the ImmutabilityPolicy of a blob container. */
 @Immutable
 public final class UpdateHistoryProperty {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateHistoryProperty.class);

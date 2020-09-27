@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.VpnConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.VpnConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListVpnConnectionsResult model. */
+/**
+ * Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn Connections
+ * and a URL nextLink to get the next set of results.
+ */
 @Fluent
 public final class ListVpnConnectionsResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVpnConnectionsResult.class);

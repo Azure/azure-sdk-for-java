@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,6 +77,6 @@ class FunctionDeploymentSlotImpl
     @Override
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // PATCH does not work for function app slot
-        return submitSiteWithoutSiteConfig(this.inner());
+        return submitSiteWithoutSiteConfig(this.innerModel());
     }
 }

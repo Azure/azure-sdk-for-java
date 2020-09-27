@@ -6,7 +6,7 @@ package com.azure.resourcemanager.eventhubs;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
-import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClientBuilder;
+import com.azure.resourcemanager.eventhubs.implementation.EventHubManagementClientBuilder;
 import com.azure.resourcemanager.eventhubs.implementation.DisasterRecoveryPairingAuthorizationRulesImpl;
 import com.azure.resourcemanager.eventhubs.implementation.EventHubAuthorizationRulesImpl;
 import com.azure.resourcemanager.eventhubs.implementation.EventHubConsumerGroupsImpl;
@@ -26,7 +26,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /**
@@ -71,20 +70,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
      * @return the EventHubsManager
      */
     public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of EventHubsManager that exposes EventHub resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the EventHubsManager
-     */
-    public static EventHubsManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new EventHubsManager(httpPipeline, profile, sdkContext);
+        return new EventHubsManager(httpPipeline, profile);
     }
 
     /**
@@ -108,7 +94,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
             return EventHubsManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
-    private EventHubsManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private EventHubsManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -116,10 +102,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext
-        );
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
+                .buildClient());
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
     }
 
     /**

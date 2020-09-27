@@ -43,9 +43,9 @@ public final class ManageVirtualMachine {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String windowsVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("wVM", 15);
+        final String linuxVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("lVM", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
@@ -56,7 +56,7 @@ public final class ManageVirtualMachine {
 
             // Prepare a creatable data disk for VM
             //
-            Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+            Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dsk-", 15))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -65,7 +65,7 @@ public final class ManageVirtualMachine {
             // Create a data disk to attach to VM
             //
             Disk dataDisk = azureResourceManager.disks()
-                    .define(azureResourceManager.sdkContext().randomResourceName("dsk-", 15))
+                    .define(azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dsk-", 15))
                         .withRegion(region)
                         .withNewResourceGroup(rgName)
                         .withData()

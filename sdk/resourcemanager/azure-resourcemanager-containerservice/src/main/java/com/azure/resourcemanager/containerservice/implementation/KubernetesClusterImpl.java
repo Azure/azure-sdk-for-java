@@ -4,7 +4,7 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -37,8 +37,8 @@ public class KubernetesClusterImpl
 
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
-        if (this.inner().agentPoolProfiles() == null) {
-            this.inner().withAgentPoolProfiles(new ArrayList<>());
+        if (this.innerModel().agentPoolProfiles() == null) {
+            this.innerModel().withAgentPoolProfiles(new ArrayList<>());
         }
 
         this.adminKubeConfigs = null;
@@ -47,22 +47,22 @@ public class KubernetesClusterImpl
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public String dnsPrefix() {
-        return this.inner().dnsPrefix();
+        return this.innerModel().dnsPrefix();
     }
 
     @Override
     public String fqdn() {
-        return this.inner().fqdn();
+        return this.innerModel().fqdn();
     }
 
     @Override
     public String version() {
-        return this.inner().kubernetesVersion();
+        return this.innerModel().kubernetesVersion();
     }
 
     @Override
@@ -101,8 +101,8 @@ public class KubernetesClusterImpl
 
     @Override
     public String servicePrincipalClientId() {
-        if (this.inner().servicePrincipalProfile() != null) {
-            return this.inner().servicePrincipalProfile().clientId();
+        if (this.innerModel().servicePrincipalProfile() != null) {
+            return this.innerModel().servicePrincipalProfile().clientId();
         } else {
             return null;
         }
@@ -110,8 +110,8 @@ public class KubernetesClusterImpl
 
     @Override
     public String servicePrincipalSecret() {
-        if (this.inner().servicePrincipalProfile() != null) {
-            return this.inner().servicePrincipalProfile().secret();
+        if (this.innerModel().servicePrincipalProfile() != null) {
+            return this.innerModel().servicePrincipalProfile().secret();
         } else {
             return null;
         }
@@ -119,8 +119,8 @@ public class KubernetesClusterImpl
 
     @Override
     public String linuxRootUsername() {
-        if (this.inner().linuxProfile() != null) {
-            return this.inner().linuxProfile().adminUsername();
+        if (this.innerModel().linuxProfile() != null) {
+            return this.innerModel().linuxProfile().adminUsername();
         } else {
             return null;
         }
@@ -128,21 +128,21 @@ public class KubernetesClusterImpl
 
     @Override
     public String sshKey() {
-        if (this.inner().linuxProfile() == null
-            || this.inner().linuxProfile().ssh() == null
-            || this.inner().linuxProfile().ssh().publicKeys() == null
-            || this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
+        if (this.innerModel().linuxProfile() == null
+            || this.innerModel().linuxProfile().ssh() == null
+            || this.innerModel().linuxProfile().ssh().publicKeys() == null
+            || this.innerModel().linuxProfile().ssh().publicKeys().size() == 0) {
             return null;
         } else {
-            return this.inner().linuxProfile().ssh().publicKeys().get(0).keyData();
+            return this.innerModel().linuxProfile().ssh().publicKeys().get(0).keyData();
         }
     }
 
     @Override
     public Map<String, KubernetesClusterAgentPool> agentPools() {
         Map<String, KubernetesClusterAgentPool> agentPoolMap = new HashMap<>();
-        if (this.inner().agentPoolProfiles() != null && this.inner().agentPoolProfiles().size() > 0) {
-            for (ManagedClusterAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
+        if (this.innerModel().agentPoolProfiles() != null && this.innerModel().agentPoolProfiles().size() > 0) {
+            for (ManagedClusterAgentPoolProfile agentPoolProfile : this.innerModel().agentPoolProfiles()) {
                 agentPoolMap.put(agentPoolProfile.name(), new KubernetesClusterAgentPoolImpl(agentPoolProfile, this));
             }
         }
@@ -152,22 +152,22 @@ public class KubernetesClusterImpl
 
     @Override
     public ContainerServiceNetworkProfile networkProfile() {
-        return this.inner().networkProfile();
+        return this.innerModel().networkProfile();
     }
 
     @Override
     public Map<String, ManagedClusterAddonProfile> addonProfiles() {
-        return Collections.unmodifiableMap(this.inner().addonProfiles());
+        return Collections.unmodifiableMap(this.innerModel().addonProfiles());
     }
 
     @Override
     public String nodeResourceGroup() {
-        return this.inner().nodeResourceGroup();
+        return this.innerModel().nodeResourceGroup();
     }
 
     @Override
     public boolean enableRBAC() {
-        return this.inner().enableRbac();
+        return this.innerModel().enableRbac();
     }
 
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
@@ -212,7 +212,7 @@ public class KubernetesClusterImpl
     public Mono<KubernetesCluster> createResourceAsync() {
         final KubernetesClusterImpl self = this;
         if (!this.isInCreateMode()) {
-            this.inner().withServicePrincipalProfile(null);
+            this.innerModel().withServicePrincipalProfile(null);
         }
         final Mono<List<CredentialResult>> adminConfig = listAdminConfig(self);
         final Mono<List<CredentialResult>> userConfig = listUserConfig(self);
@@ -221,7 +221,7 @@ public class KubernetesClusterImpl
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner())
+            .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
             .flatMap(
                 inner ->
                     Flux
@@ -236,22 +236,22 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterImpl withVersion(String kubernetesVersion) {
-        this.inner().withKubernetesVersion(kubernetesVersion);
+        this.innerModel().withKubernetesVersion(kubernetesVersion);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withDefaultVersion() {
-        this.inner().withKubernetesVersion("");
+        this.innerModel().withKubernetesVersion("");
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withRootUsername(String rootUserName) {
-        if (this.inner().linuxProfile() == null) {
-            this.inner().withLinuxProfile(new ContainerServiceLinuxProfile());
+        if (this.innerModel().linuxProfile() == null) {
+            this.innerModel().withLinuxProfile(new ContainerServiceLinuxProfile());
         }
-        this.inner().linuxProfile().withAdminUsername(rootUserName);
+        this.innerModel().linuxProfile().withAdminUsername(rootUserName);
 
         return this;
     }
@@ -259,30 +259,32 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withSshKey(String sshKeyData) {
         this
-            .inner()
+            .innerModel()
             .linuxProfile()
             .withSsh(
                 new ContainerServiceSshConfiguration().withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>()));
-        this.inner().linuxProfile().ssh().publicKeys().add(new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
+        this.innerModel().linuxProfile().ssh().publicKeys().add(
+            new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
 
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withServicePrincipalClientId(String clientId) {
-        this.inner().withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId(clientId));
+        this.innerModel().withServicePrincipalProfile(
+            new ManagedClusterServicePrincipalProfile().withClientId(clientId));
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withServicePrincipalSecret(String secret) {
-        this.inner().servicePrincipalProfile().withSecret(secret);
+        this.innerModel().servicePrincipalProfile().withSecret(secret);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withDnsPrefix(String dnsPrefix) {
-        this.inner().withDnsPrefix(dnsPrefix);
+        this.innerModel().withDnsPrefix(dnsPrefix);
         return this;
     }
 
@@ -295,7 +297,7 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl updateAgentPool(String name) {
-        for (ManagedClusterAgentPoolProfile agentPoolProfile : inner().agentPoolProfiles()) {
+        for (ManagedClusterAgentPoolProfile agentPoolProfile : innerModel().agentPoolProfiles()) {
             if (agentPoolProfile.name().equals(name)) {
                 return new KubernetesClusterAgentPoolImpl(agentPoolProfile, this);
             }
@@ -313,25 +315,25 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterImpl withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap) {
-        this.inner().withAddonProfiles(addOnProfileMap);
+        this.innerModel().withAddonProfiles(addOnProfileMap);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withNetworkProfile(ContainerServiceNetworkProfile networkProfile) {
-        this.inner().withNetworkProfile(networkProfile);
+        this.innerModel().withNetworkProfile(networkProfile);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withRBACEnabled() {
-        this.inner().withEnableRbac(true);
+        this.innerModel().withEnableRbac(true);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withRBACDisabled() {
-        this.inner().withEnableRbac(false);
+        this.innerModel().withEnableRbac(false);
         return this;
     }
 
@@ -342,7 +344,7 @@ public class KubernetesClusterImpl
                     resourceGroupName(), name(), agentPool.name(), agentPool.getAgentPoolInner())
                     .then(context.voidMono()));
         }
-        inner().agentPoolProfiles().add(agentPool.inner());
+        innerModel().agentPoolProfiles().add(agentPool.innerModel());
         return this;
     }
 }

@@ -12,11 +12,11 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,7 +44,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public boolean isInCreateMode() {
-        return inner().id() == null;
+        return innerModel().id() == null;
     }
 
     @Override
@@ -114,7 +114,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                                 throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                             }
                                         })
-                                    .flatMap(i -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(i))))))
+                                    .flatMap(i -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext
+                                        .getDelayDuration(Duration.ofSeconds(i))))))
             .map(innerToFluentMap(this));
     }
 
@@ -125,17 +126,17 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String scope() {
-        return inner().scope();
+        return innerModel().scope();
     }
 
     @Override
     public String roleDefinitionId() {
-        return inner().roleDefinitionId();
+        return innerModel().roleDefinitionId();
     }
 
     @Override
     public String principalId() {
-        return inner().principalId();
+        return innerModel().principalId();
     }
 
     @Override
@@ -188,7 +189,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public RoleAssignmentImpl withScope(String scope) {
-        this.inner().withScope(scope);
+        this.innerModel().withScope(scope);
         return this;
     }
 
@@ -209,7 +210,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override

@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * An immutable client-side representation of an Azure Web App or Function App.
  */
-public interface WebSiteBase extends Resource, HasResourceGroup, HasInner<SiteInner> {
+public interface WebSiteBase extends Resource, HasResourceGroup, HasInnerModel<SiteInner> {
 
     /** @return state of the web app */
     String state();

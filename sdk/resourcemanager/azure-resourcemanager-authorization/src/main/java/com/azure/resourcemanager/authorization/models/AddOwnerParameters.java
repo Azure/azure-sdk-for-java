@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The AddOwnerParameters model. */
+/** Request parameters for adding a owner to an application. */
 @Fluent
 public final class AddOwnerParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AddOwnerParameters.class);

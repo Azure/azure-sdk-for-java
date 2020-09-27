@@ -4,111 +4,35 @@
 
 package com.azure.resourcemanager.keyvault.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.keyvault.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointConnectionsPutResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnections. */
-public final class PrivateEndpointConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final PrivateEndpointConnectionsService service;
-
-    /** The service client containing this operation class. */
-    private final KeyVaultManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+public interface PrivateEndpointConnectionsClient {
     /**
-     * Initializes an instance of PrivateEndpointConnectionsClient.
+     * Gets the specified private endpoint connection associated with the key vault.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the key vault.
      */
-    PrivateEndpointConnectionsClient(KeyVaultManagementClient client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for KeyVaultManagementClientPrivateEndpointConnections to be used by the
-     * proxy service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "KeyVaultManagementCl")
-    private interface PrivateEndpointConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
-                + "/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
-                + "/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PrivateEndpointConnectionsPutResponse> put(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PrivateEndpointConnectionInner properties,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
-                + "/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
 
     /**
      * Gets the specified private endpoint connection associated with the key vault.
@@ -117,52 +41,28 @@ public final class PrivateEndpointConnectionsClient {
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private endpoint connection associated with the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
+
+    /**
+     * Gets the specified private endpoint connection associated with the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
 
     /**
      * Gets the specified private endpoint connection associated with the key vault.
@@ -172,135 +72,13 @@ public final class PrivateEndpointConnectionsClient {
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private endpoint connection associated with the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        return getWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, vaultName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        return getAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context).block();
-    }
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context);
 
     /**
      * Updates the specified private endpoint connection associated with the key vault.
@@ -310,61 +88,54 @@ public final class PrivateEndpointConnectionsClient {
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @param properties Private endpoint connection resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionsPutResponse> putWithResponseAsync(
+    Mono<PrivateEndpointConnectionsPutResponse> putWithResponseAsync(
         String resourceGroupName,
         String vaultName,
         String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .put(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            properties,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        PrivateEndpointConnectionInner properties);
+
+    /**
+     * Updates the specified private endpoint connection associated with the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @param properties Private endpoint connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PrivateEndpointConnectionInner> putAsync(
+        String resourceGroupName,
+        String vaultName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
+
+    /**
+     * Updates the specified private endpoint connection associated with the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @param properties Private endpoint connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String vaultName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Updates the specified private endpoint connection associated with the key vault.
@@ -375,163 +146,17 @@ public final class PrivateEndpointConnectionsClient {
      * @param properties Private endpoint connection resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionsPutResponse> putWithResponseAsync(
+    Response<PrivateEndpointConnectionInner> putWithResponse(
         String resourceGroupName,
         String vaultName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .put(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                properties,
-                context);
-    }
-
-    /**
-     * Updates the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> putAsync(
-        String resourceGroupName,
-        String vaultName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties) {
-        return putWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName, properties)
-            .flatMap(
-                (PrivateEndpointConnectionsPutResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> putAsync(
-        String resourceGroupName,
-        String vaultName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties,
-        Context context) {
-        return putWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName, properties, context)
-            .flatMap(
-                (PrivateEndpointConnectionsPutResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner put(
-        String resourceGroupName,
-        String vaultName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties) {
-        return putAsync(resourceGroupName, vaultName, privateEndpointConnectionName, properties).block();
-    }
-
-    /**
-     * Updates the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param properties Private endpoint connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner put(
-        String resourceGroupName,
-        String vaultName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties,
-        Context context) {
-        return putAsync(resourceGroupName, vaultName, privateEndpointConnectionName, properties, context).block();
-    }
+        Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -540,52 +165,43 @@ public final class PrivateEndpointConnectionsClient {
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
+
+    /**
+     * Deletes the specified private endpoint connection associated with the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDeleteAsync(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
+
+    /**
+     * Deletes the specified private endpoint connection associated with the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -595,49 +211,13 @@ public final class PrivateEndpointConnectionsClient {
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                context);
-    }
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -646,24 +226,28 @@ public final class PrivateEndpointConnectionsClient {
      * @param vaultName The name of the key vault.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName);
-        return this
-            .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class,
-                Context.NONE);
-    }
+    Mono<PrivateEndpointConnectionInner> deleteAsync(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
+
+    /**
+     * Deletes the specified private endpoint connection associated with the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner delete(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -673,132 +257,11 @@ public final class PrivateEndpointConnectionsClient {
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context);
-        return this
-            .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class,
-                context);
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> deleteAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> deleteAsync(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner delete(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        return deleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Deletes the specified private endpoint connection associated with the key vault.
-     *
-     * @param resourceGroupName Name of the resource group that contains the key vault.
-     * @param vaultName The name of the key vault.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the key vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner delete(
-        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
-        return deleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context).block();
-    }
+    PrivateEndpointConnectionInner delete(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context);
 }

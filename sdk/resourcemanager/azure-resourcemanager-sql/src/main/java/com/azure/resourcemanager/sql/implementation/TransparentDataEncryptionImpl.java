@@ -5,6 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
@@ -12,8 +13,8 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,17 +38,17 @@ class TransparentDataEncryptionImpl
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -67,23 +68,25 @@ class TransparentDataEncryptionImpl
 
     @Override
     public TransparentDataEncryptionStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public TransparentDataEncryption updateStatus(TransparentDataEncryptionStatus transparentDataEncryptionState) {
-        this.inner().withStatus(transparentDataEncryptionState);
+        this.innerModel().withStatus(transparentDataEncryptionState);
         TransparentDataEncryptionInner transparentDataEncryptionInner =
             this
                 .sqlServerManager
                 .serviceClient()
                 .getTransparentDataEncryptions()
-                .createOrUpdate(
+                .createOrUpdateWithResponse(
                     this.resourceGroupName,
                     this.sqlServerName,
                     this.databaseName(),
                     TransparentDataEncryptionName.CURRENT,
-                    transparentDataEncryptionState);
+                    transparentDataEncryptionState,
+                    Context.NONE)
+                .getValue();
         this.setInner(transparentDataEncryptionInner);
 
         return this;

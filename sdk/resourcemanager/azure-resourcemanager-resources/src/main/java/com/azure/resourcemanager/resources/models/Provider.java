@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @Fluent
 public interface Provider extends
         Indexable,
-        HasInner<ProviderInner> {
+        HasInnerModel<ProviderInner> {
 
     /**
      * @return the namespace of the provider

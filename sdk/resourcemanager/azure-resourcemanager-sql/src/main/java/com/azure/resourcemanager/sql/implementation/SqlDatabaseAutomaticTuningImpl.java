@@ -8,7 +8,7 @@ import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptions;
 import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,26 +58,26 @@ public class SqlDatabaseAutomaticTuningImpl
 
     @Override
     public AutomaticTuningMode desiredState() {
-        return this.inner().desiredState();
+        return this.innerModel().desiredState();
     }
 
     @Override
     public AutomaticTuningMode actualState() {
-        return this.inner().actualState();
+        return this.innerModel().actualState();
     }
 
     @Override
     public Map<String, AutomaticTuningOptions> tuningOptions() {
         return Collections
             .unmodifiableMap(
-                this.inner().options() != null
-                    ? this.inner().options()
+                this.innerModel().options() != null
+                    ? this.innerModel().options()
                     : new HashMap<String, AutomaticTuningOptions>());
     }
 
     @Override
     public SqlDatabaseAutomaticTuningImpl withAutomaticTuningMode(AutomaticTuningMode desiredState) {
-        this.inner().withDesiredState(desiredState);
+        this.innerModel().withDesiredState(desiredState);
         return this;
     }
 
@@ -126,12 +126,12 @@ public class SqlDatabaseAutomaticTuningImpl
     @Override
     public Mono<SqlDatabaseAutomaticTuning> applyAsync() {
         final SqlDatabaseAutomaticTuningImpl self = this;
-        this.inner().withOptions(this.automaticTuningOptionsMap);
+        this.innerModel().withOptions(this.automaticTuningOptionsMap);
         return this
             .sqlServerManager
             .serviceClient()
             .getDatabaseAutomaticTunings()
-            .updateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.inner())
+            .updateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.innerModel())
             .map(
                 databaseAutomaticTuningInner -> {
                     self.setInner(databaseAutomaticTuningInner);

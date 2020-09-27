@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
@@ -17,8 +17,8 @@ public class NetworkSecurityGroupsImpl
         NetworkSecurityGroup,
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
-    NetworkSecurityGroupsClient,
-    NetworkManager>
+        NetworkSecurityGroupsClient,
+        NetworkManager>
     implements NetworkSecurityGroups {
 
     public NetworkSecurityGroupsImpl(final NetworkManager networkManager) {

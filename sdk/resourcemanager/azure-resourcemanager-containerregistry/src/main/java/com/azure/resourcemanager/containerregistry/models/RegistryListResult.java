@@ -6,12 +6,12 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RegistryListResult model. */
+/** The result of a request to list container registries. */
 @Fluent
 public final class RegistryListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryListResult.class);

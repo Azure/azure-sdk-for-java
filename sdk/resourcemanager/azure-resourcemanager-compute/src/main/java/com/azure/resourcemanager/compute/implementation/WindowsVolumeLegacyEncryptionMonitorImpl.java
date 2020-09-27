@@ -9,8 +9,8 @@ import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
@@ -150,12 +150,8 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return this
-            .computeManager
-            .serviceClient()
-            .getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName);
-            // Exception if vm not found
+        return this.computeManager.serviceClient().getVirtualMachines().getByResourceGroupAsync(rgName, vmName);
+        // Exception if vm not found
     }
 
     private boolean hasEncryptionDetails() {

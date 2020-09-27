@@ -41,11 +41,11 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName1 = azureResourceManager.sdkContext().randomResourceName("uamsi-rg-1", 15);
-        final String rgName2 = azureResourceManager.sdkContext().randomResourceName("uamsi-rg-2", 15);
-        final String identityName = azureResourceManager.sdkContext().randomResourceName("id", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String pipName = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
+        final String rgName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("uamsi-rg-1", 15);
+        final String rgName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("uamsi-rg-2", 15);
+        final String identityName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("id", 15);
+        final String linuxVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String pipName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

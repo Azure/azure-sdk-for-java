@@ -26,7 +26,7 @@ final class DeploymentExportResultImpl extends
 
     @Override
     public Object template() {
-        return inner().template();
+        return innerModel().template();
     }
 
     @Override

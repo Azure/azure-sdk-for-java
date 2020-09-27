@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StaticRoute model. */
+/** List of all Static Routes. */
 @Fluent
 public final class StaticRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticRoute.class);

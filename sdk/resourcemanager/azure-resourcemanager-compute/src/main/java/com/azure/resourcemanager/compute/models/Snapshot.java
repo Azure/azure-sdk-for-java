@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
+import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -126,8 +126,7 @@ public interface Snapshot
             WithCreate withWindowsFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Windows OS VHD
-             * when it belongs to the same subscription.
+             * Specifies the source specialized or generalized Windows OS VHD when it belongs to the same subscription.
              *
              * @param vhdUrl the source VHD URL
              * @return the next stage of the definition
@@ -135,8 +134,7 @@ public interface Snapshot
             WithCreate withWindowsFromVhd(String vhdUrl);
 
             /**
-             * Specifies the source specialized or generalized Windows OS VHD
-             * and the storage account ID.
+             * Specifies the source specialized or generalized Windows OS VHD and the storage account ID.
              *
              * @param vhdUrl the source VHD URL
              * @param storageAccountId the storage account ID
@@ -180,8 +178,7 @@ public interface Snapshot
             WithCreate withLinuxFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Linux OS VHD
-             * when it belongs to the same subscription.
+             * Specifies the source specialized or generalized Linux OS VHD when it belongs to the same subscription.
              *
              * @param vhdUrl the source VHD URL
              * @return the next stage of the definition
@@ -189,8 +186,7 @@ public interface Snapshot
             WithCreate withLinuxFromVhd(String vhdUrl);
 
             /**
-             * Specifies the source specialized or generalized Linux OS VHD
-             * and the storage account ID.
+             * Specifies the source specialized or generalized Linux OS VHD and the storage account ID.
              *
              * @param vhdUrl the source VHD URL
              * @param storageAccountId the storage account ID

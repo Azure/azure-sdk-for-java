@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.VpnServerConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListVpnServerConfigurationsResult model. */
+/**
+ * Result of the request to list all VpnServerConfigurations. It contains a list of VpnServerConfigurations and a URL
+ * nextLink to get the next set of results.
+ */
 @Fluent
 public final class ListVpnServerConfigurationsResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVpnServerConfigurationsResult.class);

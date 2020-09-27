@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The AccessPolicyEntry model. */
+/**
+ * An identity that have access to the key vault. All identities in the array must use the same tenant ID as the key
+ * vault's tenant ID.
+ */
 @Fluent
 public final class AccessPolicyEntry {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyEntry.class);

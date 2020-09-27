@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GeoFilter model. */
+/** Rules defining user's geo access within a CDN endpoint. */
 @Fluent
 public final class GeoFilter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoFilter.class);

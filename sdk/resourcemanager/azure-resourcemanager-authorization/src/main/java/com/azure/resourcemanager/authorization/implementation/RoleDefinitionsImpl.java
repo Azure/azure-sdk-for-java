@@ -8,15 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner;
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleDefinitions and its parent interfaces. */
 public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefinitionImpl, RoleDefinitionInner>
-    implements RoleDefinitions, HasInner<RoleDefinitionsClient> {
+    implements RoleDefinitions {
     private final AuthorizationManager manager;
 
     public RoleDefinitionsImpl(final AuthorizationManager manager) {
@@ -69,7 +68,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public PagedIterable<RoleDefinition> listByScope(String scope) {
-        return wrapList(inner().list(scope, null));
+        return wrapList(inner().list(scope));
     }
 
     @Override

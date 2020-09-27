@@ -15,9 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to compute service SKUs. */
 @Fluent
 public interface ComputeSkus
-    extends SupportsListing<ComputeSku>,
-        SupportsListingByRegion<ComputeSku>,
-        HasManager<ComputeManager> {
+    extends SupportsListing<ComputeSku>, SupportsListingByRegion<ComputeSku>, HasManager<ComputeManager> {
     /**
      * Lists all the skus with the specified resource type.
      *

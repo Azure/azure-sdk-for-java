@@ -15,7 +15,7 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
@@ -27,6 +27,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -49,9 +50,9 @@ public class ManageLinuxWebAppWithContainerRegistry {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACR", 15);
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acrsample", 20);
-        final String appName = azureResourceManager.sdkContext().randomResourceName("webapp", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgACR", 15);
+        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acrsample", 20);
+        final String appName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp", 20);
         final String appUrl = appName + ".azurewebsites.net";
         final Region region = Region.US_EAST;
         final String dockerImageName = "tomcat";
@@ -151,7 +152,7 @@ public class ManageLinuxWebAppWithContainerRegistry {
             // warm up
             System.out.println("Warming up " + appUrl + "...");
             Utils.get("http://" + appUrl);
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + appUrl + "...");
             System.out.println(Utils.get("http://" + appUrl));
 

@@ -11,10 +11,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SqlElasticPool
     extends ExternalChildResource<SqlElasticPool, SqlServer>,
-        HasInner<ElasticPoolInner>,
+        HasInnerModel<ElasticPoolInner>,
         HasResourceGroup,
         Refreshable<SqlElasticPool>,
         Updatable<SqlElasticPool.Update> {

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.Disks;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
-import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
+import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -62,12 +62,15 @@ public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, D
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            manager().serviceClient(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 
     @Override

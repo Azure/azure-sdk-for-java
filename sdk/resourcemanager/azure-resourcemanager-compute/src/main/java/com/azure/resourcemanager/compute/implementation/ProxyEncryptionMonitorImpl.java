@@ -9,8 +9,8 @@ import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,17 +86,14 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
                         if (EncryptionExtensionIdentifier.isNoAADVersion(osType(), extension.typeHandlerVersion())) {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
-                                    ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager)
-                                    : new WindowsVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager);
+                                    ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(virtualMachine.id(), computeManager)
+                                    : new WindowsVolumeNoAADEncryptionMonitorImpl(virtualMachine.id(), computeManager);
                         } else {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeLegacyEncryptionMonitorImpl(
                                         virtualMachine.id(), computeManager)
-                                    : new WindowsVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager);
+                                    : new WindowsVolumeLegacyEncryptionMonitorImpl(virtualMachine.id(), computeManager);
                         }
                         return self.resolvedEncryptionMonitor.refreshAsync();
                     })
@@ -114,7 +111,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
             .serviceClient()
             .getVirtualMachines()
             .getByResourceGroupAsync(ResourceUtils.groupFromResourceId(vmId), ResourceUtils.nameFromResourceId(vmId));
-            // Exception if vm not found
+        // Exception if vm not found
     }
 
     /**
@@ -127,8 +124,7 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
         if (vm.resources() != null) {
             for (VirtualMachineExtensionInner extension : vm.resources()) {
                 if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
-                    && EncryptionExtensionIdentifier
-                        .isEncryptionTypeName(extension.typePropertiesType(), osType())) {
+                    && EncryptionExtensionIdentifier.isEncryptionTypeName(extension.typePropertiesType(), osType())) {
                     return extension;
                 }
             }

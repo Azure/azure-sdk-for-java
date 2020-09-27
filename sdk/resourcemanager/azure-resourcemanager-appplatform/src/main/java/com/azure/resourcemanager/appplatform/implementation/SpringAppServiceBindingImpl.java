@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppServiceBinding;
@@ -50,12 +50,12 @@ public class SpringAppServiceBindingImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public BindingResourceProperties properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     private AppPlatformManager manager() {

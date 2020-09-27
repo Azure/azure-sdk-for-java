@@ -19,7 +19,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
@@ -38,13 +38,13 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String rgName = virtualMachines.manager().sdkContext().randomResourceName("rg", 10);
-        final String vnetName = virtualMachines.manager().sdkContext().randomResourceName("vnet", 10);
-        final String nicName = virtualMachines.manager().sdkContext().randomResourceName("nic", 10);
+        final String rgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
+        final String vnetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
+        final String nicName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic", 10);
         final String subnetName = "default";
-        final String diskName = virtualMachines.manager().sdkContext().randomResourceName("disk", 10);
-        final String ipName = virtualMachines.manager().sdkContext().randomResourceName("ip", 10);
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String diskName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("disk", 10);
+        final String ipName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("ip", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         final Region region = Region.US_EAST;
 
         // network
@@ -101,7 +101,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
         SyncPoller<?, NetworkInterface> networkInterfaceSyncPoller = networkInterfaceAccepted.getSyncPoller();
         SyncPoller<?, Disk> diskSyncPoller = diskAccepted.getSyncPoller();
         while (!networkInterfaceLroStatus.isComplete() || !diskLroStatus.isComplete()) {
-            SdkContext.sleep(Duration.ofSeconds(1).toMillis());
+            ResourceManagerUtils.sleep(Duration.ofSeconds(1));
 
             if (!networkInterfaceLroStatus.isComplete()) {
                 logger.info("{} {}", OffsetDateTime.now(), "poll network interface");

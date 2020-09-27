@@ -4,7 +4,7 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.fluent.ZonesClient;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -40,7 +40,7 @@ public class DnsZonesImpl
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {
         // Zone location must be 'global' irrespective of region of the resource group it resides.
-        dnsZone.inner().withLocation("global");
+        dnsZone.innerModel().withLocation("global");
         return dnsZone;
     }
 

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,8 +139,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
                         for (VirtualMachineExtensionInner extension : virtualMachine.resources()) {
                             if (EncryptionExtensionIdentifier.isEncryptionPublisherName(extension.publisher())
                                 && EncryptionExtensionIdentifier
-                                    .isEncryptionTypeName(
-                                        extension.typePropertiesType(), OperatingSystemTypes.LINUX)) {
+                                    .isEncryptionTypeName(extension.typePropertiesType(), OperatingSystemTypes.LINUX)) {
                                 return retrieveExtensionWithInstanceViewAsync(extension);
                             }
                         }

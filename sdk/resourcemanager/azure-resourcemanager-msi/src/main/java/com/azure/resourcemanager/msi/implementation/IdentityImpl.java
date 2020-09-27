@@ -6,9 +6,9 @@ package com.azure.resourcemanager.msi.implementation;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
+import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
@@ -19,42 +19,42 @@ import java.util.Objects;
  * The implementation for Identity and its create and update interfaces.
  */
 public final class IdentityImpl
-        extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MSIManager>
+        extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MsiManager>
         implements Identity, Identity.Definition, Identity.Update {
 
     private RoleAssignmentHelper roleAssignmentHelper;
 
-    public IdentityImpl(String name, IdentityInner innerObject, MSIManager manager) {
+    public IdentityImpl(String name, IdentityInner innerObject, MsiManager manager) {
         super(name, innerObject, manager);
-        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.graphRbacManager(),
+        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.authorizationManager(),
             this.taskGroup(),
             this.idProvider());
     }
 
     @Override
     public String tenantId() {
-        if (this.inner().tenantId() == null) {
+        if (this.innerModel().tenantId() == null) {
             return null;
         } else {
-            return this.inner().tenantId().toString();
+            return this.innerModel().tenantId().toString();
         }
     }
 
     @Override
     public String principalId() {
-        if (this.inner().principalId() == null) {
+        if (this.innerModel().principalId() == null) {
             return null;
         } else {
-            return this.inner().principalId().toString();
+            return this.innerModel().principalId().toString();
         }
     }
 
     @Override
     public String clientId() {
-        if (this.inner().clientId() == null) {
+        if (this.innerModel().clientId() == null) {
             return null;
         } else {
-            return this.inner().clientId().toString();
+            return this.innerModel().clientId().toString();
         }
     }
 
@@ -109,7 +109,7 @@ public final class IdentityImpl
     @Override
     public Mono<Identity> createResourceAsync() {
         return this.manager().serviceClient().getUserAssignedIdentities()
-                .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
                 .map(innerToFluentMap(this));
     }
 
@@ -125,15 +125,15 @@ public final class IdentityImpl
         return new RoleAssignmentHelper.IdProvider() {
             @Override
             public String principalId() {
-                Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().principalId());
-                return inner().principalId().toString();
+                Objects.requireNonNull(innerModel());
+                Objects.requireNonNull(innerModel().principalId());
+                return innerModel().principalId().toString();
             }
             @Override
             public String resourceId() {
-                Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().id());
-                return inner().id();
+                Objects.requireNonNull(innerModel());
+                Objects.requireNonNull(innerModel().id());
+                return innerModel().id();
             }
         };
     }

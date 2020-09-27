@@ -11,7 +11,7 @@ import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -49,45 +49,45 @@ class DiagnosticSettingImpl
 
     @Override
     public DiagnosticSettingImpl withStorageAccount(String storageAccountId) {
-        this.inner().withStorageAccountId(storageAccountId);
+        this.innerModel().withStorageAccountId(storageAccountId);
         return this;
     }
 
     @Override
     public DiagnosticSettingImpl withLogAnalytics(String workspaceId) {
-        this.inner().withWorkspaceId(workspaceId);
+        this.innerModel().withWorkspaceId(workspaceId);
         return this;
     }
 
     @Override
     public DiagnosticSettingImpl withoutLogAnalytics() {
-        this.inner().withWorkspaceId(null);
+        this.innerModel().withWorkspaceId(null);
         return this;
     }
 
     @Override
     public DiagnosticSettingImpl withoutStorageAccount() {
-        this.inner().withStorageAccountId(null);
+        this.innerModel().withStorageAccountId(null);
         return this;
     }
 
     @Override
     public DiagnosticSettingImpl withEventHub(String eventHubAuthorizationRuleId) {
-        this.inner().withEventHubAuthorizationRuleId(eventHubAuthorizationRuleId);
+        this.innerModel().withEventHubAuthorizationRuleId(eventHubAuthorizationRuleId);
         return this;
     }
 
     @Override
     public DiagnosticSettingImpl withEventHub(String eventHubAuthorizationRuleId, String eventHubName) {
         this.withEventHub(eventHubAuthorizationRuleId);
-        this.inner().withEventHubName(eventHubName);
+        this.innerModel().withEventHubName(eventHubName);
         return this;
     }
 
     @Override
     public DiagnosticSettingImpl withoutEventHub() {
-        this.inner().withEventHubAuthorizationRuleId(null);
-        this.inner().withEventHubName(null);
+        this.innerModel().withEventHubAuthorizationRuleId(null);
+        this.innerModel().withEventHubName(null);
         return this;
     }
 
@@ -162,7 +162,7 @@ class DiagnosticSettingImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -172,38 +172,38 @@ class DiagnosticSettingImpl
 
     @Override
     public String storageAccountId() {
-        return this.inner().storageAccountId();
+        return this.innerModel().storageAccountId();
     }
 
     @Override
     public String eventHubAuthorizationRuleId() {
-        return this.inner().eventHubAuthorizationRuleId();
+        return this.innerModel().eventHubAuthorizationRuleId();
     }
 
     @Override
     public String eventHubName() {
-        return this.inner().eventHubName();
+        return this.innerModel().eventHubName();
     }
 
     @Override
     public List<MetricSettings> metrics() {
-        if (this.inner().metrics() == null) {
+        if (this.innerModel().metrics() == null) {
             return null;
         }
-        return Collections.unmodifiableList(this.inner().metrics());
+        return Collections.unmodifiableList(this.innerModel().metrics());
     }
 
     @Override
     public List<LogSettings> logs() {
-        if (this.inner().logs() == null) {
+        if (this.innerModel().logs() == null) {
             return null;
         }
-        return Collections.unmodifiableList(this.inner().logs());
+        return Collections.unmodifiableList(this.innerModel().logs());
     }
 
     @Override
     public String workspaceId() {
-        return this.inner().workspaceId();
+        return this.innerModel().workspaceId();
     }
 
     @Override
@@ -213,18 +213,18 @@ class DiagnosticSettingImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
-        this.inner().withLogs(new ArrayList<>(logSet.values()));
-        this.inner().withMetrics(new ArrayList<>(metricSet.values()));
+        this.innerModel().withLogs(new ArrayList<>(logSet.values()));
+        this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
         return this
             .manager()
             .serviceClient()
             .getDiagnosticSettings()
-            .createOrUpdateAsync(this.resourceId, this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -245,12 +245,12 @@ class DiagnosticSettingImpl
                     .id()
                     .substring(
                         0,
-                        this.inner().id().length()
-                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.inner().name()).length());
-            for (MetricSettings ms : this.inner().metrics()) {
+                        this.innerModel().id().length()
+                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
+            for (MetricSettings ms : this.innerModel().metrics()) {
                 this.metricSet.put(ms.category(), ms);
             }
-            for (LogSettings ls : this.inner().logs()) {
+            for (LogSettings ls : this.innerModel().logs()) {
                 this.logSet.put(ls.category(), ls);
             }
         }

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;
@@ -325,7 +325,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     }
 
     @Override
-    public RunInner inner() {
+    public RunInner innerModel() {
         return this.inner;
     }
 

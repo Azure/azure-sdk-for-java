@@ -6,12 +6,15 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.fluent.inner.ListContainerItemInner;
+import com.azure.resourcemanager.storage.fluent.models.ListContainerItemInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListContainerItems model. */
+/**
+ * Response schema. Contains list of blobs returned, and if paging is requested or required, a URL to next page of
+ * containers.
+ */
 @Immutable
 public final class ListContainerItems {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListContainerItems.class);

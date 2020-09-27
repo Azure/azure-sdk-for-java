@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.FeatureProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FeatureResult model. */
+/** Previewed feature information. */
 @Fluent
 public final class FeatureResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureResultInner.class);

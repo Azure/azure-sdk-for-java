@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.privatedns.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
@@ -41,38 +41,38 @@ class VirtualNetworkLinkImpl
 
     @Override
     public String etag() {
-        return inner().etag();
+        return innerModel().etag();
     }
 
     @Override
     public String referencedVirtualNetworkId() {
-        return inner().virtualNetwork() == null ? null : inner().virtualNetwork().id();
+        return innerModel().virtualNetwork() == null ? null : innerModel().virtualNetwork().id();
     }
 
     @Override
     public boolean isAutoRegistrationEnabled() {
-        return inner().registrationEnabled();
+        return innerModel().registrationEnabled();
     }
 
     @Override
     public VirtualNetworkLinkState virtualNetworkLinkState() {
-        return inner().virtualNetworkLinkState();
+        return innerModel().virtualNetworkLinkState();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 
     @Override
     public VirtualNetworkLinkImpl enableAutoRegistration() {
-        inner().withRegistrationEnabled(true);
+        innerModel().withRegistrationEnabled(true);
         return this;
     }
 
     @Override
     public VirtualNetworkLinkImpl disableAutoRegistration() {
-        inner().withRegistrationEnabled(false);
+        innerModel().withRegistrationEnabled(false);
         return this;
     }
 
@@ -90,13 +90,13 @@ class VirtualNetworkLinkImpl
 
     @Override
     public VirtualNetworkLinkImpl withVirtualNetworkId(String virtualNetworkId) {
-        inner().withVirtualNetwork(new SubResource().withId(virtualNetworkId));
+        innerModel().withVirtualNetwork(new SubResource().withId(virtualNetworkId));
         return this;
     }
 
     @Override
     public VirtualNetworkLinkImpl withRegion(String regionName) {
-        inner().withLocation(regionName);
+        innerModel().withLocation(regionName);
         return this;
     }
 
@@ -107,16 +107,16 @@ class VirtualNetworkLinkImpl
 
     @Override
     public VirtualNetworkLinkImpl withTags(Map<String, String> tags) {
-        inner().withTags(tags);
+        innerModel().withTags(tags);
         return this;
     }
 
     @Override
     public VirtualNetworkLinkImpl withTag(String key, String value) {
-        if (inner().tags() == null) {
-            inner().withTags(new HashMap<>());
+        if (innerModel().tags() == null) {
+            innerModel().withTags(new HashMap<>());
         }
-        inner().tags().put(key, value);
+        innerModel().tags().put(key, value);
         return this;
     }
 
@@ -128,7 +128,7 @@ class VirtualNetworkLinkImpl
 
     @Override
     public Mono<VirtualNetworkLink> createResourceAsync() {
-        return createOrUpdateAsync(inner());
+        return createOrUpdateAsync(innerModel());
     }
 
     @Override
@@ -153,7 +153,7 @@ class VirtualNetworkLinkImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -179,17 +179,17 @@ class VirtualNetworkLinkImpl
     }
 
     private VirtualNetworkLinkInner prepareForUpdate(VirtualNetworkLinkInner resource) {
-        if (inner().registrationEnabled() != null) {
-            resource.withRegistrationEnabled(inner().registrationEnabled());
+        if (innerModel().registrationEnabled() != null) {
+            resource.withRegistrationEnabled(innerModel().registrationEnabled());
         }
-        if (inner().tags() != null && !inner().tags().isEmpty()) {
+        if (innerModel().tags() != null && !innerModel().tags().isEmpty()) {
             if (resource.tags() == null) {
                 resource.withTags(new HashMap<>());
             }
-            for (Map.Entry<String, String> entryToAdd : inner().tags().entrySet()) {
+            for (Map.Entry<String, String> entryToAdd : innerModel().tags().entrySet()) {
                 resource.tags().put(entryToAdd.getKey(), entryToAdd.getValue());
             }
-            inner().tags().clear();
+            innerModel().tags().clear();
         }
         if (!linkToRemove.tags().isEmpty()) {
             for (Map.Entry<String, String> entryToDelete : linkToRemove.tags().entrySet()) {
@@ -206,6 +206,6 @@ class VirtualNetworkLinkImpl
     }
 
     private boolean isInCreateMode() {
-        return inner().id() == null;
+        return innerModel().id() == null;
     }
 }

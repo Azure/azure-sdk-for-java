@@ -5,8 +5,8 @@ package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
 import reactor.core.publisher.Mono;
@@ -68,7 +68,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
                 this.namespaceName(),
                 this.queueName(),
                 this.name(),
-                prepareForCreate(this.inner()))
+                prepareForCreate(this.innerModel()))
             .map(inner -> {
                 setInner(inner);
                 return self;

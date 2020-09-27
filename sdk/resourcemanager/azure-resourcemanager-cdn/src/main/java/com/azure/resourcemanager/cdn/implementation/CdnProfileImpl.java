@@ -5,8 +5,8 @@ package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
-import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
-import com.azure.resourcemanager.cdn.fluent.inner.SsoUriInner;
+import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
+import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
 import com.azure.resourcemanager.cdn.models.Sku;
 import com.azure.resourcemanager.cdn.models.SkuName;
@@ -147,17 +147,17 @@ class CdnProfileImpl
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
     public Sku sku() {
-        return this.inner().sku();
+        return this.innerModel().sku();
     }
 
     @Override
     public String resourceState() {
-        return this.inner().resourceState().toString();
+        return this.innerModel().resourceState().toString();
     }
 
     @Override
@@ -168,7 +168,7 @@ class CdnProfileImpl
 
     @Override
     public Mono<CdnProfile> createResourceAsync() {
-        return this.manager().serviceClient().getProfiles().createAsync(resourceGroupName(), name(), inner())
+        return this.manager().serviceClient().getProfiles().createAsync(resourceGroupName(), name(), innerModel())
                 .map(innerToFluentMap(this));
     }
 
@@ -176,7 +176,7 @@ class CdnProfileImpl
     public Mono<CdnProfile> updateResourceAsync() {
         final CdnProfileImpl self = this;
         return this.manager().serviceClient().getProfiles()
-            .updateAsync(this.resourceGroupName(), this.name(), inner().tags())
+            .updateAsync(this.resourceGroupName(), this.name(), innerModel().tags())
             .map(inner -> {
                 self.setInner(inner);
                 return self;
@@ -204,7 +204,7 @@ class CdnProfileImpl
 
     @Override
     public CdnProfileImpl withStandardAkamaiSku() {
-        this.inner()
+        this.innerModel()
                 .withSku(new Sku()
                             .withName(SkuName.STANDARD_AKAMAI));
         return this;
@@ -212,7 +212,7 @@ class CdnProfileImpl
 
     @Override
     public CdnProfileImpl withStandardVerizonSku() {
-        this.inner()
+        this.innerModel()
                 .withSku(new Sku()
                         .withName(SkuName.STANDARD_VERIZON));
         return this;
@@ -220,7 +220,7 @@ class CdnProfileImpl
 
     @Override
     public CdnProfileImpl withPremiumVerizonSku() {
-        this.inner()
+        this.innerModel()
                 .withSku(new Sku()
                         .withName(SkuName.PREMIUM_VERIZON));
         return this;

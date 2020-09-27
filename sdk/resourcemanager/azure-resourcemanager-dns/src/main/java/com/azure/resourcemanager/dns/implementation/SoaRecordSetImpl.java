@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 
 /** Implementation of SoaRecordSet. */
 class SoaRecordSetImpl extends DnsRecordSetImpl implements SoaRecordSet {
@@ -19,7 +19,7 @@ class SoaRecordSetImpl extends DnsRecordSetImpl implements SoaRecordSet {
 
     @Override
     public SoaRecord record() {
-        return this.inner().soaRecord();
+        return this.innerModel().soaRecord();
     }
 
     @Override
@@ -28,31 +28,31 @@ class SoaRecordSetImpl extends DnsRecordSetImpl implements SoaRecordSet {
             resource.withSoaRecord(new SoaRecord());
         }
 
-        if (this.inner().soaRecord().email() != null) {
-            resource.soaRecord().withEmail(this.inner().soaRecord().email());
+        if (this.innerModel().soaRecord().email() != null) {
+            resource.soaRecord().withEmail(this.innerModel().soaRecord().email());
         }
 
-        if (this.inner().soaRecord().expireTime() != null) {
-            resource.soaRecord().withExpireTime(this.inner().soaRecord().expireTime());
+        if (this.innerModel().soaRecord().expireTime() != null) {
+            resource.soaRecord().withExpireTime(this.innerModel().soaRecord().expireTime());
         }
 
-        if (this.inner().soaRecord().minimumTtl() != null) {
-            resource.soaRecord().withMinimumTtl(this.inner().soaRecord().minimumTtl());
+        if (this.innerModel().soaRecord().minimumTtl() != null) {
+            resource.soaRecord().withMinimumTtl(this.innerModel().soaRecord().minimumTtl());
         }
 
-        if (this.inner().soaRecord().refreshTime() != null) {
-            resource.soaRecord().withRefreshTime(this.inner().soaRecord().refreshTime());
+        if (this.innerModel().soaRecord().refreshTime() != null) {
+            resource.soaRecord().withRefreshTime(this.innerModel().soaRecord().refreshTime());
         }
 
-        if (this.inner().soaRecord().retryTime() != null) {
-            resource.soaRecord().withRetryTime(this.inner().soaRecord().retryTime());
+        if (this.innerModel().soaRecord().retryTime() != null) {
+            resource.soaRecord().withRetryTime(this.innerModel().soaRecord().retryTime());
         }
 
-        if (this.inner().soaRecord().serialNumber() != null) {
-            resource.soaRecord().withSerialNumber(this.inner().soaRecord().serialNumber());
+        if (this.innerModel().soaRecord().serialNumber() != null) {
+            resource.soaRecord().withSerialNumber(this.innerModel().soaRecord().serialNumber());
         }
 
-        this.inner().withSoaRecord(new SoaRecord());
+        this.innerModel().withSoaRecord(new SoaRecord());
         return resource;
     }
 }

@@ -5,14 +5,14 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** The base network interface shared across regular and virtual machine scale set network interface. */
 @Fluent
-public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInner<NetworkInterfaceInner> {
+public interface NetworkInterfaceBase extends HasManager<NetworkManager>, HasInnerModel<NetworkInterfaceInner> {
 
     /** @return true if accelerated networking is enabled for this network interface */
     boolean isAcceleratedNetworkingEnabled();

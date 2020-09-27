@@ -9,12 +9,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolDatabaseActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricInner;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
@@ -133,7 +133,7 @@ public class SqlElasticPoolImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -148,37 +148,37 @@ public class SqlElasticPoolImpl
 
     @Override
     public OffsetDateTime creationDate() {
-        return this.inner().creationDate();
+        return this.innerModel().creationDate();
     }
 
     @Override
     public ElasticPoolState state() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public ElasticPoolEdition edition() {
-        return ElasticPoolEdition.fromString(this.inner().sku().tier());
+        return ElasticPoolEdition.fromString(this.innerModel().sku().tier());
     }
 
     @Override
     public int dtu() {
-        return this.inner().sku().capacity();
+        return this.innerModel().sku().capacity();
     }
 
     @Override
     public Double databaseDtuMax() {
-        return this.inner().perDatabaseSettings().maxCapacity();
+        return this.innerModel().perDatabaseSettings().maxCapacity();
     }
 
     @Override
     public Double databaseDtuMin() {
-        return this.inner().perDatabaseSettings().minCapacity();
+        return this.innerModel().perDatabaseSettings().minCapacity();
     }
 
     @Override
     public Long storageCapacity() {
-        return this.inner().maxSizeBytes();
+        return this.innerModel().maxSizeBytes();
     }
 
     @Override
@@ -418,12 +418,12 @@ public class SqlElasticPoolImpl
     @Override
     public Mono<SqlElasticPool> createResourceAsync() {
         final SqlElasticPoolImpl self = this;
-        this.inner().withLocation(this.sqlServerLocation);
+        this.innerModel().withLocation(this.sqlServerLocation);
         return this
             .sqlServerManager
             .serviceClient()
             .getElasticPools()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);
@@ -438,7 +438,7 @@ public class SqlElasticPoolImpl
             .sqlServerManager
             .serviceClient()
             .getElasticPools()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);
@@ -497,16 +497,16 @@ public class SqlElasticPoolImpl
     }
 
     public SqlElasticPoolImpl withEdition(ElasticPoolEdition edition) {
-        if (this.inner().sku() == null) {
-            this.inner().withSku(new Sku());
+        if (this.innerModel().sku() == null) {
+            this.innerModel().withSku(new Sku());
         }
-        this.inner().sku().withTier(edition.toString());
-        this.inner().sku().withName(edition.toString() + "Pool");
+        this.innerModel().sku().withTier(edition.toString());
+        this.innerModel().sku().withName(edition.toString() + "Pool");
         return this;
     }
 
     public SqlElasticPoolImpl withCustomEdition(Sku sku) {
-        this.inner().withSku(sku);
+        this.innerModel().withSku(sku);
         return this;
     }
 
@@ -586,34 +586,34 @@ public class SqlElasticPoolImpl
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMin(double databaseDtuMin) {
-        if (this.inner().perDatabaseSettings() == null) {
-            this.inner().withPerDatabaseSettings(new ElasticPoolPerDatabaseSettings());
+        if (this.innerModel().perDatabaseSettings() == null) {
+            this.innerModel().withPerDatabaseSettings(new ElasticPoolPerDatabaseSettings());
         }
-        this.inner().perDatabaseSettings().withMinCapacity(databaseDtuMin);
+        this.innerModel().perDatabaseSettings().withMinCapacity(databaseDtuMin);
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withDatabaseDtuMax(double databaseDtuMax) {
-        if (this.inner().perDatabaseSettings() == null) {
-            this.inner().withPerDatabaseSettings(new ElasticPoolPerDatabaseSettings());
+        if (this.innerModel().perDatabaseSettings() == null) {
+            this.innerModel().withPerDatabaseSettings(new ElasticPoolPerDatabaseSettings());
         }
-        this.inner().perDatabaseSettings().withMaxCapacity(databaseDtuMax);
+        this.innerModel().perDatabaseSettings().withMaxCapacity(databaseDtuMax);
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withDtu(int dtu) {
-        if (this.inner().sku() == null) {
-            this.inner().withSku(new Sku());
+        if (this.innerModel().sku() == null) {
+            this.innerModel().withSku(new Sku());
         }
-        this.inner().sku().withCapacity(dtu);
+        this.innerModel().sku().withCapacity(dtu);
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withStorageCapacity(Long maxSizeBytes) {
-        this.inner().withMaxSizeBytes(maxSizeBytes);
+        this.innerModel().withMaxSizeBytes(maxSizeBytes);
         return this;
     }
 
@@ -682,23 +682,23 @@ public class SqlElasticPoolImpl
 
     @Override
     public SqlElasticPoolImpl withTags(Map<String, String> tags) {
-        this.inner().withTags(new HashMap<>(tags));
+        this.innerModel().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withTag(String key, String value) {
-        if (this.inner().tags() == null) {
-            this.inner().withTags(new HashMap<String, String>());
+        if (this.innerModel().tags() == null) {
+            this.innerModel().withTags(new HashMap<String, String>());
         }
-        this.inner().tags().put(key, value);
+        this.innerModel().tags().put(key, value);
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withoutTag(String key) {
-        if (this.inner().tags() != null) {
-            this.inner().tags().remove(key);
+        if (this.innerModel().tags() != null) {
+            this.innerModel().tags().remove(key);
         }
         return this;
     }

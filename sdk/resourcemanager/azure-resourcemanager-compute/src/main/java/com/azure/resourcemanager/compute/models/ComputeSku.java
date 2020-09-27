@@ -4,17 +4,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /** Type representing sku for an Azure compute resource. */
 @Fluent
-public interface ComputeSku extends HasInner<ResourceSkuInner> {
+public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
     /** @return the sku name */
     ComputeSkuName name();
     /** @return the sku tier */

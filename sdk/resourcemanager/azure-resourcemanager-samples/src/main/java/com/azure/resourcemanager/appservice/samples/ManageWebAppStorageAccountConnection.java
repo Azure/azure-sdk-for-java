@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -51,11 +52,11 @@ public final class ManageWebAppStorageAccountConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azureResourceManager.sdkContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azureResourceManager.sdkContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkstore", 20);
+        final String containerName  = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jcontainer", 20);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -119,7 +120,7 @@ public final class ManageWebAppStorageAccountConnection {
             // warm up
             System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
             Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("ResourceManagerUtils.curling " + app1Url + "/azure-samples-blob-traverser...");
             System.out.println(Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/"));
 

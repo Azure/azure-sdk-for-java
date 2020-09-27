@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BasicDependency model. */
+/** Deployment dependency information. */
 @Fluent
 public final class BasicDependency {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BasicDependency.class);

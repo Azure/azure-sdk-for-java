@@ -11,8 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGet
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -36,8 +35,7 @@ public abstract class GroupableResourcesImpl<
         SupportsGettingById<T>,
         SupportsGettingByResourceGroup<T>,
         SupportsDeletingByResourceGroup,
-        HasManager<ManagerT>,
-        HasInner<InnerCollectionT> {
+        HasManager<ManagerT> {
 
     private final InnerCollectionT innerCollection;
     private final ManagerT myManager;
@@ -49,7 +47,6 @@ public abstract class GroupableResourcesImpl<
         this.myManager = manager;
     }
 
-    @Override
     public InnerCollectionT inner() {
         return this.innerCollection;
     }
@@ -79,7 +76,7 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
         return this.deleteInnerAsync(groupName, name)
-            .subscribeOn(SdkContext.getReactorScheduler());
+            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
     }
 
     @Override

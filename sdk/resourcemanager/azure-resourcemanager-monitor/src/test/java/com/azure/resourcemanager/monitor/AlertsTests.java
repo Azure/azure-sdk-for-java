@@ -386,8 +386,8 @@ public class AlertsTests extends MonitorManagementTest {
 
             ma.refresh();
             Assertions.assertEquals(2, ma.scopes().size());
-            Assertions.assertEquals(vm1.type(), ma.inner().targetResourceType());
-            Assertions.assertEquals(vm1.regionName(), ma.inner().targetResourceRegion());
+            Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
+            Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
             Assertions.assertEquals(1, ma.alertCriterias().size());
             Assertions.assertEquals(0, ma.dynamicAlertCriterias().size());
             Assertions.assertEquals("Percentage CPU", ma.alertCriterias().get("Metric1").metricName());
@@ -413,8 +413,8 @@ public class AlertsTests extends MonitorManagementTest {
 
             ma.refresh();
             Assertions.assertEquals(2, ma.scopes().size());
-            Assertions.assertEquals(vm1.type(), ma.inner().targetResourceType());
-            Assertions.assertEquals(vm1.regionName(), ma.inner().targetResourceRegion());
+            Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
+            Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
             Assertions.assertEquals(0, ma.alertCriterias().size());
             Assertions.assertEquals(1, ma.dynamicAlertCriterias().size());
             MetricDynamicAlertCondition condition = ma.dynamicAlertCriterias().get("Metric2");

@@ -25,16 +25,16 @@ public class WhatIfOperationResultImpl extends
 
     @Override
     public String status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public List<WhatIfChange> changes() {
-        return this.inner().changes();
+        return this.innerModel().changes();
     }
 
     @Override
     public ManagementError error() {
-        return this.inner().error();
+        return this.innerModel().error();
     }
 }

@@ -50,13 +50,13 @@ public final class ManageTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String rgName                     = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String domainName                 = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String rgName                     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV_", 24);
+        final String domainName                 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkdemo-", 20) + ".com";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String certPassword               = "StrongPass!12";
-        final String appServicePlanNamePrefix   = azureResourceManager.sdkContext().randomResourceName("jplan1_", 15);
-        final String webAppNamePrefix           = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String tmName                     = azureResourceManager.sdkContext().randomResourceName("jsdktm-", 20);
+        final String appServicePlanNamePrefix   = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jplan1_", 15);
+        final String webAppNamePrefix           = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String tmName                     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdktm-", 20);
         final List<Region> regions              = new ArrayList<>();
         // The regions in which web app needs to be created
         //

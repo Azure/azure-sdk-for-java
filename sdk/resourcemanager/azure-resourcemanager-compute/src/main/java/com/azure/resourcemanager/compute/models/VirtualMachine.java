@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
@@ -96,14 +96,13 @@ public interface VirtualMachine
     Mono<Void> redeployAsync();
 
     /**
-     * Simulates the eviction of spot virtual machine.
-     * The eviction will occur with 30 minutes after calling this API.
+     * Simulates the eviction of spot virtual machine. The eviction will occur with 30 minutes after calling this API.
      */
     void simulateEviction();
 
     /**
-     * Simulates the eviction of spot virtual machine asynchronously.
-     * The eviction will occur with 30 minutes after calling this API.
+     * Simulates the eviction of spot virtual machine asynchronously. The eviction will occur with 30 minutes after
+     * calling this API.
      *
      * @return a representation of the deferred computation of this call
      */
@@ -172,8 +171,7 @@ public interface VirtualMachine
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScript(
-        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScript(List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in the virtual machine asynchronously.
@@ -644,8 +642,8 @@ public interface VirtualMachine
             WithWindowsCreateManaged withSpecializedWindowsCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a generalized Windows gallery image version
-             * to be used as the virtual machine's OS.
+             * Specifies the resource ID of a generalized Windows gallery image version to be used as the virtual
+             * machine's OS.
              *
              * @param galleryImageVersionId the resource ID of the gallery image version
              * @return the next stage of the definition
@@ -653,8 +651,8 @@ public interface VirtualMachine
             WithWindowsAdminUsernameManaged withGeneralizedWindowsGalleryImageVersion(String galleryImageVersionId);
 
             /**
-             * Specifies the resource ID of a specialized Windows gallery image version
-             * to be used as the virtual machine's OS.
+             * Specifies the resource ID of a specialized Windows gallery image version to be used as the virtual
+             * machine's OS.
              *
              * @param galleryImageVersionId the resource ID of the gallery image version
              * @return the next stage of the definition
@@ -678,8 +676,7 @@ public interface VirtualMachine
             WithLinuxRootUsernameManagedOrUnmanaged withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
-             * Specifies that the latest version of a marketplace Linux image is
-             * to be used as the virtual machine's OS.
+             * Specifies that the latest version of a marketplace Linux image is to be used as the virtual machine's OS.
              *
              * @param publisher specifies the publisher of an image
              * @param offer specifies an offer of the image
@@ -705,8 +702,7 @@ public interface VirtualMachine
             WithLinuxRootUsernameManaged withGeneralizedLinuxCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a specialized Linux custom image
-             * to be used as the virtual machines' OS.
+             * Specifies the resource ID of a specialized Linux custom image to be used as the virtual machines' OS.
              *
              * @param customImageId the resource ID of a custom image
              * @return the next stage of the definition
@@ -714,8 +710,8 @@ public interface VirtualMachine
             WithLinuxCreateManaged withSpecializedLinuxCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a generalized Linux gallery image version
-             * to be used as the virtual machines' OS.
+             * Specifies the resource ID of a generalized Linux gallery image version to be used as the virtual
+             * machines' OS.
              *
              * @param galleryImageVersionId the resource ID of a gallery image version
              * @return the next stage of the definition
@@ -723,8 +719,8 @@ public interface VirtualMachine
             WithLinuxRootUsernameManaged withGeneralizedLinuxGalleryImageVersion(String galleryImageVersionId);
 
             /**
-             * Specifies the resource ID of a specialized Linux gallery image version
-             * to be used as the virtual machines' OS.
+             * Specifies the resource ID of a specialized Linux gallery image version to be used as the virtual
+             * machines' OS.
              *
              * @param galleryImageVersionId the resource ID of a gallery image version
              * @return the next stage of the definition
@@ -1122,7 +1118,6 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
-
 
             /**
              * Specifies the size of the OSDisk in GB.

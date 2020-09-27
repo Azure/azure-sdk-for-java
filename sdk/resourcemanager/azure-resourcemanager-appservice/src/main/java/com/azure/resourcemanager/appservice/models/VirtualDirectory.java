@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualDirectory model. */
+/** Directory for virtual application. */
 @Fluent
 public final class VirtualDirectory {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualDirectory.class);
