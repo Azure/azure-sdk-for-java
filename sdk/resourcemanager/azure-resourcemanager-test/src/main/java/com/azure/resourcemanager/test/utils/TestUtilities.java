@@ -34,11 +34,9 @@ public class TestUtilities {
      * @param <T> the type of the resource
      * @return the size of the collection.
      */
-    public static synchronized <T> int getSize(Iterable<T> iterable) {
+    public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-        Iterator<T> iterator = iterable.iterator();
-        while (iterator.hasNext()) {
-            iterator.next();
+        for (T t : iterable) {
             ++res;
         }
         return res;
@@ -51,7 +49,7 @@ public class TestUtilities {
      * @param <T> the type of the resource
      * @return if the collection is empty.
      */
-    public static synchronized <T> boolean isEmpty(PagedIterable<T> iterable) {
+    public static <T> boolean isEmpty(PagedIterable<T> iterable) {
         return !iterable.iterator().hasNext();
     }
 }

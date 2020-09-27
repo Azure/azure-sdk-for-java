@@ -248,7 +248,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
                                     response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
-    protected WebAppTestClient httpClient =
+    private static final WebAppTestClient httpClient =
         RestProxy
             .create(
                 WebAppTestClient.class,

@@ -201,6 +201,7 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -213,6 +214,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -222,6 +224,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -3252,7 +3255,12 @@ public final class Utils {
 
     public static Response<String> curl(String urlString) {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Mono<SimpleResponse<Flux<ByteBuffer>>> response =
+                httpClient.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(3, Duration.ofSeconds(30))
+                        .filter(t -> t instanceof TimeoutException));
+            return stringResponse(response).block();
         } catch (MalformedURLException e) {
             return null;
         }
@@ -3307,10 +3315,12 @@ public final class Utils {
         return path;
     }
 
-    private static WebAppTestClient httpClient = RestProxy.create(
+    private static final WebAppTestClient httpClient = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+                    .policies(
+                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")
@@ -3325,11 +3335,9 @@ public final class Utils {
         Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
     }
 
-    public static synchronized <T> int getSize(Iterable<T> iterable) {
+    public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-        Iterator<T> iterator = iterable.iterator();
-        while (iterator.hasNext()) {
-            iterator.next();
+        for (T t : iterable) {
             ++res;
         }
         return res;
