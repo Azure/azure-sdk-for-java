@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SnapshotSku model. */
+/** The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. */
 @Fluent
 public final class SnapshotSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotSku.class);

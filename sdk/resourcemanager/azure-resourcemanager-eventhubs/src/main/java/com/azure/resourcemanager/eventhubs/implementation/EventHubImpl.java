@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.Destination;
 import com.azure.resourcemanager.eventhubs.models.EncodingCaptureDescription;

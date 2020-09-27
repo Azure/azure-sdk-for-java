@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.azure.resourcemanager.storage.fluent.inner.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.storage.fluent.models.CheckNameAvailabilityResultInner;
 
 /** The {@link StorageAccounts#checkNameAvailability} action result. */
 public class CheckNameAvailabilityResult {

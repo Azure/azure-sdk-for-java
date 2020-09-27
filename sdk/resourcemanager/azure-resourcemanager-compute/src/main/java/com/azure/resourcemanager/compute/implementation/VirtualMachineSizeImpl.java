@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** The implementation for {@link VirtualMachineSize}. */

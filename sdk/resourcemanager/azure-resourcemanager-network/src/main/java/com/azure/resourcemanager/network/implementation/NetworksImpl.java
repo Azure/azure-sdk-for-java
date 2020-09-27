@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.Network;

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds model. */
+/** Minimum and maximum number of scale units to deploy. */
 @Fluent
 public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
     @JsonIgnore

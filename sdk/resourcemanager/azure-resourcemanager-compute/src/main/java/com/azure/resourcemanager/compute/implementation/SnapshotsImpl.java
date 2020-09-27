@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.Snapshots;
-import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
+import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;

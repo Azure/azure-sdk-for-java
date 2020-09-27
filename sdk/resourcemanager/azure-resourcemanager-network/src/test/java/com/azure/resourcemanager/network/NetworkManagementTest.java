@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -26,7 +26,7 @@ public class NetworkManagementTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected NetworkManager networkManager;
     protected KeyVaultManager keyVaultManager;
-    protected MSIManager msiManager;
+    protected MsiManager msiManager;
     protected String rgName = "";
 
     @Override
@@ -57,7 +57,7 @@ public class NetworkManagementTest extends ResourceManagerTestBase {
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         networkManager = NetworkManager.authenticate(httpPipeline, profile);
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        msiManager = MSIManager.authenticate(httpPipeline, profile);
+        msiManager = MsiManager.authenticate(httpPipeline, profile);
         setInternalContext(internalContext, networkManager);
     }
 

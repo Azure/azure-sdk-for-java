@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.Collections;

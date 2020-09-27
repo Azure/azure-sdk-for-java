@@ -16,7 +16,7 @@ import com.azure.resourcemanager.sql.models.SqlSyncMemberOperations;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
-import com.azure.resourcemanager.sql.fluent.inner.SyncMemberInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 

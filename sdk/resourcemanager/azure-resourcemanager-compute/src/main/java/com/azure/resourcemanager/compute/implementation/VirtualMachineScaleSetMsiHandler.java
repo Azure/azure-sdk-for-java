@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;

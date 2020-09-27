@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerNetworkInterface model. */
+/** Container network interface child resource. */
 @JsonFlatten
 @Fluent
 public class ContainerNetworkInterface extends SubResource {

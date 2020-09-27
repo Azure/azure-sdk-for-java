@@ -14,7 +14,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.ZoneType;
@@ -166,7 +166,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
         Assertions.assertTrue(aaaaRecordSet1.ipv6Addresses().size() == 2);
 
         // Check CNAME records
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assertions.assertTrue(TestUtilities.getSize(cnameRecordSets) == 2);
 
         // Check Caa records

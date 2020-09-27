@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;

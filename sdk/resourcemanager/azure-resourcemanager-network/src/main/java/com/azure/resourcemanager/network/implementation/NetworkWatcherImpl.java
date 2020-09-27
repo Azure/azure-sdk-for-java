@@ -7,9 +7,9 @@ import com.azure.resourcemanager.network.models.FlowLogSettings;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
-import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherInner;
-import com.azure.resourcemanager.network.fluent.inner.SecurityGroupViewResultInner;
+import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityGroupViewResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 

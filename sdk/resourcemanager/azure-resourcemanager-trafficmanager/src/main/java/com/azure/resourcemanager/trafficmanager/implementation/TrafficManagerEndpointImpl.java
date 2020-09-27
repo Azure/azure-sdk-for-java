@@ -7,7 +7,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;

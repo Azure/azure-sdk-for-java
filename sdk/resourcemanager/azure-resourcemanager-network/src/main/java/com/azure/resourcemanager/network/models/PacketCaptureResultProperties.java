@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PacketCaptureResultProperties model. */
+/** The properties of a packet capture session. */
 @Immutable
 public final class PacketCaptureResultProperties extends PacketCaptureParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultProperties.class);

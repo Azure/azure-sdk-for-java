@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
+import com.azure.resourcemanager.compute.fluent.models.ImageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

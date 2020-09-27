@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ServiceLevelObjectiveUsageMetric;
 import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
 import com.azure.resourcemanager.sql.models.SloUsageMetric;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

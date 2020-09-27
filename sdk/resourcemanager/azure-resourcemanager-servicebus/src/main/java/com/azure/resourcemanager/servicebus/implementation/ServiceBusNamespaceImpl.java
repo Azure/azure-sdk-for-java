@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceCreateOrUpdateParameters;
 import com.azure.resourcemanager.servicebus.models.NamespaceSku;

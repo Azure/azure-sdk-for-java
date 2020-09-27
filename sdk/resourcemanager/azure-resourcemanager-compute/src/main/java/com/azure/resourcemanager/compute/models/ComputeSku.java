@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;

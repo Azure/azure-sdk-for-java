@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Endpoints model. */
+/** The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object. */
 @Fluent
 public final class Endpoints {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Endpoints.class);

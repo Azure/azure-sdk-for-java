@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFirewallPublicIpAddress model. */
+/** Public IP Address associated with azure firewall. */
 @Fluent
 public final class AzureFirewallPublicIpAddress {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallPublicIpAddress.class);
