@@ -20,6 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -91,7 +92,7 @@ public class DiagnosticSettingsImpl
                     .getDiagnosticSettingsCategories()
                     .listWithResponseAsync(resourceId)
                     .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value())))
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
             .mapPage(DiagnosticSettingsCategoryImpl::new);
     }
 
@@ -126,7 +127,7 @@ public class DiagnosticSettingsImpl
                     .getDiagnosticSettings()
                     .listWithResponseAsync(resourceId)
                     .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value())))
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
             .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
     }
 
