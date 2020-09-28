@@ -34,9 +34,9 @@ public class ManageContainerInstanceWithAzureFileShareMount {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acisample", 20);
-        final String shareName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fileshare", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACI", 15);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
+        final String shareName = Utils.randomResourceName(azureResourceManager, "fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 

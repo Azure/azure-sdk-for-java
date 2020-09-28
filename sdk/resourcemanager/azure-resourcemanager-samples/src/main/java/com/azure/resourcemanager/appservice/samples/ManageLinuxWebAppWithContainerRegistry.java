@@ -50,9 +50,9 @@ public class ManageLinuxWebAppWithContainerRegistry {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgACR", 15);
-        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acrsample", 20);
-        final String appName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACR", 15);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp", 20);
         final String appUrl = appName + ".azurewebsites.net";
         final Region region = Region.US_EAST;
         final String dockerImageName = "tomcat";

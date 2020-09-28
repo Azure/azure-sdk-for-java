@@ -47,10 +47,10 @@ public final class ManageWebAppCosmosDbByMsi {
     public static boolean runSample(AzureResourceManager azureResourceManager, TokenCredential credential, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
-        final String appName        = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
-        final String vaultName      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vault", 20);
-        final String cosmosName     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cosmosdb", 20);
+        final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String vaultName      = Utils.randomResourceName(azureResourceManager, "vault", 20);
+        final String cosmosName     = Utils.randomResourceName(azureResourceManager, "cosmosdb", 20);
         final String appUrl         = appName + ".azurewebsites.net";
 
         try {

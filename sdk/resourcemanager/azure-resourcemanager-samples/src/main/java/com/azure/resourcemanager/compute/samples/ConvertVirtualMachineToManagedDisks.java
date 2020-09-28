@@ -30,8 +30,8 @@ public final class ConvertVirtualMachineToManagedDisks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String linuxVMName = Utils.randomResourceName(azureResourceManager, "VM1", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST;

@@ -48,13 +48,13 @@ public final class ManageFunctionAppWithAuthentication {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 

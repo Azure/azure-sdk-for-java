@@ -41,9 +41,9 @@ public final class ManageFunctionAppLogs {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String appName       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String appName       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
         final String appUrl        = appName + suffix;
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 

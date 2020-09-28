@@ -255,6 +255,24 @@ public final class Utils {
     }
 
     /**
+     * Generates the specified number of random resource names with the same prefix.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to be used if possible
+     * @param maxLen the maximum length for the random generated name
+     * @param count the number of names to generate
+     * @return the randomized resource names.
+     */
+    public static String[] randomResourceNames(AzureResourceManager azure, String prefix, int maxLen, int count) {
+        String[] names = new String[count];
+        for (int i = 0; i < count; i++) {
+            names[i] = randomResourceName(azure, prefix, maxLen);
+        }
+        return names;
+    }
+
+    /**
      * Creates a random UUID.
      * Please provider your own implementation, or avoid using the method, if code is to be used in production.
      *

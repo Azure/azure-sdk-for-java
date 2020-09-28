@@ -37,10 +37,10 @@ public final class ManageWebAppSlots {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String resourceGroupName     = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 24);
-        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
+        final String resourceGroupName     = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
         final String slotName       = "staging";
 
         try {

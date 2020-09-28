@@ -89,17 +89,17 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, InterruptedException, JSchException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgaci", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgaci", 15);
         final Region region = Region.US_EAST2;
 
-        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acr", 20);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acr", 20);
 
-        final String aciName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acisample", 20);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
         final String containerImageName = "microsoft/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 
-        final String acsName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acssample", 30);
+        final String acsName = Utils.randomResourceName(azureResourceManager, "acssample", 30);
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
         final String rootUserName = "acsuser";

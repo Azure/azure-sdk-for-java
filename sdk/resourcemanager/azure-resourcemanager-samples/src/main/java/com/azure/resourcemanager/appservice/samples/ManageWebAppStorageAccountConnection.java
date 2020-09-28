@@ -53,11 +53,11 @@ public final class ManageWebAppStorageAccountConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = Utils.randomResourceName(azureResourceManager, "jsdkstore", 20);
+        final String containerName  = Utils.randomResourceName(azureResourceManager, "jcontainer", 20);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
