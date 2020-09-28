@@ -515,16 +515,13 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/PrimaryDatabaseConfiguration.java#L25-L68 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/PrimaryDatabaseConfiguration.java#L23-L62 -->
 ```java
 @Configuration
 public class PrimaryDatasourceConfiguration {
 
     private static final String DATABASE1 = "primary_database1";
     private static final String DATABASE2 = "primary_database2";
-
-    @Autowired(required = false)
-    private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.primary")
@@ -556,14 +553,13 @@ public class PrimaryDatasourceConfiguration {
         public ReactiveCosmosTemplate primaryDatabase2Template(CosmosAsyncClient cosmosAsyncClient,
                                                                CosmosConfig cosmosConfig,
                                                                MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE2, cosmosConfig, mappingCosmosConverter,
-                cosmosAuditingHandler);
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE2, cosmosConfig, mappingCosmosConverter);
         }
     }
 }
 ```
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L30-L89 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L28-L84 -->
 ```java
 @Configuration
 public class SecondaryDatasourceConfiguration {
@@ -571,9 +567,6 @@ public class SecondaryDatasourceConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
     public static final String DATABASE3 = "secondary_database3";
     public static final String DATABASE4 = "secondary_database4";
-
-    @Autowired(required = false)
-    private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.secondary")
@@ -603,7 +596,7 @@ public class SecondaryDatasourceConfiguration {
         public CosmosTemplate secondaryDatabase3Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
                                                          @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE3, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+            return new CosmosTemplate(client, DATABASE3, cosmosConfig, mappingCosmosConverter);
         }
     }
     @EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database4",
@@ -613,7 +606,7 @@ public class SecondaryDatasourceConfiguration {
         public CosmosTemplate secondaryDatabase4Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
                                                          @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter);
         }
     }
 
@@ -629,7 +622,7 @@ public class SecondaryDatasourceConfiguration {
 
 - In the above example, we have two cosmos account, each account has two databases. For each account, we can use the same Cosmos Client. You can create the `CosmosAsyncClient` like this:
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L46-L51 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L41-L56 -->
 ```java
 @Bean("secondaryCosmosClient")
 public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
@@ -641,7 +634,7 @@ public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProp
 
 - Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L53-L59-->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L48-L54-->
 ```java
 @Bean("secondaryCosmosConfig")
 public CosmosConfig getCosmosConfig() {
@@ -654,10 +647,9 @@ public CosmosConfig getCosmosConfig() {
 
 - Create an Application class
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/MultiDatasourceApplication.java#L24-L60 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/MultiDatasourceApplication.java#L23-L58 -->
 ```java
 @SpringBootApplication
-@EnableCosmosAuditing
 public class MultiDatasourceApplication implements CommandLineRunner {
 
     @Autowired

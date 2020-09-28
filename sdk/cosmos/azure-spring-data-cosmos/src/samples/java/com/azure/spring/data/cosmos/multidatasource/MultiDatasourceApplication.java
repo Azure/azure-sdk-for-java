@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.multidatasource;
 
-import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
 import com.azure.spring.data.cosmos.multidatasource.primary.database1.User;
 import com.azure.spring.data.cosmos.multidatasource.primary.database1.UserRepository;
 import com.azure.spring.data.cosmos.multidatasource.secondary.database3.Book;
@@ -22,7 +21,6 @@ import java.util.List;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 @SpringBootApplication
-@EnableCosmosAuditing
 public class MultiDatasourceApplication implements CommandLineRunner {
 
     @Autowired

@@ -14,12 +14,10 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.lang.Nullable;
 
 /**
@@ -33,9 +31,6 @@ public class SecondaryDatasourceConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecondaryDatasourceConfiguration.class);
     public static final String DATABASE3 = "secondary_database3";
     public static final String DATABASE4 = "secondary_database4";
-
-    @Autowired(required = false)
-    private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.secondary")
@@ -65,7 +60,7 @@ public class SecondaryDatasourceConfiguration {
         public CosmosTemplate secondaryDatabase3Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
                                                          @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE3, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+            return new CosmosTemplate(client, DATABASE3, cosmosConfig, mappingCosmosConverter);
         }
     }
     @EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database4",
@@ -75,7 +70,7 @@ public class SecondaryDatasourceConfiguration {
         public CosmosTemplate secondaryDatabase4Template(@Qualifier("secondaryCosmosClient") CosmosAsyncClient client,
                                                          @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+            return new CosmosTemplate(client, DATABASE4, cosmosConfig, mappingCosmosConverter);
         }
     }
 

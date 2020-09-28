@@ -10,12 +10,10 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -27,9 +25,6 @@ public class PrimaryDatasourceConfiguration {
 
     private static final String DATABASE1 = "primary_database1";
     private static final String DATABASE2 = "primary_database2";
-
-    @Autowired(required = false)
-    private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.primary")
@@ -61,8 +56,7 @@ public class PrimaryDatasourceConfiguration {
         public ReactiveCosmosTemplate primaryDatabase2Template(CosmosAsyncClient cosmosAsyncClient,
                                                                CosmosConfig cosmosConfig,
                                                                MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE2, cosmosConfig, mappingCosmosConverter,
-                cosmosAuditingHandler);
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, DATABASE2, cosmosConfig, mappingCosmosConverter);
         }
     }
 }
