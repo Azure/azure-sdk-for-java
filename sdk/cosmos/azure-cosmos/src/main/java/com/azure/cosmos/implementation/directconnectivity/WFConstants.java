@@ -69,6 +69,7 @@ public class WFConstants {
         public static final String BINARY_ID = "x-ms-binary-id";
         public static final String TIME_TO_LIVE_IN_SECONDS = "x-ms-time-to-live-in-seconds";
         public static final String EFFECTIVE_PARTITION_KEY = "x-ms-effective-partition-key";
+        public static final String EFFECTIVE_PARTITION_KEY_STRING = "x-ms-effective-partition-key-string";
         public static final String BINARY_PASSTHROUGH_REQUEST = "x-ms-binary-passthrough-request";
         public static final String FANOUT_OPERATION_STATE = "x-ms-fanout-operation-state";
         public static final String CONTENT_SERIALIZATION_FORMAT = "x-ms-documentdb-content-serialization-format";
