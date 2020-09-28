@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.TablesConstants;
 import com.azure.data.tables.implementation.ModelHelper;
 
+import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -211,5 +212,39 @@ public class TableEntity {
      */
     String getOdataEditLink() {
         return odataEditLink;
+    }
+
+    <T extends TableEntity> T into(Class<T> clazz) {
+        T result;
+        try {
+            result = clazz.getDeclaredConstructor(Map.class).newInstance(properties);
+        } catch (Exception e) {
+            return null;
+        }
+
+        for (Method m : clazz.getMethods()) {
+            // Skip any non-setter methods
+            if (m.getName().length() < 4
+                || !m.getName().startsWith("set")
+                || m.getParameterTypes().length != 1
+                || !void.class.equals(m.getReturnType())) {
+                continue;
+            }
+
+            String propName = m.getName().substring(3);
+            Object value = result.getProperties().get(propName);
+            if (value == null) {
+                continue;
+            }
+
+            try {
+                m.invoke(result, value);
+            } catch (ReflectiveOperationException | IllegalArgumentException e) {
+                logger.logThrowableAsWarning(new ReflectiveOperationException(String.format(
+                    "Failed to set property '%s' on type '%s'", propName, clazz.getName()), e));
+            }
+        }
+
+        return result;
     }
 }
