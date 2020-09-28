@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Destination model. */
+/** Capture storage details for capture description. */
 @JsonFlatten
 @Fluent
 public class Destination {

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.RecommendationInner;
+import com.azure.resourcemanager.appservice.fluent.models.RecommendationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RecommendationCollection model. */
+/** Collection of recommendations. */
 @Fluent
 public final class RecommendationCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationCollection.class);

@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetUpdate model. */
+/** Describes a Virtual Machine Scale Set. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetUpdate extends UpdateResource {

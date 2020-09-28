@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HubRoute model. */
+/** RouteTable route. */
 @Fluent
 public final class HubRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubRoute.class);

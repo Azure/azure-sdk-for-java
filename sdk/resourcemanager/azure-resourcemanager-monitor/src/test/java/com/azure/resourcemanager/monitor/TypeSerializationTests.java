@@ -6,9 +6,9 @@ package com.azure.resourcemanager.monitor;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.monitor.fluent.inner.AlertRuleResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.AlertRuleResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.LogSearchRuleResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
 import java.util.Arrays;
 
 import com.azure.resourcemanager.monitor.models.AlertingAction;

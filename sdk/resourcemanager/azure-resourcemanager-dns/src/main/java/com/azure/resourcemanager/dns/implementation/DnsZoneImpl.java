@@ -8,20 +8,20 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.ARecordSets;
 import com.azure.resourcemanager.dns.models.AaaaRecordSets;
-import com.azure.resourcemanager.dns.models.CNameRecordSets;
+import com.azure.resourcemanager.dns.models.CnameRecordSets;
 import com.azure.resourcemanager.dns.models.CaaRecordSets;
 import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MXRecordSets;
-import com.azure.resourcemanager.dns.models.NSRecordSets;
+import com.azure.resourcemanager.dns.models.MxRecordSets;
+import com.azure.resourcemanager.dns.models.NsRecordSets;
 import com.azure.resourcemanager.dns.models.PtrRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
 import com.azure.resourcemanager.dns.models.SrvRecordSets;
 import com.azure.resourcemanager.dns.models.TxtRecordSets;
 import com.azure.resourcemanager.dns.models.ZoneType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -38,9 +38,9 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     private ARecordSets aRecordSets;
     private AaaaRecordSets aaaaRecordSets;
     private CaaRecordSets caaRecordSets;
-    private CNameRecordSets cnameRecordSets;
-    private MXRecordSets mxRecordSets;
-    private NSRecordSets nsRecordSets;
+    private CnameRecordSets cnameRecordSets;
+    private MxRecordSets mxRecordSets;
+    private NsRecordSets nsRecordSets;
     private PtrRecordSets ptrRecordSets;
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
@@ -143,17 +143,17 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public CNameRecordSets cNameRecordSets() {
+    public CnameRecordSets cNameRecordSets() {
         return this.cnameRecordSets;
     }
 
     @Override
-    public MXRecordSets mxRecordSets() {
+    public MxRecordSets mxRecordSets() {
         return this.mxRecordSets;
     }
 
     @Override
-    public NSRecordSets nsRecordSets() {
+    public NsRecordSets nsRecordSets() {
         return this.nsRecordSets;
     }
 
@@ -453,9 +453,9 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         this.aRecordSets = new ARecordSetsImpl(this);
         this.aaaaRecordSets = new AaaaRecordSetsImpl(this);
         this.caaRecordSets = new CaaRecordSetsImpl(this);
-        this.cnameRecordSets = new CNameRecordSetsImpl(this);
-        this.mxRecordSets = new MXRecordSetsImpl(this);
-        this.nsRecordSets = new NSRecordSetsImpl(this);
+        this.cnameRecordSets = new CnameRecordSetsImpl(this);
+        this.mxRecordSets = new MxRecordSetsImpl(this);
+        this.nsRecordSets = new NsRecordSetsImpl(this);
         this.ptrRecordSets = new PtrRecordSetsImpl(this);
         this.srvRecordSets = new SrvRecordSetsImpl(this);
         this.txtRecordSets = new TxtRecordSetsImpl(this);
@@ -482,11 +482,11 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                             case CAA:
                                 return Mono.just(new CaaRecordSetImpl(inner.name(), self, inner));
                             case CNAME:
-                                return Mono.just(new CNameRecordSetImpl(inner.name(), self, inner));
+                                return Mono.just(new CnameRecordSetImpl(inner.name(), self, inner));
                             case MX:
-                                return Mono.just(new MXRecordSetImpl(inner.name(), self, inner));
+                                return Mono.just(new MxRecordSetImpl(inner.name(), self, inner));
                             case NS:
-                                return Mono.just(new NSRecordSetImpl(inner.name(), self, inner));
+                                return Mono.just(new NsRecordSetImpl(inner.name(), self, inner));
                             case PTR:
                                 return Mono.just(new PtrRecordSetImpl(inner.name(), self, inner));
                             case SOA:

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
-import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
+import com.azure.resourcemanager.sql.fluent.models.LocationCapabilitiesInner;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL server capabilities for a given region. */

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties model. */
+/** PrivateLinkConnection properties for the network interface. */
 @Immutable
 public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties {
     @JsonIgnore

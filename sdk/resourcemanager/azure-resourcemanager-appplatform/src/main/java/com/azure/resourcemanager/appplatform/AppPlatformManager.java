@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appplatform;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClientBuilder;
+import com.azure.resourcemanager.appplatform.implementation.AppPlatformManagementClientBuilder;
 import com.azure.resourcemanager.appplatform.implementation.SpringServicesImpl;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

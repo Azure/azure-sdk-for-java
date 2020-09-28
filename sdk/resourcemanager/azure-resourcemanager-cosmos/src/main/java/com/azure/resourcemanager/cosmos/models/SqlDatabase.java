@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.cosmos.models;
 
-import com.azure.resourcemanager.cosmos.fluent.inner.SqlDatabaseGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An Azure Cosmos DB SQL database. */

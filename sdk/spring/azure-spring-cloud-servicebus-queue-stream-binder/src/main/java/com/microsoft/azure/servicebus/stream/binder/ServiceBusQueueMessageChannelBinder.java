@@ -13,18 +13,23 @@ import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.lang.NonNull;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.support.ErrorMessage;
+import org.springframework.util.Assert;
 
 /**
  * @author Warren Zhu
  */
 public class ServiceBusQueueMessageChannelBinder extends
-        ServiceBusMessageChannelBinder<ServiceBusQueueExtendedBindingProperties> {
+    ServiceBusMessageChannelBinder<ServiceBusQueueExtendedBindingProperties> {
 
     private final ServiceBusQueueOperation serviceBusQueueOperation;
 
     public ServiceBusQueueMessageChannelBinder(String[] headersToEmbed,
-            @NonNull ServiceBusChannelProvisioner provisioningProvider,
-            @NonNull ServiceBusQueueOperation serviceBusQueueOperation) {
+                                               @NonNull ServiceBusChannelProvisioner provisioningProvider,
+                                               @NonNull ServiceBusQueueOperation serviceBusQueueOperation) {
         super(headersToEmbed, provisioningProvider);
         this.serviceBusQueueOperation = serviceBusQueueOperation;
         this.bindingProperties = new ServiceBusQueueExtendedBindingProperties();
@@ -32,7 +37,7 @@ public class ServiceBusQueueMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-            ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+                                                     ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
         this.serviceBusQueueOperation.setCheckpointConfig(buildCheckpointConfig(properties));
         this.serviceBusQueueOperation.setClientConfig(buildClientConfig(properties));
@@ -48,4 +53,35 @@ public class ServiceBusQueueMessageChannelBinder extends
     SendOperation getSendOperation() {
         return this.serviceBusQueueOperation;
     }
+
+    @Override
+    protected MessageHandler getErrorMessageHandler(ConsumerDestination destination,
+                                                    String group, final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        return new MessageHandler() {
+            @Override
+            public void handleMessage(Message<?> message) throws MessagingException {
+                Assert.state(message instanceof ErrorMessage, "Expected an ErrorMessage, not a "
+                        + message.getClass().toString() + " for: " + message);
+
+                ErrorMessage errorMessage = (ErrorMessage) message;
+                Message<?> amqpMessage = errorMessage.getOriginalMessage();
+
+                if (amqpMessage == null) {
+                    logger.error("No raw message header in " + message);
+                } else {
+                    Throwable cause = (Throwable) message.getPayload();
+
+                    if (properties.getExtension().isRequeueRejected()) {
+                        serviceBusQueueOperation.deadLetter(destination.getName(), amqpMessage,
+                                EXCEPTION_MESSAGE,
+                                cause.getCause() != null ? cause.getCause().getMessage()
+                                        : cause.getMessage());
+                    } else {
+                        serviceBusQueueOperation.abandon(destination.getName(), amqpMessage);
+                    }
+                }
+            }
+        };
+    }
+
 }

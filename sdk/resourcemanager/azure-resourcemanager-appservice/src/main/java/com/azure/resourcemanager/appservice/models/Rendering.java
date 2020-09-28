@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Rendering model. */
+/** Instructions for rendering the data. */
 @Fluent
 public final class Rendering {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Rendering.class);

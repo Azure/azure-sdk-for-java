@@ -15,8 +15,8 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
-import com.azure.resourcemanager.network.fluent.inner.IpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -190,7 +190,8 @@ class PublicIpAddressImpl
         return AcceptedImpl
             .newAccepted(
                 logger,
-                this.manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () ->
                     this
                         .manager()

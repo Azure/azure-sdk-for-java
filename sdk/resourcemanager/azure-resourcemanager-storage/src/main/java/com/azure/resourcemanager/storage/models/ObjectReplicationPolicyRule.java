@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ObjectReplicationPolicyRule model. */
+/** The replication policy rule between two containers. */
 @Fluent
 public final class ObjectReplicationPolicyRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyRule.class);

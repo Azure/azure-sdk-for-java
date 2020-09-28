@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.servicebus.fluent.ServiceBusManagementClient;
-import com.azure.resourcemanager.servicebus.fluent.ServiceBusManagementClientBuilder;
+import com.azure.resourcemanager.servicebus.implementation.ServiceBusManagementClientBuilder;
 import com.azure.resourcemanager.servicebus.implementation.ServiceBusNamespacesImpl;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 

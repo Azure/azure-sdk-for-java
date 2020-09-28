@@ -13,11 +13,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the FeatureClient type. */
-@ServiceClientBuilder(serviceClients = {FeatureClient.class})
+/** A builder for creating a new instance of the FeatureClientImpl type. */
+@ServiceClientBuilder(serviceClients = {FeatureClientImpl.class})
 public final class FeatureClientBuilder {
     /*
      * The ID of the target subscription.
@@ -116,11 +115,11 @@ public final class FeatureClientBuilder {
     }
 
     /**
-     * Builds an instance of FeatureClient with the provided parameters.
+     * Builds an instance of FeatureClientImpl with the provided parameters.
      *
-     * @return an instance of FeatureClient.
+     * @return an instance of FeatureClientImpl.
      */
-    public FeatureClient buildClient() {
+    public FeatureClientImpl buildClient() {
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
@@ -139,8 +138,9 @@ public final class FeatureClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        FeatureClient client =
-            new FeatureClient(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        FeatureClientImpl client =
+            new FeatureClientImpl(
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

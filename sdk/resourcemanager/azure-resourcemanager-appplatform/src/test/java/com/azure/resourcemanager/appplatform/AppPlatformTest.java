@@ -14,13 +14,14 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rg", 20);
         appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile);
         appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
@@ -84,7 +85,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
             } finally {
                 connection.disconnect();
             }
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         }
         return false;
     }
@@ -104,7 +105,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
             } finally {
                 connection.disconnect();
             }
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         }
         return false;
     }

@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -198,7 +199,7 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     private static final String FUNCTION_APP_PACKAGE_URL =
-        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip";
+        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
     @Test
     public void canCRUDLinuxFunctionApp() throws Exception {
@@ -269,7 +270,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // wait for deploy
         if (!isPlaybackMode()) {
-            SdkContext.sleep(180000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
         }
 
         functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
@@ -314,7 +315,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // wait for deploy
         if (!isPlaybackMode()) {
-            SdkContext.sleep(180000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
         }
 
         // verify deploy

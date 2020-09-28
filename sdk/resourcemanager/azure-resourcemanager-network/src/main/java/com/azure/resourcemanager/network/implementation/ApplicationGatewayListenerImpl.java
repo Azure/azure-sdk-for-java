@@ -167,7 +167,7 @@ class ApplicationGatewayListenerImpl
         String portName = this.parent().frontendPortNameFromNumber(portNumber);
         if (portName == null) {
             // Existing frontend port with this number not found so create one
-            portName = this.parent().manager().resourceManager().sdkContext()
+            portName = this.parent().manager().resourceManager().internalContext()
                 .randomResourceName("port", 9);
             this.parent().withFrontendPort(portNumber, portName);
         }
@@ -190,7 +190,7 @@ class ApplicationGatewayListenerImpl
     private ApplicationGatewayListenerImpl withSslCertificateFromKeyVaultSecretId(
         String keyVaultSecretId, String name) {
         if (name == null) {
-            name = this.parent().manager().resourceManager().sdkContext()
+            name = this.parent().manager().resourceManager().internalContext()
                 .randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name).withKeyVaultSecretId(keyVaultSecretId).attach();
@@ -204,7 +204,7 @@ class ApplicationGatewayListenerImpl
 
     private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) throws IOException {
         if (name == null) {
-            name = this.parent().manager().resourceManager().sdkContext()
+            name = this.parent().manager().resourceManager().internalContext()
                 .randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name).withPfxFromFile(pfxFile).attach();

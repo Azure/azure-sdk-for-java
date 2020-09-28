@@ -6,12 +6,15 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
+import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EventCategoryCollection model. */
+/**
+ * A collection of event categories. Currently possible values are: Administrative, Security, ServiceHealth, Alert,
+ * Recommendation, Policy.
+ */
 @Fluent
 public final class EventCategoryCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventCategoryCollection.class);

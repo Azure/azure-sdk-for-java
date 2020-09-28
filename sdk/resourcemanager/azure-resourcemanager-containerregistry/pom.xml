@@ -122,6 +122,8 @@
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
             <exclude>com/azure/resourcemanager/**/models/**/*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
         </configuration>
       </plugin>

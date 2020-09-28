@@ -37,7 +37,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 import java.util.Objects;
 
@@ -59,7 +58,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private PolicyAssignments policyAssignments;
     private Subscriptions subscriptions;
     private Tenants tenants;
-    private SdkContext sdkContext;
+    private ResourceManagerUtils.InternalRuntimeContext internalContext;
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
@@ -342,12 +341,12 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
-     * @return the {@link SdkContext} associated with this manager
+     * @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager
      */
-    public SdkContext sdkContext() {
-        if (sdkContext == null) {
-            sdkContext = new SdkContext();
+    public ResourceManagerUtils.InternalRuntimeContext internalContext() {
+        if (internalContext == null) {
+            internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         }
-        return this.sdkContext;
+        return this.internalContext;
     }
 }
