@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.ResourceSkuCosts;
 import com.azure.resourcemanager.compute.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.compute.models.ResourceSkuRestrictions;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.core.management.Region;
 import java.util.ArrayList;
@@ -172,7 +172,7 @@ final class ComputeSkuImpl implements ComputeSku {
     }
 
     @Override
-    public ResourceSkuInner inner() {
+    public ResourceSkuInner innerModel() {
         return this.inner;
     }
 }

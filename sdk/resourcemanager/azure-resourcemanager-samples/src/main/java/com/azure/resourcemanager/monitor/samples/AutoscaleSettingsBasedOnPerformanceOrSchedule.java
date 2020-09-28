@@ -19,13 +19,13 @@ import com.azure.resourcemanager.monitor.models.ScaleType;
 import com.azure.resourcemanager.monitor.models.TimeAggregationType;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.time.Duration;
 
 /**
- * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
+ * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
  *  - Create a Web App and App Service Plan
  *  - Configure autoscale rules for scale-in and scale out based on the number of requests a Web App receives
  *  - Trigger a scale-out action and watch the number of instances increase
@@ -40,9 +40,9 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String webappName = azureResourceManager.sdkContext().randomResourceName("MyTestScaleWebApp", 20);
-        final String autoscaleSettingsName = azureResourceManager.sdkContext().randomResourceName("autoscalename1", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("myResourceGroup", 20);
+        final String webappName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("MyTestScaleWebApp", 20);
+        final String autoscaleSettingsName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("autoscalename1", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("myResourceGroup", 20);
 
         try {
             // ============================================================
@@ -103,7 +103,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
-                SdkContext.sleep(5000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 Utils.curl(deployedWebAppUrl);
             }
 

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConnectivityHop model. */
+/** Information about a hop between the source and the destination. */
 @Immutable
 public final class ConnectivityHop {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityHop.class);

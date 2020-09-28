@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EndpointListResult model. */
+/**
+ * Result of the request to list endpoints. It contains a list of endpoint objects and a URL link to get the next set of
+ * results.
+ */
 @Fluent
 public final class EndpointListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointListResult.class);

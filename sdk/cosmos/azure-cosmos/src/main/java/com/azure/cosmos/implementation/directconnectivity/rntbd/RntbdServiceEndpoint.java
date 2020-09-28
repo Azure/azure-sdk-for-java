@@ -4,8 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -66,6 +69,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final AtomicInteger concurrentRequests;
     private final long id;
     private final AtomicLong lastRequestNanoTime;
+    private final AtomicLong lastSuccessfulRequestNanoTime;
 
     private final Instant createdTime;
     private final RntbdMetrics metrics;
@@ -122,6 +126,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         // long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime()
         // which can cause endpoint to close unnecessary.
         this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
+        this.lastSuccessfulRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
         this.requestTimer = timer;
 
@@ -180,6 +185,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     public long lastRequestNanoTime() {
         return this.lastRequestNanoTime.get();
+    }
+
+    @Override
+    public long lastSuccessfulRequestNanoTime() {
+        return this.lastSuccessfulRequestNanoTime.get();
     }
 
     @Override
@@ -244,15 +254,18 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
+        RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
+
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
             try {
-                return FailFastRntbdRequestRecord.createAndFailFast(
+                FailFastRntbdRequestRecord requestRecord = FailFastRntbdRequestRecord.createAndFailFast(
                     args,
                     concurrentRequestSnapshot,
                     metrics,
                     remoteAddress);
-            }
-            finally {
+                requestRecord.serviceEndpointStatistics(stat);
+                return requestRecord;
+            } finally {
                 concurrentRequests.decrementAndGet();
             }
         }
@@ -260,13 +273,49 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         final RntbdRequestRecord record = this.write(args);
+        record.serviceEndpointStatistics(stat);
 
         record.whenComplete((response, error) -> {
             this.concurrentRequests.decrementAndGet();
             this.metrics.markComplete(record);
+            onResponse(response, error);
         });
 
         return record;
+    }
+
+    private void onResponse(StoreResponse storeResponse, Throwable exception) {
+        if (exception == null) {
+            this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
+            return;
+        }
+
+        // exception != null
+        if (exception instanceof CosmosException) {
+            CosmosException cosmosException = (CosmosException) exception;
+            switch (cosmosException.getStatusCode()) {
+                // non 200 status codes representing business logic success
+                case HttpConstants.StatusCodes.CONFLICT:
+                case HttpConstants.StatusCodes.NOTFOUND:
+                    this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
+                    return;
+                default:
+                    return;
+            }
+        }
+    }
+
+    private RntbdEndpointStatistics endpointMetricsSnapshot(int concurrentRequestSnapshot) {
+        RntbdEndpointStatistics stats = new RntbdEndpointStatistics()
+            .availableChannels(this.channelsAvailableMetric())
+            .acquiredChannels(this.channelsAcquiredMetric())
+            .executorTaskQueueSize(this.executorTaskQueueMetrics())
+            .lastSuccessfulRequestNanoTime(this.lastSuccessfulRequestNanoTime())
+            .createdTime(this.createdTime)
+            .lastRequestNanoTime(this.lastRequestNanoTime())
+            .closed(this.closed.get())
+            .inflightRequests(concurrentRequestSnapshot);
+        return stats;
     }
 
     @Override
@@ -329,6 +378,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final Channel channel = (Channel) connected.getNow();
             assert channel != null : "impossible";
             this.releaseToPool(channel);
+            requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
             return requestRecord;
         }
@@ -555,9 +605,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private void logEndpoint(RntbdEndpoint endpoint) {
             if (this.logger.isWarnEnabled() &&
                 (endpoint.executorTaskQueueMetrics() > MAX_TASK_LIMIT ||
-                endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
-                endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
-                endpoint.channelsMetrics() > endpoint.maxChannels())) {
+                    endpoint.requestQueueLength() > MAX_TASK_LIMIT ||
+                    endpoint.gettingEstablishedConnectionsMetrics() > 0 ||
+                    endpoint.channelsMetrics() > endpoint.maxChannels())) {
                 logger.warn("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
             } else if (this.logger.isDebugEnabled()) {
                 logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));

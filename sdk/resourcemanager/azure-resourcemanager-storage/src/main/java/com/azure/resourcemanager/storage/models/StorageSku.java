@@ -5,13 +5,13 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.storage.fluent.inner.SkuInformationInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.storage.fluent.models.SkuInformationInner;
 import java.util.List;
 
 /** Type representing sku for an Azure storage resource. */
 @Fluent
-public interface StorageSku extends HasInner<SkuInformationInner> {
+public interface StorageSku extends HasInnerModel<SkuInformationInner> {
     /** @return the sku name */
     SkuName name();
     /** @return the sku tier */

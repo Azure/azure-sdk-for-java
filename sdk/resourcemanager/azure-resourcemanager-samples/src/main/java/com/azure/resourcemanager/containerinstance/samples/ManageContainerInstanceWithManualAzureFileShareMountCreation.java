@@ -11,13 +11,15 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.models.ShareFileItem;
+
+import java.time.Duration;
 
 /**
  * Azure Container Instance sample for managing container instances with Azure File Share mount.
@@ -34,10 +36,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
-        final String saName = azureResourceManager.sdkContext().randomResourceName("sa", 20);
-        final String shareName = azureResourceManager.sdkContext().randomResourceName("fileshare", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgACI", 15);
+        final String aciName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acisample", 20);
+        final String saName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sa", 20);
+        final String shareName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 
@@ -54,7 +56,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             StorageAccountKey storageAccountKey = storageAccount.getKeys().get(0);
 
             ShareClient shareClient = new ShareClientBuilder()
-                .connectionString(com.azure.resourcemanager.resources.fluentcore.utils.Utils.getStorageConnectionString(
+                .connectionString(ResourceManagerUtils.getStorageConnectionString(
                     saName,
                     storageAccountKey.value(),
                     azureResourceManager.containerGroups().manager().environment()
@@ -94,7 +96,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
             Utils.curl("http://" + containerGroup.ipAddress());
-            SdkContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
             System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
 

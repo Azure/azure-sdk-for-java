@@ -37,11 +37,11 @@ public class ManageSqlVirtualNetworkRules {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSSDFW", 20);
+        final String sqlServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlserver", 20);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSSDFW", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnetsql", 20);
+        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnetsql", 20);
 
         try {
 

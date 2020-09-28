@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSku model. */
+/** Describes an available Azure Spring Cloud SKU. */
 @Fluent
 public final class ResourceSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSku.class);

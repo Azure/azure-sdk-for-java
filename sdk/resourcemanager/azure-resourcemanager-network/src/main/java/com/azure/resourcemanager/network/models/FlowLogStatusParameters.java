@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FlowLogStatusParameters model. */
+/** Parameters that define a resource to query flow log and traffic analytics (optional) status. */
 @Fluent
 public final class FlowLogStatusParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogStatusParameters.class);

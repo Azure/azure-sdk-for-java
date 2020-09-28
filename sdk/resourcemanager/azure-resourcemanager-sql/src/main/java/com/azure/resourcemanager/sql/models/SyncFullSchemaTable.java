@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SyncFullSchemaTable model. */
+/** Properties of the table in the database full schema. */
 @Immutable
 public final class SyncFullSchemaTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaTable.class);

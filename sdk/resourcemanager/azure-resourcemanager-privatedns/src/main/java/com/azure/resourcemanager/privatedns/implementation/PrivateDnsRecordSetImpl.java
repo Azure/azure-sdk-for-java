@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
@@ -51,32 +51,32 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public String etag() {
-        return inner().etag();
+        return innerModel().etag();
     }
 
     @Override
     public Map<String, String> metadata() {
-        return inner().metadata();
+        return innerModel().metadata();
     }
 
     @Override
     public long timeToLive() {
-        return inner().ttl() == null ? 0 : inner().ttl().longValue();
+        return innerModel().ttl() == null ? 0 : innerModel().ttl().longValue();
     }
 
     @Override
     public String fqdn() {
-        return inner().fqdn();
+        return innerModel().fqdn();
     }
 
     @Override
     public boolean isAutoRegistered() {
-        return inner().isAutoRegistered();
+        return innerModel().isAutoRegistered();
     }
 
     @Override
     public PrivateDnsRecordSetImpl withIPv6Address(String ipv6Address) {
-        inner().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
+        innerModel().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
         return this;
     }
 
@@ -88,7 +88,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withIPv4Address(String ipv4Address) {
-        inner().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
+        innerModel().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
         return this;
     }
 
@@ -100,13 +100,13 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withAlias(String alias) {
-        inner().cnameRecord().withCname(alias);
+        innerModel().cnameRecord().withCname(alias);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withMailExchange(String mailExchangeHostName, int priority) {
-        inner().mxRecords().add(
+        innerModel().mxRecords().add(
             new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
@@ -120,7 +120,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withTargetDomainName(String targetDomainName) {
-        inner().ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
+        innerModel().ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
         return this;
     }
 
@@ -132,49 +132,49 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withAuthoritativeServer(String authoritativeServerHostName) {
-        inner().soaRecord().withHost(authoritativeServerHostName);
+        innerModel().soaRecord().withHost(authoritativeServerHostName);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withEmailServer(String emailServerHostName) {
-        inner().soaRecord().withEmail(emailServerHostName);
+        innerModel().soaRecord().withEmail(emailServerHostName);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withSerialNumber(long serialNumber) {
-        inner().soaRecord().withSerialNumber(serialNumber);
+        innerModel().soaRecord().withSerialNumber(serialNumber);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withRefreshTimeInSeconds(long refreshTimeInSeconds) {
-        inner().soaRecord().withRefreshTime(refreshTimeInSeconds);
+        innerModel().soaRecord().withRefreshTime(refreshTimeInSeconds);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withRetryTimeInSeconds(long retryTimeInSeconds) {
-        inner().soaRecord().withRetryTime(retryTimeInSeconds);
+        innerModel().soaRecord().withRetryTime(retryTimeInSeconds);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withExpireTimeInSeconds(long expireTimeInSeconds) {
-        inner().soaRecord().withExpireTime(expireTimeInSeconds);
+        innerModel().soaRecord().withExpireTime(expireTimeInSeconds);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive) {
-        inner().soaRecord().withMinimumTtl(negativeCachingTimeToLive);
+        innerModel().soaRecord().withMinimumTtl(negativeCachingTimeToLive);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withRecord(String target, int port, int priority, int weight) {
-        inner().srvRecords().add(
+        innerModel().srvRecords().add(
             new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
     }
@@ -195,7 +195,7 @@ class PrivateDnsRecordSetImpl
         for (String chunk : text.split("(?<=\\G.{250})")) {
             chunks.add(chunk);
         }
-        inner().txtRecords().add(new TxtRecord().withValue(chunks));
+        innerModel().txtRecords().add(new TxtRecord().withValue(chunks));
         return this;
     }
 
@@ -217,16 +217,16 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withTimeToLive(long ttlInSeconds) {
-        inner().withTtl(ttlInSeconds);
+        innerModel().withTtl(ttlInSeconds);
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withMetadata(String key, String value) {
-        if (inner().metadata() == null) {
-            inner().withMetadata(new HashMap<>());
+        if (innerModel().metadata() == null) {
+            innerModel().withMetadata(new HashMap<>());
         }
-        this.inner().metadata().put(key, value);
+        this.innerModel().metadata().put(key, value);
         return this;
     }
 
@@ -250,7 +250,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public Mono<PrivateDnsRecordSet> createResourceAsync() {
-        return createOrUpdateAsync(inner());
+        return createOrUpdateAsync(innerModel());
     }
 
     @Override
@@ -280,7 +280,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -327,18 +327,18 @@ class PrivateDnsRecordSetImpl
             }
             recordSetRemoveInfo.metadata().clear();
         }
-        if (inner().metadata() != null && inner().metadata().size() > 0) {
+        if (innerModel().metadata() != null && innerModel().metadata().size() > 0) {
             if (resource.metadata() == null) {
                 resource.withMetadata(new HashMap<>());
             }
-            for (Map.Entry<String, String> entry : inner().metadata().entrySet()) {
+            for (Map.Entry<String, String> entry : innerModel().metadata().entrySet()) {
                 resource.metadata().put(entry.getKey(), entry.getValue());
             }
-            inner().metadata().clear();
+            innerModel().metadata().clear();
         }
-        if (inner().ttl() != null) {
-            resource.withTtl(inner().ttl());
-            this.inner().withTtl(null);
+        if (innerModel().ttl() != null) {
+            resource.withTtl(innerModel().ttl());
+            this.innerModel().withTtl(null);
         }
         return prepareForUpdate(resource);
     }
@@ -353,6 +353,6 @@ class PrivateDnsRecordSetImpl
     }
 
     private boolean isInCreateMode() {
-        return inner().id() == null;
+        return innerModel().id() == null;
     }
 }

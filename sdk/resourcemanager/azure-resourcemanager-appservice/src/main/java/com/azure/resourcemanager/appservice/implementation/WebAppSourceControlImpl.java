@@ -5,10 +5,10 @@ package com.azure.resourcemanager.appservice.implementation;
 import com.azure.resourcemanager.appservice.models.RepositoryType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -33,35 +33,35 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
     public String repositoryUrl() {
-        return inner().repoUrl();
+        return innerModel().repoUrl();
     }
 
     @Override
     public String branch() {
-        return inner().branch();
+        return innerModel().branch();
     }
 
     @Override
     public boolean isManualIntegration() {
-        return Utils.toPrimitiveBoolean(inner().isManualIntegration());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isManualIntegration());
     }
 
     @Override
     public boolean deploymentRollbackEnabled() {
-        return Utils.toPrimitiveBoolean(inner().deploymentRollbackEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().deploymentRollbackEnabled());
     }
 
     @Override
     public RepositoryType repositoryType() {
-        if (inner().isMercurial() == null) {
+        if (innerModel().isMercurial() == null) {
             return null;
         } else {
-            return inner().isMercurial() ? RepositoryType.MERCURIAL : RepositoryType.GIT;
+            return innerModel().isMercurial() ? RepositoryType.MERCURIAL : RepositoryType.GIT;
         }
     }
 
@@ -79,19 +79,19 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> withBranch(String branch) {
-        inner().withBranch(branch);
+        innerModel().withBranch(branch);
         return this;
     }
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicGitRepository(String url) {
-        inner().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
+        innerModel().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
         return this;
     }
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicMercurialRepository(String url) {
-        inner().withIsManualIntegration(true).withIsMercurial(true).withRepoUrl(url);
+        innerModel().withIsManualIntegration(true).withIsMercurial(true).withRepoUrl(url);
         return this;
     }
 
@@ -104,7 +104,7 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String url) {
-        inner().withRepoUrl(url).withIsMercurial(false).withIsManualIntegration(false);
+        innerModel().withRepoUrl(url).withIsMercurial(false).withIsManualIntegration(false);
         return this;
     }
 

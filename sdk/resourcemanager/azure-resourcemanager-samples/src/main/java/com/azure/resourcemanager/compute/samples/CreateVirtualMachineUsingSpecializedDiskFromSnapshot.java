@@ -39,15 +39,15 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String managedOSSnapshotName = azureResourceManager.sdkContext().randomResourceName("ss-os-", 15);
-        final String managedDataDiskSnapshotPrefix = azureResourceManager.sdkContext().randomResourceName("ss-data-", 15);
-        final String managedNewOSDiskName = azureResourceManager.sdkContext().randomResourceName("ds-os-nw-", 15);
-        final String managedNewDataDiskNamePrefix = azureResourceManager.sdkContext().randomResourceName("ds-data-nw-", 15);
+        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
+        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
+        final String managedOSSnapshotName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ss-os-", 15);
+        final String managedDataDiskSnapshotPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ss-data-", 15);
+        final String managedNewOSDiskName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-os-nw-", 15);
+        final String managedNewDataDiskNamePrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-data-nw-", 15);
 
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
+        final String publicIpDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
@@ -118,7 +118,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .create();
 
             System.out.println("Created managed snapshot holding OS: " + osSnapshot.id());
-            // Utils.print(osSnapshot); TODO
+            // ResourceManagerUtils.print(osSnapshot); TODO
 
             //=============================================================
             // Create Managed snapshot from the Data managed disks
@@ -137,7 +137,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 dataSnapshots.add(dataSnapshot);
 
                 System.out.println("Created managed snapshot holding data: " + dataSnapshot.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 
@@ -154,7 +154,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .create();
 
             System.out.println("Created managed disk holding OS: " + osDisk.id());
-            // Utils.print(osDisk); TODO
+            // ResourceManagerUtils.print(osDisk); TODO
 
             //=============================================================
             // Create Managed disks from the data snapshots
@@ -173,7 +173,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                 newDataDisks.add(dataDisk);
 
                 System.out.println("Created managed disk holding data: " + dataDisk.id());
-                // Utils.print(dataDisk); TODO
+                // ResourceManagerUtils.print(dataDisk); TODO
                 i++;
             }
 

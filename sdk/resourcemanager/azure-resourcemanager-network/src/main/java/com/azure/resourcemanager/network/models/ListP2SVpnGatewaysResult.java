@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.P2SVpnGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.P2SVpnGatewayInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListP2SVpnGatewaysResult model. */
+/**
+ * Result of the request to list P2SVpnGateways. It contains a list of P2SVpnGateways and a URL nextLink to get the next
+ * set of results.
+ */
 @Fluent
 public final class ListP2SVpnGatewaysResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListP2SVpnGatewaysResult.class);

@@ -187,6 +187,10 @@
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.nio/*"/>
 
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.storage.blob.batch.BlobBatchOperationResponse.java"
+            lines="110"/>
+
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
@@ -568,4 +572,8 @@
 
   <!-- Suppress Event Grid checks for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
+
+  <!-- Suppress checks in azure-core-experimental -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
 </suppressions>

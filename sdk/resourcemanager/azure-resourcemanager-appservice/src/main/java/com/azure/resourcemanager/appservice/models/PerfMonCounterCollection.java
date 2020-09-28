@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.PerfMonResponseInner;
+import com.azure.resourcemanager.appservice.fluent.models.PerfMonResponseInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PerfMonCounterCollection model. */
+/** Collection of performance monitor counters. */
 @Fluent
 public final class PerfMonCounterCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PerfMonCounterCollection.class);

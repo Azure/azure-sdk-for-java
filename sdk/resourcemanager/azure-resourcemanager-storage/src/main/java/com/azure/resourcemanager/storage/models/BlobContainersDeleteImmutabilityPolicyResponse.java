@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
 
 /** Contains all response data for the deleteImmutabilityPolicy operation. */
 public final class BlobContainersDeleteImmutabilityPolicyResponse

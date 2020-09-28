@@ -5,6 +5,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActivityLogs;
 import com.azure.resourcemanager.monitor.models.EventData;
@@ -148,7 +149,7 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
     }
 
     private PagedIterable<EventData> listEventData(String filter) {
-        return this.inner().list(filter, createPropertyFilter()).mapPage(EventDataImpl::new);
+        return this.inner().list(filter, createPropertyFilter(), Context.NONE).mapPage(EventDataImpl::new);
     }
 
     private PagedIterable<EventData> listEventDataForTenant(String filter) {
@@ -156,7 +157,7 @@ public class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogs
             .manager()
             .serviceClient()
             .getTenantActivityLogs()
-            .list(filter, createPropertyFilter())
+            .list(filter, createPropertyFilter(), Context.NONE)
             .mapPage(EventDataImpl::new);
     }
 

@@ -7,7 +7,7 @@ import com.azure.core.management.Resource;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTerminalSize;
@@ -29,14 +29,14 @@ import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.inner.IpConfigurationProfileInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkProfileInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationProfileInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkProfileInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -129,7 +129,7 @@ public class ContainerGroupImpl
         } else if (newFileShares == null || creatableStorageAccountKey == null) {
             return beforeCreation()
                 .then(manager().serviceClient().getContainerGroups()
-                    .createOrUpdateAsync(resourceGroupName(), name(), inner()));
+                    .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
         } else {
             final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
             return beforeCreation()
@@ -147,7 +147,7 @@ public class ContainerGroupImpl
                         .manager()
                         .serviceClient()
                         .getContainerGroups()
-                        .createOrUpdateAsync(resourceGroupName(), name(), inner()));
+                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
         }
     }
 
@@ -172,7 +172,8 @@ public class ContainerGroupImpl
                     ShareServiceAsyncClient shareServiceAsyncClient =
                         new ShareServiceClientBuilder()
                             .connectionString(
-                                Utils.getStorageConnectionString(storageAccount.name(), key, manager().environment()))
+                                ResourceManagerUtils.getStorageConnectionString(
+                                    storageAccount.name(), key, manager().environment()))
                             .httpClient(manager().httpPipeline().getHttpClient())
                             .buildAsyncClient();
 
@@ -205,33 +206,34 @@ public class ContainerGroupImpl
     protected void initializeChildrenFromInner() {
         // Getting the container instances
         this.containers = new HashMap<>();
-        if (this.inner().containers() != null && this.inner().containers().size() > 0) {
-            for (Container containerInstance : this.inner().containers()) {
+        if (this.innerModel().containers() != null && this.innerModel().containers().size() > 0) {
+            for (Container containerInstance : this.innerModel().containers()) {
                 this.containers.put(containerInstance.name(), containerInstance);
             }
         }
 
         // Getting the volumes
         this.volumes = new HashMap<>();
-        if (this.inner().volumes() != null && this.inner().volumes().size() > 0) {
-            for (Volume volume : this.inner().volumes()) {
+        if (this.innerModel().volumes() != null && this.innerModel().volumes().size() > 0) {
+            for (Volume volume : this.innerModel().volumes()) {
                 this.volumes.put(volume.name(), volume);
             }
         }
 
         // Getting the private image registry servers
         this.imageRegistryServers = new ArrayList<>();
-        if (this.inner().imageRegistryCredentials() != null && this.inner().imageRegistryCredentials().size() > 0) {
-            for (ImageRegistryCredential imageRegistry : this.inner().imageRegistryCredentials()) {
+        if (this.innerModel().imageRegistryCredentials() != null
+            && this.innerModel().imageRegistryCredentials().size() > 0) {
+            for (ImageRegistryCredential imageRegistry : this.innerModel().imageRegistryCredentials()) {
                 this.imageRegistryServers.add(imageRegistry.server());
             }
         }
 
         // Splitting ports between TCP and UDP ports
-        if (this.inner().ipAddress() != null && this.inner().ipAddress().ports() != null) {
+        if (this.innerModel().ipAddress() != null && this.innerModel().ipAddress().ports() != null) {
             List<Port> tcpPorts = new ArrayList<>();
             List<Port> udpPorts = new ArrayList<>();
-            for (Port port : this.inner().ipAddress().ports()) {
+            for (Port port : this.innerModel().ipAddress().ports()) {
                 if (port.protocol().equals(ContainerGroupNetworkProtocol.TCP)) {
                     tcpPorts.add(port);
                 } else if (port.protocol().equals(ContainerGroupNetworkProtocol.UDP)) {
@@ -277,14 +279,14 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withLinux() {
-        this.inner().withOsType(OperatingSystemTypes.LINUX);
+        this.innerModel().withOsType(OperatingSystemTypes.LINUX);
 
         return this;
     }
 
     @Override
     public ContainerGroupImpl withWindows() {
-        this.inner().withOsType(OperatingSystemTypes.WINDOWS);
+        this.innerModel().withOsType(OperatingSystemTypes.WINDOWS);
 
         return this;
     }
@@ -333,18 +335,18 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withPublicImageRegistryOnly() {
-        this.inner().withImageRegistryCredentials(null);
+        this.innerModel().withImageRegistryCredentials(null);
 
         return this;
     }
 
     @Override
     public ContainerGroupImpl withPrivateImageRegistry(String server, String username, String password) {
-        if (this.inner().imageRegistryCredentials() == null) {
-            this.inner().withImageRegistryCredentials(new ArrayList<ImageRegistryCredential>());
+        if (this.innerModel().imageRegistryCredentials() == null) {
+            this.innerModel().withImageRegistryCredentials(new ArrayList<ImageRegistryCredential>());
         }
         this
-            .inner()
+            .innerModel()
             .imageRegistryCredentials()
             .add(new ImageRegistryCredential().withServer(server).withUsername(username).withPassword(password));
 
@@ -358,7 +360,7 @@ public class ContainerGroupImpl
                 manager()
                     .storageManager()
                     .storageAccounts()
-                    .define(manager().sdkContext().randomResourceName("fs", 24))
+                    .define(manager().resourceManager().internalContext().randomResourceName("fs", 24))
                     .withRegion(this.regionName());
             Creatable<StorageAccount> creatable;
             if (this.creatableGroup != null) {
@@ -376,10 +378,10 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withEmptyDirectoryVolume(String volumeName) {
-        if (this.inner().volumes() == null) {
-            this.inner().withVolumes(new ArrayList<Volume>());
+        if (this.innerModel().volumes() == null) {
+            this.innerModel().withVolumes(new ArrayList<Volume>());
         }
-        this.inner().volumes().add(new Volume().withName(volumeName).withEmptyDir(new Object()));
+        this.innerModel().volumes().add(new Volume().withName(volumeName).withEmptyDir(new Object()));
 
         return this;
     }
@@ -391,7 +393,7 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withoutVolume() {
-        this.inner().withVolumes(null);
+        this.innerModel().withVolumes(null);
 
         return this;
     }
@@ -425,17 +427,17 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withRestartPolicy(ContainerGroupRestartPolicy restartPolicy) {
-        this.inner().withRestartPolicy(restartPolicy);
+        this.innerModel().withRestartPolicy(restartPolicy);
 
         return this;
     }
 
     @Override
     public ContainerGroupImpl withDnsPrefix(String dnsPrefix) {
-        if (this.inner().ipAddress() == null) {
-            this.inner().withIpAddress(new IpAddress());
+        if (this.innerModel().ipAddress() == null) {
+            this.innerModel().withIpAddress(new IpAddress());
         }
-        this.inner().ipAddress().withDnsNameLabel(dnsPrefix).withType(ContainerGroupIpAddressType.PUBLIC);
+        this.innerModel().ipAddress().withDnsNameLabel(dnsPrefix).withType(ContainerGroupIpAddressType.PUBLIC);
 
         return this;
     }
@@ -455,18 +457,19 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withExistingNetworkProfile(String networkProfileId) {
-        this.inner().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
-        if (this.inner().ipAddress() == null) {
-            this.inner().withIpAddress(new IpAddress());
+        this.innerModel().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
+        if (this.innerModel().ipAddress() == null) {
+            this.innerModel().withIpAddress(new IpAddress());
         }
-        this.inner().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
+        this.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
         return this;
     }
 
     @Override
     public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
         String virtualNetworkId, String subnetName) {
-        creatableNetworkProfileName = manager().sdkContext().randomResourceName("aci-profile-", 20);
+        creatableNetworkProfileName = manager().resourceManager().internalContext()
+            .randomResourceName("aci-profile-", 20);
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         SubnetInner subnetInner = new SubnetInner();
         subnetInner.withId(subnetId);
@@ -491,7 +494,7 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withNewVirtualNetwork(String addressSpace) {
-        String virtualNetworkName = manager().sdkContext().randomResourceName("net", 20);
+        String virtualNetworkName = manager().resourceManager().internalContext().randomResourceName("net", 20);
         String subnetName = "subnet0";
 
         creatableVirtualNetwork =
@@ -517,7 +520,7 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withDnsServerNames(List<String> dnsServerNames) {
-        this.inner().withDnsConfig(new DnsConfiguration().withNameServers(dnsServerNames));
+        this.innerModel().withDnsConfig(new DnsConfiguration().withNameServers(dnsServerNames));
         return this;
     }
 
@@ -525,7 +528,7 @@ public class ContainerGroupImpl
     public ContainerGroupImpl withDnsConfiguration(
         List<String> dnsServerNames, String dnsSearchDomains, String dnsOptions) {
         this
-            .inner()
+            .innerModel()
             .withDnsConfig(
                 new DnsConfiguration()
                     .withNameServers(dnsServerNames)
@@ -537,7 +540,7 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withLogAnalytics(String workspaceId, String workspaceKey) {
         this
-            .inner()
+            .innerModel()
             .withDiagnostics(
                 new ContainerGroupDiagnostics()
                     .withLogAnalytics(new LogAnalytics().withWorkspaceId(workspaceId).withWorkspaceKey(workspaceKey)));
@@ -548,7 +551,7 @@ public class ContainerGroupImpl
     public ContainerGroupImpl withLogAnalytics(
         String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata) {
         this
-            .inner()
+            .innerModel()
             .withDiagnostics(
                 new ContainerGroupDiagnostics()
                     .withLogAnalytics(
@@ -569,8 +572,8 @@ public class ContainerGroupImpl
     public Set<Port> externalPorts() {
         return Collections
             .unmodifiableSet(
-                this.inner().ipAddress() != null && this.inner().ipAddress().ports() != null
-                    ? new HashSet<Port>(this.inner().ipAddress().ports())
+                this.innerModel().ipAddress() != null && this.innerModel().ipAddress().ports() != null
+                    ? new HashSet<Port>(this.innerModel().ipAddress().ports())
                     : new HashSet<Port>());
     }
 
@@ -596,13 +599,13 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupRestartPolicy restartPolicy() {
-        return this.inner().restartPolicy();
+        return this.innerModel().restartPolicy();
     }
 
     @Override
     public String dnsPrefix() {
-        if (this.inner().ipAddress() != null) {
-            return this.inner().ipAddress().dnsNameLabel();
+        if (this.innerModel().ipAddress() != null) {
+            return this.innerModel().ipAddress().dnsNameLabel();
         } else {
             return null;
         }
@@ -610,8 +613,8 @@ public class ContainerGroupImpl
 
     @Override
     public String fqdn() {
-        if (this.inner().ipAddress() != null) {
-            return this.inner().ipAddress().fqdn();
+        if (this.innerModel().ipAddress() != null) {
+            return this.innerModel().ipAddress().fqdn();
         } else {
             return null;
         }
@@ -619,8 +622,8 @@ public class ContainerGroupImpl
 
     @Override
     public String ipAddress() {
-        if (this.inner().ipAddress() != null) {
-            return this.inner().ipAddress().ip();
+        if (this.innerModel().ipAddress() != null) {
+            return this.innerModel().ipAddress().ip();
         } else {
             return null;
         }
@@ -628,27 +631,27 @@ public class ContainerGroupImpl
 
     @Override
     public boolean isIPAddressPublic() {
-        return this.inner().ipAddress() != null
-            && this.inner().ipAddress().type() != null
-            && this.inner().ipAddress().type() == ContainerGroupIpAddressType.PUBLIC;
+        return this.innerModel().ipAddress() != null
+            && this.innerModel().ipAddress().type() != null
+            && this.innerModel().ipAddress().type() == ContainerGroupIpAddressType.PUBLIC;
     }
 
     @Override
     public boolean isIPAddressPrivate() {
-        return this.inner().ipAddress() != null
-            && this.inner().ipAddress().type() != null
-            && this.inner().ipAddress().type() == ContainerGroupIpAddressType.PRIVATE;
+        return this.innerModel().ipAddress() != null
+            && this.innerModel().ipAddress().type() != null
+            && this.innerModel().ipAddress().type() == ContainerGroupIpAddressType.PRIVATE;
     }
 
     @Override
     public OperatingSystemTypes osType() {
-        return this.inner().osType();
+        return this.innerModel().osType();
     }
 
     @Override
     public String state() {
-        if (this.inner().instanceView() != null && this.inner().instanceView().state() != null) {
-            return this.inner().instanceView().state();
+        if (this.innerModel().instanceView() != null && this.innerModel().instanceView().state() != null) {
+            return this.innerModel().instanceView().state();
         } else {
             return null;
         }
@@ -656,8 +659,8 @@ public class ContainerGroupImpl
 
     @Override
     public String provisioningState() {
-        if (this.inner().provisioningState() != null) {
-            return this.inner().provisioningState();
+        if (this.innerModel().provisioningState() != null) {
+            return this.innerModel().provisioningState();
         } else {
             return null;
         }
@@ -667,19 +670,19 @@ public class ContainerGroupImpl
     public Set<Event> events() {
         return Collections
             .unmodifiableSet(
-                this.inner().instanceView() != null && this.inner().instanceView().events() != null
-                    ? new HashSet<Event>(this.inner().instanceView().events())
+                this.innerModel().instanceView() != null && this.innerModel().instanceView().events() != null
+                    ? new HashSet<Event>(this.innerModel().instanceView().events())
                     : new HashSet<Event>());
     }
 
     @Override
     public DnsConfiguration dnsConfig() {
-        return this.inner().dnsConfig();
+        return this.innerModel().dnsConfig();
     }
 
     @Override
     public String networkProfileId() {
-        return this.inner().networkProfile().id();
+        return this.innerModel().networkProfile().id();
     }
 
     @Override
@@ -690,40 +693,40 @@ public class ContainerGroupImpl
 
     @Override
     public String systemAssignedManagedServiceIdentityTenantId() {
-        if (this.inner().identity() != null) {
-            return this.inner().identity().tenantId();
+        if (this.innerModel().identity() != null) {
+            return this.innerModel().identity().tenantId();
         }
         return null;
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
-        if (this.inner().identity() != null) {
-            return this.inner().identity().principalId();
+        if (this.innerModel().identity() != null) {
+            return this.innerModel().identity().principalId();
         }
         return null;
     }
 
     @Override
     public ResourceIdentityType managedServiceIdentityType() {
-        if (this.inner().identity() != null) {
-            return this.inner().identity().type();
+        if (this.innerModel().identity() != null) {
+            return this.innerModel().identity().type();
         }
         return null;
     }
 
     @Override
     public Set<String> userAssignedManagedServiceIdentityIds() {
-        if (this.inner().identity() != null && this.inner().identity().userAssignedIdentities() != null) {
+        if (this.innerModel().identity() != null && this.innerModel().identity().userAssignedIdentities() != null) {
             return Collections
-                .unmodifiableSet(new HashSet<String>(this.inner().identity().userAssignedIdentities().keySet()));
+                .unmodifiableSet(new HashSet<String>(this.innerModel().identity().userAssignedIdentities().keySet()));
         }
         return Collections.unmodifiableSet(new HashSet<String>());
     }
 
     @Override
     public LogAnalytics logAnalytics() {
-        return this.inner().diagnostics().logAnalytics();
+        return this.innerModel().diagnostics().logAnalytics();
     }
 
     @Override
@@ -800,8 +803,8 @@ public class ContainerGroupImpl
         return new RoleAssignmentHelper.IdProvider() {
             @Override
             public String principalId() {
-                if (inner() != null && inner().identity() != null) {
-                    return inner().identity().principalId();
+                if (innerModel() != null && innerModel().identity() != null) {
+                    return innerModel().identity().principalId();
                 } else {
                     return null;
                 }
@@ -809,8 +812,8 @@ public class ContainerGroupImpl
 
             @Override
             public String resourceId() {
-                if (inner() != null) {
-                    return inner().id();
+                if (innerModel() != null) {
+                    return innerModel().id();
                 } else {
                     return null;
                 }

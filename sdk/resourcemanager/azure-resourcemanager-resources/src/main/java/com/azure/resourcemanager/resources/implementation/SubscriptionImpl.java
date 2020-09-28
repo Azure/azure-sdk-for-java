@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.models.SubscriptionPolicies;
 import com.azure.resourcemanager.resources.models.SubscriptionState;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 
 /**
@@ -30,22 +30,22 @@ final class SubscriptionImpl extends
 
     @Override
     public String subscriptionId() {
-        return this.inner().subscriptionId();
+        return this.innerModel().subscriptionId();
     }
 
     @Override
     public String displayName() {
-        return this.inner().displayName();
+        return this.innerModel().displayName();
     }
 
     @Override
     public SubscriptionState state() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public SubscriptionPolicies subscriptionPolicies() {
-        return this.inner().subscriptionPolicies();
+        return this.innerModel().subscriptionPolicies();
     }
 
     @Override

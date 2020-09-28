@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.NetworkManagementClientBuilder;
+import com.azure.resourcemanager.network.implementation.NetworkManagementClientBuilder;
 import com.azure.resourcemanager.network.implementation.ApplicationGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.ApplicationSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.DdosProtectionPlansImpl;
@@ -45,7 +45,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure network management. */
 public final class NetworkManager extends Manager<NetworkManagementClient> {
@@ -97,19 +96,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
      * @return the NetworkManager
      */
     public static NetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of NetworkManager that exposes network resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the NetworkManager
-     */
-    public static NetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new NetworkManager(httpPipeline, profile, sdkContext);
+        return new NetworkManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -132,7 +119,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         }
     }
 
-    private NetworkManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private NetworkManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -140,8 +127,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return entry point to route table management */
@@ -211,7 +197,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     /** @return entry point to network resource usage management API entry point */
     public NetworkUsages usages() {
         if (this.networkUsages == null) {
-            this.networkUsages = new NetworkUsagesImpl(super.innerManagementClient);
+            this.networkUsages = new NetworkUsagesImpl(this.serviceClient());
         }
         return this.networkUsages;
     }

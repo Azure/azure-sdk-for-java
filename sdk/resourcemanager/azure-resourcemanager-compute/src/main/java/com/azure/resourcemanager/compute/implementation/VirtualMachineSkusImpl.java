@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
 import com.azure.resourcemanager.compute.models.VirtualMachineSku;
 import com.azure.resourcemanager.compute.models.VirtualMachineSkus;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourceInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -42,7 +42,8 @@ class VirtualMachineSkusImpl
     public PagedFlux<VirtualMachineSku> listAsync() {
         return PagedConverter
             .convertListToPagedFlux(
-                innerCollection.listSkusAsync(offer.region().toString(), offer.publisher().name(), offer.name()))
+                innerCollection.listSkusWithResponseAsync(
+                    offer.region().toString(), offer.publisher().name(), offer.name()))
             .mapPage(this::wrapModel);
     }
 }

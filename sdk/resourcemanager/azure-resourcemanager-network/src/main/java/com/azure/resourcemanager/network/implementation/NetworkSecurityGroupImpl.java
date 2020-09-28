@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.Subnet;
@@ -35,7 +35,7 @@ class NetworkSecurityGroupImpl
     @Override
     protected void initializeChildrenFromInner() {
         this.rules = new TreeMap<>();
-        List<SecurityRuleInner> inners = this.inner().securityRules();
+        List<SecurityRuleInner> inners = this.innerModel().securityRules();
         if (inners != null) {
             for (SecurityRuleInner inner : inners) {
                 this.rules.put(inner.name(), new NetworkSecurityRuleImpl(inner, this));
@@ -43,7 +43,7 @@ class NetworkSecurityGroupImpl
         }
 
         this.defaultRules = new TreeMap<>();
-        inners = this.inner().defaultSecurityRules();
+        inners = this.innerModel().defaultSecurityRules();
         if (inners != null) {
             for (SecurityRuleInner inner : inners) {
                 this.defaultRules.put(inner.name(), new NetworkSecurityRuleImpl(inner, this));
@@ -94,12 +94,12 @@ class NetworkSecurityGroupImpl
             .manager()
             .serviceClient()
             .getNetworkSecurityGroups()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     @Override
     public List<Subnet> listAssociatedSubnets() {
-        return Utils.listAssociatedSubnets(this.myManager, this.inner().subnets());
+        return Utils.listAssociatedSubnets(this.myManager, this.innerModel().subnets());
     }
 
     // Setters (fluent)
@@ -130,8 +130,8 @@ class NetworkSecurityGroupImpl
     @Override
     public Set<String> networkInterfaceIds() {
         Set<String> ids = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        if (this.inner().networkInterfaces() != null) {
-            for (NetworkInterfaceInner inner : this.inner().networkInterfaces()) {
+        if (this.innerModel().networkInterfaces() != null) {
+            for (NetworkInterfaceInner inner : this.innerModel().networkInterfaces()) {
                 ids.add(inner.id());
             }
         }
@@ -141,7 +141,7 @@ class NetworkSecurityGroupImpl
     @Override
     protected void beforeCreating() {
         // Reset and update subnets
-        this.inner().withSecurityRules(innersFromWrappers(this.rules.values()));
+        this.innerModel().withSecurityRules(innersFromWrappers(this.rules.values()));
     }
 
     @Override
@@ -150,6 +150,6 @@ class NetworkSecurityGroupImpl
             .manager()
             .serviceClient()
             .getNetworkSecurityGroups()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
     }
 }

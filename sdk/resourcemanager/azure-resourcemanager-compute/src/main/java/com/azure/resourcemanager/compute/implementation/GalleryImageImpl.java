@@ -18,7 +18,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.azure.resourcemanager.compute.models.ResourceRange;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryImageInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -101,7 +101,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         return manager()
             .serviceClient()
             .getGalleryImages()
-            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -110,7 +110,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         return manager()
             .serviceClient()
             .getGalleryImages()
-            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -124,21 +124,21 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override
     public List<DiskSkuTypes> unsupportedDiskTypes() {
-        if (this.inner().disallowed() == null || this.inner().disallowed().diskTypes() == null) {
+        if (this.innerModel().disallowed() == null || this.innerModel().disallowed().diskTypes() == null) {
             return Collections.unmodifiableList(new ArrayList<DiskSkuTypes>());
         } else {
             List<DiskSkuTypes> diskTypes = new ArrayList<DiskSkuTypes>();
-            for (String diskTypeStr : this.inner().disallowed().diskTypes()) {
+            for (String diskTypeStr : this.innerModel().disallowed().diskTypes()) {
                 diskTypes.add(DiskSkuTypes.fromStorageAccountType(DiskStorageAccountTypes.fromString(diskTypeStr)));
             }
             return Collections.unmodifiableList(diskTypes);
@@ -147,82 +147,82 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public Disallowed disallowed() {
-        return this.inner().disallowed();
+        return this.innerModel().disallowed();
     }
 
     @Override
     public OffsetDateTime endOfLifeDate() {
-        return this.inner().endOfLifeDate();
+        return this.innerModel().endOfLifeDate();
     }
 
     @Override
     public String eula() {
-        return this.inner().eula();
+        return this.innerModel().eula();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public GalleryImageIdentifier identifier() {
-        return this.inner().identifier();
+        return this.innerModel().identifier();
     }
 
     @Override
     public String location() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public OperatingSystemStateTypes osState() {
-        return this.inner().osState();
+        return this.innerModel().osState();
     }
 
     @Override
     public OperatingSystemTypes osType() {
-        return this.inner().osType();
+        return this.innerModel().osType();
     }
 
     @Override
     public String privacyStatementUri() {
-        return this.inner().privacyStatementUri();
+        return this.innerModel().privacyStatementUri();
     }
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState().toString();
+        return this.innerModel().provisioningState().toString();
     }
 
     @Override
     public ImagePurchasePlan purchasePlan() {
-        return this.inner().purchasePlan();
+        return this.innerModel().purchasePlan();
     }
 
     @Override
     public RecommendedMachineConfiguration recommendedVirtualMachineConfiguration() {
-        return this.inner().recommended();
+        return this.innerModel().recommended();
     }
 
     @Override
     public String releaseNoteUri() {
-        return this.inner().releaseNoteUri();
+        return this.innerModel().releaseNoteUri();
     }
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().tags();
+        return this.innerModel().tags();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
@@ -241,26 +241,26 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withLocation(String location) {
-        this.inner().withLocation(location);
+        this.innerModel().withLocation(location);
         return this;
     }
 
     @Override
     public GalleryImageImpl withLocation(Region location) {
-        this.inner().withLocation(location.toString());
+        this.innerModel().withLocation(location.toString());
         return this;
     }
 
     @Override
     public GalleryImageImpl withIdentifier(GalleryImageIdentifier identifier) {
-        this.inner().withIdentifier(identifier);
+        this.innerModel().withIdentifier(identifier);
         return this;
     }
 
     @Override
     public GalleryImageImpl withIdentifier(String publisher, String offer, String sku) {
         this
-            .inner()
+            .innerModel()
             .withIdentifier(new GalleryImageIdentifier().withPublisher(publisher).withOffer(offer).withSku(sku));
         return this;
     }
@@ -277,63 +277,63 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withWindows(OperatingSystemStateTypes osState) {
-        this.inner().withOsType(OperatingSystemTypes.WINDOWS).withOsState(osState);
+        this.innerModel().withOsType(OperatingSystemTypes.WINDOWS).withOsState(osState);
         return this;
     }
 
     @Override
     public GalleryImageImpl withLinux(OperatingSystemStateTypes osState) {
-        this.inner().withOsType(OperatingSystemTypes.LINUX).withOsState(osState);
+        this.innerModel().withOsType(OperatingSystemTypes.LINUX).withOsState(osState);
         return this;
     }
 
     @Override
     public GalleryImageImpl withDescription(String description) {
-        this.inner().withDescription(description);
+        this.innerModel().withDescription(description);
         return this;
     }
 
     @Override
     public GalleryImageImpl withUnsupportedDiskType(DiskSkuTypes diskType) {
-        if (this.inner().disallowed() == null) {
-            this.inner().withDisallowed(new Disallowed());
+        if (this.innerModel().disallowed() == null) {
+            this.innerModel().withDisallowed(new Disallowed());
         }
-        if (this.inner().disallowed().diskTypes() == null) {
-            this.inner().disallowed().withDiskTypes(new ArrayList<String>());
+        if (this.innerModel().disallowed().diskTypes() == null) {
+            this.innerModel().disallowed().withDiskTypes(new ArrayList<String>());
         }
         boolean found = false;
         String newDiskTypeStr = diskType.toString();
-        for (String diskTypeStr : this.inner().disallowed().diskTypes()) {
+        for (String diskTypeStr : this.innerModel().disallowed().diskTypes()) {
             if (diskTypeStr.equalsIgnoreCase(newDiskTypeStr)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            this.inner().disallowed().diskTypes().add(diskType.toString());
+            this.innerModel().disallowed().diskTypes().add(diskType.toString());
         }
         return this;
     }
 
     @Override
     public GalleryImageImpl withUnsupportedDiskTypes(List<DiskSkuTypes> diskTypes) {
-        if (this.inner().disallowed() == null) {
-            this.inner().withDisallowed(new Disallowed());
+        if (this.innerModel().disallowed() == null) {
+            this.innerModel().withDisallowed(new Disallowed());
         }
-        this.inner().disallowed().withDiskTypes(new ArrayList<String>());
+        this.innerModel().disallowed().withDiskTypes(new ArrayList<String>());
         for (DiskSkuTypes diskType : diskTypes) {
-            this.inner().disallowed().diskTypes().add(diskType.toString());
+            this.innerModel().disallowed().diskTypes().add(diskType.toString());
         }
         return this;
     }
 
     @Override
     public GalleryImageImpl withoutUnsupportedDiskType(DiskSkuTypes diskType) {
-        if (this.inner().disallowed() != null && this.inner().disallowed().diskTypes() != null) {
+        if (this.innerModel().disallowed() != null && this.innerModel().disallowed().diskTypes() != null) {
             int foundIndex = -1;
             int i = 0;
             String diskTypeToRemove = diskType.toString();
-            for (String diskTypeStr : this.inner().disallowed().diskTypes()) {
+            for (String diskTypeStr : this.innerModel().disallowed().diskTypes()) {
                 if (diskTypeStr.equalsIgnoreCase(diskTypeToRemove)) {
                     foundIndex = i;
                     break;
@@ -341,7 +341,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
                 i++;
             }
             if (foundIndex != -1) {
-                this.inner().disallowed().diskTypes().remove(foundIndex);
+                this.innerModel().disallowed().diskTypes().remove(foundIndex);
             }
         }
         return this;
@@ -349,31 +349,31 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withDisallowed(Disallowed disallowed) {
-        this.inner().withDisallowed(disallowed);
+        this.innerModel().withDisallowed(disallowed);
         return this;
     }
 
     @Override
     public GalleryImageImpl withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        this.inner().withEndOfLifeDate(endOfLifeDate);
+        this.innerModel().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
     @Override
     public GalleryImageImpl withEula(String eula) {
-        this.inner().withEula(eula);
+        this.innerModel().withEula(eula);
         return this;
     }
 
     @Override
     public GalleryImageImpl withOsState(OperatingSystemStateTypes osState) {
-        this.inner().withOsState(osState);
+        this.innerModel().withOsState(osState);
         return this;
     }
 
     @Override
     public GalleryImageImpl withPrivacyStatementUri(String privacyStatementUri) {
-        this.inner().withPrivacyStatementUri(privacyStatementUri);
+        this.innerModel().withPrivacyStatementUri(privacyStatementUri);
         return this;
     }
 
@@ -385,96 +385,96 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
 
     @Override
     public GalleryImageImpl withPurchasePlan(ImagePurchasePlan purchasePlan) {
-        this.inner().withPurchasePlan(purchasePlan);
+        this.innerModel().withPurchasePlan(purchasePlan);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedMinimumCPUsCountForVirtualMachine(int minCount) {
-        if (this.inner().recommended() == null) {
-            this.inner().withRecommended(new RecommendedMachineConfiguration());
+        if (this.innerModel().recommended() == null) {
+            this.innerModel().withRecommended(new RecommendedMachineConfiguration());
         }
-        if (this.inner().recommended().vCPUs() == null) {
-            this.inner().recommended().withVCPUs(new ResourceRange());
+        if (this.innerModel().recommended().vCPUs() == null) {
+            this.innerModel().recommended().withVCPUs(new ResourceRange());
         }
-        this.inner().recommended().vCPUs().withMin(minCount);
+        this.innerModel().recommended().vCPUs().withMin(minCount);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedMaximumCPUsCountForVirtualMachine(int maxCount) {
-        if (this.inner().recommended() == null) {
-            this.inner().withRecommended(new RecommendedMachineConfiguration());
+        if (this.innerModel().recommended() == null) {
+            this.innerModel().withRecommended(new RecommendedMachineConfiguration());
         }
-        if (this.inner().recommended().vCPUs() == null) {
-            this.inner().recommended().withVCPUs(new ResourceRange());
+        if (this.innerModel().recommended().vCPUs() == null) {
+            this.innerModel().recommended().withVCPUs(new ResourceRange());
         }
-        this.inner().recommended().vCPUs().withMax(maxCount);
+        this.innerModel().recommended().vCPUs().withMax(maxCount);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedCPUsCountForVirtualMachine(int minCount, int maxCount) {
-        if (this.inner().recommended() == null) {
-            this.inner().withRecommended(new RecommendedMachineConfiguration());
+        if (this.innerModel().recommended() == null) {
+            this.innerModel().withRecommended(new RecommendedMachineConfiguration());
         }
-        this.inner().recommended().withVCPUs(new ResourceRange());
-        this.inner().recommended().vCPUs().withMin(minCount);
-        this.inner().recommended().vCPUs().withMax(maxCount);
+        this.innerModel().recommended().withVCPUs(new ResourceRange());
+        this.innerModel().recommended().vCPUs().withMin(minCount);
+        this.innerModel().recommended().vCPUs().withMax(maxCount);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedMinimumMemoryForVirtualMachine(int minMB) {
-        if (this.inner().recommended() == null) {
-            this.inner().withRecommended(new RecommendedMachineConfiguration());
+        if (this.innerModel().recommended() == null) {
+            this.innerModel().withRecommended(new RecommendedMachineConfiguration());
         }
-        if (this.inner().recommended().memory() == null) {
-            this.inner().recommended().withMemory(new ResourceRange());
+        if (this.innerModel().recommended().memory() == null) {
+            this.innerModel().recommended().withMemory(new ResourceRange());
         }
-        this.inner().recommended().memory().withMin(minMB);
+        this.innerModel().recommended().memory().withMin(minMB);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedMaximumMemoryForVirtualMachine(int maxMB) {
-        if (this.inner().recommended() == null) {
-            this.inner().withRecommended(new RecommendedMachineConfiguration());
+        if (this.innerModel().recommended() == null) {
+            this.innerModel().withRecommended(new RecommendedMachineConfiguration());
         }
-        if (this.inner().recommended().memory() == null) {
-            this.inner().recommended().withMemory(new ResourceRange());
+        if (this.innerModel().recommended().memory() == null) {
+            this.innerModel().recommended().withMemory(new ResourceRange());
         }
-        this.inner().recommended().memory().withMax(maxMB);
+        this.innerModel().recommended().memory().withMax(maxMB);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedMemoryForVirtualMachine(int minMB, int maxMB) {
-        if (this.inner().recommended() == null) {
-            this.inner().withRecommended(new RecommendedMachineConfiguration());
+        if (this.innerModel().recommended() == null) {
+            this.innerModel().withRecommended(new RecommendedMachineConfiguration());
         }
-        this.inner().recommended().withMemory(new ResourceRange());
-        this.inner().recommended().memory().withMin(minMB);
-        this.inner().recommended().memory().withMax(maxMB);
+        this.innerModel().recommended().withMemory(new ResourceRange());
+        this.innerModel().recommended().memory().withMin(minMB);
+        this.innerModel().recommended().memory().withMax(maxMB);
         return this;
     }
 
     @Override
     public GalleryImageImpl withRecommendedConfigurationForVirtualMachine(
         RecommendedMachineConfiguration recommendedConfig) {
-        this.inner().withRecommended(recommendedConfig);
+        this.innerModel().withRecommended(recommendedConfig);
         return this;
     }
 
     @Override
     public GalleryImageImpl withReleaseNoteUri(String releaseNoteUri) {
-        this.inner().withReleaseNoteUri(releaseNoteUri);
+        this.innerModel().withReleaseNoteUri(releaseNoteUri);
         return this;
     }
 
     @Override
     public GalleryImageImpl withTags(Map<String, String> tags) {
-        this.inner().withTags(tags);
+        this.innerModel().withTags(tags);
         return this;
     }
 

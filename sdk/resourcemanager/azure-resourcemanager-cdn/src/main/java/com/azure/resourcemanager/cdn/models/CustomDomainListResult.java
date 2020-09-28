@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CustomDomainListResult model. */
+/**
+ * Result of the request to list custom domains. It contains a list of custom domain objects and a URL link to get the
+ * next set of results.
+ */
 @Fluent
 public final class CustomDomainListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainListResult.class);

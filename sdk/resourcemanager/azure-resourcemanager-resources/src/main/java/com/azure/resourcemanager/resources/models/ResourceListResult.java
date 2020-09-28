@@ -6,12 +6,12 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceListResult model. */
+/** List of resource groups. */
 @Fluent
 public final class ResourceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceListResult.class);

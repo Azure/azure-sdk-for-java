@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.models.AvailableProviders;
 import com.azure.resourcemanager.network.models.AvailableProvidersListCountry;
 import com.azure.resourcemanager.network.models.AvailableProvidersListParameters;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
-import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
+import com.azure.resourcemanager.network.fluent.models.AvailableProvidersListInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
 
     private void initializeResourcesFromInner() {
         this.providersByCountry = new TreeMap<>();
-        List<AvailableProvidersListCountry> availableProvidersList = this.inner().countries();
+        List<AvailableProvidersListCountry> availableProvidersList = this.innerModel().countries();
         if (availableProvidersList != null) {
             for (AvailableProvidersListCountry resource : availableProvidersList) {
                 this.providersByCountry.put(resource.countryName(), resource);
@@ -54,7 +54,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
     }
 
     @Override
-    public AvailableProvidersListInner inner() {
+    public AvailableProvidersListInner innerModel() {
         return this.inner;
     }
 

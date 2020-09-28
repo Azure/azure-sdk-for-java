@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StorageProfile model. */
+/** Specifies the storage settings for the virtual machine disks. */
 @Fluent
 public final class StorageProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);

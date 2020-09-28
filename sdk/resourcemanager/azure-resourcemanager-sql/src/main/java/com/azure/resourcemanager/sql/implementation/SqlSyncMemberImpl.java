@@ -16,7 +16,7 @@ import com.azure.resourcemanager.sql.models.SqlSyncMemberOperations;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
-import com.azure.resourcemanager.sql.fluent.inner.SyncMemberInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -110,7 +110,7 @@ public class SqlSyncMemberImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -130,47 +130,47 @@ public class SqlSyncMemberImpl
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public SyncMemberDbType databaseType() {
-        return this.inner().databaseType();
+        return this.innerModel().databaseType();
     }
 
     @Override
     public String syncAgentId() {
-        return this.inner().syncAgentId();
+        return this.innerModel().syncAgentId();
     }
 
     @Override
     public String sqlServerDatabaseId() {
-        return this.inner().sqlServerDatabaseId().toString();
+        return this.innerModel().sqlServerDatabaseId().toString();
     }
 
     @Override
     public String memberServerName() {
-        return this.inner().serverName();
+        return this.innerModel().serverName();
     }
 
     @Override
     public String memberDatabaseName() {
-        return this.inner().databaseName();
+        return this.innerModel().databaseName();
     }
 
     @Override
     public String username() {
-        return this.inner().username();
+        return this.innerModel().username();
     }
 
     @Override
     public SyncDirection syncDirection() {
-        return this.inner().syncDirection();
+        return this.innerModel().syncDirection();
     }
 
     @Override
     public SyncMemberState syncState() {
-        return this.inner().syncState();
+        return this.innerModel().syncState();
     }
 
     @Override
@@ -186,7 +186,7 @@ public class SqlSyncMemberImpl
                 this.sqlDatabaseName,
                 this.sqlSyncGroupName,
                 this.name(),
-                this.inner())
+                this.innerModel())
             .map(
                 syncMemberInner -> {
                     self.setInner(syncMemberInner);
@@ -306,7 +306,7 @@ public class SqlSyncMemberImpl
 
     @Override
     public SqlSyncMemberImpl withMemberUserName(String userName) {
-        this.inner().withUsername(userName);
+        this.innerModel().withUsername(userName);
         return this;
     }
 
@@ -318,38 +318,38 @@ public class SqlSyncMemberImpl
 
     @Override
     public SqlSyncMemberImpl withMemberPassword(String password) {
-        this.inner().withPassword(password);
+        this.innerModel().withPassword(password);
         return this;
     }
 
     @Override
     public SqlSyncMemberImpl withMemberSqlServerName(String sqlServerName) {
-        this.inner().withServerName(sqlServerName);
+        this.innerModel().withServerName(sqlServerName);
         return this;
     }
 
     @Override
     public SqlSyncMemberImpl withMemberSqlDatabase(SqlDatabase sqlDatabase) {
-        this.inner().withServerName(sqlDatabase.sqlServerName());
-        this.inner().withDatabaseName(sqlDatabase.name());
+        this.innerModel().withServerName(sqlDatabase.sqlServerName());
+        this.innerModel().withDatabaseName(sqlDatabase.name());
         return this;
     }
 
     @Override
     public SqlSyncMemberImpl withMemberDatabaseType(SyncMemberDbType databaseType) {
-        this.inner().withDatabaseType(databaseType);
+        this.innerModel().withDatabaseType(databaseType);
         return this;
     }
 
     @Override
     public SqlSyncMemberImpl withDatabaseType(SyncDirection syncDirection) {
-        this.inner().withSyncDirection(syncDirection);
+        this.innerModel().withSyncDirection(syncDirection);
         return this;
     }
 
     @Override
     public SqlSyncMemberImpl withMemberSqlDatabaseName(String sqlDatabaseName) {
-        this.inner().withDatabaseName(sqlDatabaseName);
+        this.innerModel().withDatabaseName(sqlDatabaseName);
         return this;
     }
 }

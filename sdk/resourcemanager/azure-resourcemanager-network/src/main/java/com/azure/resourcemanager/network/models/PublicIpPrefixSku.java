@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PublicIpPrefixSku model. */
+/** SKU of a public IP prefix. */
 @Fluent
 public final class PublicIpPrefixSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixSku.class);

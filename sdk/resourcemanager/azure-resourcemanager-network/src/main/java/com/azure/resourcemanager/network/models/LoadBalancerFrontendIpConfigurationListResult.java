@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoadBalancerFrontendIpConfigurationListResult model. */
+/** Response for ListFrontendIPConfiguration API service call. */
 @Fluent
 public final class LoadBalancerFrontendIpConfigurationListResult {
     @JsonIgnore

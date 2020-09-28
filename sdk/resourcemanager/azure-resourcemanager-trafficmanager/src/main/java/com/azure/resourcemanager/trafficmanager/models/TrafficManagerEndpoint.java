@@ -6,9 +6,9 @@ package com.azure.resourcemanager.trafficmanager.models;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure traffic manager profile endpoint. */
 public interface TrafficManagerEndpoint
-    extends ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>, HasInner<EndpointInner> {
+    extends ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>, HasInnerModel<EndpointInner> {
     /** @return the endpoint type */
     EndpointType endpointType();
 

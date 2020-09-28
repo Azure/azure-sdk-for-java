@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DatabaseAccountRegenerateKeyParameters model. */
+/** Parameters to regenerate the keys within the database account. */
 @Fluent
 public final class DatabaseAccountRegenerateKeyParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountRegenerateKeyParameters.class);

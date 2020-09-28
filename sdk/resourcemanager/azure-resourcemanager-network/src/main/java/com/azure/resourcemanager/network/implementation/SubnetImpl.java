@@ -11,11 +11,11 @@ import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.fluent.inner.IpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -44,7 +44,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     // Getters
     @Override
     public int networkInterfaceIPConfigurationCount() {
-        List<IpConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        List<IpConfigurationInner> ipConfigRefs = this.innerModel().ipConfigurations();
         if (ipConfigRefs != null) {
             return ipConfigRefs.size();
         } else {
@@ -54,29 +54,31 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public String addressPrefix() {
-        return this.inner().addressPrefix();
+        return this.innerModel().addressPrefix();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
+        return (this.innerModel().networkSecurityGroup() != null)
+            ? this.innerModel().networkSecurityGroup().id()
+            : null;
     }
 
     @Override
     public String routeTableId() {
-        return (this.inner().routeTable() != null) ? this.inner().routeTable().id() : null;
+        return (this.innerModel().routeTable() != null) ? this.innerModel().routeTable().id() : null;
     }
 
     @Override
     public Map<ServiceEndpointType, List<Region>> servicesWithAccess() {
         Map<ServiceEndpointType, List<Region>> services = new HashMap<>();
-        if (this.inner().serviceEndpoints() != null) {
-            for (ServiceEndpointPropertiesFormat endpoint : this.inner().serviceEndpoints()) {
+        if (this.innerModel().serviceEndpoints() != null) {
+            for (ServiceEndpointPropertiesFormat endpoint : this.innerModel().serviceEndpoints()) {
                 ServiceEndpointType serviceEndpointType = ServiceEndpointType.fromString(endpoint.service());
                 if (!services.containsKey(serviceEndpointType)) {
                     services.put(serviceEndpointType, new ArrayList<Region>());
@@ -97,7 +99,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public SubnetImpl withoutNetworkSecurityGroup() {
-        this.inner().withNetworkSecurityGroup(null);
+        this.innerModel().withNetworkSecurityGroup(null);
         return this;
     }
 
@@ -111,14 +113,14 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs
         // or REST
         NetworkSecurityGroupInner reference = new NetworkSecurityGroupInner().withId(resourceId);
-        this.inner().withNetworkSecurityGroup(reference);
+        this.innerModel().withNetworkSecurityGroup(reference);
         return this;
     }
 
     @Override
     public SubnetImpl withExistingRouteTable(String resourceId) {
         RouteTableInner reference = new RouteTableInner().withId(resourceId);
-        this.inner().withRouteTable(reference);
+        this.innerModel().withRouteTable(reference);
         return this;
     }
 
@@ -129,23 +131,23 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Update withoutRouteTable() {
-        this.inner().withRouteTable(null);
+        this.innerModel().withRouteTable(null);
         return this;
     }
 
     @Override
     public SubnetImpl withAddressPrefix(String cidr) {
-        this.inner().withAddressPrefix(cidr);
+        this.innerModel().withAddressPrefix(cidr);
         return this;
     }
 
     @Override
     public SubnetImpl withAccessFromService(ServiceEndpointType service) {
-        if (this.inner().serviceEndpoints() == null) {
-            this.inner().withServiceEndpoints(new ArrayList<ServiceEndpointPropertiesFormat>());
+        if (this.innerModel().serviceEndpoints() == null) {
+            this.innerModel().withServiceEndpoints(new ArrayList<ServiceEndpointPropertiesFormat>());
         }
         boolean found = false;
-        for (ServiceEndpointPropertiesFormat endpoint : this.inner().serviceEndpoints()) {
+        for (ServiceEndpointPropertiesFormat endpoint : this.innerModel().serviceEndpoints()) {
             if (endpoint.service().equalsIgnoreCase(service.toString())) {
                 found = true;
                 break;
@@ -153,7 +155,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         }
         if (!found) {
             this
-                .inner()
+                .innerModel()
                 .serviceEndpoints()
                 .add(
                     new ServiceEndpointPropertiesFormat()
@@ -165,10 +167,10 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public Update withoutAccessFromService(ServiceEndpointType service) {
-        if (this.inner().serviceEndpoints() != null) {
+        if (this.innerModel().serviceEndpoints() != null) {
             int foundIndex = -1;
             int i = 0;
-            for (ServiceEndpointPropertiesFormat endpoint : this.inner().serviceEndpoints()) {
+            for (ServiceEndpointPropertiesFormat endpoint : this.innerModel().serviceEndpoints()) {
                 if (endpoint.service().equalsIgnoreCase(service.toString())) {
                     foundIndex = i;
                     break;
@@ -176,7 +178,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
                 i++;
             }
             if (foundIndex != -1) {
-                this.inner().serviceEndpoints().remove(foundIndex);
+                this.innerModel().serviceEndpoints().remove(foundIndex);
             }
         }
         return this;
@@ -206,7 +208,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     public Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations() {
         Collection<NicIpConfiguration> ipConfigs = new ArrayList<>();
         Map<String, NetworkInterface> nics = new TreeMap<>();
-        List<IpConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        List<IpConfigurationInner> ipConfigRefs = this.innerModel().ipConfigurations();
         if (ipConfigRefs == null) {
             return ipConfigs;
         }
@@ -269,19 +271,19 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public SubnetImpl withDelegation(String serviceName) {
-        if (inner().delegations() == null) {
-            inner().withDelegations(new ArrayList<>());
+        if (innerModel().delegations() == null) {
+            innerModel().withDelegations(new ArrayList<>());
         }
-        inner().delegations().add(new Delegation().withName(serviceName).withServiceName(serviceName));
+        innerModel().delegations().add(new Delegation().withName(serviceName).withServiceName(serviceName));
         return this;
     }
 
     @Override
     public SubnetImpl withoutDelegation(String serviceName) {
-        if (inner().delegations() != null) {
-            for (int i = 0; i < inner().delegations().size();) {
-                if (serviceName.equalsIgnoreCase(inner().delegations().get(i).serviceName())) {
-                    inner().delegations().remove(i);
+        if (innerModel().delegations() != null) {
+            for (int i = 0; i < innerModel().delegations().size();) {
+                if (serviceName.equalsIgnoreCase(innerModel().delegations().get(i).serviceName())) {
+                    innerModel().delegations().remove(i);
                 } else {
                     ++i;
                 }

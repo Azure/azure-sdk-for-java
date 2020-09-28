@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import org.apache.commons.lang.time.StopWatch;
 import reactor.core.publisher.BaseSubscriber;
@@ -20,6 +20,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -40,9 +41,9 @@ public final class ManageFunctionAppLogs {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String appName       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
         final String appUrl        = appName + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
 
         try {
 
@@ -83,7 +84,7 @@ public final class ManageFunctionAppLogs {
             // warm up
             System.out.println("Warming up " + appUrl + "/api/square...");
             Utils.post("http://" + appUrl + "/api/square", "625");
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             //============================================================
             // Listen to logs synchronously for 30 seconds
@@ -95,9 +96,9 @@ public final class ManageFunctionAppLogs {
             stopWatch.start();
             new Thread(() ->  {
                 Utils.post("http://" + appUrl + "/api/square", "625");
-                SdkContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "725");
-                SdkContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "825");
             }).start();
             while (line != null && stopWatch.getTime() < 90000) {
@@ -110,12 +111,12 @@ public final class ManageFunctionAppLogs {
             // Listen to logs asynchronously until 3 requests are completed
 
             new Thread(() ->  {
-                SdkContext.sleep(5000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 System.out.println("Starting hitting");
                 Utils.post("http://" + appUrl + "/api/square", "625");
-                SdkContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "725");
-                SdkContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.post("http://" + appUrl + "/api/square", "825");
             }).start();
 

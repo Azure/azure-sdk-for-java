@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Hostname model. */
+/** Details of a hostname derived from a domain. */
 @Fluent
 public final class Hostname {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Hostname.class);

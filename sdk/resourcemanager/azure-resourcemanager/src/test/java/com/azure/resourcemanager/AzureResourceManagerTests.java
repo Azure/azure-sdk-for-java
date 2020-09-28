@@ -25,7 +25,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
@@ -51,7 +51,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
@@ -62,6 +62,7 @@ import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +84,7 @@ import org.junit.jupiter.api.Test;
 
 public class AzureResourceManagerTests extends ResourceManagerTestBase {
     private AzureResourceManager azureResourceManager;
-    private MSIManager msiManager;
+    private MsiManager msiManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -105,12 +106,13 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
+        setInternalContext(internalContext, azureResourceManager, msiManager);
     }
 
     @Override
@@ -228,7 +230,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      */
     @Test
     public void testDeployments() throws Exception {
-        String testId = azureResourceManager.deployments().manager().sdkContext().randomResourceName("", 8);
+        String testId = azureResourceManager.deployments().manager().resourceManager().internalContext().randomResourceName("", 8);
         PagedIterable<Deployment> deployments = azureResourceManager.deployments().list();
         System.out.println("Deployments: " + TestUtilities.getSize(deployments));
         Deployment deployment =
@@ -260,13 +262,13 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         NetworkSecurityGroup nsg =
             azureResourceManager
                 .networkSecurityGroups()
-                .define(azureResourceManager.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
+                .define(azureResourceManager.networkSecurityGroups().manager().resourceManager().internalContext().randomResourceName("nsg", 13))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .create();
         azureResourceManager
             .publicIpAddresses()
-            .define(azureResourceManager.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
+            .define(azureResourceManager.networkSecurityGroups().manager().resourceManager().internalContext().randomResourceName("pip", 13))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
@@ -298,12 +300,12 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     //    @Test
     //    public void testManagementLocks() throws Exception {
     //        // Prepare a VM
-    //        final String password = SdkContext.randomResourceName("P@s", 14);
-    //        final String rgName = SdkContext.randomResourceName("rg", 15);
-    //        final String vmName = SdkContext.randomResourceName("vm", 15);
-    //        final String storageName = SdkContext.randomResourceName("st", 15);
-    //        final String diskName = SdkContext.randomResourceName("dsk", 15);
-    //        final String netName = SdkContext.randomResourceName("net", 15);
+    //        final String password = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("P@s", 14);
+    //        final String rgName = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("rg", 15);
+    //        final String vmName = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("vm", 15);
+    //        final String storageName = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("st", 15);
+    //        final String diskName = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("dsk", 15);
+    //        final String netName = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("net", 15);
     //        final Region region = Region.US_EAST;
     //
     //        ResourceGroup resourceGroup = null;
@@ -521,7 +523,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         PagedIterable<VirtualMachineImage> images = azureResourceManager.virtualMachineImages().listByRegion(Region.US_WEST);
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
         // Seems to help avoid connection refused error on subsequent mock test
-        SdkContext.sleep(2000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(2));
     }
 
     /**
@@ -603,7 +605,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
     @Test
     public void testManagedDiskVMUpdate() throws Exception {
-        SdkContext context = azureResourceManager.disks().manager().sdkContext();
+        ResourceManagerUtils.InternalRuntimeContext context = azureResourceManager.disks().manager().resourceManager().internalContext();
         final String rgName = context.randomResourceName("rg", 13);
         final String linuxVM2Name = context.randomResourceName("vm" + "-", 10);
         final String linuxVM2Pip = context.randomResourceName("pip" + "-", 18);
@@ -1323,7 +1325,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         for (String geography : geographies) {
             for (Location location : locations) {
                 if (location.regionType() == RegionType.PHYSICAL) {
-                    if (geography.equals(location.inner().metadata().geographyGroup())) {
+                    if (geography.equals(location.innerModel().metadata().geographyGroup())) {
                         locationGroupByGeography.add(location);
                     }
                 }
@@ -1331,7 +1333,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         }
         for (Location location : locations) {
             if (location.regionType() == RegionType.PHYSICAL) {
-                if (!geographies.contains(location.inner().metadata().geographyGroup())) {
+                if (!geographies.contains(location.innerModel().metadata().geographyGroup())) {
                     locationGroupByGeography.add(location);
                 }
             }
@@ -1346,8 +1348,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                         .append("\n").append(MessageFormat.format(
                             " * {0} ({1})",
                             location.displayName(),
-                            location.inner().metadata().geographyGroup()))
-                        .append(location.inner().metadata().regionCategory() == RegionCategory.RECOMMENDED
+                            location.innerModel().metadata().geographyGroup()))
+                        .append(location.innerModel().metadata().regionCategory() == RegionCategory.RECOMMENDED
                             ? " (recommended)" : "")
                         .append("\n").append(" */")
                         .append("\n").append(MessageFormat.format(
@@ -1374,7 +1376,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     }
 
     private static String getLocationVariableName(Location location) {
-        final String geographyGroup = location.inner().metadata().geographyGroup();
+        final String geographyGroup = location.innerModel().metadata().geographyGroup();
         String displayName = location.displayName();
         if ("US".equals(geographyGroup)) {
             if (displayName.contains(" US")) {

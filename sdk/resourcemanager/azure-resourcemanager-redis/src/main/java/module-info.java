@@ -7,11 +7,11 @@ module com.azure.resourcemanager.redis {
     // export public APIs of redis
     exports com.azure.resourcemanager.redis;
     exports com.azure.resourcemanager.redis.fluent;
-    exports com.azure.resourcemanager.redis.fluent.inner;
+    exports com.azure.resourcemanager.redis.fluent.models;
     exports com.azure.resourcemanager.redis.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.redis.fluent.inner to
+    opens com.azure.resourcemanager.redis.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.redis.models to
