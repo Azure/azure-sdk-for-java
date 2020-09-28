@@ -19,7 +19,11 @@ import com.azure.core.util.Context;
 public final class NotebookClient {
     private final NotebooksImpl serviceClient;
 
-    /** Initializes an instance of Notebooks client. */
+    /**
+     * Initializes an instance of Notebooks client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     NotebookClient(NotebooksImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

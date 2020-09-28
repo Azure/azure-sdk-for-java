@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SsisObjectMetadataStatusResponse model. */
+/** The status of the operation. */
 @Fluent
 public final class SsisObjectMetadataStatusResponse {
     /*

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The LogStorageSettings model. */
+/** Log storage settings. */
 @Fluent
 public final class LogStorageSettings {
     /*

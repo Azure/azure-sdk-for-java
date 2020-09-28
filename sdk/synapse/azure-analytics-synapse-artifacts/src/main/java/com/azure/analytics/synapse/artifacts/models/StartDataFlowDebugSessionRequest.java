@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StartDataFlowDebugSessionRequest model. */
+/** Request body structure for starting data flow debug session. */
 @Fluent
 public final class StartDataFlowDebugSessionRequest {
     /*

@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EvaluateDataFlowExpressionRequest model. */
+/** Request body structure for data flow expression preview. */
 @Fluent
 public final class EvaluateDataFlowExpressionRequest {
     /*

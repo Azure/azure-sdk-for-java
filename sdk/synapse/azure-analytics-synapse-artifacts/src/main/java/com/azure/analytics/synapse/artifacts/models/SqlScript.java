@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The SqlScript model. */
+/** SQL script. */
 @Fluent
 public final class SqlScript {
     /*

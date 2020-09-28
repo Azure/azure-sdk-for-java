@@ -16,7 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The LinkedService model. */
+/**
+ * The Azure Synapse nested object which contains the information and credential which can be used to connect with
+ * related store or compute resource.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,

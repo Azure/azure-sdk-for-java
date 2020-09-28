@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataFlowDebugResource model. */
+/** Data flow debug resource. */
 @Fluent
 public final class DataFlowDebugResource extends SubResourceDebugResource {
     /*

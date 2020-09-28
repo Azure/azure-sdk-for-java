@@ -19,7 +19,11 @@ import com.azure.core.util.Context;
 public final class SqlScriptClient {
     private final SqlScriptsImpl serviceClient;
 
-    /** Initializes an instance of SqlScripts client. */
+    /**
+     * Initializes an instance of SqlScripts client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SqlScriptClient(SqlScriptsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

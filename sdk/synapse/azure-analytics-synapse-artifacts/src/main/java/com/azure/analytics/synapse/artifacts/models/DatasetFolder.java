@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DatasetFolder model. */
+/** The folder that this Dataset is in. If not specified, Dataset will appear at the root level. */
 @Fluent
 public final class DatasetFolder {
     /*

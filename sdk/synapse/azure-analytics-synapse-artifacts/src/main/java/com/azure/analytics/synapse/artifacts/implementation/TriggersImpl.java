@@ -361,7 +361,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
                 .flatMap(
                         (Response<TriggerResource> res) -> {
@@ -403,7 +402,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerResource createOrUpdateTrigger(String triggerName, TriggerResource trigger) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateTriggerAsync(triggerName, trigger, ifMatch).block();
     }
 
@@ -529,7 +527,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerResource> getTriggerAsync(String triggerName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getTriggerWithResponseAsync(triggerName, ifNoneMatch)
                 .flatMap(
                         (Response<TriggerResource> res) -> {
@@ -569,7 +566,6 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerResource getTrigger(String triggerName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getTriggerAsync(triggerName, ifNoneMatch).block();
     }
 

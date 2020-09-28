@@ -430,7 +430,6 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> createOrUpdateNotebookAsync(String notebookName, NotebookResource notebook) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch)
                 .flatMap(
                         (Response<NotebookResource> res) -> {
@@ -472,7 +471,6 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResource createOrUpdateNotebook(String notebookName, NotebookResource notebook) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateNotebookAsync(notebookName, notebook, ifMatch).block();
     }
 
@@ -598,7 +596,6 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getNotebookWithResponseAsync(notebookName, ifNoneMatch)
                 .flatMap(
                         (Response<NotebookResource> res) -> {
@@ -638,7 +635,6 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResource getNotebook(String notebookName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getNotebookAsync(notebookName, ifNoneMatch).block();
     }
 

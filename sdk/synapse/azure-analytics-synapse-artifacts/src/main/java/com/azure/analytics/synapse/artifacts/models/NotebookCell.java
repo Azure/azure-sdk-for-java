@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The NotebookCell model. */
+/** Notebook cell. */
 @Fluent
 public final class NotebookCell {
     /*

@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PipelineFolder model. */
+/** The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level. */
 @Fluent
 public final class PipelineFolder {
     /*

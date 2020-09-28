@@ -269,7 +269,6 @@ public final class SparkSessionsImpl {
         final Integer from = null;
         final Integer size = null;
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkSessionsWithResponseAsync(from, size, detailed)
                 .flatMap(
                         (Response<SparkSessionCollection> res) -> {
@@ -309,7 +308,6 @@ public final class SparkSessionsImpl {
         final Integer from = null;
         final Integer size = null;
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkSessionsAsync(from, size, detailed).block();
     }
 
@@ -438,7 +436,6 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSession> createSparkSessionAsync(SparkSessionOptions sparkSessionOptions) {
         final Boolean detailed = null;
-        final Context context = null;
         return createSparkSessionWithResponseAsync(sparkSessionOptions, detailed)
                 .flatMap(
                         (Response<SparkSession> res) -> {
@@ -477,7 +474,6 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkSession createSparkSession(SparkSessionOptions sparkSessionOptions) {
         final Boolean detailed = null;
-        final Context context = null;
         return createSparkSessionAsync(sparkSessionOptions, detailed).block();
     }
 
@@ -603,7 +599,6 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSession> getSparkSessionAsync(int sessionId) {
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkSessionWithResponseAsync(sessionId, detailed)
                 .flatMap(
                         (Response<SparkSession> res) -> {
@@ -642,7 +637,6 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkSession getSparkSession(int sessionId) {
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkSessionAsync(sessionId, detailed).block();
     }
 

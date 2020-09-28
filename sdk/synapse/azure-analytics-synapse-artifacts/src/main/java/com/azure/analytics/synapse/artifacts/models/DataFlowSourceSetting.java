@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The DataFlowSourceSetting model. */
+/** Definition of data flow source setting for debug. */
 @Fluent
 public final class DataFlowSourceSetting {
     /*

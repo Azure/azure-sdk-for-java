@@ -314,7 +314,6 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> createOrUpdateDatasetAsync(String datasetName, DatasetResource dataset) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch)
                 .flatMap(
                         (Response<DatasetResource> res) -> {
@@ -356,7 +355,6 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResource createOrUpdateDataset(String datasetName, DatasetResource dataset) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateDatasetAsync(datasetName, dataset, ifMatch).block();
     }
 
@@ -482,7 +480,6 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getDatasetWithResponseAsync(datasetName, ifNoneMatch)
                 .flatMap(
                         (Response<DatasetResource> res) -> {
@@ -522,7 +519,6 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResource getDataset(String datasetName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getDatasetAsync(datasetName, ifNoneMatch).block();
     }
 

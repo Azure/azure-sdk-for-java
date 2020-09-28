@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The ActivityPolicy model. */
+/** Execution policy for an activity. */
 @Fluent
 public final class ActivityPolicy {
     /*

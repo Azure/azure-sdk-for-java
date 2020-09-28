@@ -20,7 +20,11 @@ import reactor.core.publisher.Mono;
 public final class NotebookAsyncClient {
     private final NotebooksImpl serviceClient;
 
-    /** Initializes an instance of Notebooks client. */
+    /**
+     * Initializes an instance of Notebooks client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     NotebookAsyncClient(NotebooksImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

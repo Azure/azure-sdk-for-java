@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TriggerPipelineReference model. */
+/** Pipeline that needs to be triggered with the given parameters. */
 @Fluent
 public final class TriggerPipelineReference {
     /*

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PipelineRunsQueryResponse model. */
+/** A list pipeline runs. */
 @Fluent
 public final class PipelineRunsQueryResponse {
     /*

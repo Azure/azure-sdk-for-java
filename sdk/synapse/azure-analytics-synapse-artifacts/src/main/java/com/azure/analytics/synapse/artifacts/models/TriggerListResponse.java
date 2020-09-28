@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TriggerListResponse model. */
+/** A list of trigger resources. */
 @Fluent
 public final class TriggerListResponse {
     /*

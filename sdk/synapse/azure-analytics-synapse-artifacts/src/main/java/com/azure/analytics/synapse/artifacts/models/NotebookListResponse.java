@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NotebookListResponse model. */
+/** A list of Notebook resources. */
 @Fluent
 public final class NotebookListResponse {
     /*

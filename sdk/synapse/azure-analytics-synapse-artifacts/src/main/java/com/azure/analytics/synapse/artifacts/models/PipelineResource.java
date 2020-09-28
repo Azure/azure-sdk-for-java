@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The PipelineResource model. */
+/** Pipeline resource type. */
 @JsonFlatten
 @Fluent
-public class PipelineResource extends SubResource {
+public class PipelineResource extends AzureEntityResource {
     /*
      * The description of the pipeline.
      */

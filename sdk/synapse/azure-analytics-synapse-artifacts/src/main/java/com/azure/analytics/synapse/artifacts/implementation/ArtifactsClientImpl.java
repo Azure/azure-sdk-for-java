@@ -194,7 +194,11 @@ public final class ArtifactsClientImpl {
         return this.notebooks;
     }
 
-    /** Initializes an instance of ArtifactsClient client. */
+    /**
+     * Initializes an instance of ArtifactsClient client.
+     *
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     */
     public ArtifactsClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
@@ -208,6 +212,7 @@ public final class ArtifactsClientImpl {
      * Initializes an instance of ArtifactsClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
      */
     public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
@@ -218,6 +223,7 @@ public final class ArtifactsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
      */
     public ArtifactsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;

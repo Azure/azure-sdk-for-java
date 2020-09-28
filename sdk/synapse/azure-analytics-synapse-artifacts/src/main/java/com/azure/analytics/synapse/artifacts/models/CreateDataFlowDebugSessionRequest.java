@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreateDataFlowDebugSessionRequest model. */
+/** Request body structure for creating data flow debug session. */
 @Fluent
 public final class CreateDataFlowDebugSessionRequest {
     /*

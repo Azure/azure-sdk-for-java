@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Transformation model. */
+/** A data flow transformation. */
 @Fluent
 public class Transformation {
     /*

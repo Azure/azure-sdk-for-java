@@ -9,7 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The WebClientCertificateAuthentication model. */
+/**
+ * A WebLinkedService that uses client certificate based authentication to communicate with an HTTP endpoint. This
+ * scheme follows mutual authentication; the server must also provide valid credentials to the client.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
 @JsonTypeName("ClientCertificate")
 @Fluent

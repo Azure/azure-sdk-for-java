@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The PipelineRun model. */
+/** Information about a pipeline run. */
 @Fluent
 public final class PipelineRun {
     /*

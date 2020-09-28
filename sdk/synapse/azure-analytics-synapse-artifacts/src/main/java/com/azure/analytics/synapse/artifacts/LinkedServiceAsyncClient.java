@@ -20,7 +20,11 @@ import reactor.core.publisher.Mono;
 public final class LinkedServiceAsyncClient {
     private final LinkedServicesImpl serviceClient;
 
-    /** Initializes an instance of LinkedServices client. */
+    /**
+     * Initializes an instance of LinkedServices client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     LinkedServiceAsyncClient(LinkedServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

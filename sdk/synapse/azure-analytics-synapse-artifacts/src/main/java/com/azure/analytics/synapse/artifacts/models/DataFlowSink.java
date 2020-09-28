@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataFlowSink model. */
+/** Transformation for data flow sink. */
 @Fluent
 public final class DataFlowSink extends Transformation {
     /*

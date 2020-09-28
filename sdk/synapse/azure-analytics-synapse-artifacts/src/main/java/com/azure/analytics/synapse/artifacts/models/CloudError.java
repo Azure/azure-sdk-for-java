@@ -9,7 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CloudError model. */
+/** The object that defines the structure of an Azure Synapse error response. */
 @JsonFlatten
 @Fluent
 public class CloudError {

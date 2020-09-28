@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SsisChildPackage model. */
+/** SSIS embedded child package. */
 @Fluent
 public final class SsisChildPackage {
     /*

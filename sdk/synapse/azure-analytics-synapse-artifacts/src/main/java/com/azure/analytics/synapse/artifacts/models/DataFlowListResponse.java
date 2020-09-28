@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DataFlowListResponse model. */
+/** A list of data flow resources. */
 @Fluent
 public final class DataFlowListResponse {
     /*

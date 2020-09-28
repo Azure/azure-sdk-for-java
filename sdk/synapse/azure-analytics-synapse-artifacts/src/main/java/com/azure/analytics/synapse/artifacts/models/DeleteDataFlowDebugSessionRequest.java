@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeleteDataFlowDebugSessionRequest model. */
+/** Request body structure for deleting data flow debug session. */
 @Fluent
 public final class DeleteDataFlowDebugSessionRequest {
     /*

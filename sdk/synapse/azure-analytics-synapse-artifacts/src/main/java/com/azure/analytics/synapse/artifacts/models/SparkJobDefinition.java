@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The SparkJobDefinition model. */
+/** Spark job definition. */
 @Fluent
 public final class SparkJobDefinition {
     /*

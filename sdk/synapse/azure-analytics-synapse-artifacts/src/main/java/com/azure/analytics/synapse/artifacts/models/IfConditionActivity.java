@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The IfConditionActivity model. */
+/**
+ * This activity evaluates a boolean expression and executes either the activities under the ifTrueActivities property
+ * or the ifFalseActivities property depending on the result of the expression.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("IfCondition")
 @JsonFlatten

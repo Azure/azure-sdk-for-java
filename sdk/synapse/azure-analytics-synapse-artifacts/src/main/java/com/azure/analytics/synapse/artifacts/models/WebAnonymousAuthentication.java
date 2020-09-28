@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The WebAnonymousAuthentication model. */
+/** A WebLinkedService that uses anonymous authentication to communicate with an HTTP endpoint. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
 @JsonTypeName("Anonymous")
 @Immutable

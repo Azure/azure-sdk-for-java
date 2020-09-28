@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SsisLogLocation model. */
+/** SSIS package execution log location. */
 @JsonFlatten
 @Fluent
 public class SsisLogLocation {

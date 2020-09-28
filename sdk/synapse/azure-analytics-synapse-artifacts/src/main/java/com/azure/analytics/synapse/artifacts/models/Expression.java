@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Expression model. */
+/** Azure Synapse expression definition. */
 @Fluent
 public final class Expression {
     /*

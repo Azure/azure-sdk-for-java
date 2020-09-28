@@ -518,7 +518,6 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelPipelineRunAsync(String runId) {
         final Boolean isRecursive = null;
-        final Context context = null;
         return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -547,7 +546,6 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelPipelineRun(String runId) {
         final Boolean isRecursive = null;
-        final Context context = null;
         cancelPipelineRunAsync(runId, isRecursive).block();
     }
 

@@ -21,7 +21,11 @@ import reactor.core.publisher.Mono;
 public final class TriggerAsyncClient {
     private final TriggersImpl serviceClient;
 
-    /** Initializes an instance of Triggers client. */
+    /**
+     * Initializes an instance of Triggers client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     TriggerAsyncClient(TriggersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

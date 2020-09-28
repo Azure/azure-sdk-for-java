@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The NotebookLanguageInfo model. */
+/** Language info. */
 @Fluent
 public final class NotebookLanguageInfo {
     /*

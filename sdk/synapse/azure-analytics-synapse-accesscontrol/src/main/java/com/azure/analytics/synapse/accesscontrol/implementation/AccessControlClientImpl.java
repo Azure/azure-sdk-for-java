@@ -95,7 +95,11 @@ public final class AccessControlClientImpl {
         return this.serializerAdapter;
     }
 
-    /** Initializes an instance of AccessControlClient client. */
+    /**
+     * Initializes an instance of AccessControlClient client.
+     *
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     */
     public AccessControlClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
@@ -109,6 +113,7 @@ public final class AccessControlClientImpl {
      * Initializes an instance of AccessControlClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
      */
     public AccessControlClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
@@ -119,6 +124,7 @@ public final class AccessControlClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
      */
     public AccessControlClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
@@ -420,7 +426,6 @@ public final class AccessControlClientImpl {
         final String roleId = null;
         final String principalId = null;
         final String continuationToken = null;
-        final Context context = null;
         return getRoleAssignmentsWithResponseAsync(roleId, principalId, continuationToken)
                 .flatMap(
                         (GetRoleAssignmentsResponse res) -> {
@@ -460,7 +465,6 @@ public final class AccessControlClientImpl {
         final String roleId = null;
         final String principalId = null;
         final String continuationToken = null;
-        final Context context = null;
         return getRoleAssignmentsAsync(roleId, principalId, continuationToken).block();
     }
 

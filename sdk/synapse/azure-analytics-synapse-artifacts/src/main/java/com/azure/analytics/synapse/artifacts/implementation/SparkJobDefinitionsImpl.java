@@ -351,7 +351,6 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionAsync(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, sparkJobDefinition, ifMatch)
                 .flatMap(
                         (Response<SparkJobDefinitionResource> res) -> {
@@ -395,7 +394,6 @@ public final class SparkJobDefinitionsImpl {
     public SparkJobDefinitionResource createOrUpdateSparkJobDefinition(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateSparkJobDefinitionAsync(sparkJobDefinitionName, sparkJobDefinition, ifMatch).block();
     }
 
@@ -529,7 +527,6 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkJobDefinitionResource> getSparkJobDefinitionAsync(String sparkJobDefinitionName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch)
                 .flatMap(
                         (Response<SparkJobDefinitionResource> res) -> {
@@ -569,7 +566,6 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobDefinitionResource getSparkJobDefinition(String sparkJobDefinitionName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getSparkJobDefinitionAsync(sparkJobDefinitionName, ifNoneMatch).block();
     }
 

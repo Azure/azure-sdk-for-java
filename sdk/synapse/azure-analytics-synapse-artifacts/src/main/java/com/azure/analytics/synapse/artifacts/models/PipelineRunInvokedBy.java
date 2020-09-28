@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PipelineRunInvokedBy model. */
+/** Provides entity name and id that started the pipeline run. */
 @Immutable
 public final class PipelineRunInvokedBy {
     /*

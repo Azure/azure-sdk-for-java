@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkedServiceDebugResource model. */
+/** Linked service debug resource. */
 @Fluent
 public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     /*

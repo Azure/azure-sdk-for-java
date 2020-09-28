@@ -7,9 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TriggerResource model. */
+/** Trigger resource type. */
 @Fluent
-public final class TriggerResource extends SubResource {
+public final class TriggerResource extends AzureEntityResource {
     /*
      * Properties of the trigger.
      */

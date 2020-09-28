@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The DataFlowDebugPackageDebugSettings model. */
+/** Data flow debug settings. */
 @Fluent
 public final class DataFlowDebugPackageDebugSettings {
     /*

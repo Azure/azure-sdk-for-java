@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The ActivityRun model. */
+/** Information about an activity run in a pipeline. */
 @Fluent
 public final class ActivityRun {
     /*

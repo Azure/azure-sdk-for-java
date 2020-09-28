@@ -9,7 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The SecureString model. */
+/**
+ * Azure Synapse secure string definition. The string value will be masked with asterisks '*' during Get or List API
+ * calls.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SecureString")
 @Fluent

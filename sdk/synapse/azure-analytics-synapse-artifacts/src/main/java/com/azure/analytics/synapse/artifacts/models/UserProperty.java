@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserProperty model. */
+/** User property. */
 @Fluent
 public final class UserProperty {
     /*

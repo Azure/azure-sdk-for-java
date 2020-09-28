@@ -20,7 +20,11 @@ import reactor.core.publisher.Mono;
 public final class SparkBatchAsyncClient {
     private final SparkBatchesImpl serviceClient;
 
-    /** Initializes an instance of SparkBatches client. */
+    /**
+     * Initializes an instance of SparkBatches client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SparkBatchAsyncClient(SparkBatchesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

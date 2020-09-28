@@ -20,7 +20,11 @@ import reactor.core.publisher.Mono;
 public final class DataFlowAsyncClient {
     private final DataFlowsImpl serviceClient;
 
-    /** Initializes an instance of DataFlows client. */
+    /**
+     * Initializes an instance of DataFlows client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     DataFlowAsyncClient(DataFlowsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

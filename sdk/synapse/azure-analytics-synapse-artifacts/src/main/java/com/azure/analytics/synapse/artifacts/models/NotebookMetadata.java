@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The NotebookMetadata model. */
+/** Notebook root-level metadata. */
 @Fluent
 public final class NotebookMetadata {
     /*

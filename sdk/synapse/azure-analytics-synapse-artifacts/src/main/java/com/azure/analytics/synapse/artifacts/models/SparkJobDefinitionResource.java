@@ -7,9 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SparkJobDefinitionResource model. */
+/** Spark job definition resource type. */
 @Fluent
-public final class SparkJobDefinitionResource extends SubResource {
+public final class SparkJobDefinitionResource extends AzureEntityResource {
     /*
      * Properties of spark job definition.
      */

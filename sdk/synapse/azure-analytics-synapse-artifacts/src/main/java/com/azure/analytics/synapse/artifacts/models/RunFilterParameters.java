@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The RunFilterParameters model. */
+/** Query parameters for listing runs. */
 @Fluent
 public final class RunFilterParameters {
     /*

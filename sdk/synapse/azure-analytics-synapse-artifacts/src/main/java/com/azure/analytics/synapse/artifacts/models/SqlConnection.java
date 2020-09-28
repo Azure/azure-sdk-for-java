@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The SqlConnection model. */
+/** The connection used to execute the SQL script. */
 @Fluent
 public final class SqlConnection {
     /*

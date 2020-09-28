@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The ActivityDependency model. */
+/** Activity dependency information. */
 @Fluent
 public final class ActivityDependency {
     /*

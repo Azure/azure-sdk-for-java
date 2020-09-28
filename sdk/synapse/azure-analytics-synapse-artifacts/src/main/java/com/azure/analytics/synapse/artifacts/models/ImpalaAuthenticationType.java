@@ -14,7 +14,7 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
     public static final ImpalaAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /** Static value SASLUsername for ImpalaAuthenticationType. */
-    public static final ImpalaAuthenticationType SASLUSERNAME = fromString("SASLUsername");
+    public static final ImpalaAuthenticationType SASL_USERNAME = fromString("SASLUsername");
 
     /** Static value UsernameAndPassword for ImpalaAuthenticationType. */
     public static final ImpalaAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");

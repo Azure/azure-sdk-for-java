@@ -20,7 +20,11 @@ import reactor.core.publisher.Mono;
 public final class DatasetAsyncClient {
     private final DatasetsImpl serviceClient;
 
-    /** Initializes an instance of Datasets client. */
+    /**
+     * Initializes an instance of Datasets client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     DatasetAsyncClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

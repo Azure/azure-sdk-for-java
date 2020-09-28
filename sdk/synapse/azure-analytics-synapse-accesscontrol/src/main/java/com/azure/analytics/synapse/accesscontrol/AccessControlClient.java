@@ -22,7 +22,11 @@ import java.util.List;
 public final class AccessControlClient {
     private final AccessControlClientImpl serviceClient;
 
-    /** Initializes an instance of AccessControlClient client. */
+    /**
+     * Initializes an instance of AccessControlClient client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     AccessControlClient(AccessControlClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

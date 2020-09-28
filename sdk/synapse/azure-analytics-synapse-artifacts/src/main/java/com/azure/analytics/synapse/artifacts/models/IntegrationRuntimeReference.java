@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The IntegrationRuntimeReference model. */
+/** Integration runtime reference type. */
 @Fluent
 public final class IntegrationRuntimeReference {
     /*

@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The SwitchActivity model. */
+/**
+ * This activity evaluates an expression and executes activities under the cases property that correspond to the
+ * expression evaluation expected in the equals property.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Switch")
 @JsonFlatten

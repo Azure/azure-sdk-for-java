@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.accesscontrol.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Error details.null. */
+/** Contains details when the response code indicates an error. */
 @Fluent
 public final class ErrorContract {
     /*

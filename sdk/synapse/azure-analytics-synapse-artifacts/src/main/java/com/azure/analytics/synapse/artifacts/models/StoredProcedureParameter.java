@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StoredProcedureParameter model. */
+/** SQL stored procedure parameter. */
 @Fluent
 public final class StoredProcedureParameter {
     /*

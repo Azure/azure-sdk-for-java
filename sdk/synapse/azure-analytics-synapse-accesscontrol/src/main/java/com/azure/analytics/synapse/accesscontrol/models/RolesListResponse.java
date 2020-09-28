@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RolesListResponse model. */
+/** A list of Synapse roles available. */
 @Fluent
 public final class RolesListResponse {
     /*

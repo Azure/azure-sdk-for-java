@@ -7,9 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataFlowResource model. */
+/** Data flow resource type. */
 @Fluent
-public final class DataFlowResource extends SubResource {
+public final class DataFlowResource extends AzureEntityResource {
     /*
      * Data flow properties.
      */

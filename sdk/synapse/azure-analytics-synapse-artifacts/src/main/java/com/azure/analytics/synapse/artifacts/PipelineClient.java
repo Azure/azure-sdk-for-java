@@ -21,7 +21,11 @@ import java.util.Map;
 public final class PipelineClient {
     private final PipelinesImpl serviceClient;
 
-    /** Initializes an instance of Pipelines client. */
+    /**
+     * Initializes an instance of Pipelines client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     PipelineClient(PipelinesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

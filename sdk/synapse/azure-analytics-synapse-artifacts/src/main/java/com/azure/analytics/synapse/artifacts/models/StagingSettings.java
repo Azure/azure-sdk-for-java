@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The StagingSettings model. */
+/** Staging settings. */
 @Fluent
 public final class StagingSettings {
     /*

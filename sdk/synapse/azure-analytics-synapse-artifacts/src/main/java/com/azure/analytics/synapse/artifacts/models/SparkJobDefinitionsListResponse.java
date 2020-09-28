@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SparkJobDefinitionsListResponse model. */
+/** A list of spark job definitions resources. */
 @Fluent
 public final class SparkJobDefinitionsListResponse {
     /*

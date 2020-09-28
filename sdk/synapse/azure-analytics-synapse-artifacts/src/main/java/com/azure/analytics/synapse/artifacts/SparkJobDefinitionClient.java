@@ -20,7 +20,11 @@ import com.azure.core.util.Context;
 public final class SparkJobDefinitionClient {
     private final SparkJobDefinitionsImpl serviceClient;
 
-    /** Initializes an instance of SparkJobDefinitions client. */
+    /**
+     * Initializes an instance of SparkJobDefinitions client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SparkJobDefinitionClient(SparkJobDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

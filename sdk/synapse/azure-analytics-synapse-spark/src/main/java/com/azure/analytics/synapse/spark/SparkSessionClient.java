@@ -24,7 +24,11 @@ import com.azure.core.util.Context;
 public final class SparkSessionClient {
     private final SparkSessionsImpl serviceClient;
 
-    /** Initializes an instance of SparkSessions client. */
+    /**
+     * Initializes an instance of SparkSessions client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SparkSessionClient(SparkSessionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

@@ -19,7 +19,11 @@ import com.azure.core.util.Context;
 public final class TriggerRunClient {
     private final TriggerRunsImpl serviceClient;
 
-    /** Initializes an instance of TriggerRuns client. */
+    /**
+     * Initializes an instance of TriggerRuns client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     TriggerRunClient(TriggerRunsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

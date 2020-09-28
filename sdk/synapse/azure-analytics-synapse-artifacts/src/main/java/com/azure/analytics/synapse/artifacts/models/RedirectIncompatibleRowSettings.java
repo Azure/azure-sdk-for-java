@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The RedirectIncompatibleRowSettings model. */
+/** Redirect incompatible row settings. */
 @Fluent
 public final class RedirectIncompatibleRowSettings {
     /*

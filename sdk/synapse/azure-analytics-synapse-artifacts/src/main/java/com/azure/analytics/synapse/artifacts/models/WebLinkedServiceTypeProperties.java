@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The WebLinkedServiceTypeProperties model. */
+/**
+ * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType, so
+ * not flattened in SDK models.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,

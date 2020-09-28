@@ -20,7 +20,11 @@ import com.azure.core.util.Context;
 public final class TriggerClient {
     private final TriggersImpl serviceClient;
 
-    /** Initializes an instance of Triggers client. */
+    /**
+     * Initializes an instance of Triggers client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     TriggerClient(TriggersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

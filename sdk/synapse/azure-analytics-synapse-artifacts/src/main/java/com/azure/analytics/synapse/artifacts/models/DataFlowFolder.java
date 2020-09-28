@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataFlowFolder model. */
+/** The folder that this data flow is in. If not specified, Data flow will appear at the root level. */
 @Fluent
 public final class DataFlowFolder {
     /*

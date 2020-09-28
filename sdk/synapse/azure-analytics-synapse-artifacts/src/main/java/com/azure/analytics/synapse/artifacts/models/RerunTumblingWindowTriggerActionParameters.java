@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RerunTumblingWindowTriggerActionParameters model. */
+/** Rerun tumbling window trigger Parameters. */
 @Fluent
 public final class RerunTumblingWindowTriggerActionParameters {
     /*

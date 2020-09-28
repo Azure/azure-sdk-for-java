@@ -19,7 +19,11 @@ import com.azure.core.util.Context;
 public final class LinkedServiceClient {
     private final LinkedServicesImpl serviceClient;
 
-    /** Initializes an instance of LinkedServices client. */
+    /**
+     * Initializes an instance of LinkedServices client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     LinkedServiceClient(LinkedServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

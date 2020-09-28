@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SsisExecutionParameter model. */
+/** SSIS execution parameter. */
 @Fluent
 public final class SsisExecutionParameter {
     /*

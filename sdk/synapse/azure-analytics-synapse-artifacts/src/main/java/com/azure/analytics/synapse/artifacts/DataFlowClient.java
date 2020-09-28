@@ -19,7 +19,11 @@ import com.azure.core.util.Context;
 public final class DataFlowClient {
     private final DataFlowsImpl serviceClient;
 
-    /** Initializes an instance of DataFlows client. */
+    /**
+     * Initializes an instance of DataFlows client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     DataFlowClient(DataFlowsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

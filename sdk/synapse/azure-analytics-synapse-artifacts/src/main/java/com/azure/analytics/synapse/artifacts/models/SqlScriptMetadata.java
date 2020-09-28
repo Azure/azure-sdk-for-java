@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The SqlScriptMetadata model. */
+/** The metadata of the SQL script. */
 @Fluent
 public final class SqlScriptMetadata {
     /*

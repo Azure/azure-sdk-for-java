@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TriggerRunsQueryResponse model. */
+/** A list of trigger runs. */
 @Fluent
 public final class TriggerRunsQueryResponse {
     /*

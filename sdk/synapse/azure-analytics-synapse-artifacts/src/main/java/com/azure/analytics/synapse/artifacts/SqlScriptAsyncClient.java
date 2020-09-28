@@ -20,7 +20,11 @@ import reactor.core.publisher.Mono;
 public final class SqlScriptAsyncClient {
     private final SqlScriptsImpl serviceClient;
 
-    /** Initializes an instance of SqlScripts client. */
+    /**
+     * Initializes an instance of SqlScripts client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SqlScriptAsyncClient(SqlScriptsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

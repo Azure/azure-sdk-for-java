@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The DataFlowDebugSessionInfo model. */
+/** Data flow debug session info. */
 @Fluent
 public final class DataFlowDebugSessionInfo {
     /*

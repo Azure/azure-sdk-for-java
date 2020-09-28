@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.accesscontrol.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleAssignmentOptions model. */
+/** Role Assignment request details. */
 @Fluent
 public final class RoleAssignmentOptions {
     /*

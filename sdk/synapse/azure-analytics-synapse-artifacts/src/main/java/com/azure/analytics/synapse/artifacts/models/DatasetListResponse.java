@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DatasetListResponse model. */
+/** A list of dataset resources. */
 @Fluent
 public final class DatasetListResponse {
     /*

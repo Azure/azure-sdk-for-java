@@ -21,7 +21,11 @@ import reactor.core.publisher.Mono;
 public final class PipelineRunAsyncClient {
     private final PipelineRunsImpl serviceClient;
 
-    /** Initializes an instance of PipelineRuns client. */
+    /**
+     * Initializes an instance of PipelineRuns client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     PipelineRunAsyncClient(PipelineRunsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

@@ -7,9 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NotebookResource model. */
+/** Notebook resource type. */
 @Fluent
-public final class NotebookResource extends SubResource {
+public final class NotebookResource extends AzureEntityResource {
     /*
      * Properties of Notebook.
      */

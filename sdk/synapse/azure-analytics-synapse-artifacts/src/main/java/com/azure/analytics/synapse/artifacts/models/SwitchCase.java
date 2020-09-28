@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SwitchCase model. */
+/** Switch cases with have a value and corresponding activities. */
 @Fluent
 public final class SwitchCase {
     /*

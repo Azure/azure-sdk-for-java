@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ScriptAction model. */
+/** Custom script action to run on HDI ondemand cluster once it's up. */
 @Fluent
 public final class ScriptAction {
     /*

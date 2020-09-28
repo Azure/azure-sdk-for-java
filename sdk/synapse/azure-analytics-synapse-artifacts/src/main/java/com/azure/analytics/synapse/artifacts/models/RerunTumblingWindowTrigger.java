@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** The RerunTumblingWindowTrigger model. */
+/**
+ * Trigger that schedules pipeline reruns for all fixed time interval windows from a requested start time to requested
+ * end time.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RerunTumblingWindowTrigger")
 @JsonFlatten

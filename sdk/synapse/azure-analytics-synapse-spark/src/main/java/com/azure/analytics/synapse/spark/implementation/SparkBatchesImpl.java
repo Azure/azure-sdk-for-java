@@ -211,7 +211,6 @@ public final class SparkBatchesImpl {
         final Integer from = null;
         final Integer size = null;
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkBatchJobsWithResponseAsync(from, size, detailed)
                 .flatMap(
                         (Response<SparkBatchJobCollection> res) -> {
@@ -251,7 +250,6 @@ public final class SparkBatchesImpl {
         final Integer from = null;
         final Integer size = null;
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkBatchJobsAsync(from, size, detailed).block();
     }
 
@@ -380,7 +378,6 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJob> createSparkBatchJobAsync(SparkBatchJobOptions sparkBatchJobOptions) {
         final Boolean detailed = null;
-        final Context context = null;
         return createSparkBatchJobWithResponseAsync(sparkBatchJobOptions, detailed)
                 .flatMap(
                         (Response<SparkBatchJob> res) -> {
@@ -419,7 +416,6 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob createSparkBatchJob(SparkBatchJobOptions sparkBatchJobOptions) {
         final Boolean detailed = null;
-        final Context context = null;
         return createSparkBatchJobAsync(sparkBatchJobOptions, detailed).block();
     }
 
@@ -545,7 +541,6 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJob> getSparkBatchJobAsync(int batchId) {
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkBatchJobWithResponseAsync(batchId, detailed)
                 .flatMap(
                         (Response<SparkBatchJob> res) -> {
@@ -584,7 +579,6 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob getSparkBatchJob(int batchId) {
         final Boolean detailed = null;
-        final Context context = null;
         return getSparkBatchJobAsync(batchId, detailed).block();
     }
 

@@ -7,9 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RerunTriggerResource model. */
+/** RerunTrigger resource type. */
 @Fluent
-public final class RerunTriggerResource extends SubResource {
+public final class RerunTriggerResource extends AzureEntityResource {
     /*
      * Properties of the rerun trigger.
      */

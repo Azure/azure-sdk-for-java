@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataFlowDebugCommandResponse model. */
+/** Response body structure of data flow result for data preview, statistics or expression preview. */
 @Fluent
 public final class DataFlowDebugCommandResponse {
     /*

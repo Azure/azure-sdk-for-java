@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The DataFlowReference model. */
+/** Data flow reference type. */
 @Fluent
 public final class DataFlowReference {
     /*

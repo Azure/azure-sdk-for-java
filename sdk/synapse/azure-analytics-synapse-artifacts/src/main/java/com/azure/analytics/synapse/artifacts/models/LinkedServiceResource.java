@@ -7,9 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkedServiceResource model. */
+/** Linked service resource type. */
 @Fluent
-public final class LinkedServiceResource extends SubResource {
+public final class LinkedServiceResource extends AzureEntityResource {
     /*
      * Properties of linked service.
      */

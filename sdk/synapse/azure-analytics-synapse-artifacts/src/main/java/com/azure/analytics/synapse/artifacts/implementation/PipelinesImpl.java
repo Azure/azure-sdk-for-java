@@ -331,7 +331,6 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> createOrUpdatePipelineAsync(String pipelineName, PipelineResource pipeline) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdatePipelineWithResponseAsync(pipelineName, pipeline, ifMatch)
                 .flatMap(
                         (Response<PipelineResource> res) -> {
@@ -373,7 +372,6 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResource createOrUpdatePipeline(String pipelineName, PipelineResource pipeline) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdatePipelineAsync(pipelineName, pipeline, ifMatch).block();
     }
 
@@ -499,7 +497,6 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> getPipelineAsync(String pipelineName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getPipelineWithResponseAsync(pipelineName, ifNoneMatch)
                 .flatMap(
                         (Response<PipelineResource> res) -> {
@@ -539,7 +536,6 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResource getPipeline(String pipelineName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getPipelineAsync(pipelineName, ifNoneMatch).block();
     }
 
@@ -809,7 +805,6 @@ public final class PipelinesImpl {
         final Boolean isRecovery = null;
         final String startActivityName = null;
         final Map<String, Object> parameters = null;
-        final Context context = null;
         return createPipelineRunWithResponseAsync(
                         pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
                 .flatMap(
@@ -864,7 +859,6 @@ public final class PipelinesImpl {
         final Boolean isRecovery = null;
         final String startActivityName = null;
         final Map<String, Object> parameters = null;
-        final Context context = null;
         return createPipelineRunAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
                 .block();
     }

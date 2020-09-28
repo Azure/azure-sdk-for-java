@@ -24,7 +24,11 @@ import reactor.core.publisher.Mono;
 public final class SparkSessionAsyncClient {
     private final SparkSessionsImpl serviceClient;
 
-    /** Initializes an instance of SparkSessions client. */
+    /**
+     * Initializes an instance of SparkSessions client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SparkSessionAsyncClient(SparkSessionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

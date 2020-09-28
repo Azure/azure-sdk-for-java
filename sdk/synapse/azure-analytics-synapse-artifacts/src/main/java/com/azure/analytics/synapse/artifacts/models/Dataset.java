@@ -16,7 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The Dataset model. */
+/**
+ * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
+ * folders, and documents.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,

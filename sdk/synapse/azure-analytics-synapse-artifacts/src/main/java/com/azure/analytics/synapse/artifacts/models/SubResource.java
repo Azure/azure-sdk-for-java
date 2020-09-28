@@ -5,68 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SubResource model. */
+/** Azure Synapse nested resource, which belongs to a workspace. */
 @Immutable
-public class SubResource {
-    /*
-     * The resource identifier.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /*
-     * The resource name.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * The resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
-    /*
-     * Etag identifies change in the resource.
-     */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
-
-    /**
-     * Get the id property: The resource identifier.
-     *
-     * @return the id value.
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The resource name.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The resource type.
-     *
-     * @return the type value.
-     */
-    public String getType() {
-        return this.type;
-    }
-
-    /**
-     * Get the etag property: Etag identifies change in the resource.
-     *
-     * @return the etag value.
-     */
-    public String getEtag() {
-        return this.etag;
-    }
-}
+public final class SubResource extends AzureEntityResource {}

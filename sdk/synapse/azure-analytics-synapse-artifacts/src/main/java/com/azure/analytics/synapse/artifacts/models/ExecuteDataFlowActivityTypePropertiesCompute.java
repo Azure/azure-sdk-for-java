@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExecuteDataFlowActivityTypePropertiesCompute model. */
+/** Compute properties for data flow activity. */
 @Fluent
 public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /*

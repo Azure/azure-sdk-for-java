@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CustomActivityReferenceObject model. */
+/** Reference objects for custom activity. */
 @Fluent
 public final class CustomActivityReferenceObject {
     /*

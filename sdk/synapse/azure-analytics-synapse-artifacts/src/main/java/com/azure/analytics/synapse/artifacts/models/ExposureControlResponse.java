@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExposureControlResponse model. */
+/** The exposure control response. */
 @Immutable
 public final class ExposureControlResponse {
     /*

@@ -26,7 +26,11 @@ import com.azure.core.util.Context;
 public final class DataFlowDebugSessionClient {
     private final DataFlowDebugSessionsImpl serviceClient;
 
-    /** Initializes an instance of DataFlowDebugSessions client. */
+    /**
+     * Initializes an instance of DataFlowDebugSessions client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     DataFlowDebugSessionClient(DataFlowDebugSessionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

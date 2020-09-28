@@ -4,51 +4,35 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** The Resource model. */
-@Fluent
+@Immutable
 public class Resource {
     /*
-     * The resource identifier.
+     * Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The resource name.
+     * The name of the resource
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The resource type.
+     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or
+     * Microsoft.Storage/storageAccounts.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The resource location.
-     */
-    @JsonProperty(value = "location")
-    private String location;
-
-    /*
-     * The resource tags.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
-
-    /*
-     * Etag identifies change in the resource.
-     */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
-    private String eTag;
-
     /**
-     * Get the id property: The resource identifier.
+     * Get the id property: Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
      *
      * @return the id value.
      */
@@ -57,7 +41,7 @@ public class Resource {
     }
 
     /**
-     * Get the name property: The resource name.
+     * Get the name property: The name of the resource.
      *
      * @return the name value.
      */
@@ -66,60 +50,12 @@ public class Resource {
     }
 
     /**
-     * Get the type property: The resource type.
+     * Get the type property: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
+     * Microsoft.Storage/storageAccounts.
      *
      * @return the type value.
      */
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Get the location property: The resource location.
-     *
-     * @return the location value.
-     */
-    public String getLocation() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The resource location.
-     *
-     * @param location the location value to set.
-     * @return the Resource object itself.
-     */
-    public Resource setLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: The resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> getTags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: The resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the Resource object itself.
-     */
-    public Resource setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: Etag identifies change in the resource.
-     *
-     * @return the eTag value.
-     */
-    public String getETag() {
-        return this.eTag;
     }
 }

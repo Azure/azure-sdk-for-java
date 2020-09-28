@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The NotebookKernelSpec model. */
+/** Kernel information. */
 @Fluent
 public final class NotebookKernelSpec {
     /*

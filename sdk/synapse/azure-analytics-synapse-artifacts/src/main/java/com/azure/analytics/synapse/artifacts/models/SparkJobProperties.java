@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The SparkJobProperties model. */
+/** The properties of the Spark job. */
 @Fluent
 public final class SparkJobProperties {
     /*

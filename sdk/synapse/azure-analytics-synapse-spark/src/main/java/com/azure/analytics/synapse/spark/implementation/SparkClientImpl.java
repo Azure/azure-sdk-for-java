@@ -98,7 +98,13 @@ public final class SparkClientImpl {
         return this.sparkSessions;
     }
 
-    /** Initializes an instance of SparkClient client. */
+    /**
+     * Initializes an instance of SparkClient client.
+     *
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param livyApiVersion Valid api-version for the request.
+     * @param sparkPoolName Name of the spark pool.
+     */
     public SparkClientImpl(String endpoint, String livyApiVersion, String sparkPoolName) {
         this(
                 new HttpPipelineBuilder()
@@ -114,6 +120,9 @@ public final class SparkClientImpl {
      * Initializes an instance of SparkClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param livyApiVersion Valid api-version for the request.
+     * @param sparkPoolName Name of the spark pool.
      */
     public SparkClientImpl(HttpPipeline httpPipeline, String endpoint, String livyApiVersion, String sparkPoolName) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, livyApiVersion, sparkPoolName);
@@ -124,6 +133,9 @@ public final class SparkClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param livyApiVersion Valid api-version for the request.
+     * @param sparkPoolName Name of the spark pool.
      */
     public SparkClientImpl(
             HttpPipeline httpPipeline,

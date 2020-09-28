@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TriggerSubscriptionOperationStatus model. */
+/** Defines the response of a trigger subscription operation. */
 @Immutable
 public final class TriggerSubscriptionOperationStatus {
     /*

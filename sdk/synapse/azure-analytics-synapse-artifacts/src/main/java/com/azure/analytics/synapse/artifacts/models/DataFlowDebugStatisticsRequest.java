@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DataFlowDebugStatisticsRequest model. */
+/** Request body structure for data flow statistics. */
 @Fluent
 public final class DataFlowDebugStatisticsRequest {
     /*

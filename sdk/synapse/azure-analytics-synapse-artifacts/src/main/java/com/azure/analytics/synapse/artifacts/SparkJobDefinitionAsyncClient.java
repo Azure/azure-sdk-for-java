@@ -21,7 +21,11 @@ import reactor.core.publisher.Mono;
 public final class SparkJobDefinitionAsyncClient {
     private final SparkJobDefinitionsImpl serviceClient;
 
-    /** Initializes an instance of SparkJobDefinitions client. */
+    /**
+     * Initializes an instance of SparkJobDefinitions client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SparkJobDefinitionAsyncClient(SparkJobDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

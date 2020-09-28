@@ -24,7 +24,11 @@ import reactor.core.publisher.Mono;
 public final class AccessControlAsyncClient {
     private final AccessControlClientImpl serviceClient;
 
-    /** Initializes an instance of AccessControlClient client. */
+    /**
+     * Initializes an instance of AccessControlClient client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     AccessControlAsyncClient(AccessControlClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

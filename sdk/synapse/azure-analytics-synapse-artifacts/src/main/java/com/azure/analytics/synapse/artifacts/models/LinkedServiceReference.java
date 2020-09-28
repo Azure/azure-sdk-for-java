@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The LinkedServiceReference model. */
+/** Linked service reference type. */
 @Fluent
 public final class LinkedServiceReference {
     /*

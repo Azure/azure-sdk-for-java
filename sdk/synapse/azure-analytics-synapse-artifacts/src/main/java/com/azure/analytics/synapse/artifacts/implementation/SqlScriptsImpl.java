@@ -315,7 +315,6 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(String sqlScriptName, SqlScriptResource sqlScript) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateSqlScriptWithResponseAsync(sqlScriptName, sqlScript, ifMatch)
                 .flatMap(
                         (Response<SqlScriptResource> res) -> {
@@ -358,7 +357,6 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlScriptResource createOrUpdateSqlScript(String sqlScriptName, SqlScriptResource sqlScript) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateSqlScriptAsync(sqlScriptName, sqlScript, ifMatch).block();
     }
 
@@ -484,7 +482,6 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getSqlScriptWithResponseAsync(sqlScriptName, ifNoneMatch)
                 .flatMap(
                         (Response<SqlScriptResource> res) -> {
@@ -524,7 +521,6 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlScriptResource getSqlScript(String sqlScriptName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getSqlScriptAsync(sqlScriptName, ifNoneMatch).block();
     }
 

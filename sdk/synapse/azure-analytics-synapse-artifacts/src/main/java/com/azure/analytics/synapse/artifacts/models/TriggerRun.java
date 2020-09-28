@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The TriggerRun model. */
+/** Trigger runs. */
 @Fluent
 public final class TriggerRun {
     /*

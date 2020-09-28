@@ -21,7 +21,11 @@ import com.azure.core.util.Context;
 public final class PipelineRunClient {
     private final PipelineRunsImpl serviceClient;
 
-    /** Initializes an instance of PipelineRuns client. */
+    /**
+     * Initializes an instance of PipelineRuns client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     PipelineRunClient(PipelineRunsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

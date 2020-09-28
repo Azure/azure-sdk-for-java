@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SqlPoolReference model. */
+/** SQL pool reference type. */
 @Fluent
 public final class SqlPoolReference {
     /*

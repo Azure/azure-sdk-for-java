@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureMLWebServiceFile model. */
+/** Azure ML WebService Input/Output file. */
 @Fluent
 public final class AzureMLWebServiceFile {
     /*

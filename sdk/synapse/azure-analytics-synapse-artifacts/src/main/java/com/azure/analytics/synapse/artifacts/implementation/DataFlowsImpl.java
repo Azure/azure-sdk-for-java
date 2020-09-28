@@ -212,7 +212,6 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(String dataFlowName, DataFlowResource dataFlow) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch)
                 .flatMap(
                         (Response<DataFlowResource> res) -> {
@@ -254,7 +253,6 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowResource createOrUpdateDataFlow(String dataFlowName, DataFlowResource dataFlow) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateDataFlowAsync(dataFlowName, dataFlow, ifMatch).block();
     }
 
@@ -380,7 +378,6 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch)
                 .flatMap(
                         (Response<DataFlowResource> res) -> {
@@ -420,7 +417,6 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowResource getDataFlow(String dataFlowName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getDataFlowAsync(dataFlowName, ifNoneMatch).block();
     }
 

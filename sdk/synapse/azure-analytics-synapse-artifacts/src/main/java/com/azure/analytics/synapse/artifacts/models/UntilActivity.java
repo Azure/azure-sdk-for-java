@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The UntilActivity model. */
+/**
+ * This activity executes inner activities until the specified boolean expression results to true or timeout is reached,
+ * whichever is earlier.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Until")
 @JsonFlatten

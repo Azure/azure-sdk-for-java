@@ -20,7 +20,11 @@ import com.azure.core.util.Context;
 public final class SparkBatchClient {
     private final SparkBatchesImpl serviceClient;
 
-    /** Initializes an instance of SparkBatches client. */
+    /**
+     * Initializes an instance of SparkBatches client.
+     *
+     * @param serviceClient the service client implementation.
+     */
     SparkBatchClient(SparkBatchesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }

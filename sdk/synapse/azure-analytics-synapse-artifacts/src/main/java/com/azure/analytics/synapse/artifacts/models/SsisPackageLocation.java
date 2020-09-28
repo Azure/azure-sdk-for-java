@@ -9,7 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SsisPackageLocation model. */
+/** SSIS package location. */
 @JsonFlatten
 @Fluent
 public class SsisPackageLocation {

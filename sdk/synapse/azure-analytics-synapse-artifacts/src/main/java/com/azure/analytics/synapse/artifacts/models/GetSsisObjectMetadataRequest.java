@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GetSsisObjectMetadataRequest model. */
+/** The request payload of get SSIS object metadata. */
 @Fluent
 public final class GetSsisObjectMetadataRequest {
     /*

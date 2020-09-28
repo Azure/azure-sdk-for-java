@@ -321,7 +321,6 @@ public final class LinkedServicesImpl {
     public Mono<LinkedServiceResource> createOrUpdateLinkedServiceAsync(
             String linkedServiceName, LinkedServiceResource linkedService) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch)
                 .flatMap(
                         (Response<LinkedServiceResource> res) -> {
@@ -365,7 +364,6 @@ public final class LinkedServicesImpl {
     public LinkedServiceResource createOrUpdateLinkedService(
             String linkedServiceName, LinkedServiceResource linkedService) {
         final String ifMatch = null;
-        final Context context = null;
         return createOrUpdateLinkedServiceAsync(linkedServiceName, linkedService, ifMatch).block();
     }
 
@@ -493,7 +491,6 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedServiceResource> getLinkedServiceAsync(String linkedServiceName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch)
                 .flatMap(
                         (Response<LinkedServiceResource> res) -> {
@@ -533,7 +530,6 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedServiceResource getLinkedService(String linkedServiceName) {
         final String ifNoneMatch = null;
-        final Context context = null;
         return getLinkedServiceAsync(linkedServiceName, ifNoneMatch).block();
     }
 
