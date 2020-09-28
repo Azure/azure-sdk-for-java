@@ -140,6 +140,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
+        logger
+            .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}",
+                  this.locationEndpoint, operationType, this.queryplanAddressRefreshCount);
+
         Duration retryDelay = Duration.ZERO;
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
     }
