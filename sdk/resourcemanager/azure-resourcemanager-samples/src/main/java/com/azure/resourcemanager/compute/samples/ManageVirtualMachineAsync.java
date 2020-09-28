@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
@@ -80,14 +80,13 @@ public final class ManageVirtualMachineAsync {
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            Mono<NetworkInterface> nicMono = azureResourceManager.networkInterfaces().define(Utils.randomResourceName(azureResourceManager, "nic", 20))
+            Mono<Network> networkMono = azureResourceManager.networks().define(Utils.randomResourceName(azureResourceManager, "network", 20))
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
+                .withAddressSpace("10.0.0.0/28")
                 .createAsync();
 
-            Mono.zip(dataDiskMono, nicMono)
+            Mono.zip(dataDiskMono, networkMono)
                 .flatMapMany(
                     tuple -> Flux.merge(
                         Mono.defer(() -> {
@@ -95,7 +94,10 @@ public final class ManageVirtualMachineAsync {
                             return azureResourceManager.virtualMachines().define(windowsVMName)
                                 .withRegion(region)
                                 .withExistingResourceGroup(rgName)
-                                .withExistingPrimaryNetworkInterface(tuple.getT2())
+                                .withExistingPrimaryNetwork(tuple.getT2())
+                                .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                                .withPrimaryPrivateIPAddressDynamic()
+                                .withoutPrimaryPublicIPAddress()
                                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                                 .withAdminUsername(userName)
                                 .withAdminPassword(password)
@@ -110,7 +112,10 @@ public final class ManageVirtualMachineAsync {
                             return azureResourceManager.virtualMachines().define(linuxVMName)
                                 .withRegion(region)
                                 .withExistingResourceGroup(rgName)
-                                .withExistingPrimaryNetworkInterface(tuple.getT2())
+                                .withExistingPrimaryNetwork(tuple.getT2())
+                                .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                                .withPrimaryPrivateIPAddressDynamic()
+                                .withoutPrimaryPublicIPAddress()
                                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                                 .withRootUsername(userName)
                                 .withRootPassword(password)
