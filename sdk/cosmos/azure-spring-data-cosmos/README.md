@@ -665,10 +665,10 @@ public class MultiDatasourceApplication implements CommandLineRunner {
 
     @Autowired
     private BookRepository bookRepository;
-    
+
     private final User user = new User("1024", "1024@geek.com", "1k", "Mars");
     private final Book book = new Book("9780792745488", "Zen and the Art of Motorcycle Maintenance", "Robert M. Pirsig");
-    
+
     public static void main(String[] args) {
         SpringApplication.run(MultiDatasourceApplication.class, args);
     }
