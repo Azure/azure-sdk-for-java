@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 
 /**

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewaySslPolicy model. */
+/** Application Gateway Ssl policy. */
 @Fluent
 public final class ApplicationGatewaySslPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslPolicy.class);

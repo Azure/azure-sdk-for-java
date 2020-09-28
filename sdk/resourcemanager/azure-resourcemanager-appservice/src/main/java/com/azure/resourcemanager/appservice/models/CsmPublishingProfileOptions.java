@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CsmPublishingProfileOptions model. */
+/** Publishing options for requested profile. */
 @Fluent
 public final class CsmPublishingProfileOptions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmPublishingProfileOptions.class);

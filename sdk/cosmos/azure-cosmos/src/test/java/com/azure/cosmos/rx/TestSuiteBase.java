@@ -981,6 +981,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return clientBuildersWithDirectSession(true, toArray(protocols));
     }
 
+    @DataProvider
+    public static Object[][] simpleClientBuilderGatewaySession() {
+        return clientBuildersWithDirectSession(true);
+    }
+
     static Protocol[] toArray(List<Protocol> protocols) {
         return protocols.toArray(new Protocol[protocols.size()]);
     }

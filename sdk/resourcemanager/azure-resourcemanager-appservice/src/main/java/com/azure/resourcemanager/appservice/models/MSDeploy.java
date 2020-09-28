@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The MSDeploy model. */
+/** MSDeploy ARM PUT information. */
 @JsonFlatten
 @Fluent
 public class MSDeploy extends ProxyOnlyResource {

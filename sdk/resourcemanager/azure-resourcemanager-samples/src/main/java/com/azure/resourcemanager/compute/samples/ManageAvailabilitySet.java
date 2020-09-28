@@ -40,12 +40,12 @@ public final class ManageAvailabilitySet {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMA", 15);
-        final String availSetName1 = azureResourceManager.sdkContext().randomResourceName("av1", 15);
-        final String availSetName2 = azureResourceManager.sdkContext().randomResourceName("av2", 15);
-        final String vm1Name = azureResourceManager.sdkContext().randomResourceName("vm1", 15);
-        final String vm2Name = azureResourceManager.sdkContext().randomResourceName("vm2", 15);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMA", 15);
+        final String availSetName1 = Utils.randomResourceName(azureResourceManager, "av1", 15);
+        final String availSetName2 = Utils.randomResourceName(azureResourceManager, "av2", 15);
+        final String vm1Name = Utils.randomResourceName(azureResourceManager, "vm1", 15);
+        final String vm2Name = Utils.randomResourceName(azureResourceManager, "vm2", 15);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 15);
 
         final String userName = "tirekicker";
         final String password = Utils.password();

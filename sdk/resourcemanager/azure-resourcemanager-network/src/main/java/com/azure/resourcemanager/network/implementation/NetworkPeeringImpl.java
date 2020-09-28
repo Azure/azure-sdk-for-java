@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeering.DefinitionStages.WithCreate;
@@ -374,7 +374,8 @@ class NetworkPeeringImpl
                                 .defer(
                                     () -> {
                                         // No matching remote peering, so create one on the remote network
-                                        String peeringName = this.manager().sdkContext().randomResourceName("peer", 15);
+                                        String peeringName = this.manager().resourceManager().internalContext()
+                                            .randomResourceName("peer", 15);
 
                                         WithCreate remotePeeringDefinition =
                                             remoteNetwork

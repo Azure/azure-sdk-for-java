@@ -393,14 +393,14 @@ public final class DigitalTwinsClient {
 
     /**
      * List the models in this digital twins instance based on some options.
-     * @param listModelOptions The options to follow when listing the models.
+     * @param modelsListOptions The options to follow when listing the models.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context) {
+    public PagedIterable<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions, Context context) {
         return new PagedIterable<>(
-            digitalTwinsAsyncClient.listModels(listModelOptions, context));
+            digitalTwinsAsyncClient.listModels(modelsListOptions, context));
     }
 
     /**

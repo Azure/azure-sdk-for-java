@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WorkerPool model. */
+/** Worker pool of an App Service Environment. */
 @Fluent
 public final class WorkerPool {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkerPool.class);

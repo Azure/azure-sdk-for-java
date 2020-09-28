@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultKeyReference model. */
+/** Describes a reference to Key Vault Key. */
 @Fluent
 public final class KeyVaultKeyReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyReference.class);

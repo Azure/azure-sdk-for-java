@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeerings;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;

@@ -7,8 +7,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.Policykey;

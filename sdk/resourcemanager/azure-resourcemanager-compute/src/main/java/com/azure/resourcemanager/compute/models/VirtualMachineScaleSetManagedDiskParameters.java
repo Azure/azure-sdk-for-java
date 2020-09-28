@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetManagedDiskParameters model. */
+/** Describes the parameters of a ScaleSet managed disk. */
 @Fluent
 public final class VirtualMachineScaleSetManagedDiskParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetManagedDiskParameters.class);

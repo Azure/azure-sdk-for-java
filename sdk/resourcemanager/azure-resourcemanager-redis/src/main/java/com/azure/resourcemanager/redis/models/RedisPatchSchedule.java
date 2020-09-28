@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;

@@ -12,12 +12,13 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.models.ShareFileItem;
+
+import java.time.Duration;
 
 /**
  * Azure Container Instance sample for managing container instances with Azure File Share mount.
@@ -33,9 +34,9 @@ public class ManageContainerInstanceWithAzureFileShareMount {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
-        final String shareName = azureResourceManager.sdkContext().randomResourceName("fileshare", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACI", 15);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
+        final String shareName = Utils.randomResourceName(azureResourceManager, "fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 
@@ -67,10 +68,10 @@ public class ManageContainerInstanceWithAzureFileShareMount {
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
-            SdkContext.sleep(30000);
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs

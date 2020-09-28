@@ -8,7 +8,7 @@ import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
@@ -112,7 +112,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
 
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             ResourceManager resourceManager =
                 ResourceManager
                     .authenticate(credentialFromFile(), profile())
@@ -127,7 +127,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
                 .apply();
 
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Assertions.assertNotNull(resourceManager.resourceGroups().getByName(group.name()));
             try {
                 resourceManager.resourceGroups().define(rgName + "2").withRegion(Region.US_WEST).create();

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The P2SVpnConnectionHealthRequest model. */
+/** List of P2S Vpn connection health request. */
 @Fluent
 public final class P2SVpnConnectionHealthRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnConnectionHealthRequest.class);

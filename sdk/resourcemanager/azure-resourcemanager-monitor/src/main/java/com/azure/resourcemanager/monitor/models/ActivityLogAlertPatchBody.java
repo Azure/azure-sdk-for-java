@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ActivityLogAlertPatchBody model. */
+/** An activity log alert object for the body of patch operations. */
 @JsonFlatten
 @Fluent
 public class ActivityLogAlertPatchBody {

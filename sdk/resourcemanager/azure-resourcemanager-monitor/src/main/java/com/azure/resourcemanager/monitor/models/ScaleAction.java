@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The ScaleAction model. */
+/** The parameters for the scaling action. */
 @Fluent
 public final class ScaleAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleAction.class);

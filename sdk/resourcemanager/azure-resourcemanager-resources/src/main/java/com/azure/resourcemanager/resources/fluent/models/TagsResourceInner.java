@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.Tags;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TagsResource model. */
+/** Wrapper resource for tags API requests and responses. */
 @Fluent
 public final class TagsResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResourceInner.class);

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpCon
 import com.azure.resourcemanager.network.models.ApplicationGatewayPathRule;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPathRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPathRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;

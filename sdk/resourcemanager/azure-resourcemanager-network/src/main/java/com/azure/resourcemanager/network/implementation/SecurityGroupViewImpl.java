@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.SecurityGroupNetworkInterface;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
-import com.azure.resourcemanager.network.fluent.inner.SecurityGroupViewResultInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityGroupViewResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import java.util.Collections;
 import java.util.List;

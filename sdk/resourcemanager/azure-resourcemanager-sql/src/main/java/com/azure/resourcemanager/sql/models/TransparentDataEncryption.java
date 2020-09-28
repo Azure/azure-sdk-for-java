@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
-import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
+import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicy;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CreateMode;
@@ -28,7 +28,6 @@ import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -297,7 +296,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                             authorizationManager
                                 .users()
                                 .getByNameAsync(accessPolicy.userPrincipalName())
-                                .subscribeOn(SdkContext.getReactorScheduler())
+                                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                                 .doOnNext(user -> accessPolicy.forObjectId(user.id()))
                                 .switchIfEmpty(
                                     Mono
@@ -315,7 +314,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                             authorizationManager
                                 .servicePrincipals()
                                 .getByNameAsync(accessPolicy.servicePrincipalName())
-                                .subscribeOn(SdkContext.getReactorScheduler())
+                                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                                 .doOnNext(sp -> accessPolicy.forObjectId(sp.id()))
                                 .switchIfEmpty(
                                     Mono

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.storage.models.BlobServiceProperties;
 import com.azure.resourcemanager.storage.models.CorsRule;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
-import com.azure.resourcemanager.storage.fluent.inner.BlobServicePropertiesInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 
 import java.util.ArrayList;
 import java.util.List;

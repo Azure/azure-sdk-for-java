@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The InitContainerPropertiesDefinitionInstanceView model. */
+/** The instance view of the init container. Only valid in response. */
 @Immutable
 public final class InitContainerPropertiesDefinitionInstanceView {
     @JsonIgnore

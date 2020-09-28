@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.TopicsClient;
-import com.azure.resourcemanager.servicebus.fluent.inner.TopicResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.TopicResourceInner;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;

@@ -14,11 +14,12 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -37,8 +38,8 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("saMonitor", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "saMonitor", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgMonitor", 20);
 
         try {
             // ============================================================
@@ -94,7 +95,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // give sometime for the infrastructure to process the records and fit into time grain.
             // Note: Activity Log alerts could also be configured to route the logs to EventHubs through Monitor diagnostic Settings configuration
             // for near real time monitoring.
-            SdkContext.sleep(6 * 60000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(6));
 
             OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-08-03T16:34:27.009944500+08:00");
             // get activity logs for the same period.

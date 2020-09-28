@@ -13,9 +13,9 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -58,7 +58,7 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.nicName = name;
-        this.namer = this.manager().sdkContext().createIdentifierProvider(this.nicName);
+        this.namer = this.manager().resourceManager().internalContext().createIdentifierProvider(this.nicName);
         initializeChildrenFromInner();
     }
 
@@ -471,7 +471,8 @@ class NetworkInterfaceImpl
         return AcceptedImpl
             .newAccepted(
                 logger,
-                this.manager().serviceClient(),
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
                 () ->
                     this
                         .manager()

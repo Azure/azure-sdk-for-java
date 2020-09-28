@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteServiceProviderBandwidthsOffered model. */
+/** Contains bandwidths offered in ExpressRouteServiceProvider resources. */
 @Fluent
 public final class ExpressRouteServiceProviderBandwidthsOffered {
     @JsonIgnore

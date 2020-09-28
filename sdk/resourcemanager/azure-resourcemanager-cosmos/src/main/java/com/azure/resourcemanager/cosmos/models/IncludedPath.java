@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IncludedPath model. */
+/** The paths that are included in indexing. */
 @Fluent
 public final class IncludedPath {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IncludedPath.class);

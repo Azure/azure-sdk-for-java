@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AzureReachabilityReportLatencyInfo model. */
+/** Details on latency for a time series. */
 @Fluent
 public final class AzureReachabilityReportLatencyInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportLatencyInfo.class);

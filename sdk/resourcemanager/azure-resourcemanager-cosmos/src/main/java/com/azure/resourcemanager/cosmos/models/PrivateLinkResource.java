@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 

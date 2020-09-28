@@ -6,7 +6,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.GeographicHierarchiesClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerGeographicHierarchyInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.TrafficManagerGeographicHierarchyInner;
 import com.azure.resourcemanager.trafficmanager.models.GeographicHierarchies;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 

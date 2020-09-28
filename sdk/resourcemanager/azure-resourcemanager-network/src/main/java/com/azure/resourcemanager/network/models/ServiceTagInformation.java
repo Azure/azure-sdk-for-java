@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServiceTagInformation model. */
+/** The service tag information. */
 @Immutable
 public final class ServiceTagInformation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagInformation.class);

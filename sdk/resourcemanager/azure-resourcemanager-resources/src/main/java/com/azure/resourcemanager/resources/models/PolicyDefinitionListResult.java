@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PolicyDefinitionListResult model. */
+/** List of policy definitions. */
 @Fluent
 public final class PolicyDefinitionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionListResult.class);

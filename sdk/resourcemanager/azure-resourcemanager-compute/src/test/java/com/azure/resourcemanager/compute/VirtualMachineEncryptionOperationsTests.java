@@ -33,7 +33,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
     @Test
     @Disabled("Requires manually creating service principal and setting SP credentials in the test")
     public void canEncryptVirtualMachine() {
-        // https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption
+        // https://docs.microsoft.com/azure/security/azure-security-disk-encryption
         //
         // KeyVault Resource ID
         String keyVaultId = "KEY_VAULT_ID_HERE";

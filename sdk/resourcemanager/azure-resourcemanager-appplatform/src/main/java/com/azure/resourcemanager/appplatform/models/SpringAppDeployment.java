@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;

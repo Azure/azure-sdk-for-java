@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SecurityRuleListResult model. */
+/**
+ * Response for ListSecurityRule API service call. Retrieves all security rules that belongs to a network security
+ * group.
+ */
 @Fluent
 public final class SecurityRuleListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleListResult.class);
