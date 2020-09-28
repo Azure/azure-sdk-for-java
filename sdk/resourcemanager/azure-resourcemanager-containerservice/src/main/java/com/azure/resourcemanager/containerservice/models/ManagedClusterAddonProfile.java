@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ManagedClusterAddonProfile model. */
+/** A Kubernetes add-on profile for a managed cluster. */
 @Fluent
 public final class ManagedClusterAddonProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfile.class);

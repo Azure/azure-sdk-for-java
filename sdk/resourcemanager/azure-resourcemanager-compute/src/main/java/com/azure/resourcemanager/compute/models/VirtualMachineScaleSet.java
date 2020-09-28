@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -162,7 +162,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         this.fromFrontend(frontendName);
         return this;
@@ -170,7 +170,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         this.fromFrontend(frontendName);
         return this;
@@ -178,7 +178,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 

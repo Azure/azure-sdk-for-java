@@ -20,9 +20,9 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnClientParameters;
 import com.azure.resourcemanager.network.models.VpnType;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -111,7 +111,9 @@ class VirtualNetworkGatewayImpl
     @Override
     public VirtualNetworkGatewayImpl withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
         withNewNetwork(
-            this.manager().sdkContext().randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
+            this.manager().resourceManager().internalContext().randomResourceName("vnet", 8),
+            addressSpaceCidr,
+            subnetAddressSpaceCidr);
         return this;
     }
 
@@ -141,7 +143,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIpAddress() {
-        final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
+        final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
         this.creatablePip =
             this
                 .manager()
@@ -364,7 +366,7 @@ class VirtualNetworkGatewayImpl
         VirtualNetworkGatewayIpConfigurationImpl ipConfig =
             (VirtualNetworkGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().sdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
@@ -373,7 +375,7 @@ class VirtualNetworkGatewayImpl
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()

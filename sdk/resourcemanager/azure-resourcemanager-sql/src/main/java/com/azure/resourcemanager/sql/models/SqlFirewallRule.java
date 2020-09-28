@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server Firewall Rule. */

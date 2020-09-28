@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The SloUsageMetric model. */
+/** A Slo Usage Metric. */
 @Immutable
 public final class SloUsageMetric {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SloUsageMetric.class);

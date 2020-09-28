@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayCustomError model. */
+/** Customer error of an application gateway. */
 @Fluent
 public final class ApplicationGatewayCustomError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayCustomError.class);

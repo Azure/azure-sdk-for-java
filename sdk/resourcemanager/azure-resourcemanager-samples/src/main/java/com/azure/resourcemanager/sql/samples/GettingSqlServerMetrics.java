@@ -9,7 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
 import com.azure.resourcemanager.monitor.models.Metric;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.monitor.models.MetricValue;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -52,10 +52,10 @@ public class GettingSqlServerMetrics {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws ClassNotFoundException, SQLException {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqltest", 20);
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "sqltest", 20);
         final String dbName = "dbSample";
         final String epName = "epSample";
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgsql", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
@@ -164,7 +164,7 @@ public class GettingSqlServerMetrics {
                 }
             }
 
-            SdkContext.sleep(6 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(6));
 
 
             // ============================================================

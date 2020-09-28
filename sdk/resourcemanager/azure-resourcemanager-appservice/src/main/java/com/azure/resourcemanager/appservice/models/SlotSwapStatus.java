@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SlotSwapStatus model. */
+/** The status of the last successful slot swap operation. */
 @Immutable
 public final class SlotSwapStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SlotSwapStatus.class);

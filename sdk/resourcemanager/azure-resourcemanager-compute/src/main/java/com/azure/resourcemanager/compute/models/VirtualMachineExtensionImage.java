@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**

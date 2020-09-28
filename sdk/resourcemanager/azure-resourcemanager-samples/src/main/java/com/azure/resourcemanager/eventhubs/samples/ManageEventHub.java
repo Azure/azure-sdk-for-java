@@ -35,12 +35,12 @@ public class ManageEventHub {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String namespaceName1 = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String namespaceName2 = azureResourceManager.sdkContext().randomResourceName("ns", 14);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stg", 14);
-        final String eventHubName1 = azureResourceManager.sdkContext().randomResourceName("eh", 14);
-        final String eventHubName2 = azureResourceManager.sdkContext().randomResourceName("eh", 14);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV_", 24);
+        final String namespaceName1 = Utils.randomResourceName(azureResourceManager, "ns", 14);
+        final String namespaceName2 = Utils.randomResourceName(azureResourceManager, "ns", 14);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "stg", 14);
+        final String eventHubName1 = Utils.randomResourceName(azureResourceManager, "eh", 14);
+        final String eventHubName2 = Utils.randomResourceName(azureResourceManager, "eh", 14);
         try {
 
             //============================================================

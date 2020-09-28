@@ -4,107 +4,34 @@
 
 package com.azure.resourcemanager.appplatform.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appplatform.fluent.inner.ConfigServerResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ConfigServerResourceInner;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigServers. */
-public final class ConfigServersClient {
-    private final ClientLogger logger = new ClientLogger(ConfigServersClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final ConfigServersService service;
-
-    /** The service client containing this operation class. */
-    private final AppPlatformManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in ConfigServersClient. */
+public interface ConfigServersClient {
     /**
-     * Initializes an instance of ConfigServersClient.
+     * Get the config server and its properties.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the config server and its properties.
      */
-    ConfigServersClient(AppPlatformManagementClient client) {
-        this.service =
-            RestProxy.create(ConfigServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for AppPlatformManagementClientConfigServers to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ConfigServersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configServers/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigServerResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configServers/default")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updatePut(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @BodyParam("application/json") ConfigServerResourceInner configServerResource,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configServers/default")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updatePatch(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @BodyParam("application/json") ConfigServerResourceInner configServerResource,
-            Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ConfigServerResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName);
 
     /**
      * Get the config server and its properties.
@@ -113,45 +40,26 @@ public final class ConfigServersClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the config server and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigServerResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<ConfigServerResourceInner> getAsync(String resourceGroupName, String serviceName);
+
+    /**
+     * Get the config server and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the config server and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigServerResourceInner get(String resourceGroupName, String serviceName);
 
     /**
      * Get the config server and its properties.
@@ -161,124 +69,12 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the config server and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigServerResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                context);
-    }
-
-    /**
-     * Get the config server and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the config server and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigServerResourceInner> getAsync(String resourceGroupName, String serviceName) {
-        return getWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(
-                (Response<ConfigServerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the config server and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the config server and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigServerResourceInner> getAsync(String resourceGroupName, String serviceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serviceName, context)
-            .flatMap(
-                (Response<ConfigServerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the config server and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the config server and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigServerResourceInner get(String resourceGroupName, String serviceName) {
-        return getAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Get the config server and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the config server and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigServerResourceInner get(String resourceGroupName, String serviceName, Context context) {
-        return getAsync(resourceGroupName, serviceName, context).block();
-    }
+    Response<ConfigServerResourceInner> getWithResponse(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Update the config server.
@@ -288,51 +84,45 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        ConfigServerResourceInner configServerResource = new ConfigServerResourceInner();
-        configServerResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePut(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            configServerResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param properties Config server git properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePutAsync(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param properties Config server git properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePut(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
 
     /**
      * Update the config server.
@@ -343,48 +133,13 @@ public final class ConfigServersClient {
      * @param properties Config server git properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        ConfigServerResourceInner configServerResource = new ConfigServerResourceInner();
-        configServerResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .updatePut(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                configServerResource,
-                context);
-    }
+    SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePut(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context);
 
     /**
      * Update the config server.
@@ -394,23 +149,43 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePutAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updatePutWithResponseAsync(resourceGroupName, serviceName, properties);
-        return this
-            .client
-            .<ConfigServerResourceInner, ConfigServerResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigServerResourceInner.class,
-                ConfigServerResourceInner.class,
-                Context.NONE);
-    }
+    Mono<ConfigServerResourceInner> updatePutAsync(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConfigServerResourceInner> updatePutAsync(String resourceGroupName, String serviceName);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param properties Config server git properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigServerResourceInner updatePut(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
 
     /**
      * Update the config server.
@@ -421,25 +196,27 @@ public final class ConfigServersClient {
      * @param properties Config server git properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePutAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePutWithResponseAsync(resourceGroupName, serviceName, properties, context);
-        return this
-            .client
-            .<ConfigServerResourceInner, ConfigServerResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigServerResourceInner.class,
-                ConfigServerResourceInner.class,
-                context);
-    }
+    ConfigServerResourceInner updatePut(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigServerResourceInner updatePut(String resourceGroupName, String serviceName);
 
     /**
      * Update the config server.
@@ -449,34 +226,13 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePut(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, properties).getSyncPoller();
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePut(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, properties, context).getSyncPoller();
-    }
+    Mono<Response<Flux<ByteBuffer>>> updatePatchWithResponseAsync(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
 
     /**
      * Update the config server.
@@ -486,38 +242,13 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigServerResourceInner> updatePutAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigServerResourceInner> updatePutAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
+    PollerFlux<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatchAsync(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
 
     /**
      * Update the config server.
@@ -527,15 +258,13 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigServerResourceInner updatePut(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        return updatePutAsync(resourceGroupName, serviceName, properties).block();
-    }
+    SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatch(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
 
     /**
      * Update the config server.
@@ -546,15 +275,13 @@ public final class ConfigServersClient {
      * @param properties Config server git properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigServerResourceInner updatePut(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        return updatePutAsync(resourceGroupName, serviceName, properties, context).block();
-    }
+    SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatch(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context);
 
     /**
      * Update the config server.
@@ -564,51 +291,43 @@ public final class ConfigServersClient {
      * @param serviceName The name of the Service resource.
      * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updatePatchWithResponseAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        ConfigServerResourceInner configServerResource = new ConfigServerResourceInner();
-        configServerResource.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePatch(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            configServerResource,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<ConfigServerResourceInner> updatePatchAsync(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConfigServerResourceInner> updatePatchAsync(String resourceGroupName, String serviceName);
+
+    /**
+     * Update the config server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param properties Config server git properties payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return config Server resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigServerResourceInner updatePatch(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties);
 
     /**
      * Update the config server.
@@ -619,48 +338,13 @@ public final class ConfigServersClient {
      * @param properties Config server git properties payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updatePatchWithResponseAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (properties != null) {
-            properties.validate();
-        }
-        ConfigServerResourceInner configServerResource = new ConfigServerResourceInner();
-        configServerResource.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .updatePatch(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                configServerResource,
-                context);
-    }
+    ConfigServerResourceInner updatePatch(
+        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context);
 
     /**
      * Update the config server.
@@ -668,168 +352,11 @@ public final class ConfigServersClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return config Server resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatchAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePatchWithResponseAsync(resourceGroupName, serviceName, properties);
-        return this
-            .client
-            .<ConfigServerResourceInner, ConfigServerResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigServerResourceInner.class,
-                ConfigServerResourceInner.class,
-                Context.NONE);
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatchAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePatchWithResponseAsync(resourceGroupName, serviceName, properties, context);
-        return this
-            .client
-            .<ConfigServerResourceInner, ConfigServerResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigServerResourceInner.class,
-                ConfigServerResourceInner.class,
-                context);
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatch(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        return beginUpdatePatchAsync(resourceGroupName, serviceName, properties).getSyncPoller();
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ConfigServerResourceInner>, ConfigServerResourceInner> beginUpdatePatch(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        return beginUpdatePatchAsync(resourceGroupName, serviceName, properties, context).getSyncPoller();
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigServerResourceInner> updatePatchAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        return beginUpdatePatchAsync(resourceGroupName, serviceName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigServerResourceInner> updatePatchAsync(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        return beginUpdatePatchAsync(resourceGroupName, serviceName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigServerResourceInner updatePatch(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties) {
-        return updatePatchAsync(resourceGroupName, serviceName, properties).block();
-    }
-
-    /**
-     * Update the config server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param properties Config server git properties payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return config Server resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigServerResourceInner updatePatch(
-        String resourceGroupName, String serviceName, ConfigServerProperties properties, Context context) {
-        return updatePatchAsync(resourceGroupName, serviceName, properties, context).block();
-    }
+    ConfigServerResourceInner updatePatch(String resourceGroupName, String serviceName);
 }

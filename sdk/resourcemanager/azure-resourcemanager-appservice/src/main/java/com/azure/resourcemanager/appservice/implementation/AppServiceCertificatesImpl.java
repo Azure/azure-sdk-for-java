@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
-import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
+import com.azure.resourcemanager.appservice.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;

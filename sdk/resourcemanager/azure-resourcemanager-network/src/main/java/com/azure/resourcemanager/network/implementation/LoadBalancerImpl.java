@@ -21,13 +21,13 @@ import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerBackendImpl ensureUniqueBackend() {
-        String name = this.manager().sdkContext().randomResourceName("backend", 20);
+        String name = this.manager().resourceManager().internalContext().randomResourceName("backend", 20);
         LoadBalancerBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -130,7 +130,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerFrontendImpl ensureUniqueFrontend() {
-        String name = this.manager().sdkContext().randomResourceName("frontend", 20);
+        String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 20);
         LoadBalancerFrontendImpl frontend = this.defineFrontend(name);
         frontend.attach();
         return frontend;
@@ -507,7 +507,7 @@ class LoadBalancerImpl
             this.creatablePIPKeys.put(this.addDependency(creatablePip), frontendName);
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
-            String exceptionMessage = 
+            String exceptionMessage =
                 "This public IP address definition is already associated with a frontend under a different name.";
             throw logger.logExceptionAsError(new IllegalArgumentException(exceptionMessage));
         }

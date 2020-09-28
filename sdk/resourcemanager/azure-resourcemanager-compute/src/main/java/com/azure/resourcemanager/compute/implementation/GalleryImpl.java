@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.models.GalleryImage;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 

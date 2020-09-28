@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfil
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.azure.resourcemanager.compute.models.TargetRegion;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryImageVersionInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;

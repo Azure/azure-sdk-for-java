@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The DeliveryRuleUrlFileExtensionCondition model. */
+/** Defines the URL file extension condition for the delivery rule. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("UrlFileExtension")
 @Fluent

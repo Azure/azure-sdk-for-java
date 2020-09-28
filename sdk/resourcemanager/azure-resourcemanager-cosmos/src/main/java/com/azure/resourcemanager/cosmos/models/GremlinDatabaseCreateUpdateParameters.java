@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The GremlinDatabaseCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB Gremlin database. */
 @JsonFlatten
 @Fluent
 public class GremlinDatabaseCreateUpdateParameters extends ArmResourceProperties {

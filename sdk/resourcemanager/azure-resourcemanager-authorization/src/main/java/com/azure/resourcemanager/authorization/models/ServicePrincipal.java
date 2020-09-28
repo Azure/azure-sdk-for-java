@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

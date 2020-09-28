@@ -43,12 +43,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 15);
-        final String customImageName = azureResourceManager.sdkContext().randomResourceName("img", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "VM1", 15);
+        final String linuxVMName2 = Utils.randomResourceName(azureResourceManager, "VM2", 15);
+        final String linuxVMName3 = Utils.randomResourceName(azureResourceManager, "VM3", 15);
+        final String customImageName = Utils.randomResourceName(azureResourceManager, "img", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

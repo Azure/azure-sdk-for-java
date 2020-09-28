@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.authorization.models;
 
-import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
+import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 

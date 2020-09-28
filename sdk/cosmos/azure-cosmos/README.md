@@ -14,7 +14,7 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.5.0</version>
+  <version>4.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

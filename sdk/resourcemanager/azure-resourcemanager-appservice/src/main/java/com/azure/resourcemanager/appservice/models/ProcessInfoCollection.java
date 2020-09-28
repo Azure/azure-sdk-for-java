@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.ProcessInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.ProcessInfoInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ProcessInfoCollection model. */
+/** Collection of Kudu process information elements. */
 @Fluent
 public final class ProcessInfoCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessInfoCollection.class);

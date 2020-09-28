@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricDefinitionCollection model. */
+/** Represents collection of metric definitions. */
 @Fluent
 public final class MetricDefinitionCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionCollection.class);

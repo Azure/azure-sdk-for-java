@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Express Route Circuit. */
@@ -17,8 +17,8 @@ public class TestExpressRouteCircuit {
     private static final Region REGION = Region.US_NORTH_CENTRAL;
     private String circuitName;
 
-    private void initializeResourceNames(SdkContext sdkContext) {
-        testId = sdkContext.randomResourceName("", 8);
+    private void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        testId = internalContext.randomResourceName("", 8);
         circuitName = "erc" + testId;
     }
 
@@ -26,7 +26,7 @@ public class TestExpressRouteCircuit {
     public class Basic extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().resourceManager().internalContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =
@@ -78,7 +78,7 @@ public class TestExpressRouteCircuit {
     public class ExpressRouteCircuitPeering extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
         @Override
         public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-            initializeResourceNames(expressRouteCircuits.manager().sdkContext());
+            initializeResourceNames(expressRouteCircuits.manager().resourceManager().internalContext());
 
             // create Express Route Circuit
             ExpressRouteCircuit erc =

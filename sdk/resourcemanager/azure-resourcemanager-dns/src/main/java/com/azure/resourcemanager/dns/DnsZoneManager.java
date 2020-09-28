@@ -6,7 +6,7 @@ package com.azure.resourcemanager.dns;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.dns.fluent.DnsManagementClient;
-import com.azure.resourcemanager.dns.fluent.DnsManagementClientBuilder;
+import com.azure.resourcemanager.dns.implementation.DnsManagementClientBuilder;
 import com.azure.resourcemanager.dns.implementation.DnsZonesImpl;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure DNS zone management. */
 public final class DnsZoneManager extends Manager<DnsManagementClient> {
@@ -49,19 +48,7 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
      * @return the DnsZoneManager
      */
     public static DnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return new DnsZoneManager(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the DnsZoneManager
-     */
-    public static DnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new DnsZoneManager(httpPipeline, profile, sdkContext);
+        return new DnsZoneManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -84,7 +71,7 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
         }
     }
 
-    private DnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private DnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -92,8 +79,7 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return entry point to DNS zone manager zone management */

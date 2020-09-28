@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EndpointPropertiesUpdateParametersDeliveryPolicy model. */
+/** A policy that specifies the delivery rules to be used for an endpoint. */
 @Fluent
 public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
     @JsonIgnore

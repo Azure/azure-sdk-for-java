@@ -7,7 +7,7 @@ import com.azure.resourcemanager.sql.models.MetricValue;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetricValue;
 import com.azure.resourcemanager.sql.models.UnitType;
-import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

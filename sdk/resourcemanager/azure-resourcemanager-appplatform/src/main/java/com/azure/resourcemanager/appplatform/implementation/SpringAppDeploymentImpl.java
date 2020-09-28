@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
 import com.azure.resourcemanager.appplatform.models.DeploymentInstance;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceStatus;

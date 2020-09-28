@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The RegistryUpdateParameters model. */
+/** The parameters for updating a container registry. */
 @JsonFlatten
 @Fluent
 public class RegistryUpdateParameters {

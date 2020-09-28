@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.io.OutputStream;

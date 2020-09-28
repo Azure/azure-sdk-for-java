@@ -102,12 +102,12 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageLinuxWebAppCosmosDbByMsi() {
+    public void testManageLinuxWebAppCosmosDbByMsi() throws IOException, InterruptedException {
         if (skipInPlayback()) {
             return;
         }
 
-        Assertions.assertTrue(ManageLinuxWebAppCosmosDbByMsi.runSample(azureResourceManager));
+        Assertions.assertTrue(ManageLinuxWebAppCosmosDbByMsi.runSample(azureResourceManager, ""));
     }
 
     @Test

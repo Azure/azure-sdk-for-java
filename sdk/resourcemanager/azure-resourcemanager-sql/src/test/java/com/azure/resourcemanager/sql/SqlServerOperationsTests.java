@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeActual;
@@ -53,6 +53,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -545,7 +546,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(sqlServer2);
 
         sqlServer2.dnsAliases().acquire(sqlServerName, sqlServer1.id());
-        SdkContext.sleep(3 * 60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(3));
 
         dnsAlias = sqlServer2.dnsAliases().get(sqlServerName);
         Assertions.assertNotNull(dnsAlias);
@@ -985,7 +986,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
         Assertions.assertNotNull(transparentDataEncryptionActivities);
 
-        SdkContext.sleep(10000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         transparentDataEncryption =
             sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStatus.DISABLED);
         Assertions.assertNotNull(transparentDataEncryption);
@@ -1083,7 +1084,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withSourceDatabase(databaseInServer1.id())
                 .withMode(CreateMode.ONLINE_SECONDARY)
                 .create();
-        SdkContext.sleep(2000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(2));
         List<ReplicationLink> replicationLinksInDb1 =
             new ArrayList<>(databaseInServer1.listReplicationLinks().values());
 
@@ -1103,12 +1104,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Failover
         replicationLinksInDb2.get(0).failover();
         replicationLinksInDb2.get(0).refresh();
-        SdkContext.sleep(30000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(30));
         // Force failover
         replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
         replicationLinksInDb1.get(0).refresh();
 
-        SdkContext.sleep(30000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
         replicationLinksInDb2.get(0).delete();
         Assertions.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);

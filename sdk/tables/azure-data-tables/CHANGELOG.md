@@ -2,6 +2,9 @@
 
 ## 12.0.0-beta.2 (Unreleased)
 
+### Fixes
+
+- #15294: azure-data-tables Can Not Create TableClientBuilder
 
 ## 12.0.0-beta.1 (2020-09-10):
 

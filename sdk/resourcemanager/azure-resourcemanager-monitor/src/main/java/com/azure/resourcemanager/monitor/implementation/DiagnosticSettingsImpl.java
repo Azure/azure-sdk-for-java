@@ -4,22 +4,23 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceCollectionInner;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceCollectionInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -89,8 +90,9 @@ public class DiagnosticSettingsImpl
                     .manager
                     .serviceClient()
                     .getDiagnosticSettingsCategories()
-                    .listAsync(resourceId)
-                    .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
+                    .listWithResponseAsync(resourceId)
+                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
             .mapPage(DiagnosticSettingsCategoryImpl::new);
     }
 
@@ -123,8 +125,9 @@ public class DiagnosticSettingsImpl
                     .manager()
                     .serviceClient()
                     .getDiagnosticSettings()
-                    .listAsync(resourceId)
-                    .map(DiagnosticSettingsResourceCollectionInner::value))
+                    .listWithResponseAsync(resourceId)
+                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
             .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
     }
 
