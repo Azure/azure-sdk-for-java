@@ -104,7 +104,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
                 ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-                Utils.curl(deployedWebAppUrl);
+                Utils.sendGetRequest(deployedWebAppUrl);
             }
 
             // Now you can browse the history of autoscale form the azure portal

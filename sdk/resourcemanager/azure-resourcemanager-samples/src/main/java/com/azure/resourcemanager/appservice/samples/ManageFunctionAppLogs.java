@@ -83,7 +83,7 @@ public final class ManageFunctionAppLogs {
 
             // warm up
             System.out.println("Warming up " + appUrl + "/api/square...");
-            Utils.post("http://" + appUrl + "/api/square", "625");
+            Utils.sendPostRequest("http://" + appUrl + "/api/square", "625");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             //============================================================
@@ -95,11 +95,11 @@ public final class ManageFunctionAppLogs {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             new Thread(() ->  {
-                Utils.post("http://" + appUrl + "/api/square", "625");
+                Utils.sendPostRequest("http://" + appUrl + "/api/square", "625");
                 ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-                Utils.post("http://" + appUrl + "/api/square", "725");
+                Utils.sendPostRequest("http://" + appUrl + "/api/square", "725");
                 ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-                Utils.post("http://" + appUrl + "/api/square", "825");
+                Utils.sendPostRequest("http://" + appUrl + "/api/square", "825");
             }).start();
             while (line != null && stopWatch.getTime() < 90000) {
                 System.out.println(line);
@@ -113,11 +113,11 @@ public final class ManageFunctionAppLogs {
             new Thread(() ->  {
                 ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 System.out.println("Starting hitting");
-                Utils.post("http://" + appUrl + "/api/square", "625");
+                Utils.sendPostRequest("http://" + appUrl + "/api/square", "625");
                 ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-                Utils.post("http://" + appUrl + "/api/square", "725");
+                Utils.sendPostRequest("http://" + appUrl + "/api/square", "725");
                 ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-                Utils.post("http://" + appUrl + "/api/square", "825");
+                Utils.sendPostRequest("http://" + appUrl + "/api/square", "825");
             }).start();
 
             final AtomicInteger count = new AtomicInteger(0);

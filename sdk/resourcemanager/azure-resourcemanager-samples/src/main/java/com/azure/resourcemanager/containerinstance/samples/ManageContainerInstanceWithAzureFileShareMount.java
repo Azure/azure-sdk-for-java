@@ -68,10 +68,10 @@ public class ManageContainerInstanceWithAzureFileShareMount {
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
             ResourceManagerUtils.sleep(Duration.ofSeconds(30));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs

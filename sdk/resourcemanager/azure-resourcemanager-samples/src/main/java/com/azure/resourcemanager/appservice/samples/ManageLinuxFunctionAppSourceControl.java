@@ -73,7 +73,7 @@ public class ManageLinuxFunctionAppSourceControl {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             while (stopWatch.getTime() < TIMEOUT_IN_SECONDS * 1000) {
-                String response = Utils.get("https://" + app1UrlFunction);
+                String response = Utils.sendGetRequest("https://" + app1UrlFunction);
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
@@ -82,7 +82,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             // call function
             System.out.println("CURLing " + app1UrlFunction + "...");
-            System.out.println("Response is " + Utils.get("https://" + app1UrlFunction));
+            System.out.println("Response is " + Utils.sendGetRequest("https://" + app1UrlFunction));
             // response would be "Hello, ..."
 
 
@@ -110,7 +110,7 @@ public class ManageLinuxFunctionAppSourceControl {
             stopWatch = new StopWatch();
             stopWatch.start();
             while (stopWatch.getTime() < TIMEOUT_IN_SECONDS * 1000) {
-                String response = Utils.get("https://" + app2UrlFunction);
+                String response = Utils.sendGetRequest("https://" + app2UrlFunction);
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
@@ -119,7 +119,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             // call function
             System.out.println("CURLing " + app2UrlFunction + "...");
-            System.out.println("Response is " + Utils.get("https://" + app2UrlFunction));
+            System.out.println("Response is " + Utils.sendGetRequest("https://" + app2UrlFunction));
             // response would be "Hello, ..."
 
             return true;

@@ -140,10 +140,10 @@ public final class ManageWebAppCosmosDbByMsi {
 
             // warm up
             System.out.println("Warming up " + appUrl + "...");
-            Utils.curl("http://" + appUrl);
+            Utils.sendGetRequest("http://" + appUrl);
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             System.out.println("CURLing " + appUrl);
-            System.out.println(Utils.curl("http://" + appUrl));
+            System.out.println(Utils.sendGetRequest("http://" + appUrl));
 
 
             return true;

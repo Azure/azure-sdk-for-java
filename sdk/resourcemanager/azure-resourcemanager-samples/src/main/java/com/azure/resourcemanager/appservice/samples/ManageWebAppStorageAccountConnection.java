@@ -120,10 +120,10 @@ public final class ManageWebAppStorageAccountConnection {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
-            Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/");
+            Utils.sendGetRequest("http://" + app1Url + "/azure-samples-blob-traverser/");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("ResourceManagerUtils.curling " + app1Url + "/azure-samples-blob-traverser...");
-            System.out.println(Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/"));
+            System.out.println(Utils.sendGetRequest("http://" + app1Url + "/azure-samples-blob-traverser/"));
 
             return true;
         } finally {

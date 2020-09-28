@@ -92,10 +92,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/api/square...");
-            Utils.post("http://" + app1Url + "/api/square", "625");
+            Utils.sendPostRequest("http://" + app1Url + "/api/square", "625");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/api/square...");
-            System.out.println("Square of 625 is " + Utils.post("http://" + app1Url + "/api/square", "625"));
+            System.out.println("Square of 625 is " + Utils.sendPostRequest("http://" + app1Url + "/api/square", "625"));
 
             //============================================================
             // Create a second function app with local git source control
@@ -136,10 +136,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");
-            Utils.post("http://" + app2Url + "/api/square", "725");
+            Utils.sendPostRequest("http://" + app2Url + "/api/square", "725");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/api/square...");
-            System.out.println("Square of 725 is " + Utils.post("http://" + app2Url + "/api/square", "725"));
+            System.out.println("Square of 725 is " + Utils.sendPostRequest("http://" + app2Url + "/api/square", "725"));
 
             //============================================================
             // Create a 3rd function app with a public GitHub repo in Azure-Samples
@@ -160,10 +160,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app3Url + "/api/square...");
-            Utils.post("http://" + app3Url + "/api/square", "825");
+            Utils.sendPostRequest("http://" + app3Url + "/api/square", "825");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "/api/square...");
-            System.out.println("Square of 825 is " + Utils.post("http://" + app3Url + "/api/square", "825"));
+            System.out.println("Square of 825 is " + Utils.sendPostRequest("http://" + app3Url + "/api/square", "825"));
 
             //============================================================
             // Create a 4th function app with a personal GitHub repo and turn on continuous integration
@@ -187,10 +187,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app4Url + "...");
-            Utils.curl("http://" + app4Url);
+            Utils.sendGetRequest("http://" + app4Url);
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app4Url + "...");
-            System.out.println(Utils.curl("http://" + app4Url));
+            System.out.println(Utils.sendGetRequest("http://" + app4Url));
 
             //============================================================
             // Create a 5th function app with web deploy
@@ -213,10 +213,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app5Url + "/api/square...");
-            Utils.post("http://" + app5Url + "/api/square", "925");
+            Utils.sendPostRequest("http://" + app5Url + "/api/square", "925");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app5Url + "/api/square...");
-            System.out.println("Square of 925 is " + Utils.post("http://" + app5Url + "/api/square", "925"));
+            System.out.println("Square of 925 is " + Utils.sendPostRequest("http://" + app5Url + "/api/square", "925"));
 
             //============================================================
             // Create a 6th function app with zip deploy
@@ -239,10 +239,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app6Url + "/api/square...");
-            Utils.post("http://" + app6Url + "/api/square", "926");
+            Utils.sendPostRequest("http://" + app6Url + "/api/square", "926");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app6Url + "/api/square...");
-            System.out.println("Square of 926 is " + Utils.post("http://" + app6Url + "/api/square", "926"));
+            System.out.println("Square of 926 is " + Utils.sendPostRequest("http://" + app6Url + "/api/square", "926"));
 
             return true;
         } finally {

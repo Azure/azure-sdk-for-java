@@ -178,7 +178,7 @@ public class ManageCdnProfileWithWebApp {
         Utils.print(app);
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
         return app;
     }
 }

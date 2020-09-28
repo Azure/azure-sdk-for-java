@@ -159,22 +159,22 @@ public final class ManageWebAppSourceControlAsync {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/helloworld...");
-            Utils.curl("http://" + app1Url + "/helloworld/");
+            Utils.sendGetRequest("http://" + app1Url + "/helloworld/");
             System.out.println("Warming up " + app2Url + "/helloworld...");
-            Utils.curl("http://" + app2Url + "/helloworld/");
+            Utils.sendGetRequest("http://" + app2Url + "/helloworld/");
             System.out.println("Warming up " + app3Url + "...");
-            Utils.curl("http://" + app3Url);
+            Utils.sendGetRequest("http://" + app3Url);
             System.out.println("Warming up " + app4Url + "...");
-            Utils.curl("http://" + app4Url);
+            Utils.sendGetRequest("http://" + app4Url);
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app1Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app1Url + "/helloworld/"));
             System.out.println("CURLing " + app2Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app2Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app2Url + "/helloworld/"));
             System.out.println("CURLing " + app3Url + "...");
-            System.out.println(Utils.curl("http://" + app3Url));
+            System.out.println(Utils.sendGetRequest("http://" + app3Url));
             System.out.println("CURLing " + app4Url + "...");
-            System.out.println(Utils.curl("http://" + app4Url));
+            System.out.println(Utils.sendGetRequest("http://" + app4Url));
 
             return true;
         } finally {

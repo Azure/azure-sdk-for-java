@@ -196,7 +196,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            Mono<SimpleResponse<Flux<ByteBuffer>>> response =
+            Mono<Response<Flux<ByteBuffer>>> response =
                 HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
                         .fixedDelay(3, Duration.ofSeconds(30))
@@ -235,7 +235,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
         return path;
     }
 
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono
             .flatMap(
                 response ->
@@ -263,12 +263,12 @@ public class AppServiceTest extends ResourceManagerTestBase {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(
+        Mono<Response<Flux<ByteBuffer>>> getString(
             @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(
+        Mono<Response<Flux<ByteBuffer>>> postString(
             @HostParam("$host") String host,
             @PathParam(value = "path", encoded = true) String path,
             @BodyParam("text/plain") String body);

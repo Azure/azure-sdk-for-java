@@ -144,7 +144,7 @@ public final class ManageWebAppSlots {
         Utils.print(app);
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
         return app;
     }
 
@@ -177,10 +177,10 @@ public final class ManageWebAppSlots {
         System.out.println("Deployed staging branch to slot " + slot.name());
 
         System.out.println("CURLing " + slotUrl + "...");
-        System.out.println(Utils.curl("http://" + slotUrl));
+        System.out.println(Utils.sendGetRequest("http://" + slotUrl));
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
     }
 
     private static void swapProductionBacktoSlot(DeploymentSlot slot) {
@@ -192,6 +192,6 @@ public final class ManageWebAppSlots {
         System.out.println("Swapped production slot back to " + slot.name());
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
     }
 }

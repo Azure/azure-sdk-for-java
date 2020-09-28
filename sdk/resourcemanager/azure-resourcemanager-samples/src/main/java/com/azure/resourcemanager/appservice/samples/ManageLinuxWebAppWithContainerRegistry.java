@@ -151,10 +151,10 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             // warm up
             System.out.println("Warming up " + appUrl + "...");
-            Utils.get("http://" + appUrl);
+            Utils.sendGetRequest("http://" + appUrl);
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + appUrl + "...");
-            System.out.println(Utils.get("http://" + appUrl));
+            System.out.println(Utils.sendGetRequest("http://" + appUrl));
 
             return true;
         } finally {

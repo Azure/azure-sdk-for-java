@@ -3254,9 +3254,17 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-    public static String curl(String urlString) {
+    /**
+     * Sends a GET request to target URL.
+     * <p>
+     * The method does not handle 301 redirect.
+     *
+     * @param urlString the target URL.
+     * @return Content of the HTTP response.
+     */
+    public static String sendGetRequest(String urlString) {
         try {
-            Mono<SimpleResponse<Flux<ByteBuffer>>> response =
+            Mono<Response<Flux<ByteBuffer>>> response =
                 HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
                         .fixedDelay(3, Duration.ofSeconds(30))
@@ -3276,9 +3284,16 @@ public final class Utils {
         }
     }
 
-    public static String get(String urlString) {
+    /**
+     * Sends a POST request to target URL.
+     *
+     * @param urlString the target URL.
+     * @param body the request body.
+     * @return Content of the HTTP response.
+     * */
+    public static String sendPostRequest(String urlString, String body) {
         try {
-            SimpleResponse<String> response = stringResponse(HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Response<String> response = stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
             if (response != null) {
                 return response.getValue();
             } else {
@@ -3289,20 +3304,7 @@ public final class Utils {
         }
     }
 
-    public static String post(String urlString, String body) {
-        try {
-            SimpleResponse<String> response = stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
                 .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
@@ -3338,11 +3340,11 @@ public final class Utils {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
+        Mono<Response<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+        Mono<Response<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
     }
 
     public static <T> int getSize(Iterable<T> iterable) {

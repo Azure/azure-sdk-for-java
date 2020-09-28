@@ -212,10 +212,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs
@@ -468,10 +468,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             if (serviceIP != null) {
                 // warm up
                 System.out.println("Warming up " + serviceIP);
-                Utils.curl("http://" + serviceIP);
+                Utils.sendGetRequest("http://" + serviceIP);
                 ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 System.out.println("CURLing " + serviceIP);
-                System.out.println(Utils.curl("http://" + serviceIP));
+                System.out.println(Utils.sendGetRequest("http://" + serviceIP));
             } else {
                 System.out.println("ERROR: service unavailable");
             }

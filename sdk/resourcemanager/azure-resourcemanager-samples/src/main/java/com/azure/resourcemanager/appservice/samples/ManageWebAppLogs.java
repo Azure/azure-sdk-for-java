@@ -103,10 +103,10 @@ public final class ManageWebAppLogs {
 
                     // warm up
                     System.out.println("Warming up " + appUrl + "/coffeeshop...");
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
                     ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                     System.out.println("CURLing " + appUrl + "/coffeeshop...");
-                    System.out.println(Utils.curl("http://" + appUrl + "/coffeeshop/"));
+                    System.out.println(Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/"));
                 }
             }).start();
             // Watch logs for 2 minutes
@@ -124,11 +124,11 @@ public final class ManageWebAppLogs {
                 public void run() {
                     ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                     System.out.println("Starting hitting");
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
                     ResourceManagerUtils.sleep(Duration.ofSeconds(15));
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
                     ResourceManagerUtils.sleep(Duration.ofSeconds(20));
-                    Utils.curl("http://" + appUrl + "/coffeeshop/");
+                    Utils.sendGetRequest("http://" + appUrl + "/coffeeshop/");
                 }
             }).start();
 

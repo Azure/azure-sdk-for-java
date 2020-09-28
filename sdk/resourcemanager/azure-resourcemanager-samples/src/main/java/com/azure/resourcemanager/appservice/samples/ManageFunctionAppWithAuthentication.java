@@ -126,10 +126,10 @@ public final class ManageFunctionAppWithAuthentication {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/api/square...");
-            Utils.post("http://" + app1Url + "/api/square", "625");
+            Utils.sendPostRequest("http://" + app1Url + "/api/square", "625");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/api/square...");
-            System.out.println("Square of 625 is " + Utils.post("http://" + app1Url + "/api/square?code=" + app1.getMasterKey(), "625"));
+            System.out.println("Square of 625 is " + Utils.sendPostRequest("http://" + app1Url + "/api/square?code=" + app1.getMasterKey(), "625"));
 
             //============================================================
             // Deploy to app 2 through Git
@@ -158,17 +158,17 @@ public final class ManageFunctionAppWithAuthentication {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");
-            Utils.post("http://" + app2Url + "/api/square", "725");
+            Utils.sendPostRequest("http://" + app2Url + "/api/square", "725");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/api/square...");
-            System.out.println("Square of 725 is " + Utils.post("http://" + app2Url + "/api/square?code=" + functionKey, "725"));
+            System.out.println("Square of 725 is " + Utils.sendPostRequest("http://" + app2Url + "/api/square?code=" + functionKey, "725"));
 
             System.out.println("Adding a new key to function app " + app2.name() + "...");
 
             NameValuePair newKey = app2.addFunctionKey("square", "newkey", null);
 
             System.out.println("CURLing " + app2Url + "/api/square...");
-            System.out.println("Square of 825 is " + Utils.post("http://" + app2Url + "/api/square?code=" + newKey.value(), "825"));
+            System.out.println("Square of 825 is " + Utils.sendPostRequest("http://" + app2Url + "/api/square?code=" + newKey.value(), "825"));
 
             //============================================================
             // Deploy to app 3 through Git
@@ -189,10 +189,10 @@ public final class ManageFunctionAppWithAuthentication {
 
             // warm up
             System.out.println("Warming up " + app3Url + "/api/square...");
-            Utils.post("http://" + app3Url + "/api/square", "925");
+            Utils.sendPostRequest("http://" + app3Url + "/api/square", "925");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "/api/square...");
-            System.out.println("Square of 925 is " + Utils.post("http://" + app3Url + "/api/square?code=mysecretkey", "925"));
+            System.out.println("Square of 925 is " + Utils.sendPostRequest("http://" + app3Url + "/api/square?code=mysecretkey", "925"));
 
             return true;
         } finally {
