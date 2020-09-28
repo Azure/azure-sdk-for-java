@@ -23,6 +23,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.AzureResourceManager;
@@ -234,6 +235,7 @@ import java.util.stream.Collectors;
  */
 
 public final class Utils {
+
     /** @return a generated password */
     public static String password() {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
@@ -281,6 +283,30 @@ public final class Utils {
      */
     public static String randomUuid(AzureResourceManager azure) {
         return azure.resourceGroups().manager().internalContext().randomUuid();
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager.Authenticated authenticated, String prefix, int maxLen) {
+        return Utils.randomResourceName(authenticated, prefix, maxLen);
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager.Authenticated authenticated) {
+        return Utils.randomUuid(authenticated);
     }
 
     /**
@@ -3307,23 +3333,30 @@ public final class Utils {
      * @return Content of the HTTP response.
      */
     public static String sendGetRequest(String urlString) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
             Mono<Response<Flux<ByteBuffer>>> response =
                 HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
                         .fixedDelay(5, Duration.ofSeconds(30))
                         .filter(t -> {
+                            boolean retry = false;
                             if (t instanceof TimeoutException) {
-                                return true;
+                                retry = true;
                             } else if (t instanceof HttpResponseException
                                 && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
-                                return true;
+                                retry = true;
                             }
-                            return false;
+                            if (retry) {
+                                logger.info("retry GET request to {}", urlString);
+                            }
+                            return retry;
                         }));
             Response<String> ret = stringResponse(response).block();
             return ret == null ? null : ret.getValue();
         } catch (MalformedURLException e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
@@ -3338,22 +3371,30 @@ public final class Utils {
      * @return Content of the HTTP response.
      * */
     public static String sendPostRequest(String urlString, String body) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
             Mono<Response<String>> response =
                 stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
                     .retryWhen(Retry
                         .fixedDelay(5, Duration.ofSeconds(30))
-                        .filter(t -> {if (t instanceof TimeoutException) {
-                            return true;
-                        } else if (t instanceof HttpResponseException
-                            && ((HttpResponseException) t).getResponse().getStatusCode() == 404) {
-                            return true;
-                        }
-                        return false;
-                    }));
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            } else if (t instanceof HttpResponseException
+                                && ((HttpResponseException) t).getResponse().getStatusCode() == 404) {
+                                retry = true;
+                            }
+                            if (retry) {
+                                logger.info("retry POST request to {}", urlString);
+                            }
+                            return retry;
+                        }));
             Response<String> ret = response.block();
             return ret == null ? null : ret.getValue();
         } catch (Exception e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
