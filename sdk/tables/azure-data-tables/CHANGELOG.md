@@ -4,7 +4,8 @@
 
 ### Fixes
 
-- #15294: azure-data-tables Can Not Create TableClientBuilder
+- Can Not Create TableClientBuilder #15294
+- Missing module-info.java #15296
 
 ## 12.0.0-beta.1 (2020-09-10):
 
