@@ -45,9 +45,9 @@ public class ReadmeSamples {
         NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
         HttpClient httpClient = httpClientBuilder.build();
 
-        // Your user access key retrieved from your trusted service
-        String accessKey = "SECRET";
-        CommunicationUserCredential credential = new CommunicationUserCredential(accessKey);
+        // Your user access token retrieved from your trusted service
+        String token = "SECRET";
+        CommunicationUserCredential credential = new CommunicationUserCredential(token);
 
         // Initialize the chat client
         final ChatClientBuilder builder = new ChatClientBuilder();
@@ -286,4 +286,3 @@ public class ReadmeSamples {
         chatThreadClient.sendTypingNotification();
     }
 }
-

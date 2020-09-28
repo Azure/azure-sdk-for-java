@@ -78,9 +78,9 @@ String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
 HttpClient httpClient = httpClientBuilder.build();
 
-// Your access key retrieved from your trusted service
-String accessKey = "SECRET";
-CommunicationUserCredential credential = new CommunicationUserCredential(accessKey);
+// Your user access token retrieved from your trusted service
+String token = "SECRET";
+CommunicationUserCredential credential = new CommunicationUserCredential(token);
 
 // Initialize the chat client
 final ChatClientBuilder builder = new ChatClientBuilder();
@@ -389,5 +389,3 @@ Check out other client libraries for Azure communication service
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-chat
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-chat/src
-
-
