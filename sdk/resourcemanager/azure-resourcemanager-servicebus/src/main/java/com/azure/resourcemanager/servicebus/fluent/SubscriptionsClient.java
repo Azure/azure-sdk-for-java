@@ -4,134 +4,31 @@
 
 package com.azure.resourcemanager.servicebus.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.SubscriptionListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Subscriptions. */
-public final class SubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final SubscriptionsService service;
-
-    /** The service client containing this operation class. */
-    private final ServiceBusManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
+public interface SubscriptionsClient {
     /**
-     * Initializes an instance of SubscriptionsClient.
+     * List all the subscriptions under a specified topic.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to the List Subscriptions operation.
      */
-    SubscriptionsClient(ServiceBusManagementClient client) {
-        this.service =
-            RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for ServiceBusManagementClientSubscriptions to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "ServiceBusManagement")
-    private interface SubscriptionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/topics/{topicName}/subscriptions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResult>> listAll(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") SubscriptionCreateOrUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SubscriptionResourceInner> listAllAsync(String resourceGroupName, String namespaceName, String topicName);
 
     /**
      * List all the subscriptions under a specified topic.
@@ -140,58 +37,12 @@ public final class SubscriptionsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to the List Subscriptions operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionResourceInner>> listAllSinglePageAsync(
-        String resourceGroupName, String namespaceName, String topicName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAll(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .<PagedResponse<SubscriptionResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SubscriptionResourceInner> listAll(String resourceGroupName, String namespaceName, String topicName);
 
     /**
      * List all the subscriptions under a specified topic.
@@ -201,129 +52,13 @@ public final class SubscriptionsClient {
      * @param topicName The topic name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Subscriptions operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionResourceInner>> listAllSinglePageAsync(
-        String resourceGroupName, String namespaceName, String topicName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAll(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * List all the subscriptions under a specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to the List Subscriptions operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SubscriptionResourceInner> listAllAsync(
-        String resourceGroupName, String namespaceName, String topicName) {
-        return new PagedFlux<>(
-            () -> listAllSinglePageAsync(resourceGroupName, namespaceName, topicName),
-            nextLink -> listAllNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List all the subscriptions under a specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Subscriptions operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SubscriptionResourceInner> listAllAsync(
-        String resourceGroupName, String namespaceName, String topicName, Context context) {
-        return new PagedFlux<>(
-            () -> listAllSinglePageAsync(resourceGroupName, namespaceName, topicName, context),
-            nextLink -> listAllNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * List all the subscriptions under a specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Subscriptions operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionResourceInner> listAll(
-        String resourceGroupName, String namespaceName, String topicName) {
-        return new PagedIterable<>(listAllAsync(resourceGroupName, namespaceName, topicName));
-    }
-
-    /**
-     * List all the subscriptions under a specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Subscriptions operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionResourceInner> listAll(
-        String resourceGroupName, String namespaceName, String topicName, Context context) {
-        return new PagedIterable<>(listAllAsync(resourceGroupName, namespaceName, topicName, context));
-    }
+    PagedIterable<SubscriptionResourceInner> listAll(
+        String resourceGroupName, String namespaceName, String topicName, Context context);
 
     /**
      * Creates a topic subscription.
@@ -334,64 +69,59 @@ public final class SubscriptionsClient {
      * @param subscriptionName The subscription name.
      * @param parameters Parameters supplied to the Create Or Update Subscription operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of subscription resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionResourceInner>> createOrUpdateWithResponseAsync(
+    Mono<Response<SubscriptionResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String subscriptionName,
-        SubscriptionCreateOrUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (subscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            subscriptionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        SubscriptionCreateOrUpdateParameters parameters);
+
+    /**
+     * Creates a topic subscription.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param subscriptionName The subscription name.
+     * @param parameters Parameters supplied to the Create Or Update Subscription operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of subscription resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SubscriptionResourceInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        String subscriptionName,
+        SubscriptionCreateOrUpdateParameters parameters);
+
+    /**
+     * Creates a topic subscription.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param subscriptionName The subscription name.
+     * @param parameters Parameters supplied to the Create Or Update Subscription operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of subscription resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionResourceInner createOrUpdate(
+        String resourceGroupName,
+        String namespaceName,
+        String topicName,
+        String subscriptionName,
+        SubscriptionCreateOrUpdateParameters parameters);
 
     /**
      * Creates a topic subscription.
@@ -403,177 +133,18 @@ public final class SubscriptionsClient {
      * @param parameters Parameters supplied to the Create Or Update Subscription operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of subscription resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionResourceInner>> createOrUpdateWithResponseAsync(
+    Response<SubscriptionResourceInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String namespaceName,
         String topicName,
         String subscriptionName,
         SubscriptionCreateOrUpdateParameters parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (subscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                subscriptionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates a topic subscription.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to the Create Or Update Subscription operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String subscriptionName,
-        SubscriptionCreateOrUpdateParameters parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, topicName, subscriptionName, parameters)
-            .flatMap(
-                (Response<SubscriptionResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a topic subscription.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to the Create Or Update Subscription operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String subscriptionName,
-        SubscriptionCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, topicName, subscriptionName, parameters, context)
-            .flatMap(
-                (Response<SubscriptionResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a topic subscription.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to the Create Or Update Subscription operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionResourceInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String subscriptionName,
-        SubscriptionCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, topicName, subscriptionName, parameters).block();
-    }
-
-    /**
-     * Creates a topic subscription.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param parameters Parameters supplied to the Create Or Update Subscription operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionResourceInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String subscriptionName,
-        SubscriptionCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, topicName, subscriptionName, parameters, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Deletes a subscription from the specified topic.
@@ -583,54 +154,13 @@ public final class SubscriptionsClient {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (subscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            subscriptionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String namespaceName, String topicName, String subscriptionName);
 
     /**
      * Deletes a subscription from the specified topic.
@@ -639,53 +169,13 @@ public final class SubscriptionsClient {
      * @param namespaceName The namespace name.
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (subscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                subscriptionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName);
 
     /**
      * Deletes a subscription from the specified topic.
@@ -695,16 +185,11 @@ public final class SubscriptionsClient {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    void delete(String resourceGroupName, String namespaceName, String topicName, String subscriptionName);
 
     /**
      * Deletes a subscription from the specified topic.
@@ -715,50 +200,13 @@ public final class SubscriptionsClient {
      * @param subscriptionName The subscription name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a subscription from the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        deleteAsync(resourceGroupName, namespaceName, topicName, subscriptionName).block();
-    }
-
-    /**
-     * Deletes a subscription from the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context) {
-        deleteAsync(resourceGroupName, namespaceName, topicName, subscriptionName, context).block();
-    }
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context);
 
     /**
      * Returns a subscription description for the specified topic.
@@ -768,54 +216,45 @@ public final class SubscriptionsClient {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of subscription resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (subscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            topicName,
-                            subscriptionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<SubscriptionResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String namespaceName, String topicName, String subscriptionName);
+
+    /**
+     * Returns a subscription description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param subscriptionName The subscription name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of subscription resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SubscriptionResourceInner> getAsync(
+        String resourceGroupName, String namespaceName, String topicName, String subscriptionName);
+
+    /**
+     * Returns a subscription description for the specified topic.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param topicName The topic name.
+     * @param subscriptionName The subscription name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of subscription resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionResourceInner get(
+        String resourceGroupName, String namespaceName, String topicName, String subscriptionName);
 
     /**
      * Returns a subscription description for the specified topic.
@@ -826,196 +265,11 @@ public final class SubscriptionsClient {
      * @param subscriptionName The subscription name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of subscription resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (namespaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (subscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                topicName,
-                subscriptionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Returns a subscription description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionResourceInner> getAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName)
-            .flatMap(
-                (Response<SubscriptionResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns a subscription description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionResourceInner> getAsync(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, context)
-            .flatMap(
-                (Response<SubscriptionResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns a subscription description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionResourceInner get(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        return getAsync(resourceGroupName, namespaceName, topicName, subscriptionName).block();
-    }
-
-    /**
-     * Returns a subscription description for the specified topic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param topicName The topic name.
-     * @param subscriptionName The subscription name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of subscription resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionResourceInner get(
-        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context) {
-        return getAsync(resourceGroupName, namespaceName, topicName, subscriptionName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Subscriptions operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionResourceInner>> listAllNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, context))
-            .<PagedResponse<SubscriptionResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to the List Subscriptions operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionResourceInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    Response<SubscriptionResourceInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String topicName, String subscriptionName, Context context);
 }

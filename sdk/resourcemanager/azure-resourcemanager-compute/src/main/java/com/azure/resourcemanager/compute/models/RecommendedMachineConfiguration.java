@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecommendedMachineConfiguration model. */
+/**
+ * The properties describe the recommended machine configuration for this Image Definition. These properties are
+ * updatable.
+ */
 @Fluent
 public final class RecommendedMachineConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedMachineConfiguration.class);

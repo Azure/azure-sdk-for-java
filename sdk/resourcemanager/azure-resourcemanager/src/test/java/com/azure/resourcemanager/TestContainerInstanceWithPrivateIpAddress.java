@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +26,8 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
 
     @Override
     public ContainerGroup createResource(ContainerGroups containerGroups) throws Exception {
-        final String cgName = containerGroups.manager().sdkContext().randomResourceName("aci", 10);
-        final String rgName = containerGroups.manager().sdkContext().randomResourceName("rgaci", 10);
+        final String cgName = containerGroups.manager().resourceManager().internalContext().randomResourceName("aci", 10);
+        final String rgName = containerGroups.manager().resourceManager().internalContext().randomResourceName("rgaci", 10);
 
         final String logAnalyticsWorkspaceId = "REPLACE WITH YOUR LOG ANALYTICS WORKSPACE ID";
         final String logAnalyticsWorkspaceKey = "REPLACE WITH YOUR LOG ANALYTICS WORKSPACE KEY";

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GetVpnSitesConfigurationRequest model. */
+/** List of Vpn-Sites. */
 @Fluent
 public final class GetVpnSitesConfigurationRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GetVpnSitesConfigurationRequest.class);

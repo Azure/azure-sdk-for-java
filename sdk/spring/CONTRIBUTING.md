@@ -19,13 +19,13 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 Before working on a contribution, it would be beneficial to familiarize yourself with the project so that your
 submission is consistent with the project standards and is ready to be accepted with fewer changes requested. 
 
-- [Azure Spring Boot README](./README.md), to learn more about the overall project and processes used.
+- [Azure Spring Boot README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/README.md), to learn more about the overall project and processes used.
 
 ## Development environment setup
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Maven][maven]
 - Git
 - Microsoft Azure subscription
@@ -67,3 +67,4 @@ Contribution is welcome. Please follow
 
 <!-- Links -->
 [maven]: https://maven.apache.org/
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

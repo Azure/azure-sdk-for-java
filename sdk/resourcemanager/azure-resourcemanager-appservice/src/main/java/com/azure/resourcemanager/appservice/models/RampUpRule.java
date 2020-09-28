@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RampUpRule model. */
+/**
+ * Routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to gradually change
+ * routing % based on performance.
+ */
 @Fluent
 public final class RampUpRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RampUpRule.class);

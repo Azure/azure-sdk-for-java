@@ -12,7 +12,7 @@ Various documentation is available to help you get started
 
 ## Migration from older version of Azure management library 
 
-If you are an existing user of the older version of Azure management library for Java (the namespace of old packages contains ``com.microsoft.azure.management.**``) and you are looking for a migration guide to the new version of the SDK, please refer to [this migration guide here](docs/MIGRATION_GUIDE.md)
+If you are an existing user of the older version of Azure management library for Java (the namespace of old packages contains ``com.microsoft.azure.management.**``) and you are looking for a migration guide to the new version of the SDK, please refer to [this migration guide here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)
 
 ## Getting started
 
@@ -28,7 +28,7 @@ If you are an existing user of the older version of Azure management library for
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.4</version>
+  <version>2.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,7 +82,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
@@ -229,11 +229,9 @@ azure.storageAccounts().define(storageAccountName)
     .withGeneralPurposeAccountKindV2()
     .withOnlyHttpsTraffic()
     .createAsync()
-    .filter(indexable -> indexable instanceof StorageAccount)
-    .last()
-    .flatMapMany(indexable -> azure.storageBlobContainers()
+    .flatMap(storageAccount -> azure.storageBlobContainers()
         .defineContainer("container")
-        .withExistingBlobService(rgName, ((StorageAccount) indexable).name())
+        .withExistingBlobService(rgName, storageAccount.name())
         .withPublicAccess(PublicAccess.BLOB)
         .createAsync()
     )
@@ -253,7 +251,7 @@ azure.virtualMachines().listByResourceGroupAsync(rgName)
 You can customize various aspects of the client.
 
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withHttpClient(customizedHttpClient)
     .withPolicy(additionalPolicy)
@@ -272,7 +270,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.4</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -301,7 +299,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 Sample code to enable logging in Azure Management Libraries.
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withLogLevel(HttpLogDetailLevel.BASIC)
     .authenticate(credential, profile)
@@ -325,13 +323,13 @@ If you would like to become an active contributor to this project please follow 
 [docs]: http://azure.github.io/azure-sdk-for-java/resourcemanager.html
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: ../identity/azure-identity
-[azure_core_http_netty]: ../core/azure-core-http-netty
-[azure_core_http_okhttp]: ../core/azure-core-http-okhttp
-[azure_core]: ../core/azure-core
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
+[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
+[azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp
+[azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[authenticate]: docs/AUTH.md
-[sample]: docs/SAMPLE.md
-[design]: docs/DESIGN.md
-[design_preview]: docs/DESIGN_PREVIEW.md
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
+[sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
+[design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
+[design_preview]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN_PREVIEW.md
 [reactor]: https://projectreactor.io/

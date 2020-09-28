@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The MongoDBCollectionCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB MongoDB collection. */
 @JsonFlatten
 @Fluent
 public class MongoDBCollectionCreateUpdateParameters extends ArmResourceProperties {

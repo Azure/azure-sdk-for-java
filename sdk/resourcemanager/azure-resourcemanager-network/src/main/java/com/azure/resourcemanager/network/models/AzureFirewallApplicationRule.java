@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureFirewallApplicationRule model. */
+/** Properties of an application rule. */
 @Fluent
 public final class AzureFirewallApplicationRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRule.class);

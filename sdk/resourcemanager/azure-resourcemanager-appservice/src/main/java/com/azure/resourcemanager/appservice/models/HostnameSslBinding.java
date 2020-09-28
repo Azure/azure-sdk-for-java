@@ -6,12 +6,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.io.File;
 
 /** An immutable representation of an host name SSL binding. */
 @Fluent
-public interface HostnameSslBinding extends HasInner<HostnameSslState>, ChildResource<WebAppBase> {
+public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, ChildResource<WebAppBase> {
     /** @return the SSL type */
     SslState sslState();
 

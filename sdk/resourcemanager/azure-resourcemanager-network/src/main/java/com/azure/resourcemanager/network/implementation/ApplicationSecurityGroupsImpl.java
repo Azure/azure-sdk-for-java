@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -15,12 +15,12 @@ public class ApplicationSecurityGroupsImpl
         ApplicationSecurityGroup,
         ApplicationSecurityGroupImpl,
         ApplicationSecurityGroupInner,
-    ApplicationSecurityGroupsClient,
-    NetworkManager>
+        ApplicationSecurityGroupsClient,
+        NetworkManager>
     implements ApplicationSecurityGroups {
 
     public ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getApplicationSecurityGroups(), networkManager);
+        super(networkManager.serviceClient().getApplicationSecurityGroups(), networkManager);
     }
 
     @Override

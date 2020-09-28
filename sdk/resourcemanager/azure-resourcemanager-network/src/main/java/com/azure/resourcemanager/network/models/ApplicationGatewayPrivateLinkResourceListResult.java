@@ -6,12 +6,15 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPrivateLinkResourceInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayPrivateLinkResourceListResult model. */
+/**
+ * Response for ListApplicationGatewayPrivateLinkResources API service call. Gets all private link resources for an
+ * application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateLinkResourceListResult {
     @JsonIgnore

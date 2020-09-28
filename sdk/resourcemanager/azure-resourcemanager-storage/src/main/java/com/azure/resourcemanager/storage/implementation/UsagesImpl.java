@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.UsagesClient;
 import com.azure.resourcemanager.storage.models.Usages;
-import com.azure.resourcemanager.storage.fluent.inner.UsageInner;
+import com.azure.resourcemanager.storage.fluent.models.UsageInner;
 
 /** The implementation of {@link Usages}. */
 public class UsagesImpl implements Usages {
@@ -34,6 +34,6 @@ public class UsagesImpl implements Usages {
     }
 
     public UsagesClient inner() {
-        return this.manager().inner().getUsages();
+        return this.manager().serviceClient().getUsages();
     }
 }

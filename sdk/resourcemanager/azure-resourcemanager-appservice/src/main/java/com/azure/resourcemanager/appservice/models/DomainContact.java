@@ -7,11 +7,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** A domain contact definition. */
 @Fluent
-public interface DomainContact extends HasInner<Contact>, ChildResource<AppServiceDomain> {
+public interface DomainContact extends HasInnerModel<Contact>, ChildResource<AppServiceDomain> {
 
     /** @return contact's mailing address */
     Address addressMailing();

@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
 
   <name>Microsoft Azure Schema Registry - Common Client/SerDe Package for client library</name>
   <description>
@@ -93,4 +93,28 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-opens com.azure.data.schemaregistry/com.azure.data.schemaregistry=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

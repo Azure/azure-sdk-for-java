@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -29,8 +29,8 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
-        final String publicIpDnsLabel = virtualMachines.manager().sdkContext().randomResourceName("abc", 16);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String publicIpDnsLabel = virtualMachines.manager().resourceManager().internalContext().randomResourceName("abc", 16);
 
         // Prepare the custom data
         //

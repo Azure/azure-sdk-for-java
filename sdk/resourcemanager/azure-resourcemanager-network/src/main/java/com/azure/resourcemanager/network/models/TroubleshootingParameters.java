@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TroubleshootingParameters model. */
+/** Parameters that define the resource to troubleshoot. */
 @JsonFlatten
 @Fluent
 public class TroubleshootingParameters {

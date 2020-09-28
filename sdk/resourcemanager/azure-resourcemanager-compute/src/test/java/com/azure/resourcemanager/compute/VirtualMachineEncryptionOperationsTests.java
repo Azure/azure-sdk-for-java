@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -33,7 +33,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
     @Test
     @Disabled("Requires manually creating service principal and setting SP credentials in the test")
     public void canEncryptVirtualMachine() {
-        // https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption
+        // https://docs.microsoft.com/azure/security/azure-security-disk-encryption
         //
         // KeyVault Resource ID
         String keyVaultId = "KEY_VAULT_ID_HERE";

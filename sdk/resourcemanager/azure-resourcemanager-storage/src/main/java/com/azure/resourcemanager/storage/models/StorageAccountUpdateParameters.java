@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The StorageAccountUpdateParameters model. */
+/** The parameters that can be provided when updating the storage account properties. */
 @JsonFlatten
 @Fluent
 public class StorageAccountUpdateParameters {

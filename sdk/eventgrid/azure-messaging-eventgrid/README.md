@@ -28,7 +28,7 @@ within your project, you can use [Maven][maven].
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -165,7 +165,7 @@ Learn more [here][EventGridEvent].
 ```java
 List<EventGridEvent> events = new ArrayList<>();
 events.add(
-    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data", 
+    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data",
         "1")
 );
 

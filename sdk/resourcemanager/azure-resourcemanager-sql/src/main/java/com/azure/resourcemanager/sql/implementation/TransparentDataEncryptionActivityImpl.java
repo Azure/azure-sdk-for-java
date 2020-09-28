@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivityStatus;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionActivityInner;
 
 /** Implementation for TransparentDataEncryptionActivity. */
 class TransparentDataEncryptionActivityImpl extends WrapperImpl<TransparentDataEncryptionActivityInner>
@@ -16,7 +16,7 @@ class TransparentDataEncryptionActivityImpl extends WrapperImpl<TransparentDataE
 
     protected TransparentDataEncryptionActivityImpl(TransparentDataEncryptionActivityInner innerObject) {
         super(innerObject);
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
@@ -46,11 +46,11 @@ class TransparentDataEncryptionActivityImpl extends WrapperImpl<TransparentDataE
 
     @Override
     public TransparentDataEncryptionActivityStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public double percentComplete() {
-        return this.inner().percentComplete();
+        return this.innerModel().percentComplete();
     }
 }

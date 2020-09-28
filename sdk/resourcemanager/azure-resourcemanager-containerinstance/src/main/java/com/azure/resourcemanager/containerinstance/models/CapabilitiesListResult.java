@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CapabilitiesListResult model. */
+/** The response containing list of capabilities. */
 @Fluent
 public final class CapabilitiesListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilitiesListResult.class);

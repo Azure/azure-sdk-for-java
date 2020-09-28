@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ImmutabilityPolicyProperties model. */
+/** The properties of an ImmutabilityPolicy of a blob container. */
 @JsonFlatten
 @Fluent
 public class ImmutabilityPolicyProperties {

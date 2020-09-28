@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Availability model. */
+/** Availability of the metric. */
 @Fluent
 public final class Availability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Availability.class);

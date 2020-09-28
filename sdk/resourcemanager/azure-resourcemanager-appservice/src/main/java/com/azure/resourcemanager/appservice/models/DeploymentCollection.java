@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.DeploymentInner;
+import com.azure.resourcemanager.appservice.fluent.models.DeploymentInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DeploymentCollection model. */
+/** Collection of app deployments. */
 @Fluent
 public final class DeploymentCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentCollection.class);
