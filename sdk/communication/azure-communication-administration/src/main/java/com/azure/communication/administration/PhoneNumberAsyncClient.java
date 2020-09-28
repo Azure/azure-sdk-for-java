@@ -34,6 +34,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -41,11 +42,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+
 /**
  * Asynchronous client for Communication service phone number operations
  */
 @ServiceClient(builder = PhoneNumberClientBuilder.class, isAsync = true)
 public final class PhoneNumberAsyncClient {
+    private final ClientLogger logger = new ClientLogger(PhoneNumberClientBuilder.class);
 
     private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
 
@@ -61,11 +66,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AcquiredPhoneNumber> listAllPhoneNumbers(String locale) {
-        return phoneNumberAdministrations.getAllPhoneNumbersAsync(locale, null, null);
+        try {
+            return phoneNumberAdministrations.getAllPhoneNumbersAsync(locale, null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<AcquiredPhoneNumber> listAllPhoneNumbers(String locale, Context context) {
-        return phoneNumberAdministrations.getAllPhoneNumbersAsync(locale, null, null, context);
+        try {
+            return phoneNumberAdministrations.getAllPhoneNumbersAsync(locale, null, null, context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -82,8 +95,13 @@ public final class PhoneNumberAsyncClient {
         String locationType, String countryCode, String phonePlanId, List<LocationOptionsQuery> locationOptions) {
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
-        return phoneNumberAdministrations.getAllAreaCodesAsync(
-            locationType, countryCode, phonePlanId, locationOptionsQueries);
+
+        try {
+            return phoneNumberAdministrations.getAllAreaCodesAsync(
+                locationType, countryCode, phonePlanId, locationOptionsQueries);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -101,8 +119,13 @@ public final class PhoneNumberAsyncClient {
         String locationType, String countryCode, String phonePlanId, List<LocationOptionsQuery> locationOptions) {
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
-        return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
-            locationType, countryCode, phonePlanId, locationOptionsQueries);
+
+        try {
+            return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
+                locationType, countryCode, phonePlanId, locationOptionsQueries);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<AreaCodes>> getAllAreaCodesWithResponse(
@@ -110,8 +133,13 @@ public final class PhoneNumberAsyncClient {
         Context context) {
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
-        return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
-            locationType, countryCode, phonePlanId, locationOptionsQueries, context);
+
+        try {
+            return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
+                locationType, countryCode, phonePlanId, locationOptionsQueries, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -123,7 +151,11 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpdatePhoneNumberCapabilitiesResponse> getCapabilitiesUpdate(String capabilitiesId) {
-        return phoneNumberAdministrations.getCapabilitiesUpdateAsync(capabilitiesId);
+        try {
+            return phoneNumberAdministrations.getCapabilitiesUpdateAsync(capabilitiesId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -136,12 +168,20 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> getCapabilitiesUpdateWithResponse(
         String capabilitiesId) {
-        return phoneNumberAdministrations.getCapabilitiesUpdateWithResponseAsync(capabilitiesId);
+        try {
+            return phoneNumberAdministrations.getCapabilitiesUpdateWithResponseAsync(capabilitiesId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> getCapabilitiesUpdateWithResponse(
         String capabilitiesId, Context context) {
-        return phoneNumberAdministrations.getCapabilitiesUpdateWithResponseAsync(capabilitiesId, context);
+        try {
+            return phoneNumberAdministrations.getCapabilitiesUpdateWithResponseAsync(capabilitiesId, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -161,7 +201,12 @@ public final class PhoneNumberAsyncClient {
 
         UpdateNumberCapabilitiesRequest updateNumberCapabilitiesRequest = new UpdateNumberCapabilitiesRequest();
         updateNumberCapabilitiesRequest.setPhoneNumberCapabilitiesUpdate(capabilitiesMap);
-        return phoneNumberAdministrations.updateCapabilitiesAsync(updateNumberCapabilitiesRequest);
+
+        try {
+            return phoneNumberAdministrations.updateCapabilitiesAsync(updateNumberCapabilitiesRequest);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -181,7 +226,13 @@ public final class PhoneNumberAsyncClient {
 
         UpdateNumberCapabilitiesRequest updateNumberCapabilitiesRequest = new UpdateNumberCapabilitiesRequest();
         updateNumberCapabilitiesRequest.setPhoneNumberCapabilitiesUpdate(capabilitiesMap);
-        return phoneNumberAdministrations.updateCapabilitiesWithResponseAsync(updateNumberCapabilitiesRequest);
+
+        try {
+            return phoneNumberAdministrations.updateCapabilitiesWithResponseAsync(updateNumberCapabilitiesRequest);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     Mono<Response<UpdateNumberCapabilitiesResponse>> updateCapabilitiesWithResponse(
@@ -193,7 +244,13 @@ public final class PhoneNumberAsyncClient {
 
         UpdateNumberCapabilitiesRequest updateNumberCapabilitiesRequest = new UpdateNumberCapabilitiesRequest();
         updateNumberCapabilitiesRequest.setPhoneNumberCapabilitiesUpdate(capabilitiesMap);
-        return phoneNumberAdministrations.updateCapabilitiesWithResponseAsync(updateNumberCapabilitiesRequest, context);
+
+        try {
+            return phoneNumberAdministrations.updateCapabilitiesWithResponseAsync(
+                updateNumberCapabilitiesRequest, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -204,11 +261,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberCountry> listAllSupportedCountries(String locale) {
-        return phoneNumberAdministrations.getAllSupportedCountriesAsync(locale, null, null);
+        try {
+            return phoneNumberAdministrations.getAllSupportedCountriesAsync(locale, null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PhoneNumberCountry> listAllSupportedCountries(String locale, Context context) {
-        return phoneNumberAdministrations.getAllSupportedCountriesAsync(locale, null, null, context);
+        try {
+            return phoneNumberAdministrations.getAllSupportedCountriesAsync(locale, null, null, context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
 
@@ -222,7 +287,12 @@ public final class PhoneNumberAsyncClient {
     public Mono<NumberConfigurationResponse> getNumberConfiguration(PhoneNumber phoneNumber) {
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-        return phoneNumberAdministrations.getNumberConfigurationAsync(configurationPhoneNumber);
+
+        try {
+            return phoneNumberAdministrations.getNumberConfigurationAsync(configurationPhoneNumber);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -236,14 +306,25 @@ public final class PhoneNumberAsyncClient {
     public Mono<Response<NumberConfigurationResponse>> getNumberConfigurationWithResponse(PhoneNumber phoneNumber) {
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-        return phoneNumberAdministrations.getNumberConfigurationWithResponseAsync(configurationPhoneNumber);
+
+        try {
+            return phoneNumberAdministrations.getNumberConfigurationWithResponseAsync(configurationPhoneNumber);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<NumberConfigurationResponse>> getNumberConfigurationWithResponse(
         PhoneNumber phoneNumber, Context context) {
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-        return phoneNumberAdministrations.getNumberConfigurationWithResponseAsync(configurationPhoneNumber, context);
+
+        try {
+            return phoneNumberAdministrations.getNumberConfigurationWithResponseAsync(
+                configurationPhoneNumber, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -257,7 +338,12 @@ public final class PhoneNumberAsyncClient {
     public Mono<Void> configureNumber(PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration) {
         NumberConfiguration numberConfiguration = new NumberConfiguration();
         numberConfiguration.setPhoneNumber(phoneNumber.getValue()).setPstnConfiguration(pstnConfiguration);
-        return phoneNumberAdministrations.configureNumberAsync(numberConfiguration);
+
+        try {
+            return phoneNumberAdministrations.configureNumberAsync(numberConfiguration);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -272,14 +358,24 @@ public final class PhoneNumberAsyncClient {
         PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration) {
         NumberConfiguration numberConfiguration = new NumberConfiguration();
         numberConfiguration.setPhoneNumber(phoneNumber.getValue()).setPstnConfiguration(pstnConfiguration);
-        return phoneNumberAdministrations.configureNumberWithResponseAsync(numberConfiguration);
+
+        try {
+            return phoneNumberAdministrations.configureNumberWithResponseAsync(numberConfiguration);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> configureNumberWithResponse(
         PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration, Context context) {
         NumberConfiguration numberConfiguration = new NumberConfiguration();
         numberConfiguration.setPhoneNumber(phoneNumber.getValue()).setPstnConfiguration(pstnConfiguration);
-        return phoneNumberAdministrations.configureNumberWithResponseAsync(numberConfiguration, context);
+
+        try {
+            return phoneNumberAdministrations.configureNumberWithResponseAsync(numberConfiguration, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -292,7 +388,12 @@ public final class PhoneNumberAsyncClient {
     public Mono<Void> unconfigureNumber(PhoneNumber phoneNumber) {
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-        return phoneNumberAdministrations.unconfigureNumberAsync(configurationPhoneNumber);
+
+        try {
+            return phoneNumberAdministrations.unconfigureNumberAsync(configurationPhoneNumber);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -305,13 +406,23 @@ public final class PhoneNumberAsyncClient {
     public Mono<Response<Void>> unconfigureNumberWithResponse(PhoneNumber phoneNumber) {
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-        return phoneNumberAdministrations.unconfigureNumberWithResponseAsync(configurationPhoneNumber);
+
+        try {
+            return phoneNumberAdministrations.unconfigureNumberWithResponseAsync(configurationPhoneNumber);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> unconfigureNumberWithResponse(PhoneNumber phoneNumber, Context context) {
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-        return phoneNumberAdministrations.unconfigureNumberWithResponseAsync(configurationPhoneNumber, context);
+
+        try {
+            return phoneNumberAdministrations.unconfigureNumberWithResponseAsync(configurationPhoneNumber, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -325,14 +436,22 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhonePlanGroup> listPhonePlanGroups(
         String countryCode, String locale, Boolean includeRateInformation) {
-        return phoneNumberAdministrations.getPhonePlanGroupsAsync(
-            countryCode, locale, includeRateInformation, null, null);
+        try {
+            return phoneNumberAdministrations.getPhonePlanGroupsAsync(
+                countryCode, locale, includeRateInformation, null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PhonePlanGroup> listPhonePlanGroups(
         String countryCode, String locale, Boolean includeRateInformation, Context context) {
-        return phoneNumberAdministrations.getPhonePlanGroupsAsync(
-            countryCode, locale, includeRateInformation, null, null, context);
+        try {
+            return phoneNumberAdministrations.getPhonePlanGroupsAsync(
+                countryCode, locale, includeRateInformation, null, null, context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -345,13 +464,21 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhonePlan> listPhonePlans(String countryCode, String phonePlanGroupId, String locale) {
-        return phoneNumberAdministrations.getPhonePlansAsync(
-            countryCode, phonePlanGroupId, locale, null, null);
+        try {
+            return phoneNumberAdministrations.getPhonePlansAsync(
+                countryCode, phonePlanGroupId, locale, null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PhonePlan> listPhonePlans(String countryCode, String phonePlanGroupId, String locale, Context context) {
-        return phoneNumberAdministrations.getPhonePlansAsync(
-            countryCode, phonePlanGroupId, locale, null, null, context);
+        try {
+            return phoneNumberAdministrations.getPhonePlansAsync(
+                countryCode, phonePlanGroupId, locale, null, null, context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -366,14 +493,22 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocationOptionsResponse> getPhonePlanLocationOptions(
         String countryCode, String phonePlanGroupId, String phonePlanId, String locale) {
-        return phoneNumberAdministrations.getPhonePlanLocationOptionsAsync(
-            countryCode, phonePlanGroupId, phonePlanId, locale);
+        try {
+            return phoneNumberAdministrations.getPhonePlanLocationOptionsAsync(
+                countryCode, phonePlanGroupId, phonePlanId, locale);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<LocationOptionsResponse> getPhonePlanLocationOptions(
         String countryCode, String phonePlanGroupId, String phonePlanId, String locale, Context context) {
-        return phoneNumberAdministrations.getPhonePlanLocationOptionsAsync(
-            countryCode, phonePlanGroupId, phonePlanId, locale, context);
+        try {
+            return phoneNumberAdministrations.getPhonePlanLocationOptionsAsync(
+                countryCode, phonePlanGroupId, phonePlanId, locale, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -389,14 +524,22 @@ public final class PhoneNumberAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LocationOptionsResponse>> getPhonePlanLocationOptionsWithResponse(
         String countryCode, String phonePlanGroupId, String phonePlanId, String locale) {
-        return phoneNumberAdministrations.getPhonePlanLocationOptionsWithResponseAsync(
-            countryCode, phonePlanGroupId, phonePlanId, locale);
+        try {
+            return phoneNumberAdministrations.getPhonePlanLocationOptionsWithResponseAsync(
+                countryCode, phonePlanGroupId, phonePlanId, locale);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<LocationOptionsResponse>> getPhonePlanLocationOptionsWithResponse(
         String countryCode, String phonePlanGroupId, String phonePlanId, String locale, Context context) {
-        return phoneNumberAdministrations.getPhonePlanLocationOptionsWithResponseAsync(
-            countryCode, phonePlanGroupId, phonePlanId, locale, context);
+        try {
+            return phoneNumberAdministrations.getPhonePlanLocationOptionsWithResponseAsync(
+                countryCode, phonePlanGroupId, phonePlanId, locale, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -407,7 +550,11 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberRelease> getReleaseById(String releaseId) {
-        return phoneNumberAdministrations.getReleaseByIdAsync(releaseId);
+        try {
+            return phoneNumberAdministrations.getReleaseByIdAsync(releaseId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -419,11 +566,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumberRelease>> getReleaseByIdWithResponse(String releaseId) {
-        return phoneNumberAdministrations.getReleaseByIdWithResponseAsync(releaseId);
+        try {
+            return phoneNumberAdministrations.getReleaseByIdWithResponseAsync(releaseId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PhoneNumberRelease>> getReleaseByIdWithResponse(String releaseId, Context context) {
-        return phoneNumberAdministrations.getReleaseByIdWithResponseAsync(releaseId, context);
+        try {
+            return phoneNumberAdministrations.getReleaseByIdWithResponseAsync(releaseId, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -437,7 +592,12 @@ public final class PhoneNumberAsyncClient {
         List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
         ReleaseRequest releaseRequest = new ReleaseRequest();
         releaseRequest.setPhoneNumbers(phoneNumberStrings);
-        return phoneNumberAdministrations.releasePhoneNumbersAsync(releaseRequest);
+
+        try {
+            return phoneNumberAdministrations.releasePhoneNumbersAsync(releaseRequest);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -452,14 +612,24 @@ public final class PhoneNumberAsyncClient {
         List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
         ReleaseRequest releaseRequest = new ReleaseRequest();
         releaseRequest.setPhoneNumbers(phoneNumberStrings);
-        return phoneNumberAdministrations.releasePhoneNumbersWithResponseAsync(releaseRequest);
+
+        try {
+            return phoneNumberAdministrations.releasePhoneNumbersWithResponseAsync(releaseRequest);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers, Context context) {
         List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
         ReleaseRequest releaseRequest = new ReleaseRequest();
         releaseRequest.setPhoneNumbers(phoneNumberStrings);
-        return phoneNumberAdministrations.releasePhoneNumbersWithResponseAsync(releaseRequest, context);
+
+        try {
+            return phoneNumberAdministrations.releasePhoneNumbersWithResponseAsync(releaseRequest, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -469,11 +639,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberEntity> listAllReleases() {
-        return phoneNumberAdministrations.getAllReleasesAsync(null, null);
+        try {
+            return phoneNumberAdministrations.getAllReleasesAsync(null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PhoneNumberEntity> listAllReleases(Context context) {
-        return phoneNumberAdministrations.getAllReleasesAsync(null, null, context);
+        try {
+            return phoneNumberAdministrations.getAllReleasesAsync(null, null, context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -484,7 +662,11 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberSearch> getSearchById(String searchId) {
-        return phoneNumberAdministrations.getSearchByIdAsync(searchId);
+        try {
+            return phoneNumberAdministrations.getSearchByIdAsync(searchId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -496,11 +678,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId) {
-        return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId);
+        try {
+            return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId, Context context) {
-        return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId, context);
+        try {
+            return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -511,7 +701,11 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateSearchResponse> createSearch(CreateSearchOptions searchOptions) {
-        return phoneNumberAdministrations.createSearchAsync(searchOptions);
+        try {
+            return phoneNumberAdministrations.createSearchAsync(searchOptions);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -523,11 +717,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateSearchResponse>> createSearchWithResponse(CreateSearchOptions searchOptions) {
-        return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions);
+        try {
+            return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<CreateSearchResponse>> createSearchWithResponse(CreateSearchOptions searchOptions, Context context) {
-        return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions, context);
+        try {
+            return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -537,11 +739,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberEntity> listAllSearches() {
-        return phoneNumberAdministrations.getAllSearchesAsync(null, null);
+        try {
+            return phoneNumberAdministrations.getAllSearchesAsync(null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PhoneNumberEntity> listAllSearches(Context context) {
-        return phoneNumberAdministrations.getAllSearchesAsync(null, null, context);
+        try {
+            return phoneNumberAdministrations.getAllSearchesAsync(null, null, context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -552,7 +762,11 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelSearch(String searchId) {
-        return phoneNumberAdministrations.cancelSearchAsync(searchId);
+        try {
+            return phoneNumberAdministrations.cancelSearchAsync(searchId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -563,11 +777,19 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelSearchWithResponse(String searchId) {
-        return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId);
+        try {
+            return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> cancelSearchWithResponse(String searchId, Context context) {
-        return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId, context);
+        try {
+            return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -578,7 +800,11 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purchaseSearch(String searchId) {
-        return phoneNumberAdministrations.purchaseSearchAsync(searchId);
+        try {
+            return phoneNumberAdministrations.purchaseSearchAsync(searchId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -589,10 +815,18 @@ public final class PhoneNumberAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
-        return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId);
+        try {
+            return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
-        return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId, context);
+        try {
+            return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 }
