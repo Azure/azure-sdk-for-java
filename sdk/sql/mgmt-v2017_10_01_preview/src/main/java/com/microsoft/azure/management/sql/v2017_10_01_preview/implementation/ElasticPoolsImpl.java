@@ -64,10 +64,14 @@ class ElasticPoolsImpl extends WrapperImpl<ElasticPoolsInner> implements Elastic
     public Observable<ElasticPool> getAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         ElasticPoolsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, elasticPoolName)
-        .map(new Func1<ElasticPoolInner, ElasticPool>() {
+        .flatMap(new Func1<ElasticPoolInner, Observable<ElasticPool>>() {
             @Override
-            public ElasticPool call(ElasticPoolInner inner) {
-                return wrapModel(inner);
+            public Observable<ElasticPool> call(ElasticPoolInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ElasticPool)wrapModel(inner));
+                }
             }
        });
     }
