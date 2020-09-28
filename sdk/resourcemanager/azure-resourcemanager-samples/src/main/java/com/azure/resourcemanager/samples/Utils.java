@@ -236,6 +236,9 @@ import java.util.stream.Collectors;
 
 public final class Utils {
 
+    private Utils() {
+    }
+
     /** @return a generated password */
     public static String password() {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
@@ -2248,17 +2251,33 @@ public final class Utils {
     }
 
     /**
-     * Uploads a file to an Azure app service.
+     * Uploads a file to an Azure app service for Web App.
      *
      * @param profile the publishing profile for the app service.
      * @param fileName the name of the file on server
      * @param file the local file
      */
     public static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot/webapps";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    /**
+     * Uploads a file to an Azure app service for Function App.
+     *
+     * @param profile the publishing profile for the app service.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileForFunctionViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    private static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file, String path) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
-        String path = "./site/wwwroot/webapps";
         if (fileName.contains("/")) {
             int lastslash = fileName.lastIndexOf('/');
             path = path + "/" + fileName.substring(0, lastslash);
@@ -2280,10 +2299,6 @@ public final class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Utils() {
-
     }
 
     /**
