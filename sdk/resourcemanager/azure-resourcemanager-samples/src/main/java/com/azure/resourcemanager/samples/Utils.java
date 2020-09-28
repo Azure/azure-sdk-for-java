@@ -25,6 +25,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerState;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
@@ -238,6 +239,30 @@ public final class Utils {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager azure, String prefix, int maxLen) {
+        return azure.resourceGroups().manager().internalContext().randomResourceName(prefix, maxLen);
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager azure) {
+        return azure.resourceGroups().manager().internalContext().randomUuid();
     }
 
     /**
