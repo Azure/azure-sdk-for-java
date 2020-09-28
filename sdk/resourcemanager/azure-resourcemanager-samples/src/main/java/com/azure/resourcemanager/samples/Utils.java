@@ -295,7 +295,7 @@ public final class Utils {
      * @return the randomized resource name.
      */
     public static String randomResourceName(AzureResourceManager.Authenticated authenticated, String prefix, int maxLen) {
-        return Utils.randomResourceName(authenticated, prefix, maxLen);
+        return authenticated.roleAssignments().manager().internalContext().randomResourceName(prefix, maxLen);
     }
 
     /**
@@ -306,7 +306,7 @@ public final class Utils {
      * @return the random UUID.
      */
     public static String randomUuid(AzureResourceManager.Authenticated authenticated) {
-        return Utils.randomUuid(authenticated);
+        return authenticated.roleAssignments().manager().internalContext().randomUuid();
     }
 
     /**
@@ -3348,6 +3348,7 @@ public final class Utils {
                                 && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
                                 retry = true;
                             }
+
                             if (retry) {
                                 logger.info("retry GET request to {}", urlString);
                             }
@@ -3382,10 +3383,8 @@ public final class Utils {
                             boolean retry = false;
                             if (t instanceof TimeoutException) {
                                 retry = true;
-                            } else if (t instanceof HttpResponseException
-                                && ((HttpResponseException) t).getResponse().getStatusCode() == 404) {
-                                retry = true;
                             }
+
                             if (retry) {
                                 logger.info("retry POST request to {}", urlString);
                             }
