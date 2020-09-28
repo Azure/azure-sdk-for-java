@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RouteTableListResult model. */
+/** Response for the ListRouteTable API service call. */
 @Fluent
 public final class RouteTableListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteTableListResult.class);

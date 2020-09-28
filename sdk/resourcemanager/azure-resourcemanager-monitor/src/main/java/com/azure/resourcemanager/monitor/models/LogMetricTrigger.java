@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LogMetricTrigger model. */
+/** A log metrics trigger descriptor. */
 @Fluent
 public final class LogMetricTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogMetricTrigger.class);

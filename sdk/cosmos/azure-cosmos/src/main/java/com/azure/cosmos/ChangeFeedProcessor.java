@@ -72,6 +72,6 @@ public interface ChangeFeedProcessor {
      *
      * @return a read only list of states each representing one scoped worker item.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(Beta.SinceVersion.V4_5_1)
     Mono<List<ChangeFeedProcessorState>> getCurrentState();
 }

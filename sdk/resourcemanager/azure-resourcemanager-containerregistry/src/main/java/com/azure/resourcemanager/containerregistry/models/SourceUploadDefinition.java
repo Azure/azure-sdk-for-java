@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerregistry.fluent.inner.SourceUploadDefinitionInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.SourceUploadDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The source repository properties for a build task. */

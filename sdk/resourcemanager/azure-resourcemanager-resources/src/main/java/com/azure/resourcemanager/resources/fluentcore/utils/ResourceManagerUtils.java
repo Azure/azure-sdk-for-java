@@ -6,13 +6,19 @@ package com.azure.resourcemanager.resources.fluentcore.utils;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.provider.DelayProvider;
+import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.Subscription;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Defines a few utilities.
@@ -71,6 +77,18 @@ public final class ResourceManagerUtils {
             return 0;
         }
         return value;
+    }
+
+    /**
+     * Wrapper for thread sleep.
+     *
+     * @param duration the duration value for which thread should put on sleep.
+     */
+    public static void sleep(Duration duration) {
+        try {
+            Thread.sleep(InternalRuntimeContext.getDelayDuration(duration).toMillis());
+        } catch (InterruptedException e) {
+        }
     }
 
     /**
@@ -191,5 +209,92 @@ public final class ResourceManagerUtils {
         String suffix = environment.getStorageEndpointSuffix().replaceAll("^\\.*", "");
         return String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=%s",
             accountName, accountKey, suffix);
+    }
+
+    /**
+     * The class provides the common methods required for SDK framework.
+     *
+     * RESERVED FOR INTERNAL USE.
+     */
+    public static class InternalRuntimeContext {
+        private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
+        private static DelayProvider delayProvider = new ResourceDelayProvider();
+        private static Scheduler reactorScheduler = Schedulers.parallel();
+
+        /**
+         * Sets the resource namer
+         *
+         * @param identifierFunction the function.
+         */
+        public void setIdentifierFunction(Function<String, IdentifierProvider> identifierFunction) {
+            this.identifierFunction = identifierFunction;
+        }
+
+        /**
+         * Creates a resource namer
+         *
+         * @param name the name value.
+         * @return the new resource namer
+         */
+        public IdentifierProvider createIdentifierProvider(String name) {
+            return identifierFunction.apply(name);
+        }
+
+        /**
+         * Gets a random name.
+         *
+         * @param prefix the prefix to be used if possible
+         * @param maxLen the maximum length for the random generated name
+         * @return the random name
+         */
+        public String randomResourceName(String prefix, int maxLen) {
+            return identifierFunction.apply("").getRandomName(prefix, maxLen);
+        }
+
+        /**
+         * Gets a random UUID.
+         *
+         * @return the random UUID.
+         */
+        public String randomUuid() {
+            return identifierFunction.apply("").getRandomUuid();
+        }
+
+        /**
+         * Function to override the DelayProvider.
+         *
+         * @param delayProvider delayProvider to override.
+         */
+        public static void setDelayProvider(DelayProvider delayProvider) {
+            InternalRuntimeContext.delayProvider = delayProvider;
+        }
+
+        /**
+         * Wrapper for the duration for delay, based on delayProvider.
+         *
+         * @param delay the duration of proposed delay.
+         * @return the duration of delay.
+         */
+        public static Duration getDelayDuration(Duration delay) {
+            return delayProvider.getDelayDuration(delay);
+        }
+
+        /**
+         * Gets the current Rx Scheduler for the SDK framework.
+         *
+         * @return current rx scheduler.
+         */
+        public static Scheduler getReactorScheduler() {
+            return reactorScheduler;
+        }
+
+        /**
+         * Sets the Rx Scheduler for SDK framework, by default is Scheduler.io().
+         *
+         * @param reactorScheduler current Rx Scheduler to be used in SDK framework.
+         */
+        public static void setReactorScheduler(Scheduler reactorScheduler) {
+            InternalRuntimeContext.reactorScheduler = reactorScheduler;
+        }
     }
 }

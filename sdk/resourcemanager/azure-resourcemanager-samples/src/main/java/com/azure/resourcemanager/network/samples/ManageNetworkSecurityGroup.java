@@ -45,15 +45,15 @@ public final class ManageNetworkSecurityGroup {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws UnsupportedEncodingException, JSchException {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String frontEndNSGName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("fensg", 24);
-        final String backEndNSGName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("bensg", 24);
-        final String rgName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("rgNEMS", 24);
-        final String vnetName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("vnet", 24);
-        final String networkInterfaceName1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("nic2", 24);
-        final String publicIPAddressLeafDNS1 = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("pip1", 24);
-        final String frontEndVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("fevm", 24);
-        final String backEndVMName = azureResourceManager.resourceGroups().manager().sdkContext().randomResourceName("bevm", 24);
+        final String frontEndNSGName = Utils.randomResourceName(azureResourceManager, "fensg", 24);
+        final String backEndNSGName = Utils.randomResourceName(azureResourceManager, "bensg", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMS", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
+        final String networkInterfaceName1 = Utils.randomResourceName(azureResourceManager, "nic1", 24);
+        final String networkInterfaceName2 = Utils.randomResourceName(azureResourceManager, "nic2", 24);
+        final String publicIPAddressLeafDNS1 = Utils.randomResourceName(azureResourceManager, "pip1", 24);
+        final String frontEndVMName = Utils.randomResourceName(azureResourceManager, "fevm", 24);
+        final String backEndVMName = Utils.randomResourceName(azureResourceManager, "bevm", 24);
         final String userName = "tirekicker";
         try {
             final String sshKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey();

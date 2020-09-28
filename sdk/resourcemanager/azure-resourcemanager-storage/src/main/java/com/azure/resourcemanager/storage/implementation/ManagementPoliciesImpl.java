@@ -8,7 +8,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import com.azure.resourcemanager.storage.models.ManagementPolicies;
 import com.azure.resourcemanager.storage.models.ManagementPolicy;
-import com.azure.resourcemanager.storage.fluent.inner.ManagementPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 import reactor.core.publisher.Mono;
 

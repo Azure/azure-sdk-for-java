@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +25,11 @@ public class StoreResponse {
     final private byte[] content;
 
     private CosmosDiagnostics cosmosDiagnostics;
+    private int pendingRequestQueueSize;
     private int requestPayloadLength;
     private RequestTimeline requestTimeline;
-    private int responseLength;
+    private int rntbdChannelTaskQueueSize;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
 
@@ -63,6 +66,22 @@ public class StoreResponse {
         return responseHeaderValues;
     }
 
+    public int getRntbdChannelTaskQueueSize() {
+        return rntbdChannelTaskQueueSize;
+    }
+
+    public void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
+        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    }
+
+    public int getPendingRequestQueueSize() {
+        return this.pendingRequestQueueSize;
+    }
+
+    public void setRntbdPendingRequestSize(int pendingRequestQueueSize) {
+        this.pendingRequestQueueSize = pendingRequestQueueSize;
+    }
+
     public void setRntbdRequestLength(int rntbdRequestLength) {
         this.rntbdRequestLength = rntbdRequestLength;
     }
@@ -85,10 +104,6 @@ public class StoreResponse {
 
     public void setRequestPayloadLength(int requestPayloadLength) {
         this.requestPayloadLength = requestPayloadLength;
-    }
-
-    public void setResponseBodyLength(int responseLength) {
-        this.responseLength = responseLength;
     }
 
     public byte[] getResponseBody() {
@@ -145,6 +160,14 @@ public class StoreResponse {
 
     RequestTimeline getRequestTimeline() {
         return this.requestTimeline;
+    }
+
+    void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getEndpointStsts() {
+        return this.rntbdEndpointStatistics;
     }
 
     int getSubStatusCode() {

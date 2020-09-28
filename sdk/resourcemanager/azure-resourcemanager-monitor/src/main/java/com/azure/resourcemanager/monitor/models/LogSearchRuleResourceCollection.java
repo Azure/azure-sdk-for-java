@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.LogSearchRuleResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LogSearchRuleResourceCollection model. */
+/** Represents a collection of Log Search rule resources. */
 @Fluent
 public final class LogSearchRuleResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSearchRuleResourceCollection.class);

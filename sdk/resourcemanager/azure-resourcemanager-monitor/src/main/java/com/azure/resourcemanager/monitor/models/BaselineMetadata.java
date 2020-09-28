@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BaselineMetadata model. */
+/** Represents a baseline metadata value. */
 @Fluent
 public final class BaselineMetadata {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BaselineMetadata.class);

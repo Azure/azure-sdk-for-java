@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricSpecification model. */
+/** Metric specification of operation. */
 @Fluent
 public final class MetricSpecification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);

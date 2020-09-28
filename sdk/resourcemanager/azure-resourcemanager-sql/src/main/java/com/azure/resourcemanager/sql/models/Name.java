@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Name model. */
+/** ARM Usage Name. */
 @Fluent
 public final class Name {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Name.class);

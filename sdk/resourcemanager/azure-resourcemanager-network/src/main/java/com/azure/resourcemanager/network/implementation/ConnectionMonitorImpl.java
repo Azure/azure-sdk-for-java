@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;

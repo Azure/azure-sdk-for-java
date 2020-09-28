@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DedicatedHostAvailableCapacity model. */
+/** Dedicated host unutilized capacity. */
 @Fluent
 public final class DedicatedHostAvailableCapacity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostAvailableCapacity.class);

@@ -166,9 +166,12 @@ public final class RntbdTransportClient extends TransportClient {
             if (response != null) {
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 response.setRequestTimeline(timeline);
+                response.setEndpointStatistics(record.serviceEndpointStatistics());
                 response.setRntbdResponseLength(record.responseLength());
                 response.setRntbdRequestLength(record.requestLength());
                 response.setRequestPayloadLength(request.getContentLength());
+                response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
+                response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
             }
 
         })).onErrorMap(throwable -> {
@@ -192,10 +195,15 @@ public final class RntbdTransportClient extends TransportClient {
 
             assert error instanceof CosmosException;
             CosmosException cosmosException = (CosmosException) error;
+            BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
+
             BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
             BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
             BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
             BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
+            BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
+            BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
+
 
             return cosmosException;
         });

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
-import com.azure.resourcemanager.storage.fluent.StorageManagementClientBuilder;
+import com.azure.resourcemanager.storage.implementation.StorageManagementClientBuilder;
 import com.azure.resourcemanager.storage.implementation.BlobContainersImpl;
 import com.azure.resourcemanager.storage.implementation.BlobServicesImpl;
 import com.azure.resourcemanager.storage.implementation.ManagementPoliciesImpl;

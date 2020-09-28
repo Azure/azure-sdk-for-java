@@ -16,7 +16,7 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroupOperations;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.FailoverGroupInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

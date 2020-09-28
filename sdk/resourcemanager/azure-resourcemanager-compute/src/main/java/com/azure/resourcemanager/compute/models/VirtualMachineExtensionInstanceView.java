@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineExtensionInstanceView model. */
+/** The instance view of a virtual machine extension. */
 @Fluent
 public final class VirtualMachineExtensionInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionInstanceView.class);

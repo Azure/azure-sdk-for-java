@@ -44,6 +44,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     long lastRequestNanoTime();
 
+    long lastSuccessfulRequestNanoTime();
+
     int channelsMetrics();
 
     int executorTaskQueueMetrics();
