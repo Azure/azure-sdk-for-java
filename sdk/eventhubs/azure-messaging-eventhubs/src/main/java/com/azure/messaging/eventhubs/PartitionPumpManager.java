@@ -15,6 +15,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NA
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
@@ -168,9 +169,13 @@ class PartitionPumpManager {
             Flux<Flux<PartitionEvent>> partitionEventFlux;
             Flux<PartitionEvent> receiver = eventHubConsumer
                 .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
-                .doOnNext(partitionEvent -> logger.verbose("On next {}, {}, {}",
-                    partitionContext.getEventHubName(), partitionContext.getPartitionId(),
-                    partitionEvent.getData().getSequenceNumber()));
+                .doOnNext(partitionEvent -> {
+                    if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                        logger.verbose("On next {}, {}, {}",
+                            partitionContext.getEventHubName(), partitionContext.getPartitionId(),
+                            partitionEvent.getData().getSequenceNumber());
+                    }
+                });
 
             if (maxWaitTime != null) {
                 partitionEventFlux = receiver
@@ -218,12 +223,16 @@ class PartitionPumpManager {
             }
         }
         try {
-            logger.verbose("Processing event {}, {}", partitionContext.getEventHubName(),
-                partitionContext.getPartitionId());
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Processing event {}, {}", partitionContext.getEventHubName(),
+                    partitionContext.getPartitionId());
+            }
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
                 eventContext.getLastEnqueuedEventProperties()));
-            logger.verbose("Completed processing event {}, {}", partitionContext.getEventHubName(),
-                partitionContext.getPartitionId());
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Completed processing event {}, {}", partitionContext.getEventHubName(),
+                    partitionContext.getPartitionId());
+            }
             endProcessTracingSpan(processSpanContext, Signal.complete());
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
@@ -246,11 +255,15 @@ class PartitionPumpManager {
                     .collect(Collectors.toList());
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
                     checkpointStore, lastEnqueuedEventProperties[0]);
-                logger.verbose("Processing event batch {}, {}", partitionContext.getEventHubName(),
-                    partitionContext.getPartitionId());
+                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                    logger.verbose("Processing event batch {}, {}", partitionContext.getEventHubName(),
+                        partitionContext.getPartitionId());
+                }
                 partitionProcessor.processEventBatch(eventBatchContext);
-                logger.verbose("Completed processing event batch{}, {}", partitionContext.getEventHubName(),
-                    partitionContext.getPartitionId());
+                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                    logger.verbose("Completed processing event batch{}, {}", partitionContext.getEventHubName(),
+                        partitionContext.getPartitionId());
+                }
             } else {
                 EventData eventData = (partitionEventBatch.size() == 1
                     ? partitionEventBatch.get(0).getData() : null);
