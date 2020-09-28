@@ -29,7 +29,6 @@ import java.util.List;
 
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.FAILED_TO_DOWNLOAD_IMAGE_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR_CODE;
@@ -234,8 +233,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new RecognizeReceiptsOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             validateExceptionSource(errorResponseException);
-            FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -433,8 +430,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeContentOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             validateExceptionSource(errorResponseException);
-            FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -1069,7 +1064,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
-
             validateExceptionSource(errorResponseException);
         });
     }
