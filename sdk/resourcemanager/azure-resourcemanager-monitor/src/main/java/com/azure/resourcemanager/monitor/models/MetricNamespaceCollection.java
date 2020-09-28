@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricNamespaceInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricNamespaceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricNamespaceCollection model. */
+/** Represents collection of metric namespaces. */
 @Fluent
 public final class MetricNamespaceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricNamespaceCollection.class);

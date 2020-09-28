@@ -8,11 +8,11 @@ module com.azure.resourcemanager.appplatform {
     // export public APIs of appplatform
     exports com.azure.resourcemanager.appplatform;
     exports com.azure.resourcemanager.appplatform.fluent;
-    exports com.azure.resourcemanager.appplatform.fluent.inner;
+    exports com.azure.resourcemanager.appplatform.fluent.models;
     exports com.azure.resourcemanager.appplatform.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.appplatform.fluent.inner to
+    opens com.azure.resourcemanager.appplatform.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.appplatform.models to

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceExtension;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,27 +28,27 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String publisherName() {
-        return this.inner().publisher();
+        return this.innerModel().publisher();
     }
 
     @Override
     public String typeName() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String versionName() {
-        return this.inner().typeHandlerVersion();
+        return this.innerModel().typeHandlerVersion();
     }
 
     @Override
     public boolean autoUpgradeMinorVersionEnabled() {
-        return this.inner().autoUpgradeMinorVersion();
+        return this.innerModel().autoUpgradeMinorVersion();
     }
 
     @Override
@@ -63,36 +63,36 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public VirtualMachineExtensionInstanceView instanceView() {
-        return this.inner().instanceView();
+        return this.innerModel().instanceView();
     }
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().tags() == null) {
+        if (this.innerModel().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
         }
-        return Collections.unmodifiableMap(this.inner().tags());
+        return Collections.unmodifiableMap(this.innerModel().tags());
     }
 
     @SuppressWarnings("unchecked")
     private void initializeSettings() {
-        if (this.inner().settings() == null) {
+        if (this.innerModel().settings() == null) {
             this.publicSettings = new LinkedHashMap<>();
-            this.inner().withSettings(this.publicSettings);
+            this.innerModel().withSettings(this.publicSettings);
         } else {
-            this.publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
+            this.publicSettings = (LinkedHashMap<String, Object>) this.innerModel().settings();
         }
 
-        if (this.inner().protectedSettings() == null) {
+        if (this.innerModel().protectedSettings() == null) {
             this.protectedSettings = new LinkedHashMap<>();
-            this.inner().withProtectedSettings(this.protectedSettings);
+            this.innerModel().withProtectedSettings(this.protectedSettings);
         } else {
-            this.protectedSettings = (LinkedHashMap<String, Object>) this.inner().protectedSettings();
+            this.protectedSettings = (LinkedHashMap<String, Object>) this.innerModel().protectedSettings();
         }
     }
 }

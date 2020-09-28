@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.models.ProvisioningOperation;
 import com.azure.resourcemanager.resources.models.TargetResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import reactor.core.publisher.Mono;
 
@@ -35,55 +35,55 @@ final class DeploymentOperationImpl extends
 
     @Override
     public String operationId() {
-        return inner().operationId();
+        return innerModel().operationId();
     }
 
     @Override
     public String provisioningState() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().provisioningState();
+        return this.innerModel().properties().provisioningState();
     }
 
     @Override
     public ProvisioningOperation provisioningOperation() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().provisioningOperation();
+        return this.innerModel().properties().provisioningOperation();
     }
 
     @Override
     public OffsetDateTime timestamp() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().timestamp();
+        return this.innerModel().properties().timestamp();
     }
 
     @Override
     public String statusCode() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().statusCode();
+        return this.innerModel().properties().statusCode();
     }
 
     @Override
     public Object statusMessage() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().statusMessage();
+        return this.innerModel().properties().statusMessage();
     }
 
     @Override
     public TargetResource targetResource() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().targetResource();
+        return this.innerModel().properties().targetResource();
     }
 
     @Override

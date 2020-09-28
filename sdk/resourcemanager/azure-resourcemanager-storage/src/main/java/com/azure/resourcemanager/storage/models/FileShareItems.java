@@ -6,12 +6,15 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.fluent.inner.FileShareItemInner;
+import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The FileShareItems model. */
+/**
+ * Response schema. Contains list of shares returned, and if paging is requested or required, a URL to next page of
+ * shares.
+ */
 @Immutable
 public final class FileShareItems {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareItems.class);

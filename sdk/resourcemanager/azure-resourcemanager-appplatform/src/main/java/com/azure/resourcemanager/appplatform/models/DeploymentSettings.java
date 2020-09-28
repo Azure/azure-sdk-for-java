@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DeploymentSettings model. */
+/** Deployment settings payload. */
 @Fluent
 public final class DeploymentSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentSettings.class);

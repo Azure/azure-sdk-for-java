@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.ServerMetric;
-import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for DatabaseMetric interface. */
@@ -16,36 +16,36 @@ class ServerMetricImpl extends WrapperImpl<ServerUsageInner> implements ServerMe
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String resourceName() {
-        return this.inner().resourceName();
+        return this.innerModel().resourceName();
     }
 
     @Override
     public String displayName() {
-        return this.inner().displayName();
+        return this.innerModel().displayName();
     }
 
     @Override
     public double currentValue() {
-        return this.inner().currentValue();
+        return this.innerModel().currentValue();
     }
 
     @Override
     public double limit() {
-        return this.inner().limit();
+        return this.innerModel().limit();
     }
 
     @Override
     public String unit() {
-        return this.inner().unit();
+        return this.innerModel().unit();
     }
 
     @Override
     public OffsetDateTime nextResetTime() {
-        return this.inner().nextResetTime();
+        return this.innerModel().nextResetTime();
     }
 }

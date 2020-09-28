@@ -13,7 +13,8 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -43,10 +44,10 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates() {
         Map<String, ApplicationGatewayAuthenticationCertificate> certs = new TreeMap<>();
-        if (this.inner().authenticationCertificates() == null) {
+        if (this.innerModel().authenticationCertificates() == null) {
             return Collections.unmodifiableMap(certs);
         } else {
-            for (SubResource ref : this.inner().authenticationCertificates()) {
+            for (SubResource ref : this.innerModel().authenticationCertificates()) {
                 ApplicationGatewayAuthenticationCertificate cert =
                     this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.id()));
                 if (cert != null) {
@@ -59,13 +60,13 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public ApplicationGatewayProbe probe() {
-        if (this.parent().probes() != null && this.inner().probe() != null) {
-            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().id()));
+        if (this.parent().probes() != null && this.innerModel().probe() != null) {
+            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.innerModel().probe().id()));
         } else {
             return null;
         }
@@ -73,58 +74,58 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public String hostHeader() {
-        return this.inner().hostname();
+        return this.innerModel().hostname();
     }
 
     @Override
     public boolean isHostHeaderFromBackend() {
-        return Utils.toPrimitiveBoolean(this.inner().pickHostnameFromBackendAddress());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().pickHostnameFromBackendAddress());
     }
 
     @Override
     public boolean isProbeEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().probeEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().probeEnabled());
     }
 
     @Override
     public int connectionDrainingTimeoutInSeconds() {
-        if (this.inner().connectionDraining() == null) {
+        if (this.innerModel().connectionDraining() == null) {
             return 0;
-        } else if (!this.inner().connectionDraining().enabled()) {
+        } else if (!this.innerModel().connectionDraining().enabled()) {
             return 0;
         } else {
-            return this.inner().connectionDraining().drainTimeoutInSec();
+            return this.innerModel().connectionDraining().drainTimeoutInSec();
         }
     }
 
     @Override
     public String affinityCookieName() {
-        return this.inner().affinityCookieName();
+        return this.innerModel().affinityCookieName();
     }
 
     @Override
     public String path() {
-        return this.inner().path();
+        return this.innerModel().path();
     }
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().port());
     }
 
     @Override
     public ApplicationGatewayProtocol protocol() {
-        return this.inner().protocol();
+        return this.innerModel().protocol();
     }
 
     @Override
     public boolean cookieBasedAffinity() {
-        return this.inner().cookieBasedAffinity().equals(ApplicationGatewayCookieBasedAffinity.ENABLED);
+        return this.innerModel().cookieBasedAffinity().equals(ApplicationGatewayCookieBasedAffinity.ENABLED);
     }
 
     @Override
     public int requestTimeout() {
-        return Utils.toPrimitiveInt(this.inner().requestTimeout());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().requestTimeout());
     }
 
     // Verbs
@@ -137,27 +138,27 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     // Withers
 
     public ApplicationGatewayBackendHttpConfigurationImpl withPort(int port) {
-        this.inner().withPort(port);
+        this.innerModel().withPort(port);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withCookieBasedAffinity() {
-        this.inner().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.ENABLED);
+        this.innerModel().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.ENABLED);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutCookieBasedAffinity() {
-        this.inner().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED);
+        this.innerModel().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED);
         return this;
     }
 
     private ApplicationGatewayBackendHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
-        this.inner().withProtocol(protocol);
+        this.innerModel().withProtocol(protocol);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withRequestTimeout(int seconds) {
-        this.inner().withRequestTimeout(seconds);
+        this.innerModel().withRequestTimeout(seconds);
         return this;
     }
 
@@ -166,48 +167,48 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this.withoutProbe();
         } else {
             SubResource probeRef = new SubResource().withId(this.parent().futureResourceId() + "/probes/" + name);
-            this.inner().withProbe(probeRef);
+            this.innerModel().withProbe(probeRef);
             return this;
         }
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutProbe() {
-        this.inner().withProbe(null);
+        this.innerModel().withProbe(null);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeaderFromBackend() {
-        this.inner().withPickHostnameFromBackendAddress(true).withHostname(null);
+        this.innerModel().withPickHostnameFromBackendAddress(true).withHostname(null);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeader(String hostHeader) {
-        this.inner().withHostname(hostHeader).withPickHostnameFromBackendAddress(false);
+        this.innerModel().withHostname(hostHeader).withPickHostnameFromBackendAddress(false);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutHostHeader() {
-        this.inner().withHostname(null).withPickHostnameFromBackendAddress(false);
+        this.innerModel().withHostname(null).withPickHostnameFromBackendAddress(false);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withConnectionDrainingTimeoutInSeconds(int seconds) {
-        if (this.inner().connectionDraining() == null) {
-            this.inner().withConnectionDraining(new ApplicationGatewayConnectionDraining());
+        if (this.innerModel().connectionDraining() == null) {
+            this.innerModel().withConnectionDraining(new ApplicationGatewayConnectionDraining());
         }
         if (seconds > 0) {
-            this.inner().connectionDraining().withDrainTimeoutInSec(seconds).withEnabled(true);
+            this.innerModel().connectionDraining().withDrainTimeoutInSec(seconds).withEnabled(true);
         }
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutConnectionDraining() {
-        this.inner().withConnectionDraining(null);
+        this.innerModel().withConnectionDraining(null);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withAffinityCookieName(String name) {
-        this.inner().withAffinityCookieName(name);
+        this.innerModel().withAffinityCookieName(name);
         return this;
     }
 
@@ -220,7 +221,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
                 path += "/";
             }
         }
-        this.inner().withPath(path);
+        this.innerModel().withPath(path);
         return this;
     }
 
@@ -231,10 +232,10 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         }
         SubResource certRef =
             new SubResource().withId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
-        List<SubResource> refs = this.inner().authenticationCertificates();
+        List<SubResource> refs = this.innerModel().authenticationCertificates();
         if (refs == null) {
             refs = new ArrayList<>();
-            this.inner().withAuthenticationCertificates(refs);
+            this.innerModel().withAuthenticationCertificates(refs);
         }
         for (SubResource ref : refs) {
             if (ref.id().equalsIgnoreCase(certRef.id())) {
@@ -271,7 +272,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
         // If matching cert reference not found, create a new one
         if (certName == null) {
-            certName = this.parent().manager().sdkContext().randomResourceName("cert", 20);
+            certName = this.parent().manager().resourceManager().internalContext().randomResourceName("cert", 20);
             this.parent().defineAuthenticationCertificate(certName).fromBase64(base64Data).attach();
         }
 
@@ -294,9 +295,9 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         if (name == null) {
             return this;
         }
-        for (SubResource ref : this.inner().authenticationCertificates()) {
+        for (SubResource ref : this.innerModel().authenticationCertificates()) {
             if (ResourceUtils.nameFromResourceId(ref.id()).equalsIgnoreCase(name)) {
-                this.inner().authenticationCertificates().remove(ref);
+                this.innerModel().authenticationCertificates().remove(ref);
                 break;
             }
         }
@@ -315,7 +316,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl withoutAuthenticationCertificates() {
-        this.inner().withAuthenticationCertificates(null);
+        this.innerModel().withAuthenticationCertificates(null);
         return this;
     }
 }

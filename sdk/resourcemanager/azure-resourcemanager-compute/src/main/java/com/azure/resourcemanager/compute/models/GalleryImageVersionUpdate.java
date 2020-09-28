@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GalleryImageVersionUpdate model. */
+/** Specifies information about the gallery Image Version that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionUpdate extends UpdateResourceDefinition {

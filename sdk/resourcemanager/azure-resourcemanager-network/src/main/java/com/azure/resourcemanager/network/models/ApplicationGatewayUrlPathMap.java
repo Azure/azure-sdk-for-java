@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Map;
 
 /** A client-side representation of an application gateway's URL path map. */
 @Fluent
 public interface ApplicationGatewayUrlPathMap
-    extends HasInner<ApplicationGatewayUrlPathMapInner>, ChildResource<ApplicationGateway> {
+    extends HasInnerModel<ApplicationGatewayUrlPathMapInner>, ChildResource<ApplicationGateway> {
 
     /** @return default backend address pool */
     ApplicationGatewayBackend defaultBackend();

@@ -10,11 +10,11 @@ module com.azure.resourcemanager.keyvault {
     // export public APIs of keyvault
     exports com.azure.resourcemanager.keyvault;
     exports com.azure.resourcemanager.keyvault.fluent;
-    exports com.azure.resourcemanager.keyvault.fluent.inner;
+    exports com.azure.resourcemanager.keyvault.fluent.models;
     exports com.azure.resourcemanager.keyvault.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.keyvault.fluent.inner to
+    opens com.azure.resourcemanager.keyvault.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.keyvault.models to

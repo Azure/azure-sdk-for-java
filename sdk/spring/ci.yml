@@ -131,7 +131,7 @@ extends:
         groupId: com.azure
       - name: azure-spring-boot-sample-active-directory-stateless
         groupId: com.azure
-      - name: azure-spring-boot-sample-cosmosdb
+      - name: azure-spring-boot-sample-cosmos
         groupId: com.azure
       - name: azure-spring-boot-sample-data-gremlin
         groupId: com.azure

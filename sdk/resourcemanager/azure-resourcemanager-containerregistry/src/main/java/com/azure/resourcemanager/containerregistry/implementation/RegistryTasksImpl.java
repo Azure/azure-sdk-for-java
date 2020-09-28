@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
-import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import reactor.core.publisher.Mono;
@@ -29,7 +29,7 @@ public class RegistryTasksImpl implements RegistryTasks {
     public PagedFlux<RegistryTask> listByRegistryAsync(String resourceGroupName, String registryName) {
         return this
             .registryManager
-            .inner()
+            .serviceClient()
             .getTasks()
             .listAsync(resourceGroupName, registryName)
             .mapPage(inner -> wrapModel(inner));
@@ -46,14 +46,14 @@ public class RegistryTasksImpl implements RegistryTasks {
         if (includeSecrets) {
             return this
                 .registryManager
-                .inner()
+                .serviceClient()
                 .getTasks()
                 .getDetailsAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
         } else {
             return this
                 .registryManager
-                .inner()
+                .serviceClient()
                 .getTasks()
                 .getAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
@@ -68,7 +68,7 @@ public class RegistryTasksImpl implements RegistryTasks {
 
     @Override
     public Mono<Void> deleteByRegistryAsync(String resourceGroupName, String registryName, String taskName) {
-        return this.registryManager.inner().getTasks().deleteAsync(resourceGroupName, registryName, taskName);
+        return this.registryManager.serviceClient().getTasks().deleteAsync(resourceGroupName, registryName, taskName);
     }
 
     @Override
@@ -81,6 +81,6 @@ public class RegistryTasksImpl implements RegistryTasks {
     }
 
     public TasksClient inner() {
-        return this.registryManager.inner().getTasks();
+        return this.registryManager.serviceClient().getTasks();
     }
 }

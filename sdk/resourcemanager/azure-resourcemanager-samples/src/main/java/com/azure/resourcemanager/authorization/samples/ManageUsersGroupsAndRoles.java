@@ -15,8 +15,10 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
+
+import java.time.Duration;
 
 /**
  * Azure Users, Groups and Roles sample.
@@ -38,13 +40,13 @@ public final class ManageUsersGroupsAndRoles {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager.Authenticated authenticated, AzureProfile profile) {
-        final String userEmail = authenticated.sdkContext().randomResourceName("test", 15);
+        final String userEmail = Utils.randomResourceName(authenticated, "test", 15);
         final String userName = userEmail.replace("test", "Test ");
-        final String spName = authenticated.sdkContext().randomResourceName("sp", 15);
-        final String raName1 = authenticated.sdkContext().randomUuid();
-        final String raName2 = authenticated.sdkContext().randomUuid();
-        final String groupEmail1 = authenticated.sdkContext().randomResourceName("group1", 15);
-        final String groupEmail2 = authenticated.sdkContext().randomResourceName("group2", 15);
+        final String spName = Utils.randomResourceName(authenticated, "sp", 15);
+        final String raName1 = Utils.randomUuid(authenticated);
+        final String raName2 = Utils.randomUuid(authenticated);
+        final String groupEmail1 = Utils.randomResourceName(authenticated, "group1", 15);
+        final String groupEmail2 = Utils.randomResourceName(authenticated, "group2", 15);
         final String groupName1 = groupEmail1.replace("group1", "Group ");
         final String groupName2 = groupEmail2.replace("group2", "Group ");
         String spId = "";
@@ -95,7 +97,7 @@ public final class ManageUsersGroupsAndRoles {
                     .withNewApplication("http://" + spName)
                     .create();
             // wait till service principal created and propagated
-            SdkContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("Created Service Principal:");
             Utils.print(sp);
             spId = sp.id();

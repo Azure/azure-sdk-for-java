@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SnapshotRecoverySource model. */
+/** Specifies the web app that snapshot contents will be retrieved from. */
 @Fluent
 public final class SnapshotRecoverySource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotRecoverySource.class);

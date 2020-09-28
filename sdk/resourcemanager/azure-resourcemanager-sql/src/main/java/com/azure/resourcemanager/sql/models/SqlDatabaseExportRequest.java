@@ -6,13 +6,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /** An immutable client-side representation of an Azure SQL Database export operation request. */
 @Fluent
 public interface SqlDatabaseExportRequest
-    extends HasInner<ExportRequest>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+    extends HasInnerModel<ExportRequest>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database export operation definition. */
     interface SqlDatabaseExportRequestDefinition

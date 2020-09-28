@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBDatabaseGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseGetResultsInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MongoDBDatabaseListResult model. */
+/** The List operation response, that contains the MongoDB databases and their properties. */
 @Immutable
 public final class MongoDBDatabaseListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBDatabaseListResult.class);

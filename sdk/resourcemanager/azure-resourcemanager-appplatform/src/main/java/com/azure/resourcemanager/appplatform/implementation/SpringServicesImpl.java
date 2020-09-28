@@ -7,13 +7,13 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.NameAvailability;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.ResourceSku;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +24,7 @@ public class SpringServicesImpl
     private static final String SPRING_TYPE = "Microsoft.AppPlatform/Spring";
 
     public SpringServicesImpl(AppPlatformManager manager) {
-        super(manager.inner().getServices(), manager);
+        super(manager.serviceClient().getServices(), manager);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SpringServicesImpl
 
     @Override
     public PagedFlux<ResourceSku> listSkusAsync() {
-        return manager().inner().getSkus().listAsync();
+        return manager().serviceClient().getSkus().listAsync();
     }
 
     @Override
