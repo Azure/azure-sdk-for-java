@@ -229,7 +229,7 @@ class BlobAPITest extends APISpec {
         headers.getBlobCommittedBlockCount() == null
         headers.isServerEncrypted() != null
         headers.getBlobContentMD5() == null
-        headers.getLastAccessedTime()
+//        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
     def "Download empty file"() {
@@ -974,7 +974,7 @@ class BlobAPITest extends APISpec {
         properties.getTagCount() == 1
         properties.getRehydratePriority() == null // tested in setTier rehydrate priority
         !properties.isSealed() // tested in AppendBlob. "seal blob"
-        properties.getLastAccessedTime()
+//        properties.getLastAccessedTime() /* TODO: re-enable when last access time enabled. */
     }
 
     def "Get properties min"() {
