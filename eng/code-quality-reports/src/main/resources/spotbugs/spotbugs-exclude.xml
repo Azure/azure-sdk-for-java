@@ -2173,8 +2173,8 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.microsoft.azure.utils.PropertyLoader"/> <!-- false positive -->
-      <Class name="com.microsoft.azure.spring.support.GetHashMac"/> <!-- false positive -->
+      <Class name="PropertyLoader"/> <!-- false positive -->
+      <Class name="GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
@@ -2184,7 +2184,7 @@
 
   <Match>
     <Or>
-      <Class name="com.microsoft.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+      <Class name="TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
