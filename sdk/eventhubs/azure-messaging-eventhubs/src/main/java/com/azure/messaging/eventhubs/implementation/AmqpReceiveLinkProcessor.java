@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -58,6 +59,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private volatile long requested;
     private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
         AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
+    private volatile int nextCreditToFlow;
+    private static final AtomicIntegerFieldUpdater<AmqpReceiveLinkProcessor> CREDIT_TO_FLOW =
+        AtomicIntegerFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "nextCreditToFlow");
 
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
@@ -154,7 +158,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // For a new link, add the prefetch as credits.
             linkCreditsAdded.set(true);
             next.addCredits(prefetch);
-            next.setEmptyCreditListener(this::replenishCredits);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().subscribe(
@@ -414,6 +417,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                 try {
                     subscriber.onNext(message);
+                    sendFlow(1);
                 } catch (Exception e) {
                     logger.error("Exception occurred while handling downstream onNext operation.", e);
                     throw logger.logExceptionAsError(Exceptions.propagate(
@@ -430,11 +434,25 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
     }
 
+    private void sendFlow(final int credits) {
+        // slow down sending the flow - to make the protocol less-chat'y
+        int currentCredits = CREDIT_TO_FLOW.addAndGet(this, credits);
+        if (this.shouldSendFlow(currentCredits)) {
+            this.currentLink.addCredits(currentCredits);
+            CREDIT_TO_FLOW.set(this, 0);
+            logger.info("Added {} credits to link {}.", currentCredits, currentLink.getLinkName());
+        }
+    }
+
+    private boolean shouldSendFlow(int currentCredits) {
+        return (currentCredits > 0 && currentCredits >= (this.prefetch / 2))
+            || (currentCredits >= 100);
+    }
+
     private boolean checkAndSetTerminated() {
         if (!isTerminated()) {
             return false;
         }
-
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final Throwable error = lastError;
         if (error != null) {
@@ -449,10 +467,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         messageQueue.clear();
         return true;
-    }
-
-    private int replenishCredits() {
-        return 1;
     }
 
     private int getCreditsToAdd() {

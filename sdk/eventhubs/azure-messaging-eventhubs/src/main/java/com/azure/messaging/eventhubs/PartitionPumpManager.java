@@ -166,13 +166,17 @@ class PartitionPumpManager {
             partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
             //@formatter:off
             Flux<Flux<PartitionEvent>> partitionEventFlux;
+            Flux<PartitionEvent> receiver = eventHubConsumer
+                .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                .doOnNext(partitionEvent -> logger.verbose("On next {}, {}, {}",
+                    partitionContext.getEventHubName(), partitionContext.getPartitionId(),
+                    partitionEvent.getData().getSequenceNumber()));
+
             if (maxWaitTime != null) {
-                partitionEventFlux = eventHubConsumer
-                    .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                partitionEventFlux = receiver
                     .windowTimeout(maxBatchSize, maxWaitTime);
             } else {
-                partitionEventFlux = eventHubConsumer
-                    .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                partitionEventFlux = receiver
                     .window(maxBatchSize);
             }
             partitionEventFlux
@@ -214,8 +218,12 @@ class PartitionPumpManager {
             }
         }
         try {
+            logger.verbose("Processing event {}, {}", partitionContext.getEventHubName(),
+                partitionContext.getPartitionId());
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
                 eventContext.getLastEnqueuedEventProperties()));
+            logger.verbose("Completed processing event {}, {}", partitionContext.getEventHubName(),
+                partitionContext.getPartitionId());
             endProcessTracingSpan(processSpanContext, Signal.complete());
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
@@ -237,9 +245,12 @@ class PartitionPumpManager {
                     })
                     .collect(Collectors.toList());
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
-                    checkpointStore,
-                    lastEnqueuedEventProperties[0]);
+                    checkpointStore, lastEnqueuedEventProperties[0]);
+                logger.verbose("Processing event batch {}, {}", partitionContext.getEventHubName(),
+                    partitionContext.getPartitionId());
                 partitionProcessor.processEventBatch(eventBatchContext);
+                logger.verbose("Completed processing event batch{}, {}", partitionContext.getEventHubName(),
+                    partitionContext.getPartitionId());
             } else {
                 EventData eventData = (partitionEventBatch.size() == 1
                     ? partitionEventBatch.get(0).getData() : null);
