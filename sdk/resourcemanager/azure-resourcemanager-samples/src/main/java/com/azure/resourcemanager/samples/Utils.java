@@ -3300,6 +3300,7 @@ public final class Utils {
     /**
      * Sends a GET request to target URL.
      * <p>
+     * Retry logic tuned for AppService.
      * The method does not handle 301 redirect.
      *
      * @param urlString the target URL.
@@ -3310,7 +3311,7 @@ public final class Utils {
             Mono<Response<Flux<ByteBuffer>>> response =
                 HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
                     .retryWhen(Retry
-                        .fixedDelay(3, Duration.ofSeconds(30))
+                        .fixedDelay(5, Duration.ofSeconds(30))
                         .filter(t -> {
                             if (t instanceof TimeoutException) {
                                 return true;
@@ -3329,6 +3330,8 @@ public final class Utils {
 
     /**
      * Sends a POST request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
      *
      * @param urlString the target URL.
      * @param body the request body.
@@ -3336,12 +3339,20 @@ public final class Utils {
      * */
     public static String sendPostRequest(String urlString, String body) {
         try {
-            Response<String> response = stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
+            Mono<Response<String>> response =
+                stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {if (t instanceof TimeoutException) {
+                            return true;
+                        } else if (t instanceof HttpResponseException
+                            && ((HttpResponseException) t).getResponse().getStatusCode() == 404) {
+                            return true;
+                        }
+                        return false;
+                    }));
+            Response<String> ret = response.block();
+            return ret == null ? null : ret.getValue();
         } catch (Exception e) {
             return null;
         }
