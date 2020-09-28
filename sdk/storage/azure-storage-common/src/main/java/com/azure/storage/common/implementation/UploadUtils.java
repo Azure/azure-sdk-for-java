@@ -4,6 +4,7 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -180,7 +181,7 @@ public class UploadUtils {
 
         FluxMd5Wrapper(Flux<ByteBuffer> data, byte[] md5) {
             this.data = data;
-            this.md5 = md5 == null ? null : md5.clone();
+            this.md5 = CoreUtils.clone(md5);
         }
 
         public Flux<ByteBuffer> getData() {
@@ -188,7 +189,7 @@ public class UploadUtils {
         }
 
         public byte[] getMd5() {
-            return md5 == null ? null : md5.clone();
+            return CoreUtils.clone(md5);
         }
     }
 }
