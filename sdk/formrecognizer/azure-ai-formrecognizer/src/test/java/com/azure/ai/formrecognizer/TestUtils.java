@@ -44,7 +44,6 @@ final class TestUtils {
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
-    static final String FAILED_TO_DOWNLOAD_IMAGE_CODE = "FailedToDownloadImage";
     static final String INVALID_IMAGE_URL_ERROR_CODE = "InvalidImageURL";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
