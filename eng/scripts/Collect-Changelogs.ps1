@@ -19,28 +19,29 @@ Get-ChildItem "$repoRoot/sdk" -Filter CHANGELOG.md -Recurse | Sort-Object -Prope
     $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $_
     $package = $_.Directory.Name
     $serviceDirectory = $_.Directory.Parent.Name
-
-    foreach ($changeLogEntry in $changeLogEntries.Values)
-    {
-        if ($changeLogEntry.ReleaseStatus -notmatch $date)
+    if ($serviceDirectory -ne "resourcemanager" -and $serviceDirectory -ne "spring") {
+        foreach ($changeLogEntry in $changeLogEntries.Values)
         {
+            if ($changeLogEntry.ReleaseStatus -notmatch $date)
+            {
 
-            continue;
-        }
+                continue;
+            }
 
-        $version = $changeLogEntry.ReleaseVersion
-        $githubAnchor = $changeLogEntry.ReleaseTitle.Replace("## ", "").Replace(".", "").Replace("(", "").Replace(")", "").Replace(" ", "-")
-        $TextInfo = (Get-Culture).TextInfo
-        $changelogTitle = $TextInfo.ToTitleCase($package.Replace("-", " "))
+            $version = $changeLogEntry.ReleaseVersion
+            $githubAnchor = $changeLogEntry.ReleaseTitle.Replace("## ", "").Replace(".", "").Replace("(", "").Replace(")", "").Replace(" ", "-")
+            $TextInfo = (Get-Culture).TextInfo
+            $changelogTitle = $TextInfo.ToTitleCase($package.Replace("-", " "))
 
-        $InstallNotes += "<dependency>`n  <groupId>com.azure</groupId>`n  <artifactId>$package</artifactId>`n  <version>$version</version>`n</dependency>`n`n";
-        $ReleaseNotes += "### $changelogTitle $version [Changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/$serviceDirectory/$package/CHANGELOG.md#$githubAnchor)`n"
-        $changeLogEntry.ReleaseContent | %{
+            $InstallNotes += "<dependency>`n  <groupId>com.azure</groupId>`n  <artifactId>$package</artifactId>`n  <version>$version</version>`n</dependency>`n`n";
+            $ReleaseNotes += "### $changelogTitle $version [Changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/$serviceDirectory/$package/CHANGELOG.md#$githubAnchor)`n"
+            $changeLogEntry.ReleaseContent | %{
 
-            $ReleaseNotes += $_.Replace("###", "####")
+                $ReleaseNotes += $_.Replace("###", "####")
+                $ReleaseNotes += "`n"
+            }
             $ReleaseNotes += "`n"
         }
-        $ReleaseNotes += "`n"
     }
 }
 
