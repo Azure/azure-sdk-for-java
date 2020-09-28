@@ -351,7 +351,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void initializeDirectConnectivity() {
 
         this.storeClientFactory = new StoreClientFactory(
-            this,
             this.configs,
             this.connectionPolicy,
            // this.maxConcurrentConnectionOpenRequests,
