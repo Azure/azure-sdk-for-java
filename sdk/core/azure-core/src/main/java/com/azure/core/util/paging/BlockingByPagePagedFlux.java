@@ -56,7 +56,7 @@ class BlockingByPagePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flu
 
         @Override
         boolean needToRequestPage() {
-            return pages.peek() == null && !lastPage;
+            return !lastPage && pages.peek() == null;
         }
 
         @Override

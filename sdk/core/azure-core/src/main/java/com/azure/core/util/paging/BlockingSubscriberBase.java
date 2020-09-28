@@ -29,6 +29,7 @@ abstract class BlockingSubscriberBase<C, T, P extends ContinuablePage<C, T>, E>
     private final PageRetriever<C, P> pageRetriever;
     private final Integer defaultPageSize;
 
+    private volatile boolean receivedPages;
     volatile boolean lastPage;
     volatile boolean done;
     private Throwable error;
@@ -101,14 +102,13 @@ abstract class BlockingSubscriberBase<C, T, P extends ContinuablePage<C, T>, E>
 
                 if (emitted) {
                     Operators.produced(REQUESTED, this, 1);
+                    if (WIP.decrementAndGet(this) == 0) {
+                        return;
+                    }
                 } else {
                     // If we didn't emit we must request a page to continue satisfying downstream.
                     requestPage();
                 }
-            }
-
-            if (WIP.decrementAndGet(this) == 0) {
-                return;
             }
         }
     }
@@ -130,9 +130,10 @@ abstract class BlockingSubscriberBase<C, T, P extends ContinuablePage<C, T>, E>
 
     private void requestPage() {
         CountDownLatch countDownLatch = new CountDownLatch(1);
+        receivedPages = false;
         pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-            .subscribe(page -> addPage(page, continuationState),
-                throwable -> setError(throwable, countDownLatch),
+            .subscribe(page -> onConsume(page, continuationState),
+                throwable -> onError(throwable, countDownLatch),
                 () -> onComplete(countDownLatch));
 
         try {
@@ -142,17 +143,22 @@ abstract class BlockingSubscriberBase<C, T, P extends ContinuablePage<C, T>, E>
         }
     }
 
+    private synchronized void onConsume(P page, ContinuationState<C> continuationState) {
+        receivedPages = true;
+        addPage(page, continuationState);
+    }
+
     /*
      * Add a page returned by the service and update the continuation state.
      */
     abstract void addPage(P page, ContinuationState<C> continuationState);
 
     private synchronized void onComplete(CountDownLatch countDownLatch) {
+        lastPage = lastPage || (!receivedPages && !hasNext());
         countDownLatch.countDown();
-        this.lastPage = this.lastPage || !hasNext();
     }
 
-    private synchronized void setError(Throwable error, CountDownLatch countDownLatch) {
+    private synchronized void onError(Throwable error, CountDownLatch countDownLatch) {
         this.error = error;
         countDownLatch.countDown();
         this.done = true;
