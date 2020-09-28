@@ -36,6 +36,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -342,7 +343,10 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (!(dce.getCause() instanceof ReadTimeoutException)) {
+                    BridgeInternal
+                        .setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
@@ -559,7 +563,10 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (!(dce.getCause() instanceof ReadTimeoutException)) {
+                    BridgeInternal
+                        .setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {

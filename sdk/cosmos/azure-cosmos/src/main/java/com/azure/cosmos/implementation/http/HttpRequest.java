@@ -195,7 +195,7 @@ public class HttpRequest {
     public HttpRequest withBody(byte[] content) {
         headers.set("Content-Length", String.valueOf(content.length));
         // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
-        return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
+        return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content).retain())));
     }
 
     /**

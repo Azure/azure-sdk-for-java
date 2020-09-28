@@ -953,7 +953,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             return Flux.empty();
         }
 
-        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
+        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray).retain());
     }
 
     public int getContentLength() {

@@ -8,6 +8,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -29,6 +30,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
     final static int MaxRetryCount = 120;
     private final static int MaxServiceUnavailableRetryCount = 1;
+    private final static int MAX_QUERYPLAN_ADDRESS_RETRY_COUNT = 2;
 
     private final DocumentClientRetryPolicy throttlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
@@ -43,6 +45,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
+    private int queryplanAddressRefreshCount;
+    private OperationType operationType;
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
@@ -106,9 +110,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 } else {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
                 }
+            } else if (clientException != null && clientException.getCause() instanceof ReadTimeoutException) {
+                //if operationtype is QueryPlan / AddressRefresh then just retry
+                if (this.operationType == OperationType.QueryPlan || this.operationType == OperationType.AddressRefresh) {
+                    return shouldRetryQueryPlanAndAddress();
+                }
             } else {
                 logger.warn("Backend endpoint not reachable. ", e);
-                return this.shouldRetryOnBackendServiceUnavailableAsync(this.isReadRequest, WebExceptionUtility.isWebExceptionRetriable(e));
+                return this.shouldRetryOnBackendServiceUnavailableAsync(this.isReadRequest, WebExceptionUtility
+                                                                                                .isWebExceptionRetriable(e));
             }
         }
 
@@ -119,6 +129,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         return this.throttlingRetry.shouldRetry(e);
+    }
+
+    private Mono<ShouldRetryResult> shouldRetryQueryPlanAndAddress() {
+
+        if (this.queryplanAddressRefreshCount++ > MAX_QUERYPLAN_ADDRESS_RETRY_COUNT) {
+            logger
+                .warn("shouldRetryQueryPlanAndAddress() Not retrying. Retry count = {}",
+                      this.serviceUnavailableRetryCount);
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
+        Duration retryDelay = Duration.ZERO;
+        return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
     }
 
     private ShouldRetryResult shouldRetryOnSessionNotAvailable() {
@@ -234,6 +257,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
+        this.operationType = request.getOperationType();
         this.isReadRequest = request.isReadOnlyRequest();
         this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
         if (request.requestContext != null) {

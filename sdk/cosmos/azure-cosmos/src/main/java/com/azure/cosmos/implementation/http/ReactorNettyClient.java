@@ -117,8 +117,6 @@ class ReactorNettyClient implements HttpClient {
             responseTimeout = Duration.ofSeconds(this.httpClientConfig.getConfigs().getDirectHttpsResponseTimeoutInSeconds());
         }
 
-        logger.info("Request Operation Type is : {}", request.operationType());
-
         return this.httpClient
             .observe((connection, state) -> {
                 Instant time = Instant.now();
@@ -151,7 +149,6 @@ class ReactorNettyClient implements HttpClient {
                 }
             })
             .onErrorMap(throwable -> {
-                logger.error("Error occurred while sending request : ", throwable);
                 ReactorNettyHttpResponse reactorNettyHttpResponse = responseReference.get();
                 if (reactorNettyHttpResponse != null) {
                     reactorNettyHttpResponse.releaseOnNotSubscribedResponse(ReactorNettyResponseState.ERROR);

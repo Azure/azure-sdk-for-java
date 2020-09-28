@@ -50,7 +50,7 @@ public class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuf> body() {
-        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(Unpooled.wrappedBuffer(bytes)));
+        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(Unpooled.wrappedBuffer(bytes).retain()));
     }
 
     @Override

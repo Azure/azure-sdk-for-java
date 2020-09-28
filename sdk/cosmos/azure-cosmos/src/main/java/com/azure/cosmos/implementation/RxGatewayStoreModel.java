@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -300,7 +301,10 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (WebExceptionUtility.isNetworkFailure(dce)) {
-                           BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           if (!(dce.getCause() instanceof ReadTimeoutException)) {
+                               BridgeInternal
+                                   .setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           }
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
