@@ -136,7 +136,8 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-
+        // require a longer read timeout in HttpClient
+        // e.g., new NettyAsyncHttpClientBuilder().readTimeout(Duration.ofMinutes(10))
         Assertions.assertTrue(ManageFunctionAppLogs.runSample(azureResourceManager));
     }
 
@@ -146,7 +147,8 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-
+        // require a longer read timeout in HttpClient
+        // e.g., new NettyAsyncHttpClientBuilder().readTimeout(Duration.ofMinutes(10))
         Assertions.assertTrue(ManageWebAppLogs.runSample(azureResourceManager));
     }
 
