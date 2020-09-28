@@ -65,7 +65,7 @@ class BlockingByItemPagedFlux<C, T, P extends ContinuablePage<C, T>> extends Con
      * Internal implementation of BlockingSubscriberBase which handles by item paged iterables.
      */
     private final class BlockingByItemSubscriber extends BlockingSubscriberBase<C, T, P, T> {
-        volatile Queue<P> pages = new ConcurrentLinkedQueue<>();
+        volatile Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
         volatile Iterator<T> currentPage;
 
         BlockingByItemSubscriber(Subscriber<? super T> subscriber, ContinuationState<C> continuationState,
@@ -80,13 +80,14 @@ class BlockingByItemPagedFlux<C, T, P extends ContinuablePage<C, T>> extends Con
 
         @Override
         boolean hasNext() {
-            return (currentPage != null && currentPage.hasNext()) || pages.peek() != null;
+            return (currentPage != null && currentPage.hasNext())
+                || (pages.peek() != null && pages.peek().hasNext());
         }
 
         @Override
         T getNext() {
             if ((currentPage == null || !currentPage.hasNext()) && pages.peek() != null) {
-                currentPage = pages.poll().getElements().iterator();
+                currentPage = pages.poll();
             }
 
             return currentPage.next();
@@ -96,7 +97,11 @@ class BlockingByItemPagedFlux<C, T, P extends ContinuablePage<C, T>> extends Con
         void addPage(P page, ContinuationState<C> continuationState) {
             this.lastPage = page.getContinuationToken() == null;
             continuationState.setLastContinuationToken(page.getContinuationToken());
-            this.pages.add(page);
+
+            Iterator<T> pageValues = page.getElements().iterator();
+            if (pageValues.hasNext()) {
+                this.pages.add(pageValues);
+            }
         }
     }
 }

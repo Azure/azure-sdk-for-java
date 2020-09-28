@@ -161,8 +161,8 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @param <P> The {@link ContinuablePage} holding items of type {@code T}
      * @return a Flux of {@link ContinuablePage}
      */
-    private static <C, T, P extends ContinuablePage<C, T>>
-    Flux<P> concatFluxOfPage(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, Integer pageSize) {
+    private static <C, T, P extends ContinuablePage<C, T>> Flux<P> concatFluxOfPage(ContinuationState<C> state,
+        PageRetriever<C, P> pageRetriever, Integer pageSize) {
         if (state.isDone()) {
             return Flux.empty();
         } else {
