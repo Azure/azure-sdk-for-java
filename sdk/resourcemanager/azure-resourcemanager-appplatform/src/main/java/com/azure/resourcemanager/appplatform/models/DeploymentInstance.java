@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentInstance model. */
+/** Deployment instance payload. */
 @Immutable
 public final class DeploymentInstance {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInstance.class);

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpPrefixInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
 import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

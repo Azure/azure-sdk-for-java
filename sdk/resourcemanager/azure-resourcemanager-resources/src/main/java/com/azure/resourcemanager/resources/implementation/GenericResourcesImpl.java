@@ -227,7 +227,8 @@ public final class GenericResourcesImpl
         String apiVersion = getApiVersionFromId(id).block();
 
         return AcceptedImpl.newAccepted(logger,
-            manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.inner().deleteByIdWithResponseAsync(id, apiVersion).block(),
             Function.identity(),
             Void.class,

@@ -4,14 +4,14 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -99,7 +99,7 @@ public class ApplicationGatewaysImpl
                     32,
                     32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
-                .subscribeOn(SdkContext.getReactorScheduler());
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }
     }
 
@@ -119,7 +119,7 @@ public class ApplicationGatewaysImpl
                     32,
                     32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
-                .subscribeOn(SdkContext.getReactorScheduler());
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }
     }
 }

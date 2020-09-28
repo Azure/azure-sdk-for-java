@@ -5,8 +5,8 @@ package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
-import com.azure.resourcemanager.cdn.fluent.inner.ProfileInner;
-import com.azure.resourcemanager.cdn.fluent.inner.SsoUriInner;
+import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
+import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
 import com.azure.resourcemanager.cdn.models.Sku;
 import com.azure.resourcemanager.cdn.models.SkuName;

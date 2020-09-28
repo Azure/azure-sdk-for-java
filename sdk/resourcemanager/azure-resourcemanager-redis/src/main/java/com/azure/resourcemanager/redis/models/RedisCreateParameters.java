@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The RedisCreateParameters model. */
+/** Parameters supplied to the Create Redis operation. */
 @JsonFlatten
 @Fluent
 public class RedisCreateParameters {

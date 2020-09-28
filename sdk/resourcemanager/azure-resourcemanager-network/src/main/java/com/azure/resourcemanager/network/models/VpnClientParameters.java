@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VpnClientParameters model. */
+/** Vpn Client Parameters for package generation. */
 @Fluent
 public final class VpnClientParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientParameters.class);

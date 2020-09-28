@@ -13,11 +13,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the SubscriptionClient type. */
-@ServiceClientBuilder(serviceClients = {SubscriptionClient.class})
+/** A builder for creating a new instance of the SubscriptionClientImpl type. */
+@ServiceClientBuilder(serviceClients = {SubscriptionClientImpl.class})
 public final class SubscriptionClientBuilder {
     /*
      * server parameter
@@ -100,11 +99,11 @@ public final class SubscriptionClientBuilder {
     }
 
     /**
-     * Builds an instance of SubscriptionClient with the provided parameters.
+     * Builds an instance of SubscriptionClientImpl with the provided parameters.
      *
-     * @return an instance of SubscriptionClient.
+     * @return an instance of SubscriptionClientImpl.
      */
-    public SubscriptionClient buildClient() {
+    public SubscriptionClientImpl buildClient() {
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
@@ -123,8 +122,8 @@ public final class SubscriptionClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        SubscriptionClient client =
-            new SubscriptionClient(pipeline, serializerAdapter, defaultPollInterval, environment, endpoint);
+        SubscriptionClientImpl client =
+            new SubscriptionClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, endpoint);
         return client;
     }
 }

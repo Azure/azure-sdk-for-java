@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
+import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The localizable string class. */

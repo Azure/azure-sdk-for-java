@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.ConnectivityHop;
 import com.azure.resourcemanager.network.models.ConnectivityParameters;
 import com.azure.resourcemanager.network.models.ConnectivitySource;
 import com.azure.resourcemanager.network.models.Protocol;
-import com.azure.resourcemanager.network.fluent.inner.ConnectivityInformationInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectivityInformationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.UsageInner;
+import com.azure.resourcemanager.appservice.fluent.models.UsageInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UsageCollection model. */
+/** Collection of usages. */
 @Fluent
 public final class UsageCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageCollection.class);

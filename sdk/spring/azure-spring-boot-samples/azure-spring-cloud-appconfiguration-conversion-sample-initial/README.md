@@ -8,7 +8,7 @@ This sample shows how to convert a Spring Cloud Application with Cosmos DB to be
 
 * An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
 
-* A [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable), version 8.
+* A [Java Development Kit (JDK)][jdk_link], version 8.
 
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
@@ -86,9 +86,9 @@ In this section, you clone a containerized Spring Boot application and test it l
 1. Replace below properties in `application.properties` with information from your database.
 
    ```properties
-   azure.cosmosdb.uri=your-cosmosdb-uri
-   azure.cosmosdb.key=your-cosmosdb-key
-   azure.cosmosdb.database=your-cosmosdb-databasename
+   azure.cosmos.uri=your-cosmos-uri
+   azure.cosmos.key=your-cosmos-key
+   azure.cosmos.database=your-cosmos-databasename
 
    ```
 
@@ -290,3 +290,6 @@ In this section, you clone a containerized Spring Boot application and test it l
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+<!-- LINKS -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

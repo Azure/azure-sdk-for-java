@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerPort model. */
+/** The port exposed on the container instance. */
 @Fluent
 public final class ContainerPort {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerPort.class);

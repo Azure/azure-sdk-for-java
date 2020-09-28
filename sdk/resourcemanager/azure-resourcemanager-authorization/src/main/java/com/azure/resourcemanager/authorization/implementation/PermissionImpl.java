@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.models.Permission;
-import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
+import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 

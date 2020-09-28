@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.trafficmanager.fluent.TrafficManagerManagementClient;
-import com.azure.resourcemanager.trafficmanager.fluent.TrafficManagerManagementClientBuilder;
+import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerManagementClientBuilder;
 import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerProfilesImpl;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 

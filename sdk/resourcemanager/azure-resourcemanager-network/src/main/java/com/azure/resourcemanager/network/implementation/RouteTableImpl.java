@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.RouteInner;
-import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.models.RouteInner;
+import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
 import com.azure.resourcemanager.network.models.Route;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;

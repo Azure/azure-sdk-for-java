@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiskImageEncryption model. */
+/** This is the disk image encryption base class. */
 @Fluent
 public class DiskImageEncryption {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskImageEncryption.class);

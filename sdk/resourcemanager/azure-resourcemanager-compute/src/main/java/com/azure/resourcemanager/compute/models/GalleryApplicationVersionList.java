@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryApplicationVersionInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GalleryApplicationVersionList model. */
+/** The List Gallery Application version operation response. */
 @Fluent
 public final class GalleryApplicationVersionList {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionList.class);

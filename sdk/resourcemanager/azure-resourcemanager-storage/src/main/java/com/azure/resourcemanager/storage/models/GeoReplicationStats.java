@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The GeoReplicationStats model. */
+/**
+ * Statistics related to replication for storage account's Blob, Table, Queue and File services. It is only available
+ * when geo-redundant replication is enabled for the storage account.
+ */
 @Immutable
 public final class GeoReplicationStats {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoReplicationStats.class);
