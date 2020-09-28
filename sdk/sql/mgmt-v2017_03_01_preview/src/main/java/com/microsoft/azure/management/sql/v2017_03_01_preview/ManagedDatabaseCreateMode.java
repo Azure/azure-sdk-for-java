@@ -28,6 +28,9 @@ public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<Manage
     /** Static value Recovery for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode RECOVERY = fromString("Recovery");
 
+    /** Static value RestoreLongTermRetentionBackup for ManagedDatabaseCreateMode. */
+    public static final ManagedDatabaseCreateMode RESTORE_LONG_TERM_RETENTION_BACKUP = fromString("RestoreLongTermRetentionBackup");
+
     /**
      * Creates or finds a ManagedDatabaseCreateMode from its string representation.
      * @param name a name to look for

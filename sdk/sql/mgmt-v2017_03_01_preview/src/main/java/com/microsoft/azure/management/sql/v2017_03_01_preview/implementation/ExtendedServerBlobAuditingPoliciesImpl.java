@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ExtendedServerBlobAuditingPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ExtendedServerBlobAuditingPolicy;
 
 class ExtendedServerBlobAuditingPoliciesImpl extends WrapperImpl<ExtendedServerBlobAuditingPoliciesInner> implements ExtendedServerBlobAuditingPolicies {
@@ -38,6 +39,24 @@ class ExtendedServerBlobAuditingPoliciesImpl extends WrapperImpl<ExtendedServerB
 
     private ExtendedServerBlobAuditingPolicyImpl wrapModel(String name) {
         return new ExtendedServerBlobAuditingPolicyImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<ExtendedServerBlobAuditingPolicy> listByServerAsync(final String resourceGroupName, final String serverName) {
+        ExtendedServerBlobAuditingPoliciesInner client = this.inner();
+        return client.listByServerAsync(resourceGroupName, serverName)
+        .flatMapIterable(new Func1<Page<ExtendedServerBlobAuditingPolicyInner>, Iterable<ExtendedServerBlobAuditingPolicyInner>>() {
+            @Override
+            public Iterable<ExtendedServerBlobAuditingPolicyInner> call(Page<ExtendedServerBlobAuditingPolicyInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicy>() {
+            @Override
+            public ExtendedServerBlobAuditingPolicy call(ExtendedServerBlobAuditingPolicyInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override
