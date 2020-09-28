@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 module com.azure.storage.blob {
-    requires transitive org.slf4j;
     requires transitive com.azure.storage.common;
 
+    requires org.slf4j;
     requires com.fasterxml.jackson.dataformat.xml;
     requires com.azure.storage.internal.avro;
 
