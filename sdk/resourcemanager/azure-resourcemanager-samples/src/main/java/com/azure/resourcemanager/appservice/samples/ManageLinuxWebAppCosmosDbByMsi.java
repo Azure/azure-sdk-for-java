@@ -50,12 +50,12 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
     public static boolean runSample(AzureResourceManager azure, String clientId) throws IOException, InterruptedException {
         // New resources
         final Region region         = Region.US_WEST;
-        final String acrName        = azure.resourceGroups().manager().internalContext().randomResourceName("acr", 20);
-        final String appName        = azure.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
+        final String acrName        = Utils.randomResourceName(azure, "acr", 20);
+        final String appName        = Utils.randomResourceName(azure, "webapp1-", 20);
         final String password       = Utils.password();
-        final String rgName         = azure.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
-        final String vaultName      = azure.resourceGroups().manager().internalContext().randomResourceName("vault", 20);
-        final String cosmosName     = azure.resourceGroups().manager().internalContext().randomResourceName("cosmosdb", 20);
+        final String rgName         = Utils.randomResourceName(azure, "rg1NEMV_", 24);
+        final String vaultName      = Utils.randomResourceName(azure, "vault", 20);
+        final String cosmosName     = Utils.randomResourceName(azure, "cosmosdb", 20);
 
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
 

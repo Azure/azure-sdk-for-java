@@ -60,20 +60,20 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_SOUTH_CENTRAL;
-        final String resourceGroupName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 15);
-        final String vnetAName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("net", 15);
-        final String vnetBName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("net", 15);
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 15);
+        final String vnetAName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String vnetBName = Utils.randomResourceName(azureResourceManager, "net", 15);
 
-        final String[] vmNames = azureResourceManager.resourceGroups().manager().internalContext().randomResourceNames("vm", 15, 2);
+        final String[] vmNames = Utils.randomResourceNames(azureResourceManager, "vm", 15, 2);
         final String[] vmIPAddresses = new String[]{
                 /* within subnetA */ "10.0.0.8",
                 /* within subnetB */ "10.1.0.8"
         };
 
-        final String peeringABName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("peer", 15);
+        final String peeringABName = Utils.randomResourceName(azureResourceManager, "peer", 15);
         final String rootname = "tirekicker";
-        final String password = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pWd!", 15);
-        final String networkWatcherName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("netwch", 20);
+        final String password = Utils.randomResourceName(azureResourceManager, "pWd!", 15);
+        final String networkWatcherName = Utils.randomResourceName(azureResourceManager, "netwch", 20);
 
         try {
 

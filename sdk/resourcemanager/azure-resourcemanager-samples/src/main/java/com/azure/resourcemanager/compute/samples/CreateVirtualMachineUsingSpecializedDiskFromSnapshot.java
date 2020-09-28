@@ -39,15 +39,15 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM2", 15);
-        final String managedOSSnapshotName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ss-os-", 15);
-        final String managedDataDiskSnapshotPrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ss-data-", 15);
-        final String managedNewOSDiskName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-os-nw-", 15);
-        final String managedNewDataDiskNamePrefix = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ds-data-nw-", 15);
+        final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "VM1", 15);
+        final String linuxVMName2 = Utils.randomResourceName(azureResourceManager, "VM2", 15);
+        final String managedOSSnapshotName = Utils.randomResourceName(azureResourceManager, "ss-os-", 15);
+        final String managedDataDiskSnapshotPrefix = Utils.randomResourceName(azureResourceManager, "ss-data-", 15);
+        final String managedNewOSDiskName = Utils.randomResourceName(azureResourceManager, "ds-os-nw-", 15);
+        final String managedNewDataDiskNamePrefix = Utils.randomResourceName(azureResourceManager, "ds-data-nw-", 15);
 
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;

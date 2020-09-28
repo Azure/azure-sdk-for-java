@@ -34,8 +34,8 @@ public class DeployVirtualMachineUsingARMTemplate {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSAT", 24);
-        final String deploymentName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dpRSAT", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSAT", 24);
+        final String deploymentName = Utils.randomResourceName(azureResourceManager, "dpRSAT", 24);
         try {
             String templateJson = DeployVirtualMachineUsingARMTemplate.getTemplate(azureResourceManager);
 
@@ -124,7 +124,7 @@ public class DeployVirtualMachineUsingARMTemplate {
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
         final String adminUsername = "tirekicker";
         final String adminPassword = Utils.password();
-        final String osDiskName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("osdisk-", 24);
+        final String osDiskName = Utils.randomResourceName(azureResourceManager, "osdisk-", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {
 

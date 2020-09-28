@@ -89,17 +89,17 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, InterruptedException, JSchException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgaci", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgaci", 15);
         final Region region = Region.US_EAST2;
 
-        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acr", 20);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acr", 20);
 
-        final String aciName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acisample", 20);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
         final String containerImageName = "microsoft/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 
-        final String acsName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acssample", 30);
+        final String acsName = Utils.randomResourceName(azureResourceManager, "acssample", 30);
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
         final String rootUserName = "acsuser";
@@ -212,10 +212,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs
@@ -468,10 +468,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             if (serviceIP != null) {
                 // warm up
                 System.out.println("Warming up " + serviceIP);
-                Utils.curl("http://" + serviceIP);
+                Utils.sendGetRequest("http://" + serviceIP);
                 ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 System.out.println("CURLing " + serviceIP);
-                System.out.println(Utils.curl("http://" + serviceIP));
+                System.out.println(Utils.sendGetRequest("http://" + serviceIP));
             } else {
                 System.out.println("ERROR: service unavailable");
             }

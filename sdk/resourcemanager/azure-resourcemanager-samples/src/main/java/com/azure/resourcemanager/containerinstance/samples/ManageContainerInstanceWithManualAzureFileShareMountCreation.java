@@ -36,10 +36,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgACI", 15);
-        final String aciName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acisample", 20);
-        final String saName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sa", 20);
-        final String shareName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fileshare", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACI", 15);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
+        final String saName = Utils.randomResourceName(azureResourceManager, "sa", 20);
+        final String shareName = Utils.randomResourceName(azureResourceManager, "fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 
@@ -95,10 +95,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs

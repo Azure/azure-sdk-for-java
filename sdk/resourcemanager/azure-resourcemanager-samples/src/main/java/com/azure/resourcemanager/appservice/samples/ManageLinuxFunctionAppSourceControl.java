@@ -38,14 +38,14 @@ public class ManageLinuxFunctionAppSourceControl {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
-        final String plan1Name      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("plan1-", 20);
-        final String plan2Name      = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("plan2-", 20);
-        final String storage1Name   = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("storage1", 20);
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String plan1Name      = Utils.randomResourceName(azureResourceManager, "plan1-", 20);
+        final String plan2Name      = Utils.randomResourceName(azureResourceManager, "plan2-", 20);
+        final String storage1Name   = Utils.randomResourceName(azureResourceManager, "storage1", 20);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -73,7 +73,7 @@ public class ManageLinuxFunctionAppSourceControl {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             while (stopWatch.getTime() < TIMEOUT_IN_SECONDS * 1000) {
-                String response = Utils.get("https://" + app1UrlFunction);
+                String response = Utils.sendGetRequest("https://" + app1UrlFunction);
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
@@ -82,7 +82,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             // call function
             System.out.println("CURLing " + app1UrlFunction + "...");
-            System.out.println("Response is " + Utils.get("https://" + app1UrlFunction));
+            System.out.println("Response is " + Utils.sendGetRequest("https://" + app1UrlFunction));
             // response would be "Hello, ..."
 
 
@@ -110,7 +110,7 @@ public class ManageLinuxFunctionAppSourceControl {
             stopWatch = new StopWatch();
             stopWatch.start();
             while (stopWatch.getTime() < TIMEOUT_IN_SECONDS * 1000) {
-                String response = Utils.get("https://" + app2UrlFunction);
+                String response = Utils.sendGetRequest("https://" + app2UrlFunction);
                 if (response != null && response.contains("Hello")) {
                     break;
                 }
@@ -119,7 +119,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             // call function
             System.out.println("CURLing " + app2UrlFunction + "...");
-            System.out.println("Response is " + Utils.get("https://" + app2UrlFunction));
+            System.out.println("Response is " + Utils.sendGetRequest("https://" + app2UrlFunction));
             // response would be "Hello, ..."
 
             return true;

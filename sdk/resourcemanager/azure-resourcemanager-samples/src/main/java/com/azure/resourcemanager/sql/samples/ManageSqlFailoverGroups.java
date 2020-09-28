@@ -35,10 +35,10 @@ public class ManageSqlFailoverGroups {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlPrimaryServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlpri", 20);
-        final String sqlSecondaryServerName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sqlsec", 20);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgsql", 20);
-        final String failoverGroupName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fog", 20);
+        final String sqlPrimaryServerName = Utils.randomResourceName(azureResourceManager, "sqlpri", 20);
+        final String sqlSecondaryServerName = Utils.randomResourceName(azureResourceManager, "sqlsec", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgsql", 20);
+        final String failoverGroupName = Utils.randomResourceName(azureResourceManager, "fog", 20);
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();

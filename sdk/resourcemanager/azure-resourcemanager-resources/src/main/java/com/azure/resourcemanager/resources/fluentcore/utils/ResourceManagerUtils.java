@@ -252,23 +252,6 @@ public final class ResourceManagerUtils {
         }
 
         /**
-         * Generates the specified number of random resource names with the same prefix.
-         *
-         * @param prefix the prefix to be used if possible
-         * @param maxLen the maximum length for the random generated name
-         * @param count the number of names to generate
-         * @return random names
-         */
-        public String[] randomResourceNames(String prefix, int maxLen, int count) {
-            String[] names = new String[count];
-            IdentifierProvider resourceNamer = identifierFunction.apply("");
-            for (int i = 0; i < count; i++) {
-                names[i] = resourceNamer.getRandomName(prefix, maxLen);
-            }
-            return names;
-        }
-
-        /**
          * Gets a random UUID.
          *
          * @return the random UUID.
