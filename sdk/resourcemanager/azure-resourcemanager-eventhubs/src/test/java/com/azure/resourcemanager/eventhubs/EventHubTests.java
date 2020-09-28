@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -539,7 +540,7 @@ public class EventHubTests extends ResourceManagerTestBase {
 
             while (pairing.provisioningState() != ProvisioningStateDR.SUCCEEDED) {
                 pairing = pairing.refresh();
-                ResourceManagerUtils.InternalRuntimeContext.sleep(15 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
                     Assertions.assertTrue(false, "Provisioning state of the pairing is FAILED");
                 }

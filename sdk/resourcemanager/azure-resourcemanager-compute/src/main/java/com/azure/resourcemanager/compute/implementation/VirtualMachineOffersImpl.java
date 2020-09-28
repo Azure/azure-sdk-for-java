@@ -41,7 +41,8 @@ class VirtualMachineOffersImpl
     @Override
     public PagedFlux<VirtualMachineOffer> listAsync() {
         return PagedConverter
-            .convertListToPagedFlux(innerCollection.listOffersAsync(publisher.region().toString(), publisher.name()))
+            .convertListToPagedFlux(innerCollection.listOffersWithResponseAsync(
+                publisher.region().toString(), publisher.name()))
             .mapPage(this::wrapModel);
     }
 }

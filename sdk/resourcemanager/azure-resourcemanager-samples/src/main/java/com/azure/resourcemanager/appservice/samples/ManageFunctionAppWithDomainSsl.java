@@ -19,8 +19,6 @@ import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
-
 
 /**
  * Azure App Service sample for managing function apps.
@@ -117,8 +115,8 @@ public final class ManageFunctionAppWithDomainSsl {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
-            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageFunctionAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
+            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
+            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

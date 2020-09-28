@@ -30,7 +30,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
         // This sample required to be run from a ManagedIdentityCredential (User Assigned or System Assigned) enabled virtual
         // machine with role based contributor access to the resource group specified as the second command line argument.
         //
-        // see https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
+        // see https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
         //
 
         final String usage = "Usage: mvn clean compile exec:java -Dexec.args=\"<subscription-id> <rg-name> [<client-id>]\"";

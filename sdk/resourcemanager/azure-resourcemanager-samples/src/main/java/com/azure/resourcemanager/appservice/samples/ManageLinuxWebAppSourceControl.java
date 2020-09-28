@@ -24,6 +24,7 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
+import java.time.Duration;
 
 
 /**
@@ -85,7 +86,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app1Url + "/helloworld...");
             Utils.curl("http://" + app1Url + "/helloworld/");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/helloworld...");
             System.out.println(Utils.curl("http://" + app1Url + "/helloworld/"));
 
@@ -129,7 +130,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app2Url + "/helloworld...");
             Utils.curl("http://" + app2Url + "/helloworld/");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/helloworld...");
             System.out.println(Utils.curl("http://" + app2Url + "/helloworld/"));
 
@@ -153,7 +154,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app3Url + "...");
             Utils.curl("http://" + app3Url);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "...");
             System.out.println(Utils.curl("http://" + app3Url));
 
@@ -180,7 +181,7 @@ public final class ManageLinuxWebAppSourceControl {
             // warm up
             System.out.println("Warming up " + app4Url + "...");
             Utils.curl("http://" + app4Url);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app4Url + "...");
             System.out.println(Utils.curl("http://" + app4Url));
 

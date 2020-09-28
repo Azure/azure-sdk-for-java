@@ -28,6 +28,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,7 +163,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .withSecondVirtualNetworkGateway(vngw1)
                     .withSharedKey("MySecretKey")
                     .create();
-            ResourceManagerUtils.InternalRuntimeContext.sleep(250000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(250));
             troubleshooting = nw.troubleshoot()
                     .withTargetResourceId(connection.id())
                     .withStorageAccount(storageAccount.id())

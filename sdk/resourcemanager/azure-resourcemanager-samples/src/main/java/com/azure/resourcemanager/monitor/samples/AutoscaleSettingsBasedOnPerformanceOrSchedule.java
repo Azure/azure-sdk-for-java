@@ -25,7 +25,7 @@ import com.azure.resourcemanager.samples.Utils;
 import java.time.Duration;
 
 /**
- * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
+ * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
  *  - Create a Web App and App Service Plan
  *  - Configure autoscale rules for scale-in and scale out based on the number of requests a Web App receives
  *  - Trigger a scale-out action and watch the number of instances increase
@@ -103,7 +103,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
-                ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 Utils.curl(deployedWebAppUrl);
             }
 

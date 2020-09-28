@@ -24,7 +24,6 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * Azure App Service sample for managing web apps.
@@ -102,8 +101,8 @@ public final class ManageWebAppWithTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            pfxPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
-            String cerPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
+            pfxPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
+            String cerPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

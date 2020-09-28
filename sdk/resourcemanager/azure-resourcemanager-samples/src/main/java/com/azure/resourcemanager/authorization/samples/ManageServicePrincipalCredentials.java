@@ -81,7 +81,7 @@ public final class ManageServicePrincipalCredentials {
 
             System.out.println("Creating a Contributor role assignment " + raName + " for the service principal...");
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 
             RoleAssignment roleAssignment = authenticated.roleAssignments()
                     .define(raName)
@@ -152,7 +152,7 @@ public final class ManageServicePrincipalCredentials {
                     .withoutCredential(passwordName1)
                     .apply();
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 
             System.out.println("Credential revoked.");
 
@@ -182,7 +182,7 @@ public final class ManageServicePrincipalCredentials {
 
             authenticated.roleAssignments().deleteById(roleAssignment.id());
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             // ============================================================
             // Verify the revoked password credential is no longer valid

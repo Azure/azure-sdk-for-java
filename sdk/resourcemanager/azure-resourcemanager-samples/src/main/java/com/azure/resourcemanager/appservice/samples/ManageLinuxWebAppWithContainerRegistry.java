@@ -27,6 +27,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -151,7 +152,7 @@ public class ManageLinuxWebAppWithContainerRegistry {
             // warm up
             System.out.println("Warming up " + appUrl + "...");
             Utils.get("http://" + appUrl);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + appUrl + "...");
             System.out.println(Utils.get("http://" + appUrl));
 

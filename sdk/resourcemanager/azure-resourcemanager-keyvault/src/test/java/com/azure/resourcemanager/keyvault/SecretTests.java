@@ -11,6 +11,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 public class SecretTests extends KeyVaultManagementTest {
 
     @Test
@@ -37,7 +39,7 @@ public class SecretTests extends KeyVaultManagementTest {
 
         Assertions.assertNotNull(vault);
 
-        ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
         Secret secret = vault.secrets().define(secretName).withValue("Some secret value").create();
 

@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -64,7 +65,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             Utils.print(sqlServer);
 
             // Sleep for 5 minutes to allow for the service to be aware of the new server and databases
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
             SqlDatabase dbToBeDeleted = sqlServer.databases()
                 .get(dbToDeleteName);
@@ -81,7 +82,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             while (retries > 0 && dbToRestore.listRestorePoints().size() == 0) {
                 retries--;
                 // Sleep for about 3 minutes
-                ResourceManagerUtils.InternalRuntimeContext.sleep(3 * 60 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofMinutes(3));
             }
             if (retries == 0) {
                 return false;
@@ -94,7 +95,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
                     + 5 * 60 * 1000;
             System.out.printf("waitForRestoreToBeReady %d%n", waitForRestoreToBeReady);
             if (waitForRestoreToBeReady > 0) {
-                ResourceManagerUtils.InternalRuntimeContext.sleep((int) waitForRestoreToBeReady);
+                ResourceManagerUtils.sleep(Duration.ofMillis(waitForRestoreToBeReady));
             }
 
             SqlDatabase dbRestorePointInTime = sqlServer.databases()
@@ -122,7 +123,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             while (retries > 0 && sqlServer.listRestorableDroppedDatabases().size() == 0) {
                 retries--;
                 // Sleep for about 5 minutes
-                ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 60 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofMinutes(5));
             }
             SqlRestorableDroppedDatabase restorableDroppedDatabase = sqlServer.listRestorableDroppedDatabases().get(0);
             SqlDatabase dbRestoreDeleted = sqlServer.databases()

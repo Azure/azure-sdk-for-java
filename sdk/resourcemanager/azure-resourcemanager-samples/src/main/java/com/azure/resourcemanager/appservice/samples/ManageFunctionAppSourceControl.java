@@ -22,6 +22,7 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
+import java.time.Duration;
 
 
 /**
@@ -92,7 +93,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app1Url + "/api/square...");
             Utils.post("http://" + app1Url + "/api/square", "625");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/api/square...");
             System.out.println("Square of 625 is " + Utils.post("http://" + app1Url + "/api/square", "625"));
 
@@ -136,7 +137,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");
             Utils.post("http://" + app2Url + "/api/square", "725");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/api/square...");
             System.out.println("Square of 725 is " + Utils.post("http://" + app2Url + "/api/square", "725"));
 
@@ -160,7 +161,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app3Url + "/api/square...");
             Utils.post("http://" + app3Url + "/api/square", "825");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "/api/square...");
             System.out.println("Square of 825 is " + Utils.post("http://" + app3Url + "/api/square", "825"));
 
@@ -187,7 +188,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app4Url + "...");
             Utils.curl("http://" + app4Url);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app4Url + "...");
             System.out.println(Utils.curl("http://" + app4Url));
 
@@ -206,14 +207,14 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Deploy to " + app5Name + " through web deploy...");
             app5.deploy()
-                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/webapps.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
                     .withExistingDeploymentsDeleted(true)
                     .execute();
 
             // warm up
             System.out.println("Warming up " + app5Url + "/api/square...");
             Utils.post("http://" + app5Url + "/api/square", "925");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app5Url + "/api/square...");
             System.out.println("Square of 925 is " + Utils.post("http://" + app5Url + "/api/square", "925"));
 
@@ -239,7 +240,7 @@ public final class ManageFunctionAppSourceControl {
             // warm up
             System.out.println("Warming up " + app6Url + "/api/square...");
             Utils.post("http://" + app6Url + "/api/square", "926");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app6Url + "/api/square...");
             System.out.println("Square of 926 is " + Utils.post("http://" + app6Url + "/api/square", "926"));
 

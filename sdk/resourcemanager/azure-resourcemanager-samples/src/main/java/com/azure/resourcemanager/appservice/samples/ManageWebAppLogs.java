@@ -23,6 +23,7 @@ import reactor.core.publisher.BaseSubscriber;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -93,7 +94,7 @@ public final class ManageWebAppLogs {
                     System.out.println("Deploying coffeeshop.war to " + appName + " through web deploy...");
 
                     app.deploy()
-                            .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/coffeeshop.zip")
+                            .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/coffeeshop.zip")
                             .withExistingDeploymentsDeleted(false)
                             .execute();
 
@@ -103,7 +104,7 @@ public final class ManageWebAppLogs {
                     // warm up
                     System.out.println("Warming up " + appUrl + "/coffeeshop...");
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                     System.out.println("CURLing " + appUrl + "/coffeeshop...");
                     System.out.println(Utils.curl("http://" + appUrl + "/coffeeshop/"));
                 }
@@ -121,12 +122,12 @@ public final class ManageWebAppLogs {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                     System.out.println("Starting hitting");
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
-                    ResourceManagerUtils.InternalRuntimeContext.sleep(20000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(20));
                     Utils.curl("http://" + appUrl + "/coffeeshop/");
                 }
             }).start();

@@ -80,6 +80,18 @@ public final class ResourceManagerUtils {
     }
 
     /**
+     * Wrapper for thread sleep.
+     *
+     * @param duration the duration value for which thread should put on sleep.
+     */
+    public static void sleep(Duration duration) {
+        try {
+            Thread.sleep(InternalRuntimeContext.getDelayDuration(duration).toMillis());
+        } catch (InterruptedException e) {
+        }
+    }
+
+    /**
      * Creates an Odata filter string that can be used for filtering list results by tags.
      *
      * @param tagName the name of the tag. If not provided, all resources will be returned.
@@ -272,18 +284,6 @@ public final class ResourceManagerUtils {
          */
         public static void setDelayProvider(DelayProvider delayProvider) {
             InternalRuntimeContext.delayProvider = delayProvider;
-        }
-
-        /**
-         * Wrapper for sleep, based on delayProvider.
-         *
-         * @param milliseconds number of millisecond for which thread should put on sleep.
-         */
-        public static void sleep(long milliseconds) {
-            try {
-                Thread.sleep(delayProvider.getDelayDuration(Duration.ofMillis(milliseconds)).toMillis());
-            } catch (InterruptedException e) {
-            }
         }
 
         /**

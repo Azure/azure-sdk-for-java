@@ -23,6 +23,7 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
+import java.time.Duration;
 
 
 /**
@@ -165,7 +166,7 @@ public final class ManageWebAppSourceControlAsync {
             Utils.curl("http://" + app3Url);
             System.out.println("Warming up " + app4Url + "...");
             Utils.curl("http://" + app4Url);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/helloworld...");
             System.out.println(Utils.curl("http://" + app1Url + "/helloworld/"));
             System.out.println("CURLing " + app2Url + "/helloworld...");

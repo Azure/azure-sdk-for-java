@@ -56,13 +56,13 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public Mono<Void> warDeployAsync(InputStream warFile) {
-        return warDeployAsync(warFile, null);
+    public Mono<Void> warDeployAsync(InputStream warFile, long length) {
+        return warDeployAsync(warFile, length, null);
     }
 
     @Override
-    public void warDeploy(InputStream warFile) {
-        warDeployAsync(warFile).block();
+    public void warDeploy(InputStream warFile, long length) {
+        warDeployAsync(warFile, length).block();
     }
 
     @Override
@@ -80,13 +80,13 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public Mono<Void> warDeployAsync(InputStream warFile, String appName) {
-        return kuduClient.warDeployAsync(warFile, appName);
+    public Mono<Void> warDeployAsync(InputStream warFile, long length, String appName) {
+        return kuduClient.warDeployAsync(warFile, length, appName);
     }
 
     @Override
-    public void warDeploy(InputStream warFile, String appName) {
-        warDeployAsync(warFile, appName).block();
+    public void warDeploy(InputStream warFile, long length, String appName) {
+        warDeployAsync(warFile, length, appName).block();
     }
 
     @Override
@@ -95,13 +95,13 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public void zipDeploy(InputStream zipFile) {
-        zipDeployAsync(zipFile).block();
+    public void zipDeploy(InputStream zipFile, long length) {
+        zipDeployAsync(zipFile, length).block();
     }
 
     @Override
-    public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile).then(stopAsync()).then(startAsync());
+    public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        return kuduClient.zipDeployAsync(zipFile, length).then(stopAsync()).then(startAsync());
     }
 
     @Override
