@@ -52,7 +52,7 @@ public class HttpProxyClientHandler extends ChannelInboundHandlerAdapter {
         clientChannel.config().setAutoRead(false); // disable AutoRead until remote connection is ready
 
         if (header.isHttps()) { // if https, respond 200 to create tunnel
-            clientChannel.writeAndFlush(Unpooled.wrappedBuffer("HTTP/1.1 200 Connection Established\r\n\r\n".getBytes()).retain());
+            clientChannel.writeAndFlush(Unpooled.wrappedBuffer("HTTP/1.1 200 Connection Established\r\n\r\n".getBytes()));
         }
 
         Bootstrap b = new Bootstrap();

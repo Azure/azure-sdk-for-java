@@ -66,12 +66,12 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
-                || this.operationType == OperationType.ReadFeed
-                || this.operationType == OperationType.Head
-                || this.operationType == OperationType.HeadFeed
-                || this.operationType == OperationType.Query
-                || this.operationType == OperationType.SqlQuery
-                || this.operationType == OperationType.QueryPlan;
+                   || this.operationType == OperationType.ReadFeed
+                   || this.operationType == OperationType.Head
+                   || this.operationType == OperationType.HeadFeed
+                   || this.operationType == OperationType.Query
+                   || this.operationType == OperationType.SqlQuery
+                   || this.operationType == OperationType.QueryPlan;
     }
 
     public boolean isReadOnlyScript() {
@@ -145,9 +145,9 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers           the headers
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            ResourceType resourceType,
-            String path,
-            Map<String, String> headers) {
+                                     ResourceType resourceType,
+                                     String path,
+                                     Map<String, String> headers) {
         this.requestContext = new DocumentServiceRequestContext();
         this.operationType = operationType;
         this.resourceType = resourceType;
@@ -163,13 +163,13 @@ public class RxDocumentServiceRequest implements Cloneable {
                 this.isFeed = pathInfo.isFeed;
                 String resourceIdOrFullName = pathInfo.resourceIdOrFullName;
                 if (!this.isNameBased) {
-                if (resourceType == ResourceType.Media) {
-                    this.resourceId = getAttachmentIdFromMediaId(resourceIdOrFullName);
-                } else {
-                    this.resourceId = resourceIdOrFullName;
-                }
+                    if (resourceType == ResourceType.Media) {
+                        this.resourceId = getAttachmentIdFromMediaId(resourceIdOrFullName);
+                    } else {
+                        this.resourceId = resourceIdOrFullName;
+                    }
 
-                this.resourceAddress = resourceIdOrFullName;
+                    this.resourceAddress = resourceIdOrFullName;
 
                     // throw exception when the address parsing fail
                     // do not parse address for offer resource
@@ -180,7 +180,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                             && !resourceType.equals(ResourceType.DatabaseAccount)
                             && !resourceType.equals(ResourceType.RidRange)) {
                         throw new IllegalArgumentException(
-                                String.format(RMResources.InvalidResourceUrlQuery, path, HttpConstants.QueryStrings.URL));
+                            String.format(RMResources.InvalidResourceUrlQuery, path, HttpConstants.QueryStrings.URL));
                     }
                 } else {
                     this.resourceAddress = resourceIdOrFullName;
@@ -196,7 +196,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
         if (StringUtils.isNotEmpty(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID))) {
             this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity
-                    .fromHeader(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID));
+                                                 .fromHeader(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID));
         }
     }
 
@@ -215,9 +215,9 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      Map<String, String> headers,
                                      AuthorizationTokenType authorizationTokenType) {
         this(operationType,
-            resourceType,
-            path,
-            headers);
+             resourceType,
+             path,
+             headers);
         this.authorizationTokenType = authorizationTokenType;
         this.contentAsByteArray = toByteArray(byteBuffer);
     }
@@ -232,11 +232,11 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            ResourceType resourceType,
-            byte[] content,
-            String path,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                     ResourceType resourceType,
+                                     byte[] content,
+                                     String path,
+                                     Map<String, String> headers,
+                                     AuthorizationTokenType authorizationTokenType) {
         this(operationType, resourceType, wrapByteBuffer(content), path, headers, authorizationTokenType);
     }
 
@@ -266,11 +266,11 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers      the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            ResourceType resourceType,
-            String path,
-            byte[] byteContent,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                     ResourceType resourceType,
+                                     String path,
+                                     byte[] byteContent,
+                                     Map<String, String> headers,
+                                     AuthorizationTokenType authorizationTokenType) {
         this(operationType, resourceType, byteContent, path, headers, authorizationTokenType);
     }
 
@@ -282,10 +282,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param headers               the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            ResourceType resourceType,
-            String path,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                     ResourceType resourceType,
+                                     String path,
+                                     Map<String, String> headers,
+                                     AuthorizationTokenType authorizationTokenType) {
         this(operationType, resourceType, (byte[]) null, path, headers, authorizationTokenType);
     }
 
@@ -307,10 +307,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            byte[] bytes,
-            Map<String, String> headers) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  byte[] bytes,
+                                                  Map<String, String> headers) {
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, bytes, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -325,11 +325,11 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            byte[] bytes,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  byte[] bytes,
+                                                  Map<String, String> headers,
+                                                  AuthorizationTokenType authorizationTokenType) {
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, bytes, headers, authorizationTokenType);
     }
 
@@ -344,10 +344,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            Resource resource,
-            Map<String, String> headers) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Resource resource,
+                                                  Map<String, String> headers) {
         return create(operation, resourceType, relativePath, resource, headers, (RequestOptions)null);
     }
 
@@ -363,14 +363,14 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            Resource resource,
-            Map<String, String> headers,
-            Object options) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Resource resource,
+                                                  Map<String, String> headers,
+                                                  Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
+                                                                        ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -394,7 +394,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-            byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
+                                                                        byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -407,7 +407,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ByteBuffer byteBuffer) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-            byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
+                                                                        byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -424,13 +424,13 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            String body,
-            Map<String, String> headers,
-            Object options) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  String body,
+                                                  Map<String, String> headers,
+                                                  Object options) {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-            body.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+                                                                        body.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -446,30 +446,30 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(ResourceType resourceType,
-            String relativePath,
-            SqlQuerySpec querySpec,
-            QueryCompatibilityMode queryCompatibilityMode,
-            Map<String, String> headers) {
+                                                  String relativePath,
+                                                  SqlQuerySpec querySpec,
+                                                  QueryCompatibilityMode queryCompatibilityMode,
+                                                  Map<String, String> headers) {
         OperationType operation;
         switch (queryCompatibilityMode) {
-        case SqlQuery:
-            // The querySpec.getParameters() method always ensure the returned value is non-null
-            // hence null check is not required here.
-            if (querySpec.getParameters().size() > 0) {
-                throw new IllegalArgumentException(
+            case SqlQuery:
+                // The querySpec.getParameters() method always ensure the returned value is non-null
+                // hence null check is not required here.
+                if (querySpec.getParameters().size() > 0) {
+                    throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
-                                queryCompatibilityMode.toString()));
-            }
+                                      queryCompatibilityMode.toString()));
+                }
 
-            operation = OperationType.SqlQuery;
-            return new RxDocumentServiceRequest(operation, resourceType, relativePath, Utils.getUTF8Bytes(querySpec.getQueryText()), headers, AuthorizationTokenType.PrimaryMasterKey);
+                operation = OperationType.SqlQuery;
+                return new RxDocumentServiceRequest(operation, resourceType, relativePath, Utils.getUTF8Bytes(querySpec.getQueryText()), headers, AuthorizationTokenType.PrimaryMasterKey);
 
-        case Default:
-        case Query:
-        default:
-            operation = OperationType.Query;
-            return new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                ModelBridgeInternal.serializeJsonToByteBuffer(querySpec), headers, AuthorizationTokenType.PrimaryMasterKey);
+            case Default:
+            case Query:
+            default:
+                operation = OperationType.Query;
+                return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+                                                    ModelBridgeInternal.serializeJsonToByteBuffer(querySpec), headers, AuthorizationTokenType.PrimaryMasterKey);
         }
     }
 
@@ -483,9 +483,9 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            Map<String, String> headers) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers) {
         return create(operation, resourceType, relativePath, headers, (RequestOptions)null);
     }
 
@@ -500,10 +500,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            Map<String, String> headers,
-            Object options) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers,
+                                                  Object options) {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
@@ -520,10 +520,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers,
+                                                  AuthorizationTokenType authorizationTokenType) {
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, headers, authorizationTokenType);
     }
 
@@ -537,10 +537,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            Resource resource,
-            ResourceType resourceType,
-            String relativePath,
-            Map<String, String> headers) {
+                                                  Resource resource,
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers) {
         ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
@@ -556,11 +556,11 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            Resource resource,
-            ResourceType resourceType,
-            String relativePath,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                                  Resource resource,
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  Map<String, String> headers,
+                                                  AuthorizationTokenType authorizationTokenType) {
         ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
@@ -575,9 +575,9 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            String resourceId,
-            ResourceType resourceType,
-            Map<String, String> headers) {
+                                                  String resourceId,
+                                                  ResourceType resourceType,
+                                                  Map<String, String> headers) {
         return new RxDocumentServiceRequest(operation, resourceId,resourceType, (ByteBuffer) null, headers, false, AuthorizationTokenType.PrimaryMasterKey) ;
     }
 
@@ -592,10 +592,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            String resourceId,
-            ResourceType resourceType,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                                  String resourceId,
+                                                  ResourceType resourceType,
+                                                  Map<String, String> headers,
+                                                  AuthorizationTokenType authorizationTokenType) {
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, (ByteBuffer) null, headers, false, authorizationTokenType);
     }
 
@@ -609,10 +609,10 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            String resourceId,
-            ResourceType resourceType,
-            Resource resource,
-            Map<String, String> headers) {
+                                                  String resourceId,
+                                                  ResourceType resourceType,
+                                                  Resource resource,
+                                                  Map<String, String> headers) {
         ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
@@ -628,11 +628,11 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
-            String resourceId,
-            ResourceType resourceType,
-            Resource resource,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
+                                                  String resourceId,
+                                                  ResourceType resourceType,
+                                                  Resource resource,
+                                                  Map<String, String> headers,
+                                                  AuthorizationTokenType authorizationTokenType) {
         ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
@@ -649,64 +649,64 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public static RxDocumentServiceRequest createFromName(
-            OperationType operationType,
-            String resourceFullName,
-            ResourceType resourceType) {
+        OperationType operationType,
+        String resourceFullName,
+        ResourceType resourceType) {
         return new RxDocumentServiceRequest(operationType,
-                resourceFullName,
-                resourceType,
-                (ByteBuffer) null,
-                new HashMap<>(),
-                true,
-                AuthorizationTokenType.PrimaryMasterKey
+                                            resourceFullName,
+                                            resourceType,
+                                            (ByteBuffer) null,
+                                            new HashMap<>(),
+                                            true,
+                                            AuthorizationTokenType.PrimaryMasterKey
         );
     }
 
     public static RxDocumentServiceRequest createFromName(
-            OperationType operationType,
-            String resourceFullName,
-            ResourceType resourceType,
-            AuthorizationTokenType authorizationTokenType) {
+        OperationType operationType,
+        String resourceFullName,
+        ResourceType resourceType,
+        AuthorizationTokenType authorizationTokenType) {
         return new RxDocumentServiceRequest(operationType,
-                resourceFullName,
-                resourceType,
-                (ByteBuffer) null,
-                new HashMap<>(),
-                true,
-                authorizationTokenType
+                                            resourceFullName,
+                                            resourceType,
+                                            (ByteBuffer) null,
+                                            new HashMap<>(),
+                                            true,
+                                            authorizationTokenType
         );
     }
 
     public static RxDocumentServiceRequest createFromName(
-            OperationType operationType,
-            Resource resource,
-            String resourceFullName,
-            ResourceType resourceType) {
+        OperationType operationType,
+        Resource resource,
+        String resourceFullName,
+        ResourceType resourceType) {
         ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
-                resourceFullName,
-                resourceType,
-                resourceContent,
-                new HashMap<>(),
-                true,
-                AuthorizationTokenType.PrimaryMasterKey
+                                            resourceFullName,
+                                            resourceType,
+                                            resourceContent,
+                                            new HashMap<>(),
+                                            true,
+                                            AuthorizationTokenType.PrimaryMasterKey
         );
     }
 
     public static RxDocumentServiceRequest createFromName(
-            OperationType operationType,
-            Resource resource,
-            String resourceFullName,
-            ResourceType resourceType,
-            AuthorizationTokenType authorizationTokenType) {
+        OperationType operationType,
+        Resource resource,
+        String resourceFullName,
+        ResourceType resourceType,
+        AuthorizationTokenType authorizationTokenType) {
         ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
-                resourceFullName,
-                resourceType,
-                resourceContent,
-                new HashMap<>(),
-                true,
-                authorizationTokenType
+                                            resourceFullName,
+                                            resourceType,
+                                            resourceContent,
+                                            new HashMap<>(),
+                                            true,
+                                            authorizationTokenType
         );
     }
 
@@ -880,9 +880,9 @@ public class RxDocumentServiceRequest implements Cloneable {
                 resourceType == ResourceType.DatabaseAccount ||
                 resourceType == ResourceType.PartitionKeyRange ||
                 (resourceType == ResourceType.DocumentCollection
-                        && (operationType == OperationType.ReadFeed
-                        || operationType == OperationType.Query
-                        || operationType == OperationType.SqlQuery))) {
+                     && (operationType == OperationType.ReadFeed
+                             || operationType == OperationType.Query
+                             || operationType == OperationType.SqlQuery))) {
             return true;
         }
         return false;
@@ -900,22 +900,22 @@ public class RxDocumentServiceRequest implements Cloneable {
                 if(this.resourceType == ResourceType.Database) {
                     return true;
                 } else if(this.resourceType == ResourceType.DocumentCollection ||
-                          this.resourceType == ResourceType.User) {
+                              this.resourceType == ResourceType.User) {
                     resourceTypeToValidate = ResourceType.Database;
                 } else if(this.resourceType == ResourceType.Permission) {
                     resourceTypeToValidate = ResourceType.User;
                 } else if(this.resourceType == ResourceType.Document ||
-                        this.resourceType == ResourceType.StoredProcedure ||
-                        this.resourceType == ResourceType.UserDefinedFunction ||
-                        this.resourceType == ResourceType.Trigger ||
-                        this.resourceType == ResourceType.Conflict ||
-                        this.resourceType == ResourceType.PartitionKeyRange) {
-                  resourceTypeToValidate = ResourceType.DocumentCollection;
-              } else if(this.resourceType == ResourceType.Attachment) {
-                  resourceTypeToValidate = ResourceType.Document;
-              }  else {
-                  return false;
-              }
+                              this.resourceType == ResourceType.StoredProcedure ||
+                              this.resourceType == ResourceType.UserDefinedFunction ||
+                              this.resourceType == ResourceType.Trigger ||
+                              this.resourceType == ResourceType.Conflict ||
+                              this.resourceType == ResourceType.PartitionKeyRange) {
+                    resourceTypeToValidate = ResourceType.DocumentCollection;
+                } else if(this.resourceType == ResourceType.Attachment) {
+                    resourceTypeToValidate = ResourceType.Document;
+                }  else {
+                    return false;
+                }
             }
         }
 
@@ -953,7 +953,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             return Flux.empty();
         }
 
-        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray).retain());
+        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
     }
 
     public int getContentLength() {
