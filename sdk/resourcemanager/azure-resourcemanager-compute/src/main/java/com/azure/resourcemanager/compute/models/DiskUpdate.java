@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DiskUpdate model. */
+/** Disk update resource. */
 @JsonFlatten
 @Fluent
 public class DiskUpdate {

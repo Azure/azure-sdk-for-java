@@ -22,7 +22,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -51,9 +51,9 @@ public final class ManageVirtualMachineScaleSet {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOVS", 15);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 24);
-        final String loadBalancerName1 = azureResourceManager.sdkContext().randomResourceName("intlb" + "-", 18);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOVS", 15);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
+        final String loadBalancerName1 = Utils.randomResourceName(azureResourceManager, "intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -65,12 +65,12 @@ public final class ManageVirtualMachineScaleSet {
         final String httpsLoadBalancingRule = "httpsRule";
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
-        final String vmssName =  azureResourceManager.sdkContext().randomResourceName("vmss", 24);
+        final String vmssName =  Utils.randomResourceName(azureResourceManager, "vmss", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -237,7 +237,7 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println();
 
             // Print virtual machine scale set details
-            // Utils.print(virtualMachineScaleSet);
+            // ResourceManagerUtils.print(virtualMachineScaleSet);
 
             //=============================================================
             // List virtual machine scale set network interfaces

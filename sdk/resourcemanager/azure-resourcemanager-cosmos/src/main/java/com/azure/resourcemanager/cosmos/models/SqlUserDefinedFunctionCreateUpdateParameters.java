@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The SqlUserDefinedFunctionCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB userDefinedFunction. */
 @JsonFlatten
 @Fluent
 public class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResourceProperties {

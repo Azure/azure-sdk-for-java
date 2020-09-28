@@ -23,6 +23,9 @@
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
+# PRLabel: %Communication
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen
+
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 
@@ -51,6 +54,8 @@
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+
+/sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak

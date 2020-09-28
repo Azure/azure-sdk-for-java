@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.fluent.models.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.time.Duration;
 
 /** An immutable client-side representation of an Azure autoscale profile scale rule. */
 @Fluent
-public interface ScaleRule extends HasInner<ScaleRuleInner>, HasParent<AutoscaleProfile> {
+public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<AutoscaleProfile> {
     /**
      * Get the resource identifier of the resource the rule monitors.
      *

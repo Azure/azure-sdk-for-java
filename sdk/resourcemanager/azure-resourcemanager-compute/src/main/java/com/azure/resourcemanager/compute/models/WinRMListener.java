@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WinRMListener model. */
+/** Describes Protocol and thumbprint of Windows Remote Management listener. */
 @Fluent
 public final class WinRMListener {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WinRMListener.class);

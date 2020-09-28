@@ -15,7 +15,7 @@ import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.MetricAlert;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -36,7 +36,7 @@ public final class WebAppPerformanceMonitoringAlerts {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgMonitor", 20);
 
         try {
             // ============================================================

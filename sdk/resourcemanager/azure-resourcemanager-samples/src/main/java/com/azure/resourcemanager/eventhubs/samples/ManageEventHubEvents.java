@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -34,8 +34,8 @@ public class ManageEventHubEvents {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgEvHb", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgEvHb", 24);
+        final String namespaceName = Utils.randomResourceName(azureResourceManager, "ns", 24);
         final String eventHubName = "FirstEventHub";
         String diagnosticSettingId = null;
 

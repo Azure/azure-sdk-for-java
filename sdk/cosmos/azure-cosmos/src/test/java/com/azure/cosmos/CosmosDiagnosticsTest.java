@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -42,6 +44,7 @@ import java.net.InetSocketAddress;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,11 +54,11 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.InstanceOfAssertFactories.INSTANT;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US).withZone(ZoneOffset.UTC);
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
     private CosmosContainer container;
@@ -221,6 +224,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
             validateJson(diagnostics);
+
+            // validate that on failed operation request timeline is populated
+            try {
+                cosmosContainer.createItem(internalObjectNode);
+                fail("expected 409");
+            } catch (CosmosException e) {
+                validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
+            }
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
@@ -436,15 +447,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(node.get("storeResult").asText()).isNotNull();
 
             String requestResponseTimeUTC  = node.get("requestResponseTimeUTC").asText();
-            String formattedInstant = RESPONSE_TIME_FORMATTER.format(Instant.now());
-            String[] requestResponseTimeUTCList = requestResponseTimeUTC.split(" ");
-            String[] formattedInstantList = formattedInstant.split(" ");
-            assertThat(requestResponseTimeUTC.length()).isEqualTo(formattedInstant.length());
-            assertThat(requestResponseTimeUTCList.length).isEqualTo(formattedInstantList.length);
-            assertThat(requestResponseTimeUTCList[0]).isEqualTo(formattedInstantList[0]);
-            assertThat(requestResponseTimeUTCList[1]).isEqualTo(formattedInstantList[1]);
-            assertThat(requestResponseTimeUTCList[2]).isEqualTo(formattedInstantList[2]);
-
+            Instant instant = Instant.from(RESPONSE_TIME_FORMATTER.parse(requestResponseTimeUTC));
+            assertThat(Instant.now().toEpochMilli() - instant.toEpochMilli()).isLessThan(5000);
             assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
@@ -487,6 +491,156 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         diagnostics = readItemResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void rntbdRequestResponseLengthStatistics() throws Exception {
+        TestItem testItem = new TestItem();
+        testItem.id = UUID.randomUUID().toString();
+        testItem.mypk = UUID.randomUUID().toString();
+
+        int testItemLength = OBJECT_MAPPER.writeValueAsBytes(testItem).length;
+        CosmosContainer container = directClient.getDatabase(this.cosmosAsyncContainer.getDatabase().getId()).getContainer(this.cosmosAsyncContainer.getId());
+
+        // create
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(testItem);
+        validate(createItemResponse.getDiagnostics(), testItemLength,  ModelBridgeInternal.getPayloadLength(createItemResponse));
+
+        // reading a deleted item.
+        try {
+            container.createItem(testItem);
+            fail("expected to fail due to 409");
+        } catch (CosmosException e) {
+            // no request payload and no response payload
+            validate(e.getDiagnostics(), testItemLength, 0);
+        }
+
+        // read
+        CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
+        // no request payload and no response payload
+        validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+
+        // delete
+        CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
+        // no request payload and no response payload
+        validate(deleteItemResponse.getDiagnostics(), 0, 0);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void rntbdStatistics() throws Exception {
+        Instant beforeClientInitialization = Instant.now();
+
+        CosmosClient client1 = null;
+        try {
+
+            client1 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .directMode()
+                .buildClient();
+
+            TestItem testItem = new TestItem();
+            testItem.id = UUID.randomUUID().toString();
+            testItem.mypk = UUID.randomUUID().toString();
+
+            int testItemLength = OBJECT_MAPPER.writeValueAsBytes(testItem).length;
+            CosmosContainer container = client1.getDatabase(this.cosmosAsyncContainer.getDatabase().getId()).getContainer(this.cosmosAsyncContainer.getId());
+
+            Thread.sleep(1000);
+
+            // create
+            // initializes the rntbd service endpoint
+            Instant beforeInitializingRntbdServiceEndpoint = Instant.now();
+            CosmosItemResponse<TestItem> operation1Response = container.upsertItem(testItem);
+            Instant afterInitializingRntbdServiceEndpoint = Instant.now();
+
+            Thread.sleep(1000);
+            Instant beforeOperation2 = Instant.now();
+            CosmosItemResponse<TestItem> operation2Response = container.upsertItem(testItem);
+            Instant afterOperation2 = Instant.now();
+
+            Thread.sleep(1000);
+            Instant beforeOperation3 = Instant.now();
+            CosmosItemResponse<TestItem> operation3Response = container.upsertItem(testItem);
+            Instant afterOperation3 = Instant.now();
+
+            validateRntbdStatistics(operation3Response.getDiagnostics(),
+                beforeClientInitialization,
+                beforeInitializingRntbdServiceEndpoint,
+                afterInitializingRntbdServiceEndpoint,
+                beforeOperation2,
+                afterOperation2,
+                beforeOperation3,
+                afterOperation3);
+
+            // read
+            CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
+            // no request payload and no response payload
+            validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+
+            // delete
+            CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
+            // no request payload and no response payload
+            validate(deleteItemResponse.getDiagnostics(), 0, 0);
+        } finally {
+            LifeCycleUtils.closeQuietly(client1);
+        }
+    }
+
+    private void validateRntbdStatistics(CosmosDiagnostics cosmosDiagnostics,
+                                         Instant clientInitializationTime,
+                                         Instant beforeInitializingRntbdServiceEndpoint,
+                                         Instant afterInitializingRntbdServiceEndpoint,
+                                         Instant beforeOperation2,
+                                         Instant afterOperation2,
+                                         Instant beforeOperation3,
+                                         Instant afterOperation3) throws Exception {
+        ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+        JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+        assertThat(storeResult).isNotNull();
+
+        boolean hasPayload = storeResult.get("exception").isNull();
+        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThan(0);
+        assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+
+        JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
+        assertThat(serviceEndpointStatistics).isNotNull();
+
+        assertThat(serviceEndpointStatistics.get("availableChannels").asInt(-1)).isGreaterThan(0);
+        // no concurrent work
+        assertThat(serviceEndpointStatistics.get("acquiredChannels").asInt(-1)).isEqualTo(0);
+        // current request
+        assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
+
+        assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
+
+        // first request initialized the rntbd service endpoint
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isAfterOrEqualTo(beforeInitializingRntbdServiceEndpoint);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isBeforeOrEqualTo(afterInitializingRntbdServiceEndpoint);
+
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2);
+    }
+
+    private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {
+        ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+        JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+
+        boolean hasPayload = storeResult.get("exception").isNull();
+        assertThat(storeResult).isNotNull();
+        assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
+        assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
+        assertThat(storeResult.get("requestPayloadLengthInBytes").asInt(-1)).isEqualTo(expectedRequestPayloadSize);
+        if (hasPayload) {
+            assertThat(storeResult.get("responsePayloadLengthInBytes").asInt(-1)).isEqualTo(expectedResponsePayloadSize);
+        }
+        assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

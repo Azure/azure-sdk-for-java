@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The CassandraKeyspaceCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB Cassandra keyspace. */
 @JsonFlatten
 @Fluent
 public class CassandraKeyspaceCreateUpdateParameters extends ArmResourceProperties {

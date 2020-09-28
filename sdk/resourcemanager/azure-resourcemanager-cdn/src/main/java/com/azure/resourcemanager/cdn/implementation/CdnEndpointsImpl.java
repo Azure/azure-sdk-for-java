@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.cdn.implementation;
 
-import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
@@ -35,10 +35,10 @@ class CdnEndpointsImpl extends
      */
     Map<String, CdnEndpoint> endpointsAsMap() {
         Map<String, CdnEndpoint> result = new HashMap<>();
-        for (EndpointInner endpointInner : this.getParent().manager().inner().getEndpoints()
+        for (EndpointInner endpointInner : this.getParent().manager().serviceClient().getEndpoints()
             .listByProfile(this.getParent().resourceGroupName(), this.getParent().name())) {
             CdnEndpointImpl endpoint = new CdnEndpointImpl(endpointInner.name(), this.getParent(), endpointInner);
-            for (CustomDomainInner customDomainInner : this.getParent().manager().inner().getCustomDomains()
+            for (CustomDomainInner customDomainInner : this.getParent().manager().serviceClient().getCustomDomains()
                 .listByEndpoint(this.getParent().resourceGroupName(), this.getParent().name(), endpoint.name())) {
                 endpoint.withCustomDomain(customDomainInner.hostname());
             }
@@ -67,7 +67,7 @@ class CdnEndpointsImpl extends
 
     public CdnEndpointImpl defineNewEndpoint(String endpointName, String originName, String endpointOriginHostname) {
         CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointName);
-        endpoint.inner().origins().add(
+        endpoint.innerModel().origins().add(
                 new DeepCreatedOrigin()
                         .withName(originName)
                         .withHostname(endpointOriginHostname));
@@ -81,8 +81,8 @@ class CdnEndpointsImpl extends
     public CdnEndpointImpl defineNewEndpoint(String name) {
         CdnEndpointImpl endpoint = this.prepareInlineDefine(
             new CdnEndpointImpl(name, this.getParent(), new EndpointInner()));
-        endpoint.inner().withLocation(endpoint.parent().region().toString());
-        endpoint.inner().withOrigins(new ArrayList<>());
+        endpoint.innerModel().withLocation(endpoint.parent().region().toString());
+        endpoint.innerModel().withOrigins(new ArrayList<>());
         return endpoint;
     }
 
@@ -98,7 +98,7 @@ class CdnEndpointsImpl extends
     }
 
     public CdnEndpointImpl updateEndpoint(String name) {
-        EndpointInner endpointInner = this.getParent().manager().inner().getEndpoints()
+        EndpointInner endpointInner = this.getParent().manager().serviceClient().getEndpoints()
             .get(this.getParent().resourceGroupName(), this.getParent().name(), name);
         CdnEndpointImpl endpoint = this.prepareInlineUpdate(
             new CdnEndpointImpl(name, this.getParent(), endpointInner));
@@ -110,7 +110,8 @@ class CdnEndpointsImpl extends
         CheckNameAvailabilityResult result;
 
         do {
-            endpointName = this.getParent().manager().sdkContext().randomResourceName(endpointNamePrefix, 50);
+            endpointName = this.getParent().manager().resourceManager().internalContext()
+                .randomResourceName(endpointNamePrefix, 50);
             result = this.getParent().checkEndpointNameAvailability(endpointName);
         } while (!result.nameAvailable());
 

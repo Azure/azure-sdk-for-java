@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CsmSlotEntity model. */
+/** Deployment slot parameters. */
 @Fluent
 public final class CsmSlotEntity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmSlotEntity.class);

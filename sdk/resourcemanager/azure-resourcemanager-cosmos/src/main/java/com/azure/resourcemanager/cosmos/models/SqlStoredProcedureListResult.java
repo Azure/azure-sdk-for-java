@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.SqlStoredProcedureGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlStoredProcedureGetResultsInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SqlStoredProcedureListResult model. */
+/** The List operation response, that contains the storedProcedures and their properties. */
 @Immutable
 public final class SqlStoredProcedureListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStoredProcedureListResult.class);

@@ -38,10 +38,10 @@ class ContainerImpl
 
     @Override
     public ContainerGroupImpl attach() {
-        if (parent.inner().containers() == null) {
-            parent.inner().withContainers(new ArrayList<Container>());
+        if (parent.innerModel().containers() == null) {
+            parent.innerModel().withContainers(new ArrayList<Container>());
         }
-        parent.inner().containers().add(innerContainer);
+        parent.innerModel().containers().add(innerContainer);
 
         return parent;
     }
@@ -77,19 +77,19 @@ class ContainerImpl
     }
 
     private IpAddress ensureParentIpAddress() {
-        if (parent.inner().ipAddress() == null) {
-            parent.inner().withIpAddress(new IpAddress());
+        if (parent.innerModel().ipAddress() == null) {
+            parent.innerModel().withIpAddress(new IpAddress());
         }
-        if (parent.inner().ipAddress().type() == null && parent.inner().ipAddress().dnsNameLabel() == null) {
-            parent.inner().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
+        if (parent.innerModel().ipAddress().type() == null && parent.innerModel().ipAddress().dnsNameLabel() == null) {
+            parent.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
         } else {
-            parent.inner().ipAddress().withType(ContainerGroupIpAddressType.PUBLIC);
+            parent.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PUBLIC);
         }
-        if (parent.inner().ipAddress().ports() == null) {
-            parent.inner().ipAddress().withPorts(new ArrayList<Port>());
+        if (parent.innerModel().ipAddress().ports() == null) {
+            parent.innerModel().ipAddress().withPorts(new ArrayList<Port>());
         }
 
-        return parent.inner().ipAddress();
+        return parent.innerModel().ipAddress();
     }
 
     @Override

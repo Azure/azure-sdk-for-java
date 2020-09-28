@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -27,7 +27,7 @@ class WebAppBasicImpl extends WebSiteBaseImpl implements WebAppBasic, HasManager
     @Override
     public Mono<WebApp> refreshAsync() {
         return this.manager().webApps().getByIdAsync(this.id())
-            .doOnNext(site -> this.setInner(site.inner()));
+            .doOnNext(site -> this.setInner(site.innerModel()));
     }
 
     @Override

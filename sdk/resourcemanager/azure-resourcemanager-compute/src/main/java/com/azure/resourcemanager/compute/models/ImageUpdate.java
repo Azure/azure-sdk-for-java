@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImageUpdate model. */
+/** The source user image virtual hard disk. Only tags may be updated. */
 @JsonFlatten
 @Fluent
 public class ImageUpdate extends UpdateResource {

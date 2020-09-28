@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetExtensionUpdate model. */
+/** Describes a Virtual Machine Scale Set Extension. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetExtensionUpdate extends SubResourceReadOnly {

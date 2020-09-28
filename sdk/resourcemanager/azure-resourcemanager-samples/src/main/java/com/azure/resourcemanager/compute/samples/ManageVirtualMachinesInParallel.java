@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -38,9 +38,9 @@ public final class ManageVirtualMachinesInParallel {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int vmCount = 10;
         final Region region = Region.US_SOUTH_CENTRAL;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOPP", 24);
-        final String networkName = azureResourceManager.sdkContext().randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("stgCOMV", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOPP", 24);
+        final String networkName = Utils.randomResourceName(azureResourceManager, "vnetCOMV", 24);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = Utils.password();
         try {

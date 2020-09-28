@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IpsecPolicy model. */
+/** An IPSec Policy configuration for a virtual network gateway connection. */
 @Fluent
 public final class IpsecPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpsecPolicy.class);

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetIpConfiguration model. */
+/** Describes a virtual machine scale set network profile's IP configuration. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetIpConfiguration extends SubResource {

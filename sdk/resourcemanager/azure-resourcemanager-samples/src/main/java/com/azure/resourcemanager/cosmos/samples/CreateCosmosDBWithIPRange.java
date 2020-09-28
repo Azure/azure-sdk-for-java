@@ -11,7 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -27,8 +27,8 @@ public final class CreateCosmosDBWithIPRange {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String docDBName = azureResourceManager.sdkContext().randomResourceName("docDb", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
+        final String docDBName = Utils.randomResourceName(azureResourceManager, "docDb", 10);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV", 24);
 
         try {
             //============================================================

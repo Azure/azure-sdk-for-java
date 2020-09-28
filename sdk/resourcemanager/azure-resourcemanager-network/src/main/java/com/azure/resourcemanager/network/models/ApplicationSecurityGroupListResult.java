@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationSecurityGroupListResult model. */
+/** A list of application security groups. */
 @Fluent
 public final class ApplicationSecurityGroupListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationSecurityGroupListResult.class);

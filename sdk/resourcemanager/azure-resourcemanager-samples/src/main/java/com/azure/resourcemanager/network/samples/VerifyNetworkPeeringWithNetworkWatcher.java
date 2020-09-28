@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.ConnectivityCheck;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
@@ -59,21 +59,21 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_SOUTH_CENTRAL;
-        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 15);
-        final String vnetAName = azureResourceManager.sdkContext().randomResourceName("net", 15);
-        final String vnetBName = azureResourceManager.sdkContext().randomResourceName("net", 15);
+        final Region region = Region.EUROPE_NORTH;
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 15);
+        final String vnetAName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String vnetBName = Utils.randomResourceName(azureResourceManager, "net", 15);
 
-        final String[] vmNames = azureResourceManager.sdkContext().randomResourceNames("vm", 15, 2);
+        final String[] vmNames = Utils.randomResourceNames(azureResourceManager, "vm", 15, 2);
         final String[] vmIPAddresses = new String[]{
                 /* within subnetA */ "10.0.0.8",
                 /* within subnetB */ "10.1.0.8"
         };
 
-        final String peeringABName = azureResourceManager.sdkContext().randomResourceName("peer", 15);
+        final String peeringABName = Utils.randomResourceName(azureResourceManager, "peer", 15);
         final String rootname = "tirekicker";
-        final String password = azureResourceManager.sdkContext().randomResourceName("pWd!", 15);
-        final String networkWatcherName = azureResourceManager.sdkContext().randomResourceName("netwch", 20);
+        final String password = Utils.password();
+        final String networkWatcherName = Utils.randomResourceName(azureResourceManager, "netwch", 20);
 
         try {
 
@@ -148,10 +148,17 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             //=============================================================
             // Check connectivity between the two VMs/networks using Network Watcher
-            NetworkWatcher networkWatcher = azureResourceManager.networkWatchers().define(networkWatcherName)
+
+            // Azure Network Watcher enabled by default
+            // https://azure.microsoft.com/updates/azure-network-watcher-will-be-enabled-by-default-for-subscriptions-containing-virtual-networks/
+            NetworkWatcher networkWatcher = azureResourceManager.networkWatchers().list().stream()
+                .filter(nw -> nw.region() == region).findFirst()
+                .orElseGet(() -> azureResourceManager
+                    .networkWatchers()
+                    .define(networkWatcherName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroupName)
-                    .create();
+                    .create());
 
             // Verify bi-directional connectivity between the VMs on port 22 (SSH enabled by default on Linux VMs)
             Executable<ConnectivityCheck> connectivityAtoB = networkWatcher.checkConnectivity()
