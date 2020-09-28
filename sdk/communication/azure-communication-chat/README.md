@@ -2,6 +2,9 @@
 
 Azure Communication Chat contains the APIs used in chat applications for Azure Communication Services.  
 
+[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
+| [Product documentation][product_docs]
+
 ## Getting started
 
 ### Prerequisites
@@ -75,9 +78,9 @@ String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 NettyAsyncHttpClientBuilder httpClientBuilder = new NettyAsyncHttpClientBuilder();
 HttpClient httpClient = httpClientBuilder.build();
 
-// Your user access token retrieved from your trusted service
-String token = "SECRET";
-CommunicationUserCredential credential = new CommunicationUserCredential(token);
+// Your access key retrieved from your trusted service
+String accessKey = "SECRET";
+CommunicationUserCredential credential = new CommunicationUserCredential(accessKey);
 
 // Initialize the chat client
 final ChatClientBuilder builder = new ChatClientBuilder();
@@ -382,3 +385,9 @@ Check out other client libraries for Azure communication service
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-chat
+[api_documentation]: https://aka.ms/java-docs
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-chat/src
+
+

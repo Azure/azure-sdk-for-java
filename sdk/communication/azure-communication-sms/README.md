@@ -3,7 +3,7 @@
 Azure Communication SMS is used to send simple text messages.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][azconfig_docs]
+| [Product documentation][product_docs]
 
 ## Getting started
 
@@ -36,16 +36,16 @@ via the credential() function. Endpoint and httpClient must also be set.
 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L26-L51 -->
 ```java
-// Your can find your endpoint and access token from your resource in the Azure Portal
+// Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-String accessToken = "SECRET";
+String accessKey = "SECRET";
 
 // Instantiate the http client
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
 CommunicationClientCredential credential = null;
 try {
-    credential = new CommunicationClientCredential(accessToken);
+    credential = new CommunicationClientCredential(accessKey);
 } catch (NoSuchAlgorithmException e) {
     System.out.println(e.getMessage());
 } catch (InvalidKeyException e) {
@@ -115,9 +115,9 @@ Check out other client libraries for Azure Communication Services
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
+[product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-sms
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2Fazure-communications-sms%2FREADME.png)

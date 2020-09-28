@@ -23,16 +23,16 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 public class ReadmeSamples {
     public static void main(String[] args) {
 
-        // Your can find your endpoint and access token from your resource in the Azure Portal
+        // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessToken = "SECRET";
+        String accessKey = "SECRET";
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
         
         CommunicationClientCredential credential = null;
         try {
-            credential = new CommunicationClientCredential(accessToken);
+            credential = new CommunicationClientCredential(accessKey);
         } catch (NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
         } catch (InvalidKeyException e) {
