@@ -333,19 +333,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @return the current tasks in the executor pool
      */
     public int executorTaskQueueMetrics() {
-        try {
-            SingleThreadEventExecutor singleThreadEventExecutor = Utils.as(this.executor,
-                SingleThreadEventExecutor.class);
-
-            if (singleThreadEventExecutor != null) {
-                return singleThreadEventExecutor.pendingTasks();
-            }
-        } catch (RuntimeException e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("task-queue unexpected monitoring failure", e);
-            }
-        }
-        return -1;
+        return RntbdUtils.tryGetExecutorTaskQueueSize(this.executor);
     }
 
     /**

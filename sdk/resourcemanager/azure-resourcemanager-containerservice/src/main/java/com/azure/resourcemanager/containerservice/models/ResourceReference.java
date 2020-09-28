@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceReference model. */
+/** A reference to an Azure resource. */
 @Fluent
 public final class ResourceReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceReference.class);

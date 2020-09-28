@@ -5,7 +5,7 @@ package com.azure.resourcemanager.privatedns;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClient;
-import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClientBuilder;
+import com.azure.resourcemanager.privatedns.implementation.PrivateDnsManagementClientBuilder;
 import com.azure.resourcemanager.privatedns.implementation.PrivateDnsZonesImpl;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

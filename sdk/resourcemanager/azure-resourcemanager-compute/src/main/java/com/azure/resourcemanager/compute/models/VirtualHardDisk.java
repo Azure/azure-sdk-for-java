@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualHardDisk model. */
+/** Describes the uri of a disk. */
 @Fluent
 public final class VirtualHardDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHardDisk.class);

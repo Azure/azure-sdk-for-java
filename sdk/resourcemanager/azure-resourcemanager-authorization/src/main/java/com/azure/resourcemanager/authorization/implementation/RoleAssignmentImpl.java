@@ -12,14 +12,15 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -89,7 +90,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                         .roleServiceClient()
                         .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
-                        .retryWhen(
+                        .retryWhen(Retry.withThrowable(
                             throwableFlux ->
                                 throwableFlux
                                     .zipWith(
@@ -114,7 +115,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                                 throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                             }
                                         })
-                                    .flatMap(i -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(i))))))
+                                    .flatMap(i -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext
+                                        .getDelayDuration(Duration.ofSeconds(i)))))))
             .map(innerToFluentMap(this));
     }
 

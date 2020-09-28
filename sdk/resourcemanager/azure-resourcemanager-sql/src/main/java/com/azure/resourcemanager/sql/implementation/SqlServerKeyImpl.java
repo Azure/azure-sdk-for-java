@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerKey;
 import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
-import com.azure.resourcemanager.sql.fluent.inner.ServerKeyInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerKeyInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;

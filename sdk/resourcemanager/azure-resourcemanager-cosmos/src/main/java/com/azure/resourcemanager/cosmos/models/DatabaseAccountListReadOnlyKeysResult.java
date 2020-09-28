@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListReadOnlyKeysResultInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountListReadOnlyKeysResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure Cosmos DB DatabaseAccountListReadOnlyKeysResult. */

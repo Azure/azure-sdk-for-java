@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StatusCodesBasedTrigger model. */
+/** Trigger based on status code. */
 @Fluent
 public final class StatusCodesBasedTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StatusCodesBasedTrigger.class);

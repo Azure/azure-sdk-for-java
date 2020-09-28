@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkSecurityGroupResult model. */
+/** Network configuration diagnostic result corresponded provided traffic query. */
 @Fluent
 public final class NetworkSecurityGroupResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupResult.class);

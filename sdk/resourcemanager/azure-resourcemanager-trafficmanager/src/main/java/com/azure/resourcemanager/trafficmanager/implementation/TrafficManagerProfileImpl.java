@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
 import com.azure.resourcemanager.trafficmanager.models.ProfileMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;

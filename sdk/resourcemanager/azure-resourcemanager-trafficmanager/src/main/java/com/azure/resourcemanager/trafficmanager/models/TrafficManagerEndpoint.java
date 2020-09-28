@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildRe
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

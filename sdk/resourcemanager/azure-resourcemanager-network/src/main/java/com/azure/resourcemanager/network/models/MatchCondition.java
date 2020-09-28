@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MatchCondition model. */
+/** Define match conditions. */
 @Fluent
 public final class MatchCondition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchCondition.class);

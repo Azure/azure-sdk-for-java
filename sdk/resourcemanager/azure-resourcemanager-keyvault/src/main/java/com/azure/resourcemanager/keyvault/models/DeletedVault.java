@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
+import com.azure.resourcemanager.keyvault.fluent.models.DeletedVaultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;

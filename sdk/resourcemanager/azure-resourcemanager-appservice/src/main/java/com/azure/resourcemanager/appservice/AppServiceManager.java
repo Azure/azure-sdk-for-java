@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
-import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClientBuilder;
+import com.azure.resourcemanager.appservice.implementation.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificateOrdersImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificatesImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceDomainsImpl;
@@ -109,7 +109,7 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
     }
 
-    /** @return the Graph RBAC manager instance. */
+    /** @return the authorization manager instance. */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }

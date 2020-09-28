@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.models.EventLevel;
 import com.azure.resourcemanager.monitor.models.HttpRequestInfo;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.SenderAuthorization;
-import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
+import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -28,7 +28,7 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
         this.eventName =
             (innerModel().eventName() == null) ? null : new LocalizableStringImpl(innerModel().eventName());
         this.category = (innerModel().category() == null) ? null : new LocalizableStringImpl(innerModel().category());
-        this.resourceProviderName = (innerModel().resourceProviderName() == null) 
+        this.resourceProviderName = (innerModel().resourceProviderName() == null)
             ? null : new LocalizableStringImpl(innerModel().resourceProviderName());
         this.resourceType =
             (innerModel().resourceType() == null) ? null : new LocalizableStringImpl(innerModel().resourceType());

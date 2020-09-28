@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
-import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.Queues;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;

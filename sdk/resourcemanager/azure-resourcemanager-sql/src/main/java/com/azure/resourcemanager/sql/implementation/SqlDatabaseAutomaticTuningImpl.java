@@ -8,7 +8,7 @@ import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptions;
 import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

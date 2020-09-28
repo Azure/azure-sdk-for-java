@@ -1310,6 +1310,50 @@ class EncyptedBlockBlobAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _
     }
 
+    def "Download requiresEncryption"() {
+        setup:
+        def blobName = bec.getBlobName()
+        def bc = getBlobClientBuilder(primaryCredential, cc.getBlobContainerUrl().toString())
+            .blobName(blobName)
+            .buildClient()
+
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        when: "Sync min"
+        bec = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+            cc.getBlobContainerUrl().toString())
+            .blobName(blobName)
+            .requiresEncryption(true)
+            .buildEncryptedBlobClient()
+        bec.download(new ByteArrayOutputStream())
+
+        then:
+        thrown(IllegalStateException)
+
+        when: "Sync max"
+        bec.downloadWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null)
+
+        then:
+        thrown(IllegalStateException)
+
+        when: "Async min"
+        beac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
+            cc.getBlobContainerUrl().toString())
+            .blobName(blobName)
+            .requiresEncryption(true)
+            .buildEncryptedBlobAsyncClient()
+        beac.download().blockLast()
+
+        then:
+        thrown(IllegalStateException)
+
+        when: "Async max"
+        beac.downloadWithResponse(null, null, null, false).block()
+
+        then:
+        thrown(IllegalStateException)
+    }
+
     def "Encryption upload IS overwrite fails"() {
         when:
         ebc.upload(defaultInputStream.get(), defaultDataSize)

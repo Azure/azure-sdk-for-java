@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PartitionMetricInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PartitionMetricListResult model. */
+/** The response to a list partition metrics request. */
 @Immutable
 public final class PartitionMetricListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartitionMetricListResult.class);

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicy;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyState;
-import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl

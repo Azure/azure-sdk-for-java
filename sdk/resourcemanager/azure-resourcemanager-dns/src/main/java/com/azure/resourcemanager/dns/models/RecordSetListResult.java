@@ -6,12 +6,12 @@ package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RecordSetListResult model. */
+/** The response to a record set List operation. */
 @Fluent
 public final class RecordSetListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetListResult.class);

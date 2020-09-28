@@ -26,7 +26,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
@@ -53,8 +53,8 @@ public class TestApplicationGateway {
             .replace("${resourceName}", appGatewayName);
     }
 
-    void initializeResourceNames(SdkContext sdkContext) {
-        testId = sdkContext.randomResourceName("", 8);
+    void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        testId = internalContext.randomResourceName("", 8);
         groupName = "rg" + testId;
         appGatewayName = "ag" + testId;
         pipNames = new String[] {"pipa" + testId, "pipb" + testId};
@@ -62,8 +62,8 @@ public class TestApplicationGateway {
 
     /** Minimalistic internal (private) app gateway test. */
     public class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        PrivateMinimal(SdkContext sdkContext) {
-            initializeResourceNames(sdkContext);
+        PrivateMinimal(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+            initializeResourceNames(internalContext);
         }
 
         @Override
@@ -240,8 +240,8 @@ public class TestApplicationGateway {
 
     /** Minimalistic internal (private) app gateway test. */
     public class UrlPathBased extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        UrlPathBased(SdkContext sdkContext) {
-            initializeResourceNames(sdkContext);
+        UrlPathBased(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+            initializeResourceNames(internalContext);
         }
 
         @Override
@@ -384,8 +384,8 @@ public class TestApplicationGateway {
          *
          * @throws Exception when something goes wrong
          */
-        public PrivateComplex(SdkContext sdkContext) throws Exception {
-            initializeResourceNames(sdkContext);
+        public PrivateComplex(ResourceManagerUtils.InternalRuntimeContext internalContext) throws Exception {
+            initializeResourceNames(internalContext);
         }
 
         @Override
@@ -846,8 +846,8 @@ public class TestApplicationGateway {
          *
          * @throws Exception when something goes wrong with test PIP creation
          */
-        public PublicComplex(SdkContext sdkContext) throws Exception {
-            initializeResourceNames(sdkContext);
+        public PublicComplex(ResourceManagerUtils.InternalRuntimeContext internalContext) throws Exception {
+            initializeResourceNames(internalContext);
         }
 
         @Override
@@ -1197,8 +1197,8 @@ public class TestApplicationGateway {
 
     /** Internet-facing LB test with NAT pool test. */
     public class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        PublicMinimal(SdkContext sdkContext) {
-            initializeResourceNames(sdkContext);
+        PublicMinimal(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+            initializeResourceNames(internalContext);
         }
 
         @Override
