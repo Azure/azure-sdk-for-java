@@ -66,7 +66,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
         final String vm1Name = Utils.randomResourceName(azureResourceManager, "vm1", 20);
         final String vm2Name = Utils.randomResourceName(azureResourceManager, "vm2", 20);
         final String rootname = "tirekicker";
-        final String password = Utils.randomResourceName(azureResourceManager, "pWd!", 15);
+        final String password = Utils.password();
         final String storageContainerName = "results";
 
         try {
