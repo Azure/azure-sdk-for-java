@@ -92,7 +92,7 @@ public class RetryUtils {
                         shouldRetryResult.policyArg.getValue0() != null &&
                         shouldRetryResult.policyArg.getValue0()) {
 
-                        return (Mono<T>)addressSelector.resolveAddressesAsync(
+                        return addressSelector.resolveAddressesAsync(
                             rxDocumentServiceRequest,
                             true).flatMap((dummy) -> failure);
                     }

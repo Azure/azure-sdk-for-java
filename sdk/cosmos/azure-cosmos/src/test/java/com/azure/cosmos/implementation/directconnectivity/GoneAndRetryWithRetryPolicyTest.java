@@ -116,13 +116,12 @@ public class GoneAndRetryWithRetryPolicyTest {
 
     /**
      * GoneException for write which is already sent to the wire, should not result in retry,
-     * but the request context's forceRefreshAddressCache flag should still be set to true
+     * but an address refresh should be triggered
      * shouldRetryResult. ShouldRetryResult
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldNotRetryFlushedWriteWithGoneExceptionButForceAddressRefresh() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document);
-        assertThat(request.requestContext.forceRefreshAddressCache).isFalse();
 
         Supplier<GoneException> goneExceptionForFlushedRequestSupplier = () -> {
             GoneException goneExceptionForFlushedRequest = new GoneException();
@@ -137,8 +136,8 @@ public class GoneAndRetryWithRetryPolicyTest {
         IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
 
         assertThat(shouldRetryResult.shouldRetry).isFalse();
-        assertThat(request.requestContext.forceRefreshAddressCache).isTrue();
-        assertThat(shouldRetryResult.policyArg).isNull();
+        assertThat(shouldRetryResult.policyArg).isNotNull();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.backOffTime).isNull();
     }
 
@@ -149,7 +148,6 @@ public class GoneAndRetryWithRetryPolicyTest {
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldNotRetryRequestTimeoutException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
-        assertThat(request.requestContext.forceRefreshAddressCache).isFalse();
 
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
@@ -157,12 +155,10 @@ public class GoneAndRetryWithRetryPolicyTest {
         IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
 
         assertThat(shouldRetryResult.shouldRetry).isFalse();
-        assertThat(request.requestContext.forceRefreshAddressCache).isFalse();
         assertThat(shouldRetryResult.policyArg).isNull();
         assertThat(shouldRetryResult.backOffTime).isNull();
 
         request = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document);
-        assertThat(request.requestContext.forceRefreshAddressCache).isFalse();
 
         goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         singleShouldRetry = goneAndRetryWithRetryPolicy
@@ -170,7 +166,6 @@ public class GoneAndRetryWithRetryPolicyTest {
         shouldRetryResult = singleShouldRetry.block();
 
         assertThat(shouldRetryResult.shouldRetry).isFalse();
-        assertThat(request.requestContext.forceRefreshAddressCache).isFalse();
         assertThat(shouldRetryResult.policyArg).isNull();
         assertThat(shouldRetryResult.backOffTime).isNull();
     }
