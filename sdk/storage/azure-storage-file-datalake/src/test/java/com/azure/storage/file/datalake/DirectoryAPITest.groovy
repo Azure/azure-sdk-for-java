@@ -560,9 +560,13 @@ class DirectoryAPITest extends APISpec {
         iterations == 2
     }
 
-    def getSasDirectory(DataLakeDirectoryClient directoryClient, String owner) {
-        def udk = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusHours(1))
-        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(getUTCNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), udk)
+    def getSasDirectoryClient(DataLakeDirectoryClient directoryClient, String owner) {
+        def key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusHours(1))
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(getUTCNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
         return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath())
     }
 
@@ -597,7 +601,7 @@ class DirectoryAPITest extends APISpec {
             .createFile(generatePathName())
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
@@ -652,7 +656,7 @@ class DirectoryAPITest extends APISpec {
             .createSubdirectory(generatePathName())
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         when:
         def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
@@ -714,7 +718,7 @@ class DirectoryAPITest extends APISpec {
         file9.setPermissions(pathPermissions, null, subowner)
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
@@ -898,7 +902,7 @@ class DirectoryAPITest extends APISpec {
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         when:
         def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
@@ -951,7 +955,7 @@ class DirectoryAPITest extends APISpec {
             .createSubdirectory(generatePathName())
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         when:
         def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
@@ -1016,7 +1020,7 @@ class DirectoryAPITest extends APISpec {
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         when:
         def intermediateResult = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
@@ -1195,7 +1199,7 @@ class DirectoryAPITest extends APISpec {
             .createFile(generatePathName())
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
@@ -1250,7 +1254,7 @@ class DirectoryAPITest extends APISpec {
             .createSubdirectory(generatePathName())
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         when:
         def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
@@ -1312,7 +1316,7 @@ class DirectoryAPITest extends APISpec {
         file9.setPermissions(pathPermissions, null, subowner)
 
         // Create a user delegation sas that delegates an owner when creating files
-        def subOwnerDirClient = getSasDirectory(topDirOauthClient, subowner)
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
