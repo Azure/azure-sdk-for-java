@@ -771,6 +771,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a model, including the model metadata and the model definition.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getModel#String}
+     *
      * @param modelId The Id of the model.
      * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
@@ -782,6 +787,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a model, including the model metadata and the model definition.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getModelWithResponse#String}
+     *
      * @param modelId The Id of the model.
      * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */

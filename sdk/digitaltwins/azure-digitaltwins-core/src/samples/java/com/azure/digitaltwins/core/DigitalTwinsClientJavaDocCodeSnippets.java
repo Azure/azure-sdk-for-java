@@ -512,7 +512,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncclient.createModelsWithResponse#Iterable
         Response<Iterable<DigitalTwinsModelData>> createdModels = digitalTwinsSyncClient.createModelsWithResponse(Arrays.asList(model1, model2, model3), new Context("key", "value"));
 
-        System.out.println("Recieved HTTP response of " + createdModels.getStatusCode());
+        System.out.println("Received HTTP response of " + createdModels.getStatusCode());
 
         createdModels.getValue().forEach(model -> System.out.println("Retrieved model with Id: " + model.getId()));
         // END: com.azure.digitaltwins.core.syncclient.createModelsWithResponse#Iterable
@@ -523,7 +523,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getModel() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.getModel#String
+        DigitalTwinsModelData model = digitalTwinsSyncClient.getModel("dtmi:samples:Building;1");
 
+        System.out.println("Retrieved model with Id: " + model.getId());
+        // END: com.azure.digitaltwins.core.syncclient.getModel#String
     }
 
     /**
@@ -531,7 +535,12 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getModelWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.getModelWithResponse#String
+        Response<DigitalTwinsModelData> modelWithResponse = digitalTwinsSyncClient.getModelWithResponse("dtmi:samples:Building;1", new Context("key", "value"));
 
+        System.out.println("Received HTTP response with status code: " + modelWithResponse.getStatusCode());
+        System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getId());
+        // END: com.azure.digitaltwins.core.syncclient.getModelWithResponse#String
     }
 
     /**

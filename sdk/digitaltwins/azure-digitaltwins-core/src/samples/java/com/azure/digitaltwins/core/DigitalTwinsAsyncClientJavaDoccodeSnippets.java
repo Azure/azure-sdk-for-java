@@ -503,7 +503,10 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void getModel() {
-
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getModel#String
+        digitalTwinsAsyncClient.getModel("dtmi:samples:Building;1")
+            .subscribe(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+        // END: com.azure.digitaltwins.core.asyncclient.getModel#String
     }
 
     /**
@@ -511,7 +514,13 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void getModelWithResponse() {
-
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getModelWithResponse#String
+        digitalTwinsAsyncClient.getModelWithResponse("dtmi:samples:Building;1")
+            .subscribe(modelWithResponse -> {
+                System.out.println("Recieved HTTP response with status code: " + modelWithResponse.getStatusCode());
+                System.out.println("Retrieved model with Id: " + modelWithResponse.getValue().getId());
+            });
+        // END: com.azure.digitaltwins.core.asyncclient.getModelWithResponse#String
     }
 
     /**
