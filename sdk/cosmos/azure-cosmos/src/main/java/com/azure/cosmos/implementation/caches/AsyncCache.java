@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -74,7 +75,7 @@ public class AsyncCache<TKey, TValue> {
                 }
 
                 logger.debug("cache[{}] result value is obsolete ({}), computing new value", key, obsoleteValue);
-                AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc);
+                AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc, Optional.of(value));
                 AsyncLazy<TValue> actualValue = values.merge(key, asyncLazy,
                         (lazyValue1, lazyValue2) -> lazyValue1 == initialLazyValue ? lazyValue2 : lazyValue1);
                 return actualValue.single().flux();
@@ -82,7 +83,7 @@ public class AsyncCache<TKey, TValue> {
             }, err -> {
 
                 logger.debug("cache[{}] resulted in error, computing new value", key, err);
-                AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc);
+                AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc, initialLazyValue.getOldValue());
                 AsyncLazy<TValue> resultAsyncLazy = values.merge(key, asyncLazy,
                         (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);
                 return resultAsyncLazy.single().flux();
@@ -127,7 +128,9 @@ public class AsyncCache<TKey, TValue> {
         logger.debug("refreshing cache[{}]", key);
         AsyncLazy<TValue> initialLazyValue = values.get(key);
         if (initialLazyValue != null && (initialLazyValue.isSucceeded() || initialLazyValue.isFaulted())) {
-            AsyncLazy<TValue> newLazyValue = new AsyncLazy<>(singleValueInitFunc);
+            // TODO: on the force refresh we are keeping the old value just in case the current refresh fails.
+            // is this the correct behaviour? or should we forget the old value as it is a "forced" refresh?
+            AsyncLazy<TValue> newLazyValue = new AsyncLazy<>(singleValueInitFunc, initialLazyValue.getOldValue());
 
             // UPDATE the new task in the cache,
             values.merge(key, newLazyValue,
