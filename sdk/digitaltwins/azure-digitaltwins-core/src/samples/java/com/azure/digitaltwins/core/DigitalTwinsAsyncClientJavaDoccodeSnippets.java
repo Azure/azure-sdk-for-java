@@ -413,7 +413,69 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void listRelationships() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#BasicRelationship#IterateByItem
+        digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", BasicRelationship.class)
+            .doOnNext(basicRel -> System.out.println("Retrieved relationship with Id: " + basicRel.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByItem
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#BasicRelationship#IterateByPage
+        digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", BasicRelationship.class)
+            .byPage()
+            .doOnNext(page ->
+                page.getValue()
+                .forEach(rel -> System.out.println("Retrieved relationship with Id: " + rel.getId())));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#BasicRelationship#IterateByPage
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#String#IterateByItem
+        digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", String.class)
+            .doOnNext(rel -> System.out.println("Retrieved relationship: " + rel));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#String#IterateByItem
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#String#IterateByPage
+        digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", String.class)
+            .byPage()
+            .doOnNext(page ->
+                page.getValue()
+                .forEach(rel -> System.out.println("Retrieved relationship: " + rel)));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#String#IterateByPage
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#BasicRelationship#IterateByItem
+        digitalTwinsAsyncClient.listRelationships(
+            "myDigitalTwinId",
+            "myRelationshipName",
+            BasicRelationship.class)
+            .doOnNext(rel -> System.out.println("Retrieved relationship with Id: " + rel.getId()));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#BasicRelationship#IterateByItem
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#BasicRelationship#IterateByPage
+        digitalTwinsAsyncClient.listRelationships(
+            "myDigitalTwinId",
+            "myRelationshipName",
+            BasicRelationship.class)
+            .byPage()
+            .doOnNext(page ->
+                page.getValue()
+                .forEach(rel -> System.out.println("Retrieved relationship with Id: " + rel.getId())));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#BasicRelationship#IterateByPage
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#String#IterateByItem
+        digitalTwinsAsyncClient.listRelationships(
+            "myDigitalTwinId",
+            "myRelationshipId",
+            String.class)
+            .doOnNext(rel -> System.out.println("Retrieved relationship: " + rel));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#String#IterateByItem
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#String#IterateByPage
+        digitalTwinsAsyncClient.listRelationships(
+            "myDigitalTwinId",
+            "myRelationshipId",
+            String.class)
+            .byPage()
+            .doOnNext(page ->
+                page.getValue()
+                .forEach(rel -> System.out.println("Retrieved relationship: " + rel)));
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-String-Class#String#IterateByPage
     }
 
     /**
