@@ -51,7 +51,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
  */
 @ServiceClient(builder = PhoneNumberClientBuilder.class, isAsync = true)
 public final class PhoneNumberAsyncClient {
-    private final ClientLogger logger = new ClientLogger(PhoneNumberClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
 
     private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
 
