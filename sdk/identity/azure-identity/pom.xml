@@ -34,7 +34,11 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
-
+      <dependency>
+        <groupId>net.minidev</groupId>
+        <artifactId>json-smart</artifactId>
+        <version>2.3</version> <!-- {x-version-update;net.minidev:json-smart;external_dependency} -->
+      </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
