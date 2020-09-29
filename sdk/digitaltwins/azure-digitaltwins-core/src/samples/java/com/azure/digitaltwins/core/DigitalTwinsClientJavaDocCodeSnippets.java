@@ -6,8 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Code snippets for {@link DigitalTwinsClient}
@@ -813,7 +812,16 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void publishTelemetry() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishTelemetry#String-Object#String
+        digitalTwinsSyncClient.publishTelemetry("myDigitalTwinId", "{\"Telemetry1\": 5}");
+        // END: com.azure.digitaltwins.core.syncclient.publishTelemetry#String-Object#String
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishTelemetry#String-Object#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        digitalTwinsSyncClient.publishTelemetry("myDigitalTwinId", telemetryPayload);
+        // END: com.azure.digitaltwins.core.syncclient.publishTelemetry#String-Object#Object
     }
 
     /**
@@ -821,7 +829,28 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void publishTelemetryWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishTelemetryWithResponse#String-Object-Options-Context#String
+        Response<Void> responseString = digitalTwinsSyncClient.publishTelemetryWithResponse(
+            "myDigitalTwinId",
+            "{\"Telemetry1\": 5}",
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()),
+            new Context("key", "value"));
 
+        System.out.println("Received publish telemetry operation response with HTTP status code: " + responseString.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.publishTelemetryWithResponse#String-Object-Options-Context#String
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishTelemetryWithResponse#String-Object-Options-Context#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        Response<Void> responseObject = digitalTwinsSyncClient.publishTelemetryWithResponse(
+            "myDigitalTwinId",
+            telemetryPayload,
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()),
+            new Context("key", "value"));
+
+        System.out.println("Received publish telemetry operation response with HTTP status code: " + responseObject.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.publishTelemetryWithResponse#String-Object-Options-Context#Object
     }
 
     /**

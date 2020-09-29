@@ -896,6 +896,17 @@ public final class DigitalTwinsClient {
 
     /**
      * Publishes telemetry from a digital twin
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.publishTelemetry#String-Object#Object}
+     *
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.publishTelemetry#String-Object#String}
+     *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
@@ -909,6 +920,17 @@ public final class DigitalTwinsClient {
 
     /**
      * Publishes telemetry from a digital twin
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.publishTelemetryWithResponse#String-Object-Options-Context#Object}
+     *
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.publishTelemetryWithResponse#String-Object-Options-Context#String}
+     *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.

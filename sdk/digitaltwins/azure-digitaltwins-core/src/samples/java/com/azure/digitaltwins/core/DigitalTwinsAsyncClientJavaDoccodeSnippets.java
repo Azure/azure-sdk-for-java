@@ -4,8 +4,7 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Code snippets for {@link DigitalTwinsAsyncClient}
@@ -417,7 +416,7 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#BasicRelationship#IterateByItem
         digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", BasicRelationship.class)
             .doOnNext(basicRel -> System.out.println("Retrieved relationship with Id: " + basicRel.getId()));
-        // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByItem
+        // END: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#BasicRelationship#IterateByItem
 
         // BEGIN: com.azure.digitaltwins.core.asyncclient.listRelationships#String-Class#String#IterateByItem
         digitalTwinsAsyncClient.listRelationships("myDigitalTwinId", String.class)
@@ -782,7 +781,16 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void publishTelemetry() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishTelemetry#String-Object#String
+        digitalTwinsAsyncClient.publishTelemetry("myDigitalTwinId", "{\"Telemetry1\": 5}").subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.publishTelemetry#String-Object#String
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishTelemetry#String-Object#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        digitalTwinsAsyncClient.publishTelemetry("myDigitalTwinId", telemetryPayload).subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.publishTelemetry#String-Object#Object
     }
 
     /**
@@ -790,7 +798,24 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void publishTelemetryWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishTelemetryWithResponse#String-Object-Options#String
+        digitalTwinsAsyncClient.publishTelemetryWithResponse(
+            "myDigitalTwinId",
+            "{\"Telemetry1\": 5}",
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()))
+        .subscribe(responseString -> System.out.println("Received publish telemetry operation response with HTTP status code: " + responseString.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.publishTelemetryWithResponse#String-Object-Options#String
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishTelemetryWithResponse#String-Object-Options#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        digitalTwinsAsyncClient.publishTelemetryWithResponse(
+            "myDigitalTwinId",
+            telemetryPayload,
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()))
+        .subscribe(responseObject -> System.out.println("Received publish telemetry operation response with HTTP status code: " + responseObject.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.publishTelemetryWithResponse#String-Object-Options#Object
     }
 
     /**
