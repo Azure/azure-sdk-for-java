@@ -285,6 +285,16 @@ public final class DigitalTwinsClient {
     /**
      * Gets a relationship on a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getRelationship#String#BasicRelationship}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getRelationship#String#String}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
      * @param clazz The model class to deserialize the relationship into.

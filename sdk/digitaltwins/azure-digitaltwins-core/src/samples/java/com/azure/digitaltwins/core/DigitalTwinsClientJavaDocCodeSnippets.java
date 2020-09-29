@@ -310,7 +310,24 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getRelationship() {
+        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.getRelationship#String#BasicRelationship
+        BasicRelationship retrievedRelationship = digitalTwinsClient.getRelationship("myDigitalTwinId", "myRelationshipName", BasicRelationship.class);
+
+        System.out.println(
+            "Retrieved relationship with Id: "
+            + retrievedRelationship.getId() +
+            " from: " +
+            retrievedRelationship.getSourceId() +
+            " to: " + retrievedRelationship.getTargetId());
+        // END: com.azure.digitaltwins.core.syncclient.getRelationship#String#BasicRelationship
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.getRelationship#String#String
+        String retrievedRelationshipString = digitalTwinsClient.getRelationship("myDigitalTwinId", "myRelationshipName", String.class);
+
+        System.out.println("Retrieved relationship: " + retrievedRelationshipString);
+        // END: com.azure.digitaltwins.core.syncclient.getRelationship#String#String
     }
 
     /**

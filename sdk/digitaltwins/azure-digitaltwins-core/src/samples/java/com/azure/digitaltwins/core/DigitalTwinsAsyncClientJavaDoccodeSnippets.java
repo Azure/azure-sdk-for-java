@@ -301,7 +301,22 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void getRelationship() {
+        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getRelationship#String#BasicRelationship
+        digitalTwinsAsyncClient.getRelationship("myDigitalTwinId", "myRelationshipName", BasicRelationship.class)
+            .subscribe(retrievedRelationship -> System.out.println(
+                "Retrieved relationship with Id: "
+                    + retrievedRelationship.getId() +
+                    " from: " +
+                    retrievedRelationship.getSourceId() +
+                    " to: " + retrievedRelationship.getTargetId()));
+        // END: com.azure.digitaltwins.core.asyncclient.getRelationship#String#BasicRelationship
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getRelationship#String#String
+        digitalTwinsAsyncClient.getRelationship("myDigitalTwinId", "myRelationshipName", String.class)
+            .subscribe(retrievedRelationshipString -> System.out.println("Retrieved relationship: " + retrievedRelationshipString));
+        // END: com.azure.digitaltwins.core.asyncclient.getRelationship#String#String
     }
 
     /**
