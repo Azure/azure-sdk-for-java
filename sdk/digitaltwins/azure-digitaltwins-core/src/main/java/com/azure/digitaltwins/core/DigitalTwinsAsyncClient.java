@@ -1201,6 +1201,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Get an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getEventRoute#String}
+     *
      * @param eventRouteId The Id of the event route to get.
      * @return The retrieved event route.
      */
@@ -1213,6 +1218,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Get an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getEventRouteWithResponse#String}
+     *
      * @param eventRouteId The Id of the event route to get.
      * @return A {@link Response} containing the retrieved event route.
      */

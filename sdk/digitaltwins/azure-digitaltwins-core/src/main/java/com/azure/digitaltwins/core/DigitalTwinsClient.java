@@ -796,6 +796,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Get an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getEventRoute#String}
+     *
      * @param eventRouteId The Id of the event route to get.
      * @return The retrieved event route.
      */
@@ -806,6 +811,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Get an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getEventRouteWithResponse#String-Context}
+     *
      * @param eventRouteId The Id of the event route to get.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the retrieved event route.

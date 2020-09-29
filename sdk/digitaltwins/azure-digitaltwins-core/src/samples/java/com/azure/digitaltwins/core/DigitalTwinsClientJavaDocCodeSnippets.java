@@ -744,7 +744,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getEventRoute() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.getEventRoute#String
+        EventRoute eventRoute = digitalTwinsSyncClient.getEventRoute("myEventRouteId");
 
+        System.out.println("Retrieved event route with Id: " + eventRoute.getId());
+        // END: BEGIN: com.azure.digitaltwins.core.syncclient.getEventRoute#String
     }
 
     /**
@@ -752,7 +756,12 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getEventRouteWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.getEventRouteWithResponse#String-Context
+        Response<EventRoute> eventRouteWithResponse = digitalTwinsSyncClient.getEventRouteWithResponse("myEventRouteId", new Context("key", "value"));
 
+        System.out.println("Received get event route operation response with HTTP status code: " + eventRouteWithResponse.getStatusCode());
+        System.out.println("Retrieved event route with Id: " + eventRouteWithResponse.getValue().getId());
+        // END: BEGIN: com.azure.digitaltwins.core.syncclient.getEventRouteWithResponse#String-Context
     }
 
     /**
