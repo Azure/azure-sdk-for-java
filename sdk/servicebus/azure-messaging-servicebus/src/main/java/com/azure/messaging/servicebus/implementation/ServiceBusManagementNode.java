@@ -20,16 +20,6 @@ import java.util.Map;
  */
 public interface ServiceBusManagementNode extends AutoCloseable {
     /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
-     *
-     * @param sequenceNumber The sequence number of the scheduled message.
-     *
-     * @return {@link Void} The successful completion represents the pending cancellation.
-     */
-    Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName,
-        ServiceBusTransactionContext transactionContext);
-
-    /**
      * Cancels the enqueuing of an already sent scheduled messages, if it was not already enqueued.
      *
      * @param sequenceNumbers The sequence number of the scheduled messages.

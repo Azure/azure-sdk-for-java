@@ -49,9 +49,11 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
@@ -110,6 +112,8 @@ class ServiceBusSenderAsyncClientTest {
     private ArgumentCaptor<ServiceBusMessage> singleSBMessageCaptor;
     @Captor
     private ArgumentCaptor<List<ServiceBusMessage>> sbMessagesCaptor;
+    @Captor
+    private ArgumentCaptor<Iterable<Long>> sequenceNumberCaptor;
 
     private final MessageSerializer serializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
@@ -531,16 +535,52 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(message, actualMessages.get(0));
     }
 
-
     @Test
     void cancelScheduleMessage() {
         // Arrange
-        long sequenceNumberReturned = 10;
-        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned), isNull(), isNull())).thenReturn(Mono.empty());
+        final long sequenceNumberReturned = 10;
+        when(managementNode.cancelScheduledMessages(anyList(), isNull())).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
             .verifyComplete();
+
+        verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
+        Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
+        Assertions.assertNotNull(actualSequenceNumbers);
+
+        AtomicInteger actualTotal = new AtomicInteger();
+        actualSequenceNumbers.forEach(aLong -> {
+            actualTotal.incrementAndGet();
+            Assertions.assertEquals(sequenceNumberReturned, aLong);
+        });
+        Assertions.assertEquals(1, actualTotal.get());
+    }
+
+    @Test
+    void cancelScheduleMessages() {
+        // Arrange
+        final List<Long> sequenceNumbers = new ArrayList<>();
+        sequenceNumbers.add(10L);
+        sequenceNumbers.add(11L);
+        sequenceNumbers.add(12L);
+
+        when(managementNode.cancelScheduledMessages(anyList(), isNull())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(sender.cancelScheduledMessages(sequenceNumbers))
+            .verifyComplete();
+
+        verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
+        Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
+        Assertions.assertNotNull(actualSequenceNumbers);
+
+        AtomicInteger actualTotal = new AtomicInteger();
+        actualSequenceNumbers.forEach(aLong -> {
+            actualTotal.incrementAndGet();
+            Assertions.assertTrue(sequenceNumbers.contains(aLong));
+        });
+        Assertions.assertEquals(sequenceNumbers.size(), actualTotal.get());
     }
 
     /**

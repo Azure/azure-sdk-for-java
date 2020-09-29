@@ -89,30 +89,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName,
-        ServiceBusTransactionContext transactionContext) {
-        return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
-            .then(createChannel.flatMap(channel -> {
-                final Message requestMessage = createManagementMessage(
-                    ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
-
-                requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
-                    new Long[]{sequenceNumber})));
-
-                TransactionalState transactionalState = null;
-                if (transactionContext != null && transactionContext.getTransactionId() != null) {
-                    transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                }
-
-                return sendWithVerify(channel, requestMessage, transactionalState);
-            })).then();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
@@ -121,7 +97,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 final List<Long> numbers = new ArrayList<>();
                 sequenceNumbers.forEach(s -> numbers.add(s));
-                Long[] longs = numbers.toArray(new Long[0]);
+                final Long[] longs = numbers.toArray(new Long[0]);
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));
 
@@ -315,7 +291,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<Long> schedule(final List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
+    public Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         int maxLinkSize, String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(createChannel.flatMap(channel -> {

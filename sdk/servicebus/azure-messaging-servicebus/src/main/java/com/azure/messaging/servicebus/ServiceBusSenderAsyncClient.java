@@ -376,8 +376,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get(),
-                null));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(Arrays.asList(sequenceNumber),
+                linkName.get()));
     }
 
     /**
@@ -487,8 +487,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
 
-    private Flux<Long> scheduleMessagesInternal(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
-        ServiceBusTransactionContext transaction) {
+    private Flux<Long> scheduleMessagesInternal(Iterable<ServiceBusMessage> messages,
+        OffsetDateTime scheduledEnqueueTime, ServiceBusTransactionContext transaction) {
         if (Objects.isNull(messages)) {
             return fluxError(logger, new NullPointerException("'messages' cannot be null."));
         }

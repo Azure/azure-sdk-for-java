@@ -193,7 +193,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
+                .verifyComplete();
 
         // Assert
         // Verify message is received by final destination Entity
@@ -473,7 +473,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * shared connection as needed.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials,
-                                      boolean isSessionEnabled, boolean shareConnection) {
+        boolean isSessionEnabled, boolean shareConnection) {
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
 
         if (isSessionEnabled) {
