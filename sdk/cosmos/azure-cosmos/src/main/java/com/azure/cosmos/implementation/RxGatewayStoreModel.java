@@ -15,10 +15,8 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
-import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -157,7 +155,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     httpHeaders,
                     contentAsByteArray);
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpsResponseTimeoutInSeconds());
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
             } else if (request.isAddressRefresh()) {
@@ -306,7 +304,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (WebExceptionUtility.isNetworkFailure(dce)) {
-                           if (!(dce.getCause() instanceof ReadTimeoutException)) {
+                           if (!WebExceptionUtility.isReadTimeoutException(dce)) {
                                BridgeInternal
                                    .setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
                            }

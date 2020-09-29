@@ -123,7 +123,7 @@ public class HttpTransportClient extends TransportClient {
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpsResponseTimeoutInSeconds());
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
             } else if (request.isAddressRefresh()) {

@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.OperationType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
@@ -98,7 +97,7 @@ class ReactorNettyClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         //  By default, Configs.getHttpsResponseTimeoutInSeconds default value is used as response timeout
-        return send(request, Duration.ofSeconds(Configs.getHttpsResponseTimeoutInSeconds()));
+        return send(request, Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
     }
 
     @Override

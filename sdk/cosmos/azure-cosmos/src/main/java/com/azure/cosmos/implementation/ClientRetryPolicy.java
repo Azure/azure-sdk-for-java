@@ -30,7 +30,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
     final static int MaxRetryCount = 120;
     private final static int MaxServiceUnavailableRetryCount = 1;
-    private final static int MAX_QUERYPLAN_ADDRESS_RETRY_COUNT = 2;
+    //  Query Plan and Address Refresh will be re-tried 3 times, please check the if condition carefully :)
+    private final static int MAX_QUERY_PLAN_AND_ADDRESS_RETRY_COUNT = 2;
 
     private final DocumentClientRetryPolicy throttlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
@@ -45,7 +46,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
-    private int queryplanAddressRefreshCount;
+    private int queryPlanAddressRefreshCount;
     private RxDocumentServiceRequest request;
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
@@ -110,7 +111,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 } else {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
                 }
-            } else if (clientException != null && clientException.getCause() instanceof ReadTimeoutException) {
+            } else if (WebExceptionUtility.isReadTimeoutException(clientException)) {
                 //if operationType is QueryPlan / AddressRefresh then just retry
                 if (this.request.getOperationType() == OperationType.QueryPlan || this.request.isAddressRefresh()) {
                     return shouldRetryQueryPlanAndAddress();
@@ -133,19 +134,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldRetryQueryPlanAndAddress() {
 
-        if (this.queryplanAddressRefreshCount++ > MAX_QUERYPLAN_ADDRESS_RETRY_COUNT) {
+        if (this.queryPlanAddressRefreshCount++ > MAX_QUERY_PLAN_AND_ADDRESS_RETRY_COUNT) {
             logger
                 .warn(
                     "shouldRetryQueryPlanAndAddress() No more retrying on endpoint {}, operationType = {}, count = {}, " +
                         "isAddressRefresh = {}",
-                    this.locationEndpoint, this.request.getOperationType(), this.queryplanAddressRefreshCount, this.request.isAddressRefresh());
+                    this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount, this.request.isAddressRefresh());
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
         logger
             .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
                       "isAddressRefresh = {}",
-                  this.locationEndpoint, this.request.getOperationType(), this.queryplanAddressRefreshCount, this.request.isAddressRefresh());
+                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount, this.request.isAddressRefresh());
 
         Duration retryDelay = Duration.ZERO;
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
