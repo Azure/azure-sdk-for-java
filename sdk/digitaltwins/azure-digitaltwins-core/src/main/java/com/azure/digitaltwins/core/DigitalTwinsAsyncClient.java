@@ -816,6 +816,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all of the models in this digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.listModels}
+     *
      * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -825,6 +830,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List the models in this digital twins instance based on some options.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.listModels#Options}
+     *
      * @param modelsListOptions The options to follow when listing the models.
      * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */

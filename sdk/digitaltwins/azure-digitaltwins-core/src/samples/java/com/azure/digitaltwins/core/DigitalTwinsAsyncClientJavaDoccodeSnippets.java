@@ -524,11 +524,24 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#listModels()}
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#listModels()} and {@link DigitalTwinsAsyncClient#listModels(ModelsListOptions)} )}
      */
     @Override
     public void listModels() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listModels
+        digitalTwinsAsyncClient.listModels()
+            .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.listModels
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listModels#Options
+        digitalTwinsAsyncClient.listModels(
+            new ModelsListOptions()
+                .setMaxItemCount(5)
+                .setIncludeModelDefinition(true))
+            .doOnNext(model -> System.out.println("Retrieved model with Id: " + model.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.listModels#Options
     }
 
     /**

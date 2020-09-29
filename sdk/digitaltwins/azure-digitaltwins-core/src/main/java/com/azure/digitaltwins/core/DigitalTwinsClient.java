@@ -510,7 +510,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncclient.getModel#String
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getModel#String}
      *
      * @param modelId The Id of the model.
      * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
@@ -526,7 +526,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncclient.getModelWithResponse#String
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getModelWithResponse#String}
      *
      * @param modelId The Id of the model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -539,6 +539,11 @@ public final class DigitalTwinsClient {
 
     /**
      * List all of the models in this digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listModels}
+     *
      * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -548,6 +553,11 @@ public final class DigitalTwinsClient {
 
     /**
      * List the models in this digital twins instance based on some options.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listModels#Options}
+     *
      * @param modelsListOptions The options to follow when listing the models.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} containing the retrieved {@link DigitalTwinsModelData} instances.

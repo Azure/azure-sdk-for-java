@@ -544,11 +544,25 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#listModels()}
+     * Generates code samples for using {@link DigitalTwinsClient#listModels()} and {@link DigitalTwinsClient#listModels(ModelsListOptions, Context)}
      */
     @Override
     public void listModels() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.listModels
+        PagedIterable<DigitalTwinsModelData> modelsListPagedIterable =  digitalTwinsSyncClient.listModels();
 
+        modelsListPagedIterable.forEach(model -> System.out.println("Retrieved a model with Id: " + model.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.listModels
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.listModels#Options
+        PagedIterable<DigitalTwinsModelData> modelsListWithOptionsPagedIterable =  digitalTwinsSyncClient.listModels(
+            new ModelsListOptions()
+                .setIncludeModelDefinition(true)
+                .setMaxItemCount(5),
+            new Context("key", "value"));
+
+        modelsListWithOptionsPagedIterable.forEach(model -> System.out.println("Retrieved a model with Id: " + model.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.listModels#Options
     }
 
     /**
