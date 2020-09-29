@@ -48,7 +48,8 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
+                                                             String clientCertificatePassword) {
         ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pfx Certificate Path");
         this.clientCertificatePath = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
@@ -62,7 +63,8 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate, String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate,
+                                                             String clientCertificatePassword) {
         this.clientCertificate = certificate;
         this.clientCertificatePassword = clientCertificatePassword;
         return this;

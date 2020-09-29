@@ -71,7 +71,7 @@ public class EnvironmentCredential implements TokenCredential {
                     // 1.2 Attempt ClientCertificateCredential
                     logger.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
                     ValidationUtil.validateFilePath(getClass().getSimpleName(), certPath, "Pem Certificate Path");
-                    targetCredential = new ClientCertificateCredential(tenantId, clientId,certPath, null, null,
+                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
                             identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found
