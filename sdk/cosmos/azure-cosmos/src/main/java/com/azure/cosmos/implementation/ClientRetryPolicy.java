@@ -46,8 +46,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
     private int queryplanAddressRefreshCount;
-    private OperationType operationType;
-    private boolean isAddressRefresh;
+    private RxDocumentServiceRequest request;
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
@@ -113,7 +112,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 }
             } else if (clientException != null && clientException.getCause() instanceof ReadTimeoutException) {
                 //if operationType is QueryPlan / AddressRefresh then just retry
-                if (this.operationType == OperationType.QueryPlan || this.isAddressRefresh) {
+                if (this.request.getOperationType() == OperationType.QueryPlan || this.request.isAddressRefresh()) {
                     return shouldRetryQueryPlanAndAddress();
                 }
             } else {
@@ -137,16 +136,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (this.queryplanAddressRefreshCount++ > MAX_QUERYPLAN_ADDRESS_RETRY_COUNT) {
             logger
                 .warn(
-                    "shouldRetryQueryPlanAndAddress() Not retrying on endpoint {}, operationType = {}, count = {}, " +
+                    "shouldRetryQueryPlanAndAddress() No more retrying on endpoint {}, operationType = {}, count = {}, " +
                         "isAddressRefresh = {}",
-                    this.locationEndpoint, operationType, this.queryplanAddressRefreshCount, this.isAddressRefresh);
+                    this.locationEndpoint, this.request.getOperationType(), this.queryplanAddressRefreshCount, this.request.isAddressRefresh());
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
         logger
             .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
                       "isAddressRefresh = {}",
-                  this.locationEndpoint, operationType, this.queryplanAddressRefreshCount, this.isAddressRefresh);
+                  this.locationEndpoint, this.request.getOperationType(), this.queryplanAddressRefreshCount, this.request.isAddressRefresh());
 
         Duration retryDelay = Duration.ZERO;
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
@@ -265,8 +264,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-        this.isAddressRefresh = request.isAddressRefresh();
-        this.operationType = request.getOperationType();
+        this.request = request;
         this.isReadRequest = request.isReadOnlyRequest();
         this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
         if (request.requestContext != null) {
