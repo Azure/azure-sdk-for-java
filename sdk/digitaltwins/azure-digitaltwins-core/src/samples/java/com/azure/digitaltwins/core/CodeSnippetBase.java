@@ -38,10 +38,14 @@ public abstract class CodeSnippetBase {
     public abstract void decommissionModelWithResponse();
     public abstract void deleteModel();
     public abstract void deleteModelWithResponse();
-
-
-
     //endregion ModelsSnippets
+
+    //region ComponentSnippets
+    public abstract void getComponent();
+    public abstract void getComponentWithResponse();
+    public abstract void updateComponent();
+    public abstract void updateComponentWithResponse();
+    //endregion ComponentSnippets
 
     /**
      * Implementation not provided for this method

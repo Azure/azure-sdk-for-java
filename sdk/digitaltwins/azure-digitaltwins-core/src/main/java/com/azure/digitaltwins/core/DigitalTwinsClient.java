@@ -634,6 +634,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Get a component of a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getComponent#String-String-Class}
+     *
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentPath The path of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
@@ -647,6 +652,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Get a component of a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.getComponentWithResponse#String-String-Class-Context}
+     *
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentPath The path of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.

@@ -589,4 +589,52 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
     }
 
     //endregion ModelsSnippets
+
+    //region ComponentSnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getComponent(String, String, Class)}
+     */
+    @Override
+    public void getComponent() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getComponent#String-String-Class
+        digitalTwinsAsyncClient.getComponent(
+            "myDigitalTwinId",
+            "myComponentPath",
+            String.class)
+        .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.getComponent#String-String-Class
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getComponentWithResponse(String, String, Class, Context)}
+     */
+    @Override
+    public void getComponentWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getComponentWithResponse#String-String-Class
+        digitalTwinsAsyncClient.getComponentWithResponse(
+            "myDigitalTwinId",
+            "myComponentPath",
+            String.class)
+        .subscribe(response -> System.out.println("Received component with HTTP status code: " + response.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.getComponentWithResponse#String-String-Class
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateComponent(String, String, List)}
+     */
+    @Override
+    public void updateComponent() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, List, UpdateComponentRequestOptions, Context)}
+     */
+    @Override
+    public void updateComponentWithResponse() {
+
+    }
+
+    //endregion ComponentSnippets
 }
