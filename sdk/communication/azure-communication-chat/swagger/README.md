@@ -19,12 +19,9 @@ npm install -g autorest
 
 There is one swagger for Chat management APIs. 
 
-Before generating the code, you need to run swagger_replace.ps1 to rename the swagger classes from *Request to *Options
-
 ```ps
 cd <swagger-folder>
-.\swagger_replace.ps1
-autorest README.md --java --v4 --use=@autorest/java@4.0.1
+autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ```
 
 ## Update generated files for chat service
