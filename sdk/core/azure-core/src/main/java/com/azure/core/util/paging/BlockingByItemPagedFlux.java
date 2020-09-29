@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  * @param <T> The item type.
  * @param <P> The page type.
  */
-class BlockingByItemPagedFlux<C, T, P extends ContinuablePage<C, T>> extends ContinuablePagedFluxCore<C, T, P> {
+final class BlockingByItemPagedFlux<C, T, P extends ContinuablePage<C, T>> extends ContinuablePagedFluxCore<C, T, P> {
     BlockingByItemPagedFlux(Supplier<PageRetriever<C, P>> pageRetrieverSupplier) {
         super(pageRetrieverSupplier);
     }

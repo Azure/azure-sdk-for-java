@@ -23,7 +23,7 @@ import java.util.function.Supplier;
  * @param <T> The item type.
  * @param <P> The page type.
  */
-class BlockingByPagePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<P> {
+final class BlockingByPagePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<P> {
     private final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
     private final C initialContinuationToken;
     private final Integer defaultPageSize;

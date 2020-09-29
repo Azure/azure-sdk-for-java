@@ -283,7 +283,7 @@ public class PagedIterableTest {
     }
 
     @Test
-    public void streamByPageFindFirstOnlyRetrievesTwoPages() throws InterruptedException {
+    public void streamByPageFindFirstOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
         OnlyOneContinuablePage page = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever)).streamByPage()
             .findFirst()
@@ -296,11 +296,11 @@ public class PagedIterableTest {
          * the best result we can get is only two pages being retrieved. One to satisfy the findFirst operations and
          * one to refill the buffer.
          */
-        assertEquals(2, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount());
     }
 
     @Test
-    public void iterateByPageNextOnlyRetrievesTwoPages() throws InterruptedException {
+    public void iterateByPageNextOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
         OnlyOneContinuablePage page = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever))
             .iterableByPage()
@@ -314,6 +314,6 @@ public class PagedIterableTest {
          * the best result we can get is only two pages being retrieved. One to satisfy the findFirst operations and
          * one to refill the buffer.
          */
-        assertEquals(2, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount());
     }
 }

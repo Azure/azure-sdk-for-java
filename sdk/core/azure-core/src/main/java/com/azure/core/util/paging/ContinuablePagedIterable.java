@@ -5,16 +5,17 @@ package com.azure.core.util.paging;
 
 import com.azure.core.util.IterableStream;
 
+import java.util.Iterator;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
- * This class provides utility to iterate over {@link ContinuablePage} using {@link Stream}
- * {@link Iterable} interfaces.
+ * This class provides utility to iterate over {@link ContinuablePage} using {@link Stream} {@link Iterable}
+ * interfaces.
  *
  * @param <C> the type of the continuation token
  * @param <T> The type of elements in a {@link ContinuablePage}
  * @param <P> The {@link ContinuablePage} holding items of type {@code T}.
- *
  * @see IterableStream
  * @see ContinuablePagedFlux
  */
@@ -38,31 +39,36 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @param batchSize the bounded capacity to prefetch from the {@link ContinuablePagedFlux}
      */
     public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux, int batchSize) {
-        super(attemptToConvertToBlocking(pagedFlux));
-        this.pagedFlux = attemptToConvertToBlocking(pagedFlux);
+        super(pagedFlux);
+        this.pagedFlux = pagedFlux;
         this.batchSize = batchSize;
     }
 
-    private static <C, T, P extends ContinuablePage<C, T>> ContinuablePagedFlux<C, T, P> attemptToConvertToBlocking(
-        ContinuablePagedFlux<C, T, P> pagedFlux) {
-        if (pagedFlux instanceof ContinuablePagedFluxCore) {
-            ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
-            return (pagedFluxCore.defaultPageSize == null)
-                ? new BlockingByItemPagedFlux<>(pagedFluxCore.pageRetrieverProvider)
-                : new BlockingByItemPagedFlux<>(pagedFluxCore.pageRetrieverProvider, pagedFluxCore.defaultPageSize);
-        } else {
-            return pagedFlux;
-        }
+//    private static <C, T, P extends ContinuablePage<C, T>> ContinuablePagedFlux<C, T, P> attemptToConvertToBlocking(
+//        ContinuablePagedFlux<C, T, P> pagedFlux) {
+//        if (pagedFlux instanceof ContinuablePagedFluxCore) {
+//            ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
+//            return (pagedFluxCore.defaultPageSize == null)
+//                ? new BlockingByItemPagedFlux<>(pagedFluxCore.pageRetrieverProvider)
+//                : new BlockingByItemPagedFlux<>(pagedFluxCore.pageRetrieverProvider, pagedFluxCore.defaultPageSize);
+//        } else {
+//            return pagedFlux;
+//        }
+//    }
+
+    @Override
+    public Stream<T> stream() {
+        return StreamSupport.stream(iterableByItemInternal().spliterator(), false);
     }
 
     /**
-     * Retrieve the {@link Stream}, one page at a time.
-     * It will provide same {@link Stream} of T values from starting if called multiple times.
+     * Retrieve the {@link Stream}, one page at a time. It will provide same {@link Stream} of T values from starting if
+     * called multiple times.
      *
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage() {
-        return pagedFlux.byPage().toStream(this.batchSize);
+        return streamByPageInternal(null, null);
     }
 
     /**
@@ -73,47 +79,49 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken) {
-        return this.pagedFlux.byPage(continuationToken).toStream(this.batchSize);
+        return streamByPageInternal(continuationToken, null);
     }
 
     /**
-     * Retrieve the {@link Stream}, one page at a time, with each page containing {@code preferredPageSize}
-     * items.
+     * Retrieve the {@link Stream}, one page at a time, with each page containing {@code preferredPageSize} items.
      *
      * It will provide same {@link Stream} of T values from starting if called multiple times.
      *
-     * @param preferredPageSize the preferred page size, service may or may not honor the page
-     *                          size preference hence client MUST be prepared to handle pages
-     *                          with different page size.
+     * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
+     * client MUST be prepared to handle pages with different page size.
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(int preferredPageSize) {
-        return this.pagedFlux.byPage(null, preferredPageSize).toStream(this.batchSize);
+        return streamByPageInternal(null, preferredPageSize);
     }
 
     /**
-     * Retrieve the {@link Stream}, one page at a time, with each page containing {@code preferredPageSize}
-     * items, starting from the next page associated with the given continuation token.
-     * To start from first page, use {@link #streamByPage()} or {@link #streamByPage(int)} instead.
+     * Retrieve the {@link Stream}, one page at a time, with each page containing {@code preferredPageSize} items,
+     * starting from the next page associated with the given continuation token. To start from first page, use {@link
+     * #streamByPage()} or {@link #streamByPage(int)} instead.
      *
-     * @param preferredPageSize the preferred page size, service may or may not honor the page
-     *                          size preference hence client MUST be prepared to handle pages
-     *                          with different page size.
+     * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
+     * client MUST be prepared to handle pages with different page size.
      * @param continuationToken The continuation token used to fetch the next page
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken, int preferredPageSize) {
-        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(this.batchSize);
+        return streamByPageInternal(continuationToken, preferredPageSize);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return iterableByItemInternal().iterator();
     }
 
     /**
-     * Retrieve the {@link Iterable}, one page at a time.
-     * It will provide same {@link Iterable} of T values from starting if called multiple times.
+     * Retrieve the {@link Iterable}, one page at a time. It will provide same {@link Iterable} of T values from
+     * starting if called multiple times.
      *
      * @return {@link Stream} of a pages
      */
     public Iterable<P> iterableByPage() {
-        return this.pagedFlux.byPage().toIterable(this.batchSize);
+        return iterableByPageInternal(null, null);
     }
 
     /**
@@ -124,36 +132,56 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken) {
-        return this.pagedFlux.byPage(continuationToken).toIterable(this.batchSize);
+        return iterableByPageInternal(continuationToken, null);
     }
 
     /**
-     * Retrieve the {@link Iterable}, one page at a time, with each page containing {@code preferredPageSize}
-     * items.
+     * Retrieve the {@link Iterable}, one page at a time, with each page containing {@code preferredPageSize} items.
      *
      * It will provide same {@link Iterable} of T values from starting if called multiple times.
      *
-     * @param preferredPageSize the preferred page size, service may or may not honor the page
-     *                          size preference hence client MUST be prepared to handle pages
-     *                          with different page size.
+     * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
+     * client MUST be prepared to handle pages with different page size.
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(int preferredPageSize) {
-        return this.pagedFlux.byPage(null, preferredPageSize).toIterable(this.batchSize);
+        return iterableByPageInternal(null, preferredPageSize);
     }
 
     /**
-     * Retrieve the {@link Iterable}, one page at a time, with each page containing {@code preferredPageSize}
-     * items, starting from the next page associated with the given continuation token.
-     * To start from first page, use {@link #iterableByPage()} or {@link #iterableByPage(int)} instead.
+     * Retrieve the {@link Iterable}, one page at a time, with each page containing {@code preferredPageSize} items,
+     * starting from the next page associated with the given continuation token. To start from first page, use {@link
+     * #iterableByPage()} or {@link #iterableByPage(int)} instead.
      *
-     * @param preferredPageSize the preferred page size, service may or may not honor the page
-     *                          size preference hence client MUST be prepared to handle pages
-     *                          with different page size.
+     * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
+     * client MUST be prepared to handle pages with different page size.
      * @param continuationToken The continuation token used to fetch the next page
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken, int preferredPageSize) {
-        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(this.batchSize);
+        return iterableByPageInternal(continuationToken, preferredPageSize);
+    }
+
+    private Stream<P> streamByPageInternal(C continuationToken, Integer preferredPageSize) {
+        return StreamSupport.stream(iterableByPageInternal(continuationToken, preferredPageSize).spliterator(), false);
+    }
+
+    private Iterable<P> iterableByPageInternal(C continuationToken, Integer preferredPageSize) {
+        if (pagedFlux instanceof ContinuablePagedFluxCore) {
+            ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
+            return new ContinuablePagedByPageIterable<>(pagedFluxCore.pageRetrieverProvider.get(), continuationToken,
+                preferredPageSize);
+        } else {
+            return this.pagedFlux.byPage(null, preferredPageSize).toIterable(this.batchSize);
+        }
+    }
+
+    private Iterable<T> iterableByItemInternal() {
+        if (pagedFlux instanceof ContinuablePagedFluxCore) {
+            ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
+            return new ContinuablePagedByItemIterable<>(pagedFluxCore.pageRetrieverProvider.get(), null, null);
+        } else {
+            return this.pagedFlux.toIterable(this.batchSize);
+        }
     }
 }
