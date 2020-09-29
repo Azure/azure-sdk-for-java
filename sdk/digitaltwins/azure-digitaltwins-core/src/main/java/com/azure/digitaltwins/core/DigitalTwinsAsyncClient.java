@@ -1023,6 +1023,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Patch a component on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.updateComponent#String-String-List}
+     *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
@@ -1037,6 +1042,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Patch a component on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.updateComponentWithResponse#String-String-List-Options-Context}
+     *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.

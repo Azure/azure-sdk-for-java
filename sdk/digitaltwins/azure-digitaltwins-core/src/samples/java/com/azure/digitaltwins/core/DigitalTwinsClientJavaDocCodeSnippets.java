@@ -583,7 +583,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncclient.decommissionModelWithResponse#String
         Response response = digitalTwinsSyncClient.decommissionModelWithResponse("dtmi:samples:Building;1", new Context("key", "value"));
 
-        System.out.println("Received decommission model HTTP response with status: " + response.getStatusCode());
+        System.out.println("Received decommission operation HTTP response with status: " + response.getStatusCode());
         // END: com.azure.digitaltwins.core.syncclient.decommissionModelWithResponse#String
     }
 
@@ -605,7 +605,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncclient.deleteModelWithResponse#String
         Response response = digitalTwinsSyncClient.deleteModelWithResponse("dtmi:samples:Building;1", new Context("key", "value"));
 
-        System.out.println("Received delete model HTTP response with status: " + response.getStatusCode());
+        System.out.println("Received delete model operation HTTP response with status: " + response.getStatusCode());
         // END: com.azure.digitaltwins.core.syncclient.deleteModelWithResponse#String
     }
 
@@ -635,7 +635,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             String.class,
             new Context("key", "value"));
 
-        System.out.println("Received component with HTTP status code: " + componentStringWithResponse.getStatusCode());
+        System.out.println("Received component get operation response with HTTP status code: " + componentStringWithResponse.getStatusCode());
         // END: com.azure.digitaltwins.core.syncclient.getComponentWithResponse#String-String-Class-Context
     }
 
@@ -644,7 +644,15 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void updateComponent() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.updateComponent#String-String-List
+        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
 
+        digitalTwinsSyncClient.updateComponent(
+            "myDigitalTwinId",
+            "myComponentName",
+            updateOperationUtility.getUpdateOperations());
+        // END: com.azure.digitaltwins.core.syncclient.updateComponent#String-String-List
     }
 
     /**
@@ -652,7 +660,19 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void updateComponentWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.updateComponentWithResponse#String-String-List-Options-Context
+        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
 
+        Response updateResponse = digitalTwinsSyncClient.updateComponentWithResponse(
+            "myDigitalTwinId",
+            "myComponentName",
+            updateOperationUtility.getUpdateOperations(),
+            new UpdateComponentRequestOptions(),
+            new Context("key", "value"));
+
+        System.out.println("Received update operation HTTP response with status: " + updateResponse.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.updateComponentWithResponse#String-String-List-Options-Context
     }
 
     //endregion ComponentSnippets

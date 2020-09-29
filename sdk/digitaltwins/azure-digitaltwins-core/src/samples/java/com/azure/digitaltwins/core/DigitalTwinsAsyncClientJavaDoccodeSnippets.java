@@ -584,7 +584,7 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteModelWithResponse#String
         digitalTwinsAsyncClient.deleteModelWithResponse("dtmi:samples:Building;1", new Context("key", "value"))
-            .subscribe(response -> System.out.println("Received delete model HTTP response with status:" + response.getStatusCode()));
+            .subscribe(response -> System.out.println("Received delete model operation response with HTTP status code:" + response.getStatusCode()));
         // END: com.azure.digitaltwins.core.asyncclient.deleteModelWithResponse#String
     }
 
@@ -616,7 +616,7 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
             "myDigitalTwinId",
             "myComponentPath",
             String.class)
-        .subscribe(response -> System.out.println("Received component with HTTP status code: " + response.getStatusCode()));
+        .subscribe(response -> System.out.println("Received component get operation response with HTTP status code: " + response.getStatusCode()));
         // END: com.azure.digitaltwins.core.asyncclient.getComponentWithResponse#String-String-Class
     }
 
@@ -625,7 +625,16 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void updateComponent() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.updateComponent#String-String-List
+        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
 
+        digitalTwinsAsyncClient.updateComponent(
+            "myDigitalTwinId",
+            "myComponentName",
+            updateOperationUtility.getUpdateOperations())
+        .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.updateComponent#String-String-List
     }
 
     /**
@@ -633,7 +642,17 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void updateComponentWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.updateComponentWithResponse#String-String-List-Options-Context
+        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        updateOperationUtility.appendReplaceOperation("/ComponentProp1", "Some new value");
 
+        digitalTwinsAsyncClient.updateComponentWithResponse(
+            "myDigitalTwinId",
+            "myComponentName",
+            updateOperationUtility.getUpdateOperations(),
+            new UpdateComponentRequestOptions())
+        .subscribe(updateResponse -> System.out.println("Received update operation response with HTTP status code: " + updateResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.updateComponentWithResponse#String-String-List-Options-Context
     }
 
     //endregion ComponentSnippets
