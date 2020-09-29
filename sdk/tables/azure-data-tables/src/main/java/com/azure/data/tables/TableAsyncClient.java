@@ -176,6 +176,10 @@ public class TableAsyncClient {
     }
 
     Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
+        if (entity == null) {
+            return monoError(logger, new NullPointerException("TableEntity cannot be null"));
+        }
+        EntityHelper.setPropertiesFromGetters(entity);
         return implementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
             ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(),
             null, context).map(response -> {
@@ -228,6 +232,7 @@ public class TableAsyncClient {
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
+        EntityHelper.setPropertiesFromGetters(entity);
         if (updateMode == UpdateMode.REPLACE) {
             return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                 entity.getRowKey(), timeoutInt, null, "*",
@@ -314,6 +319,10 @@ public class TableAsyncClient {
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged, UpdateMode updateMode,
                                                   Duration timeout, Context context) {
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
+        if (entity == null) {
+            return monoError(logger, new NullPointerException("TableEntity cannot be null"));
+        }
+        EntityHelper.setPropertiesFromGetters(entity);
         if (updateMode == null || updateMode == UpdateMode.MERGE) {
             if (ifUnchanged) {
                 return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
