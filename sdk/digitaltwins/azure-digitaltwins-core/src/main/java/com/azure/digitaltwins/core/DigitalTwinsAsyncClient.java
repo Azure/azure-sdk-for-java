@@ -666,6 +666,10 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.listIncomingRelationships#String}
+     *
      * @param digitalTwinId The Id of the target digital twin.
      * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
      */

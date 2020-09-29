@@ -454,17 +454,9 @@ public final class DigitalTwinsClient {
     /**
      * List the relationships that have a given digital twin as the target.
      *
-     * @param digitalTwinId The Id of the target digital twin.
-     * @return A {@link PagedIterable} of application/json strings representing the relationships directed towards the
-     * specified digital twin.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
-        return listIncomingRelationships(digitalTwinId, Context.NONE);
-    }
-
-    /**
-     * List the relationships that have a given digital twin as the target.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listIncomingRelationships#String-Context}
      *
      * @param digitalTwinId The Id of the target digital twin.
      * @param context Additional context that is passed through the Http pipeline during the service call.

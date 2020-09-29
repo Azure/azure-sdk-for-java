@@ -466,12 +466,17 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsClient#listIncomingRelationships(String)}
-     * and {@link DigitalTwinsClient#listIncomingRelationships(String, Context)}
+     * Generates code samples for using {@link DigitalTwinsClient#listIncomingRelationships(String, Context)}
      */
     @Override
     public void listIncomingRelationships() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.listIncomingRelationships#String-Context
+        PagedIterable<IncomingRelationship> pagedIncomingRelationships = digitalTwinsSyncClient.listIncomingRelationships("myDigitalTwinId", new Context("key", "value"));
 
+        for (IncomingRelationship rel : pagedIncomingRelationships) {
+            System.out.println("Retrieved relationship with Id: " + rel.getRelationshipId() + " from: " + rel.getSourceId() + " to: myDigitalTwinId");
+        }
+        // END: com.azure.digitaltwins.core.syncclient.listIncomingRelationships#String-Context
     }
 
     //endregion RelationshipSnippets
