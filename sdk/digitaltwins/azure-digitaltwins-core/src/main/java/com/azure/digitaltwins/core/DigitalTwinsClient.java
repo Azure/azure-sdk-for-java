@@ -827,6 +827,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Delete an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.deleteEventRoute#String}
+     *
      * @param eventRouteId The Id of the event route to delete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -837,6 +842,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Delete an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.deleteEventRouteWithResponse#String-Context}
+     *
      * @param eventRouteId The Id of the event route to delete.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing no parsed value.

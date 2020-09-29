@@ -1244,6 +1244,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Delete an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteEventRoute#String}
+     *
      * @param eventRouteId The Id of the event route to delete.
      * @return An empty mono.
      */
@@ -1256,6 +1261,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Delete an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteEventRouteWithResponse#String}
+     *
      * @param eventRouteId The Id of the event route to delete.
      * @return A {@link Response} containing an empty mono.
      */

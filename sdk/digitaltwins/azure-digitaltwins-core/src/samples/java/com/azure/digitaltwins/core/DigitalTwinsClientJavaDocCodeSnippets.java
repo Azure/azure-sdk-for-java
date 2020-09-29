@@ -748,7 +748,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         EventRoute eventRoute = digitalTwinsSyncClient.getEventRoute("myEventRouteId");
 
         System.out.println("Retrieved event route with Id: " + eventRoute.getId());
-        // END: BEGIN: com.azure.digitaltwins.core.syncclient.getEventRoute#String
+        // END: com.azure.digitaltwins.core.syncclient.getEventRoute#String
     }
 
     /**
@@ -761,7 +761,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
         System.out.println("Received get event route operation response with HTTP status code: " + eventRouteWithResponse.getStatusCode());
         System.out.println("Retrieved event route with Id: " + eventRouteWithResponse.getValue().getId());
-        // END: BEGIN: com.azure.digitaltwins.core.syncclient.getEventRouteWithResponse#String-Context
+        // END: com.azure.digitaltwins.core.syncclient.getEventRouteWithResponse#String-Context
     }
 
     /**
@@ -769,7 +769,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteEventRoute() {
-
+        // BEGIN: com.azure.digitaltwins.core.syncclient.deleteEventRoute#String
+        digitalTwinsSyncClient.deleteEventRoute("myEventRouteId");
+        // END: com.azure.digitaltwins.core.syncclient.deleteEventRoute#String
     }
 
     /**
@@ -777,7 +779,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteEventRouteWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.deleteEventRouteWithResponse#String-Context
+        Response deleteResponse = digitalTwinsSyncClient.deleteEventRouteWithResponse("myEventRouteId", new Context("key", "value"));
 
+        System.out.println("Received delete event route operation response with HTTP status code: " + deleteResponse.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.deleteEventRouteWithResponse#String-Context
     }
 
     /**

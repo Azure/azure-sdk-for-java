@@ -716,7 +716,7 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncclient.getEventRoute#String
         digitalTwinsAsyncClient.getEventRoute("myEventRouteId")
             .subscribe(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()));
-        // END: BEGIN: com.azure.digitaltwins.core.asyncclient.getEventRoute#String
+        // END: com.azure.digitaltwins.core.asyncclient.getEventRoute#String
     }
 
     /**
@@ -730,7 +730,7 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
             System.out.println("Received get event route operation response with HTTP status code: " + eventRouteWithResponse.getStatusCode() );
             System.out.println("Retrieved event route with Id: " + eventRouteWithResponse.getValue().getId());
         } );
-        // END: BEGIN: com.azure.digitaltwins.core.asyncclient.getEventRouteWithResponse#String
+        // END: com.azure.digitaltwins.core.asyncclient.getEventRouteWithResponse#String
     }
 
     /**
@@ -738,7 +738,10 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void deleteEventRoute() {
-
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteEventRoute#String
+        digitalTwinsAsyncClient.deleteEventRoute("myEventRouteId")
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.deleteEventRoute#String
     }
 
     /**
@@ -746,7 +749,10 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void deleteEventRouteWithResponse() {
-
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteEventRouteWithResponse#String
+        digitalTwinsAsyncClient.deleteEventRouteWithResponse("myEventRouteId")
+            .subscribe(deleteResponse -> System.out.println("Received delete event route operation response with HTTP status code: " + deleteResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.deleteEventRouteWithResponse#String
     }
 
     /**
