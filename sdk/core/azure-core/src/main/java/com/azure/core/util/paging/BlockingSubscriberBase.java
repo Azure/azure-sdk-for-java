@@ -160,8 +160,8 @@ abstract class BlockingSubscriberBase<C, T, P extends ContinuablePage<C, T>, E>
 
     private synchronized void onError(Throwable error, CountDownLatch countDownLatch) {
         this.error = error;
-        countDownLatch.countDown();
         this.done = true;
+        countDownLatch.countDown();
     }
 
     @Override
