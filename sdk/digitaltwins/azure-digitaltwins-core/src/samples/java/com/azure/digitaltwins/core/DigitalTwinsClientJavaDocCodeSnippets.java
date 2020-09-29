@@ -432,16 +432,6 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         }
         // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByItem
 
-        // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByPage
-        PagedIterable<BasicRelationship> pagedRelationshipsByPage = digitalTwinsSyncClient.listRelationships("myDigitalTwinId", BasicRelationship.class);
-
-        pagedRelationshipsByPage.iterableByPage().forEach(page -> {
-            for (BasicRelationship rel : page.getValue()) {
-                System.out.println("Retrieved relationship with Id: " + rel.getId());
-            }
-        });
-        // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByPage
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#String#IterateByItem
         PagedIterable<String> pagedRelationshipsStringByItem = digitalTwinsSyncClient.listRelationships("myDigitalTwinId", String.class);
 
@@ -449,16 +439,6 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             System.out.println("Retrieved relationship: " + rel);
         }
         // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#String#IterateByItem
-
-        // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#String#IterateByPage
-        PagedIterable<String> pagedRelationshipsStringByPage = digitalTwinsSyncClient.listRelationships("myDigitalTwinId", String.class);
-
-        pagedRelationshipsStringByPage.iterableByPage().forEach(page -> {
-            for (String rel : page.getValue()) {
-                System.out.println("Retrieved relationship: " + rel);
-            }
-        });
-        // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#String#IterateByPage
 
         // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#BasicRelationship#IterateByItem
         PagedIterable<BasicRelationship> pagedRelationshipByNameByItem = digitalTwinsSyncClient.listRelationships(
@@ -472,20 +452,6 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         }
         // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#BasicRelationship#IterateByItem
 
-        // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#BasicRelationship#IterateByPage
-        PagedIterable<BasicRelationship> pagedRelationshipsByNameByPage = digitalTwinsSyncClient.listRelationships(
-            "myDigitalTwinId",
-            "myRelationshipName",
-            BasicRelationship.class,
-            new Context("key", "value"));
-
-        pagedRelationshipsByNameByPage.iterableByPage().forEach(page -> {
-            for (BasicRelationship rel : page.getValue()) {
-                System.out.println("Retrieved relationship with Id: " + rel.getId());
-            }
-        });
-        // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByPage
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#String#IterateByItem
         PagedIterable<String> pagedRelationshipsStringByNameByItem = digitalTwinsSyncClient.listRelationships(
             "myDigitalTwinId",
@@ -497,20 +463,6 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             System.out.println("Retrieved relationship: " + rel);
         }
         // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#String#IterateByItem
-
-        // BEGIN: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#String#IterateByPage
-        PagedIterable<String> pagedRelationshipsStringByNameByPage = digitalTwinsSyncClient.listRelationships(
-            "myDigitalTwinId",
-            "myRelationshipId",
-            String.class,
-            new Context("key", "value"));
-
-        pagedRelationshipsStringByNameByPage.iterableByPage().forEach(page -> {
-            for (String rel : page.getValue()) {
-                System.out.println("Retrieved relationship: " + rel);
-            }
-        });
-        // END: com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#String#IterateByPage
     }
 
     /**

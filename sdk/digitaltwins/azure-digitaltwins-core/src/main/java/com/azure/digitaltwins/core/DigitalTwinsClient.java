@@ -404,6 +404,16 @@ public final class DigitalTwinsClient {
     /**
      * List the relationships that have a given digital twin as the source.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#BasicRelationship#IterateByItem}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listRelationships#String-Class#String#IterateByItem}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param clazz The model class to deserialize each relationship into. Since a digital twin might have relationships
      *              that conform to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
@@ -417,6 +427,16 @@ public final class DigitalTwinsClient {
 
     /**
      * List the relationships that have a given digital twin as the source and that have the given relationship name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#BasicRelationship#IterateByItem}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listRelationships#String-String-Class-Context#String#IterateByItem}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
