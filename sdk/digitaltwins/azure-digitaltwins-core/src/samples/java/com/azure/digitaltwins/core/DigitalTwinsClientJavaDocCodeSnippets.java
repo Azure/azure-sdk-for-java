@@ -260,7 +260,49 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void createRelationshipWithResponse() {
+        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.createRelationshipWithResponse#String-String-Object-Class-Context#BasicRelationship
+        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
+            .setId("myRelationshipId")
+            .setSourceId("mySourceDigitalTwinId")
+            .setTargetId("myTargetDigitalTwinId")
+            .setName("contains")
+            .addCustomProperty("Prop1", "Prop1 value")
+            .addCustomProperty("Prop2", 6);
+
+        Response<BasicRelationship> createdRelationshipWithResponse = digitalTwinsClient.createRelationshipWithResponse(
+            "mySourceDigitalTwinId",
+            "myRelationshipId",
+            buildingToFloorBasicRelationship,
+            BasicRelationship.class,
+            new Context("key", "value"));
+
+        System.out.println(
+            "Created relationship with Id: " +
+                createdRelationshipWithResponse.getValue().getId() +
+                " from: " + createdRelationshipWithResponse.getValue().getSourceId() +
+                " to: " + createdRelationshipWithResponse.getValue().getTargetId() +
+                " Http status code: " +
+                createdRelationshipWithResponse.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.createRelationshipWithResponse#String-String-Object-Class-Context#BasicRelationship
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.createRelationshipWithResponse#String-String-Object-Class-Context#String
+        String relationshipPayload = getRelationshipPayload();
+
+        Response<String> createdRelationshipStringWithResponse = digitalTwinsClient.createRelationshipWithResponse(
+            "mySourceDigitalTwinId",
+            "myRelationshipId",
+            relationshipPayload,
+            String.class,
+            new Context("key", "value"));
+
+        System.out.println(
+            "Created relationship: " +
+            createdRelationshipStringWithResponse +
+            " With HTTP status code: " +
+            createdRelationshipStringWithResponse.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.createRelationshipWithResponse#String-String-Object-Class-Context#String
     }
 
     /**
