@@ -78,8 +78,9 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                 this.attemptCount,
                 exception);
             stopStopWatch(this.durationTimer);
-            this.request.requestContext.forceRefreshAddressCache = true;
-            return Mono.just(ShouldRetryResult.noRetry());
+
+            return Mono.just(ShouldRetryResult.noRetry(
+                Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount)));
         } else if (exception instanceof RetryWithException) {
             this.lastRetryWithException = (RetryWithException) exception;
         }
@@ -134,7 +135,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             backoffTime = Duration.ofSeconds(Math.min(Math.min(this.currentBackoffSeconds, remainingSeconds),
                     GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS));
             this.currentBackoffSeconds *= GoneAndRetryWithRetryPolicy.BACK_OFF_MULTIPLIER;
-            logger.info("BackoffTime: {} seconds.", backoffTime.getSeconds());
+            logger.debug("BackoffTime: {} seconds.", backoffTime.getSeconds());
         }
 
         // Calculate the remaining time based after accounting for the backoff that we
@@ -143,7 +144,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofSeconds(GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS);
         if (exception instanceof GoneException) {
-            logger.info("Received gone exception, will retry, {}", exception.toString());
+            logger.debug("Received gone exception, will retry, {}", exception.toString());
             forceRefreshAddressCache = true; // indicate we are in retry.
         } else if (exception instanceof PartitionIsMigratingException) {
             logger.warn("Received PartitionIsMigratingException, will retry, {}", exception.toString());
