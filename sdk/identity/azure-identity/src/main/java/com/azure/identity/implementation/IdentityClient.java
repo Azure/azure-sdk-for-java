@@ -198,6 +198,7 @@ public class IdentityClient {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path"));
         }
+
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
@@ -205,6 +206,8 @@ public class IdentityClient {
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsWarning(new IllegalStateException(e));
         }
+
+        applicationBuilder.sendX5c(options.isIncludeX5c());
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {

@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -62,6 +63,18 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
+        return this;
+    }
+
+    /**
+     * Specifies if the x5c claim (public key of the certificate) should be sent as part of the authentication request.
+     * The default value is false.
+     *
+     * @param includeX5c the flag to indicate if x5c should be sent as part of authentication request.
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder includeX5c(boolean includeX5c) {
+        this.identityClientOptions.setIncludeX5c(includeX5c);
         return this;
     }
 
