@@ -41,6 +41,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -117,6 +118,10 @@ public final class PhoneNumberAsyncClient {
     Mono<Response<AreaCodes>> getAllAreaCodesWithResponse(
         String locationType, String countryCode, String phonePlanId, List<LocationOptionsQuery> locationOptions,
         Context context) {
+        Objects.requireNonNull(locationType, "'locationType' cannot be null.");
+        Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
+        Objects.requireNonNull(phonePlanId, "'phonePlanId' cannot be null.");
+
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
 
@@ -160,6 +165,8 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> getCapabilitiesUpdateWithResponse(
         String capabilitiesId, Context context) {
+        Objects.requireNonNull(capabilitiesId, "'capabilitiesId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getCapabilitiesUpdateWithResponseAsync(capabilitiesId);
@@ -199,6 +206,8 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<UpdateNumberCapabilitiesResponse>> updateCapabilitiesWithResponse(
         Map<PhoneNumber, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate, Context context) {
+        Objects.requireNonNull(phoneNumberCapabilitiesUpdate, "'phoneNumberCapabilitiesUpdate' cannot be null.");
+
         Map<String, NumberUpdateCapabilities> capabilitiesMap = new HashMap<>();
         for (Map.Entry<PhoneNumber, NumberUpdateCapabilities> entry : phoneNumberCapabilitiesUpdate.entrySet()) {
             capabilitiesMap.put(entry.getKey().getValue(), entry.getValue());
@@ -268,6 +277,8 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<NumberConfigurationResponse>> getNumberConfigurationWithResponse(
         PhoneNumber phoneNumber, Context context) {
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
 
@@ -311,6 +322,9 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<Void>> configureNumberWithResponse(
         PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration, Context context) {
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+        Objects.requireNonNull(pstnConfiguration, "'pstnConfiguration' cannot be null.");
+
         NumberConfiguration numberConfiguration = new NumberConfiguration();
         numberConfiguration.setPhoneNumber(phoneNumber.getValue()).setPstnConfiguration(pstnConfiguration);
 
@@ -348,6 +362,7 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<Void>> unconfigureNumberWithResponse(PhoneNumber phoneNumber, Context context) {
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
         NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
         configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
 
@@ -378,6 +393,8 @@ public final class PhoneNumberAsyncClient {
 
     PagedFlux<PhonePlanGroup> listPhonePlanGroups(
         String countryCode, String locale, Boolean includeRateInformation, Context context) {
+        Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getPhonePlanGroupsAsync(
@@ -405,6 +422,9 @@ public final class PhoneNumberAsyncClient {
     }
 
     PagedFlux<PhonePlan> listPhonePlans(String countryCode, String phonePlanGroupId, String locale, Context context) {
+        Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
+        Objects.requireNonNull(phonePlanGroupId, "'phonePlanGroupId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getPhonePlansAsync(
@@ -453,6 +473,10 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<LocationOptionsResponse>> getPhonePlanLocationOptionsWithResponse(
         String countryCode, String phonePlanGroupId, String phonePlanId, String locale, Context context) {
+        Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
+        Objects.requireNonNull(phonePlanGroupId, "'phonePlanGroupId' cannot be null.");
+        Objects.requireNonNull(phonePlanId, "'phonePlanId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getPhonePlanLocationOptionsWithResponseAsync(
@@ -490,6 +514,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<PhoneNumberRelease>> getReleaseByIdWithResponse(String releaseId, Context context) {
+        Objects.requireNonNull(releaseId, "'releaseId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getReleaseByIdWithResponseAsync(releaseId);
@@ -525,6 +551,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<ReleaseResponse>> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers, Context context) {
+        Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
+
         List<String> phoneNumberStrings = phoneNumbers.stream().map(PhoneNumber::getValue).collect(Collectors.toList());
         ReleaseRequest releaseRequest = new ReleaseRequest();
         releaseRequest.setPhoneNumbers(phoneNumberStrings);
@@ -586,6 +614,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId, Context context) {
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId);
@@ -621,6 +651,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<CreateSearchResponse>> createSearchWithResponse(CreateSearchOptions searchOptions, Context context) {
+        Objects.requireNonNull(searchOptions, "'searchOptions' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions);
@@ -677,6 +709,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<Void>> cancelSearchWithResponse(String searchId, Context context) {
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId);
@@ -711,6 +745,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+
         try {
             if (context == null) {
                 return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId);
