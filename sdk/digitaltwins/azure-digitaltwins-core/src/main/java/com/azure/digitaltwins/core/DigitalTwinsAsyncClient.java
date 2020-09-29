@@ -310,7 +310,6 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteDigitalTwinWithResponse#String-Options}
      *
-     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param options The optional settings for this request
      * @return The Http response
