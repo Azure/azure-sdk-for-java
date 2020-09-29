@@ -215,7 +215,39 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void createRelationship() {
+        DigitalTwinsAsyncClient digitalTwinsClient = createDigitalTwinsAsyncClient();
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#BasicRelationship
+        BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
+            .setId("myRelationshipId")
+            .setSourceId("mySourceDigitalTwinId")
+            .setTargetId("myTargetDigitalTwinId")
+            .setName("contains")
+            .addCustomProperty("Prop1", "Prop1 value")
+            .addCustomProperty("Prop2", 6);
+
+        digitalTwinsClient.createRelationship(
+            "mySourceDigitalTwinId",
+            "myRelationshipId",
+            buildingToFloorBasicRelationship,
+            BasicRelationship.class)
+        .subscribe(createdRelationship -> System.out.println(
+            "Created relationship with Id: " +
+                createdRelationship.getId() +
+                " from: " + createdRelationship.getSourceId() +
+                " to: " + createdRelationship.getTargetId()));
+        // END: com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#BasicRelationship
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#String
+        String relationshipPayload = getRelationshipPayload();
+
+        digitalTwinsClient.createRelationship(
+            "mySourceDigitalTwinId",
+            "myRelationshipId",
+            relationshipPayload,
+            String.class)
+        .subscribe(createRelationshipString -> System.out.println("Created relationship: " + createRelationshipString));
+        // END: com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#String
     }
 
     /**

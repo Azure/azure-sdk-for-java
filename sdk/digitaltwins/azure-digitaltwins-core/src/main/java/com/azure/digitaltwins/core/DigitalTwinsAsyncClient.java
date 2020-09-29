@@ -335,6 +335,18 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates a relationship on a digital twin.
      *
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#BasicRelationship}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#String}
+     *
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
