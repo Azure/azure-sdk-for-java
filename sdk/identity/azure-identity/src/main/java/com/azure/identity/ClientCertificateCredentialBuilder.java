@@ -3,7 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
