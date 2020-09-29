@@ -1,4 +1,6 @@
-package com.azure.data.tables.models;
+package com.azure.data.tables;
+
+import com.azure.data.tables.models.TableEntity;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;

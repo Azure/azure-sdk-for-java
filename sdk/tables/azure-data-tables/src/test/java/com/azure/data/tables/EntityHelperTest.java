@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+package com.azure.data.tables;
 
-package com.azure.data.tables.models;
-
-import com.azure.data.tables.implementation.TablesConstants;
+import com.azure.data.tables.models.TableEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class TableEntityTest {
+public class EntityHelperTest {
 
     @Test
     public void testConvertToSubclass() {
@@ -26,8 +25,6 @@ public class TableEntityTest {
         String s = "Test";
 
         Map<String, Object> props = new HashMap<>();
-        props.put(TablesConstants.PARTITION_KEY, "abc");
-        props.put(TablesConstants.ROW_KEY, "def");
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
         props.put("DateTimeField", dateTime);
@@ -37,8 +34,10 @@ public class TableEntityTest {
         props.put("LongField", l);
         props.put("StringField", s);
 
-        TableEntity entity = new TableEntity(props);
-        SampleEntity result = entity.convertToSubclass(SampleEntity.class);
+        TableEntity entity = new TableEntity("abc", "def");
+        entity.addProperties(props);
+
+        SampleEntity result = EntityHelper.convertToSubclass(entity, SampleEntity.class);
         Assertions.assertEquals(bytes, result.getByteField());
         Assertions.assertEquals(b, result.getBooleanField());
         Assertions.assertEquals(dateTime, result.getDateTimeField());
@@ -70,7 +69,7 @@ public class TableEntityTest {
         entity.setLongField(l);
         entity.setStringField(s);
 
-        entity.setPropertiesFromGetters();
+        EntityHelper.setPropertiesFromGetters(entity);
 
         Assertions.assertEquals(entity.getProperties().get("ByteField"), bytes);
         Assertions.assertEquals(entity.getProperties().get("BooleanField"), b);
