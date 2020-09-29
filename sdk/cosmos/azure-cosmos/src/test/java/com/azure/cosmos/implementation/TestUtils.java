@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import org.mockito.Mockito;
 
 public class TestUtils {
@@ -38,7 +40,14 @@ public class TestUtils {
     }
 
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
-        return Mockito.mock(DiagnosticsClientContext.class);
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+        Mockito.doReturn(0).when(clientContext).clientId();
+        Mockito.doReturn(1).when(clientContext).getNumberOfClients();
+        Mockito.doReturn("myConfig").when(clientContext).getConfig();
+        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
+
+        return clientContext;
+
     }
 
     private TestUtils() {
