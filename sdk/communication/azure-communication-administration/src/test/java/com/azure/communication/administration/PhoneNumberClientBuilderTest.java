@@ -286,13 +286,6 @@ public class PhoneNumberClientBuilderTest {
     }
 
     @Test()
-    public void setPipelineNull() {
-        assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.pipeline(null);
-        });
-    }
-
-    @Test()
     public void setHttpClientNull() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.httpClient(null);
