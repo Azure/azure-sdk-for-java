@@ -41,9 +41,9 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * This class provides a client for interacting asynchronously with an Azure Digital Twins instance.
  *
- * <p>
- * This client is instantiated through {@link DigitalTwinsClientBuilder}.
- * </p>
+ * <p> This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
+ *
+ * {@codesnippet com.azure.digitaltwins.core.asyncclient.instantiation}
  *
  * <p>
  * This client allows for management of digital twins, their components, and their relationships. It also allows for managing
@@ -95,6 +95,16 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
+     *
+     * <p> Or you alternatively you can use strings as input and output type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createDigitalTwins#String-Object-Class#String}
+     *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
@@ -110,6 +120,16 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Creates a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createDigitalTwinsWithResponse#String-Object-Class-Context#BasicDigitalTwin}
+     *
+     * <p> Or you alternatively you can use strings as input and output type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createDigitalTwinsWithResponse#String-Object-Class-Context#String}
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -144,6 +164,19 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a digital twin.
      *
+     <p><strong>Code Samples</strong></p>
+     *
+     * <p>
+     * A Strongly typed object type such as {@link BasicDigitalTwin} can be provided as an input parameter for {@code clazz}
+     * to indicate what type is used to deserialize the response.
+     * </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getDigitalTwin#String-Class#BasicDigitalTwin}
+     *
+     * <p>Alternatively String can be used to get the response in a json string format.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getDigitalTwin#String-Class#String}
+     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
      * @param <T> The generic type to deserialize the digital twin with.
@@ -158,6 +191,19 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>
+     * A Strongly typed object type such as {@link BasicDigitalTwin} can be provided as an input parameter for {@code clazz}
+     * to indicate what type is used to deserialize the response.
+     * </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getDigitalTwinWithResponse#String-Class#BasicDigitalTwin}
+     *
+     * <p>Alternatively String can be used to get the response in a json string format.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.getDigitalTwinWithResponse#String-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
@@ -190,6 +236,12 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Updates a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update digital twin by providing list of intended patch operations.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.updateDigitalTwin#String-List}
+     *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
@@ -204,6 +256,12 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Updates a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update digital twin by providing list of intended patch operations.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.updateDigitalTwinWithResponse#String-List-Options}
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
@@ -230,6 +288,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteDigitalTwin#String}
+     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @return An empty Mono
      */
@@ -242,6 +305,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteDigitalTwinWithResponse#String-Options}
+     *
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param options The optional settings for this request
