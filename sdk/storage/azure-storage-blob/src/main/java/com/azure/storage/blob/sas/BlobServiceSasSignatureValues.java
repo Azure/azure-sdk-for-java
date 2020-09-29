@@ -45,7 +45,7 @@ public final class BlobServiceSasSignatureValues {
 
     private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
 
-    private String version = BlobSasServiceVersion.V2019_12_12.getVersion();
+    private final String version = BlobSasServiceVersion.V2019_12_12.getVersion();
 
     private SasProtocol protocol;
 
@@ -149,7 +149,6 @@ public final class BlobServiceSasSignatureValues {
     public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        this.version = null;
         this.protocol = sasProtocol;
         this.startTime = startTime;
         this.expiryTime = expiryTime;
