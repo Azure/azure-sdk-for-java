@@ -858,7 +858,16 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void publishComponentTelemetry() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishComponentTelemetry#String-String-Object#String
+        digitalTwinsSyncClient.publishComponentTelemetry("myDigitalTwinId", "myComponentName", "{\"Telemetry1\": 5}");
+        // END: com.azure.digitaltwins.core.syncclient.publishComponentTelemetry#String-String-Object#String
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishComponentTelemetry#String-String-Object#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        digitalTwinsSyncClient.publishComponentTelemetry("myDigitalTwinId", "myComponentName", telemetryPayload);
+        // END: com.azure.digitaltwins.core.syncclient.publishComponentTelemetry#String-String-Object#Object
     }
 
     /**
@@ -866,7 +875,30 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void publishComponentTelemetryWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishComponentTelemetryWithResponse#String-String-Object-Options-Context#String
+        Response<Void> responseString = digitalTwinsSyncClient.publishComponentTelemetryWithResponse(
+            "myDigitalTwinId",
+            "myComponentName",
+            "{\"Telemetry1\": 5}",
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()),
+            new Context("key", "value"));
 
+        System.out.println("Received publish component telemetry operation response with HTTP status code: " + responseString.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.publishComponentTelemetryWithResponse#String-String-Object-Options-Context#String
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.publishComponentTelemetryWithResponse#String-String-Object-Options-Context#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        Response<Void> responseObject = digitalTwinsSyncClient.publishComponentTelemetryWithResponse(
+            "myDigitalTwinId",
+            "myComponentName",
+            telemetryPayload,
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()),
+            new Context("key", "value"));
+
+        System.out.println("Received publish component telemetry operation response with HTTP status code: " + responseObject.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.publishComponentTelemetryWithResponse#String-String-Object-Options-Context#Object
     }
 
     //endregion TelemetrySnippets

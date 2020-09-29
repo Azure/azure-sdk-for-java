@@ -823,7 +823,16 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void publishComponentTelemetry() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetry#String-String-Object#String
+        digitalTwinsAsyncClient.publishComponentTelemetry("myDigitalTwinId", "myComponentName", "{\"Telemetry1\": 5}").subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetry#String-String-Object#String
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetry#String-String-Object#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        digitalTwinsAsyncClient.publishComponentTelemetry("myDigitalTwinId", "myComponentName", telemetryPayload).subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetry#String-String-Object#Object
     }
 
     /**
@@ -831,7 +840,26 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void publishComponentTelemetryWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetryWithResponse#String-String-Object-Options#String
+        digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(
+            "myDigitalTwinId",
+            "myComponentName",
+            "{\"Telemetry1\": 5}",
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()))
+            .subscribe(responseString -> System.out.println("Received publish component telemetry operation response with HTTP status code: " + responseString.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetryWithResponse#String-String-Object-Options#String
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetryWithResponse#String-String-Object-Options#Object
+        Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
+        telemetryPayload.put("Telemetry1", 5);
+
+        digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(
+            "myDigitalTwinId",
+            "myComponentName",
+            telemetryPayload,
+            new PublishTelemetryRequestOptions().setMessageId(UUID.randomUUID().toString()))
+            .subscribe(responseObject -> System.out.println("Received publish component telemetry operation response with HTTP status code: " + responseObject.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.publishComponentTelemetryWithResponse#String-String-Object-Options#Object
     }
 
     //endregion TelemetrySnippets
