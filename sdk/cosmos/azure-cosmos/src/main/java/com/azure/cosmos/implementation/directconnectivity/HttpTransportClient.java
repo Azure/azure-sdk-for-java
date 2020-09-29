@@ -126,6 +126,8 @@ public class HttpTransportClient extends TransportClient {
             Duration responseTimeout = Duration.ofSeconds(Configs.getHttpsResponseTimeoutInSeconds());
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
 
             Mono<HttpResponse> httpResponseMono = this.httpClient

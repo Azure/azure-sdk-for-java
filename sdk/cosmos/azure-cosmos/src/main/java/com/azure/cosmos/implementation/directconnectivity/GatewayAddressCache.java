@@ -250,6 +250,7 @@ public class GatewayAddressCache implements IAddressCache {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
+        request.setAddressRefresh(true);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
@@ -489,6 +490,7 @@ public class GatewayAddressCache implements IAddressCache {
             forceRefresh,
             useMasterCollectionResolver
         );
+        request.setAddressRefresh(true);
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
