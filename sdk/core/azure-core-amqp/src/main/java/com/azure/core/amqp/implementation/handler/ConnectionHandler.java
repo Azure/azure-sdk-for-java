@@ -16,12 +16,16 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.reactor.Handshaker;
 
+import javax.net.ssl.SSLContext;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Creates an AMQP connection using sockets and the default AMQP protocol port 5671.
@@ -38,6 +42,7 @@ public class ConnectionHandler extends Handler {
 
     private final Map<String, Object> connectionProperties;
     private final ClientLogger logger = new ClientLogger(ConnectionHandler.class);
+    private final SslDomain.VerifyMode verifyMode;
 
     /**
      * Creates a handler that handles proton-j's connection events.
@@ -48,12 +53,13 @@ public class ConnectionHandler extends Handler {
      * @param clientVersion The version of the client library creating the connection handler.
      * @param clientOptions provided by user.
      */
-    public ConnectionHandler(final String connectionId, final String hostname,
-        String product, String clientVersion, final ClientOptions clientOptions) {
+    public ConnectionHandler(final String connectionId, final String hostname, final String product,
+        final String clientVersion, final SslDomain.VerifyMode verifyMode, final ClientOptions clientOptions) {
         super(connectionId, hostname);
 
         add(new Handshaker());
 
+        this.verifyMode = Objects.requireNonNull(verifyMode, "'verifyMode' cannot be null");
         this.connectionProperties = new HashMap<>();
         this.connectionProperties.put(PRODUCT.toString(), product);
         this.connectionProperties.put(VERSION.toString(), clientVersion);
@@ -93,8 +99,44 @@ public class ConnectionHandler extends Handler {
     }
 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
-        final SslDomain domain = createSslDomain(SslDomain.Mode.CLIENT);
-        transport.ssl(domain);
+        final SslDomain sslDomain = Proton.sslDomain();
+        sslDomain.init(SslDomain.Mode.CLIENT);
+
+        final SSLContext defaultSslContext;
+
+        if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
+            defaultSslContext = null;
+        } else {
+            try {
+                defaultSslContext = SSLContext.getDefault();
+            } catch (NoSuchAlgorithmException e) {
+                throw logger.logThrowableAsError(new RuntimeException(
+                    "Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
+            }
+        }
+
+        if (verifyMode == SslDomain.VerifyMode.VERIFY_PEER_NAME) {
+            final StrictTlsContextSpi serviceProvider = new StrictTlsContextSpi(defaultSslContext);
+            final SSLContext context = new StrictTlsContext(serviceProvider, defaultSslContext.getProvider(),
+                defaultSslContext.getProtocol());
+            final SslPeerDetails peerDetails = Proton.sslPeerDetails(getHostname(), getProtocolPort());
+
+            sslDomain.setSslContext(context);
+            transport.ssl(sslDomain, peerDetails);
+            return;
+        }
+
+        if (verifyMode == SslDomain.VerifyMode.VERIFY_PEER) {
+            sslDomain.setSslContext(defaultSslContext);
+        } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
+            logger.warning("{} is not secure.", verifyMode);
+        } else {
+            throw logger.logThrowableAsError(new UnsupportedOperationException(
+                "verifyMode is not supported: " + verifyMode));
+        }
+
+        sslDomain.setPeerAuthentication(verifyMode);
+        transport.ssl(sslDomain);
     }
 
     @Override
@@ -238,15 +280,6 @@ public class ConnectionHandler extends Handler {
 
     public AmqpErrorContext getErrorContext() {
         return new AmqpErrorContext(getHostname());
-    }
-
-    private static SslDomain createSslDomain(SslDomain.Mode mode) {
-        final SslDomain domain = Proton.sslDomain();
-        domain.init(mode);
-
-        // TODO: VERIFY_PEER_NAME support
-        domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
-        return domain;
     }
 
     private void notifyErrorContext(Connection connection, ErrorCondition condition) {
