@@ -69,7 +69,7 @@ public final class PhoneNumberClientBuilder {
      * @return The updated {@link PhoneNumberClientBuilder} object.
      */
     public PhoneNumberClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
+        this.pipeline = pipeline;
         return this;
     }
 
