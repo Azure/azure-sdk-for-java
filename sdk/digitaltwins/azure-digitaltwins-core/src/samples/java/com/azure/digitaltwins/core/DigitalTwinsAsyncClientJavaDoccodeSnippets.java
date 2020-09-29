@@ -760,7 +760,17 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void listEventRoutes() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listEventRoutes
+        digitalTwinsAsyncClient.listEventRoutes()
+            .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.listEventRoutes
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.listEventRoutes#Options
+        digitalTwinsAsyncClient.listEventRoutes(new EventRoutesListOptions().setMaxItemCount(5))
+            .doOnNext(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.listEventRoutes#Options
     }
 
     //endregion EventRouteSnippets

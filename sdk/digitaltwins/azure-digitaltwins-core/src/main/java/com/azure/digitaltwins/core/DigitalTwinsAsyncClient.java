@@ -1282,6 +1282,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.listEventRoutes}
+     *
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
@@ -1293,6 +1298,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.listEventRoutes#Options}
+     *
      * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
      * on what optional parameters can be set.
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.

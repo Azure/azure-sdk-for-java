@@ -791,7 +791,17 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void listEventRoutes() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.listEventRoutes
+        PagedIterable<EventRoute> listResponse =  digitalTwinsSyncClient.listEventRoutes();
 
+        listResponse.forEach(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.listEventRoutes
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.listEventRoutes#Options-Context
+        PagedIterable<EventRoute> listResponseWithOptions =  digitalTwinsSyncClient.listEventRoutes(new EventRoutesListOptions().setMaxItemCount(5), new Context("key", "value"));
+
+        listResponseWithOptions.forEach(eventRoute -> System.out.println("Retrieved event route with Id: " + eventRoute.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.listEventRoutes#Options-Context
     }
 
     //endregion EventRouteSnippets

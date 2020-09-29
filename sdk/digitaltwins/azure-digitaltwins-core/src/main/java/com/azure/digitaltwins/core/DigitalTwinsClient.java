@@ -859,6 +859,11 @@ public final class DigitalTwinsClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listEventRoutes}
+     *
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
      * This PagedIterable may take multiple service requests to iterate over all event routes.
      */
@@ -869,6 +874,11 @@ public final class DigitalTwinsClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.listEventRoutes#Options-Context}
+     *
      * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
      * on what optional parameters can be set.
      * @param context Additional context that is passed through the Http pipeline during the service call.
