@@ -1,6 +1,5 @@
 package com.azure.digitaltwins.core;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -11,6 +10,12 @@ import java.util.List;
  * Code snippets for {@link DigitalTwinsAsyncClient}
  */
 public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase {
+
+    private DigitalTwinsAsyncClient digitalTwinsAsyncClient;
+
+    DigitalTwinsAsyncClientJavaDoccodeSnippets(){
+        digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
+    }
 
     public DigitalTwinsAsyncClient createDigitalTwinsAsyncClient() {
 
@@ -216,8 +221,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void createRelationship() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.createRelationship#String-String-Object-Class#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
             .setId("myRelationshipId")
@@ -256,8 +259,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void createRelationshipWithResponse() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.createRelationshipWithResponse#String-String-Object-Class#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
             .setId("myRelationshipId")
@@ -302,8 +303,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void getRelationship() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.getRelationship#String#BasicRelationship
         digitalTwinsAsyncClient.getRelationship("myDigitalTwinId", "myRelationshipName", BasicRelationship.class)
             .subscribe(retrievedRelationship -> System.out.println(
@@ -325,8 +324,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void getRelationshipWithResponse() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.getRelationshipWithResponse#String-String-Class#BasicRelationship
         digitalTwinsAsyncClient.getRelationshipWithResponse(
             "myDigitalTwinId",
@@ -357,8 +354,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void updateRelationship() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.updateRelationship#String-String-List
         UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
         updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
@@ -373,8 +368,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void updateRelationshipWithResponse() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.updateRelationshipWithResponse#String-String-List-Options
         UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
         updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
@@ -393,8 +386,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void deleteRelationship() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteRelationship#String-String
         digitalTwinsAsyncClient.deleteRelationship("myDigitalTwinId", "myRelationshipId")
             .subscribe();
@@ -406,8 +397,6 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void deleteRelationshipWithResponse() {
-        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
-
         // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteRelationshipWithResponse#String-String-Options
         digitalTwinsAsyncClient.deleteRelationshipWithResponse(
             "myDigitalTwinId",

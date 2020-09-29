@@ -12,6 +12,12 @@ import java.util.List;
  */
 public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
+    private DigitalTwinsClient digitalTwinsSyncClient;
+
+    DigitalTwinsClientJavaDocCodeSnippets(){
+        digitalTwinsSyncClient = createDigitalTwinsClient();
+    }
+
     public DigitalTwinsClient createDigitalTwinsClient() {
 
         String tenantId = getTenenatId();
@@ -218,8 +224,6 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void createRelationship() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.createRelationship#String-String-Object-Class#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
             .setId("myRelationshipId")
@@ -229,7 +233,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
-        BasicRelationship createdRelationship = digitalTwinsClient.createRelationship(
+        BasicRelationship createdRelationship = digitalTwinsSyncClient.createRelationship(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             buildingToFloorBasicRelationship,
@@ -245,7 +249,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncclient.createRelationship#String-String-Object-Class#String
         String relationshipPayload = getRelationshipPayload();
 
-        String createdRelationshipString = digitalTwinsClient.createRelationship(
+        String createdRelationshipString = digitalTwinsSyncClient.createRelationship(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             relationshipPayload,
@@ -260,8 +264,6 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void createRelationshipWithResponse() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.createRelationshipWithResponse#String-String-Object-Class-Context#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship()
             .setId("myRelationshipId")
@@ -271,7 +273,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
-        Response<BasicRelationship> createdRelationshipWithResponse = digitalTwinsClient.createRelationshipWithResponse(
+        Response<BasicRelationship> createdRelationshipWithResponse = digitalTwinsSyncClient.createRelationshipWithResponse(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             buildingToFloorBasicRelationship,
@@ -290,7 +292,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncclient.createRelationshipWithResponse#String-String-Object-Class-Context#String
         String relationshipPayload = getRelationshipPayload();
 
-        Response<String> createdRelationshipStringWithResponse = digitalTwinsClient.createRelationshipWithResponse(
+        Response<String> createdRelationshipStringWithResponse = digitalTwinsSyncClient.createRelationshipWithResponse(
             "mySourceDigitalTwinId",
             "myRelationshipId",
             relationshipPayload,
@@ -310,10 +312,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getRelationship() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.getRelationship#String#BasicRelationship
-        BasicRelationship retrievedRelationship = digitalTwinsClient.getRelationship("myDigitalTwinId", "myRelationshipName", BasicRelationship.class);
+        BasicRelationship retrievedRelationship = digitalTwinsSyncClient.getRelationship("myDigitalTwinId", "myRelationshipName", BasicRelationship.class);
 
         System.out.println(
             "Retrieved relationship with Id: "
@@ -324,7 +324,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // END: com.azure.digitaltwins.core.syncclient.getRelationship#String#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncclient.getRelationship#String#String
-        String retrievedRelationshipString = digitalTwinsClient.getRelationship("myDigitalTwinId", "myRelationshipName", String.class);
+        String retrievedRelationshipString = digitalTwinsSyncClient.getRelationship("myDigitalTwinId", "myRelationshipName", String.class);
 
         System.out.println("Retrieved relationship: " + retrievedRelationshipString);
         // END: com.azure.digitaltwins.core.syncclient.getRelationship#String#String
@@ -335,10 +335,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void getRelationshipWithResponse() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.getRelationshipWithResponse#String-String-Class-Context#BasicRelationship
-        Response<BasicRelationship> retrievedRelationshipWithResponse = digitalTwinsClient.getRelationshipWithResponse(
+        Response<BasicRelationship> retrievedRelationshipWithResponse = digitalTwinsSyncClient.getRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipName",
             BasicRelationship.class,
@@ -354,7 +352,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // END: com.azure.digitaltwins.core.syncclient.getRelationshipWithResponse#String-String-Class-Context#BasicRelationship
 
         // BEGIN: com.azure.digitaltwins.core.syncclient.getRelationshipWithResponse#String-String-Class-Context#String
-        Response<String> retrievedRelationshipString = digitalTwinsClient.getRelationshipWithResponse("myDigitalTwinId", "myRelationshipName", String.class, new Context("key", "value"));
+        Response<String> retrievedRelationshipString = digitalTwinsSyncClient.getRelationshipWithResponse("myDigitalTwinId", "myRelationshipName", String.class, new Context("key", "value"));
 
         System.out.println("Retrieved relationship: " + retrievedRelationshipString + " HTTP status code: " + retrievedRelationshipString.getStatusCode());
         // END: com.azure.digitaltwins.core.syncclient.getRelationshipWithResponse#String-String-Class-Context#String
@@ -365,13 +363,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void updateRelationship() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.updateRelationship#String-String-List
         UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
         updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
 
-        digitalTwinsClient.updateRelationship("myDigitalTwinId", "myRelationshipId", updateOperationUtility.getUpdateOperations());
+        digitalTwinsSyncClient.updateRelationship("myDigitalTwinId", "myRelationshipId", updateOperationUtility.getUpdateOperations());
         // END: com.azure.digitaltwins.core.syncclient.updateRelationship#String-String-List
     }
 
@@ -380,13 +376,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void updateRelationshipWithResponse() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.updateRelationshipWithResponse#String-String-List-Options-Context
         UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
         updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
 
-        Response updateResponse = digitalTwinsClient.updateRelationshipWithResponse(
+        Response updateResponse = digitalTwinsSyncClient.updateRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipId",
             updateOperationUtility.getUpdateOperations(),
@@ -402,10 +396,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteRelationship() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.deleteRelationship#String-String
-        digitalTwinsClient.deleteRelationship("myDigitalTwinId", "myRelationshipId");
+        digitalTwinsSyncClient.deleteRelationship("myDigitalTwinId", "myRelationshipId");
         // END: com.azure.digitaltwins.core.syncclient.deleteRelationship#String-String
     }
 
@@ -414,10 +406,8 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteRelationshipWithResponse() {
-        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
-
         // BEGIN: com.azure.digitaltwins.core.syncclient.deleteRelationshipWithResponse#String-String-Options-Context
-        Response deleteResponse = digitalTwinsClient.deleteRelationshipWithResponse(
+        Response deleteResponse = digitalTwinsSyncClient.deleteRelationshipWithResponse(
             "myDigitalTwinId",
             "myRelationshipId",
             new DeleteRelationshipRequestOptions(),
