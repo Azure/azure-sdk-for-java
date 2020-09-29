@@ -324,7 +324,31 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void getRelationshipWithResponse() {
+        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getRelationshipWithResponse#String-String-Class#BasicRelationship
+        digitalTwinsAsyncClient.getRelationshipWithResponse(
+            "myDigitalTwinId",
+            "myRelationshipName",
+            BasicRelationship.class,
+            new Context("key", "value"))
+        .subscribe(retrievedRelationshipWithResponse -> System.out.println(
+            "Retrieved relationship with Id: "
+                + retrievedRelationshipWithResponse.getValue().getId() +
+                " from: " +
+                retrievedRelationshipWithResponse.getValue().getSourceId() +
+                " to: " + retrievedRelationshipWithResponse.getValue().getTargetId() +
+                "HTTP status code: " + retrievedRelationshipWithResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.getRelationshipWithResponse#String-String-Class#BasicRelationship
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.getRelationshipWithResponse#String-String-Class#String
+        digitalTwinsAsyncClient.getRelationshipWithResponse("myDigitalTwinId", "myRelationshipName", String.class, new Context("key", "value"))
+            .subscribe(retrievedRelationshipStringWithResponse -> System.out.println(
+                "Retrieved relationship: " +
+                retrievedRelationshipStringWithResponse +
+                " HTTP status code: " +
+                retrievedRelationshipStringWithResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.getRelationshipWithResponse#String-String-Class#String
     }
 
     /**
