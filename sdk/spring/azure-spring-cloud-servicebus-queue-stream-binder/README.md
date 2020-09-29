@@ -16,9 +16,9 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus Queue][az
 [//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-servicebus-queue-stream-binder</artifactId>
-    <version>1.2.8</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-cloud-starter-servicebus-queue-stream-binder</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

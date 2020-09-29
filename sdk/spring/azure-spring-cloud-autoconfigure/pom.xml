@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-cloud-starter-autoconfigure</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-autoconfigure;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-autoconfigure;current} -->
 
   <name>Spring Cloud Azure Autoconfigure</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-cloud-starter-telemetry</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-telemetry;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-telemetry;current} -->
     </dependency>
 
 		<!-- Cloud SQL -->
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-integration-eventhubs;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-integration-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -93,7 +93,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-integration-servicebus;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-integration-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -131,7 +131,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-cloud-starter-context</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-context;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-context;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -193,7 +193,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-cloud-starter-storage</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-storage;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-storage;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -210,10 +210,6 @@
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-core:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.azure:azure-spring-cloud-starter-context:[1.3.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-cloud-starter-context;current} -->
-                <include>com.azure:azure-spring-cloud-starter-telemetry:[1.3.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-cloud-starter-telemetry;current} -->
-                <include>com.azure:azure-spring-integration-eventhubs:[1.3.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-integration-eventhubs;current} -->
-                <include>com.azure:azure-spring-integration-servicebus:[1.3.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-spring-integration-servicebus;current} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[7.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>mysql:mysql-connector-java:[8.0.21]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
