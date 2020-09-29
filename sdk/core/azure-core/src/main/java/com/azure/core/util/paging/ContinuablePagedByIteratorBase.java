@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Internal class that is a blocking iterator base class.
@@ -27,9 +27,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     private final Integer defaultPageSize;
     private final ClientLogger logger;
 
-    private volatile boolean receivedPages;
     volatile boolean lastPage;
-    private Throwable error;
 
     ContinuablePagedByIteratorBase(PageRetriever<C, P> pageRetriever, ContinuationState<C> continuationState,
         Integer defaultPageSize, ClientLogger logger) {
@@ -72,42 +70,27 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
      */
     abstract E getNext();
 
-    void requestPage() {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        receivedPages = false;
+    synchronized void requestPage() {
+        AtomicBoolean receivedPages = new AtomicBoolean(false);
         pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-            .subscribe(page -> onConsume(page, continuationState),
-                throwable -> onError(throwable, countDownLatch),
-                () -> onComplete(countDownLatch));
+            .collectList()
+            .map(pages -> {
+                receivedPages.set(true);
+                pages.forEach(this::addPage);
 
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException ex) {
-            error = ex;
-        }
+                P lastPage = pages.get(pages.size() - 1);
+                continuationState.setLastContinuationToken(lastPage.getContinuationToken());
+                this.lastPage = lastPage.getContinuationToken() == null;
 
-        if (error != null) {
-            throw logger.logExceptionAsError(new RuntimeException(error));
-        }
-    }
+                return pages;
+            })
+            .block();
 
-    private synchronized void onConsume(P page, ContinuationState<C> continuationState) {
-        receivedPages = true;
-        addPage(page, continuationState);
+        lastPage = lastPage || (!receivedPages.get() && !isNextAvailable());
     }
 
     /*
      * Add a page returned by the service and update the continuation state.
      */
-    abstract void addPage(P page, ContinuationState<C> continuationState);
-
-    private synchronized void onComplete(CountDownLatch countDownLatch) {
-        lastPage = lastPage || (!receivedPages && !isNextAvailable());
-        countDownLatch.countDown();
-    }
-
-    private synchronized void onError(Throwable error, CountDownLatch countDownLatch) {
-        this.error = error;
-        countDownLatch.countDown();
-    }
+    abstract void addPage(P page);
 }

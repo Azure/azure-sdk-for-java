@@ -71,10 +71,7 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
         }
 
         @Override
-        void addPage(P page, ContinuationState<C> continuationState) {
-            this.lastPage = page.getContinuationToken() == null;
-            continuationState.setLastContinuationToken(page.getContinuationToken());
-
+        void addPage(P page) {
             Iterator<T> pageValues = page.getElements().iterator();
             if (pageValues.hasNext()) {
                 this.pages.add(pageValues);

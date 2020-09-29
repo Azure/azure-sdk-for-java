@@ -65,9 +65,7 @@ final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>
         }
 
         @Override
-        synchronized void addPage(P page, ContinuationState<C> continuationState) {
-            this.lastPage = page.getContinuationToken() == null;
-            continuationState.setLastContinuationToken(page.getContinuationToken());
+        synchronized void addPage(P page) {
             this.pages.add(page);
         }
     }
