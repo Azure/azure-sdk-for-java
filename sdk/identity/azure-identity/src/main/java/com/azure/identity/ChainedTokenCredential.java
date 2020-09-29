@@ -38,8 +38,8 @@ public class ChainedTokenCredential implements TokenCredential {
     }
 
     /**
-     * Sequentially calls {@link TokenCredential#getToken(TokenRequestContext)} "/> on all the specified sources,
-     * returning the first successfully obtained <see cref="AccessToken"/>.
+     * Sequentially calls {@link TokenCredential#getToken(TokenRequestContext)} on all the specified sources,
+     * returning the first successfully obtained {@link AccessToken}.
      *
      * This method is called automatically by Azure SDK client libraries.
      * You may call this method directly, but you must also handle token
