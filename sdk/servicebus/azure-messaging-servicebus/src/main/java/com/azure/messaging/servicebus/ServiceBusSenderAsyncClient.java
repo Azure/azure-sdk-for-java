@@ -340,7 +340,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code messages} or {@code scheduledEnqueueTime} is {@code null}.
      */
     public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime) {
-        return scheduleMessagesInternal(messages, scheduledEnqueueTime, null);
+        return scheduleMessages(messages, scheduledEnqueueTime, null);
     }
 
     /**
@@ -357,7 +357,21 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
-        return scheduleMessagesInternal(messages, scheduledEnqueueTime, transactionContext);
+        if (Objects.isNull(messages)) {
+            return fluxError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
+
+        return createBatch().flatMapMany(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAdd(message));
+            return getSendLink().flatMapMany(link -> connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
+                    messageBatch.getMaxSizeInBytes(), link.getLinkName(), transactionContext)));
+        });
     }
 
     /**
@@ -487,44 +501,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
 
-    private Flux<Long> scheduleMessagesInternal(Iterable<ServiceBusMessage> messages,
-        OffsetDateTime scheduledEnqueueTime, ServiceBusTransactionContext transaction) {
-        if (Objects.isNull(messages)) {
-            return fluxError(logger, new NullPointerException("'messages' cannot be null."));
-        }
-
-        if (Objects.isNull(scheduledEnqueueTime)) {
-            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
-        }
-
-        return createBatch().flatMapMany(messageBatch -> {
-            messages.forEach(message -> messageBatch.tryAdd(message));
-            return scheduleMessagesInternal(messageBatch, scheduledEnqueueTime, transaction);
-        });
-    }
-
-    private Flux<Long> scheduleMessagesInternal(ServiceBusMessageBatch message, OffsetDateTime scheduledEnqueueTime,
-        ServiceBusTransactionContext transactionContext) {
-        if (Objects.isNull(message)) {
-            return fluxError(logger, new NullPointerException("'message' cannot be null."));
-        }
-
-        if (Objects.isNull(scheduledEnqueueTime)) {
-            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
-        }
-
-        return getSendLink()
-            .flatMapMany(link -> link.getLinkSize().flatMapMany(size -> {
-                int maxSize =  size > 0
-                    ? size
-                    : MAX_MESSAGE_LENGTH_BYTES;
-
-                return connectionProcessor
-                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMapMany(managementNode -> managementNode.schedule(message.getMessages(), scheduledEnqueueTime,
-                        maxSize, link.getLinkName(), transactionContext));
-            }));
-    }
 
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {

@@ -421,9 +421,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     void transactionScheduleMessagesTest(MessagingEntityType entityType) {
 
         // Arrange
-        boolean isSessionEnabled = false;
-        int total = 2;
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_CANCEL_MESSAGES, isSessionEnabled);
+        final boolean isSessionEnabled = false;
+        final int total = 2;
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_MESSAGES, isSessionEnabled);
         final Duration scheduleDuration = Duration.ofSeconds(5);
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = new ArrayList<>();
@@ -459,6 +459,38 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can schedule messages and cancel them.
+     */
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void cancelScheduledMessagesTest(MessagingEntityType entityType) {
+
+        // Arrange
+        final boolean isSessionEnabled = false;
+        final Duration shortWaitTime = Duration.ofSeconds(5);
+        final int total = 2;
+        setSenderAndReceiver(entityType, /*TestUtils.USE_CASE_CANCEL_MESSAGES*/0, isSessionEnabled);
+        final Duration scheduleDuration = Duration.ofSeconds(15);
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = new ArrayList<>();
+        for (int i = 0; i < total; ++i) {
+            messages.add(getMessage(messageId, isSessionEnabled));
+        }
+        List<Long> seqNumbers = sender.scheduleMessages(messages, OffsetDateTime.now().plus(scheduleDuration)).collectList().block(shortWaitTime);
+
+        // Assert & Act
+        Assertions.assertNotNull(seqNumbers);
+        Assertions.assertEquals(total, seqNumbers.size());
+
+        StepVerifier.create(sender.cancelScheduledMessages(seqNumbers))
+            .verifyComplete();
+
+        // The messages should have been cancelled and we should not find any messages.
+        StepVerifier.create(receiver.receiveMessages().take(total))
+            .verifyTimeout(shortWaitTime);
     }
 
     /**
