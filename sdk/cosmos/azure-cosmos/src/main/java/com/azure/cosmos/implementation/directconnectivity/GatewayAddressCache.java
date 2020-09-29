@@ -346,7 +346,9 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                if (!WebExceptionUtility.isReadTimeoutException(dce)) {
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
                     BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
                 }
             }
@@ -567,9 +569,10 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                if (!(dce.getCause() instanceof ReadTimeoutException)) {
-                    BridgeInternal
-                        .setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
                 }
             }
 

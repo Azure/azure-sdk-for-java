@@ -304,9 +304,10 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (WebExceptionUtility.isNetworkFailure(dce)) {
-                           if (!WebExceptionUtility.isReadTimeoutException(dce)) {
-                               BridgeInternal
-                                   .setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                           } else {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
                            }
                        }
 

@@ -319,6 +319,7 @@ public class ClientRetryPolicyTest {
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException =
             BridgeInternal.createCosmosException(0, exception);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             OperationType.QueryPlan, "/dbs/db/colls/col/docs/", ResourceType.Document);
@@ -359,6 +360,7 @@ public class ClientRetryPolicyTest {
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException =
             BridgeInternal.createCosmosException(0, exception);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             OperationType.Read, "/dbs/db/colls/col/docs/", ResourceType.Document);
