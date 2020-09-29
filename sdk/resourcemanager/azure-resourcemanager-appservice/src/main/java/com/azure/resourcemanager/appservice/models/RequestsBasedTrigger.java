@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RequestsBasedTrigger model. */
+/** Trigger based on total requests. */
 @Fluent
 public final class RequestsBasedTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestsBasedTrigger.class);

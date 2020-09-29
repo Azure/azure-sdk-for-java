@@ -32,7 +32,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      *
      * @return An updated instance of this builder.
      */
-    ClientSecretCredentialBuilder enablePersistentCache() {
+    public ClientSecretCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
         return this;
     }
@@ -43,8 +43,8 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      *
      * @return An updated instance of this builder.
      */
-    ClientSecretCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+    public ClientSecretCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 

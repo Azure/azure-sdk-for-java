@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SessionIds model. */
+/** List of session IDs. */
 @Fluent
 public final class SessionIds {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionIds.class);

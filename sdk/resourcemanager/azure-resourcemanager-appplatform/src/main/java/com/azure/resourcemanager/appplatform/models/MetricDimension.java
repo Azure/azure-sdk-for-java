@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MetricDimension model. */
+/** Specifications of the Dimension of metrics. */
 @Fluent
 public final class MetricDimension {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetInstanceViewStatusesSummary model. */
+/** Instance view statuses summary for virtual machines of a virtual machine scale set. */
 @Immutable
 public final class VirtualMachineScaleSetInstanceViewStatusesSummary {
     @JsonIgnore

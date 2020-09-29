@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ScaleRuleMetricDimension model. */
+/** Specifies an auto scale rule metric dimension. */
 @Fluent
 public final class ScaleRuleMetricDimension {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleRuleMetricDimension.class);

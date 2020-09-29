@@ -5,7 +5,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
-      "x-ms-client-request-id" : "1e0e3702-e196-477f-83f3-720b9a524fbe",
+      "x-ms-client-request-id" : "6a7590b4-76fb-4b6c-940b-03a8e0a3f27b",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,14 +14,14 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 21 Aug 2020 21:09:58 GMT",
+      "Date" : "Wed, 09 Sep 2020 00:14:41 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename774088ea')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename195207fa')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "ee05d887-f002-0074-75ff-77feac000000",
+      "x-ms-request-id" : "b9dd635d-b002-00dc-7b3e-866002000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "1e0e3702-e196-477f-83f3-720b9a524fbe",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename774088ea')"
+      "x-ms-client-request-id" : "6a7590b4-76fb-4b6c-940b-03a8e0a3f27b",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename195207fa')"
     },
     "Exception" : null
   }, {
@@ -30,7 +30,7 @@
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Mac OS X; 10.15.6)",
-      "x-ms-client-request-id" : "e4866138-24ce-4bc6-a2b9-b80a05cb80fe",
+      "x-ms-client-request-id" : "655c49cf-2af6-4c20-8d4c-41c2c20c8fcd",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -39,16 +39,16 @@
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 21 Aug 2020 21:09:58 GMT",
+      "Date" : "Wed, 09 Sep 2020 00:14:41 GMT",
       "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename08545350')",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('tablename07060a19')",
       "Content-Length" : "0",
-      "x-ms-request-id" : "ee05d8ac-f002-0074-0fff-77feac000000",
+      "x-ms-request-id" : "b9dd637a-b002-00dc-113e-866002000000",
       "Preference-Applied" : "return-no-content",
-      "x-ms-client-request-id" : "e4866138-24ce-4bc6-a2b9-b80a05cb80fe",
-      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename08545350')"
+      "x-ms-client-request-id" : "655c49cf-2af6-4c20-8d4c-41c2c20c8fcd",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('tablename07060a19')"
     },
     "Exception" : null
   } ],
-  "variables" : [ "tablename774088ea", "tablename08545350" ]
+  "variables" : [ "tablename195207fa", "tablename07060a19" ]
 }

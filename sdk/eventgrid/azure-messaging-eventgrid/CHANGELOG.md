@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.3 (Unreleased)
+
+
+## 2.0.0-beta.2 (2020-09-24)
+Added system event classes for Azure Communication Services under package `com.azure.messaging.eventgrid.systemevents`.
+
 ## 2.0.0-beta.1 (2020-09-09): 
 
 Initial preview of the Event Grid library with an effort to create a Java idiomatic

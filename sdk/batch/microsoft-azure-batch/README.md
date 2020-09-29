@@ -1,4 +1,4 @@
-﻿## Azure Batch Libraries for Java
+## Azure Batch Libraries for Java
 
 This README is based on the latest released version Azure Batch SDK (7.0.0). If you are looking for other releases, see the [More Information](#more-information) section below.
 
@@ -19,7 +19,7 @@ BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(batchUri, batchAc
 BatchClient client = BatchClient.open(cred);
 ```
 
-* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/en-us/azure/batch/batch-aad-auth) for detail.
+* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/azure/batch/batch-aad-auth) for detail.
 
 ```java
 BatchApplicationTokenCredentials cred = new BatchApplicationTokenCredentials(batchEndpoint, clientId, applicationSecret, applicationDomain, null, null);
@@ -71,7 +71,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
-- Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/en-us/azure/batch/batch-aad-auth#use-a-service-principal).
+- Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
 
 
 ## Help
@@ -106,7 +106,7 @@ To run tests, set the following environment variables:
 Then run any test in src/test/java directory.
 
 # More Information
-* [Javadoc](https://docs.microsoft.com/en-us/java/api/overview/azure/batch?view=azure-java-stable)
+* [Javadoc](https://docs.microsoft.com/java/api/overview/azure/batch?view=azure-java-stable)
 * [http://azure.com/java](http://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
 

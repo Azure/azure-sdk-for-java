@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.ClientConstants;
+import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -34,6 +35,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ConnectionHandlerTest {
+    private static final String APPLICATION_ID = "some-random-app-id";
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setApplicationId(APPLICATION_ID);
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
     private ConnectionHandler handler;
@@ -46,7 +49,7 @@ public class ConnectionHandlerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
+        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS);
     }
 
     @AfterEach
@@ -78,6 +81,8 @@ public class ConnectionHandlerTest {
         });
 
         Assertions.assertTrue(properties.containsKey(USER_AGENT.toString()), "Expected the USER_AGENT string to be there.");
+        Assertions.assertTrue(((String) properties.get(USER_AGENT.toString())).indexOf(APPLICATION_ID) == 0,
+            "Expected the APPLICATION_ID to be present in USER_AGENT.");
     }
 
     @Test

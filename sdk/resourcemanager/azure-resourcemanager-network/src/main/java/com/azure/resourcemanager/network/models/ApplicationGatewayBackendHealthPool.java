@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayBackendHealthPool model. */
+/** Application gateway BackendHealth pool. */
 @Fluent
 public final class ApplicationGatewayBackendHealthPool {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthPool.class);

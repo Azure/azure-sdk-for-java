@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EventRoute model. */
@@ -29,6 +30,12 @@ public final class EventRoute {
     @JsonProperty(value = "filter")
     private String filter;
 
+    /** Creates an instance of EventRoute class. */
+    @JsonCreator
+    public EventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
+        this.endpointName = endpointName;
+    }
+
     /**
      * Get the id property: The id of the event route.
      *
@@ -45,17 +52,6 @@ public final class EventRoute {
      */
     public String getEndpointName() {
         return this.endpointName;
-    }
-
-    /**
-     * Set the endpointName property: The name of the endpoint this event route is bound to.
-     *
-     * @param endpointName the endpointName value to set.
-     * @return the EventRoute object itself.
-     */
-    public EventRoute setEndpointName(String endpointName) {
-        this.endpointName = endpointName;
-        return this;
     }
 
     /**
@@ -76,5 +72,16 @@ public final class EventRoute {
     public EventRoute setFilter(String filter) {
         this.filter = filter;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getEndpointName() == null) {
+            throw new IllegalArgumentException("Missing required property endpointName in model EventRoute");
+        }
     }
 }

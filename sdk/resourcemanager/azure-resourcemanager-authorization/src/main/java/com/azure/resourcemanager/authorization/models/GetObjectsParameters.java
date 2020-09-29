@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The GetObjectsParameters model. */
+/** Request parameters for the GetObjectsByObjectIds API. */
 @Fluent
 public final class GetObjectsParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GetObjectsParameters.class);

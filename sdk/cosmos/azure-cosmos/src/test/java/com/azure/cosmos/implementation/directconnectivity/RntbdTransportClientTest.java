@@ -34,6 +34,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
@@ -69,6 +70,7 @@ import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -841,17 +843,47 @@ public final class RntbdTransportClientTest {
         // region Accessors
 
         @Override
-        public int channelsAcquired() {
+        public int channelsAcquiredMetric() {
             return 0;
         }
 
         @Override
-        public int channelsAvailable() {
+        public int channelsAvailableMetric() {
             return 0;
         }
 
         @Override
         public int concurrentRequests() {
+            return 0;
+        }
+
+        @Override
+        public int gettingEstablishedConnectionsMetrics() {
+            return 0;
+        }
+
+        @Override
+        public Instant getCreatedTime() {
+            return null;
+        }
+
+        @Override
+        public long lastRequestNanoTime() {
+            return 0;
+        }
+
+        @Override
+        public long lastSuccessfulRequestNanoTime() {
+            return 0;
+        }
+
+        @Override
+        public int channelsMetrics() {
+            return 0;
+        }
+
+        @Override
+        public int executorTaskQueueMetrics() {
             return 0;
         }
 
@@ -863,6 +895,11 @@ public final class RntbdTransportClientTest {
         @Override
         public boolean isClosed() {
             return !this.fakeChannel.isOpen();
+        }
+
+        @Override
+        public int maxChannels() {
+            return 0;
         }
 
         @Override
@@ -901,7 +938,7 @@ public final class RntbdTransportClientTest {
 
         @Override
         public RntbdRequestRecord request(final RntbdRequestArgs requestArgs) {
-            final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
+            final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
             this.fakeChannel.writeOutbound(requestRecord);
             return requestRecord;
         }

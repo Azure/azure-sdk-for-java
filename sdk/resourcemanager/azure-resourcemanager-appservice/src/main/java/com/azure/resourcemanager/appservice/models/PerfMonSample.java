@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The PerfMonSample model. */
+/** Performance monitor sample in a set. */
 @Fluent
 public final class PerfMonSample {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PerfMonSample.class);

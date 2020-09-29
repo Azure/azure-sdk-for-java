@@ -19,8 +19,10 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Objects;
@@ -52,6 +54,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
     private final String policyName;
     private final Mac hmac;
     private final Duration tokenValidity;
+    private final String sharedAccessSignature;
 
     /**
      * Creates an instance that authorizes using the {@code policyName} and {@code sharedAccessKey}.
@@ -112,6 +115,26 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
         }
+        this.sharedAccessSignature = null;
+    }
+
+    /**
+     * Creates an instance using the provided Shared Access Signature (SAS) string. The credential created using this
+     * constructor will not be refreshed. The expiration time is set to the time defined in "se={
+     * tokenValidationSeconds}`. If the SAS string does not contain this or is in invalid format, then the token
+     * expiration will be set to {@link OffsetDateTime#MAX max duration}.
+     * <p><a href="https://docs.microsoft.com/rest/api/eventhub/generate-sas-token">See how to generate SAS
+     * programmatically.</a></p>
+     *
+     * @param sharedAccessSignature The base64 encoded shared access signature string.
+     * @throws NullPointerException if {@code sharedAccessSignature} is null.
+     */
+    public ServiceBusSharedKeyCredential(String sharedAccessSignature) {
+        this.sharedAccessSignature = Objects.requireNonNull(sharedAccessSignature,
+            "'sharedAccessSignature' cannot be null");
+        this.policyName = null;
+        this.hmac = null;
+        this.tokenValidity = null;
     }
 
     /**
@@ -138,6 +161,10 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
             throw logger.logExceptionAsError(new IllegalArgumentException("resource cannot be empty"));
         }
 
+        if (sharedAccessSignature != null) {
+            return new AccessToken(sharedAccessSignature, getExpirationTime(sharedAccessSignature));
+        }
+
         final String utf8Encoding = UTF_8.name();
         final OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(tokenValidity);
         final String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
@@ -154,5 +181,25 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
             URLEncoder.encode(policyName, utf8Encoding));
 
         return new AccessToken(token, expiresOn);
+    }
+
+    private OffsetDateTime getExpirationTime(String sharedAccessSignature) {
+        String[] parts = sharedAccessSignature.split("&");
+        return Arrays.stream(parts)
+            .map(part -> part.split("="))
+            .filter(pair -> pair.length == 2 && pair[0].equalsIgnoreCase("se"))
+            .findFirst()
+            .map(pair -> pair[1])
+            .map(expirationTimeStr -> {
+                try {
+                    long epochSeconds = Long.parseLong(expirationTimeStr);
+                    return Instant.ofEpochSecond(epochSeconds).atOffset(ZoneOffset.UTC);
+                } catch (NumberFormatException exception) {
+                    logger.verbose("Invalid expiration time format in the SAS token: {}. Falling back to max "
+                        + "expiration time.", expirationTimeStr);
+                    return OffsetDateTime.MAX;
+                }
+            })
+            .orElse(OffsetDateTime.MAX);
     }
 }

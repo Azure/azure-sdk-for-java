@@ -45,6 +45,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
+import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.internal.ThrowableUtil;
@@ -80,6 +81,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
+
+    private static final EventExecutor requestExpirationExecutor = new DefaultEventExecutor(new RntbdThreadFactory(
+        "request-expirator",
+        true,
+        Thread.NORM_PRIORITY));
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestManager.class);
 
@@ -311,7 +317,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         try {
 
             if (event instanceof IdleStateEvent) {
-
+                // NOTE: if the connection is killed this may not receive any event
                 this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
 
                     final Throwable cause;
@@ -482,7 +488,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         this.traceOperation(context, "write", message);
 
-        if (message.getClass() == RntbdRequestRecord.class) {
+        if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
@@ -563,17 +569,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
+            record.pendingRequestQueueSize(pendingRequests.size());
 
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
-                final EventExecutor executor = context.executor();
-
-                if (executor.inEventLoop()) {
-                    record.expire();
-                } else {
-                    executor.next().execute(record::expire);
-                }
+                requestExpirationExecutor.execute(record::expire);
             });
 
             record.whenComplete((response, error) -> {

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
-import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
@@ -21,17 +21,17 @@ class RedisFirewallRuleImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String startIp() {
-        return this.inner().startIp();
+        return this.innerModel().startIp();
     }
 
     @Override
     public String endIp() {
-        return this.inner().endIp();
+        return this.innerModel().endIp();
     }
 
     @Override
@@ -42,7 +42,7 @@ class RedisFirewallRuleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), parameters)
             .map(
@@ -62,7 +62,7 @@ class RedisFirewallRuleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
@@ -72,7 +72,7 @@ class RedisFirewallRuleImpl
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }

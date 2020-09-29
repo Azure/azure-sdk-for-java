@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
@@ -9,52 +10,57 @@ import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.OrchestratorServiceBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl
-    extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, OrchestratorServiceBase>
+    extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, KubernetesCluster>
     implements KubernetesClusterAgentPool,
-    KubernetesClusterAgentPool.Definition<KubernetesCluster.DefinitionStages.WithCreate> {
+    KubernetesClusterAgentPool.Definition<KubernetesClusterImpl>,
+    KubernetesClusterAgentPool.Update<KubernetesClusterImpl> {
 
     private String subnetName;
 
     KubernetesClusterAgentPoolImpl(ManagedClusterAgentPoolProfile inner, KubernetesClusterImpl parent) {
         super(inner, parent);
-        String subnetId = (inner != null) ? this.inner().vnetSubnetId() : null;
+        String subnetId = (inner != null) ? this.innerModel().vnetSubnetId() : null;
         this.subnetName = ResourceUtils.nameFromResourceId(subnetId);
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public int count() {
-        return this.inner().count();
+        return this.innerModel().count();
     }
 
     @Override
     public ContainerServiceVMSizeTypes vmSize() {
-        return this.inner().vmSize();
+        return this.innerModel().vmSize();
     }
 
     @Override
     public int osDiskSizeInGB() {
-        return this.inner().osDiskSizeGB();
+        return this.innerModel().osDiskSizeGB();
     }
 
     @Override
     public OSType osType() {
-        return this.inner().osType();
+        return this.innerModel().osType();
     }
 
     @Override
     public AgentPoolType type() {
-        return this.inner().type();
+        return this.innerModel().type();
+    }
+
+    @Override
+    public AgentPoolMode mode() {
+        return this.innerModel().mode();
     }
 
     @Override
@@ -62,55 +68,55 @@ public class KubernetesClusterAgentPoolImpl
         if (this.subnetName != null) {
             return this.subnetName;
         } else {
-            return ResourceUtils.nameFromResourceId(this.inner().vnetSubnetId());
+            return ResourceUtils.nameFromResourceId(this.innerModel().vnetSubnetId());
         }
     }
 
     @Override
     public String networkId() {
-        String subnetId = (this.inner() != null) ? this.inner().vnetSubnetId() : null;
+        String subnetId = (this.innerModel() != null) ? this.innerModel().vnetSubnetId() : null;
         return (subnetId != null) ? ResourceUtils.parentResourceIdFromResourceId(subnetId) : null;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes param0) {
-        this.inner().withVmSize(param0);
+        this.innerModel().withVmSize(param0);
         return this;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withOSType(OSType osType) {
-        this.inner().withOsType(osType);
+        this.innerModel().withOsType(osType);
         return this;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withOSDiskSizeInGB(int osDiskSizeInGB) {
-        this.inner().withOsDiskSizeGB(osDiskSizeInGB);
+        this.innerModel().withOsDiskSizeGB(osDiskSizeInGB);
         return this;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withAgentPoolType(AgentPoolType agentPoolType) {
-        this.inner().withType(agentPoolType);
+        this.innerModel().withType(agentPoolType);
         return this;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withAgentPoolTypeName(String agentPoolTypeName) {
-        this.inner().withType(AgentPoolType.fromString(agentPoolTypeName));
+        this.innerModel().withType(AgentPoolType.fromString(agentPoolTypeName));
         return this;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withAgentPoolVirtualMachineCount(int count) {
-        this.inner().withCount(count);
+        this.innerModel().withCount(count);
         return this;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withMaxPodsCount(int podsCount) {
-        this.inner().withMaxPods(podsCount);
+        this.innerModel().withMaxPods(podsCount);
         return this;
     }
 
@@ -118,22 +124,46 @@ public class KubernetesClusterAgentPoolImpl
     public KubernetesClusterAgentPoolImpl withVirtualNetwork(String virtualNetworkId, String subnetName) {
         String vnetSubnetId = virtualNetworkId + "/subnets/" + subnetName;
         this.subnetName = subnetName;
-        this.inner().withVnetSubnetId(vnetSubnetId);
+        this.innerModel().withVnetSubnetId(vnetSubnetId);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl attach() {
-        if (inner().mode() == null) {
-            inner().withMode(AgentPoolMode.SYSTEM);
-        }
-        this.parent().inner().agentPoolProfiles().add(this.inner());
-        return this.parent();
+        return this.parent().addNewAgentPool(this);
+    }
+
+    public AgentPoolInner getAgentPoolInner() {
+        AgentPoolInner agentPoolInner = new AgentPoolInner();
+        agentPoolInner.withCount(innerModel().count());
+        agentPoolInner.withVmSize(innerModel().vmSize());
+        agentPoolInner.withOsDiskSizeGB(innerModel().osDiskSizeGB());
+        agentPoolInner.withVnetSubnetId(innerModel().vnetSubnetId());
+        agentPoolInner.withMaxPods(innerModel().maxPods());
+        agentPoolInner.withOsType(innerModel().osType());
+        agentPoolInner.withMaxCount(innerModel().maxCount());
+        agentPoolInner.withMinCount(innerModel().minCount());
+        agentPoolInner.withEnableAutoScaling(innerModel().enableAutoScaling());
+        agentPoolInner.withTypePropertiesType(innerModel().type());
+        agentPoolInner.withMode(innerModel().mode());
+        agentPoolInner.withOrchestratorVersion(innerModel().orchestratorVersion());
+        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());
+        agentPoolInner.withUpgradeSettings(innerModel().upgradeSettings());
+        agentPoolInner.withAvailabilityZones(innerModel().availabilityZones());
+        agentPoolInner.withEnableNodePublicIp(innerModel().enableNodePublicIp());
+        agentPoolInner.withScaleSetPriority(innerModel().scaleSetPriority());
+        agentPoolInner.withScaleSetEvictionPolicy(innerModel().scaleSetEvictionPolicy());
+        agentPoolInner.withSpotMaxPrice(innerModel().spotMaxPrice());
+        agentPoolInner.withTags(innerModel().tags());
+        agentPoolInner.withNodeLabels(innerModel().nodeLabels());
+        agentPoolInner.withNodeTaints(innerModel().nodeTaints());
+        agentPoolInner.withProximityPlacementGroupId(innerModel().proximityPlacementGroupId());
+        return agentPoolInner;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withAgentPoolMode(AgentPoolMode agentPoolMode) {
-        inner().withMode(agentPoolMode);
+        innerModel().withMode(agentPoolMode);
         return this;
     }
 }

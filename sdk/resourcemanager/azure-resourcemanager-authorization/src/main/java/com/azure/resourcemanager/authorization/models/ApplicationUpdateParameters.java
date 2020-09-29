@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationUpdateParameters model. */
+/** Request parameters for updating a new application. */
 @Fluent
 public final class ApplicationUpdateParameters extends ApplicationBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationUpdateParameters.class);

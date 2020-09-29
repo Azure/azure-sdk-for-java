@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TagsPatchResource model. */
+/** Wrapper resource for tags patch API request only. */
 @Fluent
 public final class TagsPatchResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsPatchResource.class);

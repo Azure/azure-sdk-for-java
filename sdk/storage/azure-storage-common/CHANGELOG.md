@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
-
+- Added a Constant that represented the default storage scope for TokenCredentials.
+- Added UploadUtils.computeMd5 that computes the md5 of a flux and wraps it with the data.
 
 ## 12.8.0 (2020-08-13)
 - Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions.

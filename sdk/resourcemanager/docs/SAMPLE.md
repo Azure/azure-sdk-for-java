@@ -2,19 +2,19 @@
 
 ### Azure Authentication
 
-The `Azure` class is the simplest entry point for creating and interacting with Azure resources.
+The `AzureResourceManager` class is the simplest entry point for creating and interacting with Azure resources.
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
 
-To learn more about authentication in the Azure Management Libraries for Java, see [AUTH.md](AUTH.md).
+To learn more about authentication in the Azure Management Libraries for Java, see [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md).
 
 ### Virtual Machines
 
@@ -135,7 +135,7 @@ You can create a virtual machine scale set instance by using a `define() … cre
 You can create a virtual network by using a `define() … create()` method chain.
 
 ```java
-Network network = networks.define("mynetwork")
+Network network = azure.networks().define("mynetwork")
 	.withRegion(Region.US_EAST)
 	.withNewResourceGroup()
 	.withAddressSpace("10.0.0.0/28")
@@ -362,7 +362,7 @@ SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
 Then, you can create a SQL database instance by using a `define() … create()` method chain.
 
 ```java
-SqlDatabase database = sqlServer.databases().define("myNewDatabase")
+SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
 	...
     .create();
 ```
@@ -426,7 +426,6 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <tr>
     <td>Active Directory</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//authorization/samples/ManageServicePrincipal.java">Manage service principals using Java</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//authorization/samples/ManageServicePrincipalCredentials.java">Manage credentials for service principals using Java</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//authorization/samples/ManageUsersGroupsAndRoles.java">Manage users and groups and manage their roles</a></li>
 <!--li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li-->
@@ -455,7 +454,6 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageResourceGroup.java">Manage resource groups</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageResource.java">Manage resources</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/locks/mgmt-v2016_09_01/src/main/java/com/microsoft/azure/management/locks/v2016_09_01/ManagementLocks.java">Manage resource locks</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/WebServerWithDelegatedCredentials.java">Manage delegated credentials</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplate.java">Deploy resources with ARM templates</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplateAsync.java">Deploy resources with ARM templates asynchronously</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplateWithDeploymentOperations.java">Deploy resources with ARM templates with deployment operations</a></li>

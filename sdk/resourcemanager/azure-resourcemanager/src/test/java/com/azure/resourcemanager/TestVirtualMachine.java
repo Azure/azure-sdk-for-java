@@ -9,22 +9,21 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final VirtualMachine[] vms = new VirtualMachine[1];
         final SettableFuture<VirtualMachine> future = SettableFuture.create();
 
-        Flux<Indexable> resourceStream =
+        Mono<VirtualMachine> resourceStream =
             virtualMachines
                 .define(vmName)
                 .withRegion(Region.US_EAST)
@@ -39,7 +38,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .createAsync();
 
-        resourceStream.last().doOnSuccess(vm -> future.set((VirtualMachine) vm));
+        resourceStream.doOnSuccess(vm -> future.set(vm));
         vms[0] = future.get();
 
         Assertions.assertEquals(1, vms[0].dataDisks().size());

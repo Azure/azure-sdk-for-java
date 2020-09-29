@@ -6,10 +6,12 @@ package com.azure.resourcemanager.keyvault;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class SecretTests extends KeyVaultManagementTest {
 
@@ -37,7 +39,7 @@ public class SecretTests extends KeyVaultManagementTest {
 
         Assertions.assertNotNull(vault);
 
-        SdkContext.sleep(10000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
         Secret secret = vault.secrets().define(secretName).withValue("Some secret value").create();
 

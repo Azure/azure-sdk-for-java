@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type MetricDefinition. */
-public interface MetricDefinition extends HasManager<MonitorManager>, HasInner<MetricDefinitionInner> {
+public interface MetricDefinition extends HasManager<MonitorManager>, HasInnerModel<MetricDefinitionInner> {
 
     /**
      * Get the resourceId value.
