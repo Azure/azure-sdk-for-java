@@ -774,4 +774,40 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
     }
 
     //endregion EventRouteSnippets
+
+    //region TelemetrySnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#publishTelemetry(String, Object)}
+     */
+    @Override
+    public void publishTelemetry() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#publishTelemetryWithResponse(String, Object, PublishTelemetryRequestOptions)}
+     */
+    @Override
+    public void publishTelemetryWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#publishComponentTelemetry(String, String, Object)}
+     */
+    @Override
+    public void publishComponentTelemetry() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#publishComponentTelemetryWithResponse(String, String, Object, PublishTelemetryRequestOptions)}
+     */
+    @Override
+    public void publishComponentTelemetryWithResponse() {
+
+    }
+
+    //endregion TelemetrySnippets
 }

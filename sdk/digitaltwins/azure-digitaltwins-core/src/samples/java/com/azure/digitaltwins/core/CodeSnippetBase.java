@@ -61,6 +61,13 @@ public abstract class CodeSnippetBase {
     public abstract void listEventRoutes();
     //endregion EventRouteSnippets
 
+    //region TelemetrySnippets
+    public abstract void publishTelemetry();
+    public abstract void publishTelemetryWithResponse();
+    public abstract void publishComponentTelemetry();
+    public abstract void publishComponentTelemetryWithResponse();
+    //endregion TelemetrySnippets
+
     /**
      * Implementation not provided for this method
      *

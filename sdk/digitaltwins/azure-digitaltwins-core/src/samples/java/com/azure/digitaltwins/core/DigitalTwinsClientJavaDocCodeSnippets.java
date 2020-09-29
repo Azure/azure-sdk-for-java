@@ -679,7 +679,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     //region QuerySnippets
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#query(String, Class)} and {@link DigitalTwinsAsyncClient#query(String, Class, Context)}
+     * Generates code samples for using {@link DigitalTwinsClient#query(String, Class)} and {@link DigitalTwinsAsyncClient#query(String, Class, Context)}
      */
     @Override
     public void query() {
@@ -712,7 +712,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     //region EventRouteSnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRoute(String, EventRoute)}
+     * Generates code samples for using {@link DigitalTwinsClient#createEventRoute(String, EventRoute)}
      */
     @Override
     public void createEventRoute() {
@@ -725,7 +725,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute)}
+     * Generates code samples for using {@link DigitalTwinsClient#createEventRouteWithResponse(String, EventRoute, Context)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -740,7 +740,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRoute(String)}
+     * Generates code samples for using {@link DigitalTwinsClient#getEventRoute(String)}
      */
     @Override
     public void getEventRoute() {
@@ -752,7 +752,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String)}
+     * Generates code samples for using {@link DigitalTwinsClient#getEventRouteWithResponse(String, Context)}
      */
     @Override
     public void getEventRouteWithResponse() {
@@ -765,7 +765,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRoute(String)}
+     * Generates code samples for using {@link DigitalTwinsClient#deleteEventRoute(String)}
      */
     @Override
     public void deleteEventRoute() {
@@ -775,7 +775,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String)}
+     * Generates code samples for using {@link DigitalTwinsClient#deleteEventRouteWithResponse(String, Context)}
      */
     @Override
     public void deleteEventRouteWithResponse() {
@@ -787,7 +787,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#listEventRoutes()} and {@link DigitalTwinsAsyncClient#listEventRoutes(EventRoutesListOptions)}
+     * Generates code samples for using {@link DigitalTwinsClient#listEventRoutes()} and {@link DigitalTwinsClient#listEventRoutes(EventRoutesListOptions, Context)}
      */
     @Override
     public void listEventRoutes() {
@@ -805,4 +805,40 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     //endregion EventRouteSnippets
+
+    //region TelemetrySnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#publishTelemetry(String, Object)}
+     */
+    @Override
+    public void publishTelemetry() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#publishTelemetryWithResponse(String, Object, PublishTelemetryRequestOptions, Context)}
+     */
+    @Override
+    public void publishTelemetryWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#publishComponentTelemetry(String, String, Object)}
+     */
+    @Override
+    public void publishComponentTelemetry() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#publishComponentTelemetryWithResponse(String, String, Object, PublishTelemetryRequestOptions, Context)}
+     */
+    @Override
+    public void publishComponentTelemetryWithResponse() {
+
+    }
+
+    //endregion TelemetrySnippets
 }
