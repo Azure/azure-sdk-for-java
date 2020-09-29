@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.implementation.ReplicaReconfigurationException;
 import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
@@ -767,6 +768,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            break;
+                        case SubStatusCodes.REPLICA_RECONFIGURATION:
+                            cause = new ReplicaReconfigurationException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            // TODO: should we just short cut all pending requests to throw gone exception with the same cause?
+                            this.exceptionCaught(context, cause);
                             break;
                         default:
                             cause = new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);

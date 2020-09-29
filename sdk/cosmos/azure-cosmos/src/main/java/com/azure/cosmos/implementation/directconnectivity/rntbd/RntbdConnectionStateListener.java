@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
@@ -25,6 +26,9 @@ public class RntbdConnectionStateListener {
 
     private final AddressResolverExtension addressResolver;
     private final ConcurrentHashMap<SocketAddress, Set<RntbdAddressCacheToken>> partitionAddressCache;
+    private final ConcurrentHashMap<SocketAddress, Instant> addressCacheUpdateTimestamp;
+    private final int addressCacheRefreshIntervalInSeconds = 5; // TODO: Annie: does this needed?
+
 
     // endregion
 
@@ -33,6 +37,7 @@ public class RntbdConnectionStateListener {
     public RntbdConnectionStateListener(final AddressResolverExtension addressResolver) {
         this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");;
         this.partitionAddressCache = new ConcurrentHashMap<>();
+        this.addressCacheUpdateTimestamp = new ConcurrentHashMap<>();
     }
 
     // endregion
@@ -58,7 +63,7 @@ public class RntbdConnectionStateListener {
                 RntbdObjectMapper.toJson(request));
         }
 
-        if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
+        if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE || event == RntbdConnectionEvent.REPLICA_RECONFIG) {
             this.updateAddressCache(endpoint, request);
         }
     }
@@ -73,10 +78,28 @@ public class RntbdConnectionStateListener {
 
     @SuppressWarnings("unchecked")
     private void updateAddressCache(final RntbdEndpoint endpoint, final RxDocumentServiceRequest request) {
-        this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (remoteAddress, tokens) -> {
-            this.addressResolver.remove(request, new UnmodifiableList<>(new ArrayList<>(tokens)));
-            return null;
+        this.addressCacheUpdateTimestamp.compute(endpoint.remoteAddress(), (address, timestamp) -> {
+            boolean shouldRemoveAddressCache = false;
+
+            if (timestamp == null) {
+                shouldRemoveAddressCache = true;
+            } else {
+                shouldRemoveAddressCache = Duration.between(timestamp, Instant.now()).getSeconds() >= addressCacheRefreshIntervalInSeconds;
+            }
+
+            if (shouldRemoveAddressCache) {
+                this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (remoteAddress, tokens) -> {
+                    this.addressResolver.remove(request, new UnmodifiableList<>(new ArrayList<>(tokens)));
+                    return null;
+                });
+
+                return Instant.now();
+            } else {
+                return timestamp == null ? Instant.now() : timestamp;
+            }
         });
+
+
     }
 
     private void updatePartitionAddressCache(final RntbdAddressCacheToken addressCacheToken) {

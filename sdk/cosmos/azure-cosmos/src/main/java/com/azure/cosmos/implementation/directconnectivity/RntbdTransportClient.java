@@ -9,10 +9,11 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
+import com.azure.cosmos.implementation.ReplicaReconfigurationException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.FailFastRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionEvent;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.micrometer.core.instrument.Tag;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +54,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -235,7 +236,8 @@ public final class RntbdTransportClient extends TransportClient {
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
-        if (this.connectionStateListener != null) {
+        if (this.connectionStateListener != null &&
+            !(record instanceof FailFastRntbdRequestRecord)) {
             this.connectionStateListener.updateConnectionState(endpoint, request);
         }
 
@@ -277,67 +279,53 @@ public final class RntbdTransportClient extends TransportClient {
                     error instanceof Exception ? (Exception) error : new RuntimeException(error));
             }
 
-            if (this.connectionStateListener != null && error instanceof GoneException) {
+            if (this.connectionStateListener != null) {
+                RntbdConnectionEvent event = null;
 
-                final Throwable cause = error.getCause();
-                final RntbdConnectionEvent event;
+                if (error instanceof ReplicaReconfigurationException) {
+                    event = RntbdConnectionEvent.REPLICA_RECONFIG;
+                }
+                else if (error instanceof GoneException) {
+                    final Throwable cause = error.getCause();
 
-                if (cause != null) {
+                    if (cause != null) {
+                        // GoneException was produced by the client, not the server
+                        //
+                        // This will occur when:
+                        //
+                        // * an operation fails due to an IOException which indicates a connection reset by the server,
+                        // * a channel closes unexpectedly because the server stopped taking requests, or
+                        // * an error was detected by the transport client (e.g., IllegalStateException)
+                        // * a request timed out in pending acquisition queue
+                        // * a request failed fast in admission control layer due to high load
+                        //
+                        // We only consider the following scenario which might relates to replica movement.
+                        final Class<?> type = cause.getClass();
 
-                    // GoneException was produced by the client, not the server
-                    //
-                    // This will occur when:
-                    //
-                    // * an operation fails due to an IOException which indicates a connection reset by the server,
-                    // * a channel closes unexpectedly because the server stopped taking requests, or
-                    // * an error was detected by the transport client (e.g., IllegalStateException)
-                    //
-                    // We report the latter as an issue because it may indicate we've got a bug to find and fix.
+                        if (type == ClosedChannelException.class) {
+                            event = RntbdConnectionEvent.READ_EOF;
+                        } else if (type == IOException.class || type == ConnectTimeoutException.class) {
+                            // TODO: Annie: when these two exceptions happens, should endpoint.close() ?
+                            event = RntbdConnectionEvent.READ_FAILURE;
+                        }
 
-                    final Class<?> type = cause.getClass();
-
-                    if (type == ClosedChannelException.class) {
-                        event = RntbdConnectionEvent.READ_EOF;
-                    } else {
-                        reportIssueUnless(logger, type == IOException.class, endpoint,
-                            "expected ClosedChannelException or IOException, not ",
-                            cause);
-                        event = RntbdConnectionEvent.READ_FAILURE;
-                    }
-
-                    logger.warn("connection to {} lost due to {} event caused by ",
-                        endpoint.remoteURI(),
-                        event,
-                        cause);
-
-                } else {
-
-                    // GoneException was created from a response from the server
-                    //
-                    // This will occur for any of a number of reasons. We care about sub-status code zero because it
-                    // indicates the server hosting the targeted endpoint is being discontinued or reconfigured.
-
-                    final GoneException exception = (GoneException) error;
-
-                    if (exception.getSubStatusCode() != 0) {
-                        event = null;
-                    } else {
-                        logger.warn(
-                            "dropping connection to {} because the service is being discontinued or reconfigured",
-                            endpoint.remoteURI());
-                        event = RntbdConnectionEvent.READ_EOF;
+                        if (logger.isDebugEnabled()) {
+                            if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
+                                logger.debug(
+                                    "connection to {} lost due to {} event caused by ",
+                                    endpoint.remoteURI(),
+                                    event,
+                                    cause);
+                            }
+                        }
                     }
                 }
 
-                if (event != null) {
-                    if (!(endpoint.isClosed() || this.isClosed())) {
-                        this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint, request);
-                    }
-                    final GoneException exception = (GoneException) error;
-                    exception.getResponseHeaders().put(BackendHeaders.SUB_STATUS, DISCONTINUING_SERVICE);
+                if (event != null && !(endpoint.isClosed() || this.isClosed())) {
+                    this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint, request);
                 }
             }
-            
+
             assert error instanceof CosmosException;
             CosmosException cosmosException = (CosmosException) error;
             BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());

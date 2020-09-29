@@ -297,6 +297,7 @@ public class HttpConstants {
         public static final int CROSS_PARTITION_QUERY_NOT_SERVABLE = 1004;
 
         // 410: StatusCodeType_Gone: sub-status
+        public static final int REPLICA_RECONFIGURATION = 0;
         public static final int NAME_CACHE_IS_STALE = 1000;
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
         public static final int COMPLETING_SPLIT = 1007;

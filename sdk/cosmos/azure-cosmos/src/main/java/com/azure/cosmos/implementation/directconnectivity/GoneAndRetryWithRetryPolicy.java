@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.Quadruple;
+import com.azure.cosmos.implementation.ReplicaReconfigurationException;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -62,7 +63,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             !(exception instanceof InvalidPartitionException &&
             (this.request.getPartitionKeyRangeIdentity() == null ||
             this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null)) &&
-            !(exception instanceof PartitionKeyRangeIsSplittingException)) {
+            !(exception instanceof PartitionKeyRangeIsSplittingException) &&
+            !(exception instanceof ReplicaReconfigurationException)) {
             logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
             stopStopWatch(this.durationTimer);
@@ -74,45 +76,29 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         int currentRetryAttemptCount = this.attemptCount;
         if (this.attemptCount++ > 1) {
             if (remainingSeconds <= 0) {
-                if (exception instanceof GoneException) {
+                if (exception instanceof GoneException ||
+                    exception instanceof PartitionKeyRangeGoneException ||
+                    exception instanceof InvalidPartitionException ||
+                    exception instanceof ReplicaReconfigurationException) {
+
                     if (this.lastRetryWithException != null) {
                         logger.warn(
-                                "Received gone exception after backoff/retry including at least one RetryWithException. "
-                                        + "Will fail the request with RetryWithException. GoneException: {}. RetryWithException: {}",
-                                exception, this.lastRetryWithException);
-                        exceptionToThrow = this.lastRetryWithException;
-                    } else {
-                        logger.warn("Received gone exception after backoff/retry. Will fail the request. {}",
-                                exception.toString());
-                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
-                    }
-                } else if (exception instanceof PartitionKeyRangeGoneException) {
-                    if (this.lastRetryWithException != null) {
-                        logger.warn(
-                                "Received partition key range gone exception after backoff/retry including at least one RetryWithException."
-                                        + "Will fail the request with RetryWithException. GoneException: {}. RetryWithException: {}",
-                                exception, this.lastRetryWithException);
+                            "Received {} after backoff/retry including at least one RetryWithException. "
+                                + "Will fail the request with RetryWithException. GoneException: {}. RetryWithException: {}",
+                            exception.getClass(),
+                            exception,
+                            this.lastRetryWithException);
+
                         exceptionToThrow = this.lastRetryWithException;
                     } else {
                         logger.warn(
-                                "Received partition key range gone exception after backoff/retry. Will fail the request. {}",
-                                exception.toString());
-                        exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
-                    }
-                } else if (exception instanceof InvalidPartitionException) {
-                    if (this.lastRetryWithException != null) {
-                        logger.warn(
-                                "Received InvalidPartitionException after backoff/retry including at least one RetryWithException. "
-                                        + "Will fail the request with RetryWithException. InvalidPartitionException: {}. RetryWithException: {}",
-                                exception, this.lastRetryWithException);
-                    } else {
-                        logger.warn(
-                                "Received invalid collection partition exception after backoff/retry. Will fail the request. {}",
-                                exception.toString());
+                            "Received {} after backoff/retry. Will fail the request. {}",
+                            exception.getClass(),
+                            exception.toString());
                         exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
                 } else {
-                    logger.warn("Received retrywith exception after backoff/retry. Will fail the request. {}",
+                    logger.warn("Received retry with exception after backoff/retry. Will fail the request. {}",
                             exception.toString());
                 }
                 stopStopWatch(this.durationTimer);
@@ -166,8 +152,13 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             logger.info("Received partition key range splitting exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             forceRefreshAddressCache = false;
-        } else {
-            logger.warn("Received retrywith exception, will retry, {}", exception);
+        } else if (exception instanceof ReplicaReconfigurationException) {
+            logger.info("Received replica reconfigured exception, will retry, {}", exception.toString());
+            // ConnectionStateListener.onConnectionEvent will be called to remove staled address cache when replicaReconfigurationException happened.
+            forceRefreshAddressCache = false;
+        }
+        else {
+            logger.warn("Received retry with exception, will retry, {}", exception);
             // For RetryWithException, prevent the caller
             // from refreshing any caches.
             forceRefreshAddressCache = false;
