@@ -10,9 +10,12 @@ import com.azure.data.tables.implementation.ModelHelper;
 
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * table entity class
@@ -29,6 +32,9 @@ public class TableEntity {
     private final String odataType;
     private final String odataId;
     private final String odataEditLink;
+
+    private static final HashSet<String> tableEntityMethods = Arrays.stream(TableEntity.class.getMethods())
+        .map(Method::getName).collect(Collectors.toCollection(HashSet::new));
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
@@ -123,8 +129,12 @@ public class TableEntity {
      *
      * @return map of properties representing this entity
      */
-    public Map<String, Object> getProperties() {
+    final public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    final void addProperties(Map<String, Object> properties) {
+        this.properties.putAll(properties);
     }
 
     /**
@@ -136,7 +146,7 @@ public class TableEntity {
      * @return The updated {@link TableEntity} object.
      * @throws NullPointerException if {@code key} is null.
      */
-    public TableEntity addProperty(String key, Object value) {
+    final public TableEntity addProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (TablesConstants.PARTITION_KEY.equals(key)) {
@@ -156,7 +166,7 @@ public class TableEntity {
      *
      * @return the row key for the given entity
      */
-    public String getRowKey() {
+    final public String getRowKey() {
         return rowKey;
     }
 
@@ -165,7 +175,7 @@ public class TableEntity {
      *
      * @return the partition key for the given entity
      */
-    public String getPartitionKey() {
+    final public String getPartitionKey() {
         return partitionKey;
     }
 
@@ -174,7 +184,7 @@ public class TableEntity {
      *
      * @return the Timestamp for the entity
      */
-    public OffsetDateTime getTimestamp() {
+    final public OffsetDateTime getTimestamp() {
         return timestamp;
     }
 
@@ -183,7 +193,7 @@ public class TableEntity {
      *
      * @return the etag for the entity
      */
-    public String getETag() {
+    final public String getETag() {
         return eTag;
     }
 
@@ -192,7 +202,7 @@ public class TableEntity {
      *
      * @return type
      */
-    String getOdataType() {
+    final String getOdataType() {
         return odataType;
     }
 
@@ -201,7 +211,7 @@ public class TableEntity {
      *
      * @return ID
      */
-    String getOdataId() {
+    final String getOdataId() {
         return odataId;
     }
 
@@ -210,17 +220,49 @@ public class TableEntity {
      *
      * @return edit link
      */
-    String getOdataEditLink() {
+    final String getOdataEditLink() {
         return odataEditLink;
     }
 
-    <T extends TableEntity> T into(Class<T> clazz) {
+    final void setPropertiesFromGetters() {
+        Class<?> myClass = getClass();
+        if (myClass == TableEntity.class) {
+            return;
+        }
+
+        for (Method m : myClass.getMethods()) {
+            // Skip any non-getter methods
+            if (m.getName().length() < 3
+                || tableEntityMethods.contains(m.getName())
+                || (!m.getName().startsWith("get") && !m.getName().startsWith("is"))
+                || m.getParameterTypes().length != 0
+                || void.class.equals(m.getReturnType())) {
+                continue;
+            }
+
+            int prefixLength = m.getName().startsWith("get") ? 3 : 2;
+            String propName = m.getName().substring(prefixLength);
+
+            try {
+                getProperties().put(propName, m.invoke(this));
+            } catch (ReflectiveOperationException | IllegalArgumentException e) {
+                logger.logThrowableAsWarning(new ReflectiveOperationException(String.format(
+                    "Failed to get property '%s' on type '%s'", propName, myClass.getName()), e));
+            }
+        }
+    }
+
+    final <T extends TableEntity> T convertToSubclass(Class<T> clazz) {
         T result;
         try {
-            result = clazz.getDeclaredConstructor(Map.class).newInstance(properties);
-        } catch (Exception e) {
+            result = clazz.getDeclaredConstructor(String.class, String.class).newInstance(partitionKey, rowKey);
+        } catch (ReflectiveOperationException | SecurityException e) {
+            logger.logThrowableAsWarning(new ReflectiveOperationException(String.format(
+                "Failed to instantiate type '%s'", clazz.getName()), e));
             return null;
         }
+
+        result.addProperties(properties);
 
         for (Method m : clazz.getMethods()) {
             // Skip any non-setter methods

@@ -1,7 +1,6 @@
 package com.azure.data.tables.models;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
 import java.util.UUID;
 
 public class SampleEntity extends TableEntity {
@@ -14,9 +13,8 @@ public class SampleEntity extends TableEntity {
     private long longField;
     private String stringField;
 
-
-    SampleEntity(Map<String, Object> properties) {
-        super(properties);
+    public SampleEntity(String partitionKey, String rowKey) {
+        super(partitionKey, rowKey);
     }
 
     public int getIntField() {
