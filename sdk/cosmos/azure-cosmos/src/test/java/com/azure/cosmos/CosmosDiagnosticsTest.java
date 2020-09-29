@@ -619,10 +619,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         // first request initialized the rntbd service endpoint
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isAfterOrEqualTo(beforeInitializingRntbdServiceEndpoint);
-        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isBeforeOrEqualTo(afterInitializingRntbdServiceEndpoint);
 
-        assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2);
-        assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2);
+        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(1);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText())).isBeforeOrEqualTo(afterInitializationThreshold);
+
+        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterOperation2Threshold = afterOperation2.plusMillis(1);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2Threshold);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText())).isAfterOrEqualTo(beforeOperation2).isBeforeOrEqualTo(afterOperation2Threshold);
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {
