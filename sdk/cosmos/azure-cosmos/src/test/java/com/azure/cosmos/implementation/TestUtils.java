@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import org.mockito.Mockito;
 
 public class TestUtils {
@@ -47,8 +48,21 @@ public class TestUtils {
         Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
 
         return clientContext;
-
     }
+
+    public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
+        RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
+        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
+
+        return dsr;
+    }
+
+    public static RxDocumentServiceRequest ensureClientContextSet(RxDocumentServiceRequest request, DiagnosticsClientContext clientContext) {
+        Mockito.doReturn(clientContext.createDiagnostics()).when(request).createCosmosDiagnostics();
+        return request;
+    }
+
 
     private TestUtils() {
     }

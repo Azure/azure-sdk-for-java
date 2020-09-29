@@ -17,16 +17,14 @@ import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
 
     @Test(groups = "unit")
     public void readTimeout() throws Exception {
-        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
-
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -48,7 +46,8 @@ public class RxGatewayStoreModelTest {
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put("key", "value");
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
+
 
         Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()

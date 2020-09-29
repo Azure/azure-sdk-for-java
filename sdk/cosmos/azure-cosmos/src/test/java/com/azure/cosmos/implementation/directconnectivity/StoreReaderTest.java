@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -46,6 +47,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class StoreReaderTest {
+    private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+
     private static final int TIMEOUT = 30000;
 
 
@@ -77,7 +80,7 @@ public class StoreReaderTest {
                 }
             }
         }.start())).when(addressSelector).resolveAllUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(true), Mockito.eq(true));
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         storeReader.startBackgroundAddressRefresh(request);
 
         subject.onNext(uris);

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -39,8 +40,10 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPL
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.azure.cosmos.implementation.TestUtils.*;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class ConsistencyWriterTest {
+    private final static DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
 
     private AddressSelector addressSelector;
     private ISessionContainer sessionContainer;
@@ -78,7 +81,7 @@ public class ConsistencyWriterTest {
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
-        consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(),
+        consistencyWriter = new ConsistencyWriter(clientContext,
                 addressSelectorWrapper.addressSelector,
                 sessionContainer,
                 transportClientWrapper.transportClient,
@@ -87,8 +90,7 @@ public class ConsistencyWriterTest {
                 false);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
-        RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
 
         Mono<StoreResponse> res = consistencyWriter.writeAsync(dsr, timeoutHelper, false);
 
@@ -130,7 +132,7 @@ public class ConsistencyWriterTest {
                 }
             }.start());
         }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
-        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         consistencyWriter.startBackgroundAddressRefresh(request);
 
         directProcessor.onNext(uri);
@@ -168,7 +170,7 @@ public class ConsistencyWriterTest {
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
-        spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
@@ -185,7 +187,7 @@ public class ConsistencyWriterTest {
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
-        spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
@@ -197,14 +199,14 @@ public class ConsistencyWriterTest {
         return new Object[][]{
                 {
                         ConsistencyLevel.SESSION,
-                        Mockito.mock(RxDocumentServiceRequest.class),
+                        mockDocumentServiceRequest(clientContext),
                         Mockito.mock(StoreResponse.class),
 
                         false,
                 },
                 {
                         ConsistencyLevel.EVENTUAL,
-                        Mockito.mock(RxDocumentServiceRequest.class),
+                        mockDocumentServiceRequest(clientContext),
                         Mockito.mock(StoreResponse.class),
 
                         false,
@@ -212,7 +214,7 @@ public class ConsistencyWriterTest {
                 {
 
                         ConsistencyLevel.EVENTUAL,
-                        Mockito.mock(RxDocumentServiceRequest.class),
+                        mockDocumentServiceRequest(clientContext),
                         StoreResponseBuilder.create()
                                 .withHeader(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS, Integer.toString(5))
                                 .build(),
@@ -221,7 +223,7 @@ public class ConsistencyWriterTest {
                 {
 
                         ConsistencyLevel.STRONG,
-                        Mockito.mock(RxDocumentServiceRequest.class),
+                        mockDocumentServiceRequest(clientContext),
                         StoreResponseBuilder.create()
                                 .withHeader(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS, Integer.toString(5))
                                 .build(),
@@ -230,7 +232,7 @@ public class ConsistencyWriterTest {
                 {
 
                         ConsistencyLevel.STRONG,
-                        Mockito.mock(RxDocumentServiceRequest.class),
+                        mockDocumentServiceRequest(clientContext),
                         StoreResponseBuilder.create()
                                 .withHeader(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS, Integer.toString(0))
                                 .build(),
@@ -255,7 +257,7 @@ public class ConsistencyWriterTest {
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
-        consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(),
+        consistencyWriter = new ConsistencyWriter(clientContext,
                 addressSelector,
                 sessionContainer,
                 transportClient,
