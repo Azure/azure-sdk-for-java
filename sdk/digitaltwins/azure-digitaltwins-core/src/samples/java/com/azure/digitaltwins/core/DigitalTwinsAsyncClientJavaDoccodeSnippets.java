@@ -372,7 +372,19 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void updateRelationshipWithResponse() {
+        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.updateRelationshipWithResponse#String-String-List-Options
+        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
+
+        digitalTwinsAsyncClient.updateRelationshipWithResponse(
+            "myDigitalTwinId",
+            "myRelationshipId",
+            updateOperationUtility.getUpdateOperations(),
+            new UpdateRelationshipRequestOptions())
+        .subscribe(updateResponse -> System.out.println("Relationship updated with status code: " + updateResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.updateRelationshipWithResponse#String-String-List-Options
     }
 
     /**
