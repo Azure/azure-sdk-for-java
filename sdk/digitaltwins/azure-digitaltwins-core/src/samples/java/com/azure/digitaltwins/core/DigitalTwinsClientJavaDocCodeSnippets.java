@@ -402,7 +402,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteRelationship() {
+        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.deleteRelationship#String-String
+        digitalTwinsClient.deleteRelationship("myDigitalTwinId", "myRelationshipId");
+        // END: com.azure.digitaltwins.core.syncclient.deleteRelationship#String-String
     }
 
     /**
@@ -410,7 +414,17 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteRelationshipWithResponse() {
+        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.deleteRelationshipWithResponse#String-String-Options-Context
+        Response deleteResponse = digitalTwinsClient.deleteRelationshipWithResponse(
+            "myDigitalTwinId",
+            "myRelationshipId",
+            new DeleteRelationshipRequestOptions(),
+            new Context("key", "value"));
+
+        System.out.println("Deleted relationship with HTTP status code: " + deleteResponse.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.deleteRelationshipWithResponse#String-String-Options-Context
     }
 
     /**

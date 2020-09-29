@@ -371,6 +371,10 @@ public final class DigitalTwinsClient {
     /**
      * Deletes a relationship on a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.deleteRelationship#String-String}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
      */
@@ -381,6 +385,10 @@ public final class DigitalTwinsClient {
 
     /**
      * Deletes a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.deleteRelationshipWithResponse#String-String-Options-Context}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.

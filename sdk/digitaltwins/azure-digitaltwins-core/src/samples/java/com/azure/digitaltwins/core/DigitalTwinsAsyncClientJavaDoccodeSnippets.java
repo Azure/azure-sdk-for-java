@@ -1,5 +1,6 @@
 package com.azure.digitaltwins.core;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -392,7 +393,12 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void deleteRelationship() {
+        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteRelationship#String-String
+        digitalTwinsAsyncClient.deleteRelationship("myDigitalTwinId", "myRelationshipId")
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.deleteRelationship#String-String
     }
 
     /**
@@ -400,7 +406,16 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void deleteRelationshipWithResponse() {
+        DigitalTwinsAsyncClient digitalTwinsAsyncClient = createDigitalTwinsAsyncClient();
 
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.deleteRelationshipWithResponse#String-String-Options
+        digitalTwinsAsyncClient.deleteRelationshipWithResponse(
+            "myDigitalTwinId",
+            "myRelationshipId",
+            new DeleteRelationshipRequestOptions(),
+            new Context("key", "value"))
+        .subscribe(deleteResponse -> System.out.println("Deleted relationship with HTTP status code: " + deleteResponse.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.deleteRelationshipWithResponse#String-String-Options
     }
 
     /**

@@ -519,6 +519,10 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Deletes a relationship on a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteRelationship#String-String}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
      * @return An empty Mono.
@@ -531,6 +535,10 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteRelationshipWithResponse#String-String-Options}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
