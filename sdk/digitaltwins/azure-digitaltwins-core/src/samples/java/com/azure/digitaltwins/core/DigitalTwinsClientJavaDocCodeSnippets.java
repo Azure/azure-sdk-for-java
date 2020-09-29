@@ -365,7 +365,14 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void updateRelationship() {
+        DigitalTwinsClient digitalTwinsClient = createDigitalTwinsClient();
 
+        // BEGIN: com.azure.digitaltwins.core.syncclient.updateRelationship#String-String-List
+        UpdateOperationUtility updateOperationUtility = new UpdateOperationUtility();
+        updateOperationUtility.appendReplaceOperation("/relationshipProperty1", "new property value");
+
+        digitalTwinsClient.updateRelationship("myDigitalTwinId", "myRelationshipId", updateOperationUtility.getUpdateOperations());
+        // END: com.azure.digitaltwins.core.syncclient.updateRelationship#String-String-List
     }
 
     /**

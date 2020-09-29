@@ -334,6 +334,10 @@ public final class DigitalTwinsClient {
     /**
      * Updates the properties of a relationship on a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.updateRelationship#String-String-List}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
      * @param relationshipUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
