@@ -111,8 +111,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
                 }
             } else if (clientException != null && clientException.getCause() instanceof ReadTimeoutException) {
-                //if operationtype is QueryPlan / AddressRefresh then just retry
-                if (this.operationType == OperationType.QueryPlan || this.operationType == OperationType.AddressRefresh) {
+                //if operationType is QueryPlan / AddressRefresh then just retry
+                //  TODO: We need to add AddressRefresh scenario here
+                if (this.operationType == OperationType.QueryPlan) {
                     return shouldRetryQueryPlanAndAddress();
                 }
             } else {

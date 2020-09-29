@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.OperationType;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Flux;
 
@@ -21,9 +18,8 @@ public class HttpRequest {
     private URI uri;
     private int port;
     private HttpHeaders headers;
-    private Flux<ByteBuf> body;
+    private Flux<byte[]> body;
     private ReactorNettyRequestRecord reactorNettyRequestRecord;
-    private OperationType operationType;
 
     /**
      * Create a new HttpRequest instance.
@@ -31,13 +27,12 @@ public class HttpRequest {
      * @param httpMethod the HTTP request method
      * @param uri        the target address to send the request to
      */
-    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders httpHeaders, OperationType operationType) {
+    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders httpHeaders) {
         this.httpMethod = httpMethod;
         this.uri = uri;
         this.port = port;
         this.headers = httpHeaders;
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
-        this.operationType = operationType;
     }
 
     /**
@@ -62,14 +57,13 @@ public class HttpRequest {
      * @param headers    the HTTP headers to use with this request
      * @param body       the request content
      */
-    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders headers, Flux<ByteBuf> body, OperationType operationType) {
+    public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders headers, Flux<byte[]> body) {
         this.httpMethod = httpMethod;
         this.uri = uri;
         this.port = port;
         this.headers = headers;
         this.body = body;
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
-        this.operationType = operationType;
     }
 
     /**
@@ -170,7 +164,7 @@ public class HttpRequest {
      *
      * @return the content to be send
      */
-    public Flux<ByteBuf> body() {
+    public Flux<byte[]> body() {
         return body;
     }
 
@@ -182,7 +176,7 @@ public class HttpRequest {
      */
     public HttpRequest withBody(String content) {
         final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return withBody(bodyBytes);
+        return withBody(Flux.just(bodyBytes));
     }
 
     /**
@@ -194,20 +188,18 @@ public class HttpRequest {
      */
     public HttpRequest withBody(byte[] content) {
         headers.set("Content-Length", String.valueOf(content.length));
-        // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
-        return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
+        this.body = Flux.just(content);
+        return this;
     }
 
     /**
-     * Set request content.
-     * <p>
-     * Caller must set the Content-Length header to indicate the length of the content,
-     * or use Transfer-Encoding: chunked.
+     * Set the request content.
+     * The Content-Length header will be set based on the given content's length
      *
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(Flux<ByteBuf> content) {
+    public HttpRequest withBody(Flux<byte[]> content) {
         this.body = content;
         return this;
     }
@@ -230,26 +222,6 @@ public class HttpRequest {
      */
     public ReactorNettyRequestRecord reactorNettyRequestRecord() {
         return this.reactorNettyRequestRecord;
-    }
-
-    /**
-     * Gets the operation type of this request
-     *
-     * @return operationType OperationType
-     */
-    public OperationType operationType() {
-        return operationType;
-    }
-
-    /**
-     * Sets the operation type of the request
-     *
-     * @param operationType operationType of the request
-     * @return this HttpRequest
-     */
-    public HttpRequest withOperationType(OperationType operationType) {
-        this.operationType = operationType;
-        return this;
     }
 
     private ReactorNettyRequestRecord createReactorNettyRequestRecord(){

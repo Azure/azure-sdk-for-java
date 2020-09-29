@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -43,6 +44,11 @@ public class SharedGatewayHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return httpClient.send(request);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout) {
+        return httpClient.send(request, responseTimeout);
     }
 
     public int getReferenceCounter() {

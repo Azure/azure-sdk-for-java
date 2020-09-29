@@ -38,7 +38,7 @@ public class Configs {
     private static final String MAX_HTTP_CHUNK_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_CHUNK_SIZE_IN_BYTES";
     private static final String MAX_HTTP_HEADER_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_HEADER_SIZE_IN_BYTES";
     private static final String MAX_DIRECT_HTTPS_POOL_SIZE = "COSMOS.MAX_DIRECT_HTTP_CONNECTION_LIMIT";
-    private static final String DIRECT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.DIRECT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS";
+    private static final String HTTPS_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTPS_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
 
@@ -68,7 +68,7 @@ public class Configs {
     private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
     private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
-    private static final int DEFAULT_DIRECT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS = 60;
+    private static final int DEFAULT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 3;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 3;
 
@@ -182,15 +182,15 @@ public class Configs {
         return REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE;
     }
 
-    public int getDirectHttpsResponseTimeoutInSeconds() {
-        return getJVMConfigAsInt(DIRECT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_DIRECT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS);
+    public static int getHttpsResponseTimeoutInSeconds() {
+        return getJVMConfigAsInt(HTTPS_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_HTTPS_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 
-    public int getQueryPlanResponseTimeoutInSeconds() {
+    public static int getQueryPlanResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 
-    public int getAddressRefreshResponseTimeoutInSeconds() {
+    public static int getAddressRefreshResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 

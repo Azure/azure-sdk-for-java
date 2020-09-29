@@ -40,8 +40,7 @@ public enum OperationType {
     Stop,
     Throttle,
     Update,
-    Upsert,
-    AddressRefresh;
+    Upsert;
 
     public boolean isWriteOperation() {
         return this == Create ||

@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -148,18 +149,20 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
-            // a valid flux (including Flux.empty) hence null check is not required here.
-            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
+            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,
                     uri.getPort(),
                     httpHeaders,
-                    byteBufObservable,
-                    request.getOperationType());
+                    contentAsByteArray);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpsResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            }
+
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
             return toDocumentServiceResponse(httpResponseMono, request);
 

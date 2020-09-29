@@ -96,7 +96,13 @@ class ReactorNettyClient implements HttpClient {
     }
 
     @Override
-    public Mono<HttpResponse> send(final HttpRequest request) {
+    public Mono<HttpResponse> send(HttpRequest request) {
+        //  By default, Configs.getHttpsResponseTimeoutInSeconds default value is used as response timeout
+        return send(request, Duration.ofSeconds(Configs.getHttpsResponseTimeoutInSeconds()));
+    }
+
+    @Override
+    public Mono<HttpResponse> send(final HttpRequest request, Duration responseTimeout) {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.uri());
         Objects.requireNonNull(this.httpClientConfig);
@@ -107,15 +113,6 @@ class ReactorNettyClient implements HttpClient {
         }
 
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
-
-        final Duration responseTimeout;
-        if (OperationType.QueryPlan.equals(request.operationType())) {
-            responseTimeout = Duration.ofSeconds(this.httpClientConfig.getConfigs().getQueryPlanResponseTimeoutInSeconds());
-        } else if (OperationType.AddressRefresh.equals(request.operationType())) {
-            responseTimeout = Duration.ofSeconds(this.httpClientConfig.getConfigs().getAddressRefreshResponseTimeoutInSeconds());
-        } else {
-            responseTimeout = Duration.ofSeconds(this.httpClientConfig.getConfigs().getDirectHttpsResponseTimeoutInSeconds());
-        }
 
         return this.httpClient
             .observe((connection, state) -> {
@@ -170,7 +167,7 @@ class ReactorNettyClient implements HttpClient {
                 reactorNettyRequest.header(header.name(), header.value());
             }
             if (restRequest.body() != null) {
-                return reactorNettyOutbound.send(restRequest.body());
+                return reactorNettyOutbound.sendByteArray(restRequest.body());
             } else {
                 return reactorNettyOutbound;
             }

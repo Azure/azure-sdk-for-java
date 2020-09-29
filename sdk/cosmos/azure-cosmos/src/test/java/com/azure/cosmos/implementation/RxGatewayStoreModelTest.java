@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +34,7 @@ public class RxGatewayStoreModelTest {
                 .when(globalEndpointManager).resolveServiceEndpoint(Mockito.any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-                .when(httpClient).send(Mockito.any(HttpRequest.class));
+                .when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
                 sessionContainer,

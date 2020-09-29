@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -300,9 +301,10 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         Instant addressCallStartTime = Instant.now();
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders, OperationType.AddressRefresh);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
+            Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
@@ -523,9 +525,10 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         HttpRequest httpRequest;
-        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders, OperationType.AddressRefresh);
+        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
         Instant addressCallStartTime = Instant.now();
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
+            Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
