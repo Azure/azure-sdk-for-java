@@ -286,4 +286,3 @@ public class ReadmeSamples {
         chatThreadClient.sendTypingNotification();
     }
 }
-

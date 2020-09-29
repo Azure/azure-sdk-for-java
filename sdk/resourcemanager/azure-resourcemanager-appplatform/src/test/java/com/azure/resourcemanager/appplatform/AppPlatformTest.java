@@ -21,6 +21,7 @@ import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
             } finally {
                 connection.disconnect();
             }
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         }
         return false;
     }
@@ -104,7 +105,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
             } finally {
                 connection.disconnect();
             }
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         }
         return false;
     }

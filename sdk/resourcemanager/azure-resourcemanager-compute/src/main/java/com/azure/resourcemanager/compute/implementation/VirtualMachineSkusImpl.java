@@ -42,7 +42,8 @@ class VirtualMachineSkusImpl
     public PagedFlux<VirtualMachineSku> listAsync() {
         return PagedConverter
             .convertListToPagedFlux(
-                innerCollection.listSkusAsync(offer.region().toString(), offer.publisher().name(), offer.name()))
+                innerCollection.listSkusWithResponseAsync(
+                    offer.region().toString(), offer.publisher().name(), offer.name()))
             .mapPage(this::wrapModel);
     }
 }

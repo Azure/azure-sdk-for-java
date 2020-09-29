@@ -17,6 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 public class WebAppsWebDeployTests extends AppServiceTest {
     private String rgName1 = "";
     private String webappName1 = "";
@@ -58,13 +60,13 @@ public class WebAppsWebDeployTests extends AppServiceTest {
             webApp1
                 .deploy()
                 .withPackageUri(
-                    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/webapps.zip")
+                    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
                 .withExistingDeploymentsDeleted(true)
                 .execute();
 
         Assertions.assertNotNull(deployment);
         if (!isPlaybackMode()) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             Response<String> response = curl("http://" + webApp1.defaultHostname() + "/helloworld/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();

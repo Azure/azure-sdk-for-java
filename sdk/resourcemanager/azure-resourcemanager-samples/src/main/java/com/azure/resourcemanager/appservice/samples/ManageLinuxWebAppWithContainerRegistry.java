@@ -27,6 +27,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -49,9 +50,9 @@ public class ManageLinuxWebAppWithContainerRegistry {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgACR", 15);
-        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acrsample", 20);
-        final String appName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACR", 15);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp", 20);
         final String appUrl = appName + ".azurewebsites.net";
         final Region region = Region.US_EAST;
         final String dockerImageName = "tomcat";
@@ -150,10 +151,10 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             // warm up
             System.out.println("Warming up " + appUrl + "...");
-            Utils.get("http://" + appUrl);
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            Utils.sendGetRequest("http://" + appUrl);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + appUrl + "...");
-            System.out.println(Utils.get("http://" + appUrl));
+            System.out.println(Utils.sendGetRequest("http://" + appUrl));
 
             return true;
         } finally {

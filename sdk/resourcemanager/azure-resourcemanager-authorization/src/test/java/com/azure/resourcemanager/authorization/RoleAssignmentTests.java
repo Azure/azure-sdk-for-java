@@ -10,6 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 public class RoleAssignmentTests extends GraphRbacManagementTest {
     @Test
     public void canCRUDRoleAssignment() throws Exception {
@@ -19,7 +21,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         ServicePrincipal sp =
             authorizationManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();
 
-        ResourceManagerUtils.InternalRuntimeContext.sleep(15000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 
         RoleAssignment roleAssignment =
             authorizationManager

@@ -13,7 +13,7 @@
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
     <module>azure-spring-boot-starter-active-directory-b2c</module>
-    <module>azure-spring-boot-starter-cosmosdb</module>
+    <module>azure-spring-boot-starter-cosmos</module>
     <module>azure-spring-boot-starter-data-gremlin</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
     <module>azure-spring-boot-starter-metrics</module>
@@ -21,7 +21,7 @@
     <module>azure-spring-boot-test-application</module>
     <module>azure-spring-boot-test-core</module>
     <module>azure-spring-boot-test-aad</module>
-    <module>azure-spring-boot-test-cosmosdb</module>
+    <module>azure-spring-boot-test-cosmos</module>
     <module>azure-spring-boot-test-keyvault</module>
     <module>azure-spring-boot-test-servicebus-jms</module>
     <module>azure-spring-cloud-test-eventhubs</module>
@@ -30,7 +30,7 @@
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-stateless</module>
-    <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-mediaservices</module>

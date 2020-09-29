@@ -40,8 +40,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -53,6 +55,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /** The base for app service tests. */
 public class AppServiceTest extends ResourceManagerTestBase {
@@ -193,7 +196,12 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Mono<Response<Flux<ByteBuffer>>> response =
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(3, Duration.ofSeconds(30))
+                        .filter(t -> t instanceof TimeoutException));
+            return stringResponse(response).block();
         } catch (MalformedURLException e) {
             Assertions.fail();
             return null;
@@ -202,7 +210,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body))
+            return stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
                 .block()
                 .getValue();
         } catch (Exception e) {
@@ -227,7 +235,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
         return path;
     }
 
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono
             .flatMap(
                 response ->
@@ -240,7 +248,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
                                     response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
-    protected WebAppTestClient httpClient =
+    private static final WebAppTestClient HTTP_CLIENT =
         RestProxy
             .create(
                 WebAppTestClient.class,
@@ -255,12 +263,12 @@ public class AppServiceTest extends ResourceManagerTestBase {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(
+        Mono<Response<Flux<ByteBuffer>>> getString(
             @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(
+        Mono<Response<Flux<ByteBuffer>>> postString(
             @HostParam("$host") String host,
             @PathParam(value = "path", encoded = true) String path,
             @BodyParam("text/plain") String body);
