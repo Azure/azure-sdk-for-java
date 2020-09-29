@@ -10,3 +10,4 @@ jobs:
     ResourceServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: RECORD
+      
