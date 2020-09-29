@@ -918,6 +918,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Decommissions a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.decommissionModel#String}
+     *
      * @param modelId The Id of the model to decommission.
      * @return an empty Mono
      */
@@ -929,6 +934,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Decommissions a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.decommissionModelWithResponse#String}
+     *
      * @param modelId The Id of the model to decommission.
      * @return A {@link Response} with no parsed payload object.
      */

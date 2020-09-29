@@ -549,7 +549,10 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void decommissionModel() {
-
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.decommissionModel#String
+        digitalTwinsAsyncClient.decommissionModel("dtmi:samples:Building;1")
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.decommissionModel#String
     }
 
     /**
@@ -557,7 +560,10 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
      */
     @Override
     public void decommissionModelWithResponse() {
-
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.decommissionModelWithResponse#String
+        digitalTwinsAsyncClient.decommissionModelWithResponse("dtmi:samples:Building;1", new Context("key", "value"))
+            .subscribe(response -> System.out.println("Received decommission model HTTP response with status:" + response.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.decommissionModelWithResponse#String
     }
 
     /**

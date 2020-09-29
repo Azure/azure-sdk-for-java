@@ -590,6 +590,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Decommissions a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.decommissionModel#String}
+     *
      * @param modelId The Id of the model to decommission.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -599,6 +604,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Decommissions a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.decommissionModelWithResponse#String}
+     *
      * @param modelId The Id of the model to decommission.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with no parsed payload object.
