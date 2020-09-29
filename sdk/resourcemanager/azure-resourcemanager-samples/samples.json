@@ -177,15 +177,15 @@
     },
     {
       "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnWithCustomDomain.java",
-      "githubPath": "Azure-Samples/cdn-java-manage-cdn-with-custom-domain",
-      "description": "Getting started on managing CDN with custom domain using Java"
-    },
-    {
-      "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdn.java",
       "githubPath": "Azure-Samples/cdn-java-manage-cdn",
       "description": "Getting started on managing CDN using Java"
+    },	
+    {
+      "owner": "yungezz",
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnWithCustomDomain.java",
+      "githubPath": "Azure-Samples/cdn-java-manage-cdn-with-custom-domain",
+      "description": "Getting started on managing CDN with custom domain using Java"
     },
     {
       "owner": "yungezz",
