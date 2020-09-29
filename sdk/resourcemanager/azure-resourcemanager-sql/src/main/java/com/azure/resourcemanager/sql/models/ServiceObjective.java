@@ -7,14 +7,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 
 /** An immutable client-side representation of an Azure SQL Service Objective. */
 @Fluent
 public interface ServiceObjective
-    extends HasInner<ServiceObjectiveInner>, Refreshable<ServiceObjective>, HasResourceGroup, HasName, HasId {
+    extends HasInnerModel<ServiceObjectiveInner>, Refreshable<ServiceObjective>, HasResourceGroup, HasName, HasId {
     /** @return name of the SQL Server to which this service objective belongs */
     String sqlServerName();
 

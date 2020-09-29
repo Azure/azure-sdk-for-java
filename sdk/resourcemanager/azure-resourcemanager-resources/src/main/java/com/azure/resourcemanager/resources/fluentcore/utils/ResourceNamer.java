@@ -27,7 +27,7 @@ public class ResourceNamer implements IdentifierProvider {
     }
 
     @Override
-    public String randomName(String prefix, int maxLen) {
+    public String getRandomName(String prefix, int maxLen) {
         prefix = prefix.toLowerCase(Locale.ROOT);
         int minRandomnessLength = 5;
         if (maxLen <= minRandomnessLength) {
@@ -50,7 +50,7 @@ public class ResourceNamer implements IdentifierProvider {
     }
 
     @Override
-    public String randomUuid() {
+    public String getRandomUuid() {
         return UUID.randomUUID().toString();
     }
 

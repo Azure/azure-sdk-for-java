@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -85,7 +85,7 @@ public class SqlFirewallRuleImpl
     protected Mono<FirewallRuleInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -99,7 +99,7 @@ public class SqlFirewallRuleImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -114,22 +114,22 @@ public class SqlFirewallRuleImpl
 
     @Override
     public String startIpAddress() {
-        return this.inner().startIpAddress();
+        return this.innerModel().startIpAddress();
     }
 
     @Override
     public String endIpAddress() {
-        return this.inner().endIpAddress();
+        return this.innerModel().endIpAddress();
     }
 
     @Override
     public String kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.fromName(this.innerModel().location());
     }
 
     @Override
@@ -152,9 +152,9 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);
@@ -167,9 +167,9 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRuleImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);
@@ -181,20 +181,20 @@ public class SqlFirewallRuleImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFirewallRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     public SqlFirewallRuleImpl withStartIpAddress(String startIpAddress) {
-        this.inner().withStartIpAddress(startIpAddress);
+        this.innerModel().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
     public SqlFirewallRuleImpl withEndIpAddress(String endIpAddress) {
-        this.inner().withEndIpAddress(endIpAddress);
+        this.innerModel().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -223,15 +223,15 @@ public class SqlFirewallRuleImpl
 
     @Override
     public SqlFirewallRuleImpl withIpAddressRange(String startIpAddress, String endIpAddress) {
-        this.inner().withStartIpAddress(startIpAddress);
-        this.inner().withEndIpAddress(endIpAddress);
+        this.innerModel().withStartIpAddress(startIpAddress);
+        this.innerModel().withEndIpAddress(endIpAddress);
         return this;
     }
 
     @Override
     public SqlFirewallRuleImpl withIpAddress(String ipAddress) {
-        this.inner().withStartIpAddress(ipAddress);
-        this.inner().withEndIpAddress(ipAddress);
+        this.innerModel().withStartIpAddress(ipAddress);
+        this.innerModel().withEndIpAddress(ipAddress);
         return this;
     }
 

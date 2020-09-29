@@ -4,372 +4,183 @@
 
 package com.azure.resourcemanager.monitor.fluent;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the MonitorClient type. */
-@ServiceClient(builder = MonitorClientBuilder.class)
-public final class MonitorClient extends AzureServiceClient {
-    private final ClientLogger logger = new ClientLogger(MonitorClient.class);
-
-    /** The Azure subscription Id. */
-    private final String subscriptionId;
-
+/** The interface for MonitorClient class. */
+public interface MonitorClient {
     /**
      * Gets The Azure subscription Id.
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /** server parameter. */
-    private final String endpoint;
+    String getSubscriptionId();
 
     /**
      * Gets server parameter.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
-    }
-
-    /** The HTTP pipeline to send requests through. */
-    private final HttpPipeline httpPipeline;
+    String getEndpoint();
 
     /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     *
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /** The default poll interval for long-running operation. */
-    private final Duration defaultPollInterval;
+    HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
      *
      * @return the defaultPollInterval value.
      */
-    public Duration getDefaultPollInterval() {
-        return this.defaultPollInterval;
-    }
-
-    /** The AutoscaleSettingsClient object to access its operations. */
-    private final AutoscaleSettingsClient autoscaleSettings;
+    Duration getDefaultPollInterval();
 
     /**
      * Gets the AutoscaleSettingsClient object to access its operations.
      *
      * @return the AutoscaleSettingsClient object.
      */
-    public AutoscaleSettingsClient getAutoscaleSettings() {
-        return this.autoscaleSettings;
-    }
-
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    AutoscaleSettingsClient getAutoscaleSettings();
 
     /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The AlertRuleIncidentsClient object to access its operations. */
-    private final AlertRuleIncidentsClient alertRuleIncidents;
+    OperationsClient getOperations();
 
     /**
      * Gets the AlertRuleIncidentsClient object to access its operations.
      *
      * @return the AlertRuleIncidentsClient object.
      */
-    public AlertRuleIncidentsClient getAlertRuleIncidents() {
-        return this.alertRuleIncidents;
-    }
-
-    /** The AlertRulesClient object to access its operations. */
-    private final AlertRulesClient alertRules;
+    AlertRuleIncidentsClient getAlertRuleIncidents();
 
     /**
      * Gets the AlertRulesClient object to access its operations.
      *
      * @return the AlertRulesClient object.
      */
-    public AlertRulesClient getAlertRules() {
-        return this.alertRules;
-    }
-
-    /** The LogProfilesClient object to access its operations. */
-    private final LogProfilesClient logProfiles;
+    AlertRulesClient getAlertRules();
 
     /**
      * Gets the LogProfilesClient object to access its operations.
      *
      * @return the LogProfilesClient object.
      */
-    public LogProfilesClient getLogProfiles() {
-        return this.logProfiles;
-    }
-
-    /** The DiagnosticSettingsClient object to access its operations. */
-    private final DiagnosticSettingsClient diagnosticSettings;
+    LogProfilesClient getLogProfiles();
 
     /**
      * Gets the DiagnosticSettingsClient object to access its operations.
      *
      * @return the DiagnosticSettingsClient object.
      */
-    public DiagnosticSettingsClient getDiagnosticSettings() {
-        return this.diagnosticSettings;
-    }
-
-    /** The DiagnosticSettingsCategoriesClient object to access its operations. */
-    private final DiagnosticSettingsCategoriesClient diagnosticSettingsCategories;
+    DiagnosticSettingsClient getDiagnosticSettings();
 
     /**
      * Gets the DiagnosticSettingsCategoriesClient object to access its operations.
      *
      * @return the DiagnosticSettingsCategoriesClient object.
      */
-    public DiagnosticSettingsCategoriesClient getDiagnosticSettingsCategories() {
-        return this.diagnosticSettingsCategories;
-    }
-
-    /** The ActionGroupsClient object to access its operations. */
-    private final ActionGroupsClient actionGroups;
+    DiagnosticSettingsCategoriesClient getDiagnosticSettingsCategories();
 
     /**
      * Gets the ActionGroupsClient object to access its operations.
      *
      * @return the ActionGroupsClient object.
      */
-    public ActionGroupsClient getActionGroups() {
-        return this.actionGroups;
-    }
-
-    /** The ActivityLogAlertsClient object to access its operations. */
-    private final ActivityLogAlertsClient activityLogAlerts;
+    ActionGroupsClient getActionGroups();
 
     /**
      * Gets the ActivityLogAlertsClient object to access its operations.
      *
      * @return the ActivityLogAlertsClient object.
      */
-    public ActivityLogAlertsClient getActivityLogAlerts() {
-        return this.activityLogAlerts;
-    }
-
-    /** The ActivityLogsClient object to access its operations. */
-    private final ActivityLogsClient activityLogs;
+    ActivityLogAlertsClient getActivityLogAlerts();
 
     /**
      * Gets the ActivityLogsClient object to access its operations.
      *
      * @return the ActivityLogsClient object.
      */
-    public ActivityLogsClient getActivityLogs() {
-        return this.activityLogs;
-    }
-
-    /** The EventCategoriesClient object to access its operations. */
-    private final EventCategoriesClient eventCategories;
+    ActivityLogsClient getActivityLogs();
 
     /**
      * Gets the EventCategoriesClient object to access its operations.
      *
      * @return the EventCategoriesClient object.
      */
-    public EventCategoriesClient getEventCategories() {
-        return this.eventCategories;
-    }
-
-    /** The TenantActivityLogsClient object to access its operations. */
-    private final TenantActivityLogsClient tenantActivityLogs;
+    EventCategoriesClient getEventCategories();
 
     /**
      * Gets the TenantActivityLogsClient object to access its operations.
      *
      * @return the TenantActivityLogsClient object.
      */
-    public TenantActivityLogsClient getTenantActivityLogs() {
-        return this.tenantActivityLogs;
-    }
-
-    /** The MetricDefinitionsClient object to access its operations. */
-    private final MetricDefinitionsClient metricDefinitions;
+    TenantActivityLogsClient getTenantActivityLogs();
 
     /**
      * Gets the MetricDefinitionsClient object to access its operations.
      *
      * @return the MetricDefinitionsClient object.
      */
-    public MetricDefinitionsClient getMetricDefinitions() {
-        return this.metricDefinitions;
-    }
-
-    /** The MetricsClient object to access its operations. */
-    private final MetricsClient metrics;
+    MetricDefinitionsClient getMetricDefinitions();
 
     /**
      * Gets the MetricsClient object to access its operations.
      *
      * @return the MetricsClient object.
      */
-    public MetricsClient getMetrics() {
-        return this.metrics;
-    }
-
-    /** The MetricBaselinesClient object to access its operations. */
-    private final MetricBaselinesClient metricBaselines;
+    MetricsClient getMetrics();
 
     /**
      * Gets the MetricBaselinesClient object to access its operations.
      *
      * @return the MetricBaselinesClient object.
      */
-    public MetricBaselinesClient getMetricBaselines() {
-        return this.metricBaselines;
-    }
-
-    /** The BaselinesClient object to access its operations. */
-    private final BaselinesClient baselines;
+    MetricBaselinesClient getMetricBaselines();
 
     /**
      * Gets the BaselinesClient object to access its operations.
      *
      * @return the BaselinesClient object.
      */
-    public BaselinesClient getBaselines() {
-        return this.baselines;
-    }
-
-    /** The MetricAlertsClient object to access its operations. */
-    private final MetricAlertsClient metricAlerts;
+    BaselinesClient getBaselines();
 
     /**
      * Gets the MetricAlertsClient object to access its operations.
      *
      * @return the MetricAlertsClient object.
      */
-    public MetricAlertsClient getMetricAlerts() {
-        return this.metricAlerts;
-    }
-
-    /** The MetricAlertsStatusClient object to access its operations. */
-    private final MetricAlertsStatusClient metricAlertsStatus;
+    MetricAlertsClient getMetricAlerts();
 
     /**
      * Gets the MetricAlertsStatusClient object to access its operations.
      *
      * @return the MetricAlertsStatusClient object.
      */
-    public MetricAlertsStatusClient getMetricAlertsStatus() {
-        return this.metricAlertsStatus;
-    }
-
-    /** The ScheduledQueryRulesClient object to access its operations. */
-    private final ScheduledQueryRulesClient scheduledQueryRules;
+    MetricAlertsStatusClient getMetricAlertsStatus();
 
     /**
      * Gets the ScheduledQueryRulesClient object to access its operations.
      *
      * @return the ScheduledQueryRulesClient object.
      */
-    public ScheduledQueryRulesClient getScheduledQueryRules() {
-        return this.scheduledQueryRules;
-    }
-
-    /** The MetricNamespacesClient object to access its operations. */
-    private final MetricNamespacesClient metricNamespaces;
+    ScheduledQueryRulesClient getScheduledQueryRules();
 
     /**
      * Gets the MetricNamespacesClient object to access its operations.
      *
      * @return the MetricNamespacesClient object.
      */
-    public MetricNamespacesClient getMetricNamespaces() {
-        return this.metricNamespaces;
-    }
-
-    /** The VMInsightsClient object to access its operations. */
-    private final VMInsightsClient vMInsights;
+    MetricNamespacesClient getMetricNamespaces();
 
     /**
      * Gets the VMInsightsClient object to access its operations.
      *
      * @return the VMInsightsClient object.
      */
-    public VMInsightsClient getVMInsights() {
-        return this.vMInsights;
-    }
-
-    /**
-     * Initializes an instance of MonitorClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param defaultPollInterval The default poll interval for long-running operation.
-     * @param environment The Azure environment.
-     */
-    MonitorClient(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
-        super(httpPipeline, serializerAdapter, environment);
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
-        this.endpoint = endpoint;
-        this.autoscaleSettings = new AutoscaleSettingsClient(this);
-        this.operations = new OperationsClient(this);
-        this.alertRuleIncidents = new AlertRuleIncidentsClient(this);
-        this.alertRules = new AlertRulesClient(this);
-        this.logProfiles = new LogProfilesClient(this);
-        this.diagnosticSettings = new DiagnosticSettingsClient(this);
-        this.diagnosticSettingsCategories = new DiagnosticSettingsCategoriesClient(this);
-        this.actionGroups = new ActionGroupsClient(this);
-        this.activityLogAlerts = new ActivityLogAlertsClient(this);
-        this.activityLogs = new ActivityLogsClient(this);
-        this.eventCategories = new EventCategoriesClient(this);
-        this.tenantActivityLogs = new TenantActivityLogsClient(this);
-        this.metricDefinitions = new MetricDefinitionsClient(this);
-        this.metrics = new MetricsClient(this);
-        this.metricBaselines = new MetricBaselinesClient(this);
-        this.baselines = new BaselinesClient(this);
-        this.metricAlerts = new MetricAlertsClient(this);
-        this.metricAlertsStatus = new MetricAlertsStatusClient(this);
-        this.scheduledQueryRules = new ScheduledQueryRulesClient(this);
-        this.metricNamespaces = new MetricNamespacesClient(this);
-        this.vMInsights = new VMInsightsClient(this);
-    }
+    VMInsightsClient getVMInsights();
 }

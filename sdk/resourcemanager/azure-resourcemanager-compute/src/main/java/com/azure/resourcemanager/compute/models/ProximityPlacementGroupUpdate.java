@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ProximityPlacementGroupUpdate model. */
+/** Specifies information about the proximity placement group. */
 @Immutable
 public final class ProximityPlacementGroupUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupUpdate.class);

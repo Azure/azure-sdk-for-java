@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The ManagedClusterAgentPoolProfileProperties model. */
+/** Properties for the container service agent pool profile. */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);

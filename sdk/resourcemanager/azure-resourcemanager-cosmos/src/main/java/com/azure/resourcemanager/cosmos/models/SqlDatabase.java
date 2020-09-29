@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.cosmos.models;
 
-import com.azure.resourcemanager.cosmos.fluent.inner.SqlDatabaseGetResultsInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An Azure Cosmos DB SQL database. */
-public interface SqlDatabase extends HasInner<SqlDatabaseGetResultsInner> {
+public interface SqlDatabase extends HasInnerModel<SqlDatabaseGetResultsInner> {
 
     /**
      * Get name of the Cosmos DB SQL database.

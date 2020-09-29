@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -22,6 +23,7 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
@@ -289,8 +291,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         switch (remoteState.getType()) {
             case Rejected:
                 final Rejected rejected = (Rejected) remoteOutcome;
-                final Throwable exception = MessageUtils.toException(rejected.getError(),
-                    handler.getErrorContext(receiver));
+                final ErrorCondition errorCondition = rejected.getError();
+                final Throwable exception = ExceptionUtil.toException(errorCondition.getCondition().toString(),
+                    errorCondition.getDescription(), handler.getErrorContext(receiver));
 
                 final Duration retry = retryPolicy.calculateRetryDelay(exception, workItem.incrementRetry());
                 if (retry == null) {
@@ -312,7 +315,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
                 break;
             case Released:
-                final Throwable cancelled = MessageUtils.toException(ServiceBusErrorCondition.OPERATION_CANCELLED,
+                final Throwable cancelled = new AmqpException(false, AmqpErrorCondition.OPERATION_CANCELLED,
                     "AMQP layer unexpectedly aborted or disconnected.", handler.getErrorContext(receiver));
 
                 logger.info("deliveryTag[{}], state[{}]. Completing pending updateState operation with exception.",

@@ -3,22 +3,22 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server Firewall Rule. */
 @Fluent
 public interface SqlFirewallRule
     extends ExternalChildResource<SqlFirewallRule, SqlServer>,
-        HasInner<FirewallRuleInner>,
+        HasInnerModel<FirewallRuleInner>,
         HasResourceGroup,
         Refreshable<SqlFirewallRule>,
         Updatable<SqlFirewallRule.Update> {

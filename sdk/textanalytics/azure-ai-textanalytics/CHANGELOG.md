@@ -1,4 +1,7 @@
 # Release History
+## 5.1.0-beta.2 (Unreleased)
+
+
 ## 5.1.0-beta.1 (2020-09-17)
 - Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment`
   - `length` is the number of characters in the text of these models

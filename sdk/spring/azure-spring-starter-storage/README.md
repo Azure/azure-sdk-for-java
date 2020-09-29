@@ -4,7 +4,7 @@ The project provides a Spring Boot Starter `spring-starter-azure-storage` to aut
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
@@ -102,3 +102,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_blob_storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

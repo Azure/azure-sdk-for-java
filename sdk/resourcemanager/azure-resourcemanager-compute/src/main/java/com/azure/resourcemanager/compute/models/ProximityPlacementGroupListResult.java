@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ProximityPlacementGroupListResult model. */
+/** The List Proximity Placement Group operation response. */
 @Fluent
 public final class ProximityPlacementGroupListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupListResult.class);

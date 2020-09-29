@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
@@ -24,7 +24,7 @@ public interface ApplicationGateway
         Updatable<ApplicationGateway.Update>,
         UpdatableWithTags<ApplicationGateway>,
         HasSubnet,
-    HasPrivateIpAddress {
+        HasPrivateIpAddress {
 
     // Actions
 
@@ -973,18 +973,6 @@ public interface ApplicationGateway
              * @return the first stage of the certificate definition
              */
             ApplicationGatewaySslCertificate.UpdateDefinitionStages.Blank<Update> defineSslCertificate(String name);
-
-            /**
-             * Removes the specified SSL certificate from the application gateway.
-             *
-             * <p>Note that removing a certificate referenced by other settings may break the application gateway.
-             *
-             * @param name the name of the certificate to remove
-             * @return the next stage of the update
-             * @deprecated Use {@link #withoutSslCertificate} instead
-             */
-            @Deprecated
-            Update withoutCertificate(String name);
 
             /**
              * Removes the specified SSL certificate from the application gateway.

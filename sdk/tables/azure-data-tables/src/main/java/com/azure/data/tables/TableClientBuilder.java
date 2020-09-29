@@ -46,8 +46,10 @@ public class TableClientBuilder {
     private String accountName;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
 
-
-    TableClientBuilder() {
+    /**
+     * Create a new `TableClientBuilder`
+     */
+    public TableClientBuilder() {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
     }

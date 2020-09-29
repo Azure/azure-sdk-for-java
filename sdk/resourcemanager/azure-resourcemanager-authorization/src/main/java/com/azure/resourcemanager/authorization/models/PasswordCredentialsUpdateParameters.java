@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PasswordCredentialsUpdateParameters model. */
+/** Request parameters for a PasswordCredentials update operation. */
 @Fluent
 public final class PasswordCredentialsUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PasswordCredentialsUpdateParameters.class);

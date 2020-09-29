@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtension;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,36 +31,36 @@ public class VirtualMachineScaleSetExtensionImpl
     //
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String publisherName() {
-        return this.inner().publisher();
+        return this.innerModel().publisher();
     }
 
     @Override
     public String typeName() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String versionName() {
-        return this.inner().typeHandlerVersion();
+        return this.innerModel().typeHandlerVersion();
     }
 
     @Override
     public boolean autoUpgradeMinorVersionEnabled() {
-        return this.inner().autoUpgradeMinorVersion();
+        return this.innerModel().autoUpgradeMinorVersion();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> publicSettings() {
-        if (this.inner().settings() == null) {
+        if (this.innerModel().settings() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, Object>());
         }
-        return Collections.unmodifiableMap((LinkedHashMap<String, Object>) this.inner().settings());
+        return Collections.unmodifiableMap((LinkedHashMap<String, Object>) this.innerModel().settings());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     // Withers
@@ -83,20 +83,20 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withMinorVersionAutoUpgrade() {
-        this.inner().withAutoUpgradeMinorVersion(true);
+        this.innerModel().withAutoUpgradeMinorVersion(true);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withoutMinorVersionAutoUpgrade() {
-        this.inner().withAutoUpgradeMinorVersion(false);
+        this.innerModel().withAutoUpgradeMinorVersion(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withImage(VirtualMachineExtensionImage image) {
         this
-            .inner()
+            .innerModel()
             .withPublisher(image.publisherName())
             .withTypePropertiesType(image.typeName())
             .withTypeHandlerVersion(image.versionName());
@@ -105,7 +105,7 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withPublisher(String extensionImagePublisherName) {
-        this.inner().withPublisher(extensionImagePublisherName);
+        this.innerModel().withPublisher(extensionImagePublisherName);
         return this;
     }
 
@@ -137,13 +137,13 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withType(String extensionImageTypeName) {
-        this.inner().withTypePropertiesType(extensionImageTypeName);
+        this.innerModel().withTypePropertiesType(extensionImageTypeName);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withVersion(String extensionImageVersionName) {
-        this.inner().withTypeHandlerVersion(extensionImageVersionName);
+        this.innerModel().withTypeHandlerVersion(extensionImageVersionName);
         return this;
     }
 
@@ -163,17 +163,17 @@ public class VirtualMachineScaleSetExtensionImpl
     //
     @SuppressWarnings("unchecked")
     private HashMap<String, Object> ensurePublicSettings() {
-        if (this.inner().settings() == null) {
-            this.inner().withSettings(new LinkedHashMap<String, Object>());
+        if (this.innerModel().settings() == null) {
+            this.innerModel().withSettings(new LinkedHashMap<String, Object>());
         }
-        return (LinkedHashMap<String, Object>) this.inner().settings();
+        return (LinkedHashMap<String, Object>) this.innerModel().settings();
     }
 
     @SuppressWarnings("unchecked")
     private HashMap<String, Object> ensureProtectedSettings() {
-        if (this.inner().protectedSettings() == null) {
-            this.inner().withProtectedSettings(new LinkedHashMap<String, Object>());
+        if (this.innerModel().protectedSettings() == null) {
+            this.innerModel().withProtectedSettings(new LinkedHashMap<String, Object>());
         }
-        return (LinkedHashMap<String, Object>) this.inner().protectedSettings();
+        return (LinkedHashMap<String, Object>) this.innerModel().protectedSettings();
     }
 }

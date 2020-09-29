@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrepareNetworkPoliciesRequest model. */
+/** Details of PrepareNetworkPolicies for Subnet. */
 @Fluent
 public final class PrepareNetworkPoliciesRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrepareNetworkPoliciesRequest.class);

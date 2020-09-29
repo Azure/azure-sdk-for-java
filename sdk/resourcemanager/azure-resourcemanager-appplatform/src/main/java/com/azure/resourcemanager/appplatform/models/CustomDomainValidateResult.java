@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomDomainValidateResult model. */
+/** Validation result for custom domain. */
 @Fluent
 public final class CustomDomainValidateResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainValidateResult.class);

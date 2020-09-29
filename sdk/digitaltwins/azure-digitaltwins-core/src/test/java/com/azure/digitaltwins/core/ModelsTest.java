@@ -1,9 +1,11 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.ModelsListOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -31,19 +34,19 @@ public class ModelsTest extends ModelsTestBase {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         // Create some models to test the lifecycle of
-        final List<ModelData> createdModels = new ArrayList<>();
+        final List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(client, (modelsList) -> {
-            List<ModelData> createdModelsResponseList = client.createModels(modelsList);
+            Iterable<DigitalTwinsModelData> createdModelsResponseList = client.createModels(modelsList);
             createdModelsResponseList.forEach((modelData) -> {
                 createdModels.add(modelData);
-                logger.info("Created {} models successfully", createdModelsResponseList.size());
+                logger.info("Created models successfully");
             });
         });
 
-        for (final ModelData expected : createdModels) {
+        for (final DigitalTwinsModelData expected : createdModels) {
             // Get the model
             getModelRunner(expected.getId(), (modelId) -> {
-                ModelData actual = client.getModel(modelId);
+                DigitalTwinsModelData actual = client.getModel(modelId);
                 assertModelDataAreEqual(expected, actual, false);
                 logger.info("Model {} matched expectations", modelId);
             });
@@ -56,7 +59,7 @@ public class ModelsTest extends ModelsTestBase {
 
             // Get the model again to see if it was decommissioned as expected
             getModelRunner(expected.getId(), (modelId) -> {
-                ModelData actual = client.getModel(modelId);
+                DigitalTwinsModelData actual = client.getModel(modelId);
                 assertTrue(actual.isDecommissioned());
                 logger.info("Model {} was decommissioned successfully", modelId);
             });
@@ -89,12 +92,46 @@ public class ModelsTest extends ModelsTestBase {
         final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
         modelsToCreate.add(wardModelPayload);
 
-        List<ModelData> createdModels = client.createModels(modelsToCreate);
+        Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsToCreate);
         createdModels.forEach(Assertions::assertNotNull);
 
         assertRestException(
             () -> client.createModels(modelsToCreate),
             HttpURLConnection.HTTP_CONFLICT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void listModelsMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        final List<DigitalTwinsModelData> createdModels = new ArrayList<>();
+        createModelsRunner(client, (modelsList) -> {
+            Iterable<DigitalTwinsModelData> createdModelsResponseList = client.createModels(modelsList);
+            createdModelsResponseList.forEach((modelData) -> {
+                createdModels.add(modelData);
+                logger.info("Created models successfully");
+            });
+        });
+
+        createdModels.forEach(Assertions::assertNotNull);
+
+        AtomicInteger pageCount = new AtomicInteger();
+
+        // List models in multiple pages
+        client.listModels(new ModelsListOptions().setMaxItemCount(2), Context.NONE)
+            .iterableByPage()
+            .forEach(digitalTwinsModelDataPagedResponse -> {
+                pageCount.getAndIncrement();
+                logger.info("content for this page " + pageCount);
+                for (DigitalTwinsModelData data: digitalTwinsModelDataPagedResponse.getValue())
+                {
+                    logger.info(data.getId());
+                }
+            });
+
+        assertTrue(pageCount.get() > 1);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

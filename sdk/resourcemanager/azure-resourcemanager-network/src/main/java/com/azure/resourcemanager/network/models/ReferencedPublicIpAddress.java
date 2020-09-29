@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ReferencedPublicIpAddress model. */
+/** Reference to a public IP address. */
 @Fluent
 public final class ReferencedPublicIpAddress {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferencedPublicIpAddress.class);

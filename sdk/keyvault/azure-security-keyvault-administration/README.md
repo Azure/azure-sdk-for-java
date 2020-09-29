@@ -15,7 +15,7 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
@@ -288,7 +288,7 @@ KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
 ## Examples
 ### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault Backup client tasks, including:
-- [Backup a Key Vault](#backup-a-key-vault)
+- [Backup a Key Vault](#backup-a-collection-of-keys)
 - [Restore a Key Vault](#restore-a-collection-of-keys)
 - [Restore a key](#selectively-restore-a-key)
 
@@ -333,7 +333,7 @@ System.out.printf("Key backup restored from: %s%n", blobUri);
 
 ### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Backup client tasks, including:
-- [Backup a Key Vault asynchronously](#backup-a-key-vault-asynchronously)
+- [Backup a Key Vault asynchronously](#backup-a-collection-of-keys-asynchronously)
 - [Restore a Key Vault asynchronously](#restore-a-collection-of-keys-asynchronously)
 - [Restore a key asynchronously](#selectively-restore-a-key-asynchronously)
 
@@ -454,5 +454,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_readme_sas_token]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob#get-credentials
 [portal_sas_token]: https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-administration%2FREADME.png)

@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageType;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersions;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -42,7 +42,8 @@ public class VirtualMachineExtensionImageVersionsImpl
     @Override
     public PagedFlux<VirtualMachineExtensionImageVersion> listAsync() {
         return PagedConverter
-            .convertListToPagedFlux(client.listVersionsAsync(type.regionName(), type.publisher().name(), type.name()))
+            .convertListToPagedFlux(client.listVersionsWithResponseAsync(
+                type.regionName(), type.publisher().name(), type.name(), null, null, null))
             .mapPage(this::wrapModel);
     }
 }

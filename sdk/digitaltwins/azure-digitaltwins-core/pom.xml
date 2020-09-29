@@ -13,13 +13,24 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
 
-  <properties>
-    <!-- These are the code coverage settings that should eventually be removed to inherit them from the parent pom file. for the time being we have a very low code coverage so we are dropping it to a very low setting -->
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
-  </properties>
+  <name>Microsoft Azure client library for Digital Twins</name>
+  <description>This package contains the Microsoft Azure DigitalTwins client library.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
+  </scm>
 
   <dependencies>
     <dependency>

@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -134,9 +135,87 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestTimeline(E e, RequestTimeline requestTimeline) {
+        e.setRequestTimeline(requestTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RequestTimeline getRequestTimeline(E e) {
+        return e.getRequestTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setChannelTaskQueueSize(E e, int value) {
+        e.setRntbdChannelTaskQueueSize(value);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdPendingRequestQueueSize(E e) {
+        return e.getRntbdPendingRequestQueueSize();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdPendingRequestQueueSize(E e, int value) {
+        e.setRntbdPendingRequestQueueSize(value);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getChannelTaskQueueSize(E e) {
+        return e.getRntbdChannelTaskQueueSize();
+    }
+
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
+        e.setRntbdRequestLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdRequestLength(E e) {
+        return e.getRntbdRequestLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestBodyLength(E e, int requestLen) {
+        e.setRequestPayloadLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRequestBodyLength(E e) {
+        return e.getRequestPayloadLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdResponseLength(E e, int requestLen) {
+        e.setRntbdResponseLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdResponseLength(E e) {
+        return e.getRntbdResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setServiceEndpointStatistics(E e, RntbdEndpointStatistics rntbdEndpointStatistics) {
+        e.setRntbdServiceEndpointStatistics(rntbdEndpointStatistics);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdEndpointStatistics getServiceEndpointStatistics(E e) {
+        return e.getRntbdServiceEndpointStatistics();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

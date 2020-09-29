@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoutingPreference model. */
+/**
+ * Routing preference defines the type of network, either microsoft or internet routing to be used to deliver the user
+ * data, the default option is microsoft routing.
+ */
 @Fluent
 public final class RoutingPreference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingPreference.class);

@@ -28,13 +28,21 @@ public @interface Beta {
     /**
      * @return the version number when the annotated API was first introduced to the library as in Beta
      */
-    SinceVersion value() default SinceVersion.V4_4_0;
+    SinceVersion value() default SinceVersion.V4_5_0;
 
     /**
      * Azure library version numbers
      */
     public enum SinceVersion {
+        /** v4.3.0 */
+        V4_3_0,
         /** v4.4.0 */
-        V4_4_0
+        V4_4_0,
+        /** v4.5.0 */
+        V4_5_0,
+        /** v4.5.1 */
+        V4_5_1,
+        /** v4.6.0 */
+        V4_6_0
     }
 }

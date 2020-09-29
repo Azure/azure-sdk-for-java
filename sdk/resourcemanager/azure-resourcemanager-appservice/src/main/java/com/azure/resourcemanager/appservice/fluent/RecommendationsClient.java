@@ -4,317 +4,18 @@
 
 package com.azure.resourcemanager.appservice.fluent;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.RecommendationInner;
-import com.azure.resourcemanager.appservice.fluent.inner.RecommendationRuleInner;
-import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appservice.models.RecommendationCollection;
+import com.azure.resourcemanager.appservice.fluent.models.RecommendationInner;
+import com.azure.resourcemanager.appservice.fluent.models.RecommendationRuleInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Recommendations. */
-public final class RecommendationsClient {
-    private final ClientLogger logger = new ClientLogger(RecommendationsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final RecommendationsService service;
-
-    /** The service client containing this operation class. */
-    private final WebSiteManagementClient client;
-
-    /**
-     * Initializes an instance of RecommendationsClient.
-     *
-     * @param client the instance of the service client containing this operation class.
-     */
-    RecommendationsClient(WebSiteManagementClient client) {
-        this.service =
-            RestProxy.create(RecommendationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for WebSiteManagementClientRecommendations to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
-    private interface RecommendationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("featured") Boolean featured,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> resetAllFilters(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> disableRecommendationForSubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
-            @QueryParam("expiredOnly") Boolean expiredOnly,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{hostingEnvironmentName}/recommendations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listRecommendedRulesForHostingEnvironment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
-            @QueryParam("featured") Boolean featured,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> disableAllForHostingEnvironment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("environmentName") String environmentName,
-            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> resetAllFiltersForHostingEnvironment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("environmentName") String environmentName,
-            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
-            @PathParam("name") String name,
-            @QueryParam("updateSeen") Boolean updateSeen,
-            @QueryParam("recommendationId") String recommendationId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> disableRecommendationForHostingEnvironment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("environmentName") String environmentName,
-            @PathParam("name") String name,
-            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{siteName}/recommendationHistory")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listHistoryForWebApp(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName,
-            @QueryParam("expiredOnly") Boolean expiredOnly,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{siteName}/recommendations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listRecommendedRulesForWebApp(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName,
-            @QueryParam("featured") Boolean featured,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{siteName}/recommendations/disable")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> disableAllForWebApp(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{siteName}/recommendations/reset")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> resetAllFiltersForWebApp(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{siteName}/recommendations/{name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebApp(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName,
-            @PathParam("name") String name,
-            @QueryParam("updateSeen") Boolean updateSeen,
-            @QueryParam("recommendationId") String recommendationId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{siteName}/recommendations/{name}/disable")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> disableRecommendationForSite(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("siteName") String siteName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironmentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listRecommendedRulesForHostingEnvironmentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listHistoryForWebAppNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<RecommendationCollection>> listRecommendedRulesForWebAppNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
-
+/** An instance of this class provides access to all the operations defined in RecommendationsClient. */
+public interface RecommendationsClient {
     /**
      * Description for List all recommendations for a subscription.
      *
@@ -324,46 +25,24 @@ public final class RecommendationsClient {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(Boolean featured, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            featured,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter);
+
+    /**
+     * Description for List all recommendations for a subscription.
+     *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listAsync();
 
     /**
      * Description for List all recommendations for a subscription.
@@ -375,303 +54,107 @@ public final class RecommendationsClient {
      *     duration'[PT1H|PT1M|P1D].
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(
-        Boolean featured, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                featured,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(featured, filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
+    PagedIterable<RecommendationInner> list(Boolean featured, String filter, Context context);
 
     /**
      * Description for List all recommendations for a subscription.
      *
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(featured, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listAsync() {
-        final Boolean featured = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(featured, filter), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> list(Boolean featured, String filter) {
-        return new PagedIterable<>(listAsync(featured, filter));
-    }
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> list(Boolean featured, String filter, Context context) {
-        return new PagedIterable<>(listAsync(featured, filter, context));
-    }
-
-    /**
-     * Description for List all recommendations for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> list() {
-        final Boolean featured = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(listAsync(featured, filter));
-    }
+    PagedIterable<RecommendationInner> list();
 
     /**
      * Description for Reset all recommendation opt-out settings for a subscription.
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetAllFiltersWithResponseAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resetAllFilters(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> resetAllFiltersWithResponseAsync();
+
+    /**
+     * Description for Reset all recommendation opt-out settings for a subscription.
+     *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> resetAllFiltersAsync();
+
+    /**
+     * Description for Reset all recommendation opt-out settings for a subscription.
+     *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetAllFilters();
 
     /**
      * Description for Reset all recommendation opt-out settings for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetAllFiltersWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .resetAllFilters(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAllFiltersAsync() {
-        return resetAllFiltersWithResponseAsync().flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAllFiltersAsync(Context context) {
-        return resetAllFiltersWithResponseAsync(context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for a subscription.
-     *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAllFilters() {
-        resetAllFiltersAsync().block();
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAllFilters(Context context) {
-        resetAllFiltersAsync(context).block();
-    }
+    Response<Void> resetAllFiltersWithResponse(Context context);
 
     /**
      * Description for Disables the specified rule so it will not apply to a subscription in the future.
      *
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableRecommendationForSubscription(
-                            this.client.getEndpoint(),
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name);
+
+    /**
+     * Description for Disables the specified rule so it will not apply to a subscription in the future.
+     *
+     * @param name Rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> disableRecommendationForSubscriptionAsync(String name);
+
+    /**
+     * Description for Disables the specified rule so it will not apply to a subscription in the future.
+     *
+     * @param name Rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableRecommendationForSubscription(String name);
 
     /**
      * Description for Disables the specified rule so it will not apply to a subscription in the future.
@@ -679,90 +162,13 @@ public final class RecommendationsClient {
      * @param name Rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .disableRecommendationForSubscription(
-                this.client.getEndpoint(), name, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Description for Disables the specified rule so it will not apply to a subscription in the future.
-     *
-     * @param name Rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableRecommendationForSubscriptionAsync(String name) {
-        return disableRecommendationForSubscriptionWithResponseAsync(name)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disables the specified rule so it will not apply to a subscription in the future.
-     *
-     * @param name Rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableRecommendationForSubscriptionAsync(String name, Context context) {
-        return disableRecommendationForSubscriptionWithResponseAsync(name, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disables the specified rule so it will not apply to a subscription in the future.
-     *
-     * @param name Rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendationForSubscription(String name) {
-        disableRecommendationForSubscriptionAsync(name).block();
-    }
-
-    /**
-     * Description for Disables the specified rule so it will not apply to a subscription in the future.
-     *
-     * @param name Rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendationForSubscription(String name, Context context) {
-        disableRecommendationForSubscriptionAsync(name, context).block();
-    }
+    Response<Void> disableRecommendationForSubscriptionWithResponse(String name, Context context);
 
     /**
      * Description for Get past recommendations for an app, optionally specified by the time range.
@@ -775,58 +181,29 @@ public final class RecommendationsClient {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listHistoryForHostingEnvironment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hostingEnvironmentName,
-                            expiredOnly,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter);
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName);
 
     /**
      * Description for Get past recommendations for an app, optionally specified by the time range.
@@ -840,106 +217,14 @@ public final class RecommendationsClient {
      *     duration'[PT1H|PT1M|P1D].
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listHistoryForHostingEnvironment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hostingEnvironmentName,
-                expiredOnly,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter) {
-        return new PagedFlux<>(
-            () ->
-                listHistoryForHostingEnvironmentSinglePageAsync(
-                    resourceGroupName, hostingEnvironmentName, expiredOnly, filter),
-            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listHistoryForHostingEnvironmentSinglePageAsync(
-                    resourceGroupName, hostingEnvironmentName, expiredOnly, filter, context),
-            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context);
 
     /**
      * Description for Get past recommendations for an app, optionally specified by the time range.
@@ -947,88 +232,14 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName) {
-        final Boolean expiredOnly = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () ->
-                listHistoryForHostingEnvironmentSinglePageAsync(
-                    resourceGroupName, hostingEnvironmentName, expiredOnly, filter),
-            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter) {
-        return new PagedIterable<>(
-            listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
-        return new PagedIterable<>(
-            listHistoryForHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, expiredOnly, filter, context));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName) {
-        final Boolean expiredOnly = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(
-            listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter));
-    }
+    PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName);
 
     /**
      * Description for Get all recommendations for an app.
@@ -1040,58 +251,29 @@ public final class RecommendationsClient {
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRecommendedRulesForHostingEnvironment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hostingEnvironmentName,
-                            featured,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter);
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName);
 
     /**
      * Description for Get all recommendations for an app.
@@ -1104,104 +286,14 @@ public final class RecommendationsClient {
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForHostingEnvironment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hostingEnvironmentName,
-                featured,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter) {
-        return new PagedFlux<>(
-            () ->
-                listRecommendedRulesForHostingEnvironmentSinglePageAsync(
-                    resourceGroupName, hostingEnvironmentName, featured, filter),
-            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listRecommendedRulesForHostingEnvironmentSinglePageAsync(
-                    resourceGroupName, hostingEnvironmentName, featured, filter, context),
-            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context);
 
     /**
      * Description for Get all recommendations for an app.
@@ -1209,88 +301,14 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName) {
-        final Boolean featured = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () ->
-                listRecommendedRulesForHostingEnvironmentSinglePageAsync(
-                    resourceGroupName, hostingEnvironmentName, featured, filter),
-            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter) {
-        return new PagedIterable<>(
-            listRecommendedRulesForHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, featured, filter));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
-        return new PagedIterable<>(
-            listRecommendedRulesForHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, featured, filter, context));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName) {
-        final Boolean featured = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(
-            listRecommendedRulesForHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, featured, filter));
-    }
+    PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName);
 
     /**
      * Description for Disable all recommendations for an app.
@@ -1299,52 +317,45 @@ public final class RecommendationsClient {
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableAllForHostingEnvironment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            environmentName,
-                            hostingEnvironmentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName);
+
+    /**
+     * Description for Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Name of the app.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> disableAllForHostingEnvironmentAsync(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName);
+
+    /**
+     * Description for Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Name of the app.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableAllForHostingEnvironment(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName);
 
     /**
      * Description for Disable all recommendations for an app.
@@ -1354,122 +365,14 @@ public final class RecommendationsClient {
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .disableAllForHostingEnvironment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                environmentName,
-                hostingEnvironmentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableAllForHostingEnvironmentAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName) {
-        return disableAllForHostingEnvironmentWithResponseAsync(
-                resourceGroupName, environmentName, hostingEnvironmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableAllForHostingEnvironmentAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
-        return disableAllForHostingEnvironmentWithResponseAsync(
-                resourceGroupName, environmentName, hostingEnvironmentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableAllForHostingEnvironment(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName) {
-        disableAllForHostingEnvironmentAsync(resourceGroupName, environmentName, hostingEnvironmentName).block();
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableAllForHostingEnvironment(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
-        disableAllForHostingEnvironmentAsync(resourceGroupName, environmentName, hostingEnvironmentName, context)
-            .block();
-    }
+    Response<Void> disableAllForHostingEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context);
 
     /**
      * Description for Reset all recommendation opt-out settings for an app.
@@ -1478,52 +381,45 @@ public final class RecommendationsClient {
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resetAllFiltersForHostingEnvironment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            environmentName,
-                            hostingEnvironmentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName);
+
+    /**
+     * Description for Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Name of the app.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> resetAllFiltersForHostingEnvironmentAsync(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName);
+
+    /**
+     * Description for Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Name of the app.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetAllFiltersForHostingEnvironment(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName);
 
     /**
      * Description for Reset all recommendation opt-out settings for an app.
@@ -1533,122 +429,14 @@ public final class RecommendationsClient {
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .resetAllFiltersForHostingEnvironment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                environmentName,
-                hostingEnvironmentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAllFiltersForHostingEnvironmentAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName) {
-        return resetAllFiltersForHostingEnvironmentWithResponseAsync(
-                resourceGroupName, environmentName, hostingEnvironmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAllFiltersForHostingEnvironmentAsync(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
-        return resetAllFiltersForHostingEnvironmentWithResponseAsync(
-                resourceGroupName, environmentName, hostingEnvironmentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAllFiltersForHostingEnvironment(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName) {
-        resetAllFiltersForHostingEnvironmentAsync(resourceGroupName, environmentName, hostingEnvironmentName).block();
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAllFiltersForHostingEnvironment(
-        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
-        resetAllFiltersForHostingEnvironmentAsync(resourceGroupName, environmentName, hostingEnvironmentName, context)
-            .block();
-    }
+    Response<Void> resetAllFiltersForHostingEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context);
 
     /**
      * Description for Get a recommendation rule for an app.
@@ -1661,57 +449,74 @@ public final class RecommendationsClient {
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
+    Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
         String resourceGroupName,
         String hostingEnvironmentName,
         String name,
         Boolean updateSeen,
-        String recommendationId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getRuleDetailsByHostingEnvironment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hostingEnvironmentName,
-                            name,
-                            updateSeen,
-                            recommendationId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        String recommendationId);
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
+     *     object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
+     *     specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
+        String resourceGroupName,
+        String hostingEnvironmentName,
+        String name,
+        Boolean updateSeen,
+        String recommendationId);
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName, String name);
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecommendationRuleInner getRuleDetailsByHostingEnvironment(
+        String resourceGroupName, String hostingEnvironmentName, String name);
 
     /**
      * Description for Get a recommendation rule for an app.
@@ -1725,232 +530,19 @@ public final class RecommendationsClient {
      *     specify it to query an active entry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
+    Response<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentWithResponse(
         String resourceGroupName,
         String hostingEnvironmentName,
         String name,
         Boolean updateSeen,
         String recommendationId,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getRuleDetailsByHostingEnvironment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hostingEnvironmentName,
-                name,
-                updateSeen,
-                recommendationId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
-        String resourceGroupName,
-        String hostingEnvironmentName,
-        String name,
-        Boolean updateSeen,
-        String recommendationId) {
-        return getRuleDetailsByHostingEnvironmentWithResponseAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId)
-            .flatMap(
-                (Response<RecommendationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
-        String resourceGroupName,
-        String hostingEnvironmentName,
-        String name,
-        Boolean updateSeen,
-        String recommendationId,
-        Context context) {
-        return getRuleDetailsByHostingEnvironmentWithResponseAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId, context)
-            .flatMap(
-                (Response<RecommendationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
-        String resourceGroupName, String hostingEnvironmentName, String name) {
-        final Boolean updateSeen = null;
-        final String recommendationId = null;
-        final Context context = null;
-        return getRuleDetailsByHostingEnvironmentWithResponseAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId)
-            .flatMap(
-                (Response<RecommendationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(
-        String resourceGroupName,
-        String hostingEnvironmentName,
-        String name,
-        Boolean updateSeen,
-        String recommendationId) {
-        return getRuleDetailsByHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId)
-            .block();
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(
-        String resourceGroupName, String hostingEnvironmentName, String name) {
-        final Boolean updateSeen = null;
-        final String recommendationId = null;
-        final Context context = null;
-        return getRuleDetailsByHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId)
-            .block();
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(
-        String resourceGroupName,
-        String hostingEnvironmentName,
-        String name,
-        Boolean updateSeen,
-        String recommendationId,
-        Context context) {
-        return getRuleDetailsByHostingEnvironmentAsync(
-                resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Description for Disables the specific rule for a web site permanently.
@@ -1960,56 +552,47 @@ public final class RecommendationsClient {
      * @param name Rule name.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableRecommendationForHostingEnvironment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            environmentName,
-                            name,
-                            hostingEnvironmentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
+        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName);
+
+    /**
+     * Description for Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Site name.
+     * @param name Rule name.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> disableRecommendationForHostingEnvironmentAsync(
+        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName);
+
+    /**
+     * Description for Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Site name.
+     * @param name Rule name.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableRecommendationForHostingEnvironment(
+        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName);
 
     /**
      * Description for Disables the specific rule for a web site permanently.
@@ -2020,133 +603,14 @@ public final class RecommendationsClient {
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .disableRecommendationForHostingEnvironment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                environmentName,
-                name,
-                hostingEnvironmentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Disables the specific rule for a web site permanently.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Site name.
-     * @param name Rule name.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableRecommendationForHostingEnvironmentAsync(
-        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName) {
-        return disableRecommendationForHostingEnvironmentWithResponseAsync(
-                resourceGroupName, environmentName, name, hostingEnvironmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disables the specific rule for a web site permanently.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Site name.
-     * @param name Rule name.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableRecommendationForHostingEnvironmentAsync(
-        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName, Context context) {
-        return disableRecommendationForHostingEnvironmentWithResponseAsync(
-                resourceGroupName, environmentName, name, hostingEnvironmentName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disables the specific rule for a web site permanently.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Site name.
-     * @param name Rule name.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendationForHostingEnvironment(
-        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName) {
-        disableRecommendationForHostingEnvironmentAsync(
-                resourceGroupName, environmentName, name, hostingEnvironmentName)
-            .block();
-    }
-
-    /**
-     * Description for Disables the specific rule for a web site permanently.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Site name.
-     * @param name Rule name.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendationForHostingEnvironment(
-        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName, Context context) {
-        disableRecommendationForHostingEnvironmentAsync(
-                resourceGroupName, environmentName, name, hostingEnvironmentName, context)
-            .block();
-    }
+    Response<Void> disableRecommendationForHostingEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName, Context context);
 
     /**
      * Description for Get past recommendations for an app, optionally specified by the time range.
@@ -2159,56 +623,28 @@ public final class RecommendationsClient {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(
-        String resourceGroupName, String siteName, Boolean expiredOnly, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listHistoryForWebApp(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            siteName,
-                            expiredOnly,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listHistoryForWebAppAsync(
+        String resourceGroupName, String siteName, Boolean expiredOnly, String filter);
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listHistoryForWebAppAsync(String resourceGroupName, String siteName);
 
     /**
      * Description for Get past recommendations for an app, optionally specified by the time range.
@@ -2222,100 +658,14 @@ public final class RecommendationsClient {
      *     duration'[PT1H|PT1M|P1D].
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(
-        String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listHistoryForWebApp(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                siteName,
-                expiredOnly,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listHistoryForWebAppAsync(
-        String resourceGroupName, String siteName, Boolean expiredOnly, String filter) {
-        return new PagedFlux<>(
-            () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter),
-            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listHistoryForWebAppAsync(
-        String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter, context),
-            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<RecommendationInner> listHistoryForWebApp(
+        String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context);
 
     /**
      * Description for Get past recommendations for an app, optionally specified by the time range.
@@ -2323,81 +673,13 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listHistoryForWebAppAsync(String resourceGroupName, String siteName) {
-        final Boolean expiredOnly = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter),
-            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForWebApp(
-        String resourceGroupName, String siteName, Boolean expiredOnly, String filter) {
-        return new PagedIterable<>(listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     *     duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForWebApp(
-        String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
-        return new PagedIterable<>(
-            listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter, context));
-    }
-
-    /**
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
-        final Boolean expiredOnly = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter));
-    }
+    PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName);
 
     /**
      * Description for Get all recommendations for an app.
@@ -2409,56 +691,28 @@ public final class RecommendationsClient {
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
-        String resourceGroupName, String siteName, Boolean featured, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRecommendedRulesForWebApp(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            siteName,
-                            featured,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
+        String resourceGroupName, String siteName, Boolean featured, String filter);
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName);
 
     /**
      * Description for Get all recommendations for an app.
@@ -2471,98 +725,14 @@ public final class RecommendationsClient {
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
-        String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForWebApp(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                siteName,
-                featured,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
-        String resourceGroupName, String siteName, Boolean featured, String filter) {
-        return new PagedFlux<>(
-            () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter),
-            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
-        String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter, context),
-            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(
+        String resourceGroupName, String siteName, Boolean featured, String filter, Context context);
 
     /**
      * Description for Get all recommendations for an app.
@@ -2570,80 +740,13 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
-        String resourceGroupName, String siteName) {
-        final Boolean featured = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter),
-            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(
-        String resourceGroupName, String siteName, Boolean featured, String filter) {
-        return new PagedIterable<>(listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     *     $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(
-        String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
-        return new PagedIterable<>(
-            listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter, context));
-    }
-
-    /**
-     * Description for Get all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
-        final Boolean featured = null;
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter));
-    }
+    PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName);
 
     /**
      * Description for Disable all recommendations for an app.
@@ -2651,44 +754,40 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableAllForWebAppWithResponseAsync(String resourceGroupName, String siteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableAllForWebApp(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            siteName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> disableAllForWebAppWithResponseAsync(String resourceGroupName, String siteName);
+
+    /**
+     * Description for Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName);
+
+    /**
+     * Description for Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableAllForWebApp(String resourceGroupName, String siteName);
 
     /**
      * Description for Disable all recommendations for an app.
@@ -2697,104 +796,13 @@ public final class RecommendationsClient {
      * @param siteName Name of the app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableAllForWebAppWithResponseAsync(
-        String resourceGroupName, String siteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .disableAllForWebApp(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                siteName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName) {
-        return disableAllForWebAppWithResponseAsync(resourceGroupName, siteName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, Context context) {
-        return disableAllForWebAppWithResponseAsync(resourceGroupName, siteName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableAllForWebApp(String resourceGroupName, String siteName) {
-        disableAllForWebAppAsync(resourceGroupName, siteName).block();
-    }
-
-    /**
-     * Description for Disable all recommendations for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableAllForWebApp(String resourceGroupName, String siteName, Context context) {
-        disableAllForWebAppAsync(resourceGroupName, siteName, context).block();
-    }
+    Response<Void> disableAllForWebAppWithResponse(String resourceGroupName, String siteName, Context context);
 
     /**
      * Description for Reset all recommendation opt-out settings for an app.
@@ -2802,44 +810,40 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(String resourceGroupName, String siteName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resetAllFiltersForWebApp(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            siteName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(String resourceGroupName, String siteName);
+
+    /**
+     * Description for Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName);
+
+    /**
+     * Description for Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetAllFiltersForWebApp(String resourceGroupName, String siteName);
 
     /**
      * Description for Reset all recommendation opt-out settings for an app.
@@ -2848,104 +852,13 @@ public final class RecommendationsClient {
      * @param siteName Name of the app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(
-        String resourceGroupName, String siteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .resetAllFiltersForWebApp(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                siteName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName) {
-        return resetAllFiltersForWebAppWithResponseAsync(resourceGroupName, siteName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, Context context) {
-        return resetAllFiltersForWebAppWithResponseAsync(resourceGroupName, siteName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAllFiltersForWebApp(String resourceGroupName, String siteName) {
-        resetAllFiltersForWebAppAsync(resourceGroupName, siteName).block();
-    }
-
-    /**
-     * Description for Reset all recommendation opt-out settings for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAllFiltersForWebApp(String resourceGroupName, String siteName, Context context) {
-        resetAllFiltersForWebAppAsync(resourceGroupName, siteName, context).block();
-    }
+    Response<Void> resetAllFiltersForWebAppWithResponse(String resourceGroupName, String siteName, Context context);
 
     /**
      * Description for Get a recommendation rule for an app.
@@ -2958,51 +871,64 @@ public final class RecommendationsClient {
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
-        String resourceGroupName, String siteName, String name, Boolean updateSeen, String recommendationId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getRuleDetailsByWebApp(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            siteName,
-                            name,
-                            updateSeen,
-                            recommendationId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
+        String resourceGroupName, String siteName, String name, Boolean updateSeen, String recommendationId);
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
+     *     object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
+     *     specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(
+        String resourceGroupName, String siteName, String name, Boolean updateSeen, String recommendationId);
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name);
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name);
 
     /**
      * Description for Get a recommendation rule for an app.
@@ -3016,214 +942,19 @@ public final class RecommendationsClient {
      *     specify it to query an active entry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
+    Response<RecommendationRuleInner> getRuleDetailsByWebAppWithResponse(
         String resourceGroupName,
         String siteName,
         String name,
         Boolean updateSeen,
         String recommendationId,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .getRuleDetailsByWebApp(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                siteName,
-                name,
-                updateSeen,
-                recommendationId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(
-        String resourceGroupName, String siteName, String name, Boolean updateSeen, String recommendationId) {
-        return getRuleDetailsByWebAppWithResponseAsync(resourceGroupName, siteName, name, updateSeen, recommendationId)
-            .flatMap(
-                (Response<RecommendationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(
-        String resourceGroupName,
-        String siteName,
-        String name,
-        Boolean updateSeen,
-        String recommendationId,
-        Context context) {
-        return getRuleDetailsByWebAppWithResponseAsync(
-                resourceGroupName, siteName, name, updateSeen, recommendationId, context)
-            .flatMap(
-                (Response<RecommendationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(
-        String resourceGroupName, String siteName, String name) {
-        final Boolean updateSeen = null;
-        final String recommendationId = null;
-        final Context context = null;
-        return getRuleDetailsByWebAppWithResponseAsync(resourceGroupName, siteName, name, updateSeen, recommendationId)
-            .flatMap(
-                (Response<RecommendationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByWebApp(
-        String resourceGroupName, String siteName, String name, Boolean updateSeen, String recommendationId) {
-        return getRuleDetailsByWebAppAsync(resourceGroupName, siteName, name, updateSeen, recommendationId).block();
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
-        final Boolean updateSeen = null;
-        final String recommendationId = null;
-        final Context context = null;
-        return getRuleDetailsByWebAppAsync(resourceGroupName, siteName, name, updateSeen, recommendationId).block();
-    }
-
-    /**
-     * Description for Get a recommendation rule for an app.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     *     object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     *     specify it to query an active entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecommendationRuleInner getRuleDetailsByWebApp(
-        String resourceGroupName,
-        String siteName,
-        String name,
-        Boolean updateSeen,
-        String recommendationId,
-        Context context) {
-        return getRuleDetailsByWebAppAsync(resourceGroupName, siteName, name, updateSeen, recommendationId, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Description for Disables the specific rule for a web site permanently.
@@ -3232,49 +963,14 @@ public final class RecommendationsClient {
      * @param siteName Site name.
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
-        String resourceGroupName, String siteName, String name) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableRecommendationForSite(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            siteName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
+        String resourceGroupName, String siteName, String name);
 
     /**
      * Description for Disables the specific rule for a web site permanently.
@@ -3282,48 +978,14 @@ public final class RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site name.
      * @param name Rule name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
-        String resourceGroupName, String siteName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .disableRecommendationForSite(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                siteName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
-    }
+    Mono<Void> disableRecommendationForSiteAsync(String resourceGroupName, String siteName, String name);
 
     /**
      * Description for Disables the specific rule for a web site permanently.
@@ -3332,15 +994,12 @@ public final class RecommendationsClient {
      * @param siteName Site name.
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableRecommendationForSiteAsync(String resourceGroupName, String siteName, String name) {
-        return disableRecommendationForSiteWithResponseAsync(resourceGroupName, siteName, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    void disableRecommendationForSite(String resourceGroupName, String siteName, String name);
 
     /**
      * Description for Disables the specific rule for a web site permanently.
@@ -3350,336 +1009,12 @@ public final class RecommendationsClient {
      * @param name Rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableRecommendationForSiteAsync(
-        String resourceGroupName, String siteName, String name, Context context) {
-        return disableRecommendationForSiteWithResponseAsync(resourceGroupName, siteName, name, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Disables the specific rule for a web site permanently.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site name.
-     * @param name Rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendationForSite(String resourceGroupName, String siteName, String name) {
-        disableRecommendationForSiteAsync(resourceGroupName, siteName, name).block();
-    }
-
-    /**
-     * Description for Disables the specific rule for a web site permanently.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site name.
-     * @param name Rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendationForSite(String resourceGroupName, String siteName, String name, Context context) {
-        disableRecommendationForSiteAsync(resourceGroupName, siteName, name, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listHistoryForHostingEnvironmentNext(nextLink, context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listHistoryForHostingEnvironmentNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listRecommendedRulesForHostingEnvironmentNext(nextLink, context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForHostingEnvironmentNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listHistoryForWebAppNext(nextLink, context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listHistoryForWebAppNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listRecommendedRulesForWebAppNext(nextLink, context))
-            .<PagedResponse<RecommendationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForWebAppNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    Response<Void> disableRecommendationForSiteWithResponse(
+        String resourceGroupName, String siteName, String name, Context context);
 }
