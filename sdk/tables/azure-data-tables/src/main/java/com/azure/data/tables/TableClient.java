@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
+
 import java.time.Duration;
 
 /**
@@ -377,6 +378,36 @@ public class TableClient {
      *
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return the table entity subclass specified in resultType
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, Class<T> resultType) {
+        return client.getEntity(partitionKey, rowKey, resultType).block();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return the table entity subclass specified in resultType
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType) {
+        return client.getEntity(partitionKey, rowKey, select, resultType).block();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
      *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param timeout max time for query to execute before erroring out
@@ -384,7 +415,23 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
-        return getEntityWithResponse(partitionKey, rowKey, select, timeout, null).getValue();
+        return getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, timeout, null).getValue();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @param timeout max time for query to execute before erroring out
+     * @return the table entity
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType, Duration timeout) {
+        return getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, null).getValue();
     }
 
     /**
@@ -399,9 +446,10 @@ public class TableClient {
      * @return a mono of the response with the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                       Duration timeout, Context context) {
-        return client.getEntityWithResponse(partitionKey, rowKey, select, timeout, context).block();
+    public <T extends TableEntity> Response<T> getEntityWithResponse(String partitionKey, String rowKey, String select,
+                                                                     Class<T> resultType, Duration timeout,
+                                                                     Context context) {
+        return client.getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, context).block();
     }
 
 }

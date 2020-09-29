@@ -620,6 +620,37 @@ public class TableAsyncClient {
      *
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return a mono of the table entity subclass specified in resultType
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, Class<T> resultType) {
+        return getEntityWithResponse(partitionKey, rowKey, null, resultType).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return a mono of the table entity subclass specified in resultType
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, String select,
+                                                     Class<T> resultType) {
+        return getEntityWithResponse(partitionKey, rowKey, select,resultType).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
      *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      *
@@ -627,11 +658,30 @@ public class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, String select) {
-        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, null, context));
+        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, null,
+            context));
     }
 
-    Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                      Duration timeout, Context context) {
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return a mono of the response with the table entity subclass specified in resultType
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
+                                                                           String select, Class<T> resultType) {
+        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, resultType, null, context));
+    }
+
+    <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey, String select,
+                                                                    Class<T> resultType, Duration timeout,
+                                                                    Context context) {
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -668,7 +718,7 @@ public class TableAsyncClient {
                 // TODO: Potentially update logic to deserialize them all.
                 final TableEntity entity = ModelHelper.createEntity(matchingEntities.get(0));
                 sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    entity));
+                    EntityHelper.convertToSubclass(entity, resultType)));
             });
     }
 }

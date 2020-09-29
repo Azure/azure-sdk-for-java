@@ -43,7 +43,12 @@ final class EntityHelper {
         }
     }
 
-    static <T extends TableEntity> T convertToSubclass(TableEntity entity,Class<T> clazz) {
+    @SuppressWarnings("unchecked")
+    static <T extends TableEntity> T convertToSubclass(TableEntity entity, Class<T> clazz) {
+        if (TableEntity.class == clazz) {
+            return (T) entity;
+        }
+
         T result;
         try {
             result = clazz.getDeclaredConstructor(String.class, String.class).newInstance(entity.getPartitionKey(),
