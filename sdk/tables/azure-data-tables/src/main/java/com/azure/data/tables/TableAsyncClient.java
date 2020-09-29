@@ -472,27 +472,50 @@ public class TableAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableEntity> listEntities(ListEntitiesOptions options) {
         return new PagedFlux<>(
-            () -> withContext(context -> listEntitiesFirstPage(context, options)),
-            token -> withContext(context -> listEntitiesNextPage(token, context, options)));
-    } //802
+            () -> withContext(context -> listEntitiesFirstPage(context, options, TableEntity.class)),
+            token -> withContext(context -> listEntitiesNextPage(token, context, options, TableEntity.class)));
+    }
 
-    PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context) {
+    /**
+     * Queries and returns entities in the given table using the odata query options
+     *
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return a paged flux of all the entities which fit this criteria
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T extends TableEntity> PagedFlux<T> listEntities(Class<T> resultType) {
+        return listEntities(new ListEntitiesOptions(), resultType);
+    }
 
+    /**
+     * Queries and returns entities in the given table using the odata query options
+     *
+     * @param options the odata query object
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return a paged flux of all the entities which fit this criteria
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T extends TableEntity> PagedFlux<T> listEntities(ListEntitiesOptions options, Class<T> resultType) {
         return new PagedFlux<>(
-            () -> listEntitiesFirstPage(context, options),
-            token -> listEntitiesNextPage(token, context, options));
-    } //802
+            () -> withContext(context -> listEntitiesFirstPage(context, options, resultType)),
+            token -> withContext(context -> listEntitiesNextPage(token, context, options, resultType)));
+    }
 
-    private Mono<PagedResponse<TableEntity>> listEntitiesFirstPage(Context context, ListEntitiesOptions options) {
+    private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,
+                                                                                 ListEntitiesOptions options,
+                                                                                 Class<T> resultType) {
         try {
-            return listEntities(null, null, context, options);
+            return listEntities(null, null, context, options, resultType);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    } //1459
+    }
 
-    private Mono<PagedResponse<TableEntity>> listEntitiesNextPage(String token, Context context,
-                                                                  ListEntitiesOptions options) {
+    private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesNextPage(String token, Context context,
+                                                                                ListEntitiesOptions options,
+                                                                                Class<T> resultType) {
         if (token == null) {
             return Mono.empty();
         }
@@ -504,14 +527,15 @@ public class TableAsyncClient {
             }
             String nextPartitionKey = split[0];
             String nextRowKey = split[1];
-            return listEntities(nextPartitionKey, nextRowKey, context, options);
+            return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
-    } //1459
+    }
 
-    private Mono<PagedResponse<TableEntity>> listEntities(String nextPartitionKey, String nextRowKey, Context context,
-                                                          ListEntitiesOptions options) {
+    private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
+                                                                        Context context, ListEntitiesOptions options,
+                                                                        Class<T> resultType) {
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
@@ -530,23 +554,24 @@ public class TableAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<TableEntity> entities = entityResponseValue.stream()
+                final List<T> entities = entityResponseValue.stream()
                     .map(ModelHelper::createEntity)
+                    .map(e -> EntityHelper.convertToSubclass(e, resultType))
                     .collect(Collectors.toList());
 
-                return Mono.just(new EntityPaged(response, entities,
+                return Mono.just(new EntityPaged<>(response, entities,
                     response.getDeserializedHeaders().getXMsContinuationNextPartitionKey(),
                     response.getDeserializedHeaders().getXMsContinuationNextRowKey()));
 
             });
-    } //1836
+    }
 
-    private static class EntityPaged implements PagedResponse<TableEntity> {
+    private static class EntityPaged<T extends TableEntity> implements PagedResponse<T> {
         private final Response<TableEntityQueryResponse> httpResponse;
-        private final IterableStream<TableEntity> entityStream;
+        private final IterableStream<T> entityStream;
         private final String continuationToken;
 
-        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<TableEntity> entityList,
+        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<T> entityList,
                     String nextPartitionKey, String nextRowKey) {
             if (nextPartitionKey == null || nextRowKey == null) {
                 this.continuationToken = null;
@@ -573,7 +598,7 @@ public class TableAsyncClient {
         }
 
         @Override
-        public IterableStream<TableEntity> getElements() {
+        public IterableStream<T> getElements() {
             return entityStream;
         }
 

@@ -329,7 +329,7 @@ public class TableClient {
     /**
      * Queries and returns all entities in the given table
      *
-     * @return a list of the tables that fit the query
+     * @return a list of all the entities which fit this criteria
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities() {
@@ -340,11 +340,34 @@ public class TableClient {
      * Queries and returns entities in the given table using the odata QueryOptions
      *
      * @param options the odata query object
-     * @return a list of the tables that fit the query
+     * @return a list of all the entities which fit this criteria
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options) {
         return new PagedIterable<>(client.listEntities(options));
+    }
+
+    /**
+     * Queries and returns all entities in the given table
+     *
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @return a list of all the entities which fit this criteria
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T extends TableEntity> PagedIterable<T> listEntities(Class<T> resultType) {
+        return new PagedIterable<>(client.listEntities(resultType));
+    }
+
+    /**
+     * Queries and returns entities in the given table using the odata QueryOptions
+     *
+     * @param options the odata query object
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @return a list of all the entities which fit this criteria
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T extends TableEntity> PagedIterable<T> listEntities(ListEntitiesOptions options, Class<T> resultType) {
+        return new PagedIterable<>(client.listEntities(options, resultType));
     }
 
     /**
