@@ -48,6 +48,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -120,6 +121,7 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private final String clientSecret;
+    private final InputStream certificate;
     private final String certificatePath;
     private final String certificatePassword;
     private HttpPipelineAdapter httpPipelineAdapter;
@@ -133,13 +135,14 @@ public class IdentityClient {
      * @param clientId the client ID of the application.
      * @param clientSecret the client secret of the application.
      * @param certificatePath the path to the PKCS12 or PEM certificate of the application.
+     * @param certificate the PKCS12 or PEM certificate of the application.
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, String clientSecret,
-                   String certificatePath, String certificatePassword, boolean isSharedTokenCacheCredential,
+    IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
+                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -151,6 +154,7 @@ public class IdentityClient {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.certificatePath = certificatePath;
+        this.certificate = certificate;
         this.certificatePassword = certificatePassword;
         this.options = options;
 
@@ -170,17 +174,17 @@ public class IdentityClient {
         IClientCredential credential;
         if (clientSecret != null) {
             credential = ClientCredentialFactory.createFromSecret(clientSecret);
-        } else if (certificatePath != null) {
+        } else if (certificate != null || certificatePath != null) {
             try {
                 if (certificatePassword == null) {
-                    byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
-
+                    byte[] pemCertificateBytes = getCertificateBytes();
                     credential = ClientCredentialFactory.createFromCertificate(
                         CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                         CertificateUtil.publicKeyFromPem(pemCertificateBytes));
                 } else {
+                    InputStream pfxCertificateStream = getCertificateInputStream();
                     credential = ClientCredentialFactory.createFromCertificate(
-                        new FileInputStream(certificatePath), certificatePassword);
+                            pfxCertificateStream, certificatePassword);
                 }
             } catch (IOException | GeneralSecurityException e) {
                 throw logger.logExceptionAsError(new RuntimeException(
@@ -1026,5 +1030,27 @@ public class IdentityClient {
 
     private boolean isADFSTenant() {
         return this.tenantId.equals(ADFS_TENANT);
+    }
+
+    private byte[] getCertificateBytes() throws IOException {
+        if (certificatePath != null) {
+            return Files.readAllBytes(Paths.get(certificatePath));
+        } else if (certificate != null) {
+            byte[] pemCertificateBytes = new byte[certificate.available()];
+            certificate.read(pemCertificateBytes);
+            return pemCertificateBytes;
+        } else {
+            return null;
+        }
+    }
+
+    private InputStream getCertificateInputStream() throws IOException {
+        if (certificatePath != null) {
+            return new FileInputStream(certificatePath);
+        } else if (certificate != null) {
+            return certificate;
+        } else {
+            return null;
+        }
     }
 }

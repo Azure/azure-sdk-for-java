@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.io.InputStream;
 import java.util.HashMap;
 
 /**
@@ -13,7 +14,8 @@ import java.util.HashMap;
  * @see ClientCertificateCredential
  */
 public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase<ClientCertificateCredentialBuilder> {
-    private String clientCertificate;
+    private String clientCertificatePath;
+    private InputStream clientCertificate;
     private String clientCertificatePassword;
 
     /**
@@ -24,7 +26,18 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredentialBuilder pemCertificate(String certificatePath) {
         ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pem Certificate Path");
-        this.clientCertificate = certificatePath;
+        this.clientCertificatePath = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for authenticating to AAD.
+     *
+     * @param certificate the input stream containing the PEM certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
+        this.clientCertificate = certificate;
         return this;
     }
 
@@ -37,7 +50,20 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
         ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pfx Certificate Path");
-        this.clientCertificate = certificatePath;
+        this.clientCertificatePath = certificatePath;
+        this.clientCertificatePassword = clientCertificatePassword;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for authenticating to AAD.
+     *
+     * @param certificate the input stream containing the password protected PFX certificate
+     * @param clientCertificatePassword the password protecting the PFX file
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate, String clientCertificatePassword) {
+        this.clientCertificate = certificate;
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
     }
@@ -74,9 +100,9 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
                 put("tenantId", tenantId);
-                put("clientCertificate", clientCertificate);
+                put("clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
             }});
-        return new ClientCertificateCredential(tenantId, clientId, clientCertificate, clientCertificatePassword,
-            identityClientOptions);
+        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath, clientCertificate,
+            clientCertificatePassword, identityClientOptions);
     }
 }
