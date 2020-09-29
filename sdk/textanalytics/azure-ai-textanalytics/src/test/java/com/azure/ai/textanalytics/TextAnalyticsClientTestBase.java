@@ -935,7 +935,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedAspectOpinion.getSentiment(), actualAspectOpinion.getSentiment());
         assertEquals(expectedAspectOpinion.getText(), actualAspectOpinion.getText());
         assertEquals(expectedAspectOpinion.isNegated(), actualAspectOpinion.isNegated());
-        assertEquals(expectedAspectOpinion.getLength(), actualAspectOpinion.getLength());
         assertEquals(expectedAspectOpinion.getOffset(), actualAspectOpinion.getOffset());
     }
 
@@ -1061,7 +1060,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
             assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
-            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
             assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }
