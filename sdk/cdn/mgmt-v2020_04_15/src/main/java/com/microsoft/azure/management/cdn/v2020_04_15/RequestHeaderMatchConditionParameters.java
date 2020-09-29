@@ -24,7 +24,7 @@ public class RequestHeaderMatchConditionParameters {
     /**
      * Name of Header to be matched.
      */
-    @JsonProperty(value = "selector", required = true)
+    @JsonProperty(value = "selector")
     private String selector;
 
     /**
@@ -44,7 +44,7 @@ public class RequestHeaderMatchConditionParameters {
     /**
      * The match value for the condition of the delivery rule.
      */
-    @JsonProperty(value = "matchValues", required = true)
+    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /**
@@ -55,9 +55,7 @@ public class RequestHeaderMatchConditionParameters {
 
     /**
      * Creates an instance of RequestHeaderMatchConditionParameters class.
-     * @param selector name of Header to be matched.
      * @param operator describes operator to be matched. Possible values include: 'Any', 'Equal', 'Contains', 'BeginsWith', 'EndsWith', 'LessThan', 'LessThanOrEqual', 'GreaterThan', 'GreaterThanOrEqual'.
-     * @param matchValues the match value for the condition of the delivery rule.
      */
     public RequestHeaderMatchConditionParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestHeaderConditionParameters";
