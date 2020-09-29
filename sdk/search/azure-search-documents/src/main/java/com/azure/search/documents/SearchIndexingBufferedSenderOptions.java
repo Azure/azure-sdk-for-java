@@ -29,7 +29,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderOptions.class);
 
     private Boolean autoFlush;
-    private Duration flushWindow;
+    private Duration autoFlushWindow;
     private Integer batchSize;
     private Integer documentTryLimit;
 
@@ -42,7 +42,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
 
     /**
      * Flag determining whether a buffered sender will automatically flush its document batch based on the
-     * configurations of {@link #setFlushWindow(Duration)} and {@link #setBatchSize(Integer)}.
+     * configurations of {@link #setAutoFlushWindow(Duration)} and {@link #setBatchSize(Integer)}.
      * <p>
      * If {@code autoFlush} is null the buffered sender will be set to automatically flush.
      *
@@ -73,11 +73,11 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * only flush when {@link #setBatchSize(Integer)} is met. If {@code flushWindow} is null a default value of 60
      * seconds is used.
      *
-     * @param flushWindow Duration between document batches being sent for indexing.
+     * @param autoFlushWindow Duration between document batches being sent for indexing.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      */
-    public SearchIndexingBufferedSenderOptions<T> setFlushWindow(Duration flushWindow) {
-        this.flushWindow = flushWindow;
+    public SearchIndexingBufferedSenderOptions<T> setAutoFlushWindow(Duration autoFlushWindow) {
+        this.autoFlushWindow = autoFlushWindow;
         return this;
     }
 
@@ -95,15 +95,15 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The {@link Duration} to wait after the last document has been added to the batch before the batch is
      * flushed.
      */
-    public Duration getFlushWindow() {
-        return (flushWindow == null) ? DEFAULT_FLUSH_WINDOW : flushWindow;
+    public Duration getAutoFlushWindow() {
+        return (autoFlushWindow == null) ? DEFAULT_FLUSH_WINDOW : autoFlushWindow;
     }
 
     /**
      * The number of documents before a buffered sender will send the batch to be indexed.
      * <p>
-     * This will only trigger a batch to be sent automatically if {@link #flushWindow} is configured. Default value is
-     * {@code 100}.
+     * This will only trigger a batch to be sent automatically if {@link #autoFlushWindow} is configured. Default value
+     * is {@code 100}.
      *
      * @param batchSize The number of documents in a batch that will trigger it to be indexed.
      * @return The updated SearchIndexingBufferedSenderOptions object.

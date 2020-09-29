@@ -66,7 +66,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
         this.client = client;
         this.autoFlush = buildOptions.getAutoFlush();
-        this.flushWindowMillis = Math.max(0, buildOptions.getFlushWindow().toMillis());
+        this.flushWindowMillis = Math.max(0, buildOptions.getAutoFlushWindow().toMillis());
         this.batchSize = buildOptions.getBatchSize();
         this.documentTryLimit = buildOptions.getDocumentTryLimit();
 
@@ -235,23 +235,13 @@ public final class SearchIndexingBufferedAsyncSender<T> {
             rescheduleFlushTask();
         }
 
-        AtomicBoolean hasError = new AtomicBoolean(false);
         return flushInternal(convertedActions, 0, context)
             .map(response -> {
                 handleResponse(batchActions, response);
-                if (response.isError()) {
-                    hasError.set(true);
-                }
 
                 return response;
             })
-            .thenEmpty(Mono.defer(() -> {
-                // Indicate that batch processing is complete and another batch can be sent.
-                batchProcessing.set(false);
-                return hasError.get()
-                    ? Mono.error(new RuntimeException("Batching has encountered errors."))
-                    : Mono.empty();
-            }));
+            .thenEmpty(Mono.fromRunnable(() -> batchProcessing.set(false)));
     }
 
     /*
@@ -262,9 +252,8 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         List<com.azure.search.documents.implementation.models.IndexAction> actions, int actionsOffset,
         Context context) {
         return client.indexDocumentsWithResponse(actions, true, context)
-            .flatMapMany(response -> Flux
-                .just(
-                    new IndexBatchResponse(response.getValue().getResults(), actionsOffset, actions.size(), false)))
+            .flatMapMany(response -> Flux.just(
+                new IndexBatchResponse(response.getValue().getResults(), actionsOffset, actions.size(), false)))
             .onErrorResume(IndexBatchException.class, exception -> Flux
                 .just(new IndexBatchResponse(exception.getIndexingResults(), actionsOffset, actions.size(), true)))
             .onErrorResume(HttpResponseException.class, exception -> {

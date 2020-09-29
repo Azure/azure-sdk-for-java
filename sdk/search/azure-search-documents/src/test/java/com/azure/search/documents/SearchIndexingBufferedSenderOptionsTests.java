@@ -31,10 +31,10 @@ public class SearchIndexingBufferedSenderOptionsTests {
     @Test
     public void flushWindowDefaults60Seconds() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(Duration.ofSeconds(60), options.getFlushWindow());
+        assertEquals(Duration.ofSeconds(60), options.getAutoFlushWindow());
 
-        options.setFlushWindow(null);
-        assertEquals(Duration.ofSeconds(60), options.getFlushWindow());
+        options.setAutoFlushWindow(null);
+        assertEquals(Duration.ofSeconds(60), options.getAutoFlushWindow());
     }
 
     @Test

@@ -112,7 +112,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
             new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setFlushWindow(Duration.ofMinutes(5))
+                .setAutoFlushWindow(Duration.ofMinutes(5))
                 .setBatchSize(10)
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
@@ -133,7 +133,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
             new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setFlushWindow(Duration.ofSeconds(3))
+                .setAutoFlushWindow(Duration.ofSeconds(3))
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -174,7 +174,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
             new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setFlushWindow(Duration.ofMinutes(5))
+                .setAutoFlushWindow(Duration.ofMinutes(5))
                 .setBatchSize(1000)
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
@@ -192,7 +192,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(clientBuilder.buildAsyncClient()
             .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setFlushWindow(Duration.ofSeconds(5))
+                .setAutoFlushWindow(Duration.ofSeconds(5))
                 .setBatchSize(10)
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId")))));
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient =
@@ -273,8 +273,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        // Exception is thrown as the batch has partial failures.
-        assertThrows(RuntimeException.class, batchingClient::flush);
+        // Exceptions are propagated into the onActionError.
+        assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(10, addedCount.get());
         assertEquals(5, successCount.get());
@@ -310,8 +310,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        // Exception is thrown as the batch has partial failures.
-        assertThrows(RuntimeException.class, batchingClient::flush);
+        // Exceptions are propagated into the onActionError.
+        assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(10, addedCount.get());
         assertEquals(5, successCount.get());
@@ -398,14 +398,14 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         // Batch split until it was size of one and failed.
         for (int i = 0; i < 9; i++) {
-            assertThrows(RuntimeException.class, batchingClient::flush);
+            assertDoesNotThrow((Executable) batchingClient::flush);
 
             // Document should be added back into the batch as it is retryable.
             assertEquals(1, batchingClient.getActions().size());
         }
 
-        // Final call which will trigger the retry limit for the document.
-        assertThrows(RuntimeException.class, batchingClient::flush);
+        // Final call which will trigger the retry limit for the document but doesn't throw.
+        assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(1, addedCount.get());
         assertEquals(1, errorCount.get());
@@ -441,8 +441,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
-        // Batch split until it was size of one and failed.
-        assertThrows(RuntimeException.class, batchingClient::flush);
+        // Batch split until it was size of one and fails but doesn't throw.
+        assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(2, addedCount.get());
         assertEquals(2, errorCount.get());
@@ -481,8 +481,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
-        // Batch split until it was size of one and failed.
-        assertThrows(RuntimeException.class, batchingClient::flush);
+        // Batch split until it was size of one and fails but doesn't throw.
+        assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(2, addedCount.get());
         assertEquals(1, errorCount.get());
