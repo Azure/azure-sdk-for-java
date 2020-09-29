@@ -136,6 +136,7 @@
                 --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
 
                 --add-reads com.azure.core.test=ALL-UNNAMED
+                --add-opens com.azure.core.test/com.azure.core.test=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
