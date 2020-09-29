@@ -676,4 +676,108 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     //endregion ComponentSnippets
+
+    //region QuerySnippets
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#query(String, Class)} and {@link DigitalTwinsAsyncClient#query(String, Class, Context)}
+     */
+    @Override
+    public void query() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.query#String#BasicDigitalTwin
+        PagedIterable<BasicDigitalTwin> queryResultBasicDigitalTwin = digitalTwinsSyncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class);
+
+        queryResultBasicDigitalTwin.forEach(basicTwin -> System.out.println("Retrieved digitalTwin query result with Id: " + basicTwin.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.query#String#BasicDigitalTwin
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.query#String#String
+        PagedIterable<String> queryResultString = digitalTwinsSyncClient.query("SELECT * FROM digitaltwins", String.class);
+
+        queryResultString.forEach(queryResult -> System.out.println("Retrieved digitalTwin query result: " + queryResult));
+        // END: com.azure.digitaltwins.core.syncclient.query#String#String
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.query#String-Context#BasicDigitalTwin
+        PagedIterable<BasicDigitalTwin> queryResultBasicDigitalTwinWithContext = digitalTwinsSyncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, new Context("key", "value"));
+
+        queryResultBasicDigitalTwinWithContext.forEach(basicTwin -> System.out.println("Retrieved digitalTwin query result with Id: " + basicTwin.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.query#String-Context#BasicDigitalTwin
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.query#String-Context#String
+        PagedIterable<String> queryResultStringWithContext = digitalTwinsSyncClient.query("SELECT * FROM digitaltwins", String.class, new Context("key", "value"));
+
+        queryResultStringWithContext.forEach(queryResult -> System.out.println("Retrieved digitalTwin query result: " + queryResult));
+        // END: com.azure.digitaltwins.core.syncclient.query#String-Context#String
+    }
+    //endregion QuerySnippets
+
+    //region EventRouteSnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRoute(String, EventRoute)}
+     */
+    @Override
+    public void createEventRoute() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.createEventRoute#String-EventRoute
+        String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
+
+        EventRoute eventRoute = new EventRoute("myEndpoitName").setFilter(filter);
+        digitalTwinsSyncClient.createEventRoute("myEventRouteId", eventRoute);
+        // END: com.azure.digitaltwins.core.syncclient.createEventRoute#String-EventRoute
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute)}
+     */
+    @Override
+    public void createEventRouteWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.createEventRouteWithResponse#String-EventRoute-Context
+        String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
+
+        EventRoute eventRoute = new EventRoute("myEndpoitName").setFilter(filter);
+        Response<Void> response = digitalTwinsSyncClient.createEventRouteWithResponse("myEventRouteId", eventRoute, new Context("key", "value"));
+
+        System.out.println("Created an event rout with HTTP status code: " + response.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.createEventRouteWithResponse#String-EventRoute-Context
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRoute(String)}
+     */
+    @Override
+    public void getEventRoute() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String)}
+     */
+    @Override
+    public void getEventRouteWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRoute(String)}
+     */
+    @Override
+    public void deleteEventRoute() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String)}
+     */
+    @Override
+    public void deleteEventRouteWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#listEventRoutes()} and {@link DigitalTwinsAsyncClient#listEventRoutes(EventRoutesListOptions)}
+     */
+    @Override
+    public void listEventRoutes() {
+
+    }
+
+    //endregion EventRouteSnippets
 }

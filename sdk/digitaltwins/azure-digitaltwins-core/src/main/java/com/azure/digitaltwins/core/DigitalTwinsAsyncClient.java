@@ -1075,6 +1075,17 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Query digital twins.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.query#String#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.query#String#String}
+     *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
      *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
@@ -1150,6 +1161,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Create an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createEventRoute#String-EventRoute}
+     *
      * @param eventRouteId The Id of the event route to create.
      * @param eventRoute The event route to create.
      * @return An empty mono.
@@ -1163,6 +1179,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Create an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.createEventRouteWithResponse#String-EventRoute}
+     *
      * @param eventRouteId The Id of the event route to create.
      * @param eventRoute The event route to create.
      * @return A {@link Response} containing an empty mono.

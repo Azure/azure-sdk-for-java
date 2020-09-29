@@ -713,6 +713,16 @@ public final class DigitalTwinsClient {
     /**
      * Query digital twins.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.query#String#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.query#String#String}
+     *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
      *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
@@ -726,6 +736,16 @@ public final class DigitalTwinsClient {
 
     /**
      * Query digital twins.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.query#String-Context#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.query#String-Context#String}
      *
      * @param query The query string, in SQL-like syntax.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -744,6 +764,11 @@ public final class DigitalTwinsClient {
     //region Event Route APIs
     /**
      * Create an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.createEventRoute#String-EventRoute}
+     *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
      */
@@ -754,6 +779,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Create an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.createEventRouteWithResponse#String-EventRoute-Context}
+     *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
      * @param context Additional context that is passed through the Http pipeline during the service call.

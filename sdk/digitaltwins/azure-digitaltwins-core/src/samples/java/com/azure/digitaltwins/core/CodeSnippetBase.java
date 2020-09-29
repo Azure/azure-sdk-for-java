@@ -47,6 +47,20 @@ public abstract class CodeSnippetBase {
     public abstract void updateComponentWithResponse();
     //endregion ComponentSnippets
 
+    //region ComponentSnippets
+    public abstract void query();
+    //endregion ComponentSnippets
+
+    //region EventRouteSnippets
+    public abstract void createEventRoute();
+    public abstract void createEventRouteWithResponse();
+    public abstract void getEventRoute();
+    public abstract void getEventRouteWithResponse();
+    public abstract void deleteEventRoute();
+    public abstract void deleteEventRouteWithResponse();
+    public abstract void listEventRoutes();
+    //endregion EventRouteSnippets
+
     /**
      * Implementation not provided for this method
      *

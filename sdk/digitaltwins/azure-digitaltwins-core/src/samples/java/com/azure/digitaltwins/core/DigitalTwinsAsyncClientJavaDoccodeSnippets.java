@@ -656,4 +656,97 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
     }
 
     //endregion ComponentSnippets
+
+    //region QuerySnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#query(String, Class)}
+     */
+    @Override
+    public void query() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.query#String#BasicDigitalTwin
+        digitalTwinsAsyncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class)
+            .doOnNext(basicTwin -> System.out.println("Retrieved digitalTwin query result with Id: " + basicTwin.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.query#String#BasicDigitalTwin
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.query#String#String
+        digitalTwinsAsyncClient.query("SELECT * FROM digitaltwins", String.class)
+            .doOnNext(twinString -> System.out.println("Retrieved digitalTwin query result with Id: " + twinString))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.query#String#String
+    }
+
+    //endregion QuerySnippets
+
+    //region EventRouteSnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRoute(String, EventRoute)}
+     */
+    @Override
+    public void createEventRoute() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.createEventRoute#String-EventRoute
+        String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
+
+        EventRoute eventRoute = new EventRoute("myEndpoitName").setFilter(filter);
+        digitalTwinsAsyncClient.createEventRoute("myEventRouteId", eventRoute).subscribe();
+        // END: com.azure.digitaltwins.core.asyncclient.createEventRoute#String-EventRoute
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute)}
+     */
+    @Override
+    public void createEventRouteWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.createEventRouteWithResponse#String-EventRoute
+        String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
+
+        EventRoute eventRoute = new EventRoute("myEndpoitName").setFilter(filter);
+        digitalTwinsAsyncClient.createEventRouteWithResponse("myEventRouteId", eventRoute)
+            .subscribe(response -> System.out.println("Created an event rout with HTTP status code: " + response.getStatusCode()));
+        // END: com.azure.digitaltwins.core.asyncclient.createEventRouteWithResponse#String-EventRoute
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRoute(String)}
+     */
+    @Override
+    public void getEventRoute() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String)}
+     */
+    @Override
+    public void getEventRouteWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRoute(String)}
+     */
+    @Override
+    public void deleteEventRoute() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String)}
+     */
+    @Override
+    public void deleteEventRouteWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#listEventRoutes()} and {@link DigitalTwinsAsyncClient#listEventRoutes(EventRoutesListOptions)}
+     */
+    @Override
+    public void listEventRoutes() {
+
+    }
+
+    //endregion EventRouteSnippets
 }
