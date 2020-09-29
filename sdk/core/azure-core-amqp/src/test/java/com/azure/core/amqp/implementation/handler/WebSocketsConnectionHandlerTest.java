@@ -10,6 +10,7 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,7 +104,7 @@ public class WebSocketsConnectionHandlerTest {
             .verifyComplete();
 
         // Assert
-        verify(transport, times(1)).ssl(any());
+        verify(transport).ssl(any(SslDomain.class), any(SslPeerDetails.class));
     }
 
     @Test

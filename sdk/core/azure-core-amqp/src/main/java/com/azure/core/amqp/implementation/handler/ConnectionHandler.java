@@ -110,7 +110,7 @@ public class ConnectionHandler extends Handler {
             try {
                 defaultSslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException e) {
-                throw logger.logThrowableAsError(new RuntimeException(
+                throw logger.logExceptionAsError(new RuntimeException(
                     "Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
             }
         }
@@ -131,7 +131,7 @@ public class ConnectionHandler extends Handler {
         } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
             logger.warning("{} is not secure.", verifyMode);
         } else {
-            throw logger.logThrowableAsError(new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "verifyMode is not supported: " + verifyMode));
         }
 
