@@ -73,17 +73,16 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     synchronized void requestPage() {
         AtomicBoolean receivedPages = new AtomicBoolean(false);
         pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-            .collectList()
-            .map(pages -> {
+            .map(page -> {
                 receivedPages.set(true);
-                pages.forEach(this::addPage);
+                addPage(page);
 
-                P lastPage = pages.get(pages.size() - 1);
-                continuationState.setLastContinuationToken(lastPage.getContinuationToken());
-                this.lastPage = lastPage.getContinuationToken() == null;
+                continuationState.setLastContinuationToken(page.getContinuationToken());
+                this.lastPage = page.getContinuationToken() == null;
 
-                return pages;
+                return page;
             })
+            .then()
             .block();
 
         lastPage = lastPage || (!receivedPages.get() && !isNextAvailable());
