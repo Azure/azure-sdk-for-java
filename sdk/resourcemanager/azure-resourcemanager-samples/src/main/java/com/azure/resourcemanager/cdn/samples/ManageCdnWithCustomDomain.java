@@ -29,7 +29,7 @@ import java.util.Map;
  *  - Create CDN endpoint
  *  - Associate the custom domain with CDN endpoint
  */
-public class ManageCdnProfileWithCustomDomain {
+public class ManageCdnWithCustomDomain {
     /**
      * Main function which runs the actual sample.
      * @param azureResourceManager instance of the azure client

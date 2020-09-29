@@ -4,14 +4,14 @@
     {
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appplatform/samples/ManageSpringCloud.java",
-      "githubPath": "WAIT_FOR_GITHUB_PATH",
-      "description": "WAIT_FOR_DESCRIPTION"
+      "githubPath": "Azure-Samples/app-platform-java-manage-spring-cloud",
+      "description": "Getting started on managing Spring Cloud using Java"
     },
     {
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageFunctionAppBasic.java",
       "githubPath": "Azure-Samples/app-service-java-manage-functions",
-      "description": "Getting started on managing Functions using java"
+      "description": "Getting started on managing Functions using Java"
     },
     {
       "owner": "yungezz",
@@ -177,15 +177,15 @@
     },
     {
       "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnProfileWithCustomDomain.java",
-      "githubPath": "WAIT_FOR_GITHUB_PATH",
-      "description": "WAIT_FOR_DESCRIPTION"
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnWithCustomDomain.java",
+      "githubPath": "Azure-Samples/cdn-java-manage-cdn-with-custom-domain",
+      "description": "Getting started on managing CDN with custom domain using Java"
     },
     {
       "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnProfileWithWebApp.java",
-      "githubPath": "WAIT_FOR_GITHUB_PATH",
-      "description": "WAIT_FOR_DESCRIPTION"
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdn.java",
+      "githubPath": "Azure-Samples/cdn-java-manage-cdn",
+      "description": "Getting started on managing CDN using Java"
     },
     {
       "owner": "yungezz",
@@ -616,8 +616,8 @@
     {
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/privatedns/samples/ManagePrivateDns.java",
-      "githubPath": "WAIT_FOR_GITHUB_PATH",
-      "description": "WAIT_FOR_DESCRIPTION"
+      "githubPath": "Azure-Samples/private-dns-java-manage-private-dns",
+      "description": "Getting started on managing Private DNS using Java"
     },
     {
       "owner": "yungezz",
@@ -652,8 +652,8 @@
     {
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployUsingARMTemplateWithTags.java",
-      "githubPath": "WAIT_FOR_GITHUB_PATH",
-      "description": "WAIT_FOR_DESCRIPTION"
+      "githubPath": "Azure-Samples/resources-java-deploy-using-arm-template-with-tags",
+      "description": "Getting started on deploying using an ARM template with tags using Java"
     },
     {
       "owner": "yungezz",
