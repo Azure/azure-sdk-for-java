@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
                     .build())
             .endpoint(digitalTwinsEndpointUrl)
             .buildClient();
-        // BEGIN com.azure.digitaltwins.core.digitaltwinsclient.instantiation
+        // END com.azure.digitaltwins.core.digitaltwinsclient.instantiation
 
         return digitalTwinsSyncClient;
     }
@@ -480,4 +481,98 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     }
 
     //endregion RelationshipSnippets
+
+    //region ModelsSnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#createModels(Iterable)}
+     */
+    @Override
+    public void createModels() {
+        String model1 = loadModelFromFile("model1");
+        String model2 = loadModelFromFile("model2");
+        String model3 = loadModelFromFile("model3");
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.createModels#Iterable
+        Iterable<DigitalTwinsModelData> createdModels = digitalTwinsSyncClient.createModels(Arrays.asList(model1, model2, model3));
+
+        createdModels.forEach(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.createModels#Iterable
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#createModelsWithResponse(Iterable, Context)}
+     */
+    @Override
+    public void createModelsWithResponse() {
+        String model1 = loadModelFromFile("model1");
+        String model2 = loadModelFromFile("model2");
+        String model3 = loadModelFromFile("model3");
+
+        // BEGIN: com.azure.digitaltwins.core.syncclient.createModelsWithResponse#Iterable
+        Response<Iterable<DigitalTwinsModelData>> createdModels = digitalTwinsSyncClient.createModelsWithResponse(Arrays.asList(model1, model2, model3), new Context("key", "value"));
+
+        System.out.println("Recieved HTTP response of " + createdModels.getStatusCode());
+
+        createdModels.getValue().forEach(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+        // END: com.azure.digitaltwins.core.syncclient.createModelsWithResponse#Iterable
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#getModel(String)}
+     */
+    @Override
+    public void getModel() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#getModelWithResponse(String, Context)}
+     */
+    @Override
+    public void getModelWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#listModels()}
+     */
+    @Override
+    public void listModels() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#decommissionModel(String)}
+     */
+    @Override
+    public void decommissionModel() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#decommissionModelWithResponse(String, Context)}
+     */
+    @Override
+    public void decommissionModelWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#deleteModel(String)}
+     */
+    @Override
+    public void deleteModel() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsClient#deleteModelWithResponse(String, Context)}
+     */
+    @Override
+    public void deleteModelWithResponse() {
+
+    }
+
+    //endregion ModelsSnippets
 }

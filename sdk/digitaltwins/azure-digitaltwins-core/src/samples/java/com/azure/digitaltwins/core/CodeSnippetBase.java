@@ -28,6 +28,21 @@ public abstract class CodeSnippetBase {
     public abstract void listIncomingRelationships();
     //endregion RelationshipSnippets
 
+    //region ModelsSnippets
+    public abstract void createModels();
+    public abstract void createModelsWithResponse();
+    public abstract void getModel();
+    public abstract void getModelWithResponse();
+    public abstract void listModels();
+    public abstract void decommissionModel();
+    public abstract void decommissionModelWithResponse();
+    public abstract void deleteModel();
+    public abstract void deleteModelWithResponse();
+
+
+
+    //endregion ModelsSnippets
+
     /**
      * Implementation not provided for this method
      *
@@ -79,6 +94,15 @@ public abstract class CodeSnippetBase {
      * @return {@code null}
      */
     protected String getRelationshipPayload() {
+        return null;
+    }
+
+    /**
+     * Implementation not provided for this method
+     *
+     * @return {@code null}
+     */
+    protected String loadModelFromFile(String fileName){
         return null;
     }
 }

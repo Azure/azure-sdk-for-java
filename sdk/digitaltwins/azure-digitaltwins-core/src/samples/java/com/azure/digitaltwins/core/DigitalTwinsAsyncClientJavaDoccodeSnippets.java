@@ -4,6 +4,7 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -459,4 +460,99 @@ public class DigitalTwinsAsyncClientJavaDoccodeSnippets extends CodeSnippetBase 
     }
 
     //endregion RelationshipSnippets
+
+    //region ModelsSnippets
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createModels(Iterable)}
+     */
+    @Override
+    public void createModels() {
+        String model1 = loadModelFromFile("model1");
+        String model2 = loadModelFromFile("model2");
+        String model3 = loadModelFromFile("model3");
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.createModels#Iterable
+        digitalTwinsAsyncClient.createModels(Arrays.asList(model1, model2, model3))
+            .subscribe(createdModels -> {
+                createdModels.forEach(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+            });
+        // END: com.azure.digitaltwins.core.asyncclient.createModels#Iterable
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#createModelsWithResponse(Iterable)}
+     */
+    @Override
+    public void createModelsWithResponse() {
+        String model1 = loadModelFromFile("model1");
+        String model2 = loadModelFromFile("model2");
+        String model3 = loadModelFromFile("model3");
+
+        // BEGIN: com.azure.digitaltwins.core.asyncclient.createModelsWithResponse#Iterable
+        digitalTwinsAsyncClient.createModelsWithResponse(Arrays.asList(model1, model2, model3))
+            .subscribe(createdModels -> {
+                System.out.println("Reveieced a response with HTTP status code: " + createdModels.getStatusCode());
+                createdModels.getValue().forEach(model -> System.out.println("Retrieved model with Id: " + model.getId()));
+            });
+        // END: com.azure.digitaltwins.core.asyncclient.createModelsWithResponse#Iterable
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getModel(String)}
+     */
+    @Override
+    public void getModel() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#getModelWithResponse(String)}
+     */
+    @Override
+    public void getModelWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#listModels()}
+     */
+    @Override
+    public void listModels() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#decommissionModel(String)}
+     */
+    @Override
+    public void decommissionModel() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String)}
+     */
+    @Override
+    public void decommissionModelWithResponse() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteModel(String)}
+     */
+    @Override
+    public void deleteModel() {
+
+    }
+
+    /**
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteModelWithResponse(String)}
+     */
+    @Override
+    public void deleteModelWithResponse() {
+
+    }
+
+    //endregion ModelsSnippets
 }

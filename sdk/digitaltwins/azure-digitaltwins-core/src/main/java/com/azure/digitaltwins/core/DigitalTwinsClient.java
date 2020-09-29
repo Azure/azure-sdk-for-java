@@ -474,6 +474,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Creates one or many models.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.createModels#Iterable}
+     *
      * @param models The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
@@ -485,6 +490,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Creates one or many models.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.createModelsWithResponse#Iterable}
+     *
      * @param models The list of models to create. Each string corresponds to exactly one model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
