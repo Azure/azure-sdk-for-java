@@ -740,7 +740,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
-        assertEquals(expectedCategorizedEntity.getLength(), actualCategorizedEntity.getLength());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
@@ -752,7 +751,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualPiiEntity PiiEntity returned by the API.
      */
     static void validatePiiEntity(PiiEntity expectedPiiEntity, PiiEntity actualPiiEntity) {
-        assertEquals(expectedPiiEntity.getLength() > 0, actualPiiEntity.getLength() > 0);
         assertEquals(expectedPiiEntity.getOffset(), actualPiiEntity.getOffset());
         assertEquals(expectedPiiEntity.getSubcategory(), actualPiiEntity.getSubcategory());
         assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
@@ -875,7 +873,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
-        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
 
         if (includeOpinionMining) {
             validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
@@ -912,7 +909,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
         assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
         assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
-        assertEquals(expectedAspectSentiment.getLength(), actualAspectSentiment.getLength());
         assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
     }
 
