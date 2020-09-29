@@ -592,7 +592,9 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteModel() {
-
+        // BEGIN: com.azure.digitaltwins.core.syncclient.deleteModel#String
+        digitalTwinsSyncClient.deleteModel("dtmi:samples:Building;1");
+        // END: com.azure.digitaltwins.core.syncclient.deleteModel#String
     }
 
     /**
@@ -600,7 +602,11 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
      */
     @Override
     public void deleteModelWithResponse() {
+        // BEGIN: com.azure.digitaltwins.core.syncclient.deleteModelWithResponse#String
+        Response response = digitalTwinsSyncClient.deleteModelWithResponse("dtmi:samples:Building;1", new Context("key", "value"));
 
+        System.out.println("Received delete model HTTP response with status: " + response.getStatusCode());
+        // END: com.azure.digitaltwins.core.syncclient.deleteModelWithResponse#String
     }
 
     //endregion ModelsSnippets

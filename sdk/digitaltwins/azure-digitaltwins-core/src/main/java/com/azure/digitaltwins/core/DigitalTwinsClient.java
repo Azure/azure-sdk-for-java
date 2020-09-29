@@ -570,6 +570,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Deletes a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.deleteModel#String}
+     *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -579,6 +584,11 @@ public final class DigitalTwinsClient {
 
     /**
      * Deletes a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.syncclient.deleteModelWithResponse#String}
+     *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} with no parsed payload object.

@@ -893,6 +893,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteModel#String}
+     *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return An empty Mono
      */
@@ -904,6 +909,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncclient.deleteModelWithResponse#String}
+     *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return A {@link Response} with no parsed payload object.
      */
