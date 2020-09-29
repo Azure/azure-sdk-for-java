@@ -22,7 +22,7 @@ public class KeyVaultJcaProvider extends Provider {
     /**
      * Stores the information.
      */
-    private static final String INFO = "Azure KeyVault Security Provider";
+    private static final String INFO = "Azure KeyVault JCA Provider";
 
     /**
      * Stores the name.
@@ -59,8 +59,10 @@ public class KeyVaultJcaProvider extends Provider {
              * See SSLUtilBase.getKeyManagers and look for the 
              * "DKS".equalsIgnoreCase(certificate.getCertificateKeystoreType()
              */
+            putService(new Provider.Service(this, "KeyStore", "DKS",
+                    KeyVaultKeyStore.class.getName(), Arrays.asList("DKS"), null));
             putService(new Provider.Service(this, "KeyStore", "AzureKeyVault",
-                    KeyVaultKeyStore.class.getName(), Arrays.asList("AzureKeyVault", "DKS"), null));
+                    KeyVaultKeyStore.class.getName(), Arrays.asList("AzureKeyVault"), null));
             return null;
         });
     }
