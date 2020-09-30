@@ -50,13 +50,13 @@ public final class ManageWebAppSourceControl {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp4-", 20);
-        final String app5Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp5-", 20);
-        final String app6Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp6-", 20);
-        final String app7Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp7-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String app4Name       = Utils.randomResourceName(azureResourceManager, "webapp4-", 20);
+        final String app5Name       = Utils.randomResourceName(azureResourceManager, "webapp5-", 20);
+        final String app6Name       = Utils.randomResourceName(azureResourceManager, "webapp6-", 20);
+        final String app7Name       = Utils.randomResourceName(azureResourceManager, "webapp7-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
@@ -64,8 +64,8 @@ public final class ManageWebAppSourceControl {
         final String app5Url        = app5Name + suffix;
         final String app6Url        = app6Name + suffix;
         final String app7Url        = app7Name + suffix;
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
-        final String rg7Name         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg7NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String rg7Name         = Utils.randomResourceName(azureResourceManager, "rg7NEMV_", 24);
         try {
 
 
@@ -97,10 +97,10 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/helloworld...");
-            Utils.curl("http://" + app1Url + "/helloworld/");
+            Utils.sendGetRequest("http://" + app1Url + "/helloworld/");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app1Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app1Url + "/helloworld/"));
 
             //============================================================
             // Create a second web app with local git source control
@@ -142,10 +142,10 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/helloworld...");
-            Utils.curl("http://" + app2Url + "/helloworld/");
+            Utils.sendGetRequest("http://" + app2Url + "/helloworld/");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app2Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app2Url + "/helloworld/"));
 
             //============================================================
             // Create a 3rd web app with a public GitHub repo in Azure-Samples
@@ -165,10 +165,10 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app3Url + "...");
-            Utils.curl("http://" + app3Url);
+            Utils.sendGetRequest("http://" + app3Url);
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "...");
-            System.out.println(Utils.curl("http://" + app3Url));
+            System.out.println(Utils.sendGetRequest("http://" + app3Url));
 
             //============================================================
             // Create a 4th web app with a personal GitHub repo and turn on continuous integration
@@ -191,10 +191,10 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app4Url + "...");
-            Utils.curl("http://" + app4Url);
+            Utils.sendGetRequest("http://" + app4Url);
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app4Url + "...");
-            System.out.println(Utils.curl("http://" + app4Url));
+            System.out.println(Utils.sendGetRequest("http://" + app4Url));
 
             //============================================================
             // Create a 5th web app with the existing app service plan
@@ -233,12 +233,12 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app5Url + "/helloworld...");
-            Utils.curl("http://" + app5Url + "/helloworld/");
+            Utils.sendGetRequest("http://" + app5Url + "/helloworld/");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app5Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app5Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app5Url + "/helloworld/"));
             System.out.println("CURLing " + app5Url + "/coffeeshop...");
-            System.out.println(Utils.curl("http://" + app5Url + "/coffeeshop/"));
+            System.out.println(Utils.sendGetRequest("http://" + app5Url + "/coffeeshop/"));
 
             //============================================================
             // Create a 6th web app with the existing app service plan
@@ -274,12 +274,12 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app6Url + "/helloworld...");
-            Utils.curl("http://" + app6Url + "/helloworld/");
+            Utils.sendGetRequest("http://" + app6Url + "/helloworld/");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app6Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app6Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app6Url + "/helloworld/"));
             System.out.println("CURLing " + app6Url + "/coffeeshop...");
-            System.out.println(Utils.curl("http://" + app6Url + "/coffeeshop/"));
+            System.out.println(Utils.sendGetRequest("http://" + app6Url + "/coffeeshop/"));
 
             //============================================================
             // Create a 7th web app with the existing app service plan
@@ -317,7 +317,7 @@ public final class ManageWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app7Url);
-            Utils.curl("http://" + app7Url);
+            Utils.sendGetRequest("http://" + app7Url);
             return true;
         } finally {
             try {

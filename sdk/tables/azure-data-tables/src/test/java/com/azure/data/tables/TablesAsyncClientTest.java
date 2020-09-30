@@ -198,7 +198,7 @@ public class TablesAsyncClientTest extends TestBase {
         tableClient.createEntity(tableEntity).block(TIMEOUT);
 
         // Act & Assert
-        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue))
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
                 final TableEntity entity = response.getValue();
                 Map<String, Object> properties = entity.getProperties();
@@ -311,7 +311,7 @@ public class TablesAsyncClientTest extends TestBase {
         tableClient.createEntity(tableEntity).block(TIMEOUT);
 
         // Act & Assert
-        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue))
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
                 final TableEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
@@ -323,6 +323,33 @@ public class TablesAsyncClientTest extends TestBase {
                 assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void getEntityWithResponseWithSelectAsync() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+        tableEntity.addProperty("Test", "Value");
+        final int expectedStatusCode = 200;
+        tableClient.createEntity(tableEntity).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, "Test"))
+            .assertNext(response -> {
+                final TableEntity entity = response.getValue();
+                assertEquals(expectedStatusCode, response.getStatusCode());
+
+                assertNotNull(entity);
+                assertNull(entity.getPartitionKey());
+                assertNull(entity.getRowKey());
+                assertNull(entity.getTimestamp());
+                assertNotNull(entity.getETag());
+                assertEquals(entity.getProperties().get("Test"), "Value");
             })
             .expectComplete()
             .verify();

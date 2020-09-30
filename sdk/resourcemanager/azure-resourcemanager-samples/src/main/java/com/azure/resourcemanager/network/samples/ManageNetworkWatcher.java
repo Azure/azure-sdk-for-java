@@ -72,17 +72,17 @@ public final class ManageNetworkWatcher {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String nwName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nw", 8);
+        final String nwName = Utils.randomResourceName(azureResourceManager, "nw", 8);
 
         final String userName = "tirekicker";
-        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
-        final String dnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pipdns", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String dnsLabel = Utils.randomResourceName(azureResourceManager, "pipdns", 20);
         final String subnetName = "subnet1";
-        final String nsgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nsg", 20);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 24);
-        final String saName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sa", 24);
-        final String vmName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm", 24);
-        final String packetCaptureName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pc", 8);
+        final String nsgName = Utils.randomResourceName(azureResourceManager, "nsg", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String saName = Utils.randomResourceName(azureResourceManager, "sa", 24);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 24);
+        final String packetCaptureName = Utils.randomResourceName(azureResourceManager, "pc", 8);
         final String packetCaptureStorageContainer = "packetcapture";
         // file name to save packet capture log locally
         final String packetCaptureFile = "packetcapture.cap";

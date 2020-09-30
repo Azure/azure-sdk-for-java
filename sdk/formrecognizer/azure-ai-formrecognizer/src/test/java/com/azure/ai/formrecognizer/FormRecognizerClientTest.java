@@ -214,7 +214,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new RecognizeReceiptsOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
-
             validateExceptionSource(errorResponseException);
         });
     }
@@ -404,7 +403,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeContentOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
-
             validateExceptionSource(errorResponseException);
         });
     }
@@ -980,7 +978,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
-
             validateExceptionSource(errorResponseException);
         });
     }

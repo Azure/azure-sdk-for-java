@@ -60,8 +60,8 @@ public final class QueryMetricsAndActivityLogs {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("saMonitor", 20);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgMonitor", 20);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "saMonitor", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgMonitor", 20);
 
         try {
             // ============================================================

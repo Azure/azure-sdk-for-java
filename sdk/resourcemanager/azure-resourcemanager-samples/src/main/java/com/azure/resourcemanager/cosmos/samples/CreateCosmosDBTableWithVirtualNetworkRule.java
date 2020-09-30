@@ -36,9 +36,9 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String docDBName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("cosmosdb", 15);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgcosmosdb", 24);
-        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnetcosmosdb", 20);
+        final String docDBName = Utils.randomResourceName(azureResourceManager, "cosmosdb", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgcosmosdb", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnetcosmosdb", 20);
 
         try {
             // ============================================================

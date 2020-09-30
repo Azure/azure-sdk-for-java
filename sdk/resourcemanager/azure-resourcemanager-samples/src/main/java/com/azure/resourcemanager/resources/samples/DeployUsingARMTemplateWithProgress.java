@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.samples.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,8 +37,8 @@ public final class DeployUsingARMTemplateWithProgress {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgRSAP", 24);
-        final String deploymentName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dpRSAP", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSAP", 24);
+        final String deploymentName = Utils.randomResourceName(azureResourceManager, "dpRSAP", 24);
         try {
             String templateJson = DeployUsingARMTemplateWithProgress.getTemplate(azureResourceManager);
 
@@ -123,8 +124,8 @@ public final class DeployUsingARMTemplateWithProgress {
     }
 
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("hpRSAT", 24);
-        final String webappName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("wnRSAT", 24);
+        final String hostingPlanName = Utils.randomResourceName(azureResourceManager, "hpRSAT", 24);
+        final String webappName = Utils.randomResourceName(azureResourceManager, "wnRSAT", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 

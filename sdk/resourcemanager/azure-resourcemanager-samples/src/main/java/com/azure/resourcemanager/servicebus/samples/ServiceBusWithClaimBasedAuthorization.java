@@ -42,12 +42,12 @@ public final class ServiceBusWithClaimBasedAuthorization {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgSB03_", 24);
-        final String namespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("namespace", 20);
-        final String queueName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("queue1_", 24);
-        final String topicName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("topic_", 24);
-        final String subscription1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sub1_", 24);
-        final String subscription2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("sub2_", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgSB03_", 24);
+        final String namespaceName = Utils.randomResourceName(azureResourceManager, "namespace", 20);
+        final String queueName = Utils.randomResourceName(azureResourceManager, "queue1_", 24);
+        final String topicName = Utils.randomResourceName(azureResourceManager, "topic_", 24);
+        final String subscription1Name = Utils.randomResourceName(azureResourceManager, "sub1_", 24);
+        final String subscription2Name = Utils.randomResourceName(azureResourceManager, "sub2_", 24);
 
         try {
             //============================================================

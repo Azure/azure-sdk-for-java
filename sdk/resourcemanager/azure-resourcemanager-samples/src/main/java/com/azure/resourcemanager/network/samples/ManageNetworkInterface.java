@@ -38,16 +38,16 @@ public final class ManageNetworkInterface {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 24);
-        final String networkInterfaceName1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nic2", 24);
-        final String networkInterfaceName3 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nic3", 24);
-        final String publicIPAddressLeafDNS1 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 24);
-        final String publicIPAddressLeafDNS2 = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip2", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
+        final String networkInterfaceName1 = Utils.randomResourceName(azureResourceManager, "nic1", 24);
+        final String networkInterfaceName2 = Utils.randomResourceName(azureResourceManager, "nic2", 24);
+        final String networkInterfaceName3 = Utils.randomResourceName(azureResourceManager, "nic3", 24);
+        final String publicIPAddressLeafDNS1 = Utils.randomResourceName(azureResourceManager, "pip1", 24);
+        final String publicIPAddressLeafDNS2 = Utils.randomResourceName(azureResourceManager, "pip2", 24);
 
         // TODO: adjust the length of vm name from 8 to 24
-        final String vmName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm", 8);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMI", 24);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 8);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMI", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
         try {

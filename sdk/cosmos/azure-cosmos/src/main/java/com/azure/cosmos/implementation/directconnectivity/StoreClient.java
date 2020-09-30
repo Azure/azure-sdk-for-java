@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -40,6 +41,7 @@ import java.util.function.Function;
  * StoreClient uses the ReplicatedResourceClient to make requests to the backend.
  */
 public class StoreClient implements IStoreClient {
+    private final DiagnosticsClientContext diagnosticsClientContext;
     private final Logger logger = LoggerFactory.getLogger(StoreClient.class);
     private final GatewayServiceConfigurationReader serviceConfigurationReader;
 
@@ -49,16 +51,19 @@ public class StoreClient implements IStoreClient {
     private final String ZERO_PARTITION_KEY_RANGE = "0";
 
     public StoreClient(
+            DiagnosticsClientContext diagnosticsClientContext,
             Configs configs,
             IAddressResolver addressResolver,
             SessionContainer sessionContainer,
             GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
             TransportClient transportClient,
             boolean useMultipleWriteLocations) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
         this.serviceConfigurationReader = serviceConfigurationReader;
         this.replicatedResourceClient = new ReplicatedResourceClient(
+            diagnosticsClientContext,
             configs,
             new AddressSelector(addressResolver, configs.getProtocol()),
             sessionContainer,
@@ -144,7 +149,7 @@ public class StoreClient implements IStoreClient {
         this.captureSessionToken(request, headers);
         BridgeInternal.recordRetryContext(request.requestContext.cosmosDiagnostics, request);
         storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
-        return new RxDocumentServiceResponse(storeResponse);
+        return new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
     }
 
     private long getLSN(Map<String, String> headers) {
