@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.sample;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -28,6 +27,9 @@ public class CosmosSampleApplication implements CommandLineRunner {
     }
 
     public void run(String... var1) {
+        this.repository.deleteAll().block();
+        LOGGER.info("Deleted all data in container.");
+
         final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
 
         // Save the User class to Azure Cosmos DB database.
@@ -55,11 +57,5 @@ public class CosmosSampleApplication implements CommandLineRunner {
         Assert.state(result.getLastName().equals(testUser.getLastName()), "query result lastName doesn't match!");
 
         LOGGER.info("findOne in User collection get result: {}", result.toString());
-    }
-
-    @PostConstruct
-    public void setup() {
-        // For this example, remove all of the existing records.
-        this.repository.deleteAll().block();
     }
 }
