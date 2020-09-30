@@ -4,6 +4,12 @@ jobs:
   template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
   parameters:
     Artifacts:
+      - name: azure-communication-administration
+        groupId: com.azure
+        safeName: azurecommunicationadministration
+      - name: azure-communication-chat
+        groupId: com.azure
+        safeName: azurecommunicationchatclient
       - name: azure-communication-sms
         groupId: com.azure
         safeName: azurecommunicationsms
