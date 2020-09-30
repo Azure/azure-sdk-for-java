@@ -96,12 +96,12 @@ public class DataLakePathAsyncClient {
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
      *
-     * @param pipeline             The pipeline used to send and receive service requests.
-     * @param url                  The endpoint where to send service requests.
-     * @param serviceVersion       The version of the service to receive requests.
-     * @param accountName          The storage account name.
-     * @param fileSystemName       The file system name.
-     * @param pathName             The path name.
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param fileSystemName The file system name.
+     * @param pathName The path name.
      * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
@@ -132,6 +132,7 @@ public class DataLakePathAsyncClient {
      * Converts the metadata into a string of format "key1=value1, key2=value2" and Base64 encodes the values.
      *
      * @param metadata The metadata.
+     *
      * @return The metadata represented as a String.
      */
     static String buildMetadataString(Map<String, String> metadata) {
@@ -232,7 +233,7 @@ public class DataLakePathAsyncClient {
      * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create}
      *
      * <p>For more information see the
@@ -253,7 +254,7 @@ public class DataLakePathAsyncClient {
      * Creates a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean}
      *
      * <p>For more information see the
@@ -261,6 +262,7 @@ public class DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param overwrite Whether or not to overwrite, should data exist on the file.
+     *
      * @return A reactive response containing information about the created resource.
      */
     public Mono<PathInfo> create(boolean overwrite) {
@@ -279,17 +281,17 @@ public class DataLakePathAsyncClient {
      * Creates a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param permissions       POSIX access permissions for the resource owner, the resource owning group, and others.
-     * @param umask             Restricts permissions of the resource to be created.
-     * @param headers           {@link PathHttpHeaders}
-     * @param metadata          Metadata to associate with the resource.
+     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
+     * @param umask Restricts permissions of the resource to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
@@ -327,9 +329,9 @@ public class DataLakePathAsyncClient {
     /**
      * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
-     * @param recursive         Whether or not to delete all paths beneath the directory.
+     * @param recursive Whether or not to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
-     * @param context           Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     Mono<Response<Void>> deleteWithResponse(Boolean recursive, DataLakeRequestConditions requestConditions,
@@ -354,7 +356,7 @@ public class DataLakePathAsyncClient {
      * values must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map}
      *
      * <p>For more information, see the
@@ -376,13 +378,13 @@ public class DataLakePathAsyncClient {
      * values must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata          Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
@@ -402,7 +404,7 @@ public class DataLakePathAsyncClient {
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
@@ -424,13 +426,13 @@ public class DataLakePathAsyncClient {
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
-     * @param headers           {@link PathHttpHeaders}
+     * @param headers {@link PathHttpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
@@ -449,7 +451,7 @@ public class DataLakePathAsyncClient {
      * Returns the resources's metadata and properties.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties}
      *
      * <p>For more information, see the
@@ -469,7 +471,7 @@ public class DataLakePathAsyncClient {
      * Returns the resource's metadata and properties.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions}
      *
      * <p>For more information, see the
@@ -495,7 +497,7 @@ public class DataLakePathAsyncClient {
      * versa.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.exists}
      *
      * @return true if the path exists, false if it doesn't
@@ -515,7 +517,7 @@ public class DataLakePathAsyncClient {
      * versa.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse}
      *
      * @return true if the path exists, false if it doesn't
@@ -533,15 +535,15 @@ public class DataLakePathAsyncClient {
      * Changes the access control list, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
-     * @param group             The group of the resource.
-     * @param owner             The owner of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @return A reactive response containing the resource info.
      */
     public Mono<PathInfo> setAccessControlList(List<PathAccessControlEntry> accessControlList, String group,
@@ -557,15 +559,15 @@ public class DataLakePathAsyncClient {
      * Changes the access control list, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
-     * @param group             The group of the resource.
-     * @param owner             The owner of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource info.
      */
@@ -583,15 +585,15 @@ public class DataLakePathAsyncClient {
      * Changes the permissions, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param permissions {@link PathPermissions}
-     * @param group       The group of the resource.
-     * @param owner       The owner of the resource.
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @return A reactive response containing the resource info.
      */
     public Mono<PathInfo> setPermissions(PathPermissions permissions, String group, String owner) {
@@ -606,15 +608,15 @@ public class DataLakePathAsyncClient {
      * Changes the permissions, group and/or owner for a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
-     * @param permissions       {@link PathPermissions}
-     * @param group             The group of the resource.
-     * @param owner             The owner of the resource.
+     * @param permissions {@link PathPermissions}
+     * @param group The group of the resource.
+     * @param owner The owner of the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource info.
      */
@@ -644,8 +646,8 @@ public class DataLakePathAsyncClient {
         String permissionsString = permissions == null ? null : permissions.toString();
         String accessControlListString =
             accessControlList == null
-                ? null
-                : PathAccessControlEntry.serializeList(accessControlList);
+            ? null
+            : PathAccessControlEntry.serializeList(accessControlList);
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.paths().setAccessControlWithRestResponseAsync(null, owner, group, permissionsString,
@@ -659,7 +661,7 @@ public class DataLakePathAsyncClient {
      * Recursively sets the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#List}
      *
      * <p>For more information, see the
@@ -668,7 +670,7 @@ public class DataLakePathAsyncClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
      * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
-     *                {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
         try {
@@ -683,7 +685,7 @@ public class DataLakePathAsyncClient {
      * Recursively sets the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
@@ -709,7 +711,7 @@ public class DataLakePathAsyncClient {
      * Recursively updates the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List}
      *
      * <p>For more information, see the
@@ -718,7 +720,8 @@ public class DataLakePathAsyncClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
      */
-    public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
+    public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
+    {
         try {
             return updateAccessControlRecursiveWithResponse(
                 new PathUpdateAccessControlRecursiveOptions(accessControlList))
@@ -732,7 +735,7 @@ public class DataLakePathAsyncClient {
      * Recursively updates the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
@@ -758,7 +761,7 @@ public class DataLakePathAsyncClient {
      * Recursively removes the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List}
      *
      * <p>For more information, see the
@@ -782,7 +785,7 @@ public class DataLakePathAsyncClient {
      * Recursively removes the access control on a path and all subpaths.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
@@ -822,11 +825,10 @@ public class DataLakePathAsyncClient {
             continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed(
-                        (DataLakeStorageException) e, continuationToken));
-                } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e,
+                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                         continuationToken));
+                } else if (e instanceof Exception) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
                 }
                 return e;
             })
@@ -922,14 +924,14 @@ public class DataLakePathAsyncClient {
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed(
-                        (DataLakeStorageException) e, effectiveNextToken));
-                } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e,
+                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                         effectiveNextToken));
+                } else if (e instanceof Exception) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
                 }
                 return e;
-            }).flatMap(response2 -> setAccessControlRecursiveWithResponseHelper(response2, maxBatches,
+            })
+            .flatMap(response2 -> setAccessControlRecursiveWithResponseHelper(response2, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
                 accessControlStr, mode, batchSize, continueOnFailure, effectiveNextToken, context));
     }
@@ -938,7 +940,7 @@ public class DataLakePathAsyncClient {
      * Returns the access control for a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl}
      *
      * <p>For more information, see the
@@ -958,15 +960,15 @@ public class DataLakePathAsyncClient {
      * Returns the access control for a resource.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
-     *                                  user identity values returned as Azure Active Directory Object IDs. Default value is false.
-     * @param requestConditions         {@link DataLakeRequestConditions}
+     * user identity values returned as Azure Active Directory Object IDs. Default value is false.
+     * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource access control.
      */
     public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
@@ -1003,12 +1005,12 @@ public class DataLakePathAsyncClient {
     /**
      * Package-private rename method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
-     * @param destinationFileSystem        The file system of the destination within the account.
-     *                                     {@code null} for the current file system.
-     * @param destinationPath              The path of the destination relative to the file system name
-     * @param sourceRequestConditions      {@link DataLakeRequestConditions} against the source.
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
+     * @param destinationPath The path of the destination relative to the file system name
+     * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
-     * @param context                      Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathAsyncClient} used to interact with the path created.
      */
@@ -1050,9 +1052,8 @@ public class DataLakePathAsyncClient {
 
     /**
      * Takes in a destination and creates a DataLakePathAsyncClient with a new path
-     *
      * @param destinationFileSystem The destination file system
-     * @param destinationPath       The destination path
+     * @param destinationPath The destination path
      * @return A DataLakePathAsyncClient
      */
     DataLakePathAsyncClient getPathAsyncClient(String destinationFileSystem, String destinationPath) {
@@ -1073,9 +1074,8 @@ public class DataLakePathAsyncClient {
 
     /**
      * Takes in a destination path and creates a SpecializedBlobClientBuilder with a new path name
-     *
      * @param destinationFileSystem The destination file system
-     * @param destinationPath       The destination path
+     * @param destinationPath The destination path
      * @return An updated SpecializedBlobClientBuilder
      */
     SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem, String destinationPath) {
@@ -1102,14 +1102,15 @@ public class DataLakePathAsyncClient {
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
-     * @param userDelegationKey                 A {@link UserDelegationKey} object used to sign the SAS values.
-     * @return A {@code String} representing all SAS query parameters.
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
      * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
      * to get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
@@ -1124,10 +1125,11 @@ public class DataLakePathAsyncClient {
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
