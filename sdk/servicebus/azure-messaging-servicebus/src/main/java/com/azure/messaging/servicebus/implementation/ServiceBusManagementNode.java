@@ -10,7 +10,6 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -74,9 +73,9 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
      * @param messageLock The lock token of the message {@link ServiceBusReceivedMessage} to be renewed.
-     * @return {@link Instant} representing the pending renew.
+     * @return {@link OffsetDateTime} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(String messageLock, String associatedLinkName);
+    Mono<OffsetDateTime> renewMessageLock(String messageLock, String associatedLinkName);
 
     /**
      * Renews the lock on the session.
@@ -84,7 +83,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @param sessionId Identifier for the session.
      * @return The next expiration time for the session.
      */
-    Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName);
+    Mono<OffsetDateTime> renewSessionLock(String sessionId, String associatedLinkName);
 
     /**
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
