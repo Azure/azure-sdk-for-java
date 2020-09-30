@@ -47,9 +47,9 @@ public final class ManageVpnGatewayPoint2SiteConnection {
         final String certPath = System.getenv("CERT_PATH");
         final String clientCertThumbprint = System.getenv("CLIENT_CERT_THUMBPRINT");
         final Region region = Region.US_WEST2;
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 20);
-        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
-        final String vpnGatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vngw", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String vpnGatewayName = Utils.randomResourceName(azureResourceManager, "vngw", 20);
 
         try {
             //============================================================

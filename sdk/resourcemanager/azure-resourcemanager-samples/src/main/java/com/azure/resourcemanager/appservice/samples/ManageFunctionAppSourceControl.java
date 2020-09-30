@@ -45,19 +45,19 @@ public final class ManageFunctionAppSourceControl {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp4-", 20);
-        final String app5Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp5-", 20);
-        final String app6Name       = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("webapp6-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String app4Name       = Utils.randomResourceName(azureResourceManager, "webapp4-", 20);
+        final String app5Name       = Utils.randomResourceName(azureResourceManager, "webapp5-", 20);
+        final String app6Name       = Utils.randomResourceName(azureResourceManager, "webapp6-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
         final String app5Url        = app5Name + suffix;
         final String app6Url        = app6Name + suffix;
-        final String rgName         = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -80,9 +80,9 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Deploying a function app to " + app1Name + " through FTP...");
 
-            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
-            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
-            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
+            Utils.uploadFileForFunctionViaFtp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
+            Utils.uploadFileForFunctionViaFtp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
+            Utils.uploadFileForFunctionViaFtp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
 
             // sync triggers
             app1.syncTriggers();
@@ -92,10 +92,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/api/square...");
-            Utils.post("http://" + app1Url + "/api/square", "625");
+            Utils.sendPostRequest("http://" + app1Url + "/api/square", "625");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/api/square...");
-            System.out.println("Square of 625 is " + Utils.post("http://" + app1Url + "/api/square", "625"));
+            System.out.println("Square of 625 is " + Utils.sendPostRequest("http://" + app1Url + "/api/square", "625"));
 
             //============================================================
             // Create a second function app with local git source control
@@ -136,10 +136,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");
-            Utils.post("http://" + app2Url + "/api/square", "725");
+            Utils.sendPostRequest("http://" + app2Url + "/api/square", "725");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/api/square...");
-            System.out.println("Square of 725 is " + Utils.post("http://" + app2Url + "/api/square", "725"));
+            System.out.println("Square of 725 is " + Utils.sendPostRequest("http://" + app2Url + "/api/square", "725"));
 
             //============================================================
             // Create a 3rd function app with a public GitHub repo in Azure-Samples
@@ -160,10 +160,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app3Url + "/api/square...");
-            Utils.post("http://" + app3Url + "/api/square", "825");
+            Utils.sendPostRequest("http://" + app3Url + "/api/square", "825");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "/api/square...");
-            System.out.println("Square of 825 is " + Utils.post("http://" + app3Url + "/api/square", "825"));
+            System.out.println("Square of 825 is " + Utils.sendPostRequest("http://" + app3Url + "/api/square", "825"));
 
             //============================================================
             // Create a 4th function app with a personal GitHub repo and turn on continuous integration
@@ -187,10 +187,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app4Url + "...");
-            Utils.curl("http://" + app4Url);
+            Utils.sendGetRequest("http://" + app4Url);
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app4Url + "...");
-            System.out.println(Utils.curl("http://" + app4Url));
+            System.out.println(Utils.sendGetRequest("http://" + app4Url));
 
             //============================================================
             // Create a 5th function app with web deploy
@@ -213,10 +213,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app5Url + "/api/square...");
-            Utils.post("http://" + app5Url + "/api/square", "925");
+            Utils.sendPostRequest("http://" + app5Url + "/api/square", "925");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app5Url + "/api/square...");
-            System.out.println("Square of 925 is " + Utils.post("http://" + app5Url + "/api/square", "925"));
+            System.out.println("Square of 925 is " + Utils.sendPostRequest("http://" + app5Url + "/api/square", "925"));
 
             //============================================================
             // Create a 6th function app with zip deploy
@@ -239,10 +239,10 @@ public final class ManageFunctionAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app6Url + "/api/square...");
-            Utils.post("http://" + app6Url + "/api/square", "926");
+            Utils.sendPostRequest("http://" + app6Url + "/api/square", "926");
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app6Url + "/api/square...");
-            System.out.println("Square of 926 is " + Utils.post("http://" + app6Url + "/api/square", "926"));
+            System.out.println("Square of 926 is " + Utils.sendPostRequest("http://" + app6Url + "/api/square", "926"));
 
             return true;
         } finally {

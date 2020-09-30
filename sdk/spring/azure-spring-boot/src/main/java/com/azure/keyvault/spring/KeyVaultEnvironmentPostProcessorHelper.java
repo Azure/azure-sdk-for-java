@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.spring;
+package com.microsoft.azure.keyvault.spring;
 
-import static com.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.telemetry.TelemetryData.getClassPackageSimpleName;
-import static com.azure.utils.ApplicationId.AZURE_SPRING_KEY_VAULT;
-import static com.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
-import static com.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
+import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.utils.ApplicationId.AZURE_SPRING_KEY_VAULT;
+import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import static com.microsoft.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 import com.azure.core.credential.TokenCredential;
@@ -15,14 +15,18 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.telemetry.TelemetrySender;
+import com.azure.security.keyvault.secrets.SecretServiceVersion;
+import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
+import com.microsoft.azure.telemetry.TelemetrySender;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -62,15 +66,19 @@ class KeyVaultEnvironmentPostProcessorHelper {
      * @param normalizedName the normalized name.
      */
     public void addKeyVaultPropertySource(String normalizedName) {
-        final String vaultUri = getPropertyValue(normalizedName, KeyVaultProperties.Property.URI);
+        final String vaultUri = getPropertyValue(normalizedName, Property.URI);
+        final String version = getPropertyValue(normalizedName, Property.SECRET_SERVICE_VERSION);
+        SecretServiceVersion secretServiceVersion = Arrays.stream(SecretServiceVersion.values())
+                                                          .filter(val -> val.getVersion().equals(version))
+                                                          .findFirst()
+                                                          .orElse(null);
         Assert.notNull(vaultUri, "vaultUri must not be null!");
-        final Long refreshInterval = Optional
-                .ofNullable(getPropertyValue(normalizedName, KeyVaultProperties.Property.REFRESH_INTERVAL))
+        final Long refreshInterval = Optional.ofNullable(getPropertyValue(normalizedName, Property.REFRESH_INTERVAL))
                 .map(Long::valueOf)
                 .orElse(DEFAULT_REFRESH_INTERVAL_MS);
         final List<String> secretKeys = Binder.get(this.environment)
                 .bind(
-                        KeyVaultProperties.getPropertyName(normalizedName, KeyVaultProperties.Property.SECRET_KEYS),
+                        KeyVaultProperties.getPropertyName(normalizedName, Property.SECRET_KEYS),
                         Bindable.listOf(String.class)
                 )
                 .orElse(Collections.emptyList());
@@ -79,12 +87,13 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final SecretClient secretClient = new SecretClientBuilder()
                 .vaultUrl(vaultUri)
                 .credential(tokenCredential)
+                .serviceVersion(secretServiceVersion)
                 .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_KEY_VAULT))
                 .buildClient();
         try {
             final MutablePropertySources sources = this.environment.getPropertySources();
             final boolean caseSensitive = Boolean
-                    .parseBoolean(getPropertyValue(normalizedName, KeyVaultProperties.Property.CASE_SENSITIVE_KEYS));
+                    .parseBoolean(getPropertyValue(normalizedName, Property.CASE_SENSITIVE_KEYS));
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
                     secretClient,
                     refreshInterval,
@@ -113,6 +122,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     /**
      * Get the token credentials.
+     *
      * @return the token credentials.
      */
     public TokenCredential getCredentials() {
@@ -121,16 +131,18 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     /**
      * Get the token credentials.
+     *
      * @param normalizedName the normalized name of the key vault.
-     * @return the tocom.azure.core.util.logging.ClientLoggerken credentials.
+     * @return the token credentials.
      */
     public TokenCredential getCredentials(String normalizedName) {
         //use service principle to authenticate
-        final String clientId = getPropertyValue(normalizedName, KeyVaultProperties.Property.CLIENT_ID);
-        final String clientKey = getPropertyValue(normalizedName, KeyVaultProperties.Property.CLIENT_KEY);
-        final String tenantId = getPropertyValue(normalizedName, KeyVaultProperties.Property.TENANT_ID);
-        final String certificatePath = getPropertyValue(normalizedName, KeyVaultProperties.Property.CERTIFICATE_PATH);
-        final String certificatePassword = getPropertyValue(normalizedName, KeyVaultProperties.Property.CERTIFICATE_PASSWORD);
+        final String clientId = getPropertyValue(normalizedName, Property.CLIENT_ID);
+        final String clientKey = getPropertyValue(normalizedName, Property.CLIENT_KEY);
+        final String tenantId = getPropertyValue(normalizedName, Property.TENANT_ID);
+        final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
+        final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
+        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST) == null ? new IdentityClientOptions().getAuthorityHost() : getPropertyValue(normalizedName, Property.AUTHORITY_HOST);
         if (clientId != null
                 && tenantId != null
                 && clientKey != null
@@ -140,6 +152,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
                     .clientId(clientId)
                     .clientSecret(clientKey)
                     .tenantId(tenantId)
+                    .authorityHost(authorityHost)
                     .build();
         }
         // Use certificate to authenticate
@@ -153,11 +166,13 @@ class KeyVaultEnvironmentPostProcessorHelper {
                         .tenantId(tenantId)
                         .clientId(clientId)
                         .pemCertificate(certificatePath)
+                        .authorityHost(authorityHost)
                         .build();
             } else {
                 return new ClientCertificateCredentialBuilder()
                         .tenantId(tenantId)
                         .clientId(clientId)
+                        .authorityHost(authorityHost)
                         .pfxCertificate(certificatePath, certificatePassword)
                         .build();
             }
@@ -171,7 +186,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         return new ManagedIdentityCredentialBuilder().build();
     }
 
-    private String getPropertyValue(final KeyVaultProperties.Property property) {
+    private String getPropertyValue(final Property property) {
         return Optional.of(property)
                 .map(KeyVaultProperties::getPropertyName)
                 .map(environment::getProperty)
@@ -180,7 +195,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     private String getPropertyValue(
             final String normalizedName,
-            final KeyVaultProperties.Property property
+            final Property property
     ) {
         return Optional.of(KeyVaultProperties.getPropertyName(normalizedName, property))
                 .map(environment::getProperty)
@@ -188,7 +203,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
     }
 
     private boolean allowTelemetry() {
-        return Boolean.parseBoolean(getPropertyValue(KeyVaultProperties.Property.ALLOW_TELEMETRY));
+        return Boolean.parseBoolean(getPropertyValue(Property.ALLOW_TELEMETRY));
     }
 
     private void sendTelemetry() {

@@ -55,18 +55,18 @@ public final class ManageVpnGatewayVNet2VNetConnection {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST2;
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 20);
-        final String vnetName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
-        final String vnet2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnet", 20);
-        final String vpnGatewayName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vngw", 20);
-        final String vpnGateway2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vngw2", 20);
-        final String connectionName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("con", 20);
-        final String connection2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("con2", 20);
-        final String nwName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("nw", 20);
-        final String vm1Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm1", 20);
-        final String vm2Name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vm2", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String vnet2Name = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String vpnGatewayName = Utils.randomResourceName(azureResourceManager, "vngw", 20);
+        final String vpnGateway2Name = Utils.randomResourceName(azureResourceManager, "vngw2", 20);
+        final String connectionName = Utils.randomResourceName(azureResourceManager, "con", 20);
+        final String connection2Name = Utils.randomResourceName(azureResourceManager, "con2", 20);
+        final String nwName = Utils.randomResourceName(azureResourceManager, "nw", 20);
+        final String vm1Name = Utils.randomResourceName(azureResourceManager, "vm1", 20);
+        final String vm2Name = Utils.randomResourceName(azureResourceManager, "vm2", 20);
         final String rootname = "tirekicker";
-        final String password = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pWd!", 15);
+        final String password = Utils.password();
         final String storageContainerName = "results";
 
         try {
@@ -132,7 +132,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .withExistingResourceGroup(rgName)
                     .create();
             // Create storage account to store troubleshooting information
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define("sa" + azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("", 8))
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().define("sa" + Utils.randomResourceName(azureResourceManager, "", 8))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .create();
