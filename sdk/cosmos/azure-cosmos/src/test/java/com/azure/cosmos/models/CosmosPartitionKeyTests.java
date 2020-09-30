@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public final class CosmosPartitionKeyTests extends TestSuiteBase {
@@ -97,7 +98,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new AzureKeyCredential(TestConfigurations.MASTER_KEY));
         String authorization = base.generateKeyAuthorizationSignature(RequestVerb.POST, resourceId, Paths.COLLECTIONS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create,
                 ResourceType.DocumentCollection, path, collection, headers, new RequestOptions());
 
         String[] baseUrlSplit = TestConfigurations.HOST.split(":");
@@ -119,7 +120,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         authorization = base.generateKeyAuthorizationSignature(RequestVerb.POST, resourceId, Paths.DOCUMENTS_PATH_SEGMENT, headers);
         headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, URLEncoder.encode(authorization, "UTF-8"));
-        request = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document, path,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document, path,
                 document, headers, new RequestOptions());
 
         resourceUri = baseUrlSplit[0] + ":" + baseUrlSplit[1] + ":" + baseUrlSplit[2].split("/")[0] + "//" + Paths.DATABASES_PATH_SEGMENT + "/"

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,9 @@ public class SharedGatewayHttpClient implements HttpClient {
     private static final Logger logger = LoggerFactory.getLogger(SharedGatewayHttpClient.class);
     private static final AtomicInteger counter = new AtomicInteger(0);
     private static SharedGatewayHttpClient sharedGatewayHttpClient;
+    private final HttpClientConfig effectiveHttpClientConfig;
 
-    public static HttpClient getOrCreateInstance(HttpClientConfig httpClientConfig) {
+    public static HttpClient getOrCreateInstance(HttpClientConfig httpClientConfig, DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         synchronized (SharedGatewayHttpClient.class) {
             if (sharedGatewayHttpClient == null) {
                 assert counter.get() == 0;
@@ -31,6 +33,7 @@ public class SharedGatewayHttpClient implements HttpClient {
             }
 
             counter.incrementAndGet();
+            diagnosticsClientConfig.withGatewayHttpClientConfig(sharedGatewayHttpClient.effectiveHttpClientConfig);
             return sharedGatewayHttpClient;
         }
     }
@@ -39,6 +42,7 @@ public class SharedGatewayHttpClient implements HttpClient {
 
     private SharedGatewayHttpClient(HttpClientConfig httpClientConfig) {
         this.httpClient = HttpClient.createFixed(httpClientConfig);
+        this.effectiveHttpClientConfig = httpClientConfig;
     }
 
     @Override
