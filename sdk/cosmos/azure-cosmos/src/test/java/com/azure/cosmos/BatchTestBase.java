@@ -32,7 +32,7 @@ public class BatchTestBase extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    void createJsonTestDocsAsync(CosmosAsyncContainer container) {
+    void createJsonTestDocsAsync(CosmosContainer container) {
         this.TestDocPk1ExistingA =  this.createJsonTestDocAsync(container, this.partitionKey1);
         this.TestDocPk1ExistingB =  this.createJsonTestDocAsync(container, this.partitionKey1);
         this.TestDocPk1ExistingC =  this.createJsonTestDocAsync(container, this.partitionKey1);
@@ -48,23 +48,18 @@ public class BatchTestBase extends TestSuiteBase {
         return new TestDoc(UUID.randomUUID().toString(), this.random.nextInt(), description, partitionKey);
     }
 
-    public TestDoc populateTestDoc(String id, String partitionKey) {
-        String description = StringUtils.repeat("x", 20);
-        return new TestDoc(id, this.random.nextInt(), description, partitionKey);
-    }
-
     TestDoc getTestDocCopy(TestDoc testDoc) {
         return new TestDoc(testDoc.getId(), testDoc.getCost(), testDoc.getDescription(), testDoc.getStatus());
     }
 
-    void verifyByReadAsync(CosmosAsyncContainer container, TestDoc doc) {
+    void verifyByReadAsync(CosmosContainer container, TestDoc doc) {
         verifyByReadAsync(container, doc, null);
     }
 
-    void verifyByReadAsync(CosmosAsyncContainer container, TestDoc doc, String eTag) {
+    void verifyByReadAsync(CosmosContainer container, TestDoc doc, String eTag) {
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
-        CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class).block();
+        CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(response.getItem()).isEqualTo(doc);
@@ -74,12 +69,12 @@ public class BatchTestBase extends TestSuiteBase {
         }
     }
 
-    void verifyNotFoundAsync(CosmosAsyncContainer container, TestDoc doc) {
+    void verifyNotFoundAsync(CosmosContainer container, TestDoc doc) {
         String id = doc.getId();
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
         try {
-            CosmosItemResponse<TestDoc> response =  container.readItem(id, partitionKey, TestDoc.class).block();
+            CosmosItemResponse<TestDoc> response =  container.readItem(id, partitionKey, TestDoc.class);
 
             // Gateway returns response instead of exception
             assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
@@ -92,13 +87,13 @@ public class BatchTestBase extends TestSuiteBase {
         return new PartitionKey(partitionKey);
     }
 
-    private TestDoc createJsonTestDocAsync(CosmosAsyncContainer container, String partitionKey) {
+    private TestDoc createJsonTestDocAsync(CosmosContainer container, String partitionKey) {
         return createJsonTestDocAsync(container, partitionKey, 20);
     }
 
-    private TestDoc createJsonTestDocAsync(CosmosAsyncContainer container, String partitionKey, int minDesiredSize) {
+    private TestDoc createJsonTestDocAsync(CosmosContainer container, String partitionKey, int minDesiredSize) {
         TestDoc doc = this.populateTestDoc(partitionKey, minDesiredSize);
-        CosmosItemResponse<TestDoc> createResponse = container.createItem(doc, this.getPartitionKey(partitionKey), null).block();
+        CosmosItemResponse<TestDoc> createResponse = container.createItem(doc, this.getPartitionKey(partitionKey), null);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
         return doc;
     }

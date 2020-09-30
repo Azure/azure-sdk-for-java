@@ -156,8 +156,8 @@ public final class BatchResponseParser {
             // Read from a json response body. To enable hybrid row just complete the else part
             final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
-            try{
-                final ObjectNode[] objectNodes = mapper.readValue(documentServiceResponse.getResponseBodyAsByteArray(), ObjectNode[].class);
+            try {
+                final ObjectNode[] objectNodes = mapper.readValue(responseContent, ObjectNode[].class);
                 for (ObjectNode objectInArray : objectNodes) {
                     final TransactionalBatchOperationResult<?> batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
                     results.add(batchOperationResult);

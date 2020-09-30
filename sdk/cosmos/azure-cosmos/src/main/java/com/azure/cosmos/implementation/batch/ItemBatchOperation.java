@@ -18,7 +18,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class ItemBatchOperation<TResource> {
 
     private TResource resource;
-    private String materialisedResource;
 
     private String id;
     private int operationIndex;
@@ -53,8 +52,7 @@ public final class ItemBatchOperation<TResource> {
         jsonSerializable.set(BatchRequestResponseConstant.FIELD_OPERATION_TYPE, BatchExecUtils.getStringOperationType(operation.getOperationType()));
 
         if (StringUtils.isNotEmpty(operation.getPartitionKeyJson())) {
-            // This is set in BatchAsyncContainerExecutor.resolvePartitionKeyRangeIdAsync. For transactional no need to
-            // pass partition key in operations as batch will have it.
+            // Used for non transactional batch.
             jsonSerializable.set(BatchRequestResponseConstant.FIELD_PARTITION_KEY, operation.getPartitionKeyJson());
         }
 
@@ -81,55 +79,36 @@ public final class ItemBatchOperation<TResource> {
         return jsonSerializable;
     }
 
-    public String getId() {
+    String getId() {
         return this.id;
     }
 
-    int getOperationIndex() {
-        return this.operationIndex;
-    }
-
-    ItemBatchOperation<?> setOperationIndex(final int value) {
-        this.operationIndex = value;
-        return this;
-    }
-
-    public OperationType getOperationType() {
+    OperationType getOperationType() {
         return this.operationType;
     }
 
-    public PartitionKey getPartitionKey() {
+    String getPartitionKeyJson() {
+        return this.partitionKeyJson;
+    }
+
+    int getOperationIndex() {
+        return operationIndex;
+    }
+
+    PartitionKey getPartitionKey() {
         return partitionKey;
     }
 
-    public ItemBatchOperation<?> setPartitionKey(final PartitionKey value) {
-        partitionKey = value;
-        return this;
+    void setPartitionKeyJson(String partitionKeyJson) {
+        this.partitionKeyJson = partitionKeyJson;
     }
 
-    private String getPartitionKeyJson() {
-        return partitionKeyJson;
+    RequestOptions getRequestOptions() {
+        return this.requestOptions;
     }
 
-    ItemBatchOperation<?> setPartitionKeyJson(final String value) {
-        partitionKeyJson = value;
-        return this;
-    }
-
-    public RequestOptions getRequestOptions() {
-        return requestOptions;
-    }
-
-    public TResource getResource() {
-        return resource;
-    }
-
-    public String getMaterialisedResource() {
-        return materialisedResource;
-    }
-
-    public void setMaterialisedResource(String materialisedResource) {
-        this.materialisedResource = materialisedResource;
+    TResource getResource() {
+        return this.resource;
     }
 
     public static final class Builder<TResource> {

@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,11 +75,10 @@ public class TransactionalBatchResponse {
      * @param type class type for which deserialization is needed.
      *
      * @return TransactionalBatchOperationResult containing the individual result of operation.
-     * @throws IOException if the body of the resource cannot be read.
      */
     public <T> TransactionalBatchOperationResult<T> getOperationResultAtIndex(
         final int index,
-        final Class<T> type) throws IOException {
+        final Class<T> type) {
 
         checkArgument(index >= 0, "expected non-negative index");
         checkNotNull(type, "expected non-null type");
@@ -101,6 +99,8 @@ public class TransactionalBatchResponse {
 
     /**
      * Gets the number of operation results.
+     *
+     * @return the number of operations results in this response.
      */
     public int size() {
         return this.results == null ? 0 : this.results.size();

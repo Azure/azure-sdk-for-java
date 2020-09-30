@@ -7,8 +7,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
-import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -806,7 +804,7 @@ public interface AsyncDocumentClient {
      * @param serverBatchRequest           the batch request with the content and flags.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
-     * @return a {@link Mono} containing the single resource response with the created document or an error.
+     * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
      */
     Mono<TransactionalBatchResponse> executeBatchRequest(String collectionLink,
                                                          ServerBatchRequest serverBatchRequest,

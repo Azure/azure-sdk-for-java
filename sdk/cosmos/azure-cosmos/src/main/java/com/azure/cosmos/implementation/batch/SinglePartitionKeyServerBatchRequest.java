@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.models.PartitionKey;
-
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;

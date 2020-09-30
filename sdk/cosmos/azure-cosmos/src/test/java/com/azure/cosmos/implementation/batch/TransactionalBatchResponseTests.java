@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartitionKeyBatchResponseTests {
+public class TransactionalBatchResponseTests {
 
     private static final int TIMEOUT = 40000;
 
@@ -59,7 +59,7 @@ public class PartitionKeyBatchResponseTests {
             responseContent.getBytes(StandardCharsets.UTF_8));
 
         TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponseAsync(
-            new RxDocumentServiceResponse(storeResponse),
+            new RxDocumentServiceResponse(null, storeResponse),
             batchRequest,
             true).block();
 

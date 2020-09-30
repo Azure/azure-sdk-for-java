@@ -69,6 +69,8 @@ public final class TransactionalBatchOperationResult<TResource> {
                                       int responseStatus,
                                       Duration retryAfter,
                                       Integer subStatusCode) {
+        checkNotNull(responseStatus, "expected non-null responseStatus");
+
         this.eTag = eTag;
         this.requestCharge = requestCharge;
         this.resourceObject = resourceObject;

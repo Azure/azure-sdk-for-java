@@ -1218,11 +1218,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
-    private RxDocumentServiceRequest getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
-                                                             String documentCollectionLink,
-                                                             ServerBatchRequest serverBatchRequest,
-                                                             RequestOptions options,
-                                                             boolean disableAutomaticIdGeneration) {
+    private Mono<RxDocumentServiceRequest> getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+                                                                   String documentCollectionLink,
+                                                                   ServerBatchRequest serverBatchRequest,
+                                                                   RequestOptions options,
+                                                                   boolean disableAutomaticIdGeneration) {
 
         checkArgument(StringUtils.isNotEmpty(documentCollectionLink), "expected non empty documentCollectionLink");
         checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
@@ -1230,6 +1230,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Instant serializationStartTimeUTC = Instant.now();
         ByteBuffer content = ByteBuffer.wrap(serverBatchRequest.transferRequestBody().getBytes(StandardCharsets.UTF_8));
         Instant serializationEndTimeUTC = Instant.now();
+
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
             serializationStartTimeUTC,
             serializationEndTimeUTC,
@@ -1239,6 +1240,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Batch);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            this,
             OperationType.Batch,
             ResourceType.Document,
             path,
@@ -1255,14 +1257,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        return addBatchHeaders(request, serverBatchRequest);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+
+        return collectionObs.map((Utils.ValueHolder<DocumentCollection> collectionValueHolder) -> {
+            addBatchHeaders(request, serverBatchRequest, collectionValueHolder.v);
+            return request;
+        });
     }
 
     private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
-                                                     ServerBatchRequest serverBatchRequest) {
+                                                     ServerBatchRequest serverBatchRequest,
+                                                     DocumentCollection collection) {
 
         if(serverBatchRequest instanceof SinglePartitionKeyServerBatchRequest) {
-            PartitionKeyInternal partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(((SinglePartitionKeyServerBatchRequest) serverBatchRequest).getPartitionKey());
+
+            PartitionKey partitionKey = ((SinglePartitionKeyServerBatchRequest) serverBatchRequest).getPartitionKey();
+            PartitionKeyInternal partitionKeyInternal;
+
+            if (partitionKey.equals(PartitionKey.NONE)) {
+                PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
+                partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+            } else {
+                // Partition key is always non-null
+                partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+            }
+
             request.setPartitionKeyInternal(partitionKeyInternal);
             request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
         } else {
@@ -2367,8 +2387,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
 
-            RxDocumentServiceRequest documentServiceRequest = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
-            Mono<RxDocumentServiceResponse> responseObservable = create(documentServiceRequest, requestRetryPolicy);
+            Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
+            Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
+                return create(request, requestRetryPolicy);
+            });
 
             return responseObservable
                 .flatMap(serviceResponse -> BatchResponseParser.fromDocumentServiceResponseAsync(serviceResponse, serverBatchRequest, true))

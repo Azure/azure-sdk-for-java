@@ -471,7 +471,7 @@ public class CosmosContainer {
      *
      * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
      *
-     * @return A Mono response which contains details of execution of the transactional batch.
+     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
      * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
@@ -494,7 +494,7 @@ public class CosmosContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(Beta.SinceVersion.V4_6_0)
     public TransactionalBatchResponse executeTransactionalBatch(TransactionalBatch transactionalBatch) {
         return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch));
     }
@@ -505,7 +505,7 @@ public class CosmosContainer {
      * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
      * @param requestOptions Options that apply specifically to batch request.
      *
-     * @return A Mono response which contains details of execution of the transactional batch.
+     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
      * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
@@ -528,7 +528,7 @@ public class CosmosContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(Beta.SinceVersion.V4_6_0)
     public TransactionalBatchResponse executeTransactionalBatch(
         TransactionalBatch transactionalBatch,
         TransactionalBatchRequestOptions requestOptions) {

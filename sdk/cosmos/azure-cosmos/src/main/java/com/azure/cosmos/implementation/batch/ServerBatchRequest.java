@@ -39,34 +39,16 @@ public abstract class ServerBatchRequest {
 
     /**
      * Adds as many operations as possible from the given list of operations.
-     * <p>
-     * Operations are added in order while ensuring the request stream never exceeds {@link #maxBodyLength}.
-     *
-     * @param operations Operations to be added; read-only.
-     *
-     * @return Any pending operations that were not included in the request.
-     */
-    final List<ItemBatchOperation<?>> createBodyStreamAsync(
-        final List<ItemBatchOperation<?>> operations) {
-        return createBodyStreamAsync(operations, false);
-    }
-
-    /**
-     * Adds as many operations as possible from the given list of operations.
      * TODO(rakkuma): Similarly for hybrid row, request needs to be parsed to create a request body in any form.
      *
      * <p>
      * Operations are added in order while ensuring the request body never exceeds {@link #maxBodyLength}.
      *
      * @param operations operations to be added; read-only.
-     * @param ensureContinuousOperationIndexes specifies whether to stop adding operations to the request once there is
-     * non-continuity in the operation indexes.
      *
      * @return Any pending operations that were not included in the request.
      */
-    final List<ItemBatchOperation<?>> createBodyStreamAsync(
-        final List<ItemBatchOperation<?>> operations,
-        final boolean ensureContinuousOperationIndexes) {
+    final List<ItemBatchOperation<?>> createBodyStreamAsync(final List<ItemBatchOperation<?>> operations) {
 
         checkNotNull(operations, "expected non-null operations");
 

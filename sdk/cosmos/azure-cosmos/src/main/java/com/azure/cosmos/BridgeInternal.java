@@ -616,7 +616,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static TransactionalBatchOperationResult createTransactionBatchResult(
+    public static TransactionalBatchOperationResult<?> createTransactionBatchResult(
         String eTag,
         Double requestCharge,
         ObjectNode resourceObject,
@@ -624,7 +624,7 @@ public final class BridgeInternal {
         Duration retryAfter,
         Integer subStatusCode) {
 
-        return new TransactionalBatchOperationResult(
+        return new TransactionalBatchOperationResult<>(
             eTag,
             requestCharge,
             resourceObject,
