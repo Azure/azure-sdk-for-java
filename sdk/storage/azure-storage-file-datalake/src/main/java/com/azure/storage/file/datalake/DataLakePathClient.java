@@ -21,7 +21,9 @@ import com.azure.storage.file.datalake.implementation.models.PathSetAccessContro
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
+import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -372,6 +374,9 @@ public class DataLakePathClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public AccessControlChangeResult setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
         return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList), null,
@@ -392,6 +397,9 @@ public class DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options, Duration timeout, Context context) {
@@ -416,6 +424,9 @@ public class DataLakePathClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public AccessControlChangeResult updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
         return updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(accessControlList),
@@ -436,6 +447,9 @@ public class DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
@@ -460,6 +474,9 @@ public class DataLakePathClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public AccessControlChangeResult removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
@@ -481,6 +498,9 @@ public class DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A  response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {

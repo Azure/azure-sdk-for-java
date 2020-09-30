@@ -669,6 +669,7 @@ public class DataLakePathAsyncClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
+     *
      * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
@@ -693,6 +694,9 @@ public class DataLakePathAsyncClient {
      *
      * @param options {@link PathSetAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
@@ -719,6 +723,9 @@ public class DataLakePathAsyncClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
     {
@@ -743,6 +750,9 @@ public class DataLakePathAsyncClient {
      *
      * @param options {@link PathUpdateAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
@@ -769,6 +779,9 @@ public class DataLakePathAsyncClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
@@ -793,6 +806,9 @@ public class DataLakePathAsyncClient {
      *
      * @param options {@link PathRemoveAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
