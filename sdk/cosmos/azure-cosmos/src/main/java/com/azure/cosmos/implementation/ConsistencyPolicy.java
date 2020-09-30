@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
@@ -141,4 +142,24 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * NOTE: If the underlying ObjectNode is mutated cache might be stale
      */
     private ConsistencyLevel consistencyLevel = null;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        ConsistencyPolicy that = (ConsistencyPolicy) o;
+        return consistencyLevel == that.consistencyLevel;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), consistencyLevel);
+    }
 }
