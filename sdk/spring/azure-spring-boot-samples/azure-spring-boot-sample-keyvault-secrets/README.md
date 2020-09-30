@@ -62,6 +62,9 @@ azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 azure.keyvault.client-key=put-your-azure-client-key-here
 azure.keyvault.tenant-id=put-your-azure-tenant-id-here
+azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
+azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
+
 
 # Uncomment following property if you want to specify the secrets to load from Key Vault
 # azure.keyvault.secret-keys=yourSecretPropertyName1,yourSecretPropertyName2

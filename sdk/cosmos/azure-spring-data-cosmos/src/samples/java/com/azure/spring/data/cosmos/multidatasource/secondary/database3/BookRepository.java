@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.data.cosmos.multidatasource.secondarydatasource.first;
+package com.azure.spring.data.cosmos.multidatasource.secondary.database3;
 
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 
