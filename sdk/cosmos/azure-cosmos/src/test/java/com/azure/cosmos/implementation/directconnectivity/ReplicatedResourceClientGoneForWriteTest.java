@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
-public class ReplicatedResourceClientGoneForWriteTest extends ReplicatedResourceClientPartitionSplitTest {
+public class ReplicatedResourceClientGoneForWriteTest {
     @DataProvider(name = "goneOnWriteRefreshesAddressesArgProvider")
     public Object[][] goneOnWriteRefreshesAddressesArgProvider() {
         return new Object[][]{
@@ -34,7 +34,10 @@ public class ReplicatedResourceClientGoneForWriteTest extends ReplicatedResource
         };
     }
 
-    @Test(groups = { "unit" }, dataProvider = "goneOnWriteRefreshesAddressesArgProvider", timeOut = TIMEOUT)
+    @Test(
+        groups = { "unit" },
+        dataProvider = "goneOnWriteRefreshesAddressesArgProvider",
+        timeOut = ReplicatedResourceClientPartitionSplitTest.TIMEOUT)
     public void gone_RefreshCache_Write(ConsistencyLevel consistencyLevel) {
 
         Uri primaryAddress = Uri.create("http://primary/");
@@ -103,11 +106,22 @@ public class ReplicatedResourceClientGoneForWriteTest extends ReplicatedResource
         Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate = null;
         Mono<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
 
+        // Address refresh is happening in the background - allowing some time to finish the refresh
+        // Because this is all using mocking (no emulator) the delay of a couple hundred ms should be sufficient
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         FailureValidator validator = FailureValidator
             .builder()
             .instanceOf(CosmosException.class)
             .statusCode(410).build();
-        validateFailure(storeResponseObs, validator, TIMEOUT);
+        ReplicatedResourceClientPartitionSplitTest.validateFailure(
+            storeResponseObs,
+            validator,
+            ReplicatedResourceClientPartitionSplitTest.TIMEOUT);
         addressSelectorWrapper.verifyNumberOfForceCacheRefreshGreaterThanOrEqualTo(1);
     }
 }

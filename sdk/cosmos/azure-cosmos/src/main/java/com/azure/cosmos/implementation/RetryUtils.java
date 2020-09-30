@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.function.Function;
@@ -92,9 +93,7 @@ public class RetryUtils {
                         shouldRetryResult.policyArg.getValue0() != null &&
                         shouldRetryResult.policyArg.getValue0()) {
 
-                        return addressSelector.resolveAddressesAsync(
-                            rxDocumentServiceRequest,
-                            true).flatMap((dummy) -> failure);
+                        startBackgroundAddressRefresh(rxDocumentServiceRequest, addressSelector);
                     }
 
                     return failure;
@@ -120,6 +119,20 @@ public class RetryUtils {
                 }
             });
         };
+    }
+
+    private static void startBackgroundAddressRefresh(
+        RxDocumentServiceRequest request,
+        AddressSelector addressSelector) {
+
+        addressSelector.resolveAddressesAsync(request, true)
+                       .publishOn(Schedulers.elastic())
+                       .subscribe(
+                           r -> {
+                           },
+                           e -> logger.warn(
+                               "Background refresh of addresses failed with {}", e.getMessage(), e)
+                       );
     }
 
     private static <T> Mono<T> recursiveFunc(
