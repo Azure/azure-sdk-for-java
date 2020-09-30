@@ -1340,7 +1340,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return request;
     }
 
-    private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+    private Mono<RxDocumentServiceRequest> populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
