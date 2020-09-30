@@ -513,15 +513,31 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     /**
      * Generates code samples for using {@link DigitalTwinsClient#listIncomingRelationships(String, Context)}
+     * and {@link DigitalTwinsClient#listIncomingRelationships(String)}
      */
     @Override
     public void listIncomingRelationships() {
-        // BEGIN: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Context
+        // BEGIN: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
         PagedIterable<IncomingRelationship> pagedIncomingRelationships = digitalTwinsSyncClient.listIncomingRelationships(
             "myDigitalTwinId",
             new Context("key", "value"));
 
         for (IncomingRelationship rel : pagedIncomingRelationships) {
+            System.out.println(
+                "Retrieved relationship with Id: " +
+                    rel.getRelationshipId() +
+                    " from: " +
+                    rel.getSourceId() +
+                    " to: myDigitalTwinId");
+        }
+        // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
+
+        // BEGIN: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Context
+        PagedIterable<IncomingRelationship> pagedIncomingRelationshipsWithContext = digitalTwinsSyncClient.listIncomingRelationships(
+            "myDigitalTwinId",
+            new Context("key", "value"));
+
+        for (IncomingRelationship rel : pagedIncomingRelationshipsWithContext) {
             System.out.println(
                 "Retrieved relationship with Id: " +
                 rel.getRelationshipId() +
