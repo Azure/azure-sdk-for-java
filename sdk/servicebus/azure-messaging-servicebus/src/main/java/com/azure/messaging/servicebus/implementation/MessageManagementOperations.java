@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -29,7 +29,7 @@ public interface MessageManagementOperations {
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
      * @param lockToken The {@link UUID} of the message {@link ServiceBusReceivedMessage} to be renewed.
-     * @return {@link Instant} representing the pending renew.
+     * @return {@link OffsetDateTime} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName);
+    Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName);
 }
