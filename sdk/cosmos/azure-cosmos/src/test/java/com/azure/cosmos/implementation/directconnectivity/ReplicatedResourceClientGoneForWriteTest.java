@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+
 public class ReplicatedResourceClientGoneForWriteTest extends ReplicatedResourceClientPartitionSplitTest {
     @DataProvider(name = "goneOnWriteRefreshesAddressesArgProvider")
     public Object[][] goneOnWriteRefreshesAddressesArgProvider() {
@@ -79,7 +81,9 @@ public class ReplicatedResourceClientGoneForWriteTest extends ReplicatedResource
         SessionContainer sessionContainer = new SessionContainer("test");
 
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(new Configs(),
+        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(
+            mockDiagnosticsClientContext(),
+            new Configs(),
             addressSelectorWrapper.addressSelector,
             sessionContainer,
             transportClientWrapper.transportClient,
@@ -89,7 +93,10 @@ public class ReplicatedResourceClientGoneForWriteTest extends ReplicatedResource
             false);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
-            OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            "/dbs/db/colls/col/docs/docId",
+            ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();
         request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
 
