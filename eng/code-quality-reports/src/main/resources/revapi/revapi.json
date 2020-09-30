@@ -782,6 +782,11 @@
         "code": "java.class.externalClassExposedInAPI",
         "new": "interface org.springframework.util.StringValueResolver",
         "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.factory.config.BeanExpressionContext",
+        "justification": "This is a preview release"
       }
     ]
   }
