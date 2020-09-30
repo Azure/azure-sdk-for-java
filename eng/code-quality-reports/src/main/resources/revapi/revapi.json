@@ -208,9 +208,6 @@
         "new": "class com.azure.data.schemaregistry.models.SerializationType",
         "justification": "This is a preview release"
       },
-
-
-
       {
         "code": "java.missing.newClass",
         "new": "missing-class com.azure.cosmos.ConnectionMode",
