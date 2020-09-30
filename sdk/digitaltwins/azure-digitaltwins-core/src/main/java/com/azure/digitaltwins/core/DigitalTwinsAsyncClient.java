@@ -101,7 +101,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
      *
-     * <p> Or you alternatively you can use strings as input and output type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#String}
      *
@@ -127,7 +127,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Context#BasicDigitalTwin}
      *
-     * <p> Or you alternatively you can use strings as input and output type:</p>
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Context#String}
      *
@@ -173,7 +173,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwin#String-Class#BasicDigitalTwin}
      *
-     * <p>Alternatively String can be used to get the response in a json string format.</p>
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwin#String-Class#String}
      *
@@ -201,7 +201,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class#BasicDigitalTwin}
      *
-     * <p>Alternatively String can be used to get the response in a json string format.</p>
+     * <p>Or alternatively String can be used as input and output deserialization type: </p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class#String}
      *
