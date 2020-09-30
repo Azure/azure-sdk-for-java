@@ -10,7 +10,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.azure.communication.administration.models.*;
+import com.azure.communication.administration.models.AcquiredPhoneNumber;
+import com.azure.communication.administration.models.AreaCodes;
+import com.azure.communication.administration.models.LocationOptions;
+import com.azure.communication.administration.models.LocationOptionsDetails;
+import com.azure.communication.administration.models.LocationOptionsQuery;
+import com.azure.communication.administration.models.PhoneNumberCountry;
+import com.azure.communication.administration.models.PhonePlan;
+import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.CommunicationUser;
 import com.azure.core.http.HttpClient;
@@ -150,8 +157,8 @@ public class ReadmeSamples {
             PagedIterable<PhoneNumberCountry> phoneNumberCountries = phoneNumberClient
                 .listAllSupportedCountries(locale);
 
-            for (PhoneNumberCountry phoneNumberCountry:
-                phoneNumberCountries) {
+            for (PhoneNumberCountry phoneNumberCountry
+                : phoneNumberCountries) {
                 System.out.println("Phone Number Country Code: " + phoneNumberCountry.getCountryCode());
                 System.out.println("Phone Number Country Name: " + phoneNumberCountry.getLocalizedName());
             }
@@ -177,9 +184,9 @@ public class ReadmeSamples {
             PagedIterable<AcquiredPhoneNumber> acquiredPhoneNumbers = phoneNumberClient
                 .listAllPhoneNumbers(locale);
 
-            for (AcquiredPhoneNumber acquiredPhoneNumber:
-                 acquiredPhoneNumbers) {
-               System.out.println("Acquired Phone Number: " + acquiredPhoneNumber.getPhoneNumber());
+            for (AcquiredPhoneNumber acquiredPhoneNumber
+                : acquiredPhoneNumbers) {
+                System.out.println("Acquired Phone Number: " + acquiredPhoneNumber.getPhoneNumber());
             }
 
             return acquiredPhoneNumbers;
@@ -204,8 +211,8 @@ public class ReadmeSamples {
             PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
                 .listPhonePlanGroups(countryCode, locale, true);
 
-            for (PhonePlanGroup phonePlanGroup:
-                phonePlanGroups) {
+            for (PhonePlanGroup phonePlanGroup
+                : phonePlanGroups) {
                 System.out.println("Phone Plan GroupId: " + phonePlanGroup.getPhonePlanGroupId());
                 System.out.println("Phone Plan NumberType: " + phonePlanGroup.getPhoneNumberType());
             }
@@ -233,8 +240,8 @@ public class ReadmeSamples {
             PagedIterable<PhonePlan> phonePlans = phoneNumberClient
                 .listPhonePlans(countryCode, phonePlanGroupId, locale);
 
-            for (PhonePlan phonePlan:
-                phonePlans) {
+            for (PhonePlan phonePlan
+                : phonePlans) {
                 System.out.println("Phone Plan Id: " + phonePlan.getPhonePlanId());
                 System.out.println("Phone Plan Name: " + phonePlan.getLocalizedName());
                 System.out.println("Phone Plan Capabilities: " + phonePlan.getCapabilities());
@@ -256,8 +263,8 @@ public class ReadmeSamples {
     public LocationOptions getPhonePlanLocationOptions() {
         String countryCode = "US";
         String locale = "en-us";
-        String phonePlanGroupId = "PHONE_PLAN_GROUP_ID";;
-        String phonePlanId = "PHONE_PLAN_ID";;
+        String phonePlanGroupId = "PHONE_PLAN_GROUP_ID";
+        String phonePlanId = "PHONE_PLAN_ID";
 
         try {
             PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
@@ -267,14 +274,14 @@ public class ReadmeSamples {
                 .getLocationOptions();
 
             System.out.println("Getting LocationOptions for: " + locationOptions.getLabelId());
-            for (LocationOptionsDetails locationOptionsDetails:
-            locationOptions.getOptions()) {
+            for (LocationOptionsDetails locationOptionsDetails
+                : locationOptions.getOptions()) {
                 System.out.println(locationOptionsDetails.getValue());
-                for (LocationOptions locationOptions1:
-                locationOptionsDetails.getLocationOptions()) {
+                for (LocationOptions locationOptions1
+                    : locationOptionsDetails.getLocationOptions()) {
                     System.out.println("Getting LocationOptions for: " + locationOptions1.getLabelId());
-                    for (LocationOptionsDetails locationOptionsDetails1:
-                        locationOptions1.getOptions()) {
+                    for (LocationOptionsDetails locationOptionsDetails1
+                        : locationOptions1.getOptions()) {
                         System.out.println(locationOptionsDetails1.getValue());
                     }
                 }
@@ -313,8 +320,8 @@ public class ReadmeSamples {
             AreaCodes areaCodes = phoneNumberClient
                 .getAllAreaCodes("selection", countryCode, phonePlanId, locationOptions);
 
-            for (String areaCode:
-                areaCodes.getPrimaryAreaCodes()) {
+            for (String areaCode
+                : areaCodes.getPrimaryAreaCodes()) {
                 System.out.println(areaCode);
             }
 
