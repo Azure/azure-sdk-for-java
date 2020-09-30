@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -302,7 +302,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send, receive one message and settle on non session entity.
      */
-    @ParameterizedTest
+    /*@ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void transactionMessageAndSettle(DispositionStatus dispositionStatus) {
 
@@ -351,7 +351,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
 
         receiver.commitTransaction(transaction);
-    }
+    }*/
 
     /**
      * Verifies that we can send and receive one messages.

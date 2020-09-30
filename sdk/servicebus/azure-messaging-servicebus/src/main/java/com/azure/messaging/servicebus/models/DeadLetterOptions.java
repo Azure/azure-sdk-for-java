@@ -1,18 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.administration.models;
+package com.azure.messaging.servicebus.models;
+
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 import java.util.Map;
 
 /**
  * Options to specify while putting message in dead-letter queue.
  */
-public class DeadLetterOptions {
+final public class DeadLetterOptions extends SettlementOptions {
 
     private String deadLetterReason;
     private String deadLetterErrorDescription;
     private Map<String, Object> propertiesToModify;
+
+    public DeadLetterOptions() {
+        this(null);
+    }
+
+    public DeadLetterOptions(ServiceBusTransactionContext transactionContext) {
+        super(transactionContext);
+    }
 
     /**
      * Sets the reason while putting message in dead letter sub-queue.

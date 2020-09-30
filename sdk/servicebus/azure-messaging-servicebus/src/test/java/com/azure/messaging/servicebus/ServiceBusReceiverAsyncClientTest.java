@@ -15,7 +15,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -272,7 +272,7 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we error if we try to settle a message with null transaction.
      */
-    @ParameterizedTest
+   /* @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void settleWithNullTransaction(DispositionStatus dispositionStatus) {
         // Arrange
@@ -307,12 +307,12 @@ class ServiceBusReceiverAsyncClientTest {
 
         verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
             isNull(), isNull(), isNull(), isNull());
-    }
+    }*/
 
     /**
      * Verifies that we error if we try to settle a message with null transaction-id.
      */
-    @ParameterizedTest
+   /* @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
@@ -347,7 +347,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
             isNull(), isNull(), isNull(), isNull());
-    }
+    }*/
 
     /**
      * Verifies that we error if we try to complete a null message.

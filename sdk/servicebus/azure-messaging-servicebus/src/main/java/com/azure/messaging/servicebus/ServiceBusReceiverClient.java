@@ -7,7 +7,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -88,14 +91,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Properties to modify on the message.
+     * @param options Properties to modify on the message.
      *
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        asyncClient.abandon(message, propertiesToModify).block(operationTimeout);
+    public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
+        asyncClient.abandon(message, options).block(operationTimeout);
     }
 
     /**
@@ -113,11 +116,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
+    /*public void abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
 
         asyncClient.abandon(message, propertiesToModify, transactionContext).block(operationTimeout);
-    }
+    }*/
 
     /**
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
@@ -136,7 +139,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
+     * @param options in which this operation is taking part in. The transaction should be created first
      *     by {@link ServiceBusReceiverClient#createTransaction()} or
      *     {@link ServiceBusSenderClient#createTransaction()}.
      *
@@ -145,8 +148,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void complete(ServiceBusReceivedMessage message, ServiceBusTransactionContext transactionContext) {
-        asyncClient.complete(message, transactionContext).block(operationTimeout);
+    public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
+        asyncClient.complete(message, options).block(operationTimeout);
     }
 
     /**
@@ -168,15 +171,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * move message into the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Message properties to modify.
+     * @param options Message properties to modify.
      *
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        asyncClient.defer(message, propertiesToModify).block(operationTimeout);
+    public void defer(ServiceBusReceivedMessage message, DeferOptions options) {
+        asyncClient.defer(message, options).block(operationTimeout);
     }
 
     /**
@@ -195,10 +198,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
-    public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
+    /*public void defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
         ServiceBusTransactionContext transactionContext) {
         asyncClient.defer(message, propertiesToModify, transactionContext).block(operationTimeout);
-    }
+    }*/
 
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
@@ -245,10 +248,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions,
+    /*public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions,
         ServiceBusTransactionContext transactionContext) {
         asyncClient.deadLetter(message, deadLetterOptions, transactionContext).block(operationTimeout);
-    }
+    }*/
 
     /**
      * Gets the state of a session given its identifier.
