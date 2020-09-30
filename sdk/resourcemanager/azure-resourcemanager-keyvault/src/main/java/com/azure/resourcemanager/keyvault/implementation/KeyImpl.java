@@ -90,7 +90,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public String id() {
-        return this.innerModel() == null ? null : this.innerModel().getId();
+        return this.innerModel().getId();
     }
 
     @Override

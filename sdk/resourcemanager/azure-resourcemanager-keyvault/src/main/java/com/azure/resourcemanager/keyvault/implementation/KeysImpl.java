@@ -35,8 +35,7 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
 
     @Override
     protected KeyImpl wrapModel(String name) {
-        // No valid KeyVaultKey object until service created one.
-        return new KeyImpl(name, (KeyProperties) null, vault);
+        return new KeyImpl(name, new KeyProperties(), vault);
     }
 
     @Override

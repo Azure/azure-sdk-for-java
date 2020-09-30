@@ -41,7 +41,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
 
     @Override
     public String id() {
-        return this.innerModel() == null ? null : innerModel().getId();
+        return innerModel().getId();
     }
 
     @Override
@@ -51,7 +51,11 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
 
     @Override
     public Mono<String> getValueAsync() {
-        return getInnerAsync().map(ignored -> secretValue);
+        if (secretValue != null) {
+            return Mono.just(secretValue);
+        } else {
+            return getInnerAsync().map(ignored -> secretValue);
+        }
     }
 
     @Override
