@@ -10,6 +10,8 @@ import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
+import com.azure.storage.file.datalake.sas.PathSasPermission
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -558,6 +560,16 @@ class DirectoryAPITest extends APISpec {
         iterations == 2
     }
 
+    def getSasDirectoryClient(DataLakeDirectoryClient directoryClient, String owner) {
+        def key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusHours(1))
+        def keyOid = getConfigValue(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = getConfigValue(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+        def sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(getUTCNow().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key)
+        return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath())
+    }
+
     def "Set ACL recursive progress with failure"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -573,14 +585,28 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
-        // Create file4 as super user (using shared key)
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create file4 without assigning subowner permissions
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
         when:
-        def result = topDirOauthClient.setAccessControlRecursiveWithResponse(
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
             new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
 
         then:
@@ -608,6 +634,17 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create resources as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
@@ -618,8 +655,11 @@ class DirectoryAPITest extends APISpec {
         def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName())
 
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         when:
-        def result = topDirOauthClient.setAccessControlRecursiveWithResponse(
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
             new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
 
         then:
@@ -644,6 +684,17 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create resources as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
@@ -660,18 +711,27 @@ class DirectoryAPITest extends APISpec {
         def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
         def file9 = subdir4.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        file7.setPermissions(pathPermissions, null, subowner)
+        file8.setPermissions(pathPermissions, null, subowner)
+        subdir4.setPermissions(pathPermissions, null, subowner)
+        file9.setPermissions(pathPermissions, null, subowner)
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
         when:
-        def intermediateResult = topDirOauthClient.setAccessControlRecursiveWithResponse(options, null, null)
+        def intermediateResult = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null)
 
         then:
         intermediateResult.getValue().getContinuationToken() != null
 
         when:
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getValue().getContinuationToken())
-        def result = topDirOauthClient.setAccessControlRecursiveWithResponse(options, null, null)
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null)
 
         then:
         (result.getValue().getCounters().getChangedDirectoriesCount() + intermediateResult.getValue().getCounters().getChangedDirectoriesCount()) == 4
@@ -824,14 +884,28 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create file4 as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
 
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         when:
-        def result = topDirOauthClient.updateAccessControlRecursiveWithResponse(
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
             new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setProgressHandler(progress), null, null)
 
         then:
@@ -859,6 +933,17 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create resources as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
@@ -869,8 +954,11 @@ class DirectoryAPITest extends APISpec {
         def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName())
 
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         when:
-        def result = topDirOauthClient.updateAccessControlRecursiveWithResponse(
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
             new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
 
         then:
@@ -895,6 +983,17 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create resources as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
@@ -911,18 +1010,27 @@ class DirectoryAPITest extends APISpec {
         def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
         def file9 = subdir4.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        file7.setPermissions(pathPermissions, null, subowner)
+        file8.setPermissions(pathPermissions, null, subowner)
+        subdir4.setPermissions(pathPermissions, null, subowner)
+        file9.setPermissions(pathPermissions, null, subowner)
+
         def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         when:
-        def intermediateResult = topDirOauthClient.updateAccessControlRecursiveWithResponse(options, null, null)
+        def intermediateResult = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
 
         then:
         intermediateResult.getValue().getContinuationToken() != null
 
         when:
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getValue().getContinuationToken())
-        def result = topDirOauthClient.updateAccessControlRecursiveWithResponse(options, null, null)
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
 
         then:
         (result.getValue().getCounters().getChangedDirectoriesCount() + intermediateResult.getValue().getCounters().getChangedDirectoriesCount()) == 4
@@ -1075,14 +1183,28 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create file4 as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
 
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         def progress = new InMemoryAccessControlRecursiveChangeProgress()
 
         when:
-        def result = topDirOauthClient.removeAccessControlRecursiveWithResponse(
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
             new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setProgressHandler(progress), null, null)
 
         then:
@@ -1110,6 +1232,17 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create resources as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
@@ -1120,8 +1253,11 @@ class DirectoryAPITest extends APISpec {
         def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName())
 
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         when:
-        def result = topDirOauthClient.removeAccessControlRecursiveWithResponse(
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
             new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true), null, null)
 
         then:
@@ -1146,6 +1282,17 @@ class DirectoryAPITest extends APISpec {
         def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
         def file3 = subdir2.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
         // Create resources as super user (using shared key)
         def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName())
@@ -1162,18 +1309,27 @@ class DirectoryAPITest extends APISpec {
         def subdir4 = topDirOauthClient.createSubdirectory(generatePathName())
         def file9 = subdir4.createFile(generatePathName())
 
+        // Only allow subowner rights to the directory and it's subpaths
+        file7.setPermissions(pathPermissions, null, subowner)
+        file8.setPermissions(pathPermissions, null, subowner)
+        subdir4.setPermissions(pathPermissions, null, subowner)
+        file9.setPermissions(pathPermissions, null, subowner)
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
         def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1)
 
         when:
-        def intermediateResult = topDirOauthClient.removeAccessControlRecursiveWithResponse(options, null, null)
+        def intermediateResult = subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null)
 
         then:
         intermediateResult.getValue().getContinuationToken() != null
 
         when:
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getValue().getContinuationToken())
-        def result = topDirOauthClient.removeAccessControlRecursiveWithResponse(options, null, null)
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null)
 
         then:
         (result.getValue().getCounters().getChangedDirectoriesCount() + intermediateResult.getValue().getCounters().getChangedDirectoriesCount()) == 4
