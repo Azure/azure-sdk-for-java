@@ -6,6 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -15,8 +16,6 @@ import java.util.Collection;
  * index.
  */
 public final class SearchIndexingBufferedSender<T> {
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofDays(1);
-
     private final SearchIndexingBufferedAsyncSender<T> client;
 
     SearchIndexingBufferedSender(SearchIndexingBufferedAsyncSender<T> client) {
@@ -50,7 +49,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param documents Documents to be uploaded.
      */
     public void addUploadActions(Collection<T> documents) {
-        addUploadActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+        addUploadActions(documents, null, Context.NONE);
     }
 
     /**
@@ -64,7 +63,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addUploadActions(Collection<T> documents, Duration timeout, Context context) {
-        client.createAndAddActions(documents, IndexActionType.UPLOAD, context).block(timeout);
+        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.UPLOAD, context), timeout);
     }
 
     /**
@@ -76,7 +75,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param documents Documents to be deleted.
      */
     public void addDeleteActions(Collection<T> documents) {
-        addDeleteActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+        addDeleteActions(documents, null, Context.NONE);
     }
 
     /**
@@ -90,7 +89,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addDeleteActions(Collection<T> documents, Duration timeout, Context context) {
-        client.createAndAddActions(documents, IndexActionType.DELETE, context).block(timeout);
+        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.DELETE, context), timeout);
     }
 
     /**
@@ -102,7 +101,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param documents Documents to be merged.
      */
     public void addMergeActions(Collection<T> documents) {
-        addMergeActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+        addMergeActions(documents, null, Context.NONE);
     }
 
     /**
@@ -116,7 +115,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addMergeActions(Collection<T> documents, Duration timeout, Context context) {
-        client.createAndAddActions(documents, IndexActionType.MERGE, context).block(timeout);
+        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.MERGE, context), timeout);
     }
 
     /**
@@ -128,7 +127,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param documents Documents to be merged or uploaded.
      */
     public void addMergeOrUploadActions(Collection<T> documents) {
-        addMergeOrUploadActions(documents, DEFAULT_TIMEOUT, Context.NONE);
+        addMergeOrUploadActions(documents, null, Context.NONE);
     }
 
     /**
@@ -142,7 +141,8 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addMergeOrUploadActions(Collection<T> documents, Duration timeout, Context context) {
-        client.createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context).block(timeout);
+        blockWithOptionalTimeout(client.createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context),
+            timeout);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param actions Index actions.
      */
     public void addActions(Collection<IndexAction<T>> actions) {
-        addActions(actions, DEFAULT_TIMEOUT, Context.NONE);
+        addActions(actions, null, Context.NONE);
     }
 
     /**
@@ -168,14 +168,14 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context) {
-        client.addActions(actions, context).block(timeout);
+        blockWithOptionalTimeout(client.addActions(actions, context), timeout);
     }
 
     /**
      * Sends the current batch of documents to be indexed.
      */
     public void flush() {
-        flush(DEFAULT_TIMEOUT, Context.NONE);
+        flush(null, Context.NONE);
     }
 
     /**
@@ -185,14 +185,14 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void flush(Duration timeout, Context context) {
-        client.flush(context).block(timeout);
+        blockWithOptionalTimeout(client.flush(context), timeout);
     }
 
     /**
      * Closes the batch, any documents remaining in the batch will be sent to the Search index for indexing.
      */
     public void close() {
-        close(DEFAULT_TIMEOUT, Context.NONE);
+        close(null, Context.NONE);
     }
 
     /**
@@ -202,6 +202,14 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void close(Duration timeout, Context context) {
-        client.close(context).block(timeout);
+        blockWithOptionalTimeout(client.close(context), timeout);
+    }
+
+    private static void blockWithOptionalTimeout(Mono<?> operation, Duration timeout) {
+        if (timeout == null) {
+            operation.block();
+        } else {
+            operation.block(timeout);
+        }
     }
 }

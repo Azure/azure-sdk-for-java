@@ -4,11 +4,10 @@
 package com.azure.search.documents;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.models.IndexAction;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -22,7 +21,7 @@ import java.util.function.Function;
  */
 public final class SearchIndexingBufferedSenderOptions<T> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
-    private static final int DEFAULT_BATCH_SIZE = 100;
+    private static final int DEFAULT_BATCH_SIZE = 500;
     private static final Duration DEFAULT_FLUSH_WINDOW = Duration.ofSeconds(60);
     private static final int DEFAULT_DOCUMENT_TRY_LIMIT = 3;
 
@@ -36,7 +35,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     private Consumer<IndexAction<T>> onActionAddedConsumer;
     private Consumer<IndexAction<T>> onActionSucceededConsumer;
     private BiConsumer<IndexAction<T>, Throwable> onActionErrorBiConsumer;
-    private Consumer<IndexAction<T>> onActionRemovedConsumer;
+    private Consumer<IndexAction<T>> onActionSentConsumer;
 
     private Function<T, String> documentKeyRetriever;
 
@@ -109,7 +108,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchIndexingBufferedSenderOptions<T> setBatchSize(Integer batchSize) {
+    SearchIndexingBufferedSenderOptions<T> setBatchSize(Integer batchSize) {
         if (batchSize != null && batchSize < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
         }
@@ -124,7 +123,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      *
      * @return The number of documents required before a flush is triggered.
      */
-    public int getBatchSize() {
+    int getBatchSize() {
         return (batchSize == null) ? DEFAULT_BATCH_SIZE : batchSize;
     }
 
@@ -139,7 +138,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      * @return The updated SearchIndexingBufferedSenderOptions object.
      * @throws IllegalArgumentException If {@code documentTryLimit} is less than one.
      */
-    public SearchIndexingBufferedSenderOptions<T> setDocumentTryLimit(Integer documentTryLimit) {
+    SearchIndexingBufferedSenderOptions<T> setDocumentTryLimit(Integer documentTryLimit) {
         if (documentTryLimit != null && documentTryLimit < 1) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'documentTryLimit' cannot be less than one."));
@@ -154,7 +153,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      *
      * @return The number of times a document will attempt indexing.
      */
-    public int getDocumentTryLimit() {
+    int getDocumentTryLimit() {
         return (documentTryLimit == null) ? DEFAULT_DOCUMENT_TRY_LIMIT : documentTryLimit;
     }
 
@@ -224,46 +223,39 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     }
 
     /**
-     * Callback hook for when a document indexing has been removed from a batching queue.
-     * <p>
-     * Actions are removed from the batch queue when they either succeed or fail indexing.
+     * Callback hook for when a document indexing has been sent in a batching request.
      *
-     * @param onActionRemovedConsumer The {@link Consumer} that is callen when a document has been removed from a batch
-     * queue.
+     * @param onActionSentConsumer The {@link Consumer} that is called when a document has been sent in a batch request.
      * @return The updated SearchIndexingBufferedSenderOptions object.
      */
-    public SearchIndexingBufferedSenderOptions<T> setOnActionRemoved(Consumer<IndexAction<T>> onActionRemovedConsumer) {
-        this.onActionRemovedConsumer = onActionRemovedConsumer;
+    public SearchIndexingBufferedSenderOptions<T> setOnActionSent(Consumer<IndexAction<T>> onActionSentConsumer) {
+        this.onActionSentConsumer = onActionSentConsumer;
         return this;
     }
 
     /**
-     * Gets the {@link Consumer} that will be called when a document is removed from a batch.
+     * Gets the {@link Consumer} that will be called when a document is sent in a batch.
      *
-     * @return The {@link Consumer} called when a document is removed from a batch.
+     * @return The {@link Consumer} called when a document is sent in a batch.
      */
-    public Consumer<IndexAction<T>> getOnActionRemoved() {
-        return onActionRemovedConsumer;
+    public Consumer<IndexAction<T>> getOnActionSent() {
+        return onActionSentConsumer;
     }
 
     /**
      * Function that retrieves the key value from a document.
      * <p>
-     * If this value is null a function will be generated using the following logic:
-     * <p>
-     * An attempt to generated the fields for the index using {@link SearchIndexClient#buildSearchFields(Class,
-     * FieldBuilderOptions)} will be done. From the generated fields, the key field will be selected and used as the
-     * accessor on document.
-     * <p>
-     * If the generated search fields don't contain a key field the index will be retrieved from the service. The key
-     * field listed will be used as the accessor on the document.
+     * This function must be sent for a buffered sender to be properly constructed. It is used to correlate response
+     * values to the originating document.
      *
      * @param documentKeyRetriever Function that retrieves the key from an {@link IndexAction}.
      * @return The updated SearchIndexingBufferedSenderOptions object.
+     * @throws NullPointerException If {@code documentKeyRetriever} is null.
      */
     public SearchIndexingBufferedSenderOptions<T> setDocumentKeyRetriever(
         Function<T, String> documentKeyRetriever) {
-        this.documentKeyRetriever = documentKeyRetriever;
+        this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
+            "'documentKeyRetriever' cannot be null");
         return this;
     }
 

@@ -163,26 +163,12 @@ public final class SearchAsyncClient {
     /**
      * Creates a {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
      * this {@link SearchAsyncClient}.
-     * <p>
-     * This will use the default configuration values for {@link SearchIndexingBufferedAsyncSender}, see {@link
-     * SearchIndexingBufferedSenderOptions} for more information.
-     *
-     * @param <T> The type of the documents that will be added to the buffered sender.
-     * @return A {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
-     */
-    public <T> SearchIndexingBufferedAsyncSender<T> getSearchIndexingBufferedAsyncSender() {
-        return getSearchIndexingBufferedAsyncSender(null);
-    }
-
-    /**
-     * Creates a {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
-     * this {@link SearchAsyncClient}.
      *
      * @param options Configuration options used during construction of the {@link SearchIndexingBufferedAsyncSender}.
      * @param <T> The type of the documents that will be added to the buffered sender.
      * @return A {@link SearchIndexingBufferedAsyncSender} used to index documents for the Search index associated with
      * this {@link SearchAsyncClient}.
+     * @throws NullPointerException If {@code options} or {@code options.getDocumentKeyRetriever()} is null.
      */
     public <T> SearchIndexingBufferedAsyncSender<T> getSearchIndexingBufferedAsyncSender(
         SearchIndexingBufferedSenderOptions<T> options) {

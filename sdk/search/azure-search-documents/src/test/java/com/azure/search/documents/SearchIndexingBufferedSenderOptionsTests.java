@@ -38,12 +38,12 @@ public class SearchIndexingBufferedSenderOptionsTests {
     }
 
     @Test
-    public void batchSizeDefaults1000() {
+    public void batchSizeDefaults500() {
         SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(100, options.getBatchSize());
+        assertEquals(500, options.getBatchSize());
 
         options.setBatchSize(null);
-        assertEquals(100, options.getBatchSize());
+        assertEquals(500, options.getBatchSize());
     }
 
     @Test

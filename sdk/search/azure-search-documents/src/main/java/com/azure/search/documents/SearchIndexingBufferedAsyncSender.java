@@ -14,13 +14,13 @@ import com.azure.search.documents.models.IndexingResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,9 +44,9 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final int documentTryLimit;
 
     private final Consumer<IndexAction<T>> onActionAddedConsumer;
+    private final Consumer<IndexAction<T>> onActionSentConsumer;
     private final Consumer<IndexAction<T>> onActionSucceededConsumer;
     private final BiConsumer<IndexAction<T>, Throwable> onActionErrorBiConsumer;
-    private final Consumer<IndexAction<T>> onActionRemovedConsumer;
 
     private final Function<T, String> documentKeyRetriever;
 
@@ -60,49 +60,41 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final AtomicBoolean senderClosed = new AtomicBoolean(false);
 
     SearchIndexingBufferedAsyncSender(SearchAsyncClient client, SearchIndexingBufferedSenderOptions<T> options) {
-        SearchIndexingBufferedSenderOptions<T> buildOptions = (options == null)
-            ? new SearchIndexingBufferedSenderOptions<>()
-            : options;
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        this.documentKeyRetriever = Objects.requireNonNull(options.getDocumentKeyRetriever(),
+            "'options.documentKeyRetriever' cannot be null");
 
         this.client = client;
-        this.autoFlush = buildOptions.getAutoFlush();
-        this.flushWindowMillis = Math.max(0, buildOptions.getAutoFlushWindow().toMillis());
-        this.batchSize = buildOptions.getBatchSize();
-        this.documentTryLimit = buildOptions.getDocumentTryLimit();
+        this.autoFlush = options.getAutoFlush();
+        this.flushWindowMillis = Math.max(0, options.getAutoFlushWindow().toMillis());
+        this.batchSize = options.getBatchSize();
+        this.documentTryLimit = options.getDocumentTryLimit();
 
         this.onActionAddedConsumer = (action) -> {
-            if (buildOptions.getOnActionAdded() != null) {
-                buildOptions.getOnActionAdded().accept(action);
+            if (options.getOnActionAdded() != null) {
+                options.getOnActionAdded().accept(action);
+            }
+        };
+
+        this.onActionSentConsumer = (action) -> {
+            if (options.getOnActionSent() != null) {
+                options.getOnActionSent().accept(action);
             }
         };
 
         this.onActionSucceededConsumer = (action) -> {
-            if (buildOptions.getOnActionSucceeded() != null) {
-                buildOptions.getOnActionSucceeded().accept(action);
+            if (options.getOnActionSucceeded() != null) {
+                options.getOnActionSucceeded().accept(action);
             }
         };
 
         this.onActionErrorBiConsumer = (action, throwable) -> {
-            if (buildOptions.getOnActionError() != null) {
-                buildOptions.getOnActionError().accept(action, throwable);
+            if (options.getOnActionError() != null) {
+                options.getOnActionError().accept(action, throwable);
             }
         };
-
-        this.onActionRemovedConsumer = (action) -> {
-            if (buildOptions.getOnActionRemoved() != null) {
-                buildOptions.getOnActionRemoved().accept(action);
-            }
-        };
-
-        this.documentKeyRetriever = (buildOptions.getDocumentKeyRetriever() != null)
-            ? buildOptions.getDocumentKeyRetriever()
-            : buildDocumentKeyRetriever(buildOptions.getClass().getGenericSuperclass());
 
         this.autoFlushTimer = (this.autoFlush) ? new Timer(true) : null;
-    }
-
-    private Function<T, String> buildDocumentKeyRetriever(Type clazz) {
-        return null;
     }
 
     /**
@@ -217,7 +209,9 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         synchronized (actionsMutex) {
             int size = Math.min(batchSize, this.actions.size());
             for (int i = 0; i < size; i++) {
-                batchActions.add(actions.pop());
+                TryTrackingIndexAction<T> action = actions.pop();
+                onActionSentConsumer.accept(action.getAction());
+                batchActions.add(action);
             }
         }
 
@@ -241,7 +235,8 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
                 return response;
             })
-            .thenEmpty(Mono.fromRunnable(() -> batchProcessing.set(false)));
+            .thenEmpty(Mono.fromRunnable(() -> batchProcessing.set(false)))
+            .then(processIfNeeded(context));
     }
 
     /*
@@ -287,7 +282,6 @@ public final class SearchIndexingBufferedAsyncSender<T> {
             IndexAction<T> action = actions.get(batchResponse.getOffset()).getAction();
             onActionErrorBiConsumer.accept(action,
                 new RuntimeException("Document is too large to be indexed and won't be tried again."));
-            onActionRemovedConsumer.accept(action);
             return;
         }
 
@@ -305,7 +299,6 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
             if (isSuccess(result.getStatusCode())) {
                 onActionSucceededConsumer.accept(action.getAction());
-                onActionRemovedConsumer.accept(action.getAction());
             } else if (isRetryable(result.getStatusCode())) {
                 if (action.getTryCount() < documentTryLimit) {
                     action.incrementTryCount();
@@ -313,11 +306,9 @@ public final class SearchIndexingBufferedAsyncSender<T> {
                 } else {
                     onActionErrorBiConsumer.accept(action.getAction(),
                         new RuntimeException("Document has reached retry limit and won't be tried again."));
-                    onActionRemovedConsumer.accept(action.getAction());
                 }
             } else {
                 onActionErrorBiConsumer.accept(action.getAction(), new RuntimeException(result.getErrorMessage()));
-                onActionRemovedConsumer.accept(action.getAction());
             }
         }
 

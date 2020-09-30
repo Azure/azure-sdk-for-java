@@ -76,26 +76,12 @@ public final class SearchClient {
     /**
      * Creates a {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
      * {@link SearchClient}.
-     * <p>
-     * This will use the default configuration values for {@link SearchIndexingBufferedSender}, see {@link
-     * SearchIndexingBufferedSenderOptions} for more information.
-     *
-     * @param <T> The type of the documents that will be added to the buffered sender.
-     * @return A {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
-     */
-    public <T> SearchIndexingBufferedSender<T> getSearchIndexingBufferedSender() {
-        return getSearchIndexingBufferedSender(null);
-    }
-
-    /**
-     * Creates a {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
-     * {@link SearchClient}.
      *
      * @param options Configuration options used during construction of the {@link SearchIndexingBufferedSender}.
      * @param <T> The type of the documents that will be added to the buffered sender.
      * @return A {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
      * {@link SearchClient}.
+     * @throws NullPointerException If {@code options} or {@code options.getDocumentKeyRetriever()} is null.
      */
     public <T> SearchIndexingBufferedSender<T> getSearchIndexingBufferedSender(
         SearchIndexingBufferedSenderOptions<T> options) {

@@ -223,7 +223,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void emptyBatchIsNeverSent() {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(getSearchClientBuilder("index")
             .buildAsyncClient()
-            .getSearchIndexingBufferedAsyncSender());
+            .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId")))));
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient =
             new SearchIndexingBufferedSender<>(spyClient);
@@ -258,7 +259,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger addedCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger removedCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
@@ -268,7 +269,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setOnActionSent(action -> sentCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -279,7 +280,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(10, addedCount.get());
         assertEquals(5, successCount.get());
         assertEquals(5, errorCount.get());
-        assertEquals(10, removedCount.get());
+        assertEquals(10, sentCount.get());
 
         /*
          * No documents failed with retryable errors, so we should expect zero documents are added back into the batch.
@@ -295,7 +296,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger addedCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger removedCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
@@ -305,7 +306,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setOnActionSent(action -> sentCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -314,9 +315,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(10, addedCount.get());
+        assertEquals(10, sentCount.get());
         assertEquals(5, successCount.get());
         assertEquals(0, errorCount.get());
-        assertEquals(5, removedCount.get());
 
         /*
          * 5 documents failed with retryable errors, so we should expect 5 documents are added back into the batch.
@@ -333,7 +334,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger addedCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger removedCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
@@ -353,7 +354,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setOnActionSent(action -> sentCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -364,7 +365,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(10, addedCount.get());
         assertEquals(10, successCount.get());
         assertEquals(0, errorCount.get());
-        assertEquals(10, removedCount.get());
+        assertEquals(10, sentCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -380,7 +381,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger addedCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger removedCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
@@ -391,7 +392,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setOnActionSent(action -> sentCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
@@ -408,9 +409,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertDoesNotThrow((Executable) batchingClient::flush);
 
         assertEquals(1, addedCount.get());
+        // Document gets sent 10 times for the number of retries that happen.
+        assertEquals(10, sentCount.get());
         assertEquals(1, errorCount.get());
         assertEquals(0, successCount.get());
-        assertEquals(1, removedCount.get());
 
         /*
          * All documents failed, so we should expect zero documents are added back into the batch.
@@ -427,7 +429,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger addedCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger removedCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
@@ -436,7 +438,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setOnActionSent(action -> sentCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
@@ -447,7 +449,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(2, addedCount.get());
         assertEquals(2, errorCount.get());
         assertEquals(0, successCount.get());
-        assertEquals(2, removedCount.get());
+        assertEquals(2, sentCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
@@ -465,7 +467,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger addedCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger removedCount = new AtomicInteger();
+        AtomicInteger sentCount = new AtomicInteger();
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> (callCount.getAndIncrement() < 2)
@@ -476,7 +478,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionRemoved(action -> removedCount.incrementAndGet())
+                .setOnActionSent(action -> sentCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
@@ -487,7 +489,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(2, addedCount.get());
         assertEquals(1, errorCount.get());
         assertEquals(1, successCount.get());
-        assertEquals(2, removedCount.get());
+        assertEquals(2, sentCount.get());
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
