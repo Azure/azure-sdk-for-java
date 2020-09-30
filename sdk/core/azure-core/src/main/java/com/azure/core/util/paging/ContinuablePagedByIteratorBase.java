@@ -27,7 +27,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     private final Integer defaultPageSize;
     private final ClientLogger logger;
 
-    volatile boolean lastPage;
+    private volatile boolean done;
 
     ContinuablePagedByIteratorBase(PageRetriever<C, P> pageRetriever, ContinuationState<C> continuationState,
         Integer defaultPageSize, ClientLogger logger) {
@@ -48,7 +48,8 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
 
     @Override
     public boolean hasNext() {
-        if (needToRequestPage()) {
+        // Request next pages in a loop in case we are returned empty pages for the by item implementation.
+        while (!done && needToRequestPage()) {
             requestPage();
         }
 
@@ -78,14 +79,18 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
                 addPage(page);
 
                 continuationState.setLastContinuationToken(page.getContinuationToken());
-                this.lastPage = page.getContinuationToken() == null;
+                this.done = continuationState.isDone();
 
                 return page;
             })
             .then()
             .block();
 
-        lastPage = lastPage || (!receivedPages.get() && !isNextAvailable());
+        /*
+         * In the scenario when the subscription completes without emitting an element indicate we are done by checking
+         * if we have any additional elements to return.
+         */
+        this.done = done || (!receivedPages.get() && !isNextAvailable());
     }
 
     /*

@@ -39,8 +39,8 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
 
     private static final class ContinuablePagedByItemIterator<C, T, P extends ContinuablePage<C, T>>
         extends ContinuablePagedByIteratorBase<C, T, P, T> {
-        volatile Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
-        volatile Iterator<T> currentPage;
+        private volatile Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
+        private volatile Iterator<T> currentPage;
 
         ContinuablePagedByItemIterator(PageRetriever<C, P> pageRetriever, C continuationToken,
             Integer preferredPageSize) {
@@ -52,13 +52,12 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
 
         @Override
         boolean needToRequestPage() {
-            return (currentPage == null || !currentPage.hasNext()) && pages.peek() == null && !lastPage;
+            return (currentPage == null || !currentPage.hasNext()) && pages.peek() == null;
         }
 
         @Override
         public boolean isNextAvailable() {
-            return (currentPage != null && currentPage.hasNext())
-                || (pages.peek() != null && pages.peek().hasNext());
+            return (currentPage != null && currentPage.hasNext()) || pages.peek() != null;
         }
 
         @Override
