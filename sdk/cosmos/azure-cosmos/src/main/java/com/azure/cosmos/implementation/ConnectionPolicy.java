@@ -22,9 +22,6 @@ public final class ConnectionPolicy {
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
 
-    private static final ConnectionPolicy defaultPolicy =
-        new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
@@ -84,7 +81,7 @@ public final class ConnectionPolicy {
      * @return the default connection policy.
      */
     public static ConnectionPolicy getDefaultPolicy() {
-        return ConnectionPolicy.defaultPolicy;
+        return new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
     }
 
     /**

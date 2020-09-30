@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CilentConfigDiagnosticsTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private List<String> confList = new ArrayList<String>();
 
     @Test(groups = { "unit" })
     public void bareMinimum() throws Exception {
