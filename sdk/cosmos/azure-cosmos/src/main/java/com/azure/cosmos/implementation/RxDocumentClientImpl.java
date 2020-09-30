@@ -225,9 +225,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.diagnosticsClientConfig.withActiveClientCounter(activeClientsCnt);
 
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
-        this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(connectionPolicy.isMultipleWriteRegionsEnabled());
-        this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(connectionPolicy.isEndpointDiscoveryEnabled());
-        this.diagnosticsClientConfig.withPreferredRegions(connectionPolicy.getPreferredRegions());
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
 
         logger.info(
@@ -263,6 +260,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } else {
                 this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             }
+
+            this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(connectionPolicy.isMultipleWriteRegionsEnabled());
+            this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(connectionPolicy.isEndpointDiscoveryEnabled());
+            this.diagnosticsClientConfig.withPreferredRegions(connectionPolicy.getPreferredRegions());
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 

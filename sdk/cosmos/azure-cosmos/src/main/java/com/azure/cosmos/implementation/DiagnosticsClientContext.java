@@ -8,7 +8,14 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +27,45 @@ public interface DiagnosticsClientContext {
     DiagnosticsClientConfig getConfig();
 
     CosmosDiagnostics createDiagnostics();
+
+
+    static final class ClientContextSerializer extends StdSerializer<DiagnosticsClientContext> {
+        private final static Logger logger = LoggerFactory.getLogger(ClientContextSerializer.class);
+        public final static ClientContextSerializer INSTACE = new ClientContextSerializer();
+
+        private static final long serialVersionUID = 1;
+
+        protected ClientContextSerializer() {
+            this(null);
+        }
+
+        protected ClientContextSerializer(Class<DiagnosticsClientContext> t) {
+            super(t);
+        }
+
+        @Override
+        public void serialize(DiagnosticsClientContext clientContext, JsonGenerator generator,
+                              SerializerProvider serializerProvider) throws IOException {
+            generator.writeStartObject();
+            try {
+                generator.writeNumberField("id", clientContext.getConfig().getClientId());
+                generator.writeNumberField("numberOfClients", clientContext.getConfig().getActiveClientsCount());
+                generator.writeObjectFieldStart("connCfg");
+                try {
+                    generator.writeStringField("rntbd", clientContext.getConfig().rntbdConfig());
+                    generator.writeStringField("gw", clientContext.getConfig().gwConfig());
+                    generator.writeStringField("other", clientContext.getConfig().otherConnectionConfig());
+                } catch (Exception e) {
+                    logger.debug("unexpected failure", e);
+                }
+                generator.writeEndObject();
+                generator.writeStringField("consistencyCfg", clientContext.getConfig().consistencyRelatedConfig());
+            } catch (Exception e) {
+                logger.debug("unexpected failure", e);
+            }
+            generator.writeEndObject();
+        }
+    }
 
     class DiagnosticsClientConfig {
 
@@ -123,7 +169,7 @@ public interface DiagnosticsClientContext {
         }
 
         public int getActiveClientsCount() {
-            return this.activeClientsCnt.get();
+            return this.activeClientsCnt != null ? this.activeClientsCnt.get() : -1;
         }
 
         private String gwConfigInternal() {
@@ -152,17 +198,15 @@ public interface DiagnosticsClientContext {
 
         private String preferredRegionsInternal() {
             if (preferredRegions == null) {
-                return "null";
+                return "";
             }
 
-            return preferredRegions.stream().map(rn -> {
-                String[] parts = rn.toLowerCase(Locale.ROOT).split(" ");
-                return Arrays.stream(parts).map(s -> String.valueOf(s.charAt(0))).collect(Collectors.joining());
-            }).collect(Collectors.joining(","));
+            return preferredRegions.stream().map(r -> r.toLowerCase(Locale.ROOT).replaceAll(" ", "")).collect(Collectors.joining(","));
         }
 
         private String consistencyRelatedConfigInternal() {
-            return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel, this.multipleWriteRegionsEnabled,
+            return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel,
+                this.multipleWriteRegionsEnabled,
                 preferredRegionsInternal());
         }
     }
