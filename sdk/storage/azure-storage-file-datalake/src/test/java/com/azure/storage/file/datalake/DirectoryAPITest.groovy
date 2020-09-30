@@ -15,6 +15,7 @@ import com.azure.storage.file.datalake.sas.PathSasPermission
 import spock.lang.Unroll
 
 import java.util.function.Consumer
+import java.util.stream.Collectors
 
 class DirectoryAPITest extends APISpec {
     DataLakeDirectoryClient dc
@@ -662,11 +663,17 @@ class DirectoryAPITest extends APISpec {
         def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
             new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
 
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
         then:
         result.getValue().getCounters().getChangedDirectoriesCount() == 3
         result.getValue().getCounters().getChangedFilesCount() == 3
         result.getValue().getCounters().getFailedChangesCount() == 4
         result.getValue().getContinuationToken() == null
+        batchFailures.contains(file4.getObjectPath())
+        batchFailures.contains(file5.getObjectPath())
+        batchFailures.contains(file6.getObjectPath())
+        batchFailures.contains(subdir3.getObjectPath())
     }
 
     def "Set ACL recursive continue on failure batches resume"() {
@@ -961,11 +968,17 @@ class DirectoryAPITest extends APISpec {
         def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
             new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true), null, null)
 
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
         then:
         result.getValue().getCounters().getChangedDirectoriesCount() == 3
         result.getValue().getCounters().getChangedFilesCount() == 3
         result.getValue().getCounters().getFailedChangesCount() == 4
         result.getValue().getContinuationToken() == null
+        batchFailures.contains(file4.getObjectPath())
+        batchFailures.contains(file5.getObjectPath())
+        batchFailures.contains(file6.getObjectPath())
+        batchFailures.contains(subdir3.getObjectPath())
     }
 
     def "Update ACL recursive continue on failure batches resume"() {
@@ -1260,11 +1273,17 @@ class DirectoryAPITest extends APISpec {
         def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
             new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true), null, null)
 
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
         then:
         result.getValue().getCounters().getChangedDirectoriesCount() == 3
         result.getValue().getCounters().getChangedFilesCount() == 3
         result.getValue().getCounters().getFailedChangesCount() == 4
         result.getValue().getContinuationToken() == null
+        batchFailures.contains(file4.getObjectPath())
+        batchFailures.contains(file5.getObjectPath())
+        batchFailures.contains(file6.getObjectPath())
+        batchFailures.contains(subdir3.getObjectPath())
     }
 
     def "Remove ACL recursive continue on failure batches resume"() {

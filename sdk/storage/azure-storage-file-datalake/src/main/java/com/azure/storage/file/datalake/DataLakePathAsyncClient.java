@@ -820,7 +820,7 @@ public class DataLakePathAsyncClient {
             continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
             .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
-                accessControlList, mode, batchSize, continueOnFailure, continuationToken, contextFinal));
+                accessControlList, mode, batchSize, continueOnFailure, continuationToken, null, contextFinal));
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
@@ -828,7 +828,7 @@ public class DataLakePathAsyncClient {
         AtomicInteger filesSuccessfulCount, AtomicInteger failureCount, AtomicInteger batchesCount,
         Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
-        Context context) {
+        List<AccessControlChangeFailure> batchFailures, Context context) {
 
         // We only enter the helper after making a service call, so increment the counter immediately.
         batchesCount.incrementAndGet();
@@ -837,6 +837,18 @@ public class DataLakePathAsyncClient {
         directoriesSuccessfulCount.addAndGet(response.getValue().getDirectoriesSuccessful());
         filesSuccessfulCount.addAndGet(response.getValue().getFilesSuccessful());
         failureCount.addAndGet(response.getValue().getFailureCount());
+
+        // Update first batch failures.
+        if (failureCount.get() > 0 && batchFailures == null) {
+            batchFailures = response.getValue().getFailedEntries()
+                .stream()
+                .map(aclFailedEntry -> new AccessControlChangeFailure()
+                    .setDirectory(aclFailedEntry.getType().equals("DIRECTORY"))
+                    .setName(aclFailedEntry.getName())
+                    .setErrorMessage(aclFailedEntry.getErrorMessage())
+                ).collect(Collectors.toList());
+        }
+        List<AccessControlChangeFailure> finalBatchFailures = batchFailures;
 
         /*
         Determine which token we should report/return/use next.
@@ -894,6 +906,7 @@ public class DataLakePathAsyncClient {
          */
         if ((newToken == null || newToken.isEmpty()) || (maxBatches != null && batchesCount.get() >= maxBatches)) {
             AccessControlChangeResult result = new AccessControlChangeResult()
+                .setBatchFailures(batchFailures)
                 .setContinuationToken(effectiveNextToken)
                 .setCounters(new AccessControlChangeCounters()
                     .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
@@ -910,7 +923,7 @@ public class DataLakePathAsyncClient {
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
             .flatMap(response2 -> setAccessControlRecursiveWithResponseHelper(response2, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
-                accessControlStr, mode, batchSize, continueOnFailure, effectiveNextToken, context));
+                accessControlStr, mode, batchSize, continueOnFailure, effectiveNextToken, finalBatchFailures, context));
     }
 
     /**
