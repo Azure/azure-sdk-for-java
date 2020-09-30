@@ -34,8 +34,8 @@ import reactor.core.publisher.SynchronousSink;
 
 import java.nio.BufferOverflowException;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -226,7 +226,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
+    public Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName) {
         return isAuthorized(OPERATION_PEEK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 associatedLinkName);
@@ -236,7 +236,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             return sendWithVerify(channel, requestMessage, null);
         }).map(responseMessage -> {
-            final List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
+            final List<OffsetDateTime> renewTimeList = messageSerializer.deserializeList(responseMessage,
+                OffsetDateTime.class);
             if (CoreUtils.isNullOrEmpty(renewTimeList)) {
                 throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
                     "Service bus response empty. Could not renew message with lock token: '%s'.", lockToken),
@@ -248,7 +249,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName) {
+    public Mono<OffsetDateTime> renewSessionLock(String sessionId, String associatedLinkName) {
         if (sessionId == null) {
             return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
         } else if (sessionId.isEmpty()) {
@@ -281,8 +282,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     "Expiration is not of type Date when renewing session. Id: %s. Value: %s", sessionId,
                     expirationValue), getErrorContext())));
             }
-
-            return ((Date) expirationValue).toInstant();
+            return ((Date) expirationValue).toInstant().atOffset(ZoneOffset.UTC);
         });
     }
 
