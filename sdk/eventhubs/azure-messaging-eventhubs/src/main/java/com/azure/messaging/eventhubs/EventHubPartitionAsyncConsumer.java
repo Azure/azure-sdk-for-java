@@ -106,7 +106,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     Flux<PartitionEvent> receive() {
-        return emitterProcessor.publishOn(this.scheduler);
+        return emitterProcessor.publishOn(this.scheduler, 1);
     }
 
     /**

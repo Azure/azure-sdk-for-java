@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.message.Message;
@@ -169,6 +171,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         }
                     },
                     error -> {
+                        if (error instanceof AmqpException) {
+                            AmqpException amqpException = (AmqpException) error;
+                            if (AmqpErrorCondition.LINK_DETACH_FORCED.equals(amqpException.getErrorCondition())) {
+                                logger.info("Current link {} force detached. Requesting a new link.",
+                                    currentLink.getLinkName());
+                                requestUpstream();
+                                return;
+                            }
+                        }
                         currentLink = null;
                         logger.warning("linkName[{}] entityPath[{}]. Error occurred in link.", linkName, entityPath);
                         onError(error);
@@ -437,6 +448,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private void sendFlow(final int credits) {
         // slow down sending the flow - to make the protocol less-chat'y
         int currentCredits = CREDIT_TO_FLOW.addAndGet(this, credits);
+        logger.verbose("{} - Current credits pending {} ", currentLink.getLinkName(), currentCredits);
         if (this.shouldSendFlow(currentCredits)) {
             this.currentLink.addCredits(currentCredits);
             CREDIT_TO_FLOW.set(this, 0);
