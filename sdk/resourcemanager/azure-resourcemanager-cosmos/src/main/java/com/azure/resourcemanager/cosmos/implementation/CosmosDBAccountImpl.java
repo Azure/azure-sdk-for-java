@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.cosmos.CosmosManager;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
@@ -26,12 +26,11 @@ import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
 import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,51 +56,51 @@ class CosmosDBAccountImpl
         super(fixDBName(name), innerObject, manager);
         this.failoverPolicies = new ArrayList<>();
         this.privateEndpointConnections =
-            new PrivateEndpointConnectionsImpl(this.manager().inner().getPrivateEndpointConnections(), this);
+            new PrivateEndpointConnectionsImpl(this.manager().serviceClient().getPrivateEndpointConnections(), this);
     }
 
     @Override
     public DatabaseAccountKind kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public String documentEndpoint() {
-        return this.inner().documentEndpoint();
+        return this.innerModel().documentEndpoint();
     }
 
     @Override
     public DatabaseAccountOfferType databaseAccountOfferType() {
-        return this.inner().databaseAccountOfferType();
+        return this.innerModel().databaseAccountOfferType();
     }
 
     @Override
     public String ipRangeFilter() {
-        return this.inner().ipRangeFilter();
+        return this.innerModel().ipRangeFilter();
     }
 
     @Override
     public ConsistencyPolicy consistencyPolicy() {
-        return this.inner().consistencyPolicy();
+        return this.innerModel().consistencyPolicy();
     }
 
     @Override
     public DefaultConsistencyLevel defaultConsistencyLevel() {
-        if (this.inner().consistencyPolicy() == null) {
+        if (this.innerModel().consistencyPolicy() == null) {
             throw new RuntimeException("Consistency policy is missing!");
         }
 
-        return this.inner().consistencyPolicy().defaultConsistencyLevel();
+        return this.innerModel().consistencyPolicy().defaultConsistencyLevel();
     }
 
     @Override
     public List<Location> writableReplications() {
-        return this.inner().writeLocations();
+        return this.innerModel().writeLocations();
     }
 
     @Override
     public List<Location> readableReplications() {
-        return this.inner().readLocations();
+        return this.innerModel().readLocations();
     }
 
     @Override
@@ -113,7 +112,7 @@ class CosmosDBAccountImpl
     public Mono<DatabaseAccountListKeysResult> listKeysAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
             .map(
@@ -129,7 +128,7 @@ class CosmosDBAccountImpl
     public Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listReadOnlyKeysAsync(this.resourceGroupName(), this.name())
             .map(
@@ -145,7 +144,7 @@ class CosmosDBAccountImpl
     public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .listConnectionStringsAsync(this.resourceGroupName(), this.name())
             .map(
@@ -161,7 +160,7 @@ class CosmosDBAccountImpl
     public PagedFlux<SqlDatabase> listSqlDatabasesAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getSqlResources()
             .listSqlDatabasesAsync(this.resourceGroupName(), this.name())
             .mapPage(SqlDatabaseImpl::new);
@@ -176,7 +175,7 @@ class CosmosDBAccountImpl
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPrivateLinkResources()
             .listByDatabaseAccountAsync(this.resourceGroupName(), this.name())
             .mapPage(PrivateLinkResourceImpl::new);
@@ -191,7 +190,7 @@ class CosmosDBAccountImpl
     public Mono<PrivateLinkResource> getPrivateLinkResourceAsync(String groupName) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getPrivateLinkResources()
             .getAsync(this.resourceGroupName(), this.name(), groupName)
             .map(PrivateLinkResourceImpl::new);
@@ -222,27 +221,27 @@ class CosmosDBAccountImpl
 
     @Override
     public boolean multipleWriteLocationsEnabled() {
-        return this.inner().enableMultipleWriteLocations();
+        return this.innerModel().enableMultipleWriteLocations();
     }
 
     @Override
     public boolean cassandraConnectorEnabled() {
-        return this.inner().enableCassandraConnector();
+        return this.innerModel().enableCassandraConnector();
     }
 
     @Override
     public ConnectorOffer cassandraConnectorOffer() {
-        return this.inner().connectorOffer();
+        return this.innerModel().connectorOffer();
     }
 
     @Override
     public boolean keyBasedMetadataWriteAccessDisabled() {
-        return this.inner().disableKeyBasedMetadataWriteAccess();
+        return this.innerModel().disableKeyBasedMetadataWriteAccess();
     }
 
     @Override
     public List<Capability> capabilities() {
-        List<Capability> capabilities = this.inner().capabilities();
+        List<Capability> capabilities = this.innerModel().capabilities();
         if (capabilities == null) {
             capabilities = new ArrayList<>();
         }
@@ -252,15 +251,15 @@ class CosmosDBAccountImpl
     @Override
     public List<VirtualNetworkRule> virtualNetworkRules() {
         List<VirtualNetworkRule> result =
-            (this.inner() != null && this.inner().virtualNetworkRules() != null)
-                ? this.inner().virtualNetworkRules()
+            (this.innerModel() != null && this.innerModel().virtualNetworkRules() != null)
+                ? this.innerModel().virtualNetworkRules()
                 : new ArrayList<VirtualNetworkRule>();
         return Collections.unmodifiableList(result);
     }
 
     @Override
     public void offlineRegion(Region region) {
-        this.manager().inner().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(),
             new RegionForOnlineOffline().withRegion(region.label()));
     }
 
@@ -268,7 +267,7 @@ class CosmosDBAccountImpl
     public Mono<Void> offlineRegionAsync(Region region) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .offlineRegionAsync(this.resourceGroupName(), this.name(),
                 new RegionForOnlineOffline().withRegion(region.label()));
@@ -276,7 +275,7 @@ class CosmosDBAccountImpl
 
     @Override
     public void onlineRegion(Region region) {
-        this.manager().inner().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(),
             new RegionForOnlineOffline().withRegion(region.label()));
     }
 
@@ -284,7 +283,7 @@ class CosmosDBAccountImpl
     public Mono<Void> onlineRegionAsync(Region region) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .onlineRegionAsync(this.resourceGroupName(), this.name(),
                 new RegionForOnlineOffline().withRegion(region.label()));
@@ -292,7 +291,7 @@ class CosmosDBAccountImpl
 
     @Override
     public void regenerateKey(KeyKind keyKind) {
-        this.manager().inner().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(),
+        this.manager().serviceClient().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(),
             new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 
@@ -300,7 +299,7 @@ class CosmosDBAccountImpl
     public Mono<Void> regenerateKeyAsync(KeyKind keyKind) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDatabaseAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(),
                 new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
@@ -308,68 +307,68 @@ class CosmosDBAccountImpl
 
     @Override
     public CosmosDBAccountImpl withKind(DatabaseAccountKind kind) {
-        this.inner().withKind(kind);
+        this.innerModel().withKind(kind);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withKind(DatabaseAccountKind kind, Capability... capabilities) {
-        this.inner().withKind(kind);
-        this.inner().withCapabilities(Arrays.asList(capabilities));
+        this.innerModel().withKind(kind);
+        this.innerModel().withCapabilities(Arrays.asList(capabilities));
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withDataModelSql() {
-        this.inner().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
+        this.innerModel().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withDataModelMongoDB() {
-        this.inner().withKind(DatabaseAccountKind.MONGO_DB);
+        this.innerModel().withKind(DatabaseAccountKind.MONGO_DB);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withDataModelCassandra() {
-        this.inner().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
+        this.innerModel().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
         List<Capability> capabilities = new ArrayList<Capability>();
         capabilities.add(new Capability().withName("EnableCassandra"));
-        this.inner().withCapabilities(capabilities);
+        this.innerModel().withCapabilities(capabilities);
         this.withTag("defaultExperience", "Cassandra");
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withDataModelAzureTable() {
-        this.inner().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
+        this.innerModel().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
         List<Capability> capabilities = new ArrayList<Capability>();
         capabilities.add(new Capability().withName("EnableTable"));
-        this.inner().withCapabilities(capabilities);
+        this.innerModel().withCapabilities(capabilities);
         this.withTag("defaultExperience", "Table");
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withDataModelGremlin() {
-        this.inner().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
+        this.innerModel().withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
         List<Capability> capabilities = new ArrayList<Capability>();
         capabilities.add(new Capability().withName("EnableGremlin"));
-        this.inner().withCapabilities(capabilities);
+        this.innerModel().withCapabilities(capabilities);
         this.withTag("defaultExperience", "Graph");
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withIpRangeFilter(String ipRangeFilter) {
-        this.inner().withIpRangeFilter(ipRangeFilter);
+        this.innerModel().withIpRangeFilter(ipRangeFilter);
         return this;
     }
 
     @Override
     protected Mono<DatabaseAccountGetResultsInner> getInnerAsync() {
-        return this.manager().inner().getDatabaseAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getDatabaseAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -521,7 +520,7 @@ class CosmosDBAccountImpl
             policy.withMaxIntervalInSeconds(maxIntervalInSeconds);
         }
 
-        this.inner().withConsistencyPolicy(policy);
+        this.innerModel().withConsistencyPolicy(policy);
     }
 
     private void addLocationsForParameters(HasLocations locationParameters, List<FailoverPolicy> failoverPolicies) {
@@ -558,20 +557,20 @@ class CosmosDBAccountImpl
 
         if (isInCreateMode()) {
             final DatabaseAccountCreateUpdateParameters createUpdateParametersInner =
-                this.createUpdateParametersInner(this.inner());
+                this.createUpdateParametersInner(this.innerModel());
             request =
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getDatabaseAccounts()
                     .createOrUpdateAsync(resourceGroupName(), name(), createUpdateParametersInner);
             locationParameters = new CreateUpdateLocationParameters(createUpdateParametersInner);
         } else {
-            final DatabaseAccountUpdateParameters updateParametersInner = this.updateParametersInner(this.inner());
+            final DatabaseAccountUpdateParameters updateParametersInner = this.updateParametersInner(this.innerModel());
             request =
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getDatabaseAccounts()
                     .updateAsync(resourceGroupName(), name(), updateParametersInner);
             locationParameters = new UpdateLocationParameters(updateParametersInner);
@@ -594,11 +593,11 @@ class CosmosDBAccountImpl
                                     && (databaseAccount.id() == null
                                         || databaseAccount.id().length() == 0
                                         || locations.size()
-                                            != databaseAccount.inner().failoverPolicies().size())) {
+                                            != databaseAccount.innerModel().failoverPolicies().size())) {
                                     return Mono.empty();
                                 }
 
-                                if (isAFinalProvisioningState(databaseAccount.inner().provisioningState())) {
+                                if (isAFinalProvisioningState(databaseAccount.innerModel().provisioningState())) {
                                     for (Location location : databaseAccount.readableReplications()) {
                                         if (!isAFinalProvisioningState(location.provisioningState())) {
                                             return Mono.empty();
@@ -611,7 +610,7 @@ class CosmosDBAccountImpl
                                     return Mono.empty();
                                 }
 
-                                self.setInner(databaseAccount.inner());
+                                self.setInner(databaseAccount.innerModel());
                                 return Mono.just(databaseAccount);
                             })
                         .repeatWhenEmpty(
@@ -620,8 +619,8 @@ class CosmosDBAccountImpl
                                     .flatMap(
                                         index -> {
                                             data.set(0, data.get(0) + 30);
-                                            return Mono.delay(SdkContext.getDelayDuration(
-                                                manager().inner().getDefaultPollInterval()));
+                                            return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
+                                                manager().serviceClient().getDefaultPollInterval()));
                                         }));
                 });
     }
@@ -633,8 +632,8 @@ class CosmosDBAccountImpl
 
         if (!this.hasFailoverPolicyChanges) {
             this.failoverPolicies.clear();
-            FailoverPolicy[] policyInners = new FailoverPolicy[this.inner().failoverPolicies().size()];
-            this.inner().failoverPolicies().toArray(policyInners);
+            FailoverPolicy[] policyInners = new FailoverPolicy[this.innerModel().failoverPolicies().size()];
+            this.innerModel().failoverPolicies().toArray(policyInners);
             Arrays
                 .sort(
                     policyInners,
@@ -662,8 +661,8 @@ class CosmosDBAccountImpl
     private Map<String, VirtualNetworkRule> ensureVirtualNetworkRules() {
         if (this.virtualNetworkRulesMap == null) {
             this.virtualNetworkRulesMap = new HashMap<>();
-            if (this.inner() != null && this.inner().virtualNetworkRules() != null) {
-                for (VirtualNetworkRule virtualNetworkRule : this.inner().virtualNetworkRules()) {
+            if (this.innerModel() != null && this.innerModel().virtualNetworkRules() != null) {
+                for (VirtualNetworkRule virtualNetworkRule : this.innerModel().virtualNetworkRules()) {
                     this.virtualNetworkRulesMap.put(virtualNetworkRule.id(), virtualNetworkRule);
                 }
             }
@@ -674,7 +673,7 @@ class CosmosDBAccountImpl
 
     @Override
     public CosmosDBAccountImpl withVirtualNetwork(String virtualNetworkId, String subnetName) {
-        this.inner().withIsVirtualNetworkFilterEnabled(true);
+        this.innerModel().withIsVirtualNetworkFilterEnabled(true);
         String vnetId = virtualNetworkId + "/subnets/" + subnetName;
         ensureVirtualNetworkRules().put(vnetId, new VirtualNetworkRule().withId(vnetId));
         return this;
@@ -685,7 +684,7 @@ class CosmosDBAccountImpl
         Map<String, VirtualNetworkRule> vnetRules = ensureVirtualNetworkRules();
         vnetRules.remove(virtualNetworkId + "/subnets/" + subnetName);
         if (vnetRules.size() == 0) {
-            this.inner().withIsVirtualNetworkFilterEnabled(false);
+            this.innerModel().withIsVirtualNetworkFilterEnabled(false);
         }
         return this;
     }
@@ -695,10 +694,10 @@ class CosmosDBAccountImpl
         Map<String, VirtualNetworkRule> vnetRules = ensureVirtualNetworkRules();
         if (virtualNetworkRules == null || virtualNetworkRules.isEmpty()) {
             vnetRules.clear();
-            this.inner().withIsVirtualNetworkFilterEnabled(false);
+            this.innerModel().withIsVirtualNetworkFilterEnabled(false);
             return this;
         }
-        this.inner().withIsVirtualNetworkFilterEnabled(true);
+        this.innerModel().withIsVirtualNetworkFilterEnabled(true);
         for (VirtualNetworkRule vnetRule : virtualNetworkRules) {
             this.virtualNetworkRulesMap.put(vnetRule.id(), vnetRule);
         }
@@ -708,27 +707,27 @@ class CosmosDBAccountImpl
 
     @Override
     public CosmosDBAccountImpl withMultipleWriteLocationsEnabled(boolean enabled) {
-        this.inner().withEnableMultipleWriteLocations(enabled);
+        this.innerModel().withEnableMultipleWriteLocations(enabled);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withCassandraConnector(ConnectorOffer connectorOffer) {
-        this.inner().withEnableCassandraConnector(true);
-        this.inner().withConnectorOffer(connectorOffer);
+        this.innerModel().withEnableCassandraConnector(true);
+        this.innerModel().withConnectorOffer(connectorOffer);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withoutCassandraConnector() {
-        this.inner().withEnableCassandraConnector(false);
-        this.inner().withConnectorOffer(null);
+        this.innerModel().withEnableCassandraConnector(false);
+        this.innerModel().withConnectorOffer(null);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withDisableKeyBaseMetadataWriteAccess(boolean disabled) {
-        this.inner().withDisableKeyBasedMetadataWriteAccess(disabled);
+        this.innerModel().withDisableKeyBasedMetadataWriteAccess(disabled);
         return this;
     }
 

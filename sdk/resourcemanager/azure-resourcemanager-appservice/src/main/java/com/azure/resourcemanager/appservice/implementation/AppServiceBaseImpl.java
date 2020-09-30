@@ -16,17 +16,17 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
-import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.IdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.nio.charset.StandardCharsets;
@@ -69,87 +69,91 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<SiteInner> createOrUpdateInner(SiteInner site) {
-        return this.manager().inner().getWebApps().createOrUpdateAsync(resourceGroupName(), name(), site);
+        return this.manager().serviceClient().getWebApps().createOrUpdateAsync(resourceGroupName(), name(), site);
     }
 
     @Override
     Mono<SiteInner> updateInner(SitePatchResourceInner siteUpdate) {
-        return this.manager().inner().getWebApps().updateAsync(resourceGroupName(), name(), siteUpdate);
+        return this.manager().serviceClient().getWebApps().updateAsync(resourceGroupName(), name(), siteUpdate);
     }
 
     @Override
     Mono<SiteInner> getInner() {
-        return this.manager().inner().getWebApps().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getWebApps().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
     Mono<SiteConfigResourceInner> getConfigInner() {
-        return this.manager().inner().getWebApps().getConfigurationAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getWebApps().getConfigurationAsync(resourceGroupName(), name());
     }
 
     @Override
     Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
     }
 
     @Override
     Mono<Void> deleteHostnameBinding(String hostname) {
-        return this.manager().inner().getWebApps().deleteHostnameBindingAsync(resourceGroupName(), name(), hostname);
+        return this.manager().serviceClient().getWebApps()
+            .deleteHostnameBindingAsync(resourceGroupName(), name(), hostname);
     }
 
     @Override
     Mono<StringDictionaryInner> listAppSettings() {
-        return this.manager().inner().getWebApps().listApplicationSettingsAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getWebApps().listApplicationSettingsAsync(resourceGroupName(), name());
     }
 
     @Override
     Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
-        return this.manager().inner().getWebApps().updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
+        return this.manager().serviceClient().getWebApps()
+            .updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
     Mono<ConnectionStringDictionaryInner> listConnectionStrings() {
-        return this.manager().inner().getWebApps().listConnectionStringsAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getWebApps().listConnectionStringsAsync(resourceGroupName(), name());
     }
 
     @Override
     Mono<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
-        return this.manager().inner().getWebApps().updateConnectionStringsAsync(resourceGroupName(), name(), inner);
+        return this.manager().serviceClient().getWebApps()
+            .updateConnectionStringsAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
     Mono<SlotConfigNamesResourceInner> listSlotConfigurations() {
-        return this.manager().inner().getWebApps().listSlotConfigurationNamesAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getWebApps().listSlotConfigurationNamesAsync(resourceGroupName(), name());
     }
 
     @Override
     Mono<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
-        return this.manager().inner().getWebApps()
+        return this.manager().serviceClient().getWebApps()
             .updateSlotConfigurationNamesAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
     Mono<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
-        return this.manager().inner().getWebApps().createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
+        return this.manager().serviceClient().getWebApps()
+            .createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
     Mono<Void> deleteSourceControl() {
-        return this.manager().inner().getWebApps().deleteSourceControlAsync(resourceGroupName(), name());
+        return this.manager().serviceClient().getWebApps().deleteSourceControlAsync(resourceGroupName(), name());
     }
 
     @Override
     Mono<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner) {
-        return manager().inner().getWebApps().updateAuthSettingsAsync(resourceGroupName(), name(), inner);
+        return manager().serviceClient().getWebApps().updateAuthSettingsAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
     Mono<SiteAuthSettingsInner> getAuthentication() {
-        return manager().inner().getWebApps().getAuthSettingsAsync(resourceGroupName(), name());
+        return manager().serviceClient().getWebApps().getAuthSettingsAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -162,7 +166,7 @@ abstract class AppServiceBaseImpl<
     public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .listHostnameBindingsAsync(resourceGroupName(), name())
             .mapPage(
@@ -191,7 +195,7 @@ abstract class AppServiceBaseImpl<
         return FluxUtil
             .collectBytesInByteBufferStream(
                 manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listPublishingProfileXmlWithSecretsAsync(
                         resourceGroupName(), name(), new CsmPublishingProfileOptions()))
@@ -207,7 +211,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<WebAppSourceControl> getSourceControlAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .getSourceControlAsync(resourceGroupName(), name())
             .map(
@@ -217,7 +221,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<MSDeployStatusInner> createMSDeploy(MSDeploy msDeployInner) {
-        return manager().inner().getWebApps().createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
+        return manager().serviceClient().getWebApps()
+            .createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
     }
 
     @Override
@@ -230,7 +235,7 @@ abstract class AppServiceBaseImpl<
         IdentifierInner identifierInner = new IdentifierInner().withValue(domainVerificationToken);
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .createOrUpdateDomainOwnershipIdentifierAsync(
                 resourceGroupName(), name(), certificateOrderName, identifierInner)
@@ -245,7 +250,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> startAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .startAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -260,7 +265,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> stopAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .stopAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -275,7 +280,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> restartAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .restartAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -290,7 +295,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> swapAsync(String slotName) {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .swapSlotWithProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
@@ -305,7 +310,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> applySlotConfigurationsAsync(String slotName) {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .applySlotConfigToProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
             .then(refreshAsync())
@@ -320,7 +325,7 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> resetSlotConfigurationsAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .resetProductionSlotConfigAsync(resourceGroupName(), name())
             .then(refreshAsync())
@@ -336,7 +341,7 @@ abstract class AppServiceBaseImpl<
     public Mono<byte[]> getContainerLogsAsync() {
         return FluxUtil
             .collectBytesInByteBufferStream(
-                manager().inner().getWebApps().getWebSiteContainerLogsAsync(resourceGroupName(), name()));
+                manager().serviceClient().getWebApps().getWebSiteContainerLogsAsync(resourceGroupName(), name()));
     }
 
     @Override
@@ -348,19 +353,19 @@ abstract class AppServiceBaseImpl<
     public Mono<byte[]> getContainerLogsZipAsync() {
         return FluxUtil
             .collectBytesInByteBufferStream(
-                manager().inner().getWebApps().getContainerLogsZipAsync(resourceGroupName(), name()));
+                manager().serviceClient().getWebApps().getContainerLogsZipAsync(resourceGroupName(), name()));
     }
 
     @Override
     Mono<SiteLogsConfigInner> updateDiagnosticLogsConfig(SiteLogsConfigInner siteLogsConfigInner) {
         return manager()
-            .inner()
+            .serviceClient()
             .getWebApps()
             .updateDiagnosticLogsConfigAsync(resourceGroupName(), name(), siteLogsConfigInner);
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan() {
-        String planName = this.manager().sdkContext().randomResourceName(name() + "plan", 32);
+        String planName = this.manager().resourceManager().internalContext().randomResourceName(name() + "plan", 32);
         return newDefaultAppServicePlan(planName);
     }
 
@@ -415,7 +420,7 @@ abstract class AppServiceBaseImpl<
                     "serverFarms",
                     appServicePlanCreatable.name(),
                     "");
-        inner().withServerFarmId(id);
+        innerModel().withServerFarmId(id);
         if (appServicePlanCreatable instanceof AppServicePlanImpl) {
             return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
         } else {
@@ -427,14 +432,14 @@ abstract class AppServiceBaseImpl<
     @SuppressWarnings("unchecked")
     private FluentImplT withOperatingSystem(OperatingSystem os) {
         if (os == OperatingSystem.LINUX) {
-            inner().withReserved(true);
-            inner().withKind(inner().kind() + ",linux");
+            innerModel().withReserved(true);
+            innerModel().withKind(innerModel().kind() + ",linux");
         }
         return (FluentImplT) this;
     }
 
     public FluentImplT withExistingAppServicePlan(AppServicePlan appServicePlan) {
-        inner().withServerFarmId(appServicePlan.id());
+        innerModel().withServerFarmId(appServicePlan.id());
         this.withRegion(appServicePlan.regionName());
         return withOperatingSystem(appServicePlanOperatingSystem(appServicePlan));
     }

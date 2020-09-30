@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 
 /**
@@ -20,21 +20,21 @@ class AuthorizationKeysImpl
 
     @Override
     public String primaryKey() {
-        return this.inner().primaryKey();
+        return this.innerModel().primaryKey();
     }
 
     @Override
     public String secondaryKey() {
-        return this.inner().secondaryKey();
+        return this.innerModel().secondaryKey();
     }
 
     @Override
     public String primaryConnectionString() {
-        return this.inner().primaryConnectionString();
+        return this.innerModel().primaryConnectionString();
     }
 
     @Override
     public String secondaryConnectionString() {
-        return this.inner().secondaryConnectionString();
+        return this.innerModel().secondaryConnectionString();
     }
 }

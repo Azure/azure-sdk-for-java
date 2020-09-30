@@ -116,6 +116,8 @@ computeManager.virtualMachines().list()
 
 It is worth noting that page is requested on demand. Therefore, after result found, it helps to `break` in for-loop, or to `findFirst` in stream, by avoiding unnecessary requests.
 
+Also, there is no caching for requested pages or items in the `PagedIterable<T>` instance. Therefore, if you iterate `PagedIterable<T>` a second times, it will again request pages even if they are already iterated in the first iteration.
+
 ### Conditional request
 
 For services support ETag and conditional request, consider supporting following methods in `define...create` and `update...apply`:
@@ -130,6 +132,6 @@ Exception on management of Azure resource is a `ManagementException` instance. D
 `managementError.getCode()` and `managementError.getMessage()` returns code and message of the error response.
 
 <!-- LINKS -->
-[authenticate]: AUTH.md
-[sample_creatable_dependency]: ../README.md#dependency-across-azure-resources
-[sample_creatable_batch]: ../README.md#batch-azure-resource-provisioning
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
+[sample_creatable_dependency]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/README.md#dependency-across-azure-resources
+[sample_creatable_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/README.md#batch-azure-resource-provisioning

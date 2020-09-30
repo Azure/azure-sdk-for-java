@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.PCFilter;
 import com.azure.resourcemanager.network.models.PacketCapture;
@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.PacketCaptureStatus;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -122,12 +122,12 @@ public class PacketCaptureImpl
         if (createParameters.filters() == null) {
             createParameters.withFilters(new ArrayList<PacketCaptureFilter>());
         }
-        createParameters.filters().add(pcFilter.inner());
+        createParameters.filters().add(pcFilter.innerModel());
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
@@ -140,41 +140,41 @@ public class PacketCaptureImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public String targetId() {
-        return inner().target();
+        return innerModel().target();
     }
 
     @Override
     public int bytesToCapturePerPacket() {
-        return Utils.toPrimitiveInt(inner().bytesToCapturePerPacket());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().bytesToCapturePerPacket());
     }
 
     @Override
     public int totalBytesPerSession() {
-        return Utils.toPrimitiveInt(inner().totalBytesPerSession());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().totalBytesPerSession());
     }
 
     @Override
     public int timeLimitInSeconds() {
-        return Utils.toPrimitiveInt(inner().timeLimitInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().timeLimitInSeconds());
     }
 
     @Override
     public PacketCaptureStorageLocation storageLocation() {
-        return inner().storageLocation();
+        return innerModel().storageLocation();
     }
 
     @Override
     public List<PacketCaptureFilter> filters() {
-        return inner().filters();
+        return innerModel().filters();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 }

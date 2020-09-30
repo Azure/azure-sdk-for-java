@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySourc
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.StorageService;
-import com.azure.resourcemanager.storage.fluent.inner.StorageAccountInner;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import java.util.HashMap;
 import java.util.Map;
 

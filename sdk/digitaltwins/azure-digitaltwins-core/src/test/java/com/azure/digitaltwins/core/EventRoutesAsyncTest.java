@@ -27,8 +27,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         String eventRouteId = testResourceNamer.randomUuid();
 
         // CREATE
-        EventRoute eventRouteToCreate = new EventRoute();
-        eventRouteToCreate.setEndpointName(EVENT_ROUTE_ENDPOINT_NAME);
+        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
         StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))
             .verifyComplete();
@@ -76,8 +75,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
     public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
-        EventRoute eventRouteToCreate = new EventRoute();
-        eventRouteToCreate.setEndpointName(EVENT_ROUTE_ENDPOINT_NAME);
+        EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
         StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))

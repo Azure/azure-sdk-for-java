@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VnetValidationTestFailure model. */
+/** A class that describes a test that failed during NSG and UDR validation. */
 @JsonFlatten
 @Fluent
 public class VnetValidationTestFailure extends ProxyOnlyResource {

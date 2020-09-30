@@ -3,6 +3,7 @@ package com.azure.digitaltwins.core.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
@@ -18,8 +19,12 @@ public final class ComponentMetadata {
     /**
      * Model-defined writable properties' request state.
      */
+    @JsonIgnore
     private final Map<String, Object> writeableProperties = new HashMap<>();
 
+    /**
+     * The public constructor for the ComponentMetadata.
+     */
     public ComponentMetadata() {}
 
     /**
@@ -33,11 +38,13 @@ public final class ComponentMetadata {
     }
 
     /**
-     * Sets the model-defined writable properties' request state.
+     * Adds additional writable properties to the model-defined writable properties' request state.
+     * @param key The key of the additional property to be added to the component metadata.
+     * @param value The value of the additional property to be added to the component metadata.
      * @return The ComponentMetadata object itself.
      */
     @JsonAnySetter
-    ComponentMetadata setWritableProperties(String key, Object value) {
+    public ComponentMetadata addWritableProperties(String key, Object value) {
         this.writeableProperties.put(key, value);
         return this;
     }

@@ -1,5 +1,8 @@
 # Release History
 
+## 1.2.0-beta.2 (Unreleased)
+
+
 ## 1.2.0-beta.1 (2020-09-11)
 - Added `InteractiveBrowserCredentialBuilder.redirectUrl(String)` to configure the redirect URL
 - Deprecated `InteractiveBrowserCredentialBuilder.port(int)`

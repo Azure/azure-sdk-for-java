@@ -6,7 +6,7 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
@@ -102,7 +102,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [event_hubs]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
 [event_hubs_kafka]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
 [service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
-[storage]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage
+[storage]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-starter-storage
 [storage_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
 [app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-sample
 [app_configuration_conversation_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-complete
@@ -112,3 +112,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample
 [storage_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-storage-resource-sample
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-storage-queue-integration-sample
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FeatureProperties model. */
+/** Information about feature. */
 @Fluent
 public final class FeatureProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureProperties.class);

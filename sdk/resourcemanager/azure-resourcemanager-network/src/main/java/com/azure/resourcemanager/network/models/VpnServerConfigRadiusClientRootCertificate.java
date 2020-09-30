@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnServerConfigRadiusClientRootCertificate model. */
+/** Properties of the Radius client root certificate of VpnServerConfiguration. */
 @Fluent
 public final class VpnServerConfigRadiusClientRootCertificate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnServerConfigRadiusClientRootCertificate.class);

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to gallery images management API in Azure. */
 @Fluent
-public interface GalleryImages
-    extends SupportsCreating<GalleryImage.DefinitionStages.Blank>, HasInner<GalleryImagesClient> {
+public interface GalleryImages extends SupportsCreating<GalleryImage.DefinitionStages.Blank> {
     /**
      * Retrieves information about an image in a gallery.
      *

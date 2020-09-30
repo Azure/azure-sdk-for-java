@@ -7,9 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +17,7 @@ import java.util.UUID;
 /** An immutable client-side representation of an Azure SQL Service tier advisor. */
 @Fluent
 public interface ServiceTierAdvisor
-    extends Refreshable<ServiceTierAdvisor>, HasInner<ServiceTierAdvisorInner>, HasResourceGroup, HasName, HasId {
+    extends Refreshable<ServiceTierAdvisor>, HasInnerModel<ServiceTierAdvisorInner>, HasResourceGroup, HasName, HasId {
 
     /** @return name of the SQL Server to which this replication belongs */
     String sqlServerName();

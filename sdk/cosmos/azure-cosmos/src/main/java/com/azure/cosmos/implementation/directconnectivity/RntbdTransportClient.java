@@ -28,8 +28,10 @@ import io.micrometer.core.instrument.Tag;
 import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.util.context.Context;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +43,7 @@ import java.util.Locale;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -57,6 +60,29 @@ public final class RntbdTransportClient extends TransportClient {
 
     private static final AtomicLong instanceCount = new AtomicLong();
     private static final Logger logger = LoggerFactory.getLogger(RntbdTransportClient.class);
+
+    /**
+     * NOTE: This context key name has been copied from {link Hooks#KEY_ON_ERROR_DROPPED} which is
+     * not exposed as public Api but package internal only
+     *
+     * A key that can be used to store a sequence-specific {@link Hooks#onErrorDropped(Consumer)}
+     * hook in a {@link Context}, as a {@link Consumer Consumer&lt;Throwable&gt;}.
+     */
+    private static final String KEY_ON_ERROR_DROPPED = "reactor.onErrorDropped.local";
+
+    /**
+     * This lambda gets injected into the local Reactor Context to react tot he onErrorDropped event and
+     * log the throwable with DEBUG level instead of the ERROR level used in the default hook.
+     * This is safe here because we guarantee resource clean-up with the doFinally-lambda
+     */
+    private static final Consumer<? super Throwable> onErrorDropHookWithReduceLogLevel =
+        throwable -> {
+            if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "Extra error - on error dropped - operator called :",
+                    throwable);
+            }
+        };
 
     private final AtomicBoolean closed = new AtomicBoolean();
     private final RntbdEndpoint.Provider endpointProvider;
@@ -128,8 +154,9 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
+        final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
+        final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
             if (request.requestContext.cosmosDiagnostics == null) {
@@ -139,6 +166,12 @@ public final class RntbdTransportClient extends TransportClient {
             if (response != null) {
                 RequestTimeline timeline = record.takeTimelineSnapshot();
                 response.setRequestTimeline(timeline);
+                response.setEndpointStatistics(record.serviceEndpointStatistics());
+                response.setRntbdResponseLength(record.responseLength());
+                response.setRntbdRequestLength(record.requestLength());
+                response.setRequestPayloadLength(request.getContentLength());
+                response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
+                response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
             }
 
         })).onErrorMap(throwable -> {
@@ -160,8 +193,19 @@ public final class RntbdTransportClient extends TransportClient {
                     address.toString());
             }
 
-            return error;
+            assert error instanceof CosmosException;
+            CosmosException cosmosException = (CosmosException) error;
+            BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
 
+            BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
+            BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
+            BridgeInternal.setRequestBodyLength(cosmosException, request.getContentLength());
+            BridgeInternal.setRequestTimeline(cosmosException, record.takeTimelineSnapshot());
+            BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
+            BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
+
+
+            return cosmosException;
         });
 
         return result.doFinally(signalType -> {
@@ -177,7 +221,10 @@ public final class RntbdTransportClient extends TransportClient {
             // This lambda does not prevent requests that complete exceptionally before the call to this lambda from
             // bubbling up to Hooks#onErrorDropped as CompletionException errors. We will still see some onErrorDropped
             // messages due to CompletionException errors. Anecdotal evidence shows that this is more likely to be seen
-            // in low latency environments on Azure cloud.
+            // in low latency environments on Azure cloud. To avoid the onErrorDropped events to get logged in the
+            // default hook (which logs with level ERROR) we inject a local hook in the Reactor Context to just log it
+            // as DEBUG level fro the lifecycle of this Mono (safe here because we know the onErrorDropped doesn't have
+            // any functional issues.
             //
             // One might be tempted to complete a pending request here, but that is ill advised. Testing and
             // inspection of the reactor code shows that this does not prevent errors from bubbling up to
@@ -189,11 +236,6 @@ public final class RntbdTransportClient extends TransportClient {
             //
             // * Calling record.complete with a null value causes failures in all environments, depending on the
             //   operation being performed. In short: many of our tests fail.
-            //
-            // TODO (DANOBLE) verify the correctness of this statement: Fact: We still see some of these errors. Does
-            //  reactor provide a mechanism other than Hooks#onErrorDropped(Consumer<? super Throwable> consumer) for
-            //  doing this per Mono or must we, for example, rely on something like this in the consistency layer:
-            //  https://www.codota.com/code/java/classes/reactor.core.publisher.Hooks
 
             if (signalType != SignalType.CANCEL) {
                 return;
@@ -220,7 +262,7 @@ public final class RntbdTransportClient extends TransportClient {
                             RntbdObjectMapper.toJson(throwable));
                     }
                 });
-        });
+        }).subscriberContext(reactorContext);
     }
 
     public Tag tag() {
@@ -252,6 +294,8 @@ public final class RntbdTransportClient extends TransportClient {
 
     public static final class Options {
 
+        private static final int DEFAULT_MIN_MAX_CONCURRENT_REQUESTS_PER_ENDPOINT = 10_000;
+
         // region Fields
 
         @JsonProperty()
@@ -280,6 +324,9 @@ public final class RntbdTransportClient extends TransportClient {
 
         @JsonProperty()
         private final int maxRequestsPerChannel;
+
+        @JsonProperty()
+        private final int maxConcurrentRequestsPerEndpointOverride;
 
         @JsonProperty()
         private final Duration receiveHangDetectionTime;
@@ -324,6 +371,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
+            this.maxConcurrentRequestsPerEndpointOverride = builder.maxConcurrentRequestsPerEndpointOverride;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
             this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
@@ -340,7 +388,7 @@ public final class RntbdTransportClient extends TransportClient {
 
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
-            this.connectionAcquisitionTimeout = Duration.ZERO;
+            this.connectionAcquisitionTimeout = Duration.ofSeconds(5L);
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
             this.idleChannelTimerResolution = Duration.ofMillis(100);
@@ -348,6 +396,9 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+
+            this.maxConcurrentRequestsPerEndpointOverride = -1;
+
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
             this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = connectionPolicy.getRequestTimeout();
@@ -396,12 +447,18 @@ public final class RntbdTransportClient extends TransportClient {
             return this.maxRequestsPerChannel;
         }
 
-        public Duration receiveHangDetectionTime() {
-            return this.receiveHangDetectionTime;
+        public int maxConcurrentRequestsPerEndpoint() {
+            if (this.maxConcurrentRequestsPerEndpointOverride > 0) {
+                return maxConcurrentRequestsPerEndpointOverride;
+            }
+
+            return Math.max(
+                DEFAULT_MIN_MAX_CONCURRENT_REQUESTS_PER_ENDPOINT,
+                this.maxChannelsPerEndpoint * this.maxRequestsPerChannel);
         }
 
-        public Duration requestExpiryInterval() {
-            return this.requestExpiryInterval;
+        public Duration receiveHangDetectionTime() {
+            return this.receiveHangDetectionTime;
         }
 
         public Duration requestTimeout() {
@@ -470,6 +527,7 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxBufferCapacity": 8388608,
          *   "maxChannelsPerEndpoint": 10,
          *   "maxRequestsPerChannel": 30,
+         *   "maxConcurrentRequestsPerEndpointOverride": 500,
          *   "receiveHangDetectionTime": "PT1M5S",
          *   "requestExpiryInterval": "PT5S",
          *   "requestTimeout": "PT5S",
@@ -550,7 +608,7 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             private int bufferPageSize;
-            private Duration connectionAcquisitionTimeout;
+            private final Duration connectionAcquisitionTimeout;
             private Duration connectTimeout;
             private Duration idleChannelTimeout;
             private Duration idleChannelTimerResolution;
@@ -558,6 +616,7 @@ public final class RntbdTransportClient extends TransportClient {
             private int maxBufferCapacity;
             private int maxChannelsPerEndpoint;
             private int maxRequestsPerChannel;
+            private int maxConcurrentRequestsPerEndpointOverride;
             private Duration receiveHangDetectionTime;
             private Duration requestExpiryInterval;
             private Duration requestTimeout;
@@ -582,6 +641,10 @@ public final class RntbdTransportClient extends TransportClient {
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
                 this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+
+                this.maxConcurrentRequestsPerEndpointOverride =
+                    DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;
+
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
                 this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
                 this.requestTimeout = connectionPolicy.getRequestTimeout();
@@ -663,6 +726,12 @@ public final class RntbdTransportClient extends TransportClient {
             public Builder maxRequestsPerChannel(final int value) {
                 checkArgument(value > 0, "expected positive value, not %s", value);
                 this.maxRequestsPerChannel = value;
+                return this;
+            }
+
+            public Builder maxConcurrentRequestsPerEndpointOverride(final int value) {
+                checkArgument(value > 0, "expected positive value, not %s", value);
+                this.maxConcurrentRequestsPerEndpointOverride = value;
                 return this;
             }
 

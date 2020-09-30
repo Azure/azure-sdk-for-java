@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -27,7 +27,7 @@ class FunctionAppBasicImpl extends WebSiteBaseImpl implements FunctionAppBasic, 
     @Override
     public Mono<FunctionApp> refreshAsync() {
         return this.manager().functionApps().getByIdAsync(this.id())
-            .doOnNext(site -> this.setInner(site.inner()));
+            .doOnNext(site -> this.setInner(site.innerModel()));
     }
 
     @Override

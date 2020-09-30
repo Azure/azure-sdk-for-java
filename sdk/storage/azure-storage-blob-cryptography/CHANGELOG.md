@@ -1,7 +1,10 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
-
+- Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.
+- Added support to specify 'requiresEncryption' on the EncryptedBlobClientBuilder to specify whether or not to enforce that the blob is encrypted on download.
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
 
 ## 12.8.0 (2020-08-13)
 - GA release for 2019-12-12 service version

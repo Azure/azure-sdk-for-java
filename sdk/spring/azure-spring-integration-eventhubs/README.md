@@ -7,7 +7,7 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
@@ -17,7 +17,7 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>spring-integration-eventhubs</artifactId>
-    <version>1.2.8-beta.1</version>
+    <version>1.2.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,3 +68,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: http://maven.apache.org/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-eventhubs
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

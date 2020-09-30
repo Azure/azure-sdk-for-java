@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An immutable client-side representation of an inbound NAT rule. */
@@ -17,7 +17,7 @@ public interface LoadBalancerInboundNatRule
         HasProtocol<TransportProtocol>,
         HasFloatingIP,
         HasFrontendPort,
-        HasInner<InboundNatRuleInner>,
+        HasInnerModel<InboundNatRuleInner>,
         ChildResource<LoadBalancer> {
 
     /** @return the name of the IP configuration within the network interface associated with this NAT rule */

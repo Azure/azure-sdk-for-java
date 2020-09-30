@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NatGatewaySku model. */
+/** SKU of nat gateway. */
 @Fluent
 public final class NatGatewaySku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NatGatewaySku.class);

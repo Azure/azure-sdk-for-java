@@ -21,23 +21,22 @@ import java.net.MalformedURLException;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
+import static com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
+import static com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
+
 /**
  * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
-    private static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
-    private static final String INVALID_REQUEST = "invalid_request";
-    private static final String SERVER_ERROR = "server_error";
-    private static final String DEFAULT_USERNAME_ATTR_NAME = "name";
+    private final AADAuthenticationProperties aadAuthenticationProperties;
+    private final ServiceEndpointsProperties serviceEndpointsProperties;
+    private final OidcUserService oidcUserService;
 
-    private AADAuthenticationProperties aadAuthProps;
-    private ServiceEndpointsProperties serviceEndpointsProps;
-    private OidcUserService oidcUserService;
-
-    public AADOAuth2UserService(AADAuthenticationProperties aadAuthProps,
-                                ServiceEndpointsProperties serviceEndpointsProps) {
-        this.aadAuthProps = aadAuthProps;
-        this.serviceEndpointsProps = serviceEndpointsProps;
+    public AADOAuth2UserService(AADAuthenticationProperties aadAuthenticationProperties,
+                                ServiceEndpointsProperties serviceEndpointsProperties) {
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
+        this.serviceEndpointsProperties = serviceEndpointsProperties;
         this.oidcUserService = new OidcUserService();
     }
 
@@ -50,25 +49,28 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
             final ClientRegistration registration = userRequest.getClientRegistration();
-            final AzureADGraphClient graphClient = new AzureADGraphClient(
+            final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
                 registration.getClientId(),
                 registration.getClientSecret(),
-                aadAuthProps,
-                serviceEndpointsProps
+                aadAuthenticationProperties,
+                serviceEndpointsProperties
             );
-            String graphApiToken = graphClient
-                .acquireTokenForGraphApi(userRequest.getIdToken().getTokenValue(), aadAuthProps.getTenantId())
+            String graphApiToken = azureADGraphClient
+                .acquireTokenForGraphApi(
+                    userRequest.getIdToken().getTokenValue(),
+                    aadAuthenticationProperties.getTenantId()
+                )
                 .accessToken();
-            mappedAuthorities = graphClient.getGrantedAuthorities(graphApiToken);
+            mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
-            throw wrapException(INVALID_REQUEST, "Failed to acquire token for Graph API.", null, e);
+            throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
         } catch (ServiceUnavailableException e) {
-            throw wrapException(SERVER_ERROR, "Failed to acquire token for Graph API.", null, e);
+            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to acquire token for Graph API.", e);
         } catch (IOException e) {
-            throw wrapException(SERVER_ERROR, "Failed to map group to authorities.", null, e);
+            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to map group to authorities.", e);
         } catch (MsalServiceException e) {
             if (e.claims() != null && !e.claims().isEmpty()) {
-                throw wrapException(CONDITIONAL_ACCESS_POLICY, "Handle conditional access policy", null, e);
+                throw toOAuth2AuthenticationException(CONDITIONAL_ACCESS_POLICY, "Handle conditional access policy", e);
             } else {
                 throw e;
             }
@@ -79,13 +81,15 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                           .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
                                           .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
                                           .filter(s -> !s.isEmpty())
-                                          .orElse(DEFAULT_USERNAME_ATTR_NAME);
+                                          .orElse(AADAccessTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }
 
-    private OAuth2AuthenticationException wrapException(String errorCode, String errDesc, String uri, Exception e) {
-        final OAuth2Error oAuth2Error = new OAuth2Error(errorCode, errDesc, uri);
-        throw new OAuth2AuthenticationException(oAuth2Error, e);
+    private OAuth2AuthenticationException toOAuth2AuthenticationException(String errorCode,
+                                                                          String description,
+                                                                          Exception cause) {
+        OAuth2Error oAuth2Error = new OAuth2Error(errorCode, description, null);
+        return new OAuth2AuthenticationException(oAuth2Error, cause);
     }
 }

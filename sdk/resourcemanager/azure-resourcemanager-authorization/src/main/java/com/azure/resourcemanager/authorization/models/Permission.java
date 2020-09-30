@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.authorization.models;
 
-import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** An immutable client-side representation of a permission. */
-public interface Permission extends HasInner<PermissionInner> {
+public interface Permission extends HasInnerModel<PermissionInner> {
     /** @return allowed actions */
     List<String> actions();
 
