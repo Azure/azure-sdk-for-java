@@ -9,15 +9,16 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.TransactionalBatch;
 import com.azure.cosmos.TransactionalBatchRequestOptions;
 import com.azure.cosmos.TransactionalBatchResponse;
-import com.azure.cosmos.implementation.RequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+
 public final class BatchExecutor {
 
     private final CosmosAsyncContainer container;
-    private final RequestOptions options;
+    private final TransactionalBatchRequestOptions options;
     private final TransactionalBatch transactionalBatch;
 
     public BatchExecutor(
@@ -27,7 +28,7 @@ public final class BatchExecutor {
 
         this.container = container;
         this.transactionalBatch = transactionalBatch;
-        this.options = options.toRequestOptions();
+        this.options = options;
     }
 
     /**
@@ -37,17 +38,16 @@ public final class BatchExecutor {
      */
     public final Mono<TransactionalBatchResponse> executeAsync() {
 
-        List<ItemBatchOperation<?>> operations = this.transactionalBatch.getOperations();
-
-        BatchExecUtils.ensureValid(operations, this.options);
+        List<ItemBatchOperation<?>> operations = BridgeInternal.getOperationsFromTransactionalBatch(this.transactionalBatch);
+        checkArgument(operations.size() > 0, "Number of operations should be more than 0.");
 
         final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createAsync(
-            this.transactionalBatch.getPartitionKey(),
+            BridgeInternal.getPartitionKeyFromTransactionalBatch(this.transactionalBatch),
             operations);
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);
 
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
-            .executeBatchRequest(BridgeInternal.getLink(container), request, options, false);
+            .executeBatchRequest(BridgeInternal.getLink(container), request, BridgeInternal.toRequestOptions(options), false);
     }
 }

@@ -4,10 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.models.PartitionKey;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -68,7 +70,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     .readItem("jogging")
  *     .readItem("running")
  *
- * try (TransactionalBatchResponse response = container.executeTransactionalBatch(new Cosmos.PartitionKey(activityType)) {
+ * try (TransactionalBatchResponse response = container.executeTransactionalBatch(batch) {
  *
  *     // Look up interested results - eg. via direct access to operation result stream
  *
@@ -89,6 +91,8 @@ public final class TransactionalBatch {
     private final PartitionKey partitionKey;
 
     public TransactionalBatch(PartitionKey partitionKey) {
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
         this.operations = new ArrayList<>();
         this.partitionKey = partitionKey;
     }
@@ -296,11 +300,21 @@ public final class TransactionalBatch {
         return this;
     }
 
-    public ArrayList<ItemBatchOperation<?>> getOperations() {
-        return operations;
+    /**
+     * Return the list of operation in an unmodifiable instace so no one can change it in the down path.
+     *
+     * @return The list of operations which are to be executed.
+     */
+    List<ItemBatchOperation<?>> getOperations() {
+        return UnmodifiableList.unmodifiableList(operations);
     }
 
-    public PartitionKey getPartitionKey() {
+    /**
+     * Return the partition key for this batch.
+     *
+     * @return The partition key for this batch.
+     */
+    PartitionKey getPartitionKey() {
         return partitionKey;
     }
 }

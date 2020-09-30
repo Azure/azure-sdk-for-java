@@ -49,7 +49,7 @@ public final class TransactionalBatchItemRequestOptions {
         return this;
     }
 
-    public RequestOptions toRequestOptions() {
+    RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());

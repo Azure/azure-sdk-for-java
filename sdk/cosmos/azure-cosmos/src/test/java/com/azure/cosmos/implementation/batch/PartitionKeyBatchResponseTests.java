@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.OperationType;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PartitionKeyBatchResponseTests {
 
@@ -33,8 +34,14 @@ public class PartitionKeyBatchResponseTests {
             .id("0")
             .build();
 
-        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK.code());
-        transactionalBatchOperationResult.setETag(operation.getId());
+        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+            operation.getId(),
+            0.0,
+            null,
+            HttpResponseStatus.OK.code(),
+            null,
+            0
+        );
 
         results.add(transactionalBatchOperationResult);
 
@@ -56,6 +63,6 @@ public class PartitionKeyBatchResponseTests {
             batchRequest,
             true).block();
 
-        assertEquals(HttpResponseStatus.OK.code(), batchResponse.getResponseStatus());
+        assertThat(batchResponse.getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
     }
 }

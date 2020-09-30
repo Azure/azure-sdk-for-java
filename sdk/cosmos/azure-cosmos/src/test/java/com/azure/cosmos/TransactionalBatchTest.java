@@ -5,11 +5,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.Assert;
+import org.assertj.core.data.Offset;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -24,7 +23,6 @@ public class TransactionalBatchTest extends BatchTestBase {
 
     private CosmosAsyncClient batchClient;
     private CosmosAsyncContainer batchContainer;
-    private CosmosAsyncContainer sharedThroughputContainer;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public TransactionalBatchTest(CosmosClientBuilder clientBuilder) {
@@ -37,29 +35,17 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.batchClient = getClientBuilder().buildAsyncClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient);
         batchContainer = batchClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
-        sharedThroughputContainer = super.createSharedThroughputContainer(this.batchClient);
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.batchClient).isNotNull();
-
-        if (sharedThroughputContainer != null) {
-            // Delete the database created in this test
-            sharedThroughputContainer.getDatabase().delete().block();
-        }
-
         this.batchClient.close();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchCrud() throws Exception {
          this.runCrudAsync(batchContainer);
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void batchSharedThroughputCrud() throws Exception {
-        this.runCrudAsync(sharedThroughputContainer);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -80,8 +66,8 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
+        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
 
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByReadAsync(container, replaceDoc);
@@ -103,7 +89,7 @@ public class TransactionalBatchTest extends BatchTestBase {
                 this.getPartitionKey(this.partitionKey1),
                 TestDoc.class).block();
 
-            Assert.assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
             TransactionalBatchItemRequestOptions firstReplaceOptions = new TransactionalBatchItemRequestOptions();
             firstReplaceOptions.setIfMatchETag(response.getETag());
@@ -116,8 +102,8 @@ public class TransactionalBatchTest extends BatchTestBase {
 
             this.verifyBatchProcessed(batchResponse, 2);
 
-            Assert.assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
-            Assert.assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
+            assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
 
             // Ensure that the replace overwrote the doc from the first operation
             this.verifyByReadAsync(container, testDocToCreate, batchResponse.get(0).getETag());
@@ -138,7 +124,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
             this.verifyBatchProcessed(batchResponse, 1, HttpResponseStatus.PRECONDITION_FAILED);
 
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), batchResponse.get(0).getResponseStatus());
+            assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
 
             // ensure the document was not updated
             this.verifyByReadAsync(container, this.TestDocPk1ExistingB);
@@ -160,7 +146,7 @@ public class TransactionalBatchTest extends BatchTestBase {
             this.getPartitionKey(this.partitionKey1),
             TestDoc.class).block();
 
-        Assert.assertEquals(HttpResponseStatus.OK.code(), readResponse.getStatusCode());
+        assertThat(readResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         ISessionToken beforeRequestSessionToken = this.getSessionToken(readResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
 
@@ -172,11 +158,13 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
+        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
 
         ISessionToken afterRequestSessionToken = this.getSessionToken(batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
-        Assert.assertTrue(afterRequestSessionToken.getLSN() > beforeRequestSessionToken.getLSN(), "Response session token should be more than request session token");
+        assertThat(afterRequestSessionToken.getLSN())
+            .as("Response session token should be more than request session token")
+            .isGreaterThan(beforeRequestSessionToken.getLSN());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -192,7 +180,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch).block();
-        Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), batchResponse.getResponseStatus());
+        assertThat(batchResponse.getResponseStatus()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -209,13 +197,13 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 3);
 
-        Assert.assertEquals(HttpResponseStatus.OK.code(),  batchResponse.get(0).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(),  batchResponse.get(1).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(),  batchResponse.get(2).getResponseStatus());
+        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(2).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
 
-        Assert.assertEquals(this.TestDocPk1ExistingA, batchResponse.getOperationResultAtIndex(0, TestDoc.class).getItem());
-        Assert.assertEquals(this.TestDocPk1ExistingB, batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem());
-        Assert.assertEquals(this.TestDocPk1ExistingC, batchResponse.getOperationResultAtIndex(2, TestDoc.class).getItem());
+        assertThat(batchResponse.getOperationResultAtIndex(0, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingA);
+        assertThat(batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingB);
+        assertThat(batchResponse.getOperationResultAtIndex(2, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingC);
     }
 
     private TransactionalBatchResponse runCrudAsync(CosmosAsyncContainer container) throws Exception {
@@ -243,14 +231,14 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 6);
 
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(0).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(1).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(2).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), batchResponse.get(3).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.OK.code(), batchResponse.get(4).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), batchResponse.get(5).getResponseStatus());
+        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(2).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(3).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(4).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(5).getResponseStatus()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-        Assert.assertEquals(this.TestDocPk1ExistingC, batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem());
+        assertThat(batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingC);
 
         this.verifyByReadAsync(container, testDocToCreate);
         this.verifyByReadAsync(container, testDocToReplace);
@@ -264,11 +252,6 @@ public class TransactionalBatchTest extends BatchTestBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void batchWithCreateConflictAsync() {
         this.runBatchWithCreateConflictAsync(batchContainer);
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void batchWithCreateConflictSharedThroughputAsync() {
-        this.runBatchWithCreateConflictAsync(this.sharedThroughputContainer);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -357,9 +340,9 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 3, expectedFailedOperationStatusCode);
 
-        Assert.assertEquals(HttpResponseStatus.FAILED_DEPENDENCY.code(), batchResponse.get(0).getResponseStatus());
-        Assert.assertEquals(expectedFailedOperationStatusCode.code(), batchResponse.get(1).getResponseStatus());
-        Assert.assertEquals(HttpResponseStatus.FAILED_DEPENDENCY.code(), batchResponse.get(2).getResponseStatus());
+        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(expectedFailedOperationStatusCode.code());
+        assertThat(batchResponse.get(2).getResponseStatus()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
         this.verifyNotFoundAsync(container, testDocToCreate);
         this.verifyNotFoundAsync(container, anotherTestDocToCreate);
@@ -370,21 +353,19 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     private void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
-        Assert.assertNotNull(batchResponse);
-        Assert.assertEquals(
-            batchResponse.getResponseStatus(),
-            expectedStatusCode.code(),
-            "Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}");
+        assertThat(batchResponse).isNotNull();
+        assertThat(batchResponse.getResponseStatus())
+            .as("Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}")
+            .isEqualTo(expectedStatusCode.code());
 
-        Assert.assertEquals(numberOfOperations, batchResponse.size());
-        Assert.assertTrue(batchResponse.getRequestCharge() > 0);
-        Assert.assertTrue(StringUtils.isNotEmpty(batchResponse.getCosmosDiagnostics().toString()));
+        assertThat(batchResponse.size()).isEqualTo(numberOfOperations);
+        assertThat(batchResponse.getRequestCharge()).isPositive();
+        assertThat(batchResponse.getCosmosDiagnostics().toString()).isNotEmpty();
 
         // Allow a delta since we round both the total charge and the individual operation
         // charges to 2 decimal places.
-        Assert.assertEquals(
-            batchResponse.getRequestCharge(),
-            batchResponse.stream().mapToDouble(result -> result.getRequestCharge()).sum(),
-            0.1);
+        assertThat(batchResponse.getRequestCharge())
+            .isCloseTo(batchResponse.getResults().stream().mapToDouble(TransactionalBatchOperationResult::getRequestCharge).sum(),
+            Offset.offset(0.1));
     }
 }

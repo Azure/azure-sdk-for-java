@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.TransactionalBatchResponse;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.SUB_STATUS;
@@ -45,15 +47,15 @@ public final class BatchResponseParser {
 
         if (throwable instanceof CosmosException) {
             final CosmosException cosmosException = (CosmosException) throwable;
-            final TransactionalBatchResponse response =  new TransactionalBatchResponse(
+            final TransactionalBatchResponse response = BridgeInternal.createTransactionBatchResponse(
                 cosmosException.getStatusCode(),
                 cosmosException.getSubStatusCode(),
-                cosmosException.getMessage(),
+                cosmosException.toString(),
                 cosmosException.getResponseHeaders(),
                 cosmosException.getDiagnostics(),
                 request.getOperations());
 
-            response.createAndPopulateResults(request.getOperations(), 0);
+            BatchResponseParser.createAndPopulateResults(response, request.getOperations(), cosmosException.getRetryAfterDuration());
             return Mono.just(response);
         } else {
             return Mono.error(throwable);
@@ -75,14 +77,14 @@ public final class BatchResponseParser {
         final boolean shouldPromoteOperationStatus) {
 
         TransactionalBatchResponse response = null;
-        final String responseContent = documentServiceResponse.getResponseBodyAsString();
+        final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
-        if (StringUtils.isNotEmpty(responseContent)) {
+        if (responseContent != null && responseContent.length > 0) {
             response = BatchResponseParser.populateFromResponseContentAsync(documentServiceResponse, request, shouldPromoteOperationStatus);
 
             if (response == null) {
                 // Convert any payload read failures as InternalServerError
-                response = new TransactionalBatchResponse(
+                response = BridgeInternal.createTransactionBatchResponse(
                     HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
                     0,
                     "ServerResponseDeserializationFailure",
@@ -97,7 +99,7 @@ public final class BatchResponseParser {
             documentServiceResponse.getResponseHeaders().getOrDefault(SUB_STATUS, String.valueOf(0)));
 
         if (response == null) {
-            response = new TransactionalBatchResponse(
+            response = BridgeInternal.createTransactionBatchResponse(
                 responseStatusCode,
                 responseSubStatusCode,
                 null,
@@ -110,7 +112,7 @@ public final class BatchResponseParser {
             if (responseStatusCode >= 200 && responseStatusCode <= 299)  {
                 // Server should be guaranteeing number of results equal to operations when
                 // batch request is successful - so fail as InternalServerError if this is not the case.
-                response = new TransactionalBatchResponse(
+                response = BridgeInternal.createTransactionBatchResponse(
                     HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
                     0,
                     "Invalid server response",
@@ -133,7 +135,7 @@ public final class BatchResponseParser {
                 }
             }
 
-            response.createAndPopulateResults(request.getOperations(), retryAfterMilliseconds);
+            BatchResponseParser.createAndPopulateResults(response, request.getOperations(), Duration.ofMillis(retryAfterMilliseconds));
         }
 
         checkState(response.size() == request.getOperations().size(),
@@ -147,15 +149,15 @@ public final class BatchResponseParser {
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
 
-        final ArrayList<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
-        final String responseContent = documentServiceResponse.getResponseBodyAsString();
+        final ArrayList<TransactionalBatchOperationResult<?>> results = new ArrayList<>(request.getOperations().size());
+        final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
-        if (responseContent.charAt(0) != HYBRID_V1) {
+        if (responseContent[0] != (byte)HYBRID_V1) {
             // Read from a json response body. To enable hybrid row just complete the else part
             final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
             try{
-                final ObjectNode[] objectNodes = mapper.readValue(documentServiceResponse.getResponseBodyAsString(), ObjectNode[].class);
+                final ObjectNode[] objectNodes = mapper.readValue(documentServiceResponse.getResponseBodyAsByteArray(), ObjectNode[].class);
                 for (ObjectNode objectInArray : objectNodes) {
                     final TransactionalBatchOperationResult<?> batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
                     results.add(batchOperationResult);
@@ -172,7 +174,7 @@ public final class BatchResponseParser {
         }
 
         int responseStatusCode = documentServiceResponse.getStatusCode();
-        int responseSubStatusCode = Integer.parseInt(
+        Integer responseSubStatusCode = Integer.parseInt(
             documentServiceResponse.getResponseHeaders().getOrDefault(SUB_STATUS, String.valueOf(HttpConstants.SubStatusCodes.UNKNOWN)));
 
         // Status code of the exact operation which failed.
@@ -187,7 +189,7 @@ public final class BatchResponseParser {
             }
         }
 
-        final TransactionalBatchResponse response = new TransactionalBatchResponse(
+        final TransactionalBatchResponse response = BridgeInternal.createTransactionBatchResponse(
             responseStatusCode,
             responseSubStatusCode,
             null,
@@ -195,8 +197,7 @@ public final class BatchResponseParser {
             documentServiceResponse.getCosmosDiagnostics(),
             request.getOperations());
 
-        response.addAll(results);
-
+        BridgeInternal.addTransactionBatchResultInResponse(response, results);
         return response;
     }
 
@@ -210,36 +211,47 @@ public final class BatchResponseParser {
      * @return the result
      */
     private static TransactionalBatchOperationResult<?> createBatchOperationResultFromJson(ObjectNode objectNode) {
-        final TransactionalBatchOperationResult<?> transactionalBatchOperationResult = new TransactionalBatchOperationResult<>();
-
         final JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
-        transactionalBatchOperationResult.setResponseStatus(jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_STATUS_CODE));
 
+        final int responseStatusCode = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_STATUS_CODE);
         final Integer subStatusCode = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_SUBSTATUS_CODE);
-        if(subStatusCode != null) {
-            transactionalBatchOperationResult.setSubStatusCode(subStatusCode);
-        }
-
         final Double requestCharge = jsonSerializable.getDouble(BatchRequestResponseConstant.FIELD_REQUEST_CHARGE);
-        if(requestCharge != null) {
-            transactionalBatchOperationResult.setRequestCharge(requestCharge);
-        }
-
-        final Integer retryAfterMilliseconds = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_RETRY_AFTER_MILLISECONDS);
-        if(retryAfterMilliseconds != null) {
-            transactionalBatchOperationResult.setRetryAfter(Duration.ofMillis(retryAfterMilliseconds));
-        }
-
-        final String etag = jsonSerializable.getString(BatchRequestResponseConstant.FIELD_ETAG);
-        if(etag != null) {
-            transactionalBatchOperationResult.setETag(etag);
-        }
-
+        final String eTag = jsonSerializable.getString(BatchRequestResponseConstant.FIELD_ETAG);
         final ObjectNode resourceBody = jsonSerializable.getObject(BatchRequestResponseConstant.FIELD_RESOURCE_BODY);
-        if(resourceBody != null) {
-            transactionalBatchOperationResult.setResourceObject(resourceBody);
+        final Integer retryAfterMilliseconds = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_RETRY_AFTER_MILLISECONDS);
+
+        return BridgeInternal.createTransactionBatchResult(
+            eTag,
+            requestCharge,
+            resourceBody,
+            responseStatusCode,
+            retryAfterMilliseconds != null ? Duration.ofMillis(retryAfterMilliseconds) : null,
+            subStatusCode);
+    }
+
+    /**
+     * Populate results to match number of operations to number of results in case of any error.
+     *
+     * @param response The transactionalBatchResponse in which to add the results
+     * @param operations List of operations for which the wrapper TransactionalBatchResponse is returned.
+     * @param retryAfterDuration retryAfterDuration.
+     * */
+    private static void createAndPopulateResults(final TransactionalBatchResponse response,
+                                                 final List<ItemBatchOperation<?>> operations,
+                                                 final Duration retryAfterDuration) {
+        final ArrayList<TransactionalBatchOperationResult<?>> results = new ArrayList<>(operations.size());
+        for (int i = 0; i < operations.size(); i++) {
+            results.add(
+                BridgeInternal.createTransactionBatchResult(
+                    null,
+                    response.getRequestCharge(),
+                    null,
+                    response.getResponseStatus(),
+                    retryAfterDuration,
+                    response.getSubStatusCode()
+                ));
         }
 
-        return transactionalBatchOperationResult;
+        BridgeInternal.addTransactionBatchResultInResponse(response, results);
     }
 }

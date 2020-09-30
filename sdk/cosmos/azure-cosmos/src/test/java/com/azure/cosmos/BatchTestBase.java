@@ -6,12 +6,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -19,8 +15,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.Random;
 import java.util.UUID;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BatchTestBase extends TestSuiteBase {
 
@@ -35,27 +30,6 @@ public class BatchTestBase extends TestSuiteBase {
 
     public BatchTestBase(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
-    }
-
-    CosmosAsyncContainer createSharedThroughputContainer(CosmosAsyncClient client) {
-        CosmosAsyncContainer sharedThroughputContainer = null;
-        CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(
-            "Shared_" + UUID.randomUUID().toString(),
-            ThroughputProperties.createManualThroughput(12000)).block();
-
-        CosmosAsyncDatabase db = client.getDatabase(cosmosDatabaseResponse.getProperties().getId());
-
-        for (int index = 0; index < 5; index++) {
-
-            CosmosContainerResponse cosmosContainerResponse = db.createContainerIfNotExists(getCollectionDefinition()).block();
-            assertTrue(Boolean.parseBoolean(cosmosContainerResponse.getResponseHeaders().get(WFConstants.BackendHeaders.SHARE_THROUGHPUT)));
-
-            if (index == 2) {
-                sharedThroughputContainer = db.getContainer(cosmosContainerResponse.getProperties().getId());
-            }
-        }
-
-        return sharedThroughputContainer;
     }
 
     void createJsonTestDocsAsync(CosmosAsyncContainer container) {
@@ -92,11 +66,11 @@ public class BatchTestBase extends TestSuiteBase {
 
         CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class).block();
 
-        assertEquals(HttpResponseStatus.OK.code(), response.getStatusCode());
-        assertEquals(doc, response.getItem());
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isEqualTo(doc);
 
         if (eTag != null) {
-            assertEquals(eTag, response.getETag());
+            assertThat(response.getETag()).isEqualTo(eTag);
         }
     }
 
@@ -108,9 +82,9 @@ public class BatchTestBase extends TestSuiteBase {
             CosmosItemResponse<TestDoc> response =  container.readItem(id, partitionKey, TestDoc.class).block();
 
             // Gateway returns response instead of exception
-            assertEquals(HttpResponseStatus.NOT_FOUND.code(), response.getStatusCode());
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
         } catch (CosmosException ex) {
-            assertEquals(HttpResponseStatus.NOT_FOUND.code(), ex.getStatusCode());
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
         }
     }
 
@@ -125,7 +99,7 @@ public class BatchTestBase extends TestSuiteBase {
     private TestDoc createJsonTestDocAsync(CosmosAsyncContainer container, String partitionKey, int minDesiredSize) {
         TestDoc doc = this.populateTestDoc(partitionKey, minDesiredSize);
         CosmosItemResponse<TestDoc> createResponse = container.createItem(doc, this.getPartitionKey(partitionKey), null).block();
-        assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
         return doc;
     }
 

@@ -15,7 +15,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Represents an operation on an item which will be executed as part of a batch request on a container.
  */
-public final class ItemBatchOperation<TResource> implements AutoCloseable {
+public final class ItemBatchOperation<TResource> {
 
     private TResource resource;
     private String materialisedResource;
@@ -130,22 +130,6 @@ public final class ItemBatchOperation<TResource> implements AutoCloseable {
 
     public void setMaterialisedResource(String materialisedResource) {
         this.materialisedResource = materialisedResource;
-    }
-
-    /**
-     * Closes this {@link ItemBatchOperation}.
-     */
-    public void close() {
-        try {
-            if (this.resource instanceof AutoCloseable) {
-                ((AutoCloseable) this.resource).close();  // assumes an idempotent close implementation
-            }
-            this.resource = null;
-        } catch (Exception ex) {
-            //
-        }
-
-        this.materialisedResource = null;
     }
 
     public static final class Builder<TResource> {

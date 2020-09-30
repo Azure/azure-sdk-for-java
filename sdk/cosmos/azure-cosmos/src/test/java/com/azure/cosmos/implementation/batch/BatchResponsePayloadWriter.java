@@ -10,15 +10,15 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
-public class BatchResponsePayloadWriter {
+class BatchResponsePayloadWriter {
 
     private List<TransactionalBatchOperationResult<?>> results;
 
-    public BatchResponsePayloadWriter(List<TransactionalBatchOperationResult<?>> results) {
+    BatchResponsePayloadWriter(List<TransactionalBatchOperationResult<?>> results) {
         this.results = results;
     }
 
-    public String generatePayload() {
+    String generatePayload() {
         return writeOperationResult().toString();
     }
 

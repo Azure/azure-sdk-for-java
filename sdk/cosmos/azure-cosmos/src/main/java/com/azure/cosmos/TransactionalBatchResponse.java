@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -26,7 +24,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link TransactionalBatch} request.
  */
-public class TransactionalBatchResponse implements AutoCloseable, List<TransactionalBatchOperationResult<?>> {
+public class TransactionalBatchResponse {
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBatchResponse.class);
 
@@ -34,7 +32,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
     private final int responseStatus;
     private String errorMessage;
     private List<TransactionalBatchOperationResult<?>> results;
-    private int subStatusCode;
+    private Integer subStatusCode;
     private List<ItemBatchOperation<?>> operations;
     private CosmosDiagnostics cosmosDiagnostics;
 
@@ -48,9 +46,9 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      * @param cosmosDiagnostics the diagnostic
      * @param operations a {@link List list} of {@link ItemBatchOperation batch operations}.
      */
-    public TransactionalBatchResponse(
+    TransactionalBatchResponse(
         final int responseStatus,
-        final int subStatusCode,
+        final Integer subStatusCode,
         final String errorMessage,
         final Map<String, String> responseHeaders,
         final CosmosDiagnostics cosmosDiagnostics,
@@ -67,15 +65,6 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         this.cosmosDiagnostics = cosmosDiagnostics;
         this.operations = UnmodifiableList.unmodifiableList(operations);
         this.results = new ArrayList<>();
-    }
-
-    public void createAndPopulateResults(final List<ItemBatchOperation<?>> operations, final int retryAfterMilliseconds) {
-        for (int i = 0; i < operations.size(); i++) {
-            this.results.add(
-                new TransactionalBatchOperationResult<>(this.getResponseStatus())
-                    .setSubStatusCode(this.getSubStatusCode())
-                    .setRetryAfter(Duration.ofMillis(retryAfterMilliseconds)));
-        }
     }
 
     /**
@@ -127,25 +116,12 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
     }
 
     /**
-     * Gets all the activity IDs associated with the response.
-     *
-     * @return an enumerable that contains the activity IDs.
-     */
-    public Iterable<String> getActivityIds() {
-        return Stream.of(this.getActivityId())::iterator;
-    }
-
-    /**
      * Gets the activity ID that identifies the server request made to execute the batch.
      *
      * @return the activity ID that identifies the server request made to execute the batch.
      */
     public String getActivityId() {
         return this.responseHeaders.get(HttpConstants.HttpHeaders.ACTIVITY_ID);
-    }
-
-    public final List<ItemBatchOperation<?>> getBatchOperations() {
-        return this.operations;
     }
 
     /**
@@ -157,10 +133,6 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         return this.errorMessage;
     }
 
-    public void setErrorMessage(String value) {
-        this.errorMessage = value;
-    }
-
     /**
      * Gets the request charge for the batch request.
      *
@@ -168,6 +140,10 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      */
     public double getRequestCharge() {
         final String value = this.responseHeaders.get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+
         try {
             return Double.valueOf(value);
         } catch (NumberFormatException e) {
@@ -191,7 +167,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      * @return the response header map.
      */
     public Map<String, String> getResponseHeaders() {
-        return responseHeaders;
+        return this.responseHeaders;
     }
 
     /**
@@ -207,8 +183,17 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         return null;
     }
 
-    public int getSubStatusCode() {
+    public Integer getSubStatusCode() {
         return this.subStatusCode;
+    }
+
+    /**
+     * Get all the results of the operations in batch.
+     *
+     * @return Results of operation in batch.
+     */
+    public List<TransactionalBatchOperationResult<?>> getResults() {
+        return this.results;
     }
 
     /**
@@ -218,123 +203,15 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      *
      * @return Result of operation at the provided index in the batch.
      */
-    @Override
     public TransactionalBatchOperationResult<?> get(int index) {
         return this.results.get(index);
     }
 
-    @Override
-    public int indexOf(Object o) {
-        return this.results.indexOf(o);
-    }
-
-    @Override
-    public Iterator<TransactionalBatchOperationResult<?>> iterator() {
-        return this.results.iterator();
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public ListIterator<TransactionalBatchOperationResult<?>> listIterator() {
-        return null;
-    }
-
-    @Override
-    public ListIterator<TransactionalBatchOperationResult<?>> listIterator(int index) {
-        return null;
-    }
-
-    @Override
-    public boolean remove(Object result) {
-        return this.results.remove(result);
-    }
-
-    @Override
-    public TransactionalBatchOperationResult<?> remove(int index) {
-        return null;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> collection) {
-        return this.results.removeAll(collection);
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> collection) {
-        return this.results.retainAll(collection);
-    }
-
-    @Override
-    public TransactionalBatchOperationResult<?> set(int index, TransactionalBatchOperationResult<?> result) {
-        return this.results.set(index, result);
-    }
-
-    @Override
-    public List<TransactionalBatchOperationResult<?>> subList(int fromIndex, int toIndex) {
-        return this.results.subList(fromIndex, toIndex);
-    }
-
-    @Override
-    public Object[] toArray() {
-        return this.results.toArray();
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return this.results.toArray(a);
-    }
-
-    @Override
     public boolean isEmpty() {
         return this.results.isEmpty();
     }
 
-    @Override
-    public boolean add(TransactionalBatchOperationResult<?> result) {
-        return this.results.add(result);
-    }
-
-    @Override
-    public void add(int index, TransactionalBatchOperationResult<?> element) {
-        this.results.add(index, element);
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends TransactionalBatchOperationResult<?>> collection) {
+    boolean addAll(Collection<? extends TransactionalBatchOperationResult<?>> collection) {
         return this.results.addAll(collection);
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends TransactionalBatchOperationResult<?>> collection) {
-        return this.results.addAll(index, collection);
-    }
-
-    @Override
-    public void clear() {
-        this.results.clear();
-    }
-
-    @Override
-    public boolean contains(Object result) {
-        return this.results.contains(result);
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    /**
-     * Closes the current {@link TransactionalBatchResponse}.
-     */
-    public void close() {
-        this.operations = null;
-        this.responseHeaders = null;
-        this.results = null;
-        this.cosmosDiagnostics = null;
     }
 }

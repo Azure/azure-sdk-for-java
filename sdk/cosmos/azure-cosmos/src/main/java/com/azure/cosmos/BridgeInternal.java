@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -23,6 +24,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -594,5 +596,64 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Duration getRequestTimeoutFromGatewayConnectionConfig(GatewayConnectionConfig gatewayConnectionConfig) {
         return gatewayConnectionConfig.getRequestTimeout();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<ItemBatchOperation<?>> getOperationsFromTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return transactionalBatch.getOperations();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static PartitionKey getPartitionKeyFromTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return transactionalBatch.getPartitionKey();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(TransactionalBatchRequestOptions transactionalBatchRequestOptions) {
+        return transactionalBatchRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TransactionalBatchOperationResult createTransactionBatchResult(
+        String eTag,
+        Double requestCharge,
+        ObjectNode resourceObject,
+        int responseStatus,
+        Duration retryAfter,
+        Integer subStatusCode) {
+
+        return new TransactionalBatchOperationResult(
+            eTag,
+            requestCharge,
+            resourceObject,
+            responseStatus,
+            retryAfter,
+            subStatusCode);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TransactionalBatchResponse createTransactionBatchResponse(
+        int responseStatusCode,
+        Integer responseSubStatusCode,
+        String errorMessage,
+        Map<String, String> responseHeaders,
+        CosmosDiagnostics cosmosDiagnostics,
+        List<ItemBatchOperation<?>> operations) {
+
+        return new TransactionalBatchResponse(
+            responseStatusCode,
+            responseSubStatusCode,
+            errorMessage,
+            responseHeaders,
+            cosmosDiagnostics,
+            operations);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void addTransactionBatchResultInResponse(
+        TransactionalBatchResponse transactionalBatchResponse,
+        List<TransactionalBatchOperationResult<?>> transactionalBatchOperationResult) {
+
+        transactionalBatchResponse.addAll(transactionalBatchOperationResult);
     }
 }

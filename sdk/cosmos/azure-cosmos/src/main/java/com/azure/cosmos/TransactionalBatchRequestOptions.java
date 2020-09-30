@@ -4,60 +4,16 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.models.IndexingDirective;
 
 public final class TransactionalBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
-    private IndexingDirective indexingDirective;
     private String sessionToken;
-    private String ifMatchETag;
-    private String ifNoneMatchETag;
 
     /**
      * Constructor
      */
     public TransactionalBatchRequestOptions() {
         super();
-    }
-
-    /**
-     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
-     *
-     * @return the ifMatchETag associated with the request.
-     */
-    public String getIfMatchETag() {
-        return this.ifMatchETag;
-    }
-
-    /**
-     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
-     *
-     * @param ifMatchETag the ifMatchETag associated with the request.
-     * @return the current request options
-     */
-    public TransactionalBatchRequestOptions setIfMatchETag(String ifMatchETag) {
-        this.ifMatchETag = ifMatchETag;
-        return this;
-    }
-
-    /**
-     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
-     *
-     * @return the ifNoneMatchETag associated with the request.
-     */
-    public String getIfNoneMatchETag() {
-        return this.ifNoneMatchETag;
-    }
-
-    /**
-     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
-     *
-     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
-     * @return the current request options
-     */
-    public TransactionalBatchRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
-        this.ifNoneMatchETag = ifNoneMatchETag;
-        return this;
     }
 
     /**
@@ -82,26 +38,6 @@ public final class TransactionalBatchRequestOptions {
     }
 
     /**
-     * Gets the indexing directive (index, do not index etc).
-     *
-     * @return the indexing directive.
-     */
-    public IndexingDirective getIndexingDirective() {
-        return indexingDirective;
-    }
-
-    /**
-     * Sets the indexing directive (index, do not index etc).
-     *
-     * @param indexingDirective the indexing directive.
-     * @return the CosmosItemRequestOptions.
-     */
-    public TransactionalBatchRequestOptions setIndexingDirective(IndexingDirective indexingDirective) {
-        this.indexingDirective = indexingDirective;
-        return this;
-    }
-
-    /**
      * Gets the token for use with session consistency.
      *
      * @return the session token.
@@ -121,12 +57,9 @@ public final class TransactionalBatchRequestOptions {
         return this;
     }
 
-    public RequestOptions toRequestOptions() {
+    RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setIfMatchETag(getIfMatchETag());
-        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         requestOptions.setConsistencyLevel(getConsistencyLevel());
-        requestOptions.setIndexingDirective(indexingDirective);
         requestOptions.setSessionToken(sessionToken);
         return requestOptions;
     }

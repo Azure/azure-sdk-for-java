@@ -4,9 +4,6 @@
 package com.azure.cosmos;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -16,24 +13,22 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TResource> the type parameter
  */
-public final class TransactionalBatchOperationResult<TResource> implements AutoCloseable {
-
-    private final static Logger logger = LoggerFactory.getLogger(TransactionalBatchOperationResult.class);
+public final class TransactionalBatchOperationResult<TResource> {
 
     private String eTag;
-    private double requestCharge;
+    private Double requestCharge;
     private TResource item;
     private ObjectNode resourceObject;
     private int responseStatus;
     private Duration retryAfter;
-    private int subStatusCode;
+    private Integer subStatusCode;
 
     /**
      * Instantiates a new Transactional batch operation result.
      *
      * @param responseStatus the response status
      */
-    public TransactionalBatchOperationResult(final int responseStatus) {
+    TransactionalBatchOperationResult(final int responseStatus) {
         this.responseStatus = responseStatus;
     }
 
@@ -42,7 +37,7 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
      *
      * @param other the other
      */
-    public TransactionalBatchOperationResult(final TransactionalBatchOperationResult<?> other) {
+    TransactionalBatchOperationResult(final TransactionalBatchOperationResult<?> other) {
 
         checkNotNull(other, "expected non-null other");
 
@@ -60,7 +55,7 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
      * @param result the result
      * @param item the item
      */
-    public TransactionalBatchOperationResult(TransactionalBatchOperationResult<?> result, TResource item) {
+    TransactionalBatchOperationResult(TransactionalBatchOperationResult<?> result, TResource item) {
         this(result);
         this.item = item;
     }
@@ -68,7 +63,18 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
     /**
      * Initializes a new instance of the {@link TransactionalBatchOperationResult} class.
      */
-    public TransactionalBatchOperationResult() {
+    TransactionalBatchOperationResult(String eTag,
+                                      Double requestCharge,
+                                      ObjectNode resourceObject,
+                                      int responseStatus,
+                                      Duration retryAfter,
+                                      Integer subStatusCode) {
+        this.eTag = eTag;
+        this.requestCharge = requestCharge;
+        this.resourceObject = resourceObject;
+        this.responseStatus = responseStatus;
+        this.retryAfter = retryAfter;
+        this.subStatusCode = subStatusCode;
     }
 
     /**
@@ -83,36 +89,12 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
     }
 
     /**
-     * Sets e tag.
-     *
-     * @param value the value
-     *
-     * @return the e tag
-     */
-    public TransactionalBatchOperationResult<?> setETag(final String value) {
-        this.eTag = value;
-        return this;
-    }
-
-    /**
      * Gets the request charge in request units for the current operation.
      *
      * @return Request charge in request units for the current operation.
      */
-    public double getRequestCharge() {
-        return requestCharge;
-    }
-
-    /**
-     * Sets request charge.
-     *
-     * @param value the value
-     *
-     * @return the request charge
-     */
-    public TransactionalBatchOperationResult<?> setRequestCharge(final double value) {
-        this.requestCharge = value;
-        return this;
+    public Double getRequestCharge() {
+        return this.requestCharge;
     }
 
     /**
@@ -125,18 +107,6 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
     }
 
     /**
-     * Sets item.
-     *
-     * @param value the value
-     *
-     * @return the item
-     */
-    public TransactionalBatchOperationResult<TResource> setItem(final TResource value) {
-        this.item = value;
-        return this;
-    }
-
-    /**
      * Gets retry after.
      *
      * @return the retry after
@@ -146,36 +116,12 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
     }
 
     /**
-     * Sets retry after.
-     *
-     * @param value the value
-     *
-     * @return the retry after
-     */
-    public TransactionalBatchOperationResult<?> setRetryAfter(final Duration value) {
-        this.retryAfter = value;
-        return this;
-    }
-
-    /**
      * Gets sub status code.
      *
      * @return the sub status code
      */
-    public int getSubStatusCode() {
+    public Integer getSubStatusCode() {
         return this.subStatusCode;
-    }
-
-    /**
-     * Sets sub status code.
-     *
-     * @param value the value
-     *
-     * @return the sub status code
-     */
-    public TransactionalBatchOperationResult<?> setSubStatusCode(final int value) {
-        this.subStatusCode = value;
-        return this;
     }
 
     /**
@@ -196,29 +142,7 @@ public final class TransactionalBatchOperationResult<TResource> implements AutoC
         return this.responseStatus;
     }
 
-    public void setResponseStatus(int value) {
-        this.responseStatus = value;
-    }
-
     public ObjectNode getResourceObject() {
         return resourceObject;
-    }
-
-    public void setResourceObject(ObjectNode resourceObject) {
-        this.resourceObject = resourceObject;
-    }
-
-    @Override
-    public void close() {
-        try {
-            if (this.item instanceof AutoCloseable) {
-                ((AutoCloseable) this.item).close();  // assumes an idempotent close implementation
-            }
-        } catch (Exception ex) {
-            logger.debug("Unexpected failure in closing item", ex);
-        }
-
-        this.item = null;
-        this.resourceObject = null;
     }
 }
