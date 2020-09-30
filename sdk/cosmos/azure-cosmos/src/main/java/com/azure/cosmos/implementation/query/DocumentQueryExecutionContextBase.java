@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
@@ -37,6 +38,7 @@ import java.util.UUID;
 public abstract class DocumentQueryExecutionContextBase<T extends Resource>
 implements IDocumentQueryExecutionContext<T> {
 
+    protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
     protected IDocumentQueryClient client;
@@ -46,7 +48,8 @@ implements IDocumentQueryExecutionContext<T> {
     protected UUID correlatedActivityId;
     protected boolean shouldExecuteQueryRequest;
 
-    protected DocumentQueryExecutionContextBase(IDocumentQueryClient client, ResourceType resourceTypeEnum,
+    protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
+                                                IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
                                                 boolean getLazyFeedResponse, UUID correlatedActivityId) {
 
@@ -60,6 +63,7 @@ implements IDocumentQueryExecutionContext<T> {
         this.resourceLink = resourceLink;
         // this.getLazyFeedResponse = getLazyFeedResponse;
         this.correlatedActivityId = correlatedActivityId;
+        this.diagnosticsClientContext = diagnosticsClientContext;
     }
 
     @Override
@@ -223,10 +227,12 @@ implements IDocumentQueryExecutionContext<T> {
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
 
-            executeQueryRequest = RxDocumentServiceRequest.create(OperationType.SqlQuery, this.resourceTypeEnum,
-                    this.resourceLink,
+            executeQueryRequest = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
+                OperationType.SqlQuery,
+                this.resourceTypeEnum,
+                this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
-                    requestHeaders);
+                requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
             executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
@@ -235,10 +241,12 @@ implements IDocumentQueryExecutionContext<T> {
         case Default:
         case Query:
         default:
-            executeQueryRequest = RxDocumentServiceRequest.create(OperationType.Query, this.resourceTypeEnum,
-                    this.resourceLink,
+            executeQueryRequest = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
+                OperationType.Query,
+                this.resourceTypeEnum,
+                this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
-                    requestHeaders);
+                requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
@@ -250,12 +258,12 @@ implements IDocumentQueryExecutionContext<T> {
 
     private RxDocumentServiceRequest createReadFeedDocumentServiceRequest(Map<String, String> requestHeaders) {
         if (this.resourceTypeEnum == ResourceType.Database || this.resourceTypeEnum == ResourceType.Offer) {
-            return RxDocumentServiceRequest.create(OperationType.ReadFeed, null, this.resourceTypeEnum,
+            return RxDocumentServiceRequest.create(this.diagnosticsClientContext, OperationType.ReadFeed, null, this.resourceTypeEnum,
                     // TODO: we may want to add a constructor to RxDocumentRequest supporting authorization type similar to .net
                     // AuthorizationTokenType.PrimaryMasterKey,
                     requestHeaders);
         } else {
-            return RxDocumentServiceRequest.create(OperationType.ReadFeed, this.resourceTypeEnum, this.resourceLink,
+            return RxDocumentServiceRequest.create(this.diagnosticsClientContext, OperationType.ReadFeed, this.resourceTypeEnum, this.resourceLink,
                     // TODO: we may want to add a constructor to RxDocumentRequest supporting authorization type similar to .net
                     // AuthorizationTokenType.PrimaryMasterKey,
                     requestHeaders);

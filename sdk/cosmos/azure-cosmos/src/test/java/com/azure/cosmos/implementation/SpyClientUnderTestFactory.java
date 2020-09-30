@@ -17,6 +17,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -133,14 +134,15 @@ public class SpyClientUnderTestFactory {
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
                 HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
                 return origHttpClient
-                        .send(httpRequest)
+                        .send(httpRequest, responseTimeout)
                         .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
                         .doOnError(f::completeExceptionally);
-            }).when(spyClient).send(Mockito.any(HttpRequest.class));
+            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
 
         @Override
@@ -191,15 +193,16 @@ public class SpyClientUnderTestFactory {
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
                 HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
                 return origHttpClient
-                        .send(httpRequest)
+                        .send(httpRequest, responseTimeout)
                         .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
                         .doOnError(f::completeExceptionally);
 
-            }).when(spyClient).send(Mockito.any(HttpRequest.class));
+            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
 
         @Override
