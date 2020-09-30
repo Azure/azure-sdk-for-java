@@ -207,6 +207,18 @@
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.models.SerializationType",
         "justification": "This is a preview release"
+      },
+      {
+        "code": "java.method.parameterTypeParameterChanged",
+        "old": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<com.azure.core.amqp.models.BinaryData>===)",
+        "new": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<byte[]>===)",
+        "justification": "BinaryData need more design discussion and we have release core-amqp as GA. Once we have designed BinaryData and approved from arch board, we will put it back in core."
+      },
+      {
+        "code": "java.method.returnTypeTypeParametersChanged",
+        "old": "method com.azure.core.util.IterableStream<com.azure.core.amqp.models.BinaryData> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "new": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "justification": "BinaryData need more design discussion and we have release core-amqp as GA. Once we have designed BinaryData and approved from arch board, we will put it back in core."
       }
     ]
   }
