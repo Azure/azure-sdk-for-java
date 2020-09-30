@@ -121,7 +121,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
     }
 
     @Override
-    public boolean isManaged() {
+    public boolean managed() {
         return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isManaged());
     }
 

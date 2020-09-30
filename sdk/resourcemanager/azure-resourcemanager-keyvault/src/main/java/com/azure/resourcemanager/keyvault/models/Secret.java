@@ -43,6 +43,11 @@ public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasI
      */
     boolean managed();
 
+    /**
+     * @return whether secret is enabled.
+     */
+    boolean enabled();
+
     /** @return a list of individual secret versions with the same secret name */
     Iterable<Secret> listVersions();
 

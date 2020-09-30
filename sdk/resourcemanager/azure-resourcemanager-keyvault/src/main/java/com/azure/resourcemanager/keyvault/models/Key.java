@@ -44,7 +44,7 @@ public interface Key extends Indexable, HasInnerModel<KeyProperties>, HasId, Has
      * @return true if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed
      *     will be true.
      */
-    boolean isManaged();
+    boolean managed();
 
     /** @return a list of individual key versions with the same key name */
     Iterable<Key> listVersions();

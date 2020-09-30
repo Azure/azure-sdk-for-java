@@ -84,6 +84,11 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
     }
 
     @Override
+    public boolean enabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isEnabled());
+    }
+
+    @Override
     public Iterable<Secret> listVersions() {
         return this.listVersionsAsync().toIterable();
     }
