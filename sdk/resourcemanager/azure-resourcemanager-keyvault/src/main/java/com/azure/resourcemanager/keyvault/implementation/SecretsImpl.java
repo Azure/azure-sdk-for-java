@@ -35,7 +35,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
 
     @Override
     protected SecretImpl wrapModel(String name) {
-        return new SecretImpl(name, new KeyVaultSecret(name, null), vault);
+        return new SecretImpl(name, (SecretProperties) null, vault);
     }
 
     @Override
