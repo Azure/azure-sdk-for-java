@@ -207,6 +207,584 @@
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.models.SerializationType",
         "justification": "This is a preview release"
+      },
+
+
+
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.cosmos.ConnectionMode",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.cosmos.ConsistencyLevel",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.cosmos.CosmosAsyncClient",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.cosmos.CosmosClientBuilder",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.security.keyvault.secrets.SecretClient",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.spring.data.cosmos.config.CosmosConfig",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.microsoft.applicationinsights.TelemetryConfiguration",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.microsoft.spring.data.gremlin.common.GremlinConfig",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.microsoft.spring.data.gremlin.common.GremlinFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.microsoft.spring.data.gremlin.mapping.GremlinMappingContext",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class com.microsoft.spring.data.gremlin.query.GremlinTemplate",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class io.micrometer.azuremonitor.AzureMonitorConfig",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class io.micrometer.azuremonitor.AzureMonitorMeterRegistry",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class io.micrometer.core.instrument.Clock",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class javax.jms.ConnectionFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class javax.servlet.FilterChain",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class javax.servlet.ServletException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class javax.servlet.http.HttpServletRequest",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class javax.servlet.http.HttpServletResponse",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.boot.actuate.health.Health",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.boot.actuate.health.Health.Builder",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.boot.actuate.health.HealthIndicator",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.data.repository.config.RepositoryConfigurationExtension",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.jms.config.JmsListenerContainerFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.jms.core.JmsTemplate",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.config.annotation.web.builders.HttpSecurity",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.core.Authentication",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.core.AuthenticationException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.core.GrantedAuthority",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.core.authority.SimpleGrantedAuthority",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.oauth2.client.userinfo.OAuth2UserService",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.oauth2.core.OAuth2AuthenticationException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.missing.newClass",
+        "new": "missing-class org.springframework.security.oauth2.core.oidc.user.OidcUser",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class com.azure.telemetry.TelemetryEventData.EventData.CustomData",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class com.azure.telemetry.TelemetryEventData.EventData",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class com.azure.telemetry.TelemetryEventData.Tags",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface com.microsoft.aad.msal4j.IAccount",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface com.microsoft.aad.msal4j.IAuthenticationResult",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class net.minidev.json.JSONArray",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class net.minidev.json.JSONStyle",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.apache.commons.logging.Log",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.BeanMetadataAttribute",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.BeanWrapper",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.BeansException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.MutablePropertyValues",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.PropertyEditorRegistrar",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.PropertyEditorRegistry",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.PropertyValue",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.PropertyValues",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.TypeConverter",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.TypeMismatchException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.factory.BeanDefinitionStoreException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.BeanFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.factory.NoSuchBeanDefinitionException",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.ObjectFactory<T extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.ObjectProvider<T extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.AutowireCapableBeanFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.BeanDefinition",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.BeanExpressionResolver",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.BeanFactoryPostProcessor",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.BeanPostProcessor",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.ConfigurableBeanFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.ConfigurableListableBeanFactory",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.factory.config.ConstructorArgumentValues",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.factory.config.DependencyDescriptor",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.beans.factory.config.NamedBeanHolder<T extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.config.Scope",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.support.BeanDefinitionRegistry",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.beans.factory.support.BeanNameGenerator",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.boot.ApplicationArguments",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.boot.Banner",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "class org.springframework.boot.BeanDefinitionLoader",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.boot.ExitCodeGenerator",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.boot.SpringApplication",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "enum org.springframework.boot.WebApplicationType",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.context.ApplicationContext",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.context.ApplicationContextInitializer<C extends org.springframework.context.ConfigurableApplicationContext>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.context.ApplicationEvent",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.context.ApplicationListener<E extends org.springframework.context.ApplicationEvent>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.context.ConfigurableApplicationContext",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.context.MessageSourceResolvable",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.AttributeAccessor",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.MethodParameter",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.ParameterNameDiscoverer",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.ParameterizedTypeReference<T extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.ResolvableType",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.annotation.AnnotationFilter",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.annotation.MergedAnnotation<A extends java.lang.annotation.Annotation>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.annotation.MergedAnnotationSelector<A extends java.lang.annotation.Annotation>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.annotation.MergedAnnotations",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.annotation.RepeatableContainers",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.convert.ConversionService",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.convert.Property",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.convert.TypeDescriptor",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.convert.converter.Converter<S extends java.lang.Object, T extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.convert.converter.ConverterFactory<S extends java.lang.Object, R extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.convert.converter.GenericConverter",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.convert.support.ConfigurableConversionService",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.env.ConfigurableEnvironment",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.env.Environment",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.env.MutablePropertySources",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.env.Profiles",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "class org.springframework.core.env.PropertySource<T extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.env.PropertySources",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.io.ProtocolResolver",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.io.Resource",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.io.ResourceLoader",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.core.type.AnnotationMetadata",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.util.MultiValueMap<K extends java.lang.Object, V extends java.lang.Object>",
+        "justification": "This is a preview release"
+      },
+      {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface org.springframework.util.StringValueResolver",
+        "justification": "This is a preview release"
       }
     ]
   }

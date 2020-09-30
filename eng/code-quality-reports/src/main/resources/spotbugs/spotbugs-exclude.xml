@@ -2184,7 +2184,7 @@
 
   <Match>
     <Or>
-      <Class name="TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+      <Class name="com.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
