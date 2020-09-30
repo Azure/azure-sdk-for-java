@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+  labels:
+    app: springboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot
+  template:
+    metadata:
+      labels:
+        app: springboot
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: springboot
+        image: keyvaultssl.azurecr.io/demo:latest
+        ports:
+        - containerPort: 8443
+          name: https
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 443 
+    targetPort: 8443
+  selector:
+    app: springboot
+
