@@ -84,8 +84,8 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         }
     }
 
-    private KeyImpl wrapModel(KeyProperties key) {
-        return new KeyImpl(key.getName(), key, vault);
+    private KeyImpl wrapModel(KeyProperties keyProperties) {
+        return new KeyImpl(keyProperties.getName(), keyProperties, vault);
     }
 
     @Override

@@ -50,11 +50,11 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
     }
 
     @Override
-    protected SecretImpl wrapModel(SecretProperties inner) {
-        if (inner == null) {
+    protected SecretImpl wrapModel(SecretProperties secretProperties) {
+        if (secretProperties == null) {
             return null;
         }
-        return new SecretImpl(inner.getName(), inner, vault);
+        return new SecretImpl(secretProperties.getName(), secretProperties, vault);
     }
 
     protected SecretImpl wrapModel(KeyVaultSecret keyVaultSecret) {

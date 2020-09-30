@@ -50,18 +50,18 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
     }
 
     @Override
-    protected KeyImpl wrapModel(KeyProperties inner) {
-        if (inner == null) {
+    protected KeyImpl wrapModel(KeyProperties keyProperties) {
+        if (keyProperties == null) {
             return null;
         }
-        return new KeyImpl(inner.getName(), inner, vault);
+        return new KeyImpl(keyProperties.getName(), keyProperties, vault);
     }
 
-    protected KeyImpl wrapModel(KeyVaultKey inner) {
-        if (inner == null) {
+    protected KeyImpl wrapModel(KeyVaultKey keyVaultKey) {
+        if (keyVaultKey == null) {
             return null;
         }
-        return new KeyImpl(inner.getName(), inner.getProperties(), vault);
+        return new KeyImpl(keyVaultKey.getName(), keyVaultKey, vault);
     }
 
     @Override
