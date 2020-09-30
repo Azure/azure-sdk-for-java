@@ -14,7 +14,7 @@ This package helps developers to finish the auto-configuration of Azure Context.
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-spring-cloud-starter-context</artifactId>
+    <artifactId>azure-spring-cloud-context</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>
 ```

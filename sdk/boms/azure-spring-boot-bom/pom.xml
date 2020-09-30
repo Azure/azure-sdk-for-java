@@ -99,7 +99,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
-      <artifactId>azure-spring-integration-storage</artifactId>
+      <artifactId>azure-spring-starter-storage</artifactId>
         <version>${azure.spring.boot.storage.integration.version}</version>
       </dependency>
     </dependencies>

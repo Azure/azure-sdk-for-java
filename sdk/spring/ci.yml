@@ -57,12 +57,12 @@ extends:
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure
         safeName: azurespringbootstarterservicebusjms
-      - name: azure-spring-cloud-starter-context
+      - name: azure-spring-cloud-context
         groupId: com.azure
-        safeName: azurespringcloudstartercontext
-      - name: azure-spring-cloud-starter-telemetry
+        safeName: azurespringcloudcontext
+      - name: azure-spring-cloud-telemetry
         groupId: com.azure
-        safeName: azurespringcloudstartertelemetry
+        safeName: azurespringcloudtelemetry
       - name: azure-spring-integration-core
         groupId: com.azure
         safeName: azurespringintegrationcore
@@ -78,15 +78,15 @@ extends:
       - name: azure-spring-integration-storage-queue
         groupId: com.azure
         safeName: azurespringintegrationstoragequeue
-      - name: azure-spring-cloud-starter-storage
+      - name: azure-spring-cloud-storage
         groupId: com.azure
-        safeName: azurespringcloudstarterstorage
-      - name: azure-spring-cloud-starter-autoconfigure
+        safeName: azurespringcloudstorage
+      - name: azure-spring-cloud-autoconfigure
         groupId: com.azure
-        safeName: azurespringcloudstarterautoconfigure
-      - name: azure-spring-cloud-starter-messaging
+        safeName: azurespringcloudautoconfigure
+      - name: azure-spring-cloud-messaging
         groupId: com.azure
-        safeName: azurespringcloudstartermessaging
+        safeName: azurespringcloudmessaging
       - name: azure-spring-cloud-starter-cache
         groupId: com.azure
         safeName: azurespringcloudstartercache
@@ -99,27 +99,27 @@ extends:
       - name: azure-spring-cloud-starter-servicebus
         groupId: com.azure
         safeName: azurespringcloudstarterservicebus
-      - name: azure-spring-cloud-starter-storage
+      - name: azure-spring-starter-storage
         groupId: com.azure
-        safeName: azurespringcloudstarterstorage
+        safeName: azurespringstarterstorage
       - name: azure-spring-cloud-starter-storage-queue
         groupId: com.azure
         safeName: azurespringcloudstarterstoragequeue
-      - name: azure-spring-cloud-starter-servicebus-stream-binder-core
+      - name: azure-spring-cloud-servicebus-stream-binder-core
         groupId: com.azure
-        safeName: azurespringcloudstarterservicebusstreambindercore
-      - name: azure-spring-cloud-starter-stream-binder-test
+        safeName: azurespringcloudservicebusstreambindercore
+      - name: azure-spring-cloud-stream-binder-test
         groupId: com.azure
-        safeName: azurespringcloudstarterstreambindertest
-      - name: azure-spring-cloud-starter-servicebus-topic-stream-binder
+        safeName: azurespringcloudstreambindertest
+      - name: azure-spring-cloud-servicebus-topic-stream-binder
         groupId: com.azure
-        safeName: azurespringcloudstarterservicebustopicstreambinder
-      - name: azure-spring-cloud-starter-servicebus-queue-stream-binder
+        safeName: azurespringcloudservicebustopicstreambinder
+      - name: azure-spring-cloud-servicebus-queue-stream-binder
         groupId: com.azure
-        safeName: azurespringcloudstarterservicebusqueuestreambinder
-      - name: azure-spring-cloud-starter-eventhubs-stream-binder
+        safeName: azurespringcloudservicebusqueuestreambinder
+      - name: azure-spring-cloud-eventhubs-stream-binder
         groupId: com.azure
-        safeName: azurespringcloudstartereventhubsstreambinder
+        safeName: azurespringcloudeventhubsstreambinder
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
@@ -161,7 +161,7 @@ extends:
         groupId: com.azure
       - name: azure-spring-cloud-sample-eventhubs-binder
         groupId: com.azure
-      - name: azure-spring-cloud-sample-eventhubs-integration
+      - name: azure-spring-integration-sample-eventhubs
         groupId: com.azure
       - name: azure-spring-cloud-sample-eventhubs-kafka
         groupId: com.azure
@@ -177,7 +177,7 @@ extends:
         groupId: com.azure
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure
-      - name: azure-spring-cloud-sample-servicebus-integration
+      - name: azure-spring-integration-sample-servicebus
         groupId: com.azure
       - name: azure-spring-cloud-sample-servicebus-operation
         groupId: com.azure
@@ -187,7 +187,7 @@ extends:
         groupId: com.azure
       - name: azure-spring-cloud-sample-servicebus-topic-binder
         groupId: com.azure
-      - name: azure-spring-cloud-sample-storage-queue-integration
+      - name: azure-spring-integration-sample-storage-queue
         groupId: com.azure
       - name: azure-spring-cloud-sample-storage-queue-operation
         groupId: com.azure

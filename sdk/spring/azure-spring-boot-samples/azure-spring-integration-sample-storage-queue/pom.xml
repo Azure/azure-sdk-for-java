@@ -9,10 +9,10 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>azure-spring-cloud-sample-servicebus-integration</artifactId>
+  <artifactId>azure-spring-integration-sample-storage-queue</artifactId>
   <groupId>com.azure</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-sample-servicebus-integration;current} -->
-  <name>Azure Spring Cloud Service Bus Integration Sample</name>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-integration-sample-storage-queue;current} -->
+  <name>Azure Spring Cloud Storage Queue Integration Sample</name>
 
   <dependencyManagement>
     <dependencies>
@@ -33,8 +33,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-servicebus;current} -->
+      <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-storage-queue;current} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

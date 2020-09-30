@@ -41,26 +41,26 @@
     <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin</module>
     <module>azure-spring-boot-samples/azure-spring-data-sample-gremlin-web-service</module>
     <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-resource</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-integration</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-operation</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-feature-management</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-integration</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-topic-binder</module>
     <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-queue-operation</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-queue-integration</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-messaging</module>
-    <module>azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders</module>
+    <module>azure-spring-boot-samples/azure-spring-cloud-sample-storage-resource</module>
+    <module>azure-spring-boot-samples/azure-spring-integration-sample-eventhubs</module>
+    <module>azure-spring-boot-samples/azure-spring-integration-sample-servicebus</module>
+    <module>azure-spring-boot-samples/azure-spring-integration-sample-storage-queue</module>
     <module>azure-spring-cloud-autoconfigure</module>
     <module>azure-spring-cloud-context</module>
     <module>azure-spring-cloud-storage</module>

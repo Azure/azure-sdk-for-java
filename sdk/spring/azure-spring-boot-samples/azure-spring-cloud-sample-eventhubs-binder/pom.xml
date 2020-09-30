@@ -33,8 +33,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-spring-cloud-starter-eventhubs-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-starter-eventhubs-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-eventhubs-stream-binder;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

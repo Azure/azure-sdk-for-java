@@ -14,7 +14,7 @@ This package helps developers to finish the auto-configuration of Azure Storage.
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-spring-cloud-starter-storage</artifactId>
+    <artifactId>azure-spring-cloud-storage</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>
 ```
