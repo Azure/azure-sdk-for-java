@@ -65,7 +65,7 @@ final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>
         }
 
         @Override
-        synchronized void addPage(P page) {
+        void addPage(P page) {
             this.pages.add(page);
         }
     }
