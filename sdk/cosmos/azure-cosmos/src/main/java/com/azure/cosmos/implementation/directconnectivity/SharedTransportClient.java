@@ -31,7 +31,7 @@ public class SharedTransportClient extends TransportClient {
     private static SharedTransportClient sharedTransportClient;
     private final RntbdTransportClient.Options rntbdOptions;
 
-    public static SharedTransportClient getOrCreateInstance(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent, DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
+    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent, DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;

@@ -39,8 +39,8 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class GlobalAddressResolverTest {
 

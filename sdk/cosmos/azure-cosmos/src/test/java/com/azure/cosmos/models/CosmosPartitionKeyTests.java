@@ -47,8 +47,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
 public final class CosmosPartitionKeyTests extends TestSuiteBase {
 

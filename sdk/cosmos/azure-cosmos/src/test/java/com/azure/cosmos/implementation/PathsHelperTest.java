@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation;
 
 import org.testng.annotations.Test;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class PathsHelperTest {
 

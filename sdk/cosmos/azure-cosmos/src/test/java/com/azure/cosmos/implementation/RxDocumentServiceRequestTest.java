@@ -10,8 +10,8 @@ import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RxDocumentServiceRequestTest {

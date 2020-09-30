@@ -19,9 +19,9 @@ import org.testng.annotations.Test;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class BarrierRequestHelperTest {
     @Test(groups = "direct")
