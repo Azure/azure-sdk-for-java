@@ -9,6 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
+import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.junit.jupiter.api.AfterEach;
@@ -33,6 +34,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +48,7 @@ public class ReactorHandlerProviderTest {
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER;
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
 
     @Mock
     private Reactor reactor;
@@ -55,7 +58,6 @@ public class ReactorHandlerProviderTest {
     private ReactorHandlerProvider provider;
     private ProxySelector originalProxySelector;
     private ProxySelector proxySelector;
-
 
     public static Stream<ProxyOptions> getProxyConfigurations() {
         return Stream.of(ProxyOptions.SYSTEM_DEFAULTS,
@@ -89,7 +91,7 @@ public class ReactorHandlerProviderTest {
     public void getsConnectionHandlerAMQP() {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            AmqpTransportType.AMQP, null, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null);
+            AmqpTransportType.AMQP, null, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -104,7 +106,7 @@ public class ReactorHandlerProviderTest {
     public void getsConnectionHandlerWebSockets(ProxyOptions configuration) {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -125,7 +127,7 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -133,7 +135,7 @@ public class ReactorHandlerProviderTest {
         Assertions.assertEquals(address.getHostName(), handler.getHostname());
         Assertions.assertEquals(address.getPort(), handler.getProtocolPort());
 
-        verifyZeroInteractions(proxySelector);
+        verifyNoInteractions(proxySelector);
     }
 
     /**
@@ -149,7 +151,7 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());

@@ -326,7 +326,8 @@ class ReactorConnectionTest {
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), clientOptions, VERIFY_MODE);
 
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
+            VERIFY_MODE, clientOptions);
         final ReactorHandlerProvider provider = mock(ReactorHandlerProvider.class);
 
         when(provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, parameters.getTransportType(),
