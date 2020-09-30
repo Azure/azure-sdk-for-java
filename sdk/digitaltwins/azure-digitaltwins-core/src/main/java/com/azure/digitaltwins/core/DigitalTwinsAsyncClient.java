@@ -125,11 +125,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter: </p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Context#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class#BasicDigitalTwin}
      *
      * <p>Or alternatively String can be used as input and output deserialization type: </p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json object representing the digital twin to create.

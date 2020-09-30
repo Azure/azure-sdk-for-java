@@ -1,4 +1,4 @@
-package com.azure.digitaltwins.core;
+package com.azure.digitaltwins.core.snippets;
 
 public abstract class CodeSnippetBase {
 

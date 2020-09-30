@@ -1,8 +1,11 @@
-package com.azure.digitaltwins.core;
+package com.azure.digitaltwins.core.snippets;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
+import com.azure.digitaltwins.core.DigitalTwinsClient;
+import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
 import com.azure.digitaltwins.core.models.*;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
