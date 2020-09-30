@@ -45,6 +45,8 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile PartitionKeyRangeIdentity partitionKeyRangeIdentity;
     private volatile Integer defaultReplicaIndex;
 
+    private boolean isAddressRefresh;
+
     public DocumentServiceRequestContext requestContext;
 
     // has the non serialized value of the partition-key
@@ -956,6 +958,14 @@ public class RxDocumentServiceRequest implements Cloneable {
         return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
     }
 
+    public synchronized Flux<byte[]> getContentAsByteArrayFlux() {
+        if (contentAsByteArray == null) {
+            return Flux.empty();
+        }
+
+        return Flux.just(contentAsByteArray);
+    }
+
     public int getContentLength() {
         return contentAsByteArray != null ? contentAsByteArray.length : 0;
     }
@@ -1022,5 +1032,23 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private static ByteBuffer wrapByteBuffer(byte[] bytes) {
         return bytes != null ? ByteBuffer.wrap(bytes) : null;
+    }
+
+    /**
+     * Getter for property 'addressRefresh'.
+     *
+     * @return Value for property 'addressRefresh'.
+     */
+    public boolean isAddressRefresh() {
+        return isAddressRefresh;
+    }
+
+    /**
+     * Setter for property 'addressRefresh'.
+     *
+     * @param addressRefresh Value to set for property 'addressRefresh'.
+     */
+    public void setAddressRefresh(final boolean addressRefresh) {
+        isAddressRefresh = addressRefresh;
     }
 }

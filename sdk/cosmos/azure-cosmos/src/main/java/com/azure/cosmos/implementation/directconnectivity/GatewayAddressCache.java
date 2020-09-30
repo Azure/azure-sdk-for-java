@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -36,6 +37,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -248,6 +250,7 @@ public class GatewayAddressCache implements IAddressCache {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
+        request.setAddressRefresh(true);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
@@ -301,7 +304,8 @@ public class GatewayAddressCache implements IAddressCache {
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
+            Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
@@ -342,7 +346,11 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
@@ -483,6 +491,7 @@ public class GatewayAddressCache implements IAddressCache {
             forceRefresh,
             useMasterCollectionResolver
         );
+        request.setAddressRefresh(true);
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
@@ -521,7 +530,8 @@ public class GatewayAddressCache implements IAddressCache {
         HttpRequest httpRequest;
         httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
         Instant addressCallStartTime = Instant.now();
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
+            Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
@@ -559,7 +569,11 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {

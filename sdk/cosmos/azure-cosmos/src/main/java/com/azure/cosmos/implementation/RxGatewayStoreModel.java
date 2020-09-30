@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
-import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -25,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -147,17 +147,22 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
-            // a valid flux (including Flux.empty) hence null check is not required here.
-            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
+            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,
                     uri.getPort(),
                     httpHeaders,
-                    byteBufObservable);
+                    contentAsByteArray);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            }
+
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
             return toDocumentServiceResponse(httpResponseMono, request);
 
@@ -254,7 +259,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             return contentObservable
                        .map(content -> {
                                //Adding transport client request timeline to diagnostics
-                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
+                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                                    BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
@@ -299,7 +304,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (WebExceptionUtility.isNetworkFailure(dce)) {
-                           BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                           } else {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           }
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
