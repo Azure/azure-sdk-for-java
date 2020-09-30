@@ -21,6 +21,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +44,11 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        String groupName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("group", 15);
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgCOMV", 15);
-        String roleAssignmentName = azureResourceManager.resourceGroups().manager().internalContext().randomUuid();
-        final String linuxVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("VM1", 15);
-        final String pipName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip1", 15);
+        String groupName = Utils.randomResourceName(azureResourceManager, "group", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        String roleAssignmentName = Utils.randomUuid(azureResourceManager);
+        final String linuxVMName = Utils.randomResourceName(azureResourceManager, "VM1", 15);
+        final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;
@@ -78,7 +79,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
                         .withRegion(region)
                         .create();
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(45 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(45));
 
             System.out.println("Assigning AAD security group Contributor role to the resource group");
 
@@ -128,11 +129,11 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             System.out.println("Waiting 15 minutes to MSI extension in the VM to refresh the token");
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(10));
 
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
-            final String stgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("st44", 15);
+            final String stgName = Utils.randomResourceName(azureResourceManager, "st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
                     .replace("{rgName}", rgName)
                     .replace("{location}", region.name());

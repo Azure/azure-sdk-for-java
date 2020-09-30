@@ -112,7 +112,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             ResourceManager resourceManager =
                 ResourceManager
                     .authenticate(credentialFromFile(), profile())
@@ -127,7 +127,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
                 .apply();
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Assertions.assertNotNull(resourceManager.resourceGroups().getByName(group.name()));
             try {
                 resourceManager.resourceGroups().define(rgName + "2").withRegion(Region.US_WEST).create();

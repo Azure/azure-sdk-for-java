@@ -20,6 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -89,7 +90,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                         .roleServiceClient()
                         .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
-                        .retryWhen(
+                        .retryWhen(Retry.withThrowable(
                             throwableFlux ->
                                 throwableFlux
                                     .zipWith(
@@ -115,7 +116,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                             }
                                         })
                                     .flatMap(i -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext
-                                        .getDelayDuration(Duration.ofSeconds(i))))))
+                                        .getDelayDuration(Duration.ofSeconds(i)))))))
             .map(innerToFluentMap(this));
     }
 

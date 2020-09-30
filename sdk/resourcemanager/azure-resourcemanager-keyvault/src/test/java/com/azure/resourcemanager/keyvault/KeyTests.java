@@ -21,6 +21,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.Signature;
+import java.time.Duration;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -268,7 +269,7 @@ public class KeyTests extends KeyVaultManagementTest {
 
         Assertions.assertNotNull(vault);
 
-        ResourceManagerUtils.InternalRuntimeContext.sleep(10000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
         return vault;
     }

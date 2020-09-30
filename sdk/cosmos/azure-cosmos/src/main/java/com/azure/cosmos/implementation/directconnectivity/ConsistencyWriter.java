@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -60,6 +61,7 @@ public class ConsistencyWriter {
     private final static int DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS = 30;
     private final static int MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION = 4;
     private final static int SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION = 10;
+    private final DiagnosticsClientContext diagnosticsClientContext;
 
     private final Logger logger = LoggerFactory.getLogger(ConsistencyWriter.class);
     private final TransportClient transportClient;
@@ -71,12 +73,14 @@ public class ConsistencyWriter {
     private final StoreReader storeReader;
 
     public ConsistencyWriter(
+        DiagnosticsClientContext diagnosticsClientContext,
         AddressSelector addressSelector,
         ISessionContainer sessionContainer,
         TransportClient transportClient,
         IAuthorizationTokenProvider authorizationTokenProvider,
         GatewayServiceConfigurationReader serviceConfigReader,
         boolean useMultipleWriteLocations) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
         this.sessionContainer = sessionContainer;
@@ -123,7 +127,7 @@ public class ConsistencyWriter {
         }
 
         if (request.requestContext.cosmosDiagnostics == null) {
-            request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+            request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
         }
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
@@ -198,7 +202,7 @@ public class ConsistencyWriter {
             });
         } else {
 
-            Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(request, this.authorizationTokenProvider, null, request.requestContext.globalCommittedSelectedLSN);
+            Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, request, this.authorizationTokenProvider, null, request.requestContext.globalCommittedSelectedLSN);
             return barrierRequestObs.flatMap(barrierRequest -> waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN)
                 .flatMap(v -> {
 
@@ -251,7 +255,8 @@ public class ConsistencyWriter {
                 //barrier only if necessary, i.e. when write region completes write, but read regions have not.
 
                 if (globalCommittedLsn.v < lsn.v) {
-                    Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(request,
+                    Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext,
+                        request,
                         this.authorizationTokenProvider,
                         null,
                         request.requestContext.globalCommittedSelectedLSN);

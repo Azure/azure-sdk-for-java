@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.AadTokenAuthorizationHelper;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -26,6 +27,7 @@ public class BarrierRequestHelper {
     private final static Logger logger = LoggerFactory.getLogger(BarrierRequestHelper.class);
 
     public static Mono<RxDocumentServiceRequest> createAsync(
+            DiagnosticsClientContext clientContext,
             RxDocumentServiceRequest request,
             IAuthorizationTokenProvider authorizationTokenProvider,
             Long targetLsn,
@@ -47,7 +49,7 @@ public class BarrierRequestHelper {
         RxDocumentServiceRequest barrierLsnRequest = null;
         if (!isCollectionHeadRequest) {
             // DB Feed
-            barrierLsnRequest = RxDocumentServiceRequest.create(
+            barrierLsnRequest = RxDocumentServiceRequest.create(clientContext,
                 OperationType.HeadFeed,
                 null,
                 ResourceType.Database,
@@ -58,13 +60,13 @@ public class BarrierRequestHelper {
             // get the collection full name
             // dbs/{id}/colls/{collid}/
             String collectionLink = PathsHelper.getCollectionPath(request.getResourceAddress());
-            barrierLsnRequest = RxDocumentServiceRequest.createFromName(
+            barrierLsnRequest = RxDocumentServiceRequest.createFromName(clientContext,
                     OperationType.Head,
                     collectionLink,
                     ResourceType.DocumentCollection);
         } else {
             // RID based Server request
-            barrierLsnRequest = RxDocumentServiceRequest.create(
+            barrierLsnRequest = RxDocumentServiceRequest.create(clientContext,
                     OperationType.Head,
                     ResourceId.parse(request.getResourceId()).getDocumentCollectionId().toString(),
                     ResourceType.DocumentCollection, null);

@@ -26,16 +26,16 @@ public class ReadmeSamples {
      */
     public CommunicationIdentityClient createCommunicationIdentityClient()
             throws InvalidKeyException, NoSuchAlgorithmException {
-        // Your can find your endpoint and access token from your resource in the Azure Portal
+        // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessToken = "SECRET";
+        String accessKey = "SECRET";
 
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .endpoint(endpoint)
-            .credential(new CommunicationClientCredential(accessToken))
+            .credential(new CommunicationClientCredential(accessKey))
             .httpClient(httpClient)
             .buildClient();
 

@@ -582,13 +582,13 @@ class FunctionAppImpl
     }
 
     @Override
-    public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile);
+    public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        return kuduClient.zipDeployAsync(zipFile, length);
     }
 
     @Override
-    public void zipDeploy(InputStream zipFile) {
-        zipDeployAsync(zipFile).block();
+    public void zipDeploy(InputStream zipFile, long length) {
+        zipDeployAsync(zipFile, length).block();
     }
 
     @Override

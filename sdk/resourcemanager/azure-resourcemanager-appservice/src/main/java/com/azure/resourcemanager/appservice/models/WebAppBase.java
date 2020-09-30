@@ -304,18 +304,24 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param zipFile the ZIP file to upload
+     * @param length the length of the file
      */
-    void zipDeploy(InputStream zipFile);
+    void zipDeploy(InputStream zipFile, long length);
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param zipFile the ZIP file to upload
+     * @param length the length of the file
      * @return a completable of the operation
      */
-    Mono<Void> zipDeployAsync(InputStream zipFile);
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length);
 
     /**************************************************************
      * Fluent interfaces to provision a Web App or deployment slot.

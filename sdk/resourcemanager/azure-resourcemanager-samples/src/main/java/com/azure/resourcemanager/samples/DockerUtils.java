@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -189,8 +190,8 @@ public class DockerUtils {
      */
     public static DockerClient fromNewDockerVM(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                String registryServerUrl, String username, String password) {
-        final String dockerVMName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("dockervm", 15);
-        final String publicIPDnsLabel = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("pip", 10);
+        final String dockerVMName = Utils.randomResourceName(azureResourceManager, "dockervm", 15);
+        final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String vmUserName = "dockerUser";
         final String vmPassword = Utils.password();
 
@@ -216,7 +217,7 @@ public class DockerUtils {
         System.out.println("Created Azure Virtual Machine: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + dockerVM.id());
 
         // Wait for a minute for PIP to be available
-        ResourceManagerUtils.InternalRuntimeContext.sleep(60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
         // Get the IP of the Docker host
         NicIpConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
         PublicIpAddress publicIp = nicIPConfiguration.getPublicIpAddress();

@@ -596,7 +596,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             || innerLinkedResource.provisioningState() != ProvisioningState.SUCCEEDED
             || innerResource == null
             || innerResource.provisioningState() != ProvisioningState.SUCCEEDED) {
-            ResourceManagerUtils.InternalRuntimeContext.sleep(30 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             innerLinkedResource =
                 this

@@ -6,7 +6,9 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -36,6 +38,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -61,6 +64,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final static int DefaultBatchSize = 50;
 
     private final static int DefaultSuboptimalPartitionForceRefreshIntervalInSeconds = 600;
+    private final DiagnosticsClientContext clientContext;
     private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
@@ -81,12 +85,14 @@ public class GatewayAddressCache implements IAddressCache {
     private volatile Instant suboptimalMasterPartitionTimestamp;
 
     public GatewayAddressCache(
+            DiagnosticsClientContext clientContext,
             URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
             HttpClient httpClient,
             long suboptimalPartitionForceRefreshIntervalInSeconds) {
+        this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
         } catch (MalformedURLException | URISyntaxException e) {
@@ -121,12 +127,14 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public GatewayAddressCache(
+            DiagnosticsClientContext clientContext,
             URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
             HttpClient httpClient) {
-        this(serviceEndpoint,
+        this(clientContext,
+             serviceEndpoint,
              protocol,
              tokenProvider,
              userAgent,
@@ -248,6 +256,7 @@ public class GatewayAddressCache implements IAddressCache {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
+        request.setAddressRefresh(true);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
@@ -302,14 +311,16 @@ public class GatewayAddressCache implements IAddressCache {
 
         Mono<HttpResponse> httpResponseMono;
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            httpResponseMono = this.httpClient.send(httpRequest);
+            httpResponseMono = this.httpClient.send(httpRequest,
+                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(httpHeaders)
-                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest));
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
+                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(clientContext, httpResponseMono, httpRequest);
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
@@ -348,7 +359,11 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
@@ -489,6 +504,7 @@ public class GatewayAddressCache implements IAddressCache {
             forceRefresh,
             useMasterCollectionResolver
         );
+        request.setAddressRefresh(true);
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
@@ -529,14 +545,16 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<HttpResponse> httpResponseMono;
 
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            httpResponseMono = this.httpClient.send(httpRequest);
+            httpResponseMono = this.httpClient.send(httpRequest,
+                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(defaultHttpHeaders)
-                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest));
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
+                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(this.clientContext, httpResponseMono, httpRequest);
 
         return dsrObs.map(
             dsr -> {
@@ -573,7 +591,11 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (WebExceptionUtility.isNetworkFailure(dce)) {
-                BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
@@ -612,6 +634,7 @@ public class GatewayAddressCache implements IAddressCache {
         int batchSize = GatewayAddressCache.DefaultBatchSize;
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                this.clientContext,
                 OperationType.Read,
                 //    collection.AltLink,
                 collection.getResourceId(),

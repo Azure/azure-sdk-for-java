@@ -67,10 +67,10 @@ public final class ManageNetworkPeeringInSameSubscription {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String resourceGroupName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 15);
-        final String vnetAName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("net", 15);
-        final String vnetBName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("net", 15);
-        final String peeringABName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("peer", 15);
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 15);
+        final String vnetAName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String vnetBName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String peeringABName = Utils.randomResourceName(azureResourceManager, "peer", 15);
         try {
 
             //=============================================================
