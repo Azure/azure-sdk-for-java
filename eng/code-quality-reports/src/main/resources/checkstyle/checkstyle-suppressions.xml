@@ -541,6 +541,9 @@
 
   <!--Checkstyle suppressions ThrowFromClientLoggerCheck-->
   <suppress checks="com.azure.tools.checkstyle.checks.(ThrowFromClientLoggerCheck|JavadocThrowsChecks|EnforceFinalFieldsCheck)" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CProperties"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration"></suppress>
 
   <!--Checkstyle suppressions JavadocThrowsChecks-->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"></suppress>
@@ -570,6 +573,7 @@
   <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetryEventData"></suppress>
   <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetryData"></suppress>
   <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetrySender"></suppress>
+  <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetryProperties"></suppress>
   <suppress checks="MissingJavadocMethod" files="com.azure.utils.PropertyLoader"></suppress>
   <suppress checks="MissingJavadocMethod" files="com.azure.spring.cloudfoundry.environment.VcapProcessor"></suppress>
   <suppress checks="MissingJavadocMethod" files="com.azure.spring.cloudfoundry.environment.VcapServiceConfig"></suppress>
