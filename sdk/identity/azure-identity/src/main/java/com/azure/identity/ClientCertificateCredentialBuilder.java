@@ -19,7 +19,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private String clientCertificatePassword;
 
     /**
-     * Sets the client certificate for authenticating to AAD.
+     * Sets the path of the PEM certificate for authenticating to AAD.
      *
      * @param certificatePath the PEM file containing the certificate
      * @return An updated instance of this builder.
@@ -31,7 +31,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the client certificate for authenticating to AAD.
+     * Sets the input stream holding the PEM certificate for authenticating to AAD.
      *
      * @param certificate the input stream containing the PEM certificate
      * @return An updated instance of this builder.
@@ -42,7 +42,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the client certificate for authenticating to AAD.
+     * Sets the path and password of the PFX certificate for authenticating to AAD.
      *
      * @param certificatePath the password protected PFX file containing the certificate
      * @param clientCertificatePassword the password protecting the PFX file
@@ -57,7 +57,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the client certificate for authenticating to AAD.
+     * Sets the input stream holding the PFX certificate and its password for authenticating to AAD.
      *
      * @param certificate the input stream containing the password protected PFX certificate
      * @param clientCertificatePassword the password protecting the PFX file
