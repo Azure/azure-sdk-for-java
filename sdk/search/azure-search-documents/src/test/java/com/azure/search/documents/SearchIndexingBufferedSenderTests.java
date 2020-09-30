@@ -14,12 +14,16 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.implementation.models.IndexingResult;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -33,20 +37,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 
 /**
  * Tests {@link SearchIndexingBufferedSender}.
@@ -189,7 +189,13 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void indexManyDocuments() {
         setupIndex();
 
-        SearchClient client = clientBuilder.buildClient();
+        AtomicInteger requestCount = new AtomicInteger();
+        SearchClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            })
+            .buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(clientBuilder.buildAsyncClient()
             .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
                 .setAutoFlushWindow(Duration.ofSeconds(5))
@@ -213,7 +219,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         sleepIfRunningAgainstService((long) (5000 * 1.5));
 
         assertEquals(1000, client.getDocumentCount());
-        verify(spyClient, atLeast(100)).flushInternal(anyList(), anyInt(), any());
+        assertTrue(requestCount.get() >= 100);
     }
 
     /**
@@ -221,7 +227,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void emptyBatchIsNeverSent() {
+        AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(getSearchClientBuilder("index")
+            .addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            })
             .buildAsyncClient()
             .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId")))));
@@ -232,7 +243,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.flush();
 
         // flushInternal should never be called if the batch doesn't have any documents.
-        verify(spyClient, never()).flushInternal(anyList(), anyInt(), any());
+        assertEquals(0, requestCount.get());
     }
 
     /**
@@ -495,6 +506,64 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
          * No documents failed, so we should expect zero documents are added back into the batch.
          */
         assertEquals(0, batchingClient.getActions().size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("operationsThrowAfterClientIsClosedSupplier")
+    public void operationsThrowAfterClientIsClosed(
+        Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
+        SearchClient client = getSearchClientBuilder("index").buildClient();
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+
+        batchingClient.close();
+
+        assertThrows(IllegalStateException.class, () -> operation.accept(batchingClient));
+
+    }
+
+    private static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
+        List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
+        List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
+            .map(document -> new IndexAction<Map<String, Object>>()
+                .setDocument(document)
+                .setActionType(IndexActionType.UPLOAD))
+            .collect(Collectors.toList());
+
+        return Stream.of(
+            client -> client.addActions(actions),
+            client -> client.addActions(actions, Duration.ofSeconds(60), Context.NONE),
+
+            client -> client.addUploadActions(simpleDocuments),
+            client -> client.addUploadActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+
+            client -> client.addMergeOrUploadActions(simpleDocuments),
+            client -> client.addMergeOrUploadActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+
+            client -> client.addMergeActions(simpleDocuments),
+            client -> client.addMergeActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+
+            client -> client.addDeleteActions(simpleDocuments),
+            client -> client.addDeleteActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+
+            SearchIndexingBufferedSender::flush,
+            client -> client.flush(Duration.ofSeconds(60), Context.NONE)
+        );
+    }
+
+    @Test
+    public void closingTwiceDoesNotThrow() {
+        SearchClient client = getSearchClientBuilder("index").buildClient();
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
+            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+
+        batchingClient.close();
+
+        assertDoesNotThrow((Executable) batchingClient::close);
     }
 
     /*
