@@ -350,6 +350,7 @@ public class TableClient {
     /**
      * Queries and returns all entities in the given table
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param resultType the type of the result value, which must be a subclass of TableEntity
      * @return a list of all the entities which fit this criteria
      */
@@ -361,6 +362,7 @@ public class TableClient {
     /**
      * Queries and returns entities in the given table using the odata QueryOptions
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param options the odata query object
      * @param resultType the type of the result value, which must be a subclass of TableEntity
      * @return a list of all the entities which fit this criteria
@@ -399,6 +401,7 @@ public class TableClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param resultType the type of the result value, which must be a subclass of TableEntity
@@ -413,6 +416,7 @@ public class TableClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
@@ -444,6 +448,7 @@ public class TableClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
@@ -460,10 +465,12 @@ public class TableClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
      *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
      * @param timeout max time for query to execute before erroring out
      * @param context the context of the query
      * @return a mono of the response with the table entity

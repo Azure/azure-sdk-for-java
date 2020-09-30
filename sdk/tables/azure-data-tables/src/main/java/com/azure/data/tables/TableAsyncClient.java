@@ -479,6 +479,7 @@ public class TableAsyncClient {
     /**
      * Queries and returns entities in the given table using the odata query options
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param resultType the type of the result value, which must be a subclass of TableEntity
      *
      * @return a paged flux of all the entities which fit this criteria
@@ -491,6 +492,7 @@ public class TableAsyncClient {
     /**
      * Queries and returns entities in the given table using the odata query options
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param options the odata query object
      * @param resultType the type of the result value, which must be a subclass of TableEntity
      *
@@ -643,6 +645,7 @@ public class TableAsyncClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param resultType the type of the result value, which must be a subclass of TableEntity
@@ -657,6 +660,7 @@ public class TableAsyncClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
@@ -690,6 +694,7 @@ public class TableAsyncClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
