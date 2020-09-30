@@ -318,13 +318,17 @@ class ClientSideRequestStatistics {
                 // Error while evaluating system information, do nothing
             }
 
-            generator.writeObjectFieldStart("ClientStatistics");
-            generator.writeNumberField("numberOfClients", statistics.diagnosticsClientContext.getNumberOfClients());
-            generator.writeNumberField("id", statistics.diagnosticsClientContext.clientId());
-            generator.writeStringField("cfg", statistics.diagnosticsClientContext.getConfig());
+            generator.writeObjectFieldStart("ClientCfgs");
+            generator.writeNumberField("id", statistics.diagnosticsClientContext.getConfig().getClientId());
+            generator.writeNumberField("numberOfClients", statistics.diagnosticsClientContext.getConfig().getActiveClientsCount());
 
+            generator.writeObjectFieldStart("connCfg");
+            generator.writeStringField("rntbd", statistics.diagnosticsClientContext.getConfig().rntbdConfig());
+            generator.writeStringField("gw", statistics.diagnosticsClientContext.getConfig().gwConfig());
+            generator.writeStringField("other", statistics.diagnosticsClientContext.getConfig().otherConnectionConfig());
             generator.writeEndObject();
-
+            generator.writeStringField("consistencyCfg", statistics.diagnosticsClientContext.getConfig().consistencyRelatedConfig());
+            generator.writeEndObject();
             generator.writeEndObject();
         }
     }

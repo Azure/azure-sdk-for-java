@@ -136,6 +136,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private StoreClientFactory storeClientFactory;
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
+    private DiagnosticsClientConfig diagnosticsClientConfig;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -219,6 +220,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.getAndDecrement();
+        this.diagnosticsClientConfig = new DiagnosticsClientConfig();
+        this.diagnosticsClientConfig.withClientId(this.clientId);
+        this.diagnosticsClientConfig.withActiveClientCounter(this.activeClientsCnt);
+
+        this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
+        this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(connectionPolicy.isMultipleWriteRegionsEnabled());
+        this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(connectionPolicy.isEndpointDiscoveryEnabled());
+        this.diagnosticsClientConfig.withPreferredRegions(connectionPolicy.getPreferredRegions());
+        this.diagnosticsClientConfig.withConsistency(consistencyLevel);
+
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -279,18 +290,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public String getConfig() {
-        return connectionPolicy.asDiagnostics();
-    }
-
-    @Override
-    public int getNumberOfClients() {
-        return activeClientsCnt.get();
-    }
-
-    @Override
-    public int clientId() {
-        return this.clientId;
+    public DiagnosticsClientConfig getConfig() {
+        return diagnosticsClientConfig;
     }
 
     @Override
@@ -351,6 +352,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void initializeDirectConnectivity() {
 
         this.storeClientFactory = new StoreClientFactory(
+            this.diagnosticsClientConfig,
             this.configs,
             this.connectionPolicy,
            // this.maxConcurrentConnectionOpenRequests,
@@ -420,8 +422,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
 
         if (connectionSharingAcrossClientsEnabled) {
-            return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig);
+            return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {
+            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig);
             return HttpClient.createFixed(httpClientConfig);
         }
     }

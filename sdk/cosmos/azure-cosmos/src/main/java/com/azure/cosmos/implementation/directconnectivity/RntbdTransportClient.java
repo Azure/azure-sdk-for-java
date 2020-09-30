@@ -105,10 +105,6 @@ public final class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final ConnectionPolicy connectionPolicy, final UserAgentContainer userAgent) {
-        this(new Options.Builder(connectionPolicy).userAgent(userAgent).build(), configs.getSslContext());
-    }
-
     // endregion
 
     // region Methods

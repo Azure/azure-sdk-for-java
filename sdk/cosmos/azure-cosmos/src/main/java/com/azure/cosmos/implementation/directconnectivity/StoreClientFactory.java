@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 
@@ -28,6 +29,7 @@ public class StoreClientFactory implements AutoCloseable {
     private volatile boolean isClosed;
 
     public StoreClientFactory(
+        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         Configs configs,
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
@@ -35,12 +37,19 @@ public class StoreClientFactory implements AutoCloseable {
         this.configs = configs;
         this.protocol = configs.getProtocol();
         if (enableTransportClientSharing) {
-            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, connectionPolicy, userAgent);
+            SharedTransportClient sharedTransportClient = SharedTransportClient.getOrCreateInstance(protocol, configs
+                , connectionPolicy, userAgent, diagnosticsClientConfig);
+            this.transportClient = sharedTransportClient;
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
             } else if (protocol == Protocol.TCP) {
-                this.transportClient = new RntbdTransportClient(configs, connectionPolicy, userAgent);
+
+                RntbdTransportClient.Options rntbdOptions =
+                    new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
+                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext());
+                diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
+
             } else {
                 throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
             }

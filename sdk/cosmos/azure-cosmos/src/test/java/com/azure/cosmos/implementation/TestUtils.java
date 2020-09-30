@@ -42,9 +42,7 @@ public class TestUtils {
 
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
-        Mockito.doReturn(0).when(clientContext).clientId();
-        Mockito.doReturn(1).when(clientContext).getNumberOfClients();
-        Mockito.doReturn("myConfig").when(clientContext).getConfig();
+        Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
         Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
 
         return clientContext;
@@ -57,12 +55,6 @@ public class TestUtils {
 
         return dsr;
     }
-
-    public static RxDocumentServiceRequest ensureClientContextSet(RxDocumentServiceRequest request, DiagnosticsClientContext clientContext) {
-        Mockito.doReturn(clientContext.createDiagnostics()).when(request).createCosmosDiagnostics();
-        return request;
-    }
-
 
     private TestUtils() {
     }
