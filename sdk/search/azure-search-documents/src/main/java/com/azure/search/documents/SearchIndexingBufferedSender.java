@@ -189,14 +189,20 @@ public final class SearchIndexingBufferedSender<T> {
     }
 
     /**
-     * Closes the batch, any documents remaining in the batch will be sent to the Search index for indexing.
+     * Closes the buffered sender, any documents remaining in the batch will be sent to the Search index for indexing.
+     * <p>
+     * Once the buffered sender has been closed any attempts to add documents or flush it will cause an {@link
+     * IllegalStateException} to be thrown.
      */
     public void close() {
         close(null, Context.NONE);
     }
 
     /**
-     * Closes the batch, any documents remaining in the batch sill be sent to the Search index for indexing.
+     * Closes the buffered, any documents remaining in the batch sill be sent to the Search index for indexing.
+     * <p>
+     * Once the buffered sender has been closed any attempts to add documents or flush it will cause an {@link
+     * IllegalStateException} to be thrown.
      *
      * @param timeout Duration before the operation times out.
      * @param context Additional context that is passed through the HTTP pipeline.

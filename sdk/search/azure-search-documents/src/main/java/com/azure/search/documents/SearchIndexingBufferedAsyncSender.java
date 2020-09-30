@@ -175,9 +175,12 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     }
 
     /**
-     * Closes the batch, any documents remaining in the batch will be sent to the Search index for indexing.
+     * Closes the buffered sender, any documents remaining in the batch will be sent to the Search index for indexing.
+     * <p>
+     * Once the buffered sender has been closed any attempts to add documents or flush it will cause an {@link
+     * IllegalStateException} to be thrown.
      *
-     * @return A reactive response indicating that the batch has been closed.
+     * @return A reactive response indicating that the buffered sender has been closed.
      */
     public Mono<Void> close() {
         return withContext(this::close);
