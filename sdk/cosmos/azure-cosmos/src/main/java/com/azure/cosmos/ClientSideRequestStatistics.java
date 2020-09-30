@@ -318,10 +318,7 @@ class ClientSideRequestStatistics {
                 // Error while evaluating system information, do nothing
             }
 
-            generator.writeObjectFieldStart("clientCfgs");
-            DiagnosticsClientContext.ClientContextSerializer.INSTACE.serialize(statistics.diagnosticsClientContext, generator, provider);
-            generator.writeEndObject();
-
+            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientContext);
             generator.writeEndObject();
         }
     }

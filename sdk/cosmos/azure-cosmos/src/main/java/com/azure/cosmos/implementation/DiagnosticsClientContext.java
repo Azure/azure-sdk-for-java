@@ -8,20 +8,20 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+@JsonSerialize(using = DiagnosticsClientContext.ClientContextSerializer.class)
 public interface DiagnosticsClientContext {
 
     DiagnosticsClientConfig getConfig();
@@ -75,7 +75,6 @@ public interface DiagnosticsClientContext {
         private ConsistencyLevel consistencyLevel;
         private boolean connectionSharingAcrossClientsEnabled;
         private String consistencyRelatedConfigAsString;
-        private boolean contentResponseOnWriteEnabled;
         private String httpConfigAsString;
         private String otherCfgAsString;
         private List<String> preferredRegions;
