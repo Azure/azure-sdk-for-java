@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.keyvault.spring;
+package com.azure.keyvault.spring;
 
-import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
-import static com.microsoft.azure.utils.ApplicationId.AZURE_SPRING_KEY_VAULT;
-import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
-import static com.microsoft.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
+import static com.azure.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.azure.utils.ApplicationId.AZURE_SPRING_KEY_VAULT;
+import static com.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import static com.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 import com.azure.core.credential.TokenCredential;
@@ -19,8 +19,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
-import com.microsoft.azure.telemetry.TelemetrySender;
+import com.azure.keyvault.spring.KeyVaultProperties.Property;
+import com.azure.telemetry.TelemetrySender;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
