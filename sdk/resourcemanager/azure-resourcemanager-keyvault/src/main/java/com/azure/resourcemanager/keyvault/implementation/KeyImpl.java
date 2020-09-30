@@ -43,10 +43,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     private CreateKeyOptions createKeyRequest;
     private UpdateKeyOptions updateKeyRequest;
-    private ImportKeyOptions importKeyRequest = null;
-    private JsonWebKey jsonWebKey = null;
+    private ImportKeyOptions importKeyRequest;
 
     private CryptographyAsyncClient cryptographyClient;
+
+    private JsonWebKey jsonWebKey;
 
     private CryptographyAsyncClient cryptographyClient() {
         return cryptographyClient;
@@ -62,9 +63,9 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         this.vault = vault;
     }
 
-    KeyImpl(String name, KeyVaultKey innerObject, Vault vault) {
-        super(name, innerObject.getProperties());
-        this.jsonWebKey = innerObject.getKey();
+    KeyImpl(String name, KeyVaultKey keyVaultKey, Vault vault) {
+        super(name, keyVaultKey.getProperties());
+        this.jsonWebKey = keyVaultKey.getKey();
         this.vault = vault;
     }
 
