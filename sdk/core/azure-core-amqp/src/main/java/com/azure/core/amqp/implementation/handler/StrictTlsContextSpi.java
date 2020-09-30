@@ -31,6 +31,7 @@ class StrictTlsContextSpi extends SSLContextSpi {
      * Creates an instance with the given SSL context.
      *
      * @param sslContext SSL context to use.
+     *
      * @throws NullPointerException if {@code sslContext} is null.
      */
     StrictTlsContextSpi(SSLContext sslContext) {
@@ -55,30 +56,34 @@ class StrictTlsContextSpi extends SSLContextSpi {
     }
 
     /**
-     * Gets an SSL engine without SSLv2Hello protocol enabled.
+     * Creates an SSLEngine from the context without SSLv2Hello protocol enabled.
      *
-     * @return SSL engine without SSLv2Hello protocol enabled.
+     * @return An {@code SSLEngine} object.
      */
     @Override
     protected SSLEngine engineCreateSSLEngine() {
-        final SSLEngine engine = sslContext.createSSLEngine();
-        final String[] protocols = Stream.of(engine.getEnabledProtocols())
-            .filter(protocol -> {
-                final boolean isSSLv2Hello = protocol.equalsIgnoreCase(SSL_V2_HELLO);
-                if (isSSLv2Hello) {
-                    logger.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
-                }
+        final SSLEngine sslEngine = sslContext.createSSLEngine();
+        final String[] protocols = getAllowedProtocols(sslEngine.getEnabledProtocols());
 
-                return !isSSLv2Hello;
-            }).toArray(String[]::new);
-
-        engine.setEnabledProtocols(protocols);
-        return engine;
+        sslEngine.setEnabledProtocols(protocols);
+        return sslEngine;
     }
 
+    /**
+     * Creates an SSLEngine from the context without SSLv2Hello protocol enabled.
+     *
+     * @param host the non-authoritative name of the host
+     * @param port the non-authoritative port
+     *
+     * @return An {@code SSLEngine} object.
+     */
     @Override
     protected SSLEngine engineCreateSSLEngine(String host, int port) {
-        return sslContext.createSSLEngine(host, port);
+        final SSLEngine sslEngine = sslContext.createSSLEngine(host, port);
+        final String[] protocols = getAllowedProtocols(sslEngine.getEnabledProtocols());
+
+        sslEngine.setEnabledProtocols(protocols);
+        return sslEngine;
     }
 
     @Override
@@ -89,5 +94,22 @@ class StrictTlsContextSpi extends SSLContextSpi {
     @Override
     protected SSLSessionContext engineGetClientSessionContext() {
         return sslContext.getClientSessionContext();
+    }
+
+    /**
+     * Removes {@link #SSL_V2_HELLO} protocol if it is available.
+     *
+     * @return Enabled protocols.
+     */
+    private String[] getAllowedProtocols(String[] protocols) {
+        return Stream.of(protocols)
+            .filter(protocol -> {
+                final boolean isSSLv2Hello = protocol.equalsIgnoreCase(SSL_V2_HELLO);
+                if (isSSLv2Hello) {
+                    logger.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
+                }
+
+                return !isSSLv2Hello;
+            }).toArray(String[]::new);
     }
 }
