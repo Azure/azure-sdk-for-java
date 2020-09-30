@@ -670,8 +670,8 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
-     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default).
+     * In other words, the {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions}
