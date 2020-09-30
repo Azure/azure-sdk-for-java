@@ -37,9 +37,8 @@ public class StoreClientFactory implements AutoCloseable {
         this.configs = configs;
         this.protocol = configs.getProtocol();
         if (enableTransportClientSharing) {
-            SharedTransportClient sharedTransportClient = SharedTransportClient.getOrCreateInstance(protocol, configs
+            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs
                 , connectionPolicy, userAgent, diagnosticsClientConfig);
-            this.transportClient = sharedTransportClient;
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
