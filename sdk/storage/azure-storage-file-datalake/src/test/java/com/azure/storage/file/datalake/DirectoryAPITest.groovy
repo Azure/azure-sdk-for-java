@@ -459,6 +459,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Set ACL recursive batches"() {
@@ -476,6 +477,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Set ACL recursive batches resume"() {
@@ -497,6 +499,7 @@ class DirectoryAPITest extends APISpec {
         (result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount()) == 4
         (result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount()) == 0
         result2.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Set ACL recursive batches progress"() {
@@ -516,6 +519,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
         progress.batchCounters.size() == 4
         (progress.batchCounters[0].getChangedFilesCount() + progress.batchCounters[0].getChangedDirectoriesCount()) == 2
         (progress.batchCounters[1].getChangedFilesCount() + progress.batchCounters[1].getChangedDirectoriesCount()) == 2
@@ -670,6 +674,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getCounters().getChangedFilesCount() == 3
         result.getValue().getCounters().getFailedChangesCount() == 4
         result.getValue().getContinuationToken() == null
+        batchFailures.size() == 4
         batchFailures.contains(file4.getObjectPath())
         batchFailures.contains(file5.getObjectPath())
         batchFailures.contains(file6.getObjectPath())
@@ -774,6 +779,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedDirectoriesCount() == 3
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
+        result.getBatchFailures() == null
     }
 
     def "Update ACL recursive batches"() {
@@ -791,6 +797,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Update ACL recursive batches resume"() {
@@ -812,6 +819,7 @@ class DirectoryAPITest extends APISpec {
         (result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount()) == 4
         (result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount()) == 0
         result2.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Update ACL recursive batches progress"() {
@@ -831,6 +839,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
         progress.batchCounters.size() == 4
         (progress.batchCounters[0].getChangedFilesCount() + progress.batchCounters[0].getChangedDirectoriesCount()) == 2
         (progress.batchCounters[1].getChangedFilesCount() + progress.batchCounters[1].getChangedDirectoriesCount()) == 2
@@ -975,6 +984,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getCounters().getChangedFilesCount() == 3
         result.getValue().getCounters().getFailedChangesCount() == 4
         result.getValue().getContinuationToken() == null
+        batchFailures.size() == 4
         batchFailures.contains(file4.getObjectPath())
         batchFailures.contains(file5.getObjectPath())
         batchFailures.contains(file6.getObjectPath())
@@ -1096,6 +1106,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Remove ACL recursive batches resume"() {
@@ -1117,6 +1128,7 @@ class DirectoryAPITest extends APISpec {
         (result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount()) == 4
         (result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount()) == 0
         result2.getContinuationToken() == null
+        result.getBatchFailures() == null
     }
 
     def "Remove ACL recursive batches progress"() {
@@ -1136,6 +1148,7 @@ class DirectoryAPITest extends APISpec {
         result.getCounters().getChangedFilesCount() == 4
         result.getCounters().getFailedChangesCount() == 0
         result.getContinuationToken() == null
+        result.getBatchFailures() == null
         progress.batchCounters.size() == 4
         (progress.batchCounters[0].getChangedFilesCount() + progress.batchCounters[0].getChangedDirectoriesCount()) == 2
         (progress.batchCounters[1].getChangedFilesCount() + progress.batchCounters[1].getChangedDirectoriesCount()) == 2
@@ -1280,6 +1293,7 @@ class DirectoryAPITest extends APISpec {
         result.getValue().getCounters().getChangedFilesCount() == 3
         result.getValue().getCounters().getFailedChangesCount() == 4
         result.getValue().getContinuationToken() == null
+        batchFailures.size() == 4
         batchFailures.contains(file4.getObjectPath())
         batchFailures.contains(file5.getObjectPath())
         batchFailures.contains(file6.getObjectPath())
@@ -1388,8 +1402,15 @@ class DirectoryAPITest extends APISpec {
         List<AccessControlChangeCounters> batchCounters = new ArrayList<>()
         List<AccessControlChangeCounters> cumulativeCounters = new ArrayList<>()
 
+        List<AccessControlChangeFailure> firstFailures = new ArrayList<>()
+        boolean firstFailure = false
+
         @Override
         void accept(Response<AccessControlChanges> response) {
+            if (!firstFailure && response.getValue().getBatchFailures().size() > 0) {
+                firstFailures.addAll(response.getValue().getBatchFailures())
+                firstFailure = true
+            }
             failures.addAll(response.getValue().getBatchFailures())
             batchCounters.addAll(response.getValue().getBatchCounters())
             cumulativeCounters.addAll(response.getValue().getAggregateCounters())
