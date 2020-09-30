@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -39,11 +40,13 @@ import reactor.core.publisher.Mono;
 class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
     implements Key, Key.Definition, Key.UpdateWithCreate, Key.UpdateWithImport {
 
+    private final ClientLogger logger = new ClientLogger(this.getClass());
+
     private final Vault vault;
 
     private CreateKeyOptions createKeyRequest;
     private UpdateKeyOptions updateKeyRequest;
-    private ImportKeyOptions importKeyRequest;
+    private ImportKeyOptions importKeyRequest = null;
 
     private CryptographyAsyncClient cryptographyClient;
 
@@ -340,7 +343,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public KeyImpl withLocalKeyToImport(JsonWebKey key) {
-        importKeyRequest = new ImportKeyOptions(name(), key);
+        if (importKeyRequest == null) {
+            importKeyRequest = new ImportKeyOptions(name(), key);
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("Not in import flow"));
+        }
         return this;
     }
 
@@ -361,7 +368,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public KeyImpl withHsm(boolean isHsm) {
-        importKeyRequest.setHardwareProtected(isHsm);
+        if (importKeyRequest != null) {
+            importKeyRequest.setHardwareProtected(isHsm);
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("Not in import flow"));
+        }
         return this;
     }
 
