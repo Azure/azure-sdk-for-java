@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.UserAgentUtil;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -31,6 +32,7 @@ import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATF
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.USER_AGENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -64,7 +66,53 @@ public class ConnectionHandlerTest {
     }
 
     @Test
-    public void createHandler() {
+    void constructorNull() {
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
+            null, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
+            CONNECTION_ID, null, PRODUCT, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
+            CONNECTION_ID, HOSTNAME, null, CLIENT_VERSION, VERIFY_MODE, CLIENT_OPTIONS));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
+            CONNECTION_ID, HOSTNAME, PRODUCT, null, VERIFY_MODE, CLIENT_OPTIONS));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
+            CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null, CLIENT_OPTIONS));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(
+            CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE, null));
+    }
+
+    @Test
+    void applicationIdNotSet() {
+        // Arrange
+        final ClientOptions options = new ClientOptions();
+        final String expected = UserAgentUtil.toUserAgentString(null, PRODUCT, CLIENT_VERSION, null);
+
+        // Act
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
+            VERIFY_MODE, options);
+
+        // Assert
+        final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
+        assertEquals(expected, userAgent);
+    }
+
+    @Test
+    void applicationIdSet() {
+        // Arrange
+        final ClientOptions options = new ClientOptions().setApplicationId("my-application-id");
+        final String expected = UserAgentUtil.toUserAgentString(options.getApplicationId(), PRODUCT, CLIENT_VERSION, null);
+
+        // Act
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
+            VERIFY_MODE, options);
+
+        // Assert
+        final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
+        assertEquals(expected, userAgent);
+    }
+
+    @Test
+    void createHandler() {
         // Arrange
         final Map<String, String> expected = new HashMap<>();
         expected.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
@@ -93,7 +141,7 @@ public class ConnectionHandlerTest {
     }
 
     @Test
-    public void addsSslLayer() {
+    void addsSslLayer() {
         // Arrange
         final TransportInternal transport = mock(TransportInternal.class);
         final Connection connection = mock(Connection.class);
@@ -116,7 +164,7 @@ public class ConnectionHandlerTest {
     }
 
     @Test
-    public void onConnectionInit() {
+    void onConnectionInit() {
         // Arrange
         final String expectedHostname = String.join(":", HOSTNAME, String.valueOf(AMQPS_PORT));
         final Map<String, Object> expectedProperties = new HashMap<>(handler.getConnectionProperties());

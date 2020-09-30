@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -59,6 +60,13 @@ public class ConnectionHandler extends Handler {
 
         add(new Handshaker());
 
+        Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
+        Objects.requireNonNull(hostname, "'hostname' cannot be null.");
+        Objects.requireNonNull(product, "'product' cannot be null.");
+        Objects.requireNonNull(clientVersion, "'clientVersion' cannot be null.");
+        Objects.requireNonNull(verifyMode, "'verifyMode' cannot be null.");
+        Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+
         this.verifyMode = Objects.requireNonNull(verifyMode, "'verifyMode' cannot be null");
         this.connectionProperties = new HashMap<>();
         this.connectionProperties.put(PRODUCT.toString(), product);
@@ -66,7 +74,9 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
-        final String applicationId = clientOptions != null ? clientOptions.getApplicationId() : null;
+        final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
+            ? clientOptions.getApplicationId()
+            : null;
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, product, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
