@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Migration level result for Sql server to Azure Sql DB migration.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSqlServerSqlDbTaskOutputMigrationLevel.class)
 @JsonTypeName("MigrationLevelOutput")
 public class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends MigrateSqlServerSqlDbTaskOutput {
     /**
