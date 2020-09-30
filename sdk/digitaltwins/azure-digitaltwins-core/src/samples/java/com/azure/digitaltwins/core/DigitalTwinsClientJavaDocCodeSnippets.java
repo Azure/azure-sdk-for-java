@@ -533,9 +533,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // END: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String
 
         // BEGIN: com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Context
-        PagedIterable<IncomingRelationship> pagedIncomingRelationshipsWithContext = digitalTwinsSyncClient.listIncomingRelationships(
-            "myDigitalTwinId",
-            new Context("key", "value"));
+        PagedIterable<IncomingRelationship> pagedIncomingRelationshipsWithContext =
+            digitalTwinsSyncClient.listIncomingRelationships(
+                "myDigitalTwinId",
+                new Context("key", "value"));
 
         for (IncomingRelationship rel : pagedIncomingRelationshipsWithContext) {
             System.out.println(
