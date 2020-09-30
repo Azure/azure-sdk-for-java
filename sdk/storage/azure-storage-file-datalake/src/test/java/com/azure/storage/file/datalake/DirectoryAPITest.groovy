@@ -681,6 +681,64 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    def "Set ACL recursive continue on failure batch failures"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
+            new PathSetAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true).setBatchSize(2).setProgressHandler(progress), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        batchFailures.size() == progress.firstFailures.size()
+        for (def f : progress.firstFailures) {
+            assert batchFailures.contains(f.getName())
+        }
+        result.getValue().getContinuationToken() == null
+    }
+
     def "Set ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -991,6 +1049,64 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(subdir3.getObjectPath())
     }
 
+    def "Update ACL recursive continue on failure batch failures"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
+            new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries).setContinueOnFailure(true).setBatchSize(2).setProgressHandler(progress), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        batchFailures.size() == progress.firstFailures.size()
+        for (def f : progress.firstFailures) {
+            assert batchFailures.contains(f.getName())
+        }
+        result.getValue().getContinuationToken() == null
+    }
+
     def "Update ACL recursive continue on failure batches resume"() {
         setup:
         fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
@@ -1298,6 +1414,64 @@ class DirectoryAPITest extends APISpec {
         batchFailures.contains(file5.getObjectPath())
         batchFailures.contains(file6.getObjectPath())
         batchFailures.contains(subdir3.getObjectPath())
+    }
+
+    def "Remove ACL recursive continue on failure batch failures"() {
+        setup:
+        fsc.getRootDirectoryClient().setAccessControlList(executeOnlyAccessControlEntries, null, null)
+        String topDirName = generatePathName()
+
+        // Create tree using AAD creds
+        def topDirOauthClient = getOAuthServiceClient().getFileSystemClient(fsc.getFileSystemName())
+            .getDirectoryClient(topDirName)
+        topDirOauthClient.create()
+        def subdir1 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file1 = subdir1.createFile(generatePathName())
+        def file2 = subdir1.createFile(generatePathName())
+        def subdir2 = topDirOauthClient.createSubdirectory(generatePathName())
+        def file3 = subdir2.createFile(generatePathName())
+
+        // Only allow subowner rights to the directory and it's subpaths
+        def subowner = getRandomUUID()
+        def rp = RolePermissions.parseSymbolic("rwx", false)
+        def pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp)
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
+        subdir1.setPermissions(pathPermissions, null, subowner)
+        file1.setPermissions(pathPermissions, null, subowner)
+        file2.setPermissions(pathPermissions, null, subowner)
+        subdir2.setPermissions(pathPermissions, null, subowner)
+        file3.setPermissions(pathPermissions, null, subowner)
+
+        // Create resources as super user (using shared key)
+        def file4 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file5 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def file6 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createFile(generatePathName())
+        def subdir3 = fsc.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName())
+
+        // Create a user delegation sas that delegates an owner when creating files
+        def subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner)
+
+        def progress = new InMemoryAccessControlRecursiveChangeProgress()
+
+        when:
+        def result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
+            new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries).setContinueOnFailure(true).setBatchSize(2).setProgressHandler(progress), null, null)
+
+        def batchFailures = result.getValue().getBatchFailures().stream().map( { failure -> failure.getName() } ).collect(Collectors.toList())
+
+        then:
+        result.getValue().getCounters().getChangedDirectoriesCount() == 3
+        result.getValue().getCounters().getChangedFilesCount() == 3
+        result.getValue().getCounters().getFailedChangesCount() == 4
+        batchFailures.size() == progress.firstFailures.size()
+        for (def f : progress.firstFailures) {
+            assert batchFailures.contains(f.getName())
+        }
+        result.getValue().getContinuationToken() == null
     }
 
     def "Remove ACL recursive continue on failure batches resume"() {
