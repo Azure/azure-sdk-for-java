@@ -9,17 +9,13 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.azure.communication.administration.models.*;
 import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
-import org.junit.jupiter.api.Assertions;
 
 public class ReadmeSamples {
 
@@ -131,13 +127,9 @@ public class ReadmeSamples {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-        CommunicationClientCredential credential = new CommunicationClientCredential(accessToken);
-        HttpPipelinePolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(credential);
-
         PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
             .endpoint(endpoint)
-            .credential(credential)
-            .addPolicy(hmacAuthenticationPolicy)
+            .credential(new CommunicationClientCredential(accessToken))
             .httpClient(httpClient)
             .buildClient();
 
@@ -149,16 +141,14 @@ public class ReadmeSamples {
      *
      * @return supported countries
      */
-    public List<PhoneNumberCountry> getSupportedCountries() {
+    public PagedIterable<PhoneNumberCountry> getSupportedCountries() {
         String locale = "en-us";
 
         try {
             PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-            List<PhoneNumberCountry> phoneNumberCountries = phoneNumberClient
-                .listAllSupportedCountries(locale)
-                .stream()
-                .collect(Collectors.toList());
+            PagedIterable<PhoneNumberCountry> phoneNumberCountries = phoneNumberClient
+                .listAllSupportedCountries(locale);
 
             for (PhoneNumberCountry phoneNumberCountry:
                 phoneNumberCountries) {
@@ -178,16 +168,14 @@ public class ReadmeSamples {
      *
      * @return the acquired phone numbers
      */
-    public List<AcquiredPhoneNumber> getAcquiredPhoneNumbers() {
+    public PagedIterable<AcquiredPhoneNumber> getAcquiredPhoneNumbers() {
         String locale = "en-us";
 
         try {
             PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-            List<AcquiredPhoneNumber> acquiredPhoneNumbers = phoneNumberClient
-                .listAllPhoneNumbers(locale)
-                .stream()
-                .collect(Collectors.toList());
+            PagedIterable<AcquiredPhoneNumber> acquiredPhoneNumbers = phoneNumberClient
+                .listAllPhoneNumbers(locale);
 
             for (AcquiredPhoneNumber acquiredPhoneNumber:
                  acquiredPhoneNumbers) {
@@ -206,17 +194,15 @@ public class ReadmeSamples {
      *
      * @return phone plans groups
      */
-    public List<PhonePlanGroup> getPhonePlanGroups() {
+    public PagedIterable<PhonePlanGroup> getPhonePlanGroups() {
         String countryCode = "US";
         String locale = "en-us";
 
         try {
             PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-            List<PhonePlanGroup> phonePlanGroups = phoneNumberClient
-                .listPhonePlanGroups(countryCode, locale, true)
-                .stream()
-                .collect(Collectors.toList());
+            PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
+                .listPhonePlanGroups(countryCode, locale, true);
 
             for (PhonePlanGroup phonePlanGroup:
                 phonePlanGroups) {
@@ -236,7 +222,7 @@ public class ReadmeSamples {
      *
      * @return phone plans
      */
-    public List<PhonePlan> getPhonePlansInGroup() {
+    public PagedIterable<PhonePlan> getPhonePlansInGroup() {
         String countryCode = "US";
         String locale = "en-us";
         String phonePlanGroupId = "PHONE_PLAN_GROUP_ID";
@@ -244,10 +230,8 @@ public class ReadmeSamples {
         try {
             PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-            List<PhonePlan> phonePlans = phoneNumberClient
-                .listPhonePlans(countryCode, phonePlanGroupId, locale)
-                .stream()
-                .collect(Collectors.toList());
+            PagedIterable<PhonePlan> phonePlans = phoneNumberClient
+                .listPhonePlans(countryCode, phonePlanGroupId, locale);
 
             for (PhonePlan phonePlan:
                 phonePlans) {
