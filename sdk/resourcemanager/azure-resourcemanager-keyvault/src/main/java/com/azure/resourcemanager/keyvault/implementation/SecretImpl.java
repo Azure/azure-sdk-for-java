@@ -41,7 +41,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
 
     @Override
     public String id() {
-        return innerModel().getId();
+        return this.innerModel() == null ? null : innerModel().getId();
     }
 
     @Override
