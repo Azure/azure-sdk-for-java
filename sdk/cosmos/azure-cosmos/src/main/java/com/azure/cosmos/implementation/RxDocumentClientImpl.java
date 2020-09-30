@@ -222,14 +222,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.clientId = clientIdGenerator.getAndDecrement();
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
-        this.diagnosticsClientConfig.withActiveClientCounter(this.activeClientsCnt);
+        this.diagnosticsClientConfig.withActiveClientCounter(activeClientsCnt);
 
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
         this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(connectionPolicy.isMultipleWriteRegionsEnabled());
         this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(connectionPolicy.isEndpointDiscoveryEnabled());
         this.diagnosticsClientConfig.withPreferredRegions(connectionPolicy.getPreferredRegions());
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
-
 
         logger.info(
             "Initializing DocumentClient [{}] with"

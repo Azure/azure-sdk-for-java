@@ -50,6 +50,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,9 +80,9 @@ public class DeployImageFromContainerRegistryToKubernetes {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException, InterruptedException {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgaks", 15);
-        final String acrName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("acrsample", 20);
-        final String aksName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("akssample", 30);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgaks", 15);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
+        final String aksName = Utils.randomResourceName(azureResourceManager, "akssample", 30);
         final String rootUserName = "aksuser";
         final Region region = Region.US_EAST;
         final String dockerImageName = "nginx";
@@ -304,7 +305,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 System.err.println(e.getMessage());
             }
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             for (Namespace namespace : kubernetesClient.namespaces().list().getItems()) {
                 System.out.println("\tFound Kubernetes namespace: " + namespace.toString());
             }
@@ -333,7 +334,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
             System.out.println("Creating new secret: " + kubernetesClient.secrets().inNamespace(aksNamespace).create(secretBuilder.build()));
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             for (Secret kubeS : kubernetesClient.secrets().inNamespace(aksNamespace).list().getItems()) {
                 System.out.println("\tFound secret: " + kubeS);
@@ -370,7 +371,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .build();
 
             System.out.println("Creating a replication controller: " + kubernetesClient.replicationControllers().inNamespace(aksNamespace).create(rc));
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             rc = kubernetesClient.replicationControllers().inNamespace(aksNamespace).withName("acrsample-rc").get();
             System.out.println("Found replication controller: " + rc.toString());
@@ -400,7 +401,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
             System.out.println("Creating a service: " + kubernetesClient.services().inNamespace(aksNamespace).create(lbService));
 
-            ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             System.out.println("\tFound service: " + kubernetesClient.services().inNamespace(aksNamespace).withName(aksLbIngressName).get());
 
@@ -423,7 +424,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
                 if (timeout > 0) {
                     timeout -= 30000; // 30 seconds
-                    ResourceManagerUtils.InternalRuntimeContext.sleep(30000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(30));
                 }
             }
 

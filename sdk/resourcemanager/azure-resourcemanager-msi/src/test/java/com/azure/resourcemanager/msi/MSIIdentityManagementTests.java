@@ -26,6 +26,7 @@ import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -156,7 +157,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestBase {
                 .withoutAccessTo(resourceGroup.id(), BuiltInRole.READER)
                 .apply();
 
-        ResourceManagerUtils.InternalRuntimeContext.sleep(30 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
         // Ensure role assignment removed
         //

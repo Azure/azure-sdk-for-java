@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestAssetDefaults.*;
 import static com.azure.digitaltwins.core.TestAssetsHelper.*;
@@ -25,6 +26,7 @@ import static com.azure.digitaltwins.core.helpers.UniqueIdHelper.getUniqueModelI
 import static java.net.HttpURLConnection.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBase {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsRelationshipTest.class);
@@ -45,45 +47,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
         try {
             // Create floor, room and hvac model
-            createModelsRunner(
-                floorModelId,
-                roomModelId,
-                hvacModelId,
-                modelsList -> {
-                    Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsList);
-                    logger.info("Created models successfully");
-                }
-            );
-
-            // Create floor twin
-            createFloorTwinRunner(
-                floorTwinId,
-                floorModelId,
-                (twinId, twin) -> {
-                    BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
-                    logger.info("Created {} twin successfully", createdTwin.getId());
-                }
-            );
-
-            // Create room twin
-            createRoomTwinRunner(
-                roomTwinId,
-                roomModelId,
-                (twinId, twin) -> {
-                    BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
-                    logger.info("Created {} twin successfully", createdTwin.getId());
-                }
-            );
-
-            // Create hvac twin
-            createHvacTwinRunner(
-                hvacTwinId,
-                hvacModelId,
-                (twinId, twin) -> {
-                    BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
-                    logger.info("Created {} twin successfully", createdTwin.getId());
-                }
-            );
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
             String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
@@ -224,5 +188,120 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 fail("Test cleanup failed", ex);
             }
         }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        List<String> createdRelationshipIds = new ArrayList<>();
+
+        try {
+            createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+
+            // Create large number of relationships to test paging functionality
+            // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
+            // Create relationships from Floor -> Room
+            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+                String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
+                client.createRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
+                createdRelationshipIds.add(relationshipId);
+            }
+
+            // LIST relationships
+            List<String> relationshipsTargetIds = new ArrayList<>();
+            PagedIterable<BasicRelationship> listRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
+
+            AtomicInteger pageCount = new AtomicInteger();
+            listRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
+                pageCount.getAndIncrement();
+                logger.info("content for this page " + pageCount);
+                for (BasicRelationship data: relationshipsPagedResponse.getValue())
+                {
+                    logger.info(data.getId());
+                }
+            });
+
+            assertTrue(pageCount.get() > 1, "Number of pages must be more than one.");
+
+        } finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                createdRelationshipIds.forEach(relationshipId -> client.deleteRelationship(floorTwinId, relationshipId));
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                client.deleteDigitalTwin(floorTwinId);
+                client.deleteDigitalTwin(roomTwinId);
+                client.deleteDigitalTwin(hvacTwinId);
+
+                logger.info("Deleting created models.");
+                client.deleteModel(floorModelId);
+                client.deleteModel(roomModelId);
+                client.deleteModel(hvacModelId);
+            } catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    private void createModelsAndTwins(DigitalTwinsClient client, String floorModelId, String roomModelId, String hvacModelId, String floorTwinId, String roomTwinId, String hvacTwinId) throws JsonProcessingException {
+        // Create floor, room and hvac model
+        createModelsRunner(
+            floorModelId,
+            roomModelId,
+            hvacModelId,
+            modelsList -> {
+                Iterable<DigitalTwinsModelData> createdModels = client.createModels(modelsList);
+                logger.info("Created models successfully");
+            }
+        );
+
+        // Create floor twin
+        createFloorTwinRunner(
+            floorTwinId,
+            floorModelId,
+            (twinId, twin) -> {
+                BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
+                logger.info("Created {} twin successfully", createdTwin.getId());
+            }
+        );
+
+        // Create room twin
+        createRoomTwinRunner(
+            roomTwinId,
+            roomModelId,
+            (twinId, twin) -> {
+                BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
+                logger.info("Created {} twin successfully", createdTwin.getId());
+            }
+        );
+
+        // Create hvac twin
+        createHvacTwinRunner(
+            hvacTwinId,
+            hvacModelId,
+            (twinId, twin) -> {
+                BasicDigitalTwin createdTwin = client.createDigitalTwin(twinId, twin, BasicDigitalTwin.class);
+                logger.info("Created {} twin successfully", createdTwin.getId());
+            }
+        );
     }
 }

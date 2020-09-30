@@ -44,11 +44,11 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int frontendVMCount = 4;
         final int backendVMCount = 4;
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEPP", 24);
-        final String frontEndNsgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("fensg", 24);
-        final String backEndNsgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("bensg", 24);
-        final String networkName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("vnetCOMV", 24);
-        final String storageAccountName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("stgCOMV", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEPP", 24);
+        final String frontEndNsgName = Utils.randomResourceName(azureResourceManager, "fensg", 24);
+        final String backEndNsgName = Utils.randomResourceName(azureResourceManager, "bensg", 24);
+        final String networkName = Utils.randomResourceName(azureResourceManager, "vnetCOMV", 24);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "stgCOMV", 20);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_SOUTH_CENTRAL;

@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 public class HostnameSslTests extends AppServiceTest {
     private String webappName = "";
     private String appServicePlanName = "";
@@ -83,7 +85,7 @@ public class HostnameSslTests extends AppServiceTest {
                     response = curl("https://" + webappName + "." + domainName);
                 } catch (SSLPeerUnverifiedException e) {
                     retryCount--;
-                    ResourceManagerUtils.InternalRuntimeContext.sleep(5000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 }
             }
             if (retryCount == 0) {

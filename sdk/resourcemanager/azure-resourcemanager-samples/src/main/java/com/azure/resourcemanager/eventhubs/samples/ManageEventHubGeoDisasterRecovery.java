@@ -20,6 +20,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.time.Duration;
+
 /**
  * Azure Event Hub sample for managing geo disaster recovery pairing -
  *   - Create two event hub namespaces
@@ -35,11 +37,11 @@ public class ManageEventHubGeoDisasterRecovery {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rgNEMV_", 24);
-        final String primaryNamespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ns", 14);
-        final String secondaryNamespaceName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ns", 14);
-        final String geoDRName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("geodr", 14);
-        final String eventHubName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("eh", 14);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV_", 24);
+        final String primaryNamespaceName = Utils.randomResourceName(azureResourceManager, "ns", 14);
+        final String secondaryNamespaceName = Utils.randomResourceName(azureResourceManager, "ns", 14);
+        final String geoDRName = Utils.randomResourceName(azureResourceManager, "geodr", 14);
+        final String eventHubName = Utils.randomResourceName(azureResourceManager, "eh", 14);
         boolean isFailOverSucceeded = false;
         EventHubDisasterRecoveryPairing pairing = null;
 
@@ -87,7 +89,7 @@ public class ManageEventHubGeoDisasterRecovery {
 
             while (pairing.provisioningState() != ProvisioningStateDR.SUCCEEDED) {
                 pairing = pairing.refresh();
-                ResourceManagerUtils.InternalRuntimeContext.sleep(15 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
                     throw new IllegalStateException("Provisioning state of the pairing is FAILED");
                 }
@@ -112,7 +114,7 @@ public class ManageEventHubGeoDisasterRecovery {
             Utils.print(eventHubInPrimaryNamespace);
 
             System.out.println("Waiting for 60 seconds to allow metadata to sync across primary and secondary");
-            ResourceManagerUtils.InternalRuntimeContext.sleep(60 * 1000);    // Wait for syncing to finish
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));    // Wait for syncing to finish
 
             System.out.println("Retrieving the event hubs in secondary namespace");
 

@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,7 +106,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (isProviderRegistered(provider)) {
             return Mono.empty();
         }
-        ResourceManagerUtils.InternalRuntimeContext.sleep(5 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         return Mono.error(new ProviderUnregisteredException());
     }
 

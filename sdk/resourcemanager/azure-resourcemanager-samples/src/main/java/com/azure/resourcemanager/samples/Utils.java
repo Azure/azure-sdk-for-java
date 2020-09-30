@@ -11,6 +11,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -22,8 +23,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerState;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
@@ -201,6 +204,7 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -213,6 +217,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -222,6 +227,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -229,11 +235,81 @@ import java.util.stream.Collectors;
  */
 
 public final class Utils {
+
+    private Utils() {
+    }
+
     /** @return a generated password */
     public static String password() {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager azure, String prefix, int maxLen) {
+        return azure.resourceGroups().manager().internalContext().randomResourceName(prefix, maxLen);
+    }
+
+    /**
+     * Generates the specified number of random resource names with the same prefix.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to be used if possible
+     * @param maxLen the maximum length for the random generated name
+     * @param count the number of names to generate
+     * @return the randomized resource names.
+     */
+    public static String[] randomResourceNames(AzureResourceManager azure, String prefix, int maxLen, int count) {
+        String[] names = new String[count];
+        for (int i = 0; i < count; i++) {
+            names[i] = randomResourceName(azure, prefix, maxLen);
+        }
+        return names;
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager azure) {
+        return azure.resourceGroups().manager().internalContext().randomUuid();
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager.Authenticated authenticated, String prefix, int maxLen) {
+        return authenticated.roleAssignments().manager().internalContext().randomResourceName(prefix, maxLen);
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager.Authenticated authenticated) {
+        return authenticated.roleAssignments().manager().internalContext().randomUuid();
     }
 
     /**
@@ -2175,17 +2251,33 @@ public final class Utils {
     }
 
     /**
-     * Uploads a file to an Azure app service.
+     * Uploads a file to an Azure app service for Web App.
      *
      * @param profile the publishing profile for the app service.
      * @param fileName the name of the file on server
      * @param file the local file
      */
     public static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot/webapps";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    /**
+     * Uploads a file to an Azure app service for Function App.
+     *
+     * @param profile the publishing profile for the app service.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileForFunctionViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    private static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file, String path) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
-        String path = "./site/wwwroot/webapps";
         if (fileName.contains("/")) {
             int lastslash = fileName.lastIndexOf('/');
             path = path + "/" + fileName.substring(0, lastslash);
@@ -2207,10 +2299,6 @@ public final class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Utils() {
-
     }
 
     /**
@@ -3250,41 +3338,82 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-    public static Response<String> curl(String urlString) {
+    /**
+     * Sends a GET request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
+     * The method does not handle 301 redirect.
+     *
+     * @param urlString the target URL.
+     * @return Content of the HTTP response.
+     */
+    public static String sendGetRequest(String urlString) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Mono<Response<Flux<ByteBuffer>>> response =
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            } else if (t instanceof HttpResponseException
+                                && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
+                                retry = true;
+                            }
+
+                            if (retry) {
+                                logger.info("retry GET request to {}", urlString);
+                            }
+                            return retry;
+                        }));
+            Response<String> ret = stringResponse(response).block();
+            return ret == null ? null : ret.getValue();
         } catch (MalformedURLException e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
 
-    public static String get(String urlString) {
+    /**
+     * Sends a POST request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
+     *
+     * @param urlString the target URL.
+     * @param body the request body.
+     * @return Content of the HTTP response.
+     * */
+    public static String sendPostRequest(String urlString, String body) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
-            SimpleResponse<String> response = stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
+            Mono<Response<String>> response =
+                stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            }
+
+                            if (retry) {
+                                logger.info("retry POST request to {}", urlString);
+                            }
+                            return retry;
+                        }));
+            Response<String> ret = response.block();
+            return ret == null ? null : ret.getValue();
         } catch (Exception e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
 
-    public static String post(String urlString, String body) {
-        try {
-            SimpleResponse<String> response = stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
                 .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
@@ -3307,10 +3436,12 @@ public final class Utils {
         return path;
     }
 
-    private static WebAppTestClient httpClient = RestProxy.create(
+    private static final WebAppTestClient HTTP_CLIENT = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+                    .policies(
+                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")
@@ -3318,19 +3449,18 @@ public final class Utils {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
+        Mono<Response<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+        Mono<Response<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
     }
 
-    public static synchronized <T> int getSize(Iterable<T> iterable) {
+    public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
         Iterator<T> iterator = iterable.iterator();
         while (iterator.hasNext()) {
             iterator.next();
-            ++res;
         }
         return res;
     }

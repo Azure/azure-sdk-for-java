@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.9.0-beta.1 (Unreleased)
+- Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.
 - Added support to specify block size when using BlobInputStream.
 
 - Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
