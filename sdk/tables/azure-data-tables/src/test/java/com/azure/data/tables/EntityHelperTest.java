@@ -23,6 +23,7 @@ public class EntityHelperTest {
         int i = 123;
         long l = 123L;
         String s = "Test";
+        SampleEntity.Color color = SampleEntity.Color.GREEN;
 
         Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
@@ -33,6 +34,7 @@ public class EntityHelperTest {
         props.put("IntField", i);
         props.put("LongField", l);
         props.put("StringField", s);
+        props.put("EnumField", color);
 
         TableEntity entity = new TableEntity("abc", "def");
         entity.addProperties(props);
@@ -46,6 +48,7 @@ public class EntityHelperTest {
         Assertions.assertEquals(i, result.getIntField());
         Assertions.assertEquals(l, result.getLongField());
         Assertions.assertEquals(s, result.getStringField());
+        Assertions.assertEquals(color, result.getEnumField());
     }
 
     @Test
@@ -58,6 +61,7 @@ public class EntityHelperTest {
         int i = 123;
         long l = 123L;
         String s = "Test";
+        SampleEntity.Color color = SampleEntity.Color.GREEN;
 
         SampleEntity entity = new SampleEntity("abc", "def");
         entity.setByteField(bytes);
@@ -68,6 +72,7 @@ public class EntityHelperTest {
         entity.setIntField(i);
         entity.setLongField(l);
         entity.setStringField(s);
+        entity.setEnumField(color);
 
         EntityHelper.setPropertiesFromGetters(entity);
 
@@ -79,5 +84,6 @@ public class EntityHelperTest {
         Assertions.assertEquals(entity.getProperties().get("IntField"), i);
         Assertions.assertEquals(entity.getProperties().get("LongField"), l);
         Assertions.assertEquals(entity.getProperties().get("StringField"), s);
+        Assertions.assertEquals(entity.getProperties().get("EnumField"), color);
     }
 }

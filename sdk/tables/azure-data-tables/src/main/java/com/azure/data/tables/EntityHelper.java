@@ -76,6 +76,16 @@ final class EntityHelper {
                 continue;
             }
 
+            Class<?> paramType = m.getParameterTypes()[0];
+            if (paramType.isEnum() && value instanceof String) {
+                try {
+                    value = Enum.valueOf(paramType.asSubclass(Enum.class), (String) value);
+                } catch (IllegalArgumentException e) {
+                    logger.logThrowableAsWarning(new IllegalArgumentException(String.format(
+                        "Failed to convert '%s' to value of enum '%s'", propName, paramType.getName()), e));
+                }
+            }
+
             try {
                 m.invoke(result, value);
             } catch (ReflectiveOperationException | IllegalArgumentException e) {

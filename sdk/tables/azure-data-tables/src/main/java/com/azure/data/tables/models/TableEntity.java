@@ -53,6 +53,16 @@ public class TableEntity {
     }
 
     /**
+     * Gets a single property from the properties map
+     *
+     * @param key Key for the property.
+     * @return Value of the property.
+     */
+    final public Object getProperty(String key) {
+        return properties.get(key);
+    }
+
+    /**
      * Gets the map of properties
      *
      * @return map of properties representing this entity
@@ -64,7 +74,7 @@ public class TableEntity {
     /**
      * Adds a property to the entity.
      *
-     * @param key Key to for the property.
+     * @param key Key for the property.
      * @param value Value of the property.
      *
      * @return The updated {@link TableEntity} object.

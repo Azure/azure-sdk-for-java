@@ -16,6 +16,7 @@ public class SampleEntity extends TableEntity {
     private int intField;
     private long longField;
     private String stringField;
+    private Color enumField;
 
     public SampleEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);
@@ -87,5 +88,34 @@ public class SampleEntity extends TableEntity {
 
     public void setStringField(String stringField) {
         this.stringField = stringField;
+    }
+
+    public Color getEnumField() {
+        return enumField;
+    }
+
+    public void setEnumField(Color enumField) {
+        this.enumField = enumField;
+    }
+
+    public enum Color {
+        RED(1),
+        GREEN(2),
+        BLUE(3);
+
+        private final int value;
+
+        private Color(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
     }
 }

@@ -232,6 +232,7 @@ public class TablesAsyncClientTest extends TestBase {
         int i = 123;
         long l = 123L;
         String s = "Test";
+        SampleEntity.Color color = SampleEntity.Color.GREEN;
 
         SampleEntity tableEntity = new SampleEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setByteField(bytes);
@@ -242,6 +243,7 @@ public class TablesAsyncClientTest extends TestBase {
         tableEntity.setIntField(i);
         tableEntity.setLongField(l);
         tableEntity.setStringField(s);
+        tableEntity.setEnumField(color);
 
         tableClient.createEntity(tableEntity).block(TIMEOUT);
 
@@ -257,6 +259,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(entity.getProperties().get("IntField"), i);
                 assertEquals(entity.getProperties().get("LongField"), l);
                 assertEquals(entity.getProperties().get("StringField"), s);
+                assertEquals(entity.getProperties().get("EnumField"), color.name());
             })
             .expectComplete()
             .verify();
@@ -416,6 +419,7 @@ public class TablesAsyncClientTest extends TestBase {
         int i = 123;
         long l = 123L;
         String s = "Test";
+        SampleEntity.Color color = SampleEntity.Color.GREEN;
 
         Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
@@ -426,6 +430,7 @@ public class TablesAsyncClientTest extends TestBase {
         props.put("IntField", i);
         props.put("LongField", l);
         props.put("StringField", s);
+        props.put("EnumField", color);
 
         tableEntity.addProperties(props);
 
@@ -454,6 +459,7 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(i, entity.getIntField());
                 assertEquals(l, entity.getLongField());
                 assertEquals(s, entity.getStringField());
+                assertEquals(color, entity.getEnumField());
             })
             .expectComplete()
             .verify();
