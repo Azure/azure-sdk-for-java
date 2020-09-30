@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.models.TableEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,10 +13,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class EntityHelperTest {
+    private final ClientLogger logger = new ClientLogger(EntityHelperTest.class);
 
     @Test
     public void testConvertToSubclass() {
-        byte[] bytes = new byte[]{1,2,3};
+        byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
         OffsetDateTime dateTime = OffsetDateTime.now();
         double d = 1.23D;
@@ -39,7 +41,7 @@ public class EntityHelperTest {
         TableEntity entity = new TableEntity("abc", "def");
         entity.addProperties(props);
 
-        SampleEntity result = EntityHelper.convertToSubclass(entity, SampleEntity.class);
+        SampleEntity result = EntityHelper.convertToSubclass(entity, SampleEntity.class, logger);
         Assertions.assertEquals(bytes, result.getByteField());
         Assertions.assertEquals(b, result.getBooleanField());
         Assertions.assertEquals(dateTime, result.getDateTimeField());
@@ -53,7 +55,7 @@ public class EntityHelperTest {
 
     @Test
     public void testSetPropertiesFromGetters() {
-        byte[] bytes = new byte[]{1,2,3};
+        byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
         OffsetDateTime dateTime = OffsetDateTime.now();
         double d = 1.23D;
@@ -74,7 +76,7 @@ public class EntityHelperTest {
         entity.setStringField(s);
         entity.setEnumField(color);
 
-        EntityHelper.setPropertiesFromGetters(entity);
+        EntityHelper.setPropertiesFromGetters(entity, logger);
 
         Assertions.assertEquals(entity.getProperties().get("ByteField"), bytes);
         Assertions.assertEquals(entity.getProperties().get("BooleanField"), b);

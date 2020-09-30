@@ -224,7 +224,7 @@ public class TablesAsyncClientTest extends TestBase {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        byte[] bytes = new byte[]{1,2,3};
+        byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
         OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         double d = 1.23D;
@@ -411,7 +411,7 @@ public class TablesAsyncClientTest extends TestBase {
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
-        byte[] bytes = new byte[]{1,2,3};
+        byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
         OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         double d = 1.23D;

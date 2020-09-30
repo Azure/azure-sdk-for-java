@@ -105,7 +105,7 @@ public class SampleEntity extends TableEntity {
 
         private final int value;
 
-        private Color(int value) {
+        Color(int value) {
             this.value = value;
         }
 

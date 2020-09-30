@@ -179,7 +179,7 @@ public class TableAsyncClient {
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
-        EntityHelper.setPropertiesFromGetters(entity);
+        EntityHelper.setPropertiesFromGetters(entity, logger);
         return implementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
             ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(),
             null, context).map(response -> {
@@ -232,7 +232,7 @@ public class TableAsyncClient {
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
-        EntityHelper.setPropertiesFromGetters(entity);
+        EntityHelper.setPropertiesFromGetters(entity, logger);
         if (updateMode == UpdateMode.REPLACE) {
             return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                 entity.getRowKey(), timeoutInt, null, "*",
@@ -322,7 +322,7 @@ public class TableAsyncClient {
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
-        EntityHelper.setPropertiesFromGetters(entity);
+        EntityHelper.setPropertiesFromGetters(entity, logger);
         if (updateMode == null || updateMode == UpdateMode.MERGE) {
             if (ifUnchanged) {
                 return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
@@ -558,7 +558,7 @@ public class TableAsyncClient {
 
                 final List<T> entities = entityResponseValue.stream()
                     .map(ModelHelper::createEntity)
-                    .map(e -> EntityHelper.convertToSubclass(e, resultType))
+                    .map(e -> EntityHelper.convertToSubclass(e, resultType, logger))
                     .collect(Collectors.toList());
 
                 return Mono.just(new EntityPaged<>(response, entities,
@@ -672,7 +672,7 @@ public class TableAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, String select,
                                                      Class<T> resultType) {
-        return getEntityWithResponse(partitionKey, rowKey, select,resultType).flatMap(FluxUtil::toMono);
+        return getEntityWithResponse(partitionKey, rowKey, select, resultType).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -748,7 +748,7 @@ public class TableAsyncClient {
                 // TODO: Potentially update logic to deserialize them all.
                 final TableEntity entity = ModelHelper.createEntity(matchingEntities.get(0));
                 sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    EntityHelper.convertToSubclass(entity, resultType)));
+                    EntityHelper.convertToSubclass(entity, resultType, logger)));
             });
     }
 }

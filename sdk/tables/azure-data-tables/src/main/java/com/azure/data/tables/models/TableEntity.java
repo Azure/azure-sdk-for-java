@@ -58,7 +58,7 @@ public class TableEntity {
      * @param key Key for the property.
      * @return Value of the property.
      */
-    final public Object getProperty(String key) {
+    public final Object getProperty(String key) {
         return properties.get(key);
     }
 
@@ -67,7 +67,7 @@ public class TableEntity {
      *
      * @return map of properties representing this entity
      */
-    final public Map<String, Object> getProperties() {
+    public final Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -80,7 +80,7 @@ public class TableEntity {
      * @return The updated {@link TableEntity} object.
      * @throws NullPointerException if {@code key} is null.
      */
-    final public TableEntity addProperty(String key, Object value) {
+    public final TableEntity addProperty(String key, Object value) {
         validateProperty(key, value);
         properties.put(key, value);
         return this;
@@ -93,7 +93,7 @@ public class TableEntity {
      *
      * @return The updated {@link TableEntity} object.
      */
-    final public TableEntity addProperties(Map<String, Object> properties) {
+    public final TableEntity addProperties(Map<String, Object> properties) {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             validateProperty(entry.getKey(), entry.getValue());
         }
@@ -128,7 +128,7 @@ public class TableEntity {
      *
      * @return the row key for the given entity
      */
-    final public String getRowKey() {
+    public final String getRowKey() {
         return (String) properties.get(TablesConstants.ROW_KEY);
     }
 
@@ -137,7 +137,7 @@ public class TableEntity {
      *
      * @return the partition key for the given entity
      */
-    final public String getPartitionKey() {
+    public final String getPartitionKey() {
         return (String) properties.get(TablesConstants.PARTITION_KEY);
     }
 
@@ -146,7 +146,7 @@ public class TableEntity {
      *
      * @return the Timestamp for the entity
      */
-    final public OffsetDateTime getTimestamp() {
+    public final OffsetDateTime getTimestamp() {
         return (OffsetDateTime) properties.get(TablesConstants.TIMESTAMP_KEY);
     }
 
@@ -155,7 +155,7 @@ public class TableEntity {
      *
      * @return the etag for the entity
      */
-    final public String getETag() {
+    public final String getETag() {
         return (String) properties.get(TablesConstants.ODATA_ETAG_KEY);
     }
 

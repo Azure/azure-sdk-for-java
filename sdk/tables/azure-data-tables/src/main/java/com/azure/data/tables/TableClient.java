@@ -458,7 +458,8 @@ public class TableClient {
      * @return the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType, Duration timeout) {
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType,
+                                               Duration timeout) {
         return getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, null).getValue();
     }
 

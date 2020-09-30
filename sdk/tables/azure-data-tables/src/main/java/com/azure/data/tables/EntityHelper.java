@@ -11,11 +11,13 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 final class EntityHelper {
-    private static final ClientLogger logger = new ClientLogger(EntityHelper.class);
-    private static final HashSet<String> tableEntityMethods = Arrays.stream(TableEntity.class.getMethods())
+    private static final HashSet<String> TABLE_ENTITY_METHODS = Arrays.stream(TableEntity.class.getMethods())
         .map(Method::getName).collect(Collectors.toCollection(HashSet::new));
 
-    static void setPropertiesFromGetters(TableEntity entity) {
+    private EntityHelper() {
+    }
+
+    static void setPropertiesFromGetters(TableEntity entity, ClientLogger logger) {
         Class<?> myClass = entity.getClass();
         if (myClass == TableEntity.class) {
             return;
@@ -24,7 +26,7 @@ final class EntityHelper {
         for (Method m : myClass.getMethods()) {
             // Skip any non-getter methods
             if (m.getName().length() < 3
-                || tableEntityMethods.contains(m.getName())
+                || TABLE_ENTITY_METHODS.contains(m.getName())
                 || (!m.getName().startsWith("get") && !m.getName().startsWith("is"))
                 || m.getParameterTypes().length != 0
                 || void.class.equals(m.getReturnType())) {
@@ -44,7 +46,7 @@ final class EntityHelper {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends TableEntity> T convertToSubclass(TableEntity entity, Class<T> clazz) {
+    static <T extends TableEntity> T convertToSubclass(TableEntity entity, Class<T> clazz, ClientLogger logger) {
         if (TableEntity.class == clazz) {
             return (T) entity;
         }
