@@ -11,10 +11,20 @@ package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 import java.util.Map;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Base class for MongoDB migration outputs.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MongoDbProgress.class)
+@JsonTypeName("MongoDbProgress")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Collection", value = MongoDbCollectionProgress.class),
+    @JsonSubTypes.Type(name = "Database", value = MongoDbDatabaseProgress.class),
+    @JsonSubTypes.Type(name = "Migration", value = MongoDbMigrationProgress.class)
+})
 public class MongoDbProgress {
     /**
      * The number of document bytes copied during the Copying stage.
@@ -83,13 +93,6 @@ public class MongoDbProgress {
      */
     @JsonProperty(value = "qualifiedName")
     private String qualifiedName;
-
-    /**
-     * The type of progress object. Possible values include: 'Migration',
-     * 'Database', 'Collection'.
-     */
-    @JsonProperty(value = "resultType", required = true)
-    private String resultType;
 
     /**
      * Possible values include: 'NotStarted', 'ValidatingInput',
@@ -310,26 +313,6 @@ public class MongoDbProgress {
      */
     public MongoDbProgress withQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
-        return this;
-    }
-
-    /**
-     * Get the type of progress object. Possible values include: 'Migration', 'Database', 'Collection'.
-     *
-     * @return the resultType value
-     */
-    public String resultType() {
-        return this.resultType;
-    }
-
-    /**
-     * Set the type of progress object. Possible values include: 'Migration', 'Database', 'Collection'.
-     *
-     * @param resultType the resultType value to set
-     * @return the MongoDbProgress object itself.
-     */
-    public MongoDbProgress withResultType(String resultType) {
-        this.resultType = resultType;
         return this;
     }
 

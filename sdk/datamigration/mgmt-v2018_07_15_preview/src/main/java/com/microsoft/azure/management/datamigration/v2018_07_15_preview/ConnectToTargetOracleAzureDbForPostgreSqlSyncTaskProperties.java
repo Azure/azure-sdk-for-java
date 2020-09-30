@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * PostgreSQL server and target server requirements for online migration for
  * Oracle source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties.class)
 @JsonTypeName("ConnectToTarget.Oracle.AzureDbForPostgreSql.Sync")
 public class ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties extends ProjectTaskProperties {
     /**

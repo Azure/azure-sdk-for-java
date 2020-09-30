@@ -8,9 +8,13 @@
 
 package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Describes the progress of a collection.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MongoDbCollectionProgress.class)
+@JsonTypeName("Collection")
 public class MongoDbCollectionProgress extends MongoDbProgress {
 }
