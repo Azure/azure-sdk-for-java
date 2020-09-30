@@ -794,6 +794,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
+    @Requires( { playbackMode() } )
     def "List ranges diff"() {
         given:
         primaryFileClient.create(1024)
@@ -839,6 +840,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
+    @Requires( { playbackMode() } )
     def "List ranges diff lease"() {
         given:
         def fileName = testResourceName.randomName("file", 60)
@@ -883,6 +885,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
+    @Requires( { playbackMode() } )
     def "List ranges diff fail"() {
         given:
         def fileName = testResourceName.randomName("file", 60)

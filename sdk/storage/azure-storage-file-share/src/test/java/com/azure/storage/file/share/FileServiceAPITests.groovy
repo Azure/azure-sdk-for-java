@@ -19,7 +19,7 @@ import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareSmbSettings
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.SmbMultichannel
-
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -233,6 +233,7 @@ class FileServiceAPITests extends APISpec {
         FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
     }
 
+    @Requires( { playbackMode() } )
     def "Set and get properties premium"() {
         given:
         def originalProperties = premiumFileServiceClient.getProperties()
