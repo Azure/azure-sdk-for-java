@@ -45,6 +45,7 @@ import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -1036,11 +1037,16 @@ public class IdentityClient {
         if (certificatePath != null) {
             return Files.readAllBytes(Paths.get(certificatePath));
         } else if (certificate != null) {
-            byte[] pemCertificateBytes = new byte[certificate.available()];
-            certificate.read(pemCertificateBytes);
-            return pemCertificateBytes;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = certificate.read(buffer, 0, buffer.length);
+            while (read != -1) {
+                outputStream.write(buffer, 0, read);
+                read = certificate.read(buffer, 0, buffer.length);
+            }
+            return outputStream.toByteArray();
         } else {
-            return null;
+            return new byte[0];
         }
     }
 
