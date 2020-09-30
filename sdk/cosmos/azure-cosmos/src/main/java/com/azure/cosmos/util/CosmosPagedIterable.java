@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  */
 public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<String, T, FeedResponse<T>> {
 
-    private CosmosPagedFlux<T> cosmosPagedFlux;
+    private final CosmosPagedFlux<T> cosmosPagedFlux;
 
     /**
      * Creates instance given {@link CosmosPagedFlux}.
@@ -42,7 +42,7 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      */
     @Beta(value = Beta.SinceVersion.V4_6_0)
     public CosmosPagedIterable<T> handle(Consumer<FeedResponse<T>> feedResponseConsumer) {
-        this.cosmosPagedFlux = this.cosmosPagedFlux.handle(feedResponseConsumer);
+        CosmosPagedFlux<T> cosmosPagedFlux = this.cosmosPagedFlux.handle(feedResponseConsumer);
         return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 }

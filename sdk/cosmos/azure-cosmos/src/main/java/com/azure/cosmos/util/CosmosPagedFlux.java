@@ -37,10 +37,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
-    private Consumer<FeedResponse<T>> feedResponseConsumer;
+    private final Consumer<FeedResponse<T>> feedResponseConsumer;
 
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this.optionsFluxFunction = optionsFluxFunction;
+        this.feedResponseConsumer = null;
     }
 
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
