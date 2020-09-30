@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
@@ -87,7 +88,7 @@ public final class FormRecognizerAsyncClient {
      * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
@@ -113,7 +114,7 @@ public final class FormRecognizerAsyncClient {
      * {@link RecognizeCustomFormsOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
@@ -172,7 +173,7 @@ public final class FormRecognizerAsyncClient {
      * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
@@ -202,7 +203,7 @@ public final class FormRecognizerAsyncClient {
      * {@link RecognizeCustomFormsOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
@@ -257,7 +258,7 @@ public final class FormRecognizerAsyncClient {
      * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize content operation until it has completed, has failed, or
-     * has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
@@ -281,7 +282,7 @@ public final class FormRecognizerAsyncClient {
      * that may be passed when recognizing content/layout on a form.
      *
      * @return A {@link PollerFlux} that polls the recognized content/layout operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
+     * has failed, or has been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
@@ -332,7 +333,7 @@ public final class FormRecognizerAsyncClient {
      * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
@@ -360,7 +361,7 @@ public final class FormRecognizerAsyncClient {
      * that may be passed when recognizing content/layout on a form.
      *
      * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a List of {@link FormPage}.
+     * been cancelled. The completed operation returns a list of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
@@ -408,7 +409,7 @@ public final class FormRecognizerAsyncClient {
      * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
@@ -433,7 +434,7 @@ public final class FormRecognizerAsyncClient {
      * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
@@ -488,7 +489,7 @@ public final class FormRecognizerAsyncClient {
      * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
@@ -506,7 +507,7 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
-     * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
+     * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
@@ -518,7 +519,7 @@ public final class FormRecognizerAsyncClient {
      * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
@@ -553,6 +554,167 @@ public final class FormRecognizerAsyncClient {
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string}
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl) {
+        return beginRecognizeBusinessCardsFromUrl(businessCardUrl, null);
+    }
+
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card trained
+     * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions}
+     *
+     * @param businessCardUrl The source URL to the input business card.
+     * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
+     * that may be passed when analyzing a business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCardUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions) {
+        return beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
+        String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
+        try {
+            Objects.requireNonNull(businessCardUrl, "'businessCardUrl' is required and cannot be null.");
+
+            recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+            final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                recognizeBusinessCardsOptions.getPollInterval(),
+                urlActivationOperation(
+                    () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
+                        "", new SourcePath().setSource(businessCardUrl), context)
+                              .map(response -> new FormRecognizerOperationResult(
+                                  parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                                          .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Recognizes business card data using optical character recognition (OCR) and a prebuilt business card
+     * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default).
+     * In other words, thev{@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long}
+     *
+     * @param businessCard The data of the document to recognize business card information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        Flux<ByteBuffer> businessCard, long length) {
+        return beginRecognizeBusinessCards(businessCard, length, null);
+    }
+
+    /**
+     * Recognizes business card data from documents using optical character recognition (OCR)
+     * and a prebuilt business card trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
+     *
+     * Note that the {@code businessCard} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long-RecognizeBusinessCardsOptions}
+     *
+     * @param businessCard The data of the document to recognize business card information from.
+     * @param length The exact length of the data.
+     * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
+     * that may be passed when analyzing a business card.
+     *
+     * @return A {@link PollerFlux} that polls the recognize business card operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code businessCard} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions) {
+        return beginRecognizeBusinessCards(businessCard, length, recognizeBusinessCardsOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
+        Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
+        Context context) {
+        try {
+            Objects.requireNonNull(businessCard, "'businessCard' is required and cannot be null.");
+            recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+            final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
+            return new PollerFlux<>(
+                recognizeBusinessCardsOptions.getPollInterval(),
+                streamActivationOperation(
+                    (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
+                        contentType, businessCard, length, isFieldElementsIncluded, "", context)
+                                        .map(response -> new FormRecognizerOperationResult(
+                                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                    businessCard, recognizeBusinessCardsOptions.getContentType()),
+                pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
+                (activationResponse, pollingContext) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
+                        modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                                          .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -674,5 +836,10 @@ public final class FormRecognizerAsyncClient {
     private static RecognizeReceiptsOptions
         getRecognizeReceiptOptions(RecognizeReceiptsOptions userProvidedOptions) {
         return userProvidedOptions == null ? new RecognizeReceiptsOptions() : userProvidedOptions;
+    }
+
+    private static RecognizeBusinessCardsOptions getRecognizeBusinessCardsOptions(
+        RecognizeBusinessCardsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeBusinessCardsOptions() : userProvidedOptions;
     }
 }

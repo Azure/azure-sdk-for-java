@@ -82,6 +82,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
+    static final String BUSINESS_CARD_JPG = "businessCard.jpg";
+    static final String BUSINESS_CARD_PNG = "businessCard.png";
     // Error code
     static final String BAD_ARGUMENT_CODE = "BadArgument";
     static final String INVALID_IMAGE_ERROR_CODE = "InvalidImage";
@@ -98,6 +100,18 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
     static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
+
+    // Business Card fields
+    static final String CONTACT_NAMES = "ContactNames";
+    static final String JOB_TITLES = "JobTitles";
+    static final String DEPARTMENTS = "Departments";
+    static final String EMAILS = "Emails";
+    static final String WEBSITES = "Websites";
+    static final String MOBILE_PHONES = "MobilePhones";
+    static final String OTHER_PHONES = "OtherPhones";
+    static final String FAXES = "Faxes";
+    static final String ADDRESSES = "Addresses";
+    static final String COMPANY_NAMES = "CompanyNames";
 
     Duration durationTestMode;
 
@@ -506,6 +520,54 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
+    // Business Card - data
+    @Test
+    abstract void recognizeBusinessCardData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataWithPngFile(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardDataWithBlankPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardFromDamagedPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Business card - URL
+
+    @Test
+    abstract void recognizeBusinessCardSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardInvalidSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardFromUrlIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBusinessCardSourceUrlWithPngFile(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
     // Receipt
     void validateReceiptDataFields(Map<String, FormField> actualRecognizedReceiptFields, boolean includeFieldElements) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
@@ -596,6 +658,56 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
+    // Business cards
+    void validateBusinessCardDataFields(Map<String, FormField> actualRecognizedBusinessCardFields, boolean includeFieldElements) {
+        final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
+        List<ReadResult> readResults = analyzeResult.getReadResults();
+        DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
+        Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
+
+        validateFieldValueTransforms(expectedReceiptFields.get(CONTACT_NAMES),
+            actualRecognizedBusinessCardFields.get(CONTACT_NAMES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(JOB_TITLES),
+            actualRecognizedBusinessCardFields.get(JOB_TITLES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(DEPARTMENTS),
+            actualRecognizedBusinessCardFields.get(DEPARTMENTS), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(EMAILS),
+            actualRecognizedBusinessCardFields.get(EMAILS), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(WEBSITES),
+            actualRecognizedBusinessCardFields.get(WEBSITES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(MOBILE_PHONES),
+            actualRecognizedBusinessCardFields.get(MOBILE_PHONES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(OTHER_PHONES),
+            actualRecognizedBusinessCardFields.get(OTHER_PHONES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(FAXES),
+            actualRecognizedBusinessCardFields.get(FAXES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(ADDRESSES),
+            actualRecognizedBusinessCardFields.get(ADDRESSES), readResults, includeFieldElements);
+
+        validateFieldValueTransforms(expectedReceiptFields.get(COMPANY_NAMES),
+            actualRecognizedBusinessCardFields.get(COMPANY_NAMES), readResults, includeFieldElements);
+    }
+
+    void validateBusinessCardResultData(List<RecognizedForm> actualBusinessCardList, boolean includeFieldElements) {
+        final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
+        for (int i = 0; i < actualBusinessCardList.size(); i++) {
+            final RecognizedForm actualBusinessCard = actualBusinessCardList.get(i);
+            validateLabeledData(actualBusinessCard, includeFieldElements, rawResponse.getReadResults(),
+                rawResponse.getDocumentResults().get(i));
+            validateBusinessCardDataFields(actualBusinessCard.getFields(), includeFieldElements);
+        }
+    }
+
+    // Others
+
     void invalidSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
     }
@@ -606,6 +718,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void urlRunner(Consumer<String> testRunner, String fileName) {
         testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
+    }
+
+    void storageUrlRunner(Consumer<String> testRunner, String fileName) {
+        testRunner.accept(getStorageTestingFileUrl(fileName));
     }
 
     void urlPdfUnlabeledRunner(Consumer<String> testRunner) {
@@ -624,6 +740,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 throw new RuntimeException("Local file not found.", e);
             }
         }
+    }
+
+    void localFilePathRunner(BiConsumer<String, Long> testRunner, String fileName) {
+        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
+        testRunner.accept(LOCAL_FILE_PATH + fileName, fileLength);
     }
 
     void damagedPdfDataRunner(BiConsumer<InputStream, Integer> testRunner) {
@@ -696,7 +817,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
-                assertNull(formField.getLabelData());
             });
         });
     }

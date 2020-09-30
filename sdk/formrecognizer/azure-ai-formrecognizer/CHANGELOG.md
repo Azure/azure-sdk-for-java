@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.1.0-beta.1 (Unreleased)
-
+### New Features
+- Added support for business card recognition.
 
 ## 3.0.1 (2020-09-10)
 - Updated dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.

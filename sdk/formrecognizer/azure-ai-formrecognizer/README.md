@@ -313,11 +313,96 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 }
 ```
 
+### Recognize business cards
+Recognize data from a USA sales receipts using a prebuilt model. Business card fields recognized by the service
+can be found [here][service_recognize_business_card].
+See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
+information from business card.
+
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L200-L274-->
+```java
+String businessCardUrl =
+    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+        + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+
+SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeBusinessCardPoller =
+    formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl);
+
+List<RecognizedForm> businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
+
+for (int i = 0; i < businessCardPageResults.size(); i++) {
+    RecognizedForm recognizedForm = businessCardPageResults.get(i);
+    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+    System.out.printf("----------- Recognized business card info for page %d -----------%n", i);
+    FormField contactNames = recognizedFields.get("ContactNames");
+    if (contactNames != null) {
+        if (FieldValueType.LIST == contactNames.getValue().getValueType()) {
+            List<FormField> businessCardItems = contactNames.getValue().asList();
+            businessCardItems.stream()
+                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
+                .map(formField -> formField.getValue().asMap())
+                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                    if ("FirstName".equals(key)) {
+                        if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                            String firstName = formField.getValue().asString();
+                            System.out.printf("First Name: %s, confidence: %.2f%n",
+                                firstName, contactNames.getConfidence());
+                        }
+                    }
+                    if ("LastName".equals(key)) {
+                        if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                            String lastName = formField.getValue().asString();
+                            System.out.printf("Last Name: %s, confidence: %.2f%n",
+                                lastName, contactNames.getConfidence());
+                        }
+                    }
+                }));
+        }
+    }
+    FormField jobTitles = recognizedFields.get("JobTitles");
+    if (jobTitles != null) {
+        if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
+            List<FormField> jobTitlesItems = jobTitles.getValue().asList();
+            jobTitlesItems.stream().forEach(formField -> {
+                if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                    String jobTitle = formField.getValue().asString();
+                    System.out.printf("Job Title: %s, confidence: %.2f%n",
+                        jobTitle, jobTitles.getConfidence());
+                }
+            });
+        }
+    }
+    FormField addresses = recognizedFields.get("Addresses");
+    if (addresses != null) {
+        if (FieldValueType.LIST == addresses.getValue().getValueType()) {
+            List<FormField> addressesItems = addresses.getValue().asList();
+            addressesItems.stream().forEach(formField -> {
+                if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                    String address = formField.getValue().asString();
+                    System.out.printf("Address: %s, confidence: %.2f%n", address, addresses.getConfidence());
+                }
+            });
+        }
+    }
+    FormField companyName = recognizedFields.get("CompanyNames");
+    if (companyName != null) {
+        if (FieldValueType.LIST == companyName.getValue().getValueType()) {
+            List<FormField> companyNameItems = companyName.getValue().asList();
+            companyNameItems.stream().forEach(formField -> {
+                if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                    String companyNameValue = formField.getValue().asString();
+                    System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
+                        companyName.getConfidence());
+                }
+            });
+        }
+```
+
 ### Train a model
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L200-L220 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L280-L300 -->
 ```java
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -344,7 +429,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models in your Form Recognizer account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L224-L252 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L304-L332 -->
 ```java
 // First, we see how many custom models we have, and what our limit is
 AccountProperties accountProperties = formTrainingClient.getAccountProperties();
@@ -385,7 +470,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L259-L263 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L339-L343 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -420,7 +505,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `FormRecognizerAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L270-L273 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L350-L353 -->
 ```java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -500,6 +585,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CopyModel.java
 [copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CopyModelAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[service_recognize_business_card]: https://aka.ms/formrecognizer/businesscardfields
 [service_recognize_receipt]: https://aka.ms/formrecognizer/receiptfields
 [strongly_typed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src
