@@ -10,6 +10,9 @@ import org.springframework.util.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * properties class of ServiceEndpoints
+ */
 @Configuration
 @ConfigurationProperties("azure.service")
 public class ServiceEndpointsProperties {

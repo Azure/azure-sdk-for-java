@@ -34,7 +34,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         final KeyVaultEnvironmentPostProcessorHelper helper
             = new KeyVaultEnvironmentPostProcessorHelper(environment);
         if (hasMultipleKeyVaultsEnabled(environment)) {
-            final String property = environment.getProperty(KeyVaultProperties.getPropertyName(KeyVaultProperties.Property.ORDER), "");
+            final String property = environment.
+                getProperty(KeyVaultProperties.getPropertyName(KeyVaultProperties.Property.ORDER), "");
             final String[] keyVaultNames = property.split(",");
             for (int i = keyVaultNames.length - 1; i >= 0; i--) {
                 final String normalizedName = keyVaultNames[i].trim();
@@ -49,8 +50,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     /**
      * Is the key vault enabled.
-     *
-     * @param environment    the environment.
+     * @param environment  the environment.
      * @param normalizedName the normalized name used to differentiate between
      *                       multiple key vaults.
      * @return true if the key vault is enabled, false otherwise.
@@ -60,13 +60,13 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                 KeyVaultProperties.getPropertyName(normalizedName, KeyVaultProperties.Property.ENABLED),
                 Boolean.class,
                 true)
-            && environment.getProperty(KeyVaultProperties.getPropertyName(normalizedName, KeyVaultProperties.Property.URI)) != null
+            && environment.getProperty(KeyVaultProperties
+            .getPropertyName(normalizedName, KeyVaultProperties.Property.URI)) != null
             && isKeyVaultClientAvailable();
     }
 
     /**
      * Determine whether or not multiple key vaults are enabled.
-     *
      * @param environment the environment.
      * @return true if enabled, false otherwise.
      */
@@ -83,6 +83,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     public int getOrder() {
         return order;
     }
+
 
     public void setOrder(int order) {
         this.order = order;

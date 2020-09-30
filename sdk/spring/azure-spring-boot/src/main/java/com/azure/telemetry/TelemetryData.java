@@ -15,6 +15,7 @@ public class TelemetryData {
     public static final String HASHED_NAMESPACE = "hashedNamespace";
     public static final String TENANT_NAME = "tenantName";
 
+
     public static String getClassPackageSimpleName(Class<?> clazz) {
         if (clazz == null) {
             return "unknown";

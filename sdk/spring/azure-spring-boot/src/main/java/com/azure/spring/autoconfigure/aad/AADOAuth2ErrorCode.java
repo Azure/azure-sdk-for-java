@@ -3,6 +3,9 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+/**
+ * entity class of AADOAuth2ErrorCode
+ */
 public class AADOAuth2ErrorCode {
     public static final String CONDITIONAL_ACCESS_POLICY = "conditional_access_policy";
     public static final String INVALID_REQUEST = "invalid_request";

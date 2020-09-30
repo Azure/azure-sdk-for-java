@@ -20,6 +20,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * the class to get HashMac
+ */
 public final class GetHashMac {
     public static final String MAC_REGEX = "([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}";
     public static final String MAC_REGEX_ZERO = "([0]{2}[:-]){5}[0]{2}";
@@ -28,6 +31,7 @@ public final class GetHashMac {
     private GetHashMac() {
         super();
     }
+
 
     public static boolean isValidHashMacFormat(String hashMac) {
         if (hashMac == null || hashMac.isEmpty()) {
@@ -38,6 +42,7 @@ public final class GetHashMac {
         final Matcher matcher = hashedMacPattern.matcher(hashMac);
         return matcher.matches();
     }
+
 
     public static String getHashMac() {
         final String rawMac = getRawMac();

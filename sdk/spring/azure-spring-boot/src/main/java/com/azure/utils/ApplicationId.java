@@ -5,6 +5,9 @@ package com.azure.utils;
 
 import java.util.Optional;
 
+/**
+ * Util class for ApplicationId
+ */
 public class ApplicationId {
     //    There is 24 char limitation about the app id. So some abbreviation needs to be applied:
     //    az: for Azure

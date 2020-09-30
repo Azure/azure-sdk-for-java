@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * entity class of UserPrincipal
+ */
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;
 

@@ -97,6 +97,9 @@ public class AADB2CAutoConfiguration {
         }
     }
 
+    /**
+     * Automatic configuration class of AADB2COidc
+     */
     @Configuration
     @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
     @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = "oidc-enabled", havingValue = "true", matchIfMissing = true)

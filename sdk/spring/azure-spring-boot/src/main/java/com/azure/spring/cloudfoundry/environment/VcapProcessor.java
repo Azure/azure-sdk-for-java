@@ -96,6 +96,7 @@ public class VcapProcessor implements EnvironmentPostProcessor {
         return configs.stream().map(this::getVcapServiceConfig).collect(Collectors.toList());
     }
 
+
     public List<VcapPojo> parseVcapService(String vcapServices) {
         final List<VcapPojo> results = new ArrayList<>();
 

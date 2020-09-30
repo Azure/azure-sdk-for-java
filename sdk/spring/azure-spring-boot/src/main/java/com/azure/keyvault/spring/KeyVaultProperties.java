@@ -10,6 +10,9 @@ import java.util.stream.Stream;
 import com.azure.utils.Constants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * KeyVaultProperties
+ */
 @ConfigurationProperties(value = KeyVaultProperties.PREFIX)
 public class KeyVaultProperties {
 
@@ -132,7 +135,9 @@ public class KeyVaultProperties {
     private String tenantId;
     private String uri;
 
-
+    /**
+     * enum Property
+     */
     public enum Property {
         ALLOW_TELEMETRY("allow-telemetry"),
         CASE_SENSITIVE_KEYS("case-sensitive-keys"),
@@ -157,6 +162,7 @@ public class KeyVaultProperties {
             this.name = name;
         }
     }
+
 
     public static String getPropertyName(Property property) {
         return String.join(DELIMITER, PREFIX, property.getName());

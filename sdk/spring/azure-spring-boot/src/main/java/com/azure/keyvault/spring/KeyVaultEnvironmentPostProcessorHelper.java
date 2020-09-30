@@ -64,7 +64,8 @@ class KeyVaultEnvironmentPostProcessorHelper {
     public void addKeyVaultPropertySource(String normalizedName) {
         final String vaultUri = getPropertyValue(normalizedName, KeyVaultProperties.Property.URI);
         Assert.notNull(vaultUri, "vaultUri must not be null!");
-        final Long refreshInterval = Optional.ofNullable(getPropertyValue(normalizedName, KeyVaultProperties.Property.REFRESH_INTERVAL))
+        final Long refreshInterval = Optional
+                .ofNullable(getPropertyValue(normalizedName, KeyVaultProperties.Property.REFRESH_INTERVAL))
                 .map(Long::valueOf)
                 .orElse(DEFAULT_REFRESH_INTERVAL_MS);
         final List<String> secretKeys = Binder.get(this.environment)
@@ -112,7 +113,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     /**
      * Get the token credentials.
-     *
      * @return the token credentials.
      */
     public TokenCredential getCredentials() {
@@ -121,9 +121,8 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     /**
      * Get the token credentials.
-     *
      * @param normalizedName the normalized name of the key vault.
-     * @return the token credentials.
+     * @return the tocom.azure.core.util.logging.ClientLoggerken credentials.
      */
     public TokenCredential getCredentials(String normalizedName) {
         //use service principle to authenticate

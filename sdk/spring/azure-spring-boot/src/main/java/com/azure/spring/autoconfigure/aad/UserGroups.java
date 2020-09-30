@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * entity class of UserGroups
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserGroups {
 

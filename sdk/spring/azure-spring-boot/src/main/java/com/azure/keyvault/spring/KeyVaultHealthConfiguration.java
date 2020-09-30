@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+/**
+ * configuration class of KeyVaultHealth
+ */
 @Configuration
 @ConditionalOnClass({ SecretClient.class, HealthIndicator.class })
 @PropertySource("classpath:/azure-spring-actuator.properties")

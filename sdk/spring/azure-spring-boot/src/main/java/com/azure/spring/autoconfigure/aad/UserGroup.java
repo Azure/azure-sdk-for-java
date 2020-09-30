@@ -11,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * entity class of UserGroup
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserGroup implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;

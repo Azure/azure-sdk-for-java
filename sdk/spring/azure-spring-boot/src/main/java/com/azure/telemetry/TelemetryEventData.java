@@ -27,6 +27,7 @@ public class TelemetryEventData {
 
     private final String time;
 
+
     public TelemetryEventData(String eventName, @NonNull Map<String, String> properties) {
         Assert.hasText(eventName, "Event name should contain text.");
 
@@ -108,21 +109,26 @@ public class TelemetryEventData {
         }
     }
 
+
     public String getName() {
         return name;
     }
+
 
     public String getInstrumentationKey() {
         return instrumentationKey;
     }
 
+
     public Tags getTags() {
         return tags;
     }
 
+
     public EventData getData() {
         return data;
     }
+
 
     public String getTime() {
         return time;

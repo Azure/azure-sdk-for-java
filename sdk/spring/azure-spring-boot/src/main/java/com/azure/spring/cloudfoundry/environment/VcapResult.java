@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ *class the result of VcapProcessor
+ */
 @JsonIgnoreProperties
 public class VcapResult implements Serializable {
 
@@ -32,6 +35,7 @@ public class VcapResult implements Serializable {
     private static final long serialVersionUID = -4825963001214199795L;
 
     private final boolean logFlag;
+
 
     public VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
         this.logFlag = logFlag;

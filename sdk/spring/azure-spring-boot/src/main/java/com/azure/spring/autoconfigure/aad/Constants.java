@@ -3,6 +3,9 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+/**
+ * Constant class
+ */
 public class Constants {
     public static final String SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
     public static final String CAP_CLAIMS = "CAP_Claims";

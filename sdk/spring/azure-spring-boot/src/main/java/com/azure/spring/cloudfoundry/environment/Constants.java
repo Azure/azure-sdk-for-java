@@ -3,6 +3,9 @@
 
 package com.azure.spring.cloudfoundry.environment;
 
+/**
+ * utils class of Constants
+ */
 public class Constants {
     // Property namespaces
     public static final String NAMESPACE_SERVICE_BUS = "azure.servicebus";

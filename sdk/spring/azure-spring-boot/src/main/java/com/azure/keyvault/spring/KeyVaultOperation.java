@@ -27,6 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
+/**
+ * class of KeyVaultOperation
+ */
 public class KeyVaultOperation {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
@@ -53,7 +56,6 @@ public class KeyVaultOperation {
 
     /**
      * Constructor.
-     *
      * @param secretClient    the Key Vault secret client.
      * @param refreshInMillis the refresh in milliseconds (0 or less disables refresh).
      * @param secretKeys      the secret keys to look for.

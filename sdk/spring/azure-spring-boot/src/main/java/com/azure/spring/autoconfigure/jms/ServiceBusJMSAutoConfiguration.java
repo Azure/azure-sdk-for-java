@@ -18,6 +18,9 @@ import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
 
+/**
+ * Automatic configuration class of ServiceBusJMS
+ */
 @Configuration
 @ConditionalOnClass(JmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")

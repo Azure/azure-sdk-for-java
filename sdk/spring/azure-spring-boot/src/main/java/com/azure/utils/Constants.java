@@ -3,6 +3,9 @@
 
 package com.azure.utils;
 
+/**
+ * Util class for Constants
+ */
 public class Constants {
 
     public static final String AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";

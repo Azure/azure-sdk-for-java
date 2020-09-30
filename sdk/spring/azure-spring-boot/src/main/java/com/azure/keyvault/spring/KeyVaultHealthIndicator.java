@@ -7,6 +7,9 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+/**
+ * Indicator class of KeyVaultHealth
+ */
 public class KeyVaultHealthIndicator implements HealthIndicator {
 
     private final ConfigurableEnvironment environment;
