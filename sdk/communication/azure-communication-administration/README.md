@@ -34,7 +34,7 @@ and httpClient() functions respectively.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L38-L49 -->
 ```java
-// Your can find your endpoint and access token from your resource in the Azure Portal
+// You can find your endpoint and access token from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 String accessToken = "SECRET";
 

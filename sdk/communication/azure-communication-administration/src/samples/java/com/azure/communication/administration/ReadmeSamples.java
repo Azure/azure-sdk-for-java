@@ -35,7 +35,7 @@ public class ReadmeSamples {
      */
     public CommunicationIdentityClient createCommunicationIdentityClient()
             throws InvalidKeyException, NoSuchAlgorithmException {
-        // Your can find your endpoint and access token from your resource in the Azure Portal
+        // You can find your endpoint and access token from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         String accessToken = "SECRET";
 
@@ -127,7 +127,7 @@ public class ReadmeSamples {
      */
     public PhoneNumberClient createPhoneNumberClient()
         throws NoSuchAlgorithmException, InvalidKeyException {
-        // Your can find your endpoint and access token from your resource in the Azure Portal
+        // You can find your endpoint and access token from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         String accessToken = "SECRET";
 
