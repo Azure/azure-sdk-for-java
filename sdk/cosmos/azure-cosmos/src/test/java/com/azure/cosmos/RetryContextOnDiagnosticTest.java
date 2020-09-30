@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +53,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteRetry() throws Exception {
         @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
@@ -70,7 +71,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
         @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
@@ -91,7 +92,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
@@ -118,7 +119,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteAsyncWithFailure() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<CosmosException> exceptionMono = Mono.error(exception);
