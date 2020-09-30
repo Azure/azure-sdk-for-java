@@ -8,7 +8,7 @@ package com.azure.storage.file.datalake.models;
  */
 public class DataLakeAclChangeFailedException extends RuntimeException {
 
-    private String continuationToken;
+    private final String continuationToken;
 
     /**
      * Initializes a new instance of DataLakeAclChangeFailedException with a specified error message, and a reference
