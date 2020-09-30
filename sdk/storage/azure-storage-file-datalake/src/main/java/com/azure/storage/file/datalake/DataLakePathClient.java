@@ -375,7 +375,7 @@ public class DataLakePathClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
      *
-     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public AccessControlChangeResult setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
@@ -398,7 +398,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
      *
-     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
@@ -425,7 +425,7 @@ public class DataLakePathClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
      *
-     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public AccessControlChangeResult updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
@@ -448,7 +448,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the result of the operation.
      *
-     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
@@ -475,7 +475,7 @@ public class DataLakePathClient {
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return The result of the operation.
      *
-     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public AccessControlChangeResult removeAccessControlRecursive(
@@ -499,7 +499,7 @@ public class DataLakePathClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A  response containing the result of the operation.
      *
-     * @throws {@link DataLakeAclChangeFailedException} if a request to storage throws a
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(

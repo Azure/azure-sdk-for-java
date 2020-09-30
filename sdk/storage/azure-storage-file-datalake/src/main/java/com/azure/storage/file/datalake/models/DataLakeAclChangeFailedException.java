@@ -6,7 +6,7 @@ package com.azure.storage.file.datalake.models;
 /**
  * An exception thrown when an operation is interrupted and can be continued later on.
  */
-public class DataLakeAclChangeFailedException extends RuntimeException {
+public class DataLakeAclChangeFailedException extends Exception {
 
     private String continuationToken;
 
