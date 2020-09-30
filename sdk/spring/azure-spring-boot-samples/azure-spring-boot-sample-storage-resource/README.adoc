@@ -76,6 +76,8 @@ spring.cloud.azure.resource-group=[resource-group]
 spring.cloud.azure.storage.account=[account-name]
 ....
 
+
+
 == How to run
 
 5. Update link:src/main/resources/application.properties[application.properties]

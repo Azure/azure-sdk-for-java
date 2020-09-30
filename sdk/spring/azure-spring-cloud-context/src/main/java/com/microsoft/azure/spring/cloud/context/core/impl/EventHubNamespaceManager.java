@@ -7,10 +7,13 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.eventhub.EventHubNamespace;
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
-public class EventHubNamesapceManager extends AzureManager<EventHubNamespace, String> {
+public class EventHubNamespaceManager extends AzureManager<EventHubNamespace, String> {
 
-    public EventHubNamesapceManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    private final Azure azure;
+
+    public EventHubNamespaceManager(Azure azure, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override
@@ -28,7 +31,8 @@ public class EventHubNamesapceManager extends AzureManager<EventHubNamespace, St
         try {
             return azure.eventHubNamespaces().getByResourceGroup(azureProperties.getResourceGroup(), namespace);
         } catch (NullPointerException e) {
-            // azure management api has no way to determine whether an eventhub namespace exists
+            // azure management api has no way to determine whether an eventhub namespace
+            // exists
             // Workaround for this is by catching NPE
             return null;
         }
@@ -37,6 +41,6 @@ public class EventHubNamesapceManager extends AzureManager<EventHubNamespace, St
     @Override
     public EventHubNamespace internalCreate(String namespace) {
         return azure.eventHubNamespaces().define(namespace).withRegion(azureProperties.getRegion())
-            .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
+                .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
     }
 }

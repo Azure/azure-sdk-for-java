@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.spring.cloud.context.core.storage;
 
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.storage.StorageAccount;
 
 public class StorageConnectionStringProvider {
 
     public static String getConnectionString(StorageAccount storageAccount, AzureEnvironment environment,
-        boolean isSecureTransfer) {
+            boolean isSecureTransfer) {
         return buildConnectionString(storageAccount, environment, isSecureTransfer);
     }
 
@@ -22,14 +22,15 @@ public class StorageConnectionStringProvider {
     }
 
     public static String getConnectionString(String storageAccount, String accessKey, AzureEnvironment environment,
-        boolean isSecureTransfer) {
+            boolean isSecureTransfer) {
         return StorageConnectionStringBuilder.build(storageAccount, accessKey, environment, isSecureTransfer);
     }
 
     private static String buildConnectionString(StorageAccount storageAccount, AzureEnvironment environment,
-        boolean isSecureTransfer) {
-        return storageAccount.getKeys().stream().findFirst().map(key -> StorageConnectionStringBuilder
-            .build(storageAccount.name(), key.value(), environment, isSecureTransfer))
-            .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
+            boolean isSecureTransfer) {
+        return storageAccount
+                .getKeys().stream().findFirst().map(key -> StorageConnectionStringBuilder.build(storageAccount.name(),
+                        key.value(), environment, isSecureTransfer))
+                .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
     }
 }

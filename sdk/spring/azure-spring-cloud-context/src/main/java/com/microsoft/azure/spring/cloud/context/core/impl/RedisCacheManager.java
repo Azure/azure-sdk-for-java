@@ -9,8 +9,11 @@ import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
+    private final Azure azure;
+
     public RedisCacheManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override
@@ -31,6 +34,6 @@ public class RedisCacheManager extends AzureManager<RedisCache, String> {
     @Override
     public RedisCache internalCreate(String name) {
         return azure.redisCaches().define(name).withRegion(azureProperties.getRegion())
-            .withExistingResourceGroup(azureProperties.getResourceGroup()).withBasicSku().create();
+                .withExistingResourceGroup(azureProperties.getResourceGroup()).withBasicSku().create();
     }
 }

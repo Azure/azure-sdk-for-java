@@ -3,24 +3,22 @@
 
 package com.microsoft.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManager;
-import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.spring.cloud.context.core.api.ResourceManager;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureManager.class);
 
     protected final AzureProperties azureProperties;
-    protected final Azure azure;
 
-    public AzureManager(@NonNull Azure azure, @NonNull AzureProperties azureProperties) {
-        this.azure = azure;
+    public AzureManager(@NonNull AzureProperties azureProperties) {
         this.azureProperties = azureProperties;
     }
 

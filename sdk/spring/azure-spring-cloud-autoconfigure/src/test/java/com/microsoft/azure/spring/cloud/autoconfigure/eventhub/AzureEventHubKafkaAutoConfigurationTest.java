@@ -3,13 +3,12 @@
 
 package com.microsoft.azure.spring.cloud.autoconfigure.eventhub;
 
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
-import com.microsoft.azure.management.eventhub.EventHubNamespaceAuthorizationRule;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.rest.RestException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -20,11 +19,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.io.IOException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
+import com.microsoft.azure.management.eventhub.EventHubNamespace;
+import com.microsoft.azure.management.eventhub.EventHubNamespaceAuthorizationRule;
+import com.microsoft.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
+import com.microsoft.rest.RestException;
 
 public class AzureEventHubKafkaAutoConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -72,9 +73,9 @@ public class AzureEventHubKafkaAutoConfigurationTest {
     static class TestConfiguration {
 
         @Bean
-        ResourceManagerProvider resourceManagerProvider() {
+        EventHubNamespaceManager eventHubNamespaceManager() {
 
-            ResourceManagerProvider resourceManagerProvider = mock(ResourceManagerProvider.class);
+            
             EventHubNamespace namespace = mock(EventHubNamespace.class);
             EventHubAuthorizationKey key = mock(EventHubAuthorizationKey.class);
             when(key.primaryConnectionString()).thenReturn("connectionString1");
@@ -90,7 +91,10 @@ public class AzureEventHubKafkaAutoConfigurationTest {
             rules.add(rule);
             when(namespace.listAuthorizationRules()).thenReturn(rules);
             when(namespace.serviceBusEndpoint()).thenReturn("localhost");
-            return resourceManagerProvider;
+            EventHubNamespaceManager eventHubNamespaceManager = mock(EventHubNamespaceManager.class);
+            //This previously returned a ResourceManagerProvider that was in no way connected to any of the objets created above.
+            //Maintaining similar behavior in refactoring.
+            return eventHubNamespaceManager;
         }
 
     }

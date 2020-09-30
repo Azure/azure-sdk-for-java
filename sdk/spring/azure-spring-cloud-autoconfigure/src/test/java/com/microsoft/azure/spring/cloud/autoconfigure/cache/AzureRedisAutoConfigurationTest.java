@@ -3,10 +3,11 @@
 
 package com.microsoft.azure.spring.cloud.autoconfigure.cache;
 
-import com.microsoft.azure.management.redis.RedisAccessKeys;
-import com.microsoft.azure.management.redis.RedisCache;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.context.core.impl.RedisCacheManager;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -16,10 +17,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisOperations;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.microsoft.azure.management.redis.RedisAccessKeys;
+import com.microsoft.azure.management.redis.RedisCache;
+import com.microsoft.azure.spring.cloud.context.core.impl.RedisCacheManager;
 
 public class AzureRedisAutoConfigurationTest {
     private static final String KEY = "KEY";
@@ -66,9 +66,9 @@ public class AzureRedisAutoConfigurationTest {
     static class TestConfiguration {
 
         @Bean
-        ResourceManagerProvider resourceManagerProvider() {
+        RedisCacheManager redisCacheManager() {
 
-            ResourceManagerProvider resourceManagerProvider = mock(ResourceManagerProvider.class);
+            
             RedisCacheManager redisCacheManager = mock(RedisCacheManager.class);
             RedisCache redisCache = mock(RedisCache.class);
             RedisAccessKeys accessKeys = mock(RedisAccessKeys.class);
@@ -78,9 +78,8 @@ public class AzureRedisAutoConfigurationTest {
             when(redisCache.sslPort()).thenReturn(PORT);
             when(redisCache.shardCount()).thenReturn(0);
             when(redisCache.getKeys()).thenReturn(accessKeys);
-            when(resourceManagerProvider.getRedisCacheManager()).thenReturn(redisCacheManager);
             when(redisCacheManager.getOrCreate(isA(String.class))).thenReturn(redisCache);
-            return resourceManagerProvider;
+            return redisCacheManager;
         }
 
     }

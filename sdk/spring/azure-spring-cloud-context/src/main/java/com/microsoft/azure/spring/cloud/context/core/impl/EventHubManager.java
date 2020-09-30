@@ -10,9 +10,12 @@ import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 
 public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamespace, String>> {
+    
+    private final Azure azure;
 
     public EventHubManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override

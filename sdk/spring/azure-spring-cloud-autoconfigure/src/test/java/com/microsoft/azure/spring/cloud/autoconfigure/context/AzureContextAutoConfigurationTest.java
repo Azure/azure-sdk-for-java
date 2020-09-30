@@ -3,12 +3,9 @@
 
 package com.microsoft.azure.spring.cloud.autoconfigure.context;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.spring.cloud.context.core.api.CredentialsProvider;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -16,8 +13,11 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.spring.cloud.context.core.api.CredentialsProvider;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 public class AzureContextAutoConfigurationTest {
     private ApplicationContextRunner contextRunner =
@@ -78,11 +78,6 @@ public class AzureContextAutoConfigurationTest {
         @Bean
         CredentialsProvider credentialsProvider() {
             return mock(CredentialsProvider.class);
-        }
-
-        @Bean
-        ResourceManagerProvider resourceManagerProvider() {
-            return mock(ResourceManagerProvider.class);
         }
 
         @Bean

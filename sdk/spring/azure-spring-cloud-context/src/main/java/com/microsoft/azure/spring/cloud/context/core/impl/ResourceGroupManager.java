@@ -9,8 +9,11 @@ import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
+    private final Azure azure;
+    
     public ResourceGroupManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override

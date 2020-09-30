@@ -3,14 +3,19 @@
 
 package com.microsoft.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.storage.StorageAccount;
+import javax.annotation.Nonnull;
+
+import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
 public class StorageAccountManager extends AzureManager<StorageAccount, String> {
+    
+    private final Azure azure;
 
-    public StorageAccountManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    public StorageAccountManager(@Nonnull Azure azure, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override
@@ -25,6 +30,7 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
 
     @Override
     public StorageAccount internalGet(String key) {
+        
         return azure.storageAccounts().getByResourceGroup(azureProperties.getResourceGroup(), key);
     }
 

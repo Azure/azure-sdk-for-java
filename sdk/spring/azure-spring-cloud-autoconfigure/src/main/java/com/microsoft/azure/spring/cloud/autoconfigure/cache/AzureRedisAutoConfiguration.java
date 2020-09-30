@@ -3,12 +3,11 @@
 
 package com.microsoft.azure.spring.cloud.autoconfigure.cache;
 
-import com.microsoft.azure.management.redis.RedisCache;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
+import java.util.Arrays;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,8 +18,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisOperations;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
+import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.redis.RedisCache;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
+import com.microsoft.azure.spring.cloud.context.core.impl.RedisCacheManager;
+import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
 
 /**
  * An auto-configuration for Spring cache using Azure redis cache
@@ -31,7 +34,6 @@ import java.util.Arrays;
 @AutoConfigureAfter(AzureContextAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.redis.enabled", matchIfMissing = true)
 @ConditionalOnClass(RedisOperations.class)
-@ConditionalOnBean(ResourceManagerProvider.class)
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
     private static final String REDIS = "Redis";
@@ -42,13 +44,18 @@ public class AzureRedisAutoConfiguration {
     }
 
     @ConditionalOnMissingBean
+    @Bean
+    public RedisCacheManager redisCacheManager(Azure azure, AzureProperties azureProperties) {
+        return new RedisCacheManager(azure, azureProperties);
+    }
+    
+    @ConditionalOnMissingBean
     @Primary
     @Bean
-    public RedisProperties redisProperties(ResourceManagerProvider resourceManagerProvider,
-                                           AzureRedisProperties azureRedisProperties) {
+    public RedisProperties redisProperties(AzureRedisProperties azureRedisProperties, RedisCacheManager redisCacheManager) {
         String cacheName = azureRedisProperties.getName();
 
-        RedisCache redisCache = resourceManagerProvider.getRedisCacheManager().getOrCreate(cacheName);
+        RedisCache redisCache = redisCacheManager.getOrCreate(cacheName);
 
         RedisProperties redisProperties = new RedisProperties();
 

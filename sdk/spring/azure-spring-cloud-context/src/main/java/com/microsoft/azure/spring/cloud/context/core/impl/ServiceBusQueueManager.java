@@ -11,8 +11,11 @@ import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 
 public class ServiceBusQueueManager extends AzureManager<Queue, Tuple<ServiceBusNamespace, String>> {
 
+    private final Azure azure;
+    
     public ServiceBusQueueManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override

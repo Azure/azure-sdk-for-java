@@ -3,14 +3,8 @@
 
 package com.microsoft.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.microsoft.azure.management.servicebus.AuthorizationKeys;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManager;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -22,7 +16,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
+import com.microsoft.azure.management.servicebus.AuthorizationKeys;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
+import com.microsoft.azure.servicebus.IMessage;
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.microsoft.azure.spring.cloud.context.core.api.ResourceManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
 
 /**
  * An auto-configuration for Service Bus
@@ -55,15 +56,13 @@ public class AzureServiceBusAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(ResourceManagerProvider.class)
-    public AzureServiceBusProperties serviceBusProperties(ResourceManagerProvider resourceManagerProvider,
+    @ConditionalOnBean(ServiceBusNamespaceManager.class)
+    public AzureServiceBusProperties serviceBusProperties(ServiceBusNamespaceManager serviceBusNamespaceManager,
                                                           AzureServiceBusProperties serviceBusProperties) {
         if (!StringUtils.hasText(serviceBusProperties.getConnectionString())) {
-            ResourceManager<ServiceBusNamespace, String> serviceBusNamespaceManager =
-                resourceManagerProvider.getServiceBusNamespaceManager();
             serviceBusNamespaceManager.getOrCreate(serviceBusProperties.getNamespace());
             serviceBusProperties.setConnectionString(
-                buildConnectionString(resourceManagerProvider.getServiceBusNamespaceManager(),
+                buildConnectionString(serviceBusNamespaceManager,
                     serviceBusProperties.getNamespace()));
             LOG.info("'spring.cloud.azure.servicebus.connection-string' auto configured");
         }

@@ -14,8 +14,11 @@ import java.net.URISyntaxException;
 
 public class StorageQueueManager extends AzureManager<CloudQueue, Tuple<CloudStorageAccount, String>> {
 
+    private final Azure azure;
+
     public StorageQueueManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override

@@ -11,8 +11,11 @@ import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 
 public class EventHubConsumerGroupManager extends AzureManager<EventHubConsumerGroup, Tuple<EventHub, String>> {
 
+    private final Azure azure;
+    
     public EventHubConsumerGroupManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override

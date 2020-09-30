@@ -11,8 +11,11 @@ import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 
 public class ServiceBusTopicSubscriptionManager extends AzureManager<ServiceBusSubscription, Tuple<Topic, String>> {
 
+    private final Azure azure;
+
     public ServiceBusTopicSubscriptionManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+        super(azureProperties);
+        this.azure = azure;
     }
 
     @Override
@@ -30,7 +33,8 @@ public class ServiceBusTopicSubscriptionManager extends AzureManager<ServiceBusS
         try {
             return topicAndSubscriptionName.getFirst().subscriptions().getByName(topicAndSubscriptionName.getSecond());
         } catch (NullPointerException ignore) {
-            // azure management api has no way to determine whether an service bus topic subscription exists
+            // azure management api has no way to determine whether an service bus topic
+            // subscription exists
             // Workaround for this is by catching NPE
             return null;
         }
@@ -39,6 +43,6 @@ public class ServiceBusTopicSubscriptionManager extends AzureManager<ServiceBusS
     @Override
     public ServiceBusSubscription internalCreate(Tuple<Topic, String> topicAndSubscriptionName) {
         return topicAndSubscriptionName.getFirst().subscriptions().define(topicAndSubscriptionName.getSecond())
-            .create();
+                .create();
     }
 }

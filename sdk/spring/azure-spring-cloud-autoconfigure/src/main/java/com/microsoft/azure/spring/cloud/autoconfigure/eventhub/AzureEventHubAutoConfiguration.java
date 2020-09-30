@@ -3,19 +3,8 @@
 
 package com.microsoft.azure.spring.cloud.autoconfigure.eventhub;
 
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
-import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.microsoft.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
-import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubClientFactory;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.microsoft.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
-import com.microsoft.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
-import com.microsoft.azure.spring.integration.eventhub.impl.EventHubTemplate;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -26,7 +15,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.microsoft.azure.management.eventhub.EventHubNamespace;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.microsoft.azure.spring.cloud.context.core.api.EnvironmentProvider;
+import com.microsoft.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.StorageAccountManager;
+import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
+import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.microsoft.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.microsoft.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
+import com.microsoft.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import com.microsoft.azure.spring.integration.eventhub.impl.EventHubTemplate;
 
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubOperation}
@@ -43,7 +45,10 @@ public class AzureEventHubAutoConfiguration {
     private static final String NAMESPACE = "Namespace";
 
     @Autowired(required = false)
-    private ResourceManagerProvider resourceManagerProvider;
+    private EventHubNamespaceManager eventHubNamespaceManager;
+
+    @Autowired(required = false)
+    private StorageAccountManager storageAccountManager;
 
     @PostConstruct
     public void collectTelemetry() {
@@ -59,10 +64,9 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubConnectionStringProvider eventHubConnectionStringProvider(
-        AzureEventHubProperties eventHubProperties) {
-        if (resourceManagerProvider != null) {
-            EventHubNamespace namespace = resourceManagerProvider.getEventHubNamespaceManager()
-                .getOrCreate(eventHubProperties.getNamespace());
+            AzureEventHubProperties eventHubProperties) {
+        if (eventHubNamespaceManager != null) {
+            EventHubNamespace namespace = eventHubNamespaceManager.getOrCreate(eventHubProperties.getNamespace());
             return new EventHubConnectionStringProvider(namespace);
         } else {
             String connectionString = eventHubProperties.getConnectionString();
@@ -71,8 +75,8 @@ public class AzureEventHubAutoConfiguration {
                 throw new IllegalArgumentException("Event hubs connection string cannot be empty");
             }
 
-            TelemetryCollector.getInstance()
-                .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(connectionString));
+            TelemetryCollector.getInstance().addProperty(EVENT_HUB, NAMESPACE,
+                    EventHubUtils.getNamespace(connectionString));
             return new EventHubConnectionStringProvider(connectionString);
         }
     }
@@ -80,20 +84,20 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientFactory clientFactory(EventHubConnectionStringProvider connectionStringProvider,
-                                               AzureEventHubProperties eventHubProperties, EnvironmentProvider environmentProvider) {
+            AzureEventHubProperties eventHubProperties, EnvironmentProvider environmentProvider) {
         String checkpointConnectionString;
-        if (resourceManagerProvider != null) {
-            StorageAccount checkpointStorageAccount = resourceManagerProvider.getStorageAccountManager().getOrCreate(
-                eventHubProperties.getCheckpointStorageAccount());
-            checkpointConnectionString = StorageConnectionStringProvider
-                .getConnectionString(checkpointStorageAccount, environmentProvider.getEnvironment());
+        if (storageAccountManager != null) {
+            StorageAccount checkpointStorageAccount = storageAccountManager
+                    .getOrCreate(eventHubProperties.getCheckpointStorageAccount());
+            checkpointConnectionString = StorageConnectionStringProvider.getConnectionString(checkpointStorageAccount,
+                    environmentProvider.getEnvironment());
         } else {
-            checkpointConnectionString = StorageConnectionStringProvider
-                .getConnectionString(eventHubProperties.getCheckpointStorageAccount(),
-                    eventHubProperties.getCheckpointAccessKey(), environmentProvider.getEnvironment());
+            checkpointConnectionString = StorageConnectionStringProvider.getConnectionString(
+                    eventHubProperties.getCheckpointStorageAccount(), eventHubProperties.getCheckpointAccessKey(),
+                    environmentProvider.getEnvironment());
         }
 
         return new DefaultEventHubClientFactory(connectionStringProvider, checkpointConnectionString,
-            eventHubProperties.getCheckpointContainer());
+                eventHubProperties.getCheckpointContainer());
     }
 }

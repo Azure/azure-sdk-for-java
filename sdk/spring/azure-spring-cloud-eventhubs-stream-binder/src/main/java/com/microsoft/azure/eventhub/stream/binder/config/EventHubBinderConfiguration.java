@@ -3,17 +3,8 @@
 
 package com.microsoft.azure.eventhub.stream.binder.config;
 
-import com.microsoft.azure.eventhub.stream.binder.EventHubMessageChannelBinder;
-import com.microsoft.azure.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
-import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
-import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
-import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
-import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,7 +13,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
+import com.microsoft.azure.eventhub.stream.binder.EventHubMessageChannelBinder;
+import com.microsoft.azure.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
+import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
+import com.microsoft.azure.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
+import com.microsoft.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
+import com.microsoft.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.EventHubManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
+import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
 
 /**
  * @author Warren Zhu
@@ -36,8 +39,16 @@ public class EventHubBinderConfiguration {
     private static final String EVENT_HUB_BINDER = "EventHubBinder";
     private static final String NAMESPACE = "Namespace";
 
+  
     @Autowired(required = false)
-    private ResourceManagerProvider resourceManagerProvider;
+    private EventHubNamespaceManager eventHubNamespaceManager;
+    
+    @Autowired(required=false)
+    private EventHubManager eventHubManager;
+    
+    @Autowired(required=false)
+    private EventHubConsumerGroupManager eventHubConsumerGroupManager;
+    
 
     @PostConstruct
     public void collectTelemetry() {
@@ -47,8 +58,8 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubChannelProvisioner eventHubChannelProvisioner(AzureEventHubProperties eventHubProperties) {
-        if (resourceManagerProvider != null) {
-            return new EventHubChannelResourceManagerProvisioner(resourceManagerProvider,
+        if (eventHubNamespaceManager != null && eventHubManager != null && eventHubConsumerGroupManager!=null) {
+            return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager, eventHubConsumerGroupManager,
                     eventHubProperties.getNamespace());
         } else {
             TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE,

@@ -3,17 +3,8 @@
 
 package com.microsoft.azure.servicebus.stream.binder.config;
 
-import com.microsoft.azure.servicebus.stream.binder.ServiceBusQueueMessageChannelBinder;
-import com.microsoft.azure.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
-import com.microsoft.azure.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
-import com.microsoft.azure.servicebus.stream.binder.provisioning.ServiceBusQueueChannelResourceManagerProvisioner;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
-import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
-import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration;
-import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils;
-import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -23,22 +14,36 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
+import com.microsoft.azure.servicebus.stream.binder.ServiceBusQueueMessageChannelBinder;
+import com.microsoft.azure.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
+import com.microsoft.azure.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
+import com.microsoft.azure.servicebus.stream.binder.provisioning.ServiceBusQueueChannelResourceManagerProvisioner;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
+import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils;
+import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 
 /**
  * @author Warren Zhu
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
-@Import({AzureServiceBusQueueAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class})
-@EnableConfigurationProperties({AzureServiceBusProperties.class, ServiceBusQueueExtendedBindingProperties.class})
+@Import({ AzureServiceBusQueueAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class })
+@EnableConfigurationProperties({ AzureServiceBusProperties.class, ServiceBusQueueExtendedBindingProperties.class })
 public class ServiceBusQueueBinderConfiguration {
 
     private static final String SERVICE_BUS_QUEUE_BINDER = "ServiceBusQueueBinder";
     private static final String NAMESPACE = "Namespace";
 
     @Autowired(required = false)
-    private ResourceManagerProvider resourceManagerProvider;
+    private ServiceBusNamespaceManager serviceBusNamespaceManager;
+
+    @Autowired(required = false)
+    private ServiceBusQueueManager serviceBusQueueManager;
 
     @PostConstruct
     public void collectTelemetry() {
@@ -46,12 +51,12 @@ public class ServiceBusQueueBinderConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(ResourceManagerProvider.class)
+    @ConditionalOnBean({ ServiceBusNamespaceManager.class, ServiceBusQueueManager.class })
     @ConditionalOnMissingBean
     public ServiceBusChannelProvisioner serviceBusChannelProvisioner(AzureServiceBusProperties serviceBusProperties) {
-        if (this.resourceManagerProvider != null) {
-            return new ServiceBusQueueChannelResourceManagerProvisioner(resourceManagerProvider,
-                    serviceBusProperties.getNamespace());
+        if (this.serviceBusNamespaceManager != null && serviceBusQueueManager != null) {
+            return new ServiceBusQueueChannelResourceManagerProvisioner(serviceBusNamespaceManager,
+                    serviceBusQueueManager, serviceBusProperties.getNamespace());
         } else {
             TelemetryCollector.getInstance().addProperty(SERVICE_BUS_QUEUE_BINDER, NAMESPACE,
                     ServiceBusUtils.getNamespace(serviceBusProperties.getConnectionString()));
@@ -60,7 +65,7 @@ public class ServiceBusQueueBinderConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean({ResourceManagerProvider.class, ServiceBusChannelProvisioner.class})
+    @ConditionalOnMissingBean(ServiceBusChannelProvisioner.class)
     public ServiceBusChannelProvisioner serviceBusChannelProvisionerWithResourceManagerProvider() {
         return new ServiceBusChannelProvisioner();
     }
@@ -69,8 +74,8 @@ public class ServiceBusQueueBinderConfiguration {
     public ServiceBusQueueMessageChannelBinder serviceBusQueueBinder(
             ServiceBusChannelProvisioner queueChannelProvisioner, ServiceBusQueueOperation serviceBusQueueOperation,
             ServiceBusQueueExtendedBindingProperties bindingProperties) {
-        ServiceBusQueueMessageChannelBinder binder =
-                new ServiceBusQueueMessageChannelBinder(null, queueChannelProvisioner, serviceBusQueueOperation);
+        ServiceBusQueueMessageChannelBinder binder = new ServiceBusQueueMessageChannelBinder(null,
+                queueChannelProvisioner, serviceBusQueueOperation);
         binder.setBindingProperties(bindingProperties);
         return binder;
     }

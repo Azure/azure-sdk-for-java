@@ -12,6 +12,8 @@ import com.microsoft.azure.servicebus.SubscriptionClient;
 import com.microsoft.azure.servicebus.TopicClient;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
 import com.microsoft.azure.spring.cloud.context.core.util.Memoizer;
 import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 import com.microsoft.azure.spring.integration.servicebus.ServiceBusRuntimeException;
@@ -21,17 +23,18 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Default implementation of {@link ServiceBusTopicClientFactory}.
- * Client will be cached to improve performance
+ * Default implementation of {@link ServiceBusTopicClientFactory}. Client will
+ * be cached to improve performance
  *
  * @author Warren Zhu
  */
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
-    implements ServiceBusTopicClientFactory {
+        implements ServiceBusTopicClientFactory {
     private static final String SUBSCRIPTION_PATH = "%s/subscriptions/%s";
-    private final BiFunction<String, String, ISubscriptionClient> subscriptionClientCreator =
-        Memoizer.memoize(this::createSubscriptionClient);
+    private final BiFunction<String, String, ISubscriptionClient> subscriptionClientCreator = Memoizer
+            .memoize(this::createSubscriptionClient);
     private final Function<String, ? extends IMessageSender> sendCreator = Memoizer.memoize(this::createTopicClient);
+
 
     public DefaultServiceBusTopicClientFactory(String connectionString) {
         super(connectionString);
@@ -39,28 +42,25 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
 
     private ISubscriptionClient createSubscriptionClient(String topicName, String subscription) {
 
-        if (resourceManagerProvider != null && StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace =
-                resourceManagerProvider.getServiceBusNamespaceManager().getOrCreate(namespace);
-            Topic topic = resourceManagerProvider.getServiceBusTopicManager()
-                .getOrCreate(Tuple.of(serviceBusNamespace, topicName));
-            resourceManagerProvider.getServiceBusTopicSubscriptionManager().getOrCreate(Tuple.of(topic, subscription));
+        if (StringUtils.hasText(namespace)) {
+            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.getOrCreate(namespace);
+            Topic topic = serviceBusTopicManager.getOrCreate(Tuple.of(serviceBusNamespace, topicName));
+            serviceBusTopicSubscriptionManager.getOrCreate(Tuple.of(topic, subscription));
         }
 
         String subscriptionPath = String.format(SUBSCRIPTION_PATH, topicName, subscription);
         try {
             return new SubscriptionClient(new ConnectionStringBuilder(connectionString, subscriptionPath),
-                ReceiveMode.PEEKLOCK);
+                    ReceiveMode.PEEKLOCK);
         } catch (InterruptedException | ServiceBusException e) {
             throw new ServiceBusRuntimeException("Failed to create service bus subscription client", e);
         }
     }
 
     private IMessageSender createTopicClient(String topicName) {
-        if (resourceManagerProvider != null && StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace =
-                resourceManagerProvider.getServiceBusNamespaceManager().getOrCreate(namespace);
-            resourceManagerProvider.getServiceBusTopicManager().getOrCreate(Tuple.of(serviceBusNamespace, topicName));
+        if (serviceBusNamespaceManager != null && serviceBusTopicManager != null && StringUtils.hasText(namespace)) {
+            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.getOrCreate(namespace);
+            serviceBusTopicManager.getOrCreate(Tuple.of(serviceBusNamespace, topicName));
         }
 
         try {
