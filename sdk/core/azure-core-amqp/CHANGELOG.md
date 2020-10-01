@@ -1,6 +1,12 @@
 # Release History
 
 ## 1.6.0-beta.1 (Unreleased)
+### New Features
+
+### Breaking Changes
+- Removing `BinaryData` type which is used when using `AmqpAnnotatedMessage`. 
+
+### Bug Fixes
 
 ## 1.5.1 (2020-09-10)
 - Add support for SAS when authenticating.
