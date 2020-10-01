@@ -25,6 +25,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -37,6 +38,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisabledIfEnvironmentVariable(
+    named = "SKIP_PHONENUMBER_INTEGRATION_TESTS",
+    matches = "(?i)(true)")
 public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegrationTestBase {
     @Test()
     public void listAllPhoneNumbers() {
