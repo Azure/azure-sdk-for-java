@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.OAuthToken;
+import java.util.HashMap;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -15,12 +16,12 @@ class AuthClient extends DelegateRestClient {
      * Stores the Client ID fragment.
      */
     private static final String CLIENT_ID_FRAGMENT = "&client_id=";
-    
+
     /**
      * Stores the Client Secret fragment.
      */
     private static final String CLIENT_SECRET_FRAGMENT = "&client_secret=";
-    
+
     /**
      * Stores the Grant Type fragment.
      */
@@ -42,6 +43,12 @@ class AuthClient extends DelegateRestClient {
     private static final String OAUTH2_TOKEN_POSTFIX = "/oauth2/token";
 
     /**
+     * Stores the OAuth2 managed identity URL.
+     */
+    private static final String OAUTH2_MANAGED_IDENTITY_TOKEN_URL
+            = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01";
+
+    /**
      * Constructor.
      */
     public AuthClient() {
@@ -49,17 +56,36 @@ class AuthClient extends DelegateRestClient {
     }
 
     /**
-     * Get an access token.
+     * Get an authorization token for a managed identity.
+     *
+     * @param resource the resource.
+     * @return the authorization token.
+     */
+    public String getAuthorizationToken(String resource) {
+        String result;
+
+        if (System.getenv("WEBSITE_SITE_NAME") != null &&
+                !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+            result = getAuthorizationTokenOnAppService(resource);
+        } else {
+            result = getAuthorizationTokenOnOthers(resource);
+        }
+
+        return result;
+    }
+
+    /**
+     * Get an authorization token.
      *
      * @param resource the resource.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
-     * @return the access token.
+     * @return the authorization token.
      */
-    public String getAuthorizationToken(String resource, String tenantId, 
+    public String getAuthorizationToken(String resource, String tenantId,
             String clientId, String clientSecret) {
-        
+
         String result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
@@ -74,6 +100,41 @@ class AuthClient extends DelegateRestClient {
                 .append(RESOURCE_FRAGMENT).append(resource);
 
         String body = post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+        if (body != null) {
+            JsonConverter converter = JsonConverterFactory.createJsonConverter();
+            OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
+            result = token.getAccess_token();
+        }
+        return result;
+    }
+
+    /**
+     * Get the authorization token on Azure App Service.
+     *
+     * @param resource the resource.
+     * @return the authorization token.
+     */
+    private String getAuthorizationTokenOnAppService(String resource) {
+        return null;
+    }
+
+    /**
+     * Get the authorization token on everything else but Azure App Service.
+     *
+     * @param resource the resource.
+     * @return the authorization token.
+     */
+    private String getAuthorizationTokenOnOthers(String resource) {
+        String result = null;
+
+        StringBuilder url = new StringBuilder();
+        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
+                .append(RESOURCE_FRAGMENT).append(resource);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Metadata", "true");
+        String body = get(url.toString(), headers);
+        
         if (body != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);

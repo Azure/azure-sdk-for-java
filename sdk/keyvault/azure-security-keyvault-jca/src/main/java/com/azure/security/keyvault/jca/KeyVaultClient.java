@@ -90,7 +90,11 @@ class KeyVaultClient extends DelegateRestClient {
         try {
             AuthClient authClient = new AuthClient();
             String resource = URLEncoder.encode("https://vault.azure.net", "UTF-8");
-            accessToken = authClient.getAuthorizationToken(resource, tenantId, clientId, clientSecret);
+            if (tenantId != null && clientId != null && clientSecret != null) {
+                accessToken = authClient.getAuthorizationToken(resource, tenantId, clientId, clientSecret);
+            } else {
+                accessToken = authClient.getAuthorizationToken(resource);
+            }
         } catch (UnsupportedEncodingException uee) {
             uee.printStackTrace();
         }
