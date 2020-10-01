@@ -32,12 +32,15 @@ import com.azure.storage.file.datalake.implementation.models.PathsSetAccessContr
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
+import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
+import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -666,6 +669,9 @@ public class DataLakePathAsyncClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
         try {
@@ -688,6 +694,9 @@ public class DataLakePathAsyncClient {
      *
      * @param options {@link PathSetAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
@@ -714,9 +723,12 @@ public class DataLakePathAsyncClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
-    public Mono<AccessControlChangeResult> updateAccessControlRecursive(List<PathAccessControlEntry> accessControlList)
-    {
+    public Mono<AccessControlChangeResult> updateAccessControlRecursive(
+        List<PathAccessControlEntry> accessControlList) {
         try {
             return updateAccessControlRecursiveWithResponse(
                 new PathUpdateAccessControlRecursiveOptions(accessControlList))
@@ -738,6 +750,9 @@ public class DataLakePathAsyncClient {
      *
      * @param options {@link PathUpdateAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
@@ -764,6 +779,9 @@ public class DataLakePathAsyncClient {
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
@@ -788,6 +806,9 @@ public class DataLakePathAsyncClient {
      *
      * @param options {@link PathRemoveAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
+     *
+     * @throws DataLakeAclChangeFailedException if a request to storage throws a
+     * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
@@ -818,6 +839,15 @@ public class DataLakePathAsyncClient {
 
         return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
             continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
+            .onErrorMap(e -> {
+                if (e instanceof DataLakeStorageException) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                        continuationToken));
+                } else if (e instanceof Exception) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
+                }
+                return e;
+            })
             .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
                 accessControlList, mode, batchSize, continueOnFailure, continuationToken, null, contextFinal));
@@ -921,6 +951,15 @@ public class DataLakePathAsyncClient {
         // If we're not finished, issue another request
         return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
+            .onErrorMap(e -> {
+                if (e instanceof DataLakeStorageException) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                        effectiveNextToken));
+                } else if (e instanceof Exception) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
+                }
+                return e;
+            })
             .flatMap(response2 -> setAccessControlRecursiveWithResponseHelper(response2, maxBatches,
                 directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
                 accessControlStr, mode, batchSize, continueOnFailure, effectiveNextToken, finalBatchFailures, context));

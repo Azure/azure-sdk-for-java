@@ -1,6 +1,12 @@
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
@@ -12,6 +18,7 @@ import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOpti
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.PathSasPermission
+import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 import java.util.function.Consumer
@@ -823,7 +830,36 @@ class DirectoryAPITest extends APISpec {
             new PathSetAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == DataLakeStorageException.class
+    }
+
+    @Unroll
+    def "Set ACL recursive error middle of batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathSetAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2)
+
+        // Mock a policy that will return an error on the call with the continuation token
+        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        }
+
+        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+
+        when:
+        def result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == error.class
+
+        where:
+        error                                                                                                                               || _
+        new IllegalArgumentException()                                                                                                      || _
+        new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
     def "Update ACL recursive"() {
@@ -1191,7 +1227,36 @@ class DirectoryAPITest extends APISpec {
             new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries), null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == DataLakeStorageException.class
+    }
+
+    @Unroll
+    def "Update ACL recursive error middle of batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathUpdateAccessControlRecursiveOptions(pathAccessControlEntries)
+            .setBatchSize(2)
+
+        // Mock a policy that will return an error on the call with the continuation token
+        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        }
+
+        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+
+        when:
+        def result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == error.class
+
+        where:
+        error                                                                                                                               || _
+        new IllegalArgumentException()                                                                                                      || _
+        new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
     def "Remove ACL recursive"() {
@@ -1558,7 +1623,36 @@ class DirectoryAPITest extends APISpec {
             new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries), null, null)
 
         then:
-        thrown(DataLakeStorageException)
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == DataLakeStorageException.class
+    }
+
+    @Unroll
+    def "Remove ACL recursive error middle of batches"() {
+        setup:
+        setupStandardRecursiveAclTest()
+
+        def options = new PathRemoveAccessControlRecursiveOptions(removeAccessControlEntries)
+            .setBatchSize(2)
+
+        // Mock a policy that will return an error on the call with the continuation token
+        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        }
+
+        dc = getDirectoryClient(primaryCredential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
+
+        when:
+        def result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue()
+
+        then:
+        def e = thrown(DataLakeAclChangeFailedException)
+        e.getCause().class == error.class
+
+        where:
+        error                                                                                                                               || _
+        new IllegalArgumentException()                                                                                                      || _
+        new DataLakeStorageException("error", getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com"))), null) || _
     }
 
     def setupStandardRecursiveAclTest() {
