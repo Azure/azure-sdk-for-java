@@ -165,4 +165,14 @@ public class RecordingRedactorTests {
             Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT)
             );
     }
+
+
+    /**
+     * Verify if the value in the json key {@code httpUrl}  is redacted successfully.
+     */
+    @Test
+    public void replaceUrlKey() {
+        assertEquals(REDACTED_ACCOUNT_KEY_RESPONSE_BODY, new RecordingRedactor().redact(ACCOUNT_KEY_RESPONSE_BODY));
+        assertEquals(REDACTED_AUTH_HEADER_RESPONSE_BODY, new RecordingRedactor().redact(AUTH_HEADER_RESPONSE_BODY));
+    }
 }
