@@ -16,8 +16,9 @@ import java.util.List;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
+ * This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
  *
- * <p> This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
+ * <p><strong>Code Samples</strong></p>
  *
  * {@codesnippet com.azure.digitaltwins.core.syncClient.instantiation}
  *
@@ -52,11 +53,11 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter: </p>
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output type: </p>
+     * <p>Or alternatively String can be used as input and output type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
@@ -77,11 +78,11 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>A strongly typed digital twin object type such as {@link BasicDigitalTwin} can be provided as the input parameter: </p>
+     * <p>A strongly typed digital twin object type such as {@link BasicDigitalTwin} can be provided as the input parameter:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Context#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output type: </p>
+     * <p>Or alternatively String can be used as input and output type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
@@ -240,7 +241,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#String}
      *
@@ -265,7 +266,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Context#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Context#String}
      *
@@ -291,7 +292,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationship#String#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationship#String#String}
      *
@@ -315,7 +316,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Context#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Context#String}
      *
@@ -410,7 +411,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#String#IterateByItem}
      *
@@ -434,7 +435,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Context#BasicRelationship#IterateByItem}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Context#String#IterateByItem}
      *
@@ -735,7 +736,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String#String}
      *
@@ -759,7 +760,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String-Context#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String-Context#String}
      *
@@ -919,7 +920,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-Object#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-Object#String}
      *
@@ -943,7 +944,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-Object-Options-Context#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-Object-Options-Context#String}
      *
@@ -969,7 +970,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetry#String-String-Object#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetry#String-String-Object#String}
      *
@@ -994,7 +995,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-Object-Options-Context#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-Object-Options-Context#String}
      *

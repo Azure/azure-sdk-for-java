@@ -40,8 +40,9 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client for interacting asynchronously with an Azure Digital Twins instance.
+ * This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
  *
- * <p> This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
+ * <p><strong>Code Samples</strong></p>
  *
  * {@codesnippet com.azure.digitaltwins.core.asyncClient.instantiation}
  *
@@ -97,11 +98,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter: </p>
+     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#String}
      *
@@ -123,11 +124,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter: </p>
+     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class#String}
      *
@@ -173,7 +174,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwin#String-Class#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwin#String-Class#String}
      *
@@ -201,7 +202,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class#String}
      *
@@ -340,7 +341,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#String}
      *
@@ -366,7 +367,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class#String}
      *
@@ -408,7 +409,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationship#String#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationship#String#String}
      *
@@ -433,7 +434,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationshipWithResponse#String-String-Class#BasicRelationship}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationshipWithResponse#String-String-Class#String}
      *
@@ -564,7 +565,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class#String#IterateByItem}
      *
@@ -585,7 +586,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class#BasicRelationship#IterateByItem}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class#String#IterateByItem}
      *
@@ -1081,7 +1082,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin}
      *
-     * <p>Or alternatively String can be used as input and output deserialization type: </p>
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#String}
      *
@@ -1364,7 +1365,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetry#String-Object#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetry#String-Object#String}
      *
@@ -1390,7 +1391,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-Object-Options#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-Object-Options#String}
      *
@@ -1424,7 +1425,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetry#String-String-Object#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetry#String-String-Object#String}
      *
@@ -1451,7 +1452,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetryWithResponse#String-String-Object-Options#Object}
      *
-     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload: </p>
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetryWithResponse#String-String-Object-Options#String}
      *
