@@ -4,7 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.util.Beta;
 
+/**
+ * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
+ */
+@Beta(Beta.SinceVersion.V4_7_0)
 public final class TransactionalBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;

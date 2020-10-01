@@ -13,6 +13,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
     private CosmosClient batchClient;
     private CosmosContainer batchContainer;
+    private CosmosAsyncContainer batchAsyncContainer;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public TransactionalBatchTest(CosmosClientBuilder clientBuilder) {
@@ -33,13 +35,42 @@ public class TransactionalBatchTest extends BatchTestBase {
     public void before_TransactionalBatchTest() {
         assertThat(this.batchClient).isNull();
         this.batchClient = getClientBuilder().buildClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
-        batchContainer = batchClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
+        batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeCloseSyncClient(this.batchClient);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void batchExecutionRepeat() {
+        CosmosContainer container = this.batchContainer;
+        this.createJsonTestDocsAsync(container);
+
+        TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
+        TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
+        replaceDoc.setCost(replaceDoc.getCost() + 1);
+
+        Mono<TransactionalBatchResponse> batchResponseMono = batchAsyncContainer.executeTransactionalBatch(
+            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                .createItem(firstDoc)
+                .replaceItem(replaceDoc.getId(), replaceDoc));
+
+        TransactionalBatchResponse batchResponse1 = batchResponseMono.block();
+        this.verifyBatchProcessed(batchResponse1, 2);
+
+        assertThat(batchResponse1.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse1.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+
+        // Block again.
+        TransactionalBatchResponse batchResponse2 = batchResponseMono.block();
+        assertThat(batchResponse2.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CONFLICT.code());
+        assertThat(batchResponse2.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+
+        // Ensure that the replace overwrote the doc from the first operation
+        this.verifyByReadAsync(container, replaceDoc);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)

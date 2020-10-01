@@ -567,15 +567,20 @@ public class CosmosAsyncContainer {
             requestOptions = new TransactionalBatchRequestOptions();
         }
 
-        final BatchExecutor executor = new BatchExecutor(this, transactionalBatch, requestOptions);
-        final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
+        final TransactionalBatchRequestOptions transactionalBatchRequestOptions = requestOptions;
 
-        return withContext(context -> database.getClient().getTracerProvider().
-            traceEnabledBatchResponsePublisher(responseMono,
-                context,
-                this.batchSpanName,
-                database.getId(),
-                database.getClient().getServiceEndpoint()));
+        return withContext(context -> {
+            final BatchExecutor executor = new BatchExecutor(this, transactionalBatch, transactionalBatchRequestOptions);
+            final Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
+
+            return database.getClient().getTracerProvider().
+                traceEnabledBatchResponsePublisher(
+                    responseMono,
+                    context,
+                    this.batchSpanName,
+                    database.getId(),
+                    database.getClient().getServiceEndpoint());
+            });
     }
 
     /**

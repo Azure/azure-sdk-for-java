@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Duration;
 
@@ -13,6 +14,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TResource> the type parameter
  */
+@Beta(Beta.SinceVersion.V4_7_0)
 public final class TransactionalBatchOperationResult<TResource> {
 
     private String eTag;

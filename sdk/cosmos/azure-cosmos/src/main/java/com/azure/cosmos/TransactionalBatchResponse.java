@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.util.Beta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link TransactionalBatch} request.
  */
+@Beta(Beta.SinceVersion.V4_7_0)
 public class TransactionalBatchResponse {
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBatchResponse.class);

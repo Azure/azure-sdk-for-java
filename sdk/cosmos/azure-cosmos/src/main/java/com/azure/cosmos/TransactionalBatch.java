@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <b>See:</b>
  * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on TransactionalBatch requests</a>.
  */
+@Beta(Beta.SinceVersion.V4_7_0)
 public final class TransactionalBatch {
 
     private final ArrayList<ItemBatchOperation<?>> operations;
