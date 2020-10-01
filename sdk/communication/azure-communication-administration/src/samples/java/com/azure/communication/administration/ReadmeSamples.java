@@ -12,14 +12,19 @@ import java.util.List;
 
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
+import com.azure.communication.administration.models.CreateSearchOptions;
+import com.azure.communication.administration.models.CreateSearchResponse;
 import com.azure.communication.administration.models.LocationOptions;
 import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.PhoneNumberCountry;
+import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
+import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -301,7 +306,7 @@ public class ReadmeSamples {
      */
     public AreaCodes getAreaCodes() {
         String countryCode = "US";
-        String phonePlanId = "phone-plan-id-1";
+        String phonePlanId = "PHONE_PLAN_ID";
 
         List<LocationOptionsQuery> locationOptions = new ArrayList<>();
         LocationOptionsQuery query = new LocationOptionsQuery();
@@ -330,5 +335,76 @@ public class ReadmeSamples {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Sample code to create a phone number search
+     *
+     * @return PhoneNumberSearch for the phone plan
+     */
+    public PhoneNumberSearch createPhoneNumberSearch() {
+        String phonePlanId = "PHONE_PLAN_ID";
+
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add(phonePlanId);
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode("AREA_CODE_FOR_SEARCH")
+            .setDescription("DESCRIPTION_FOR_SEARCH")
+            .setDisplayName("NAME_FOR_SEARCH")
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+
+        try {
+            PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+            CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
+
+            System.out.println("SearchId: " + createSearchResponse.getSearchId());
+            PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
+
+            for (String phoneNumber
+                 : phoneNumberSearch.getPhoneNumbers()) {
+                System.out.println("Phone Number: " + phoneNumber);
+            }
+
+            return phoneNumberSearch;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Sample code to purchase a phone number search
+     */
+    public void purchasePhoneNumberSearch() {
+        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+
+        try {
+            PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+            phoneNumberClient.purchaseSearch(phoneNumberSearchId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sample code to configure a phone number
+     */
+    public void configurePhoneNumber() {
+        PhoneNumber phoneNumber = new PhoneNumber("PHONENUMBER_TO_CONFIGURE");
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("APPLICATION_ID");
+        pstnConfiguration.setAzurePstnTargetId("AZURE_PSTN_TARGET_ID");
+        pstnConfiguration.setCallbackUrl("CALLBACK_URL");
+
+        try {
+            PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+            phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
