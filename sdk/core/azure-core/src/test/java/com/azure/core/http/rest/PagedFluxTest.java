@@ -301,46 +301,34 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void streamFindFirstOnlyRetrievesOnePage() throws InterruptedException {
+    public void fluxByItemOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        Integer next = new OnlyOnePagedFlux(() -> pageRetriever).blockFirst();
+        OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
+
+        pagedFlux.ignoreElements().block();
+        int fullPageCount = pageRetriever.getGetCount();
+        assertTrue(fullPageCount > 1);
+
+        Integer next = pagedFlux.blockFirst();
 
         Thread.sleep(2000);
 
-        assertEquals(1, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
     }
 
     @Test
-    public void iterateNextOnlyRetrievesOnePage() throws InterruptedException {
+    public void fluxByPageOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        Integer next = new OnlyOnePagedFlux(() -> pageRetriever).blockFirst();
+        OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
+
+        pagedFlux.byPage().ignoreElements().block();
+        int fullPageCount = pageRetriever.getGetCount();
+        assertTrue(fullPageCount > 1);
+
+        OnlyOneContinuablePage page = pagedFlux.byPage().blockFirst();
 
         Thread.sleep(2000);
 
-        assertEquals(1, pageRetriever.getGetCount());
-    }
-
-    @Test
-    public void streamByPageFindFirstOnlyRetrievesOnePage() throws InterruptedException {
-        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        OnlyOneContinuablePage page = new OnlyOnePagedFlux(() -> pageRetriever)
-            .byPage()
-            .blockFirst();
-
-        Thread.sleep(2000);
-
-        assertEquals(1, pageRetriever.getGetCount());
-    }
-
-    @Test
-    public void iterateByPageNextOnlyRetrievesOnePage() throws InterruptedException {
-        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        OnlyOneContinuablePage page = new OnlyOnePagedFlux(() -> pageRetriever)
-            .byPage()
-            .blockFirst();
-
-        Thread.sleep(2000);
-
-        assertEquals(1, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
     }
 }

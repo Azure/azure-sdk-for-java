@@ -21,6 +21,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link PagedIterable}.
@@ -259,35 +260,55 @@ public class PagedIterableTest {
     @Test
     public void streamFindFirstOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        Integer next = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever)).stream().findFirst().get();
+        OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
+
+        // Validation that there is more than one paged in the full return.
+        pagedIterable.stream().count();
+        int fullPageCount = pageRetriever.getGetCount();
+        assertTrue(fullPageCount > 1);
+
+        Integer next = pagedIterable.stream().findFirst().get();
 
         Thread.sleep(2000);
 
         /*
          * Given that each page contains more than one element we are able to only retrieve a single page.
          */
-        assertEquals(1, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
     }
 
     @Test
     public void iterateNextOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        Integer next = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever)).iterator().next();
+        OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
+
+        // Validation that there is more than one paged in the full return.
+        pagedIterable.iterator().forEachRemaining(ignored -> {
+        });
+        int fullPageCount = pageRetriever.getGetCount();
+        assertTrue(fullPageCount > 1);
+
+        Integer next = pagedIterable.iterator().next();
 
         Thread.sleep(2000);
 
         /*
          * Given that each page contains more than one element we are able to only retrieve a single page.
          */
-        assertEquals(1, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
     }
 
     @Test
     public void streamByPageFindFirstOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        OnlyOneContinuablePage page = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever)).streamByPage()
-            .findFirst()
-            .get();
+        OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
+
+        // Validation that there is more than one paged in the full return.
+        pagedIterable.streamByPage().count();
+        int fullPageCount = pageRetriever.getGetCount();
+        assertTrue(fullPageCount > 1);
+
+        OnlyOneContinuablePage page = pagedIterable.streamByPage().findFirst().get();
 
         Thread.sleep(2000);
 
@@ -296,16 +317,21 @@ public class PagedIterableTest {
          * the best result we can get is only two pages being retrieved. One to satisfy the findFirst operations and
          * one to refill the buffer.
          */
-        assertEquals(1, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
     }
 
     @Test
     public void iterateByPageNextOnlyRetrievesOnePage() throws InterruptedException {
         OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
-        OnlyOneContinuablePage page = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever))
-            .iterableByPage()
-            .iterator()
-            .next();
+        OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
+
+        // Validation that there is more than one paged in the full return.
+        pagedIterable.iterableByPage().iterator().forEachRemaining(ignored -> {
+        });
+        int fullPageCount = pageRetriever.getGetCount();
+        assertTrue(fullPageCount > 1);
+
+        OnlyOneContinuablePage page = pagedIterable.iterableByPage().iterator().next();
 
         Thread.sleep(2000);
 
@@ -314,6 +340,6 @@ public class PagedIterableTest {
          * the best result we can get is only two pages being retrieved. One to satisfy the findFirst operations and
          * one to refill the buffer.
          */
-        assertEquals(1, pageRetriever.getGetCount());
+        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
     }
 }
