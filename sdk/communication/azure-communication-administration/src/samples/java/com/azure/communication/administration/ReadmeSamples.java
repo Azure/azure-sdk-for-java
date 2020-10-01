@@ -397,7 +397,6 @@ public class ReadmeSamples {
         PhoneNumber phoneNumber = new PhoneNumber("PHONENUMBER_TO_CONFIGURE");
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("APPLICATION_ID");
-        pstnConfiguration.setAzurePstnTargetId("AZURE_PSTN_TARGET_ID");
         pstnConfiguration.setCallbackUrl("CALLBACK_URL");
 
         try {

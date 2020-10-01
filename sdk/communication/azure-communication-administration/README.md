@@ -170,7 +170,7 @@ Unlike Toll-Free phone plans, area codes for Geographic Phone Plans are empty. A
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L243-L254 -->
 ```java
- PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
 PagedIterable<PhonePlan> phonePlans = phoneNumberClient
     .listPhonePlans(countryCode, phonePlanGroupId, locale);
@@ -226,7 +226,6 @@ for (String areaCode
     : areaCodes.getPrimaryAreaCodes()) {
     System.out.println(areaCode);
 }
-
 ```
 
 ### Create Search
@@ -254,7 +253,7 @@ phoneNumberClient.purchaseSearch(phoneNumberSearchId);
 
 ### Configure Phone Number
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L404-L405 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L403-L404 -->
 ```java
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
