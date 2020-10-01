@@ -29,6 +29,7 @@ import reactor.core.publisher.Signal;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ import java.util.stream.Collector;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -327,6 +329,52 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime OffsetDateTime at which the message should appear in the Service Bus queue or topic.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code messages} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime) {
+        return scheduleMessages(messages, scheduledEnqueueTime, null);
+    }
+
+    /**
+     * Sends a scheduled messages to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param messages Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
+     * @param transactionContext to be set on batch message before scheduling them on Service Bus.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
+     */
+    public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
+        ServiceBusTransactionContext transactionContext) {
+        if (Objects.isNull(messages)) {
+            return fluxError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        if (Objects.isNull(scheduledEnqueueTime)) {
+            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+        }
+
+        return createBatch().flatMapMany(messageBatch -> {
+            messages.forEach(message -> messageBatch.tryAdd(message));
+            return getSendLink().flatMapMany(link -> connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
+                    messageBatch.getMaxSizeInBytes(), link.getLinkName(), transactionContext)));
+        });
+    }
+
+    /**
      * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
      *
      * @param sequenceNumber of the scheduled message to cancel.
@@ -342,7 +390,33 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber, linkName.get()));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(Arrays.asList(sequenceNumber),
+                linkName.get()));
+    }
+
+    /**
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumbers of the scheduled messages to cancel.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     */
+    public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
+
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "cancelScheduledMessages")));
+        }
+
+        if (Objects.isNull(sequenceNumbers)) {
+            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get()));
     }
 
     /**
@@ -426,6 +500,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
     }
 
+
+
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(message)) {
@@ -444,8 +520,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
                 return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize,
-                        link.getLinkName(), transactionContext));
+                    .flatMap(managementNode -> managementNode.schedule(Arrays.asList(message), scheduledEnqueueTime,
+                        maxSize, link.getLinkName(), transactionContext)
+                    .next());
             }));
     }
 
