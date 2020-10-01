@@ -1,12 +1,11 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.7.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version. 
 - Added support to getFileRanges on a previous snapshot by adding the getFileRangesDiff API. 
 - Added support to set whether or not smb multichannel is enabled.
 - Added support to lease shares and snapshot shares.
 - Added support to specify a lease id for share operations. 
-
 - Fixed a bug where getProperties on a file client would throw a HttpResponseException instead of ShareStorageException.
 - Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
 - Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
