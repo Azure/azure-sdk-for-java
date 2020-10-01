@@ -107,13 +107,13 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         }
 
         // list event routes by page, make sure that all non-final pages have the expected page size
-        AtomicBoolean atLeastOnePage = new AtomicBoolean(false);
+        AtomicInteger pageCount = new AtomicInteger(0);
         EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemCount(expectedPageSize);
         StepVerifier.create(asyncClient.listEventRoutes(eventRoutesListOptions).byPage())
             .thenConsumeWhile(
                 (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,
                 (pagedResponseOfEventRoute) -> {
-                    atLeastOnePage.set(true);
+                    pageCount.incrementAndGet();
 
                     // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
                     if (pagedResponseOfEventRoute.getContinuationToken() != null) {
@@ -122,6 +122,6 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
                 })
             .verifyComplete();
 
-        assertTrue(atLeastOnePage.get(), "No pages were returned by list call when at least one page should have been returned");
+        assertTrue(pageCount.get() >= 3, "At least three pages should have been returned.");
     }
 }

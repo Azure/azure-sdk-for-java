@@ -111,6 +111,6 @@ public class EventRoutesTest extends EventRoutesTestBase {
             }
         }
 
-        assertTrue(pageCount > 1, "No pages were returned by list call when at least one page should have been returned.");
+        assertTrue(pageCount >= 3, "At least three pages should have been returned.");
     }
 }
