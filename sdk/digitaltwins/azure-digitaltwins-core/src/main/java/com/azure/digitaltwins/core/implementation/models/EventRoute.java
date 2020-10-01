@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EventRoute model. */
+/**
+ * A route which directs notification and telemetry events to an endpoint. Endpoints are a destination outside of Azure
+ * Digital Twins such as an EventHub.
+ */
 @Fluent
 public final class EventRoute {
     /*
@@ -30,7 +33,11 @@ public final class EventRoute {
     @JsonProperty(value = "filter")
     private String filter;
 
-    /** Creates an instance of EventRoute class. */
+    /**
+     * Creates an instance of EventRoute class.
+     *
+     * @param endpointName the endpointName value to set.
+     */
     @JsonCreator
     public EventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
         this.endpointName = endpointName;
