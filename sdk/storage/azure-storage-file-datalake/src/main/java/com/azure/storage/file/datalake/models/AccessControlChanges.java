@@ -3,32 +3,34 @@
 
 package com.azure.storage.file.datalake.models;
 
+import java.util.List;
+
 /**
  * AccessControlChanges contains batch and cumulative counts of operations that change Access Control Lists recursively.
  * Additionally it exposes path entries that failed to update while these operations progress.
  */
 public class AccessControlChanges {
-    private Iterable<AccessControlChangeFailure> batchFailures;
+    private List<AccessControlChangeFailure> batchFailures;
     private AccessControlChangeCounters batchCounters;
     private AccessControlChangeCounters aggregateCounters;
     private String continuationToken;
 
     /**
-     * Returns an iterable of path entries that failed to update Access Control List within a single batch.
+     * Returns a list of path entries that failed to update Access Control List within a single batch.
      *
-     * @return An iterable of path entries that failed to update Access Control List within a single batch.
+     * @return A list of path entries that failed to update Access Control List within a single batch.
      */
-    public Iterable<AccessControlChangeFailure> getBatchFailures() {
+    public List<AccessControlChangeFailure> getBatchFailures() {
         return batchFailures;
     }
 
     /**
-     * Sets an iterable of path entries that failed to update Access Control List within a single batch.
+     * Sets a list of path entries that failed to update Access Control List within a single batch.
      *
-     * @param batchFailures An iterable of path entries that failed to update Access Control List within a single batch.
+     * @param batchFailures A list of path entries that failed to update Access Control List within a single batch.
      * @return The updated object
      */
-    public AccessControlChanges setBatchFailures(Iterable<AccessControlChangeFailure> batchFailures) {
+    public AccessControlChanges setBatchFailures(List<AccessControlChangeFailure> batchFailures) {
         this.batchFailures = batchFailures;
         return this;
     }

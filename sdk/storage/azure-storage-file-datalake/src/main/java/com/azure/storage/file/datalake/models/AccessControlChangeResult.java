@@ -3,12 +3,15 @@
 
 package com.azure.storage.file.datalake.models;
 
+import java.util.List;
+
 /**
  * AccessControlChangeResult contains result of operations that change Access Control Lists recursively.
  */
 public class AccessControlChangeResult {
     private AccessControlChangeCounters counters;
     private String continuationToken;
+    private List<AccessControlChangeFailure> batchFailures;
 
     /**
      * Returns the {@link AccessControlChangeCounters}.
@@ -49,6 +52,28 @@ public class AccessControlChangeResult {
      */
     public AccessControlChangeResult setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
+        return this;
+    }
+
+    /**
+     * Optional the first set of batch failures. Value is present if there was a set of failures in a batch and
+     * contains a list of path entries that failed to change access control.
+     *
+     * @return The first set of batch failures.
+     */
+    public List<AccessControlChangeFailure> getBatchFailures() {
+        return batchFailures;
+    }
+
+    /**
+     * Sets the first set of batch failures.
+     *
+     * @param batchFailures Optional the first set of batch failures. Value is present if there was a set of failures
+     * in a batch and contains a list of path entries that failed to change access control.
+     * @return The updated object.
+     */
+    public AccessControlChangeResult setBatchFailures(List<AccessControlChangeFailure> batchFailures) {
+        this.batchFailures = batchFailures;
         return this;
     }
 }
