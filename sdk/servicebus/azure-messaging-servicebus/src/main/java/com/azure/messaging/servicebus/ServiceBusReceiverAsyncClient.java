@@ -28,9 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -693,8 +691,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil().toInstant(),
-                        receivedMessage.getLockedUntil()).atOffset(ZoneOffset.UTC));
+                        receivedMessage.getLockedUntil(),
+                        receivedMessage.getLockedUntil()));
                 }
 
                 return receivedMessage;
@@ -739,8 +737,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil().toInstant(),
-                        receivedMessage.getLockedUntil()).atOffset(ZoneOffset.UTC));
+                        receivedMessage.getLockedUntil(),
+                        receivedMessage.getLockedUntil()));
                 }
 
                 return receivedMessage;
@@ -782,8 +780,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(message.getLockToken(), getLinkName(null)))
-            .map(instant -> managementNodeLocks.addOrUpdate(message.getLockToken(), instant,
-                instant.atOffset(ZoneOffset.UTC)).atOffset(ZoneOffset.UTC));
+            .map(offsetDateTime -> managementNodeLocks.addOrUpdate(message.getLockToken(), offsetDateTime,
+                offsetDateTime));
     }
 
     /**
@@ -819,7 +817,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final LockRenewalOperation operation = new LockRenewalOperation(message.getLockToken(),
             maxLockRenewalDuration, false, ignored -> renewMessageLock(message));
-        renewalContainer.addOrUpdate(message.getLockToken(), Instant.now().plus(maxLockRenewalDuration), operation);
+        renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
+            operation);
 
         return operation.getCompletionOperation();
     }
@@ -846,8 +845,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName)
-                .map(instant -> instant.atOffset(ZoneOffset.UTC)));
+            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
     }
 
     /**
@@ -882,7 +880,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
             this::renewSessionLock);
 
-        renewalContainer.addOrUpdate(sessionId, Instant.now().plus(maxLockRenewalDuration), operation);
+        renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
         return operation.getCompletionOperation();
     }
 
