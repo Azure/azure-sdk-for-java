@@ -8,7 +8,7 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
 
 /**
- * async code snippets for the table service
+ * async code snippets for the Tables service
  */
 public class TableServiceAsyncClientCodeSnippets {
 
