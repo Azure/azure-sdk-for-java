@@ -36,6 +36,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
@@ -428,15 +429,12 @@ public final class BlobServiceAsyncClient {
      */
     private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
         boolean hasDetails = blobContainerListDetails != null
-            && blobContainerListDetails.getRetrieveMetadata();
-        // Add back for container soft delete.
-//        boolean hasDetails = blobContainerListDetails != null
-//            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
+            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
-//            if (blobContainerListDetails.getRetrieveDeleted()) {
-//                flags.add(ListBlobContainersIncludeType.DELETED);
-//            }
+            if (blobContainerListDetails.getRetrieveDeleted()) {
+                flags.add(ListBlobContainersIncludeType.DELETED);
+            }
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
             }
@@ -849,14 +847,12 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
      * to interact with the restored container.
      */
-    /*
     public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion)
+        return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
+            deletedContainerVersion)
         ).flatMap(FluxUtil::toMono);
     }
-    */
 
     /**
      * Restores a previously deleted container. The restored container
@@ -877,13 +873,10 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
-    /*
     public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options) {
         try {
-            return withContext(context ->
-                undeleteBlobContainerWithResponse(
-                    options, context));
+            return withContext(context -> undeleteBlobContainerWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -903,5 +896,4 @@ public final class BlobServiceAsyncClient {
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
-    */
 }

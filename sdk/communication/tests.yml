@@ -10,6 +10,6 @@ jobs:
       - name: azure-communication-chat
         groupId: com.azure
         safeName: azurecommunicationchatclient
-    ResourceServiceDirectory: communication
+    ServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: RECORD

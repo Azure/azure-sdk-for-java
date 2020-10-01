@@ -30,6 +30,11 @@ public final class Constants {
     public static final int GB = 1024 * MB;
 
     /**
+     * Represents a non-SI terabyte.
+     */
+    public static final long TB = 1024L * GB;
+
+    /**
      * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
      */
     public static final String HTTPS = "https";
@@ -191,7 +196,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2019-12-12";
+        public static final String TARGET_STORAGE_VERSION = "2020-02-10";
 
         /**
          * Error code returned from the service.
@@ -348,6 +353,26 @@ public final class Constants {
          * The SAS signed version parameter for user delegation SAS.
          */
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
+
+        /**
+         * The SAS preauthorized agent object id parameter for user delegation SAS.
+         */
+        public static final String SAS_PREAUTHORIZED_AGENT_OBJECT_ID = "saoid";
+
+        /**
+         * The SAS agent object id parameter for user delegation SAS.
+         */
+        public static final String SAS_AGENT_OBJECT_ID = "suoid";
+
+        /**
+         * The SAS correlation id parameter for user delegation SAS.
+         */
+        public static final String SAS_CORRELATION_ID = "scid";
+
+        /**
+         * The SAS directory depth parameter.
+         */
+        public static final String SAS_DIRECTORY_DEPTH = "sdd";
 
         /**
          * The SAS queue constant.

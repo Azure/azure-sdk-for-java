@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestssetmetadataerror51384c6105afa911a4?restype=share&comp=metadata",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetmetadataerror7512825eca9d28afe4?restype=share&comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a589d0f4-3790-4618-bb9c-0a8bf737f847"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2155a67f-5446-405e-a4a3-1d614d40a8f9"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9ba99ee6-201a-0011-06fa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:9ba99ee6-201a-0011-06fa-aa088f000000\nTime:2019-12-04T23:30:46.1650197Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:45 GMT",
-      "x-ms-client-request-id" : "a589d0f4-3790-4618-bb9c-0a8bf737f847",
+      "x-ms-request-id" : "8c89f8d6-601a-0022-6c75-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f8d6-601a-0022-6c75-761fdd000000\nTime:2020-08-19T22:09:43.4767626Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:43 GMT",
+      "x-ms-client-request-id" : "2155a67f-5446-405e-a4a3-1d614d40a8f9",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestssetmetadataerror51384c6105afa911a4" ]
+  "variables" : [ "shareapitestssetmetadataerror7512825eca9d28afe4" ]
 }
