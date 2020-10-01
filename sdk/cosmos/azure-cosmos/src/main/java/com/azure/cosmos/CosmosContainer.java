@@ -494,7 +494,7 @@ public class CosmosContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_6_0)
+    @Beta(Beta.SinceVersion.V4_7_0)
     public TransactionalBatchResponse executeTransactionalBatch(TransactionalBatch transactionalBatch) {
         return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch));
     }
@@ -528,7 +528,7 @@ public class CosmosContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_6_0)
+    @Beta(Beta.SinceVersion.V4_7_0)
     public TransactionalBatchResponse executeTransactionalBatch(
         TransactionalBatch transactionalBatch,
         TransactionalBatchRequestOptions requestOptions) {

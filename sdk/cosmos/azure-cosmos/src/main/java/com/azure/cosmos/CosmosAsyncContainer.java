@@ -524,7 +524,7 @@ public class CosmosAsyncContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_6_0)
+    @Beta(Beta.SinceVersion.V4_7_0)
     public Mono<TransactionalBatchResponse> executeTransactionalBatch(TransactionalBatch transactionalBatch) {
         return executeTransactionalBatch(transactionalBatch, new TransactionalBatchRequestOptions());
     }
@@ -558,7 +558,7 @@ public class CosmosAsyncContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_6_0)
+    @Beta(Beta.SinceVersion.V4_7_0)
     public Mono<TransactionalBatchResponse> executeTransactionalBatch(
         TransactionalBatch transactionalBatch,
         TransactionalBatchRequestOptions requestOptions) {
