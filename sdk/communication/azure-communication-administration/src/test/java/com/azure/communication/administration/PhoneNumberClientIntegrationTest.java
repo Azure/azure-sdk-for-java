@@ -264,7 +264,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
-        pstnConfiguration.setAzurePstnTargetId("AzurePstnTargetId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
         this.getClient().configureNumber(number, pstnConfiguration);
@@ -275,12 +274,11 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
-        pstnConfiguration.setAzurePstnTargetId("AzurePstnTargetId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
         Response<Void> response = this.getClient().configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
 
-        assertEquals(202, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test()
@@ -315,7 +313,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
         Response<Void> response = this.getClient().unconfigureNumberWithResponse(number, Context.NONE);
 
-        assertEquals(202, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test()
