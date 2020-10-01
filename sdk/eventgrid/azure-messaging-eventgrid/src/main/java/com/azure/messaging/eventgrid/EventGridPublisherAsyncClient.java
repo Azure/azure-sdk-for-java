@@ -78,11 +78,12 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Void> sendEvents(Iterable<EventGridEvent> events, Context context) {
+        final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
             .collectList()
-            .flatMap(list -> this.impl.publishEventsAsync(this.hostname,
-                list, context.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
     /**
@@ -100,12 +101,13 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Void> sendCloudEvents(Iterable<CloudEvent> events, Context context) {
+        final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .map(CloudEvent::toImpl)
             .collectList()
             .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
     /**
@@ -123,10 +125,11 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Void> sendCustomEvents(Iterable<Object> events, Context context) {
+        final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
     /**
@@ -144,11 +147,12 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+        final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
             .collectList()
             .flatMap(list -> this.impl.publishEventsWithResponseAsync(this.hostname, list,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
     /**
@@ -166,12 +170,13 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
+        final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .map(CloudEvent::toImpl)
             .collectList()
             .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
     /**
@@ -189,10 +194,11 @@ public final class EventGridPublisherAsyncClient {
     }
 
     Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
+        final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
     private void addCloudEventTracePlaceHolder(Iterable<CloudEvent> events) {
