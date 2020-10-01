@@ -1,6 +1,6 @@
 # Release History
 
-## 12.7.0-beta.1 ((2020-10-01))
+## 12.7.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version. 
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Fixed a bug where Default Azure Credential would not work with Azurite.
