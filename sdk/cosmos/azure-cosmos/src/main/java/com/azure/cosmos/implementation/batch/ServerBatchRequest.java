@@ -40,7 +40,7 @@ public abstract class ServerBatchRequest {
     /**
      * Adds as many operations as possible from the given list of operations.
      * TODO(rakkuma): Similarly for hybrid row, request needs to be parsed to create a request body in any form.
-     *
+     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
      * <p>
      * Operations are added in order while ensuring the request body never exceeds {@link #maxBodyLength}.
      *

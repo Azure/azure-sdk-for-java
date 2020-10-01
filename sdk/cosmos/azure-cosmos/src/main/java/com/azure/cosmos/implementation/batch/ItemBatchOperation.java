@@ -46,6 +46,7 @@ public final class ItemBatchOperation<TResource> {
     }
 
     // TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
+    // Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
     static JsonSerializable writeOperation(final ItemBatchOperation<?> operation) {
         final JsonSerializable jsonSerializable = new JsonSerializable();
 

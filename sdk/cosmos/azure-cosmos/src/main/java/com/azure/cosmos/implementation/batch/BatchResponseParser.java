@@ -169,6 +169,7 @@ public final class BatchResponseParser {
         } else {
             // TODO(rakkuma): Implement hybrid row response parsing logic here. Parse the response hybrid row buffer
             //  into array list of TransactionalBatchOperationResult. Remaining part is taken care from the caller function.
+            // Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
             logger.error("Hybrid row is not implemented right now");
             return null;
         }
@@ -205,6 +206,7 @@ public final class BatchResponseParser {
      * Read batch operation result result.
      *
      *  TODO(rakkuma): Similarly hybrid row result needs to be parsed.
+     *  Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
      *
      * @param objectNode having response for a single operation.
      *
