@@ -66,7 +66,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -172,7 +172,7 @@ class EventHubConsumerAsyncClientTest {
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .verifyComplete();
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -201,7 +201,7 @@ class EventHubConsumerAsyncClientTest {
             })
             .verifyComplete();
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
 
@@ -251,7 +251,7 @@ class EventHubConsumerAsyncClientTest {
         // Assert
         Assertions.assertTrue(countDownLatch.await(30, TimeUnit.SECONDS));
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     private Mono<Instant> saveAction(EventData event) {
@@ -315,7 +315,7 @@ class EventHubConsumerAsyncClientTest {
         verify(link2, times(1)).addCredits(PREFETCH);
         verify(link3, times(1)).addCredits(PREFETCH);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -564,7 +564,7 @@ class EventHubConsumerAsyncClientTest {
             .thenCancel()
             .verify(TIMEOUT);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -642,7 +642,7 @@ class EventHubConsumerAsyncClientTest {
             .thenCancel()
             .verify(TIMEOUT);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -683,7 +683,7 @@ class EventHubConsumerAsyncClientTest {
         // Verify
         verify(hubConnection, times(1)).dispose();
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {
