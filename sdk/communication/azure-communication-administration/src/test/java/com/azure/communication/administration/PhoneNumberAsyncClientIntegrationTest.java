@@ -346,7 +346,6 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
-        pstnConfiguration.setAzurePstnTargetId("AzurePstnTargetId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
         Mono<Void> mono = this.getClient().configureNumber(number, pstnConfiguration);
@@ -359,14 +358,13 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
-        pstnConfiguration.setAzurePstnTargetId("AzurePstnTargetId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
         Mono<Response<Void>> mono = this.getClient().configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
 
         StepVerifier.create(mono)
             .assertNext(item -> {
-                assertEquals(202, item.getStatusCode());
+                assertEquals(200, item.getStatusCode());
             })
             .verifyComplete();
     }
@@ -416,7 +414,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         StepVerifier.create(mono)
             .assertNext(item -> {
-                assertEquals(202, item.getStatusCode());
+                assertEquals(200, item.getStatusCode());
             })
             .verifyComplete();
     }

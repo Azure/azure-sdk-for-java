@@ -12,7 +12,7 @@
       "retry-after" : "0",
       "X-Azure-Ref" : "0RXxpXwAAAAA/H8wY0GrvSaITi8Q5Mz9xWVZSMzBFREdFMDMwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Content-Length" : "0",
-      "StatusCode" : "202",
+      "StatusCode" : "200",
       "Date" : "Tue, 22 Sep 2020 04:23:33 GMT"
     },
     "Exception" : null
