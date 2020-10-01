@@ -19,6 +19,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -166,7 +167,9 @@ public final class SecretClientBuilder {
     /**
      * Sets the vault url to send HTTP requests to.
      *
-     * @param vaultUrl The vault url is used as destination on Azure to send requests to.
+     * @param vaultUrl The vault url is used as destination on Azure to send requests to. If you have a secret
+     * identifier, use {@link KeyVaultSecretIdentifier#parse(String)} to parse it and obtain the {@code vaultUrl} and
+     * other information.
      * @return the updated {@link SecretClientBuilder} object.
      * @throws IllegalArgumentException if {@code vaultUrl} is null or it cannot be parsed into a valid URL.
      */
