@@ -4,48 +4,33 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl;
-import com.azure.communication.administration.models.AcquiredPhoneNumber;
-import com.azure.communication.administration.models.AreaCodes;
-import com.azure.communication.administration.models.CreateSearchOptions;
-import com.azure.communication.administration.models.CreateSearchResponse;
-import com.azure.communication.administration.models.LocationOptionsQueries;
-import com.azure.communication.administration.models.LocationOptionsQuery;
-import com.azure.communication.administration.models.LocationOptionsResponse;
-import com.azure.communication.administration.models.NumberConfigurationPhoneNumber;
-import com.azure.communication.administration.models.NumberConfigurationResponse;
-import com.azure.communication.administration.models.NumberUpdateCapabilities;
-import com.azure.communication.administration.models.PhoneNumberCountry;
-import com.azure.communication.administration.models.PhoneNumberEntity;
-import com.azure.communication.administration.models.PhoneNumberRelease;
-import com.azure.communication.administration.models.PhonePlan;
-import com.azure.communication.administration.models.PhonePlanGroup;
-import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.administration.models.ReleaseRequest;
-import com.azure.communication.administration.models.ReleaseResponse;
-import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
-import com.azure.communication.administration.models.NumberConfiguration;
-import com.azure.communication.administration.models.PhoneNumberSearch;
-import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
-import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
+import com.azure.communication.administration.models.*;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.*;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Asynchronous client for Communication service phone number operations
@@ -756,5 +741,72 @@ public final class PhoneNumberAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+
+    public PollerFlux<Void, PhoneNumberSearch> beginPurchaseSearch(String searchId, Duration lroDuration) {
+
+        final Duration duration = lroDuration != null ? lroDuration : DEFAULT_POLL_INTERVAL;
+        return new PollerFlux<Void, PhoneNumberSearch>(duration,
+            activationOperation(searchId),
+            createPollOperation(searchId),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchResultOperation(searchId));
+    }
+
+    private Function<PollingContext<Void>, Mono<Void>> activationOperation (String searchId) {
+
+        return (pollingContext) ->withContext(context ->   purchaseSearchWithResponse(searchId,context)
+            .flatMap(response -> Mono.just(response.getValue())));
+    }
+
+    private Function<PollingContext<Void>, Mono<PollResponse<Void>>> createPollOperation(String searchId) {
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> getSearchByIdWithResponse(searchId, context))
+                    .flatMap(this::getSearchByIdStatus);
+            } catch (HttpResponseException e) {
+                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            }
+        };
+    }
+
+    private Mono<PollResponse<Void>> getSearchByIdStatus(Response<PhoneNumberSearch> phoneNumberSearchResponse) {
+        LongRunningOperationStatus status = null;
+        SearchStatus statusResponse = phoneNumberSearchResponse.getValue().getStatus();
+        if (statusResponse.equals( SearchStatus.RESERVED))
+            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        else if(statusResponse.equals( SearchStatus.EXPIRED))
+            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        else if(statusResponse.equals( SearchStatus.SUCCESS))
+            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        else if(statusResponse.equals( SearchStatus.ERROR))
+            status = LongRunningOperationStatus.FAILED;
+        else
+            status = LongRunningOperationStatus.IN_PROGRESS;
+
+        return Mono.just(new PollResponse<>(status,null));
+
+
+    }
+
+    private Function<PollingContext<Void>,
+        Mono<PhoneNumberSearch>> fetchResultOperation(String searchId) {
+
+        return (pollingContext) -> {
+            try {
+                return withContext(context -> getSearchByIdWithResponse(searchId, context))
+                    .flatMap((Response<PhoneNumberSearch> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        }
+                        return Mono.empty();
+                    });
+            } catch (HttpResponseException e) {
+                return Mono.error(new RuntimeException("HTTP response error "+e));
+            }
+        };
+
     }
 }
