@@ -2,7 +2,8 @@
 ## 5.1.0-beta.2 (Unreleased)
 ### Breaking changes
 - Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`, 
-`OpinionSentiment`, and `PiiEntity`.
+`OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself
+ using the string's length property.
 
 ## 5.1.0-beta.1 (2020-09-17)
 - Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment`
