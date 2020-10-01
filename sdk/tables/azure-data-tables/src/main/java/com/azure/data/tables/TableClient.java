@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
+
 import java.time.Duration;
 
 /**
@@ -328,7 +329,7 @@ public class TableClient {
     /**
      * Queries and returns all entities in the given table
      *
-     * @return a list of the tables that fit the query
+     * @return a list of all the entities which fit this criteria
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities() {
@@ -339,11 +340,36 @@ public class TableClient {
      * Queries and returns entities in the given table using the odata QueryOptions
      *
      * @param options the odata query object
-     * @return a list of the tables that fit the query
+     * @return a list of all the entities which fit this criteria
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options) {
         return new PagedIterable<>(client.listEntities(options));
+    }
+
+    /**
+     * Queries and returns all entities in the given table
+     *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @return a list of all the entities which fit this criteria
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T extends TableEntity> PagedIterable<T> listEntities(Class<T> resultType) {
+        return new PagedIterable<>(client.listEntities(resultType));
+    }
+
+    /**
+     * Queries and returns entities in the given table using the odata QueryOptions
+     *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
+     * @param options the odata query object
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @return a list of all the entities which fit this criteria
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T extends TableEntity> PagedIterable<T> listEntities(ListEntitiesOptions options, Class<T> resultType) {
+        return new PagedIterable<>(client.listEntities(options, resultType));
     }
 
     /**
@@ -375,16 +401,33 @@ public class TableClient {
     /**
      * gets the entity which fits the given criteria
      *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return the table entity subclass specified in resultType
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, Class<T> resultType) {
+        return client.getEntity(partitionKey, rowKey, resultType).block();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
      * @param partitionKey the partition key of the entity
      * @param rowKey the row key of the entity
      * @param select a select expression using OData notation. Limits the columns on each record to just those
      *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
-     * @param timeout max time for query to execute before erroring out
-     * @return the table entity
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     *
+     * @return the table entity subclass specified in resultType
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
-        return getEntityWithResponse(partitionKey, rowKey, select, timeout, null).getValue();
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType) {
+        return client.getEntity(partitionKey, rowKey, select, resultType).block();
     }
 
     /**
@@ -395,13 +438,49 @@ public class TableClient {
      * @param select a select expression using OData notation. Limits the columns on each record to just those
      *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      * @param timeout max time for query to execute before erroring out
+     * @return the table entity
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
+        return getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, timeout, null).getValue();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @param timeout max time for query to execute before erroring out
+     * @return the table entity
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType,
+                                               Duration timeout) {
+        return getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, null).getValue();
+    }
+
+    /**
+     * gets the entity which fits the given criteria
+     *
+     * @param <T> the type of the result value, which must be a subclass of TableEntity
+     * @param partitionKey the partition key of the entity
+     * @param rowKey the row key of the entity
+     * @param select a select expression using OData notation. Limits the columns on each record to just those
+     *               requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * @param resultType the type of the result value, which must be a subclass of TableEntity
+     * @param timeout max time for query to execute before erroring out
      * @param context the context of the query
      * @return a mono of the response with the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                       Duration timeout, Context context) {
-        return client.getEntityWithResponse(partitionKey, rowKey, select, timeout, context).block();
+    public <T extends TableEntity> Response<T> getEntityWithResponse(String partitionKey, String rowKey, String select,
+                                                                     Class<T> resultType, Duration timeout,
+                                                                     Context context) {
+        return client.getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, context).block();
     }
 
 }
