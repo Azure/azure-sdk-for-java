@@ -30,8 +30,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
-import java.util.regex.Pattern;
-
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -45,6 +43,7 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient}, {@link
@@ -143,6 +142,7 @@ public class EventHubClientBuilder {
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
+    private SslDomain.VerifyMode verifyMode;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -400,6 +400,17 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Package-private method that sets the verify mode for this connection.
+     *
+     * @param verifyMode The verification mode.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder verifyMode(SslDomain.VerifyMode verifyMode) {
+        this.verifyMode = verifyMode;
+        return this;
+    }
+
+    /**
      * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time {@code
      * buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
      *
@@ -646,9 +657,12 @@ public class EventHubClientBuilder {
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final SslDomain.VerifyMode verificationMode = verifyMode != null
+            ? verifyMode
+            : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            proxyOptions, scheduler, options, verificationMode);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
