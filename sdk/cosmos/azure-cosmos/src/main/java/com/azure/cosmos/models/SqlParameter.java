@@ -6,6 +6,8 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Objects;
+
 /**
  * Represents a SQL parameter in the SqlQuerySpec used for queries in the Azure Cosmos DB database service.
  */
@@ -88,4 +90,21 @@ public final class SqlParameter {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SqlParameter that = (SqlParameter) o;
+        return Objects.equals(jsonSerializable, that.jsonSerializable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jsonSerializable);
+    }
 }
