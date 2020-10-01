@@ -114,9 +114,8 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
                 (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,
                 (pagedResponseOfEventRoute) -> {
                     atLeastOnePage.set(true);
-                    // There may be other event routes in place, so ignore them if they aren't the event route
-                    // that was just created. We only need to see that the newly created event route is present in the
-                    // list of all event routes.
+
+                    // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
                     if (pagedResponseOfEventRoute.getContinuationToken() != null) {
                         assertEquals(expectedPageSize, pagedResponseOfEventRoute.getValue().size());
                     }

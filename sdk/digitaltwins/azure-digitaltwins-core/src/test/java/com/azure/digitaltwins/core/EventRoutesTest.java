@@ -105,6 +105,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         for (PagedResponse<EventRoute> eventRoutePagedResponse : eventRoutePages) {
             pageCount++;
 
+            // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
             if (eventRoutePagedResponse.getContinuationToken() != null) {
                 assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size());
             }
