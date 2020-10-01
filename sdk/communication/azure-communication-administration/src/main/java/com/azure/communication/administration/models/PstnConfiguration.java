@@ -22,12 +22,6 @@ public final class PstnConfiguration {
     @JsonProperty(value = "applicationId")
     private String applicationId;
 
-    /*
-     * Routable TargetId for the ACS Number
-     */
-    @JsonProperty(value = "azurePstnTargetId")
-    private String azurePstnTargetId;
-
     /**
      * Get the callbackUrl property: The webhook URL on the phone number configuration.
      *
@@ -65,26 +59,6 @@ public final class PstnConfiguration {
      */
     public PstnConfiguration setApplicationId(String applicationId) {
         this.applicationId = applicationId;
-        return this;
-    }
-
-    /**
-     * Get the azurePstnTargetId property: Routable TargetId for the ACS Number.
-     *
-     * @return the azurePstnTargetId value.
-     */
-    public String getAzurePstnTargetId() {
-        return this.azurePstnTargetId;
-    }
-
-    /**
-     * Set the azurePstnTargetId property: Routable TargetId for the ACS Number.
-     *
-     * @param azurePstnTargetId the azurePstnTargetId value to set.
-     * @return the PstnConfiguration object itself.
-     */
-    public PstnConfiguration setAzurePstnTargetId(String azurePstnTargetId) {
-        this.azurePstnTargetId = azurePstnTargetId;
         return this;
     }
 }
