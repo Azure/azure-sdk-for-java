@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit tests for {@link PagedFlux}
  */
 public class PagedFluxTest {
+    private static final int DEFAULT_PAGE_COUNT = 4;
 
     private List<PagedResponse<Integer>> pagedResponses;
     private List<PagedResponse<String>> pagedStringResponses;
@@ -302,33 +303,31 @@ public class PagedFluxTest {
 
     @Test
     public void fluxByItemOnlyRetrievesOnePage() throws InterruptedException {
-        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
 
         pagedFlux.ignoreElements().block();
-        int fullPageCount = pageRetriever.getGetCount();
-        assertTrue(fullPageCount > 1);
+        assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        Integer next = pagedFlux.blockFirst();
+        pagedFlux.blockFirst();
 
         Thread.sleep(2000);
 
-        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
+        assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
     }
 
     @Test
     public void fluxByPageOnlyRetrievesOnePage() throws InterruptedException {
-        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever();
+        OnlyOnePageRetriever pageRetriever = new OnlyOnePageRetriever(DEFAULT_PAGE_COUNT);
         OnlyOnePagedFlux pagedFlux = new OnlyOnePagedFlux(() -> pageRetriever);
 
         pagedFlux.byPage().ignoreElements().block();
-        int fullPageCount = pageRetriever.getGetCount();
-        assertTrue(fullPageCount > 1);
+        assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        OnlyOneContinuablePage page = pagedFlux.byPage().blockFirst();
+        pagedFlux.byPage().blockFirst();
 
         Thread.sleep(2000);
 
-        assertEquals(1, pageRetriever.getGetCount() - fullPageCount);
+        assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
     }
 }
