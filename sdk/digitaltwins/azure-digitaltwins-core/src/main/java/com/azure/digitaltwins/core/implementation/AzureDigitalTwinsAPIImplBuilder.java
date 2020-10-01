@@ -16,7 +16,6 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -131,22 +130,6 @@ public final class AzureDigitalTwinsAPIImplBuilder {
      */
     public AzureDigitalTwinsAPIImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /*
-     * The service API version that is used when making API requests.
-     */
-    private ServiceVersion serviceVersion;
-
-    /**
-     * Sets The service API version that is used when making API requests.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the AzureDigitalTwinsAPIImplBuilder.
-     */
-    public AzureDigitalTwinsAPIImplBuilder serviceVersion(ServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
         return this;
     }
 
