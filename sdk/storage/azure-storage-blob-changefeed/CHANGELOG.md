@@ -1,5 +1,8 @@
 # Release History
 
+## 12.0.0-beta.4 (Unreleased)
+
+
 ## 12.0.0-beta.3 (2020-10-01)
 - Added support to specify context in the sync methods.
 
