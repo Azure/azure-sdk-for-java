@@ -12,7 +12,7 @@ import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchIndexer model. */
+/** Represents an indexer. */
 @Fluent
 public final class SearchIndexer {
     /*
