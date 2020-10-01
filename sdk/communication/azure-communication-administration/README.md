@@ -229,6 +229,7 @@ for (String areaCode
 ```
 
 ### Create Search
+
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L360-L369 -->
 ```java
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
@@ -238,7 +239,7 @@ System.out.println("SearchId: " + createSearchResponse.getSearchId());
 PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
 
 for (String phoneNumber
-      : phoneNumberSearch.getPhoneNumbers()) {
+    : phoneNumberSearch.getPhoneNumbers()) {
     System.out.println("Phone Number: " + phoneNumber);
 }
 ```

@@ -364,7 +364,7 @@ public class ReadmeSamples {
             PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
 
             for (String phoneNumber
-                 : phoneNumberSearch.getPhoneNumbers()) {
+                : phoneNumberSearch.getPhoneNumbers()) {
                 System.out.println("Phone Number: " + phoneNumber);
             }
 
