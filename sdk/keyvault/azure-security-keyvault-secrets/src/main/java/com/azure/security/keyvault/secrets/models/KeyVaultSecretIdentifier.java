@@ -76,11 +76,11 @@ public final class KeyVaultSecretIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 2 && pathSegments.length != 3) || !"secrets".equals(pathSegments[0])) {
+        if ((pathSegments.length != 3 && pathSegments.length != 4) || !"secrets".equals(pathSegments[1])) {
             throw new IllegalArgumentException("secretId is not a valid Key Vault Secret identifier");
         }
 
-        return new KeyVaultSecretIdentifier(secretId, url.getProtocol() + "://" + url.getHost(), pathSegments[0],
-            pathSegments.length == 3 ? pathSegments[2] : null);
+        return new KeyVaultSecretIdentifier(secretId, url.getProtocol() + "://" + url.getHost(), pathSegments[2],
+            pathSegments.length == 4 ? pathSegments[3] : null);
     }
 }

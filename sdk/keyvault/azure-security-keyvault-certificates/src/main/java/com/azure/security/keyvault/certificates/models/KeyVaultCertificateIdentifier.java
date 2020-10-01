@@ -76,11 +76,11 @@ public final class KeyVaultCertificateIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 2 && pathSegments.length != 3) || !"certificates".equals(pathSegments[0])) {
+        if ((pathSegments.length != 3 && pathSegments.length != 4) || !"certificates".equals(pathSegments[1])) {
             throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
         }
 
-        return new KeyVaultCertificateIdentifier(certificateId, url.getProtocol() + "://" + url.getHost(), pathSegments[0],
-            pathSegments.length == 3 ? pathSegments[2] : null);
+        return new KeyVaultCertificateIdentifier(certificateId, url.getProtocol() + "://" + url.getHost(),
+            pathSegments[2], pathSegments.length == 4 ? pathSegments[3] : null);
     }
 }

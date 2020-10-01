@@ -1,0 +1,59 @@
+package com.azure.security.keyvault.certificates.models;
+
+import org.junit.jupiter.api.Test;
+
+import java.net.MalformedURLException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class KeyVaultCertificateIdentifierTest {
+    @Test
+    void parse_withoutVersion() throws MalformedURLException {
+        String certificateId = "https://test-key-vault.vault.azure.net/certificates/test-certificate";
+        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
+            KeyVaultCertificateIdentifier.parse(certificateId);
+
+        assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
+        assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
+        assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
+        assertNull(keyVaultCertificateIdentifier.getVersion());
+    }
+
+    @Test
+    void parse_withVersion() throws MalformedURLException {
+        String certificateId = "https://test-key-vault.vault.azure.net/certificates/test-certificate/test-version";
+        KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
+            KeyVaultCertificateIdentifier.parse(certificateId);
+
+        assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
+        assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
+        assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
+        assertEquals("test-version", keyVaultCertificateIdentifier.getVersion());
+    }
+
+    @Test
+    void parse_invalidIdentifier_thatIsNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> KeyVaultCertificateIdentifier.parse(null));
+
+        assertEquals("certificateId cannot be null", exception.getMessage());
+    }
+
+    @Test
+    void parse_invalidIdentifier_withWrongCollection() {
+        String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate";
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> KeyVaultCertificateIdentifier.parse(certificateId));
+
+        assertEquals("certificateId is not a valid Key Vault Certificate identifier", exception.getMessage());
+    }
+
+    @Test
+    void parse_invalidIdentifier_withExtraSegment() {
+        String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate/test-version/extra";
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> KeyVaultCertificateIdentifier.parse(certificateId));
+
+        assertEquals("certificateId is not a valid Key Vault Certificate identifier", exception.getMessage());
+    }
+}
