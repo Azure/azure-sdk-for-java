@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SqlParameterTest {
 
     @Test(groups = {"unit"})
-    public void testSqlParameterEquals() {
+    public void validateSqlParameterEquals() {
         ArrayList<SqlParameter> sqlParameters = Lists.newArrayList(new SqlParameter("@param1", 3), new SqlParameter(
             "@param2", 4));
 
@@ -22,7 +22,7 @@ public class SqlParameterTest {
     }
 
     @Test(groups = {"unit"})
-    public void testSqlParameterHashcode() {
+    public void validateSqlParameterHashcode() {
         SqlParameter sqlParameter1 = new SqlParameter("@param1", 3);
         SqlParameter sqlParameter2 = new SqlParameter("@param2", 4);
 
