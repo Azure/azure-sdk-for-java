@@ -140,7 +140,7 @@ public final class PhoneNumberAdministrationsImpl {
                 Context context);
 
         @Patch("/administration/phonenumbers/numberconfiguration/configure")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> configureNumber(
                 @HostParam("endpoint") String endpoint,
@@ -149,7 +149,7 @@ public final class PhoneNumberAdministrationsImpl {
                 Context context);
 
         @Patch("/administration/phonenumbers/numberconfiguration/unconfigure")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> unconfigureNumber(
                 @HostParam("endpoint") String endpoint,
