@@ -49,7 +49,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.spy;
 
 /**
  * Tests {@link SearchIndexingBufferedSender}.
@@ -102,6 +101,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         sleepIfRunningAgainstService(3000);
 
         assertEquals(10, client.getDocumentCount());
+
+        batchingClient.close();
     }
 
     /**
@@ -124,6 +125,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         sleepIfRunningAgainstService(3000);
 
         assertEquals(10, client.getDocumentCount());
+        batchingClient.close();
     }
 
     /**
@@ -136,6 +138,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
             new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setBatchSize(10)
                 .setAutoFlushWindow(Duration.ofSeconds(3))
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
@@ -144,6 +147,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         sleepIfRunningAgainstService((long) (3000 * 1.5));
 
         assertEquals(10, client.getDocumentCount());
+        batchingClient.close();
     }
 
     /**
@@ -186,10 +190,11 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         sleepIfRunningAgainstService(3000);
 
         assertEquals(0, client.getDocumentCount());
+        batchingClient.close();
     }
 
     @Test
-    public void indexManyDocuments() {
+    public void indexManyDocumentsSmallDocumentSets() {
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
@@ -199,13 +204,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 return next.process();
             })
             .buildClient();
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(clientBuilder.buildAsyncClient()
-            .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
                 .setAutoFlushWindow(Duration.ofSeconds(5))
                 .setBatchSize(10)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId")))));
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient =
-            new SearchIndexingBufferedSender<>(spyClient);
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
         for (int i = 0; i < 100; i++) {
@@ -223,6 +227,46 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         assertEquals(1000, client.getDocumentCount());
         assertTrue(requestCount.get() >= 100);
+        batchingClient.close();
+    }
+
+    @Test
+    public void indexManyDocumentsOneLargeDocumentSet() {
+        setupIndex();
+
+        AtomicInteger requestCount = new AtomicInteger();
+        SearchClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            })
+            .buildClient();
+
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.
+            getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlushWindow(Duration.ofSeconds(5))
+                .setBatchSize(10)
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        List<Map<String, Object>> documentBatch = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            final int offset = i;
+            documents.stream().map(HashMap::new)
+                .forEach(document -> {
+                    int originalId = Integer.parseInt(document.get("HotelId").toString());
+                    document.put("HotelId", String.valueOf((offset * 10) + originalId));
+                    documentBatch.add(document);
+                });
+        }
+
+        batchingClient.addUploadActions(documentBatch);
+
+        sleepIfRunningAgainstService((long) (5000 * 1.5));
+
+        assertEquals(1000, client.getDocumentCount());
+        assertTrue(requestCount.get() >= 100);
+        batchingClient.close();
     }
 
     /**
@@ -231,22 +275,20 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void emptyBatchIsNeverSent() {
         AtomicInteger requestCount = new AtomicInteger();
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> spyClient = spy(getSearchClientBuilder("index")
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();
             })
-            .buildAsyncClient()
-            .getSearchIndexingBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId")))));
-
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient =
-            new SearchIndexingBufferedSender<>(spyClient);
+            .buildClient()
+            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         batchingClient.flush();
 
         // flushInternal should never be called if the batch doesn't have any documents.
         assertEquals(0, requestCount.get());
+        batchingClient.close();
     }
 
     /**
@@ -258,6 +300,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> Mono.<HttpResponse>empty().delayElement(Duration.ofSeconds(5)))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Integer>()
+                .setAutoFlush(false)
                 .setDocumentKeyRetriever(String::valueOf));
 
         batchingClient.addUploadActions(Collections.singletonList(1));
@@ -280,6 +323,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 createMockResponseData(0, 201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
@@ -317,6 +361,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 createMockResponseData(0, 201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
@@ -365,6 +410,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             })
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
@@ -402,6 +448,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 createMockResponseData(0, 409))))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
                 .setDocumentTryLimit(10)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
@@ -449,6 +496,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
@@ -489,6 +537,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 : createMockBatchSplittingResponse(request, 1, 1))
             .buildClient()
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                .setAutoFlush(false)
                 .setOnActionAdded(action -> addedCount.incrementAndGet())
                 .setOnActionSucceeded(action -> successCount.incrementAndGet())
                 .setOnActionError((action, throwable) -> errorCount.incrementAndGet())

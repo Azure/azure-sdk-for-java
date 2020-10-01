@@ -28,7 +28,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final boolean autoFlush;
     private final long flushWindowMillis;
 
-    private final Timer autoFlushTimer;
+    private Timer autoFlushTimer;
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
     private volatile boolean isClosed = false;
@@ -38,7 +38,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
         this.autoFlush = options.getAutoFlush();
         this.flushWindowMillis = Math.max(0, options.getAutoFlushWindow().toMillis());
-        this.autoFlushTimer = (this.autoFlush) ? new Timer(true) : null;
+        this.autoFlushTimer = (this.autoFlush && this.flushWindowMillis > 0) ? new Timer() : null;
     }
 
     /**
@@ -131,7 +131,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context) {
         ensureOpen();
 
-        return publisher.addActions(actions, context);
+        return publisher.addActions(actions, context, this::rescheduleFlushTask);
     }
 
     /**
@@ -189,12 +189,14 @@ public final class SearchIndexingBufferedAsyncSender<T> {
                 if (!isClosed) {
                     isClosed = true;
                     if (this.autoFlush) {
-                        TimerTask currentTask = flushTask.get();
+                        TimerTask currentTask = flushTask.getAndSet(null);
                         if (currentTask != null) {
                             currentTask.cancel();
                         }
 
+                        autoFlushTimer.purge();
                         autoFlushTimer.cancel();
+                        autoFlushTimer = null;
                     }
 
                     return publisher.flush(context, true);

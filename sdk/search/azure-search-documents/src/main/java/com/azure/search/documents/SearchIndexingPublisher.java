@@ -92,7 +92,7 @@ final class SearchIndexingPublisher<T> {
         return batchSize;
     }
 
-    synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context) {
+    synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context, Runnable rescheduleFlush) {
         actions.stream()
             .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
             .forEach(action -> {
@@ -100,9 +100,12 @@ final class SearchIndexingPublisher<T> {
                 this.actions.add(action);
             });
 
-        return (autoFlush && batchAvailableForProcessing())
-            ? flush(context, false)
-            : Mono.empty();
+        if (autoFlush && batchAvailableForProcessing()) {
+            rescheduleFlush.run();
+            return flush(context, false);
+        }
+
+        return Mono.empty();
     }
 
     Mono<Void> flush(Context context, boolean awaitLock) {
