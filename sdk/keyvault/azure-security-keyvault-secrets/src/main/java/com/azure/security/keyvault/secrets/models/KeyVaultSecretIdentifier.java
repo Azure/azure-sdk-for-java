@@ -13,7 +13,7 @@ import java.net.URL;
  * Information about a {@link KeyVaultSecret} parsed from the key URL. You can use this information when calling
  * methods of {@link SecretClient} or {@link SecretAsyncClient}.
  */
-public class KeyVaultSecretIdentifier {
+public final class KeyVaultSecretIdentifier {
     private final String secretId, vaultUrl, name, version;
 
     private KeyVaultSecretIdentifier(String secretId, String vaultUrl, String name, String version) {
