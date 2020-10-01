@@ -52,7 +52,7 @@
       },
       "ADMINISTRATION_SERVICE_ENDPOINT": {
         "type": "string",
-        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), 'communication.azure.com')]"
+        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), '.communication.azure.com')]"
       },
       "ADMINISTRATION_SERVICE_ACCESS_TOKEN": {
         "type": "string",
@@ -60,7 +60,7 @@
       },
       "CHAT_SERVICE_ENDPOINT": {
         "type": "string",
-        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), 'communication.azure.com')]"
+        "value": "[concat('https://', parameters('baseName'), '-', parameters('endpointPrefix'), '.communication.azure.com')]"
       },
       "COMMUNICATION_SERVICES_CONNECTION_STRING": {
         "type": "string",
