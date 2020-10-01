@@ -3,7 +3,6 @@ package com.azure.digitaltwins.core.snippets;
 public abstract class CodeSnippetBase {
 
     //region DigitalTwinSnippets
-
     public abstract void createDigitalTwin();
     public abstract void createDigitalTwinWithResponse();
     public abstract void getDigitalTwin();
@@ -12,7 +11,6 @@ public abstract class CodeSnippetBase {
     public abstract void updateDigitalTwinWithResponse();
     public abstract void deleteDigitalTwin();
     public abstract void deleteDigitalTwinWithResponse();
-
     //endregion DigitalTwinSnippets
 
     //region RelationshipSnippets
