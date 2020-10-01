@@ -147,7 +147,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         ensureOpen();
 
         rescheduleFlushTask();
-        return publisher.flush(context);
+        return publisher.flush(context, false);
     }
 
     private void rescheduleFlushTask() {
@@ -158,10 +158,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         TimerTask newTask = new TimerTask() {
             @Override
             public void run() {
-                // Only trigger a flush if one isn't being processed already.
-                if (publisher.batchProcessing.compareAndSet(false, true)) {
-                    publisher.flush(Context.NONE).subscribe();
-                }
+                Mono.defer(() -> publisher.flush(Context.NONE, false)).subscribe();
             }
         };
 
@@ -200,7 +197,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
                         autoFlushTimer.cancel();
                     }
 
-                    return publisher.flush(context);
+                    return publisher.flush(context, true);
                 }
 
                 return Mono.empty();

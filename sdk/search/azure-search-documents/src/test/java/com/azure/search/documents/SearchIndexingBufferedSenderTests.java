@@ -36,8 +36,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -564,6 +567,102 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.close();
 
         assertDoesNotThrow((Executable) batchingClient::close);
+    }
+
+    @Test
+    public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
+        AtomicInteger callCount = new AtomicInteger();
+
+        SearchAsyncClient client = getSearchClientBuilder("index")
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return createMockBatchSplittingResponse(request, 0, 5)
+                        .delayElement(Duration.ofSeconds(2))
+                        .map(Function.identity());
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }).buildAsyncClient();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = client
+            .getSearchIndexingBufferedAsyncSender(
+                new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                    .setAutoFlush(false)
+                    .setBatchSize(5)
+                    .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
+
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        batchingClient.flush()
+            .doFinally(ignored -> {
+                firstFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            })
+            .subscribe();
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        batchingClient.flush()
+            .doFinally(ignored -> {
+                secondFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            })
+            .subscribe();
+
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get());
+    }
+
+    @Test
+    public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
+        AtomicInteger callCount = new AtomicInteger();
+
+        SearchAsyncClient client = getSearchClientBuilder("index")
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return createMockBatchSplittingResponse(request, 0, 5)
+                        .delayElement(Duration.ofSeconds(2))
+                        .map(Function.identity());
+                } else if (count == 1) {
+                    return createMockBatchSplittingResponse(request, 5, 5);
+                } else {
+                    return Mono.error(new IllegalStateException("Unexpected request."));
+                }
+            }).buildAsyncClient();
+
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = client
+            .getSearchIndexingBufferedAsyncSender(
+                new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+                    .setAutoFlush(false)
+                    .setBatchSize(5)
+                    .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
+
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        batchingClient.flush()
+            .doFinally(ignored -> {
+                firstFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            })
+            .subscribe();
+
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        batchingClient.close()
+            .doFinally(ignored -> {
+                secondFlushCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            })
+            .subscribe();
+
+        countDownLatch.await();
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
     }
 
     /*

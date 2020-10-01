@@ -20,7 +20,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.Semaphore;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -47,7 +47,7 @@ final class SearchIndexingPublisher<T> {
     private final Object actionsMutex = new Object();
     private final Deque<TryTrackingIndexAction<T>> actions = new LinkedList<>();
 
-    final AtomicBoolean batchProcessing = new AtomicBoolean(false);
+    private final Semaphore processingSemaphore = new Semaphore(1);
 
     SearchIndexingPublisher(SearchAsyncClient client, SearchIndexingBufferedSenderOptions<T> options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -100,10 +100,25 @@ final class SearchIndexingPublisher<T> {
                 this.actions.add(action);
             });
 
-        return processIfNeeded(context);
+        return (autoFlush && batchAvailableForProcessing())
+            ? flush(context, false)
+            : Mono.empty();
     }
 
-    Mono<Void> flush(Context context) {
+    Mono<Void> flush(Context context, boolean awaitLock) {
+        if (awaitLock) {
+            processingSemaphore.acquireUninterruptibly();
+            return createAndProcessBatch(context)
+                .doFinally(ignored -> processingSemaphore.release());
+        } else if (processingSemaphore.tryAcquire()) {
+            return createAndProcessBatch(context)
+                .doFinally(ignored -> processingSemaphore.release());
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    private Mono<Void> createAndProcessBatch(Context context) {
         final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(batchSize);
         synchronized (actionsMutex) {
             int size = Math.min(batchSize, this.actions.size());
@@ -123,21 +138,21 @@ final class SearchIndexingPublisher<T> {
             .map(action -> IndexActionConverter.map(action.getAction(), client.serializer))
             .collect(Collectors.toList());
 
-        return flushInternal(convertedActions, 0, context)
+        return sendBatch(convertedActions, 0, context)
             .map(response -> {
                 handleResponse(batchActions, response);
 
                 return response;
-            })
-            .thenEmpty(Mono.fromRunnable(() -> batchProcessing.set(false)))
-            .then(processIfNeeded(context));
+            }).then(Mono.defer(() -> batchAvailableForProcessing()
+                ? createAndProcessBatch(context)
+                : Mono.empty()));
     }
 
     /*
      * This may result in more than one service call in the case where the index batch is too large and we attempt to
      * split it.
      */
-    Flux<IndexBatchResponse> flushInternal(
+    private Flux<IndexBatchResponse> sendBatch(
         List<com.azure.search.documents.implementation.models.IndexAction> actions, int actionsOffset,
         Context context) {
         return client.indexDocumentsWithResponse(actions, true, context)
@@ -159,8 +174,8 @@ final class SearchIndexingPublisher<T> {
 
                     int splitOffset = Math.round(actionCount / 2.0f);
                     return Flux.concat(
-                        flushInternal(actions.subList(0, splitOffset), 0, context),
-                        flushInternal(actions.subList(splitOffset, actionCount), splitOffset, context)
+                        sendBatch(actions.subList(0, splitOffset), 0, context),
+                        sendBatch(actions.subList(splitOffset, actionCount), splitOffset, context)
                     );
                 }
 
@@ -216,17 +231,8 @@ final class SearchIndexingPublisher<T> {
         }
     }
 
-    private Mono<Void> processIfNeeded(Context context) {
-        if (!this.autoFlush) {
-            return Mono.empty();
-        }
-
-        if (actions.size() < batchSize) {
-            return Mono.empty();
-        }
-
-        // Only trigger a flush if one isn't being processed already.
-        return batchProcessing.compareAndSet(false, true) ? flush(context) : Mono.empty();
+    private boolean batchAvailableForProcessing() {
+        return actions.size() >= batchSize;
     }
 
     private static boolean isSuccess(int statusCode) {
