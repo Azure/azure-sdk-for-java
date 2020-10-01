@@ -1,14 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.models;
 
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KeyVaultKeyIdentifierTest {
     @Test
-    void parse_withoutVersion() throws MalformedURLException {
+    void parseWithoutVersion() throws MalformedURLException {
         String keyId = "https://test-key-vault.vault.azure.net/keys/test-key";
         KeyVaultKeyIdentifier keyVaultKeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
 
@@ -19,7 +24,7 @@ class KeyVaultKeyIdentifierTest {
     }
 
     @Test
-    void parse_withVersion() throws MalformedURLException {
+    void parseWithVersion() throws MalformedURLException {
         String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/test-version";
         KeyVaultKeyIdentifier keyVaultkeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
 
@@ -30,14 +35,14 @@ class KeyVaultKeyIdentifierTest {
     }
 
     @Test
-    void parse_invalidIdentifier_thatIsNull() {
+    void parseNullIdentifier() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(null));
 
         assertEquals("keyId cannot be null", exception.getMessage());
     }
 
     @Test
-    void parse_invalidIdentifier_withWrongCollection() {
+    void parseInvalidIdentifierWithWrongCollection() {
         String keyId = "https://test-key-vault.vault.azure.net/secrets/test-key";
         Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
 
@@ -45,7 +50,7 @@ class KeyVaultKeyIdentifierTest {
     }
 
     @Test
-    void parse_invalidIdentifier_withExtraSegment() {
+    void parseInvalidIdentifierWithExtraSegment() {
         String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/test-key/extra";
         Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
 

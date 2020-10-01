@@ -1,14 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.secrets.models;
 
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KeyVaultSecretIdentifierTest {
     @Test
-    void parse_withoutVersion() throws MalformedURLException {
+    void parseWithoutVersion() throws MalformedURLException {
         String secretId = "https://test-secret-vault.vault.azure.net/secrets/test-secret";
         KeyVaultSecretIdentifier keyVaultSecretIdentifier = KeyVaultSecretIdentifier.parse(secretId);
 
@@ -19,7 +24,7 @@ class KeyVaultSecretIdentifierTest {
     }
 
     @Test
-    void parse_withVersion() throws MalformedURLException {
+    void parseWithVersion() throws MalformedURLException {
         String secretId = "https://test-secret-vault.vault.azure.net/secrets/test-secret/test-version";
         KeyVaultSecretIdentifier keyVaultSecretIdentifier = KeyVaultSecretIdentifier.parse(secretId);
 
@@ -30,14 +35,14 @@ class KeyVaultSecretIdentifierTest {
     }
 
     @Test
-    void parse_invalidIdentifier_thatIsNull() {
+    void parseNullIdentifier() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultSecretIdentifier.parse(null));
 
         assertEquals("secretId cannot be null", exception.getMessage());
     }
 
     @Test
-    void parse_invalidIdentifier_withWrongCollection() {
+    void parseInvalidIdentifierWithWrongCollection() {
         String secretId = "https://test-secret-vault.vault.azure.net/certificates/test-secret";
         Exception exception = assertThrows(IllegalArgumentException.class,
             () -> KeyVaultSecretIdentifier.parse(secretId));
@@ -46,7 +51,7 @@ class KeyVaultSecretIdentifierTest {
     }
 
     @Test
-    void parse_invalidIdentifier_withExtraSegment() {
+    void parseInvalidIdentifierWithExtraSegment() {
         String secretId = "https://test-secret-vault.vault.azure.net/secrets/test-secret/test-secret/extra";
         Exception exception = assertThrows(IllegalArgumentException.class,
             () -> KeyVaultSecretIdentifier.parse(secretId));
