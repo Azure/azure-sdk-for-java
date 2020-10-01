@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 
 public class CloudEventTracingPipelinePolicyTests {
     private HttpRequest httpRequest;
@@ -29,7 +28,7 @@ public class CloudEventTracingPipelinePolicyTests {
         httpRequest.setBody(testBodyString);
         httpRequest.setHeader(Constants.CONTENT_LENGTH, testBodyString);
         String newBody = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(
-            httpRequest, ByteBuffer.wrap(testBodyString.getBytes()));
+            httpRequest, new StringBuilder(testBodyString));
         Assertions.assertEquals(expectedNewBody, newBody);
         Assertions.assertEquals(httpRequest.getHeaders().get(Constants.CONTENT_LENGTH).getValue(),
             String.valueOf(newBody.length()));
@@ -47,7 +46,7 @@ public class CloudEventTracingPipelinePolicyTests {
         httpRequest.setBody(testBodyString);
         httpRequest.setHeader(Constants.CONTENT_LENGTH, testBodyString);
         String newBody = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(
-            httpRequest, ByteBuffer.wrap(testBodyString.getBytes()));
+            httpRequest, new StringBuilder(testBodyString));
         Assertions.assertEquals(expectedNewBody, newBody);
         Assertions.assertEquals(httpRequest.getHeaders().get(Constants.CONTENT_LENGTH).getValue(),
             String.valueOf(newBody.length()));
@@ -66,7 +65,7 @@ public class CloudEventTracingPipelinePolicyTests {
         httpRequest.setBody(testBodyString);
         httpRequest.setHeader(Constants.CONTENT_LENGTH, testBodyString);
         String newBody = CloudEventTracingPipelinePolicy.replaceTracingPlaceHolder(
-            httpRequest, ByteBuffer.wrap(testBodyString.getBytes()));
+            httpRequest, new StringBuilder(testBodyString));
         Assertions.assertEquals(expectedNewBody, newBody);
         Assertions.assertEquals(httpRequest.getHeaders().get(Constants.CONTENT_LENGTH).getValue(),
             String.valueOf(newBody.length()));

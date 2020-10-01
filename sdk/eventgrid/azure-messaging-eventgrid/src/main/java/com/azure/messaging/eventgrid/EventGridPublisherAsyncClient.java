@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
@@ -17,6 +18,7 @@ import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -36,8 +38,8 @@ public final class EventGridPublisherAsyncClient {
 
     private final EventGridServiceVersion serviceVersion;
 
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
+    private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
+
 
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, SerializerAdapter serializerAdapter,
                                   EventGridServiceVersion serviceVersion) {
@@ -69,6 +71,9 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendEvents(Iterable<EventGridEvent> events) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         return withContext(context -> sendEvents(events, context));
     }
 
@@ -88,6 +93,9 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendCloudEvents(Iterable<CloudEvent> events) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         return withContext(context -> sendCloudEvents(events, context));
     }
 
@@ -108,6 +116,9 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendCustomEvents(Iterable<Object> events) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         return withContext(context -> sendCustomEvents(events, context));
     }
 
@@ -126,6 +137,9 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         return withContext(context -> sendEventsWithResponse(events, context));
     }
 
@@ -145,6 +159,9 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         return withContext(context -> sendCloudEventsWithResponse(events, context));
     }
 
@@ -165,6 +182,9 @@ public final class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<Object> events) {
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'events' cannot be null."));
+        }
         return withContext(context -> sendCustomEventsWithResponse(events, context));
     }
 
@@ -182,8 +202,8 @@ public final class EventGridPublisherAsyncClient {
                     (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null &&
                     event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
 
-                    event.addExtensionAttribute(Constants.TRACE_PARENT, Constants.TRACE_PARENT_PLACEHOLDER);
-                    event.addExtensionAttribute(Constants.TRACE_STATE, Constants.TRACE_STATE_PLACEHOLDER);
+                    event.addExtensionAttribute(Constants.TRACE_PARENT, Constants.TRACE_PARENT_PLACEHOLDER_UUID);
+                    event.addExtensionAttribute(Constants.TRACE_STATE, Constants.TRACE_STATE_PLACEHOLDER_UUID);
                 }
             }
         }
