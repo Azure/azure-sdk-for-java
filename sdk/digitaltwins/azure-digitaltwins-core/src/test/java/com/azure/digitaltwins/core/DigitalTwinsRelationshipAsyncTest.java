@@ -15,6 +15,9 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestAssetDefaults.*;
 import static com.azure.digitaltwins.core.TestAssetsHelper.*;
@@ -27,6 +30,7 @@ import static java.net.HttpURLConnection.HTTP_PRECON_FAILED;
 import static javax.net.ssl.HttpsURLConnection.HTTP_NO_CONTENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipTestBase {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsRelationshipAsyncTest.class);
@@ -47,41 +51,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
         try {
             // Create floor, room and hvac model
-            createModelsRunner(
-                floorModelId,
-                roomModelId,
-                hvacModelId,
-                modelsList -> StepVerifier
-                    .create(asyncClient.createModels(modelsList))
-                    .assertNext(createResponseList -> logger.info("Created models successfully"))
-                    .verifyComplete());
-
-            // Create floor twin
-            createFloorTwinRunner(
-                floorTwinId,
-                floorModelId,
-                (twinId, twin) -> StepVerifier
-                    .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
-                    .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
-                    .verifyComplete());
-
-            // Create room twin
-            createRoomTwinRunner(
-                roomTwinId,
-                roomModelId,
-                (twinId, twin) -> StepVerifier
-                    .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
-                    .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
-                    .verifyComplete());
-
-            // Create hvac twin
-            createHvacTwinRunner(
-                hvacTwinId,
-                hvacModelId,
-                (twinId, twin) -> StepVerifier
-                    .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
-                    .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
-                    .verifyComplete());
+            createModelsAndTwins(asyncClient, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
             String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
@@ -273,5 +243,130 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                 fail("Test cleanup failed", ex);
             }
         }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
+
+        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+
+        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+
+        final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 30;
+
+        List<String> createdRelationshipIds = new ArrayList<>();
+
+        try {
+            createModelsAndTwins(asyncClient, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
+
+            // Connect the created twins via relationships
+            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+
+            // Create large number of relationships to test paging functionality
+            // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
+            // Create relationships from Floor -> Room
+            final CountDownLatch createRelationshipsLatch = new CountDownLatch(BULK_RELATIONSHIP_COUNT);
+
+            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+                String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
+                asyncClient.createRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class)
+                    .doOnSuccess(s -> createdRelationshipIds.add(relationshipId))
+                    .doOnTerminate(createRelationshipsLatch::countDown)
+                    .subscribe();
+            }
+
+            createRelationshipsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
+
+            AtomicInteger pageCount = new AtomicInteger();
+            // List models in multiple pages and verify more than one page was retrieved.
+            StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
+                .thenConsumeWhile(
+                    page -> {
+                        pageCount.getAndIncrement();
+                        logger.info("content for this page " + pageCount);
+                        for (BasicRelationship relationship : page.getValue()) {
+                            logger.info(relationship.getId());
+                        }
+                        return true;
+                    })
+                .verifyComplete();
+
+            int finalPageCount = pageCount.get();
+
+            assertTrue(finalPageCount > 1, "Number of pages must be more than one.");
+        }
+        catch (Exception ex) {
+            fail("Test run failed", ex);
+        }
+        finally {
+            // Clean up
+            try {
+                logger.info("Cleaning up test resources.");
+
+                logger.info("Deleting created relationships.");
+                // Delete the created relationships.
+                createdRelationshipIds.forEach(relationshipId -> asyncClient.deleteRelationship(floorTwinId, relationshipId).block());
+
+                // Now the twins and models can be deleted.
+                logger.info("Deleting created digital twins.");
+                asyncClient.deleteDigitalTwin(floorTwinId).block();
+                asyncClient.deleteDigitalTwin(roomTwinId).block();
+                asyncClient.deleteDigitalTwin(hvacTwinId).block();
+
+                logger.info("Deleting created models.");
+                asyncClient.deleteModel(floorModelId).block();
+                asyncClient.deleteModel(roomModelId).block();
+                asyncClient.deleteModel(hvacModelId).block();
+            }
+            catch (Exception ex) {
+                fail("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    private void createModelsAndTwins(DigitalTwinsAsyncClient asyncClient, String floorModelId, String roomModelId, String hvacModelId, String floorTwinId, String roomTwinId, String hvacTwinId) throws JsonProcessingException {
+        // Create floor, room and hvac model
+        createModelsRunner(
+            floorModelId,
+            roomModelId,
+            hvacModelId,
+            modelsList -> StepVerifier
+                .create(asyncClient.createModels(modelsList))
+                .assertNext(createResponseList -> logger.info("Created models successfully"))
+                .verifyComplete());
+
+        // Create floor twin
+        createFloorTwinRunner(
+            floorTwinId,
+            floorModelId,
+            (twinId, twin) -> StepVerifier
+                .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
+                .verifyComplete());
+
+        // Create room twin
+        createRoomTwinRunner(
+            roomTwinId,
+            roomModelId,
+            (twinId, twin) -> StepVerifier
+                .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
+                .verifyComplete());
+
+        // Create hvac twin
+        createHvacTwinRunner(
+            hvacTwinId,
+            hvacModelId,
+            (twinId, twin) -> StepVerifier
+                .create(asyncClient.createDigitalTwin(twinId, twin, BasicDigitalTwin.class))
+                .assertNext(basicDigitalTwin -> logger.info("Created {} twin successfully", basicDigitalTwin.getId()))
+                .verifyComplete());
     }
 }

@@ -7,11 +7,11 @@ module com.azure.resourcemanager.network {
     // export public APIs of network
     exports com.azure.resourcemanager.network;
     exports com.azure.resourcemanager.network.fluent;
-    exports com.azure.resourcemanager.network.fluent.inner;
+    exports com.azure.resourcemanager.network.fluent.models;
     exports com.azure.resourcemanager.network.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.network.fluent.inner to
+    opens com.azure.resourcemanager.network.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.network.models to

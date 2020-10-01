@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroupExportResult;
 import com.azure.resourcemanager.resources.models.ResourceGroupExportTemplateOptions;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import reactor.core.publisher.Mono;
@@ -39,12 +39,12 @@ class ResourceGroupImpl extends
 
     @Override
     public String provisioningState() {
-        return this.inner().properties().provisioningState();
+        return this.innerModel().properties().provisioningState();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -54,7 +54,7 @@ class ResourceGroupImpl extends
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -64,7 +64,7 @@ class ResourceGroupImpl extends
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().tags();
+        Map<String, String> tags = this.innerModel().tags();
         if (tags == null) {
             tags = new HashMap<>();
         }
@@ -87,7 +87,7 @@ class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl withRegion(String regionName) {
-        this.inner().withLocation(regionName);
+        this.innerModel().withLocation(regionName);
         return this;
     }
 
@@ -98,30 +98,30 @@ class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl withTags(Map<String, String> tags) {
-        this.inner().withTags(new HashMap<>(tags));
+        this.innerModel().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public ResourceGroupImpl withTag(String key, String value) {
-        if (this.inner().tags() == null) {
-            this.inner().withTags(new HashMap<String, String>());
+        if (this.innerModel().tags() == null) {
+            this.innerModel().withTags(new HashMap<String, String>());
         }
-        this.inner().tags().put(key, value);
+        this.innerModel().tags().put(key, value);
         return this;
     }
 
     @Override
     public ResourceGroupImpl withoutTag(String key) {
-        this.inner().tags().remove(key);
+        this.innerModel().tags().remove(key);
         return this;
     }
 
     @Override
     public Mono<ResourceGroup> createResourceAsync() {
         ResourceGroupInner params = new ResourceGroupInner();
-        params.withLocation(this.inner().location());
-        params.withTags(this.inner().tags());
+        params.withLocation(this.innerModel().location());
+        params.withTags(this.innerModel().tags());
         return client.createOrUpdateAsync(this.name(), params)
                 .map(innerToFluentMap(this));
     }
@@ -133,7 +133,7 @@ class ResourceGroupImpl extends
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override

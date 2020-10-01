@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
-import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.Queues;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
@@ -47,24 +47,24 @@ class QueuesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(this.resourceGroupName,
+        return this.innerModel().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
                 name);
     }
 
     @Override
     protected Mono<QueueResourceInner> getInnerByNameAsync(String name) {
-        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name);
+        return this.innerModel().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
     protected PagedFlux<QueueResourceInner> listInnerAsync() {
-        return this.inner().listAllAsync(this.resourceGroupName, this.namespaceName);
+        return this.innerModel().listAllAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
     protected PagedIterable<QueueResourceInner> listInner() {
-        return this.inner().listAll(this.resourceGroupName, this.namespaceName);
+        return this.innerModel().listAll(this.resourceGroupName, this.namespaceName);
     }
 
     @Override

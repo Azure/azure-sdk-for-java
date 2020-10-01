@@ -40,10 +40,11 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client for interacting asynchronously with an Azure Digital Twins instance.
- *
- * <p>
  * This client is instantiated through {@link DigitalTwinsClientBuilder}.
- * </p>
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * {@codesnippet com.azure.digitaltwins.core.asyncClient.instantiation}
  *
  * <p>
  * This client allows for management of digital twins, their components, and their relationships. It also allows for managing
@@ -57,7 +58,7 @@ public final class DigitalTwinsAsyncClient {
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private static final Boolean includeModelDefinitionOnGet = true;
-    private JsonSerializer serializer = null;
+    private final JsonSerializer serializer;
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -95,6 +96,16 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwins#String-Object-Class#String}
+     *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
@@ -110,6 +121,16 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Creates a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p> You can provide a strongly typed digital twin object such as {@link BasicDigitalTwin} as the input parameter:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createDigitalTwinsWithResponse#String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -127,7 +148,7 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .addWithResponseAsync(digitalTwinId, digitalTwin, context)
             .flatMap(response -> {
-                T genericResponse = null;
+                T genericResponse;
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
@@ -144,6 +165,19 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets a digital twin.
      *
+     <p><strong>Code Samples</strong></p>
+     *
+     * <p>
+     * A Strongly typed object type such as {@link BasicDigitalTwin} can be provided as an input parameter for {@code clazz}
+     * to indicate what type is used to deserialize the response.
+     * </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwin#String-Class#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwin#String-Class#String}
+     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
      * @param <T> The generic type to deserialize the digital twin with.
@@ -158,6 +192,19 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>
+     * A Strongly typed object type such as {@link BasicDigitalTwin} can be provided as an input parameter for {@code clazz}
+     * to indicate what type is used to deserialize the response.
+     * </p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getDigitalTwinWithResponse#String-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
@@ -175,7 +222,7 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .getByIdWithResponseAsync(digitalTwinId, context)
             .flatMap(response -> {
-                T genericResponse = null;
+                T genericResponse;
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
@@ -189,6 +236,12 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Updates a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update digital twin by providing list of intended patch operations.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateDigitalTwin#String-List}
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
@@ -204,6 +257,12 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Updates a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update digital twin by providing list of intended patch operations.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateDigitalTwinWithResponse#String-List-Options}
      *
      * @param digitalTwinId The Id of the digital twin.
      * @param digitalTwinUpdateOperations The JSON patch to apply to the specified digital twin.
@@ -230,6 +289,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteDigitalTwin#String}
+     *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @return An empty Mono
      */
@@ -242,6 +306,10 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a digital twin. All relationships referencing the digital twin must already be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteDigitalTwinWithResponse#String-Options}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param options The optional settings for this request
@@ -267,6 +335,16 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Creates a relationship on a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#BasicRelationship}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationship#String-String-Object-Class#String}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
      * @param relationship The relationship to be created.
@@ -282,6 +360,16 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Creates a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class#BasicRelationship}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createRelationshipWithResponse#String-String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -300,7 +388,7 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, context)
             .flatMap(response -> {
-                T genericResponse = null;
+                T genericResponse;
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
@@ -314,6 +402,16 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationship#String#BasicRelationship}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationship#String#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
@@ -329,6 +427,16 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationshipWithResponse#String-String-Class#BasicRelationship}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getRelationshipWithResponse#String-String-Class#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
@@ -346,7 +454,7 @@ public final class DigitalTwinsAsyncClient {
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, context)
             .flatMap(response -> {
-                T genericResponse = null;
+                T genericResponse;
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
@@ -360,6 +468,10 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Updates the properties of a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateRelationship#String-String-List}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
@@ -375,6 +487,10 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Updates the properties of a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateRelationshipWithResponse#String-String-List-Options}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
@@ -403,6 +519,10 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Deletes a relationship on a digital twin.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteRelationship#String-String}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
      * @return An empty Mono.
@@ -415,6 +535,10 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a relationship on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteRelationshipWithResponse#String-String-Options}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
@@ -437,6 +561,14 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets all the relationships on a digital twin by iterating through a collection.
      *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class#String#IterateByItem}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
      * @param <T> The generic type to convert the relationship to.
@@ -450,6 +582,14 @@ public final class DigitalTwinsAsyncClient {
     /**
      * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
      *
+     * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class#BasicRelationship#IterateByItem}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-String-Class#String#IterateByItem}
+     *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
      * @param clazz The model class to convert the relationship to.
@@ -460,7 +600,7 @@ public final class DigitalTwinsAsyncClient {
     public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz) {
         return new PagedFlux<>(
             () -> withContext(context -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context)),
-            nextLink -> withContext(context -> listRelationshipsNextPage(nextLink, clazz, context)));
+            nextLink -> withContext(context -> listRelationshipsNextPage(this.protocolLayer.getHost() + nextLink, clazz, context)));
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
@@ -485,7 +625,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                        objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -512,7 +652,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                    objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -520,11 +660,15 @@ public final class DigitalTwinsAsyncClient {
     <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
         return new PagedFlux<>(
             () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context),
-            nextLink -> listRelationshipsNextPage(nextLink, clazz, context));
+            nextLink -> listRelationshipsNextPage(this.protocolLayer.getHost() + nextLink, clazz, context));
     }
 
     /**
      * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String}
      *
      * @param digitalTwinId The Id of the target digital twin.
      * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
@@ -533,13 +677,13 @@ public final class DigitalTwinsAsyncClient {
     public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
         return new PagedFlux<>(
             () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context)),
-            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context)));
+            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context)));
     }
 
     PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) {
         return new PagedFlux<>(
             () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context),
-            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
+            nextLink -> listIncomingRelationshipsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context));
     }
 
     Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context){
@@ -562,7 +706,7 @@ public final class DigitalTwinsAsyncClient {
             pagedIncomingRelationshipResponse.getStatusCode(),
             pagedIncomingRelationshipResponse.getHeaders(),
             convertedList,
-            SerializationHelpers.serializeContinuationToken(pagedIncomingRelationshipResponse.getContinuationToken()),
+            pagedIncomingRelationshipResponse.getContinuationToken(),
             ((PagedResponseBase)pagedIncomingRelationshipResponse).getDeserializedHeaders());
     };
 
@@ -572,6 +716,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Creates one or many models.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createModels#Iterable}
+     *
      * @param models The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
@@ -584,6 +733,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Creates one or many models.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createModelsWithResponse#Iterable}
+     *
      * @param models The list of models to create. Each string corresponds to exactly one model.
      * @return A {@link Response} containing the list of created models. Each {@link DigitalTwinsModelData} instance in this list
      * will contain metadata about the created model, but will not contain the model itself.
@@ -617,6 +771,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a model, including the model metadata and the model definition.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getModel#String}
+     *
      * @param modelId The Id of the model.
      * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
@@ -628,6 +787,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Gets a model, including the model metadata and the model definition.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getModelWithResponse#String}
+     *
      * @param modelId The Id of the model.
      * @return A {@link Response} containing a {@link DigitalTwinsModelData} instance that contains the model and its metadata.
      */
@@ -652,42 +816,46 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all of the models in this digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listModels}
+     *
      * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DigitalTwinsModelData> listModels() {
-        return listModels(new ListModelOptions());
+        return listModels(new ModelsListOptions());
     }
 
     /**
      * List the models in this digital twins instance based on some options.
-     * @param listModelOptions The options to follow when listing the models.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listModels#Options}
+     *
+     * @param modelsListOptions The options to follow when listing the models.
      * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedFlux<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> listModelsSinglePageAsync(listModelOptions, context)),
-            nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
+            () -> withContext(context -> listModelsSinglePageAsync(modelsListOptions, context)),
+            nextLink -> withContext(context -> listModelsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context)));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions, Context context){
         return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(new ListModelOptions(), context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
+            () -> listModelsSinglePageAsync(modelsListOptions, context),
+            nextLink -> listModelsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context){
-        return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(listModelOptions, context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
-    }
-
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ModelsListOptions modelsListOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
-            listModelOptions.getDependenciesFor(),
-            listModelOptions.getIncludeModelDefinition(),
-            new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()),
+            modelsListOptions.getDependenciesFor(),
+            modelsListOptions.getIncludeModelDefinition(),
+            new DigitalTwinModelsListOptions().setMaxItemCount(modelsListOptions.getMaxItemCount()),
             context)
             .map(
                 objectPagedResponse -> {
@@ -718,13 +886,18 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                objectPagedResponse.getContinuationToken(),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
 
     /**
      * Deletes a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteModel#String}
+     *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return An empty Mono
      */
@@ -736,6 +909,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Deletes a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteModelWithResponse#String}
+     *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @return A {@link Response} with no parsed payload object.
      */
@@ -750,6 +928,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Decommissions a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.decommissionModel#String}
+     *
      * @param modelId The Id of the model to decommission.
      * @return an empty Mono
      */
@@ -761,6 +944,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Decommissions a model.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.decommissionModelWithResponse#String}
+     *
      * @param modelId The Id of the model to decommission.
      * @return A {@link Response} with no parsed payload object.
      */
@@ -783,6 +971,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Get a component of a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getComponent#String-String-Class}
+     *
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentPath The path of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
@@ -797,6 +990,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Get a component of a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getComponentWithResponse#String-String-Class}
+     *
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentPath The path of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
@@ -811,7 +1009,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, Context context) {
         return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, context)
             .flatMap(response -> {
-                T genericResponse = null;
+                T genericResponse;
                 try {
                     genericResponse = DeserializationHelpers.deserializeObject(mapper, response.getValue(), clazz, this.serializer);
                 } catch (JsonProcessingException e) {
@@ -825,6 +1023,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Patch a component on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateComponent#String-String-List}
+     *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
@@ -839,6 +1042,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Patch a component on a digital twin.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.updateComponentWithResponse#String-String-List-Options-Context}
+     *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentPath The path of the component on the digital twin.
      * @param componentUpdateOperations The JSON patch to apply to the specified digital twin's relationship.
@@ -867,6 +1075,17 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Query digital twins.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#String}
+     *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
      *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
@@ -942,6 +1161,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Create an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createEventRoute#String-EventRoute}
+     *
      * @param eventRouteId The Id of the event route to create.
      * @param eventRoute The event route to create.
      * @return An empty mono.
@@ -955,6 +1179,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Create an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.createEventRouteWithResponse#String-EventRoute}
+     *
      * @param eventRouteId The Id of the event route to create.
      * @param eventRoute The event route to create.
      * @return A {@link Response} containing an empty mono.
@@ -972,6 +1201,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Get an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getEventRoute#String}
+     *
      * @param eventRouteId The Id of the event route to get.
      * @return The retrieved event route.
      */
@@ -984,6 +1218,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Get an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.getEventRouteWithResponse#String}
+     *
      * @param eventRouteId The Id of the event route to get.
      * @return A {@link Response} containing the retrieved event route.
      */
@@ -1005,6 +1244,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Delete an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteEventRoute#String}
+     *
      * @param eventRouteId The Id of the event route to delete.
      * @return An empty mono.
      */
@@ -1017,6 +1261,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Delete an event route.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.deleteEventRouteWithResponse#String}
+     *
      * @param eventRouteId The Id of the event route to delete.
      * @return A {@link Response} containing an empty mono.
      */
@@ -1033,6 +1282,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listEventRoutes}
+     *
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
      * This PagedFlux may take multiple service requests to iterate over all event routes.
      */
@@ -1044,6 +1298,11 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listEventRoutes#Options}
+     *
      * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
      * on what optional parameters can be set.
      * @return A {@link PagedFlux} that contains all the event routes that exist in your digital twins instance.
@@ -1054,14 +1313,14 @@ public final class DigitalTwinsAsyncClient {
     {
         return new PagedFlux<>(
             () -> withContext(context -> listEventRoutesFirstPage(options, context)),
-            nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, context)));
+            nextLink -> withContext(context -> listEventRoutesNextPage(this.protocolLayer.getHost() + nextLink, context)));
     }
 
     PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
     {
         return new PagedFlux<>(
             () -> listEventRoutesFirstPage(options, context),
-            nextLink -> listEventRoutesNextPage(nextLink, context));
+            nextLink -> listEventRoutesNextPage(this.protocolLayer.getHost() + nextLink, context));
     }
 
     Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
@@ -1089,7 +1348,7 @@ public final class DigitalTwinsAsyncClient {
             pagedEventRouteResponse.getStatusCode(),
             pagedEventRouteResponse.getHeaders(),
             convertedList,
-            SerializationHelpers.serializeContinuationToken(pagedEventRouteResponse.getContinuationToken()),
+            pagedEventRouteResponse.getContinuationToken(),
             ((PagedResponseBase) pagedEventRouteResponse).getDeserializedHeaders());
     };
 
@@ -1099,6 +1358,17 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Publishes telemetry from a digital twin
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetry#String-Object#Object}
+     *
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetry#String-Object#String}
+     *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
@@ -1114,6 +1384,17 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Publishes telemetry from a digital twin
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-Object-Options#Object}
+     *
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-Object-Options#String}
+     *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
@@ -1137,6 +1418,17 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Publishes telemetry from a digital twin's component
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetry#String-String-Object#Object}
+     *
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetry#String-String-Object#String}
+     *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.
@@ -1153,6 +1445,17 @@ public final class DigitalTwinsAsyncClient {
 
     /**
      * Publishes telemetry from a digital twin's component
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetryWithResponse#String-String-Object-Options#Object}
+     *
+     * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.publishComponentTelemetryWithResponse#String-String-Object-Options#String}
+     *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
      * @param digitalTwinId The Id of the digital twin.

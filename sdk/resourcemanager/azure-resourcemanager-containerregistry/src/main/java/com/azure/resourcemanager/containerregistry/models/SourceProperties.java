@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SourceProperties model. */
+/** The properties of the source code repository. */
 @Fluent
 public final class SourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceProperties.class);

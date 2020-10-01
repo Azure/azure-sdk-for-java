@@ -8,7 +8,7 @@ import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerOptions;
 import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,38 +52,38 @@ public class SqlServerAutomaticTuningImpl
 
     @Override
     public AutomaticTuningServerMode desiredState() {
-        return this.inner().desiredState();
+        return this.innerModel().desiredState();
     }
 
     @Override
     public AutomaticTuningServerMode actualState() {
-        return this.inner().actualState();
+        return this.innerModel().actualState();
     }
 
     @Override
     public Map<String, AutomaticTuningServerOptions> tuningOptions() {
         return Collections
             .unmodifiableMap(
-                this.inner().options() != null
-                    ? this.inner().options()
+                this.innerModel().options() != null
+                    ? this.innerModel().options()
                     : new HashMap<String, AutomaticTuningServerOptions>());
     }
 
     @Override
     public SqlServerAutomaticTuningImpl withAutomaticTuningMode(AutomaticTuningServerMode desiredState) {
-        this.inner().withDesiredState(desiredState);
+        this.innerModel().withDesiredState(desiredState);
         return this;
     }
 
     @Override
     public SqlServerAutomaticTuningImpl withAutomaticTuningOption(
         String tuningOptionName, AutomaticTuningOptionModeDesired desiredState) {
-        if (this.inner().options() == null) {
-            this.inner().withOptions(new HashMap<String, AutomaticTuningServerOptions>());
+        if (this.innerModel().options() == null) {
+            this.innerModel().withOptions(new HashMap<String, AutomaticTuningServerOptions>());
         }
-        AutomaticTuningServerOptions item = this.inner().options().get(tuningOptionName);
+        AutomaticTuningServerOptions item = this.innerModel().options().get(tuningOptionName);
         this
-            .inner()
+            .innerModel()
             .options()
             .put(
                 tuningOptionName,
@@ -125,7 +125,7 @@ public class SqlServerAutomaticTuningImpl
             .sqlServerManager
             .serviceClient()
             .getServerAutomaticTunings()
-            .updateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
+            .updateAsync(this.resourceGroupName, this.sqlServerName, this.innerModel())
             .map(
                 serverAutomaticTuningInner -> {
                     self.setInner(serverAutomaticTuningInner);

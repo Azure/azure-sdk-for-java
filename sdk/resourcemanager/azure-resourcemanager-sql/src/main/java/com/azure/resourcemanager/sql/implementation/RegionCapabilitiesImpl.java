@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 import com.azure.resourcemanager.sql.models.CapabilityStatus;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ServerVersionCapability;
-import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
+import com.azure.resourcemanager.sql.fluent.models.LocationCapabilitiesInner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +25,8 @@ public class RegionCapabilitiesImpl extends WrapperImpl<LocationCapabilitiesInne
     public RegionCapabilitiesImpl(LocationCapabilitiesInner innerObject) {
         super(innerObject);
         supportedCapabilitiesMap = new HashMap<>();
-        if (this.inner().supportedServerVersions() != null) {
-            for (ServerVersionCapability serverVersionCapability : this.inner().supportedServerVersions()) {
+        if (this.innerModel().supportedServerVersions() != null) {
+            for (ServerVersionCapability serverVersionCapability : this.innerModel().supportedServerVersions()) {
                 supportedCapabilitiesMap.put(serverVersionCapability.name(), serverVersionCapability);
             }
         }
@@ -34,12 +34,12 @@ public class RegionCapabilitiesImpl extends WrapperImpl<LocationCapabilitiesInne
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().name());
+        return Region.fromName(this.innerModel().name());
     }
 
     @Override
     public CapabilityStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override

@@ -50,7 +50,7 @@ public abstract class IndependentChildResourceImpl<
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class IndependentChildResourceImpl<
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().tags();
+        Map<String, String> tags = this.innerModel().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -69,8 +69,8 @@ public abstract class IndependentChildResourceImpl<
 
     @Override
     public String id() {
-        if (this.inner() != null) {
-            return this.inner().id();
+        if (this.innerModel() != null) {
+            return this.innerModel().id();
         }
 
         return null;
@@ -78,15 +78,15 @@ public abstract class IndependentChildResourceImpl<
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String name() {
-        if (this.inner().name() == null) {
+        if (this.innerModel().name() == null) {
             return super.name();
         } else {
-            return this.inner().name();
+            return this.innerModel().name();
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class IndependentChildResourceImpl<
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTags(Map<String, String> tags) {
-        this.inner().withTags(new HashMap<>(tags));
+        this.innerModel().withTags(new HashMap<>(tags));
         return (FluentModelImplT) this;
     }
 
@@ -115,10 +115,10 @@ public abstract class IndependentChildResourceImpl<
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTag(String key, String value) {
-        if (this.inner().tags() == null) {
-            this.inner().withTags(new HashMap<String, String>());
+        if (this.innerModel().tags() == null) {
+            this.innerModel().withTags(new HashMap<String, String>());
         }
-        this.inner().tags().put(key, value);
+        this.innerModel().tags().put(key, value);
         return (FluentModelImplT) this;
     }
 
@@ -130,8 +130,8 @@ public abstract class IndependentChildResourceImpl<
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withoutTag(String key) {
-        if (this.inner().tags() != null) {
-            this.inner().tags().remove(key);
+        if (this.innerModel().tags() != null) {
+            this.innerModel().tags().remove(key);
         }
         return (FluentModelImplT) this;
     }
@@ -141,12 +141,12 @@ public abstract class IndependentChildResourceImpl<
      */
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public FluentModelImplT withExistingParentResource(FluentParentModelT existingParentResource) {
-        this.inner().withLocation(existingParentResource.regionName());
+        this.innerModel().withLocation(existingParentResource.regionName());
         return super.withExistingParentResource(existingParentResource);
     }
 }

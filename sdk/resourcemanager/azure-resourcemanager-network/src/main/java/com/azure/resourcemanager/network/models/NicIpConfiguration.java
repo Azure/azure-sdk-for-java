@@ -4,20 +4,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An IP configuration in a network interface. */
 @Fluent()
 public interface NicIpConfiguration
     extends NicIpConfigurationBase,
-        HasInner<NetworkInterfaceIpConfigurationInner>,
+        HasInnerModel<NetworkInterfaceIpConfigurationInner>,
         ChildResource<NetworkInterface>,
-    HasPublicIpAddress {
+        HasPublicIpAddress {
 
     /**
      * The entirety of the network interface IP configuration definition.

@@ -44,16 +44,16 @@ import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
 import com.azure.resourcemanager.sql.models.SqlWarehouse;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseAutomaticTuningInner;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
-import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
-import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricInner;
+import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.fluent.models.RestorePointInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
@@ -170,7 +170,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -185,62 +185,62 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String collation() {
-        return this.inner().collation();
+        return this.innerModel().collation();
     }
 
     @Override
     public OffsetDateTime creationDate() {
-        return this.inner().creationDate();
+        return this.innerModel().creationDate();
     }
 
     @Override
     public String currentServiceObjectiveName() {
-        return this.inner().currentServiceObjectiveName();
+        return this.innerModel().currentServiceObjectiveName();
     }
 
     @Override
     public String databaseId() {
-        return this.inner().databaseId().toString();
+        return this.innerModel().databaseId().toString();
     }
 
     @Override
     public OffsetDateTime earliestRestoreDate() {
-        return this.inner().earliestRestoreDate();
+        return this.innerModel().earliestRestoreDate();
     }
 
     @Override
     public DatabaseEdition edition() {
-        return DatabaseEdition.fromString(this.inner().sku().tier());
+        return DatabaseEdition.fromString(this.innerModel().sku().tier());
     }
 
     @Override
     public long maxSizeBytes() {
-        return this.inner().maxSizeBytes();
+        return this.innerModel().maxSizeBytes();
     }
 
     @Override
     public String requestedServiceObjectiveName() {
-        return this.inner().requestedServiceObjectiveName();
+        return this.innerModel().requestedServiceObjectiveName();
     }
 
     @Override
     public DatabaseStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public String elasticPoolId() {
-        return this.inner().elasticPoolId();
+        return this.innerModel().elasticPoolId();
     }
 
     @Override
     public String elasticPoolName() {
-        return ResourceUtils.nameFromResourceId(this.inner().elasticPoolId());
+        return ResourceUtils.nameFromResourceId(this.innerModel().elasticPoolId());
     }
 
     @Override
     public String defaultSecondaryLocation() {
-        return this.inner().defaultSecondaryLocation();
+        return this.innerModel().defaultSecondaryLocation();
     }
 
     @Override
@@ -252,14 +252,14 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     public SqlWarehouse asWarehouse() {
         if (this.isDataWarehouse()) {
             if (this.parent() != null) {
-                return new SqlWarehouseImpl(this.name(), this.parent(), this.inner(), this.sqlServerManager);
+                return new SqlWarehouseImpl(this.name(), this.parent(), this.innerModel(), this.sqlServerManager);
             } else {
                 return new SqlWarehouseImpl(
                     this.resourceGroupName,
                     this.sqlServerName,
                     this.sqlServerLocation,
                     this.name(),
-                    this.inner(),
+                    this.innerModel(),
                     this.sqlServerManager);
             }
         }
@@ -574,7 +574,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -627,19 +627,19 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public Mono<SqlDatabase> createResourceAsync() {
         final SqlDatabaseImpl self = this;
-        this.inner().withLocation(this.sqlServerLocation);
+        this.innerModel().withLocation(this.sqlServerLocation);
         if (this.importRequestInner != null) {
             this.importRequestInner.withDatabaseName(this.name());
             if (this.importRequestInner.edition() == null) {
                 this.importRequestInner.withEdition(this.edition());
             }
-            if (this.importRequestInner.serviceObjectiveName() == null && this.inner().sku() != null) {
+            if (this.importRequestInner.serviceObjectiveName() == null && this.innerModel().sku() != null) {
                 this
                     .importRequestInner
-                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.inner().sku().name()));
+                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.innerModel().sku().name()));
             }
             if (this.importRequestInner.maxSizeBytes() == null) {
-                this.importRequestInner.withMaxSizeBytes(String.valueOf(this.inner().maxSizeBytes()));
+                this.importRequestInner.withMaxSizeBytes(String.valueOf(this.innerModel().maxSizeBytes()));
             }
 
             return this
@@ -666,7 +666,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 .sqlServerManager
                 .serviceClient()
                 .getDatabases()
-                .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
+                .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
                 .map(
                     inner -> {
                         self.setInner(inner);
@@ -681,13 +681,13 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             final SqlDatabaseImpl self = this;
             DatabaseUpdate databaseUpdateInner =
                 new DatabaseUpdate()
-                    .withTags(self.inner().tags())
-                    .withCollation(self.inner().collation())
-                    .withSourceDatabaseId(self.inner().sourceDatabaseId())
-                    .withCreateMode(self.inner().createMode())
-                    .withSku(self.inner().sku())
-                    .withMaxSizeBytes(this.inner().maxSizeBytes())
-                    .withElasticPoolId(this.inner().elasticPoolId());
+                    .withTags(self.innerModel().tags())
+                    .withCollation(self.innerModel().collation())
+                    .withSourceDatabaseId(self.innerModel().sourceDatabaseId())
+                    .withCreateMode(self.innerModel().createMode())
+                    .withSku(self.innerModel().sku())
+                    .withMaxSizeBytes(this.innerModel().maxSizeBytes())
+                    .withElasticPoolId(this.innerModel().elasticPoolId());
             return this
                 .sqlServerManager
                 .serviceClient()
@@ -771,7 +771,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseImpl withoutElasticPool() {
-        this.inner().withElasticPoolId(null);
+        this.innerModel().withElasticPoolId(null);
 
         return this;
     }
@@ -792,16 +792,16 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseImpl withExistingElasticPool(String elasticPoolName) {
-        this.inner().withSku(null);
-        this.inner().withElasticPoolId(generateElasticPoolIdFromName(elasticPoolName));
+        this.innerModel().withSku(null);
+        this.innerModel().withElasticPoolId(generateElasticPoolIdFromName(elasticPoolName));
 
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withExistingElasticPoolId(String elasticPoolId) {
-        this.inner().withSku(null);
-        this.inner().withElasticPoolId(elasticPoolId);
+        this.innerModel().withSku(null);
+        this.innerModel().withElasticPoolId(elasticPoolId);
 
         return this;
     }
@@ -809,8 +809,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl withExistingElasticPool(SqlElasticPool sqlElasticPool) {
         Objects.requireNonNull(sqlElasticPool);
-        this.inner().withSku(null);
-        this.inner().withElasticPoolId(sqlElasticPool.id());
+        this.innerModel().withSku(null);
+        this.innerModel().withElasticPoolId(sqlElasticPool.id());
 
         return this;
     }
@@ -818,8 +818,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl withNewElasticPool(final Creatable<SqlElasticPool> sqlElasticPool) {
         Objects.requireNonNull(sqlElasticPool);
-        this.inner().withSku(null);
-        this.inner().withElasticPoolId(generateElasticPoolIdFromName(sqlElasticPool.name()));
+        this.innerModel().withSku(null);
+        this.innerModel().withElasticPoolId(generateElasticPoolIdFromName(sqlElasticPool.name()));
         this.addDependency(sqlElasticPool);
 
         return this;
@@ -832,8 +832,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                 new SqlElasticPoolsAsExternalChildResourcesImpl(
                     this.taskGroup(), this.sqlServerManager, "SqlElasticPool");
         }
-        this.inner().withSku(null);
-        this.inner().withElasticPoolId(generateElasticPoolIdFromName(elasticPoolName));
+        this.innerModel().withSku(null);
+        this.innerModel().withElasticPoolId(generateElasticPoolIdFromName(elasticPoolName));
 
         return new SqlElasticPoolForDatabaseImpl(
             this,
@@ -846,7 +846,10 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl fromRestorableDroppedDatabase(SqlRestorableDroppedDatabase restorableDroppedDatabase) {
         Objects.requireNonNull(restorableDroppedDatabase);
-        this.inner().withRestorableDroppedDatabaseId(restorableDroppedDatabase.id()).withCreateMode(CreateMode.RESTORE);
+        this
+            .innerModel()
+            .withRestorableDroppedDatabaseId(restorableDroppedDatabase.id())
+            .withCreateMode(CreateMode.RESTORE);
         return this;
     }
 
@@ -936,13 +939,13 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl fromRestorePoint(RestorePoint restorePoint, OffsetDateTime restorePointDateTime) {
         Objects.requireNonNull(restorePoint);
-        this.inner().withRestorePointInTime(restorePointDateTime);
+        this.innerModel().withRestorePointInTime(restorePointDateTime);
         return this.withSourceDatabase(restorePoint.databaseId()).withMode(CreateMode.POINT_IN_TIME_RESTORE);
     }
 
     @Override
     public SqlDatabaseImpl withSourceDatabase(String sourceDatabaseId) {
-        this.inner().withSourceDatabaseId(sourceDatabaseId);
+        this.innerModel().withSourceDatabaseId(sourceDatabaseId);
 
         return this;
     }
@@ -954,36 +957,36 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseImpl withMode(CreateMode createMode) {
-        this.inner().withCreateMode(createMode);
+        this.innerModel().withCreateMode(createMode);
 
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withCollation(String collation) {
-        this.inner().withCollation(collation);
+        this.innerModel().withCollation(collation);
 
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withMaxSizeBytes(long maxSizeBytes) {
-        this.inner().withMaxSizeBytes(maxSizeBytes);
+        this.innerModel().withMaxSizeBytes(maxSizeBytes);
 
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withEdition(DatabaseEdition edition) {
-        if (this.inner().sku() == null) {
-            this.inner().withSku(new Sku());
+        if (this.innerModel().sku() == null) {
+            this.innerModel().withSku(new Sku());
         }
-        this.inner().sku().withTier(edition.toString());
-        if (this.inner().sku().name() == null) {
-            this.inner().sku().withName(edition.toString());
+        this.innerModel().sku().withTier(edition.toString());
+        if (this.innerModel().sku().name() == null) {
+            this.innerModel().sku().withName(edition.toString());
         }
-        this.inner().sku().withCapacity(null);
-        this.inner().withElasticPoolId(null);
+        this.innerModel().sku().withCapacity(null);
+        this.innerModel().withElasticPoolId(null);
 
         return this;
     }
@@ -997,9 +1000,9 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     public SqlDatabaseImpl withBasicEdition(SqlDatabaseBasicStorage maxStorageCapacity) {
         Sku sku = new Sku().withName(ServiceObjectiveName.BASIC.toString()).withTier(DatabaseEdition.BASIC.toString());
 
-        this.inner().withSku(sku);
-        this.inner().withMaxSizeBytes(maxStorageCapacity.capacity());
-        this.inner().withElasticPoolId(null);
+        this.innerModel().withSku(sku);
+        this.innerModel().withMaxSizeBytes(maxStorageCapacity.capacity());
+        this.innerModel().withElasticPoolId(null);
         return this;
     }
 
@@ -1013,9 +1016,9 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity) {
         Sku sku = new Sku().withName(serviceObjective.toString()).withTier(DatabaseEdition.STANDARD.toString());
 
-        this.inner().withSku(sku);
-        this.inner().withMaxSizeBytes(maxStorageCapacity.capacity());
-        this.inner().withElasticPoolId(null);
+        this.innerModel().withSku(sku);
+        this.innerModel().withMaxSizeBytes(maxStorageCapacity.capacity());
+        this.innerModel().withElasticPoolId(null);
         return this;
     }
 
@@ -1029,16 +1032,16 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity) {
         Sku sku = new Sku().withName(serviceObjective.toString()).withTier(DatabaseEdition.PREMIUM.toString());
 
-        this.inner().withSku(sku);
-        this.inner().withMaxSizeBytes(maxStorageCapacity.capacity());
-        this.inner().withElasticPoolId(null);
+        this.innerModel().withSku(sku);
+        this.innerModel().withMaxSizeBytes(maxStorageCapacity.capacity());
+        this.innerModel().withElasticPoolId(null);
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withCustomEdition(Sku sku) {
-        this.inner().withSku(sku);
-        this.inner().withElasticPoolId(null);
+        this.innerModel().withSku(sku);
+        this.innerModel().withElasticPoolId(null);
         return this;
     }
 
@@ -1056,40 +1059,40 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseImpl withServiceObjective(ServiceObjectiveName serviceLevelObjective) {
-        if (this.inner().sku() == null) {
-            this.inner().withSku(new Sku());
+        if (this.innerModel().sku() == null) {
+            this.innerModel().withSku(new Sku());
         }
-        this.inner().sku().withName(serviceLevelObjective.toString());
-        this.inner().sku().withCapacity(null);
+        this.innerModel().sku().withName(serviceLevelObjective.toString());
+        this.innerModel().sku().withCapacity(null);
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withTags(Map<String, String> tags) {
-        this.inner().withTags(new HashMap<>(tags));
+        this.innerModel().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withTag(String key, String value) {
-        if (this.inner().tags() == null) {
-            this.inner().withTags(new HashMap<String, String>());
+        if (this.innerModel().tags() == null) {
+            this.innerModel().withTags(new HashMap<String, String>());
         }
-        this.inner().tags().put(key, value);
+        this.innerModel().tags().put(key, value);
         return this;
     }
 
     @Override
     public SqlDatabaseImpl withoutTag(String key) {
-        if (this.inner().tags() != null) {
-            this.inner().tags().remove(key);
+        if (this.innerModel().tags() != null) {
+            this.innerModel().tags().remove(key);
         }
         return this;
     }
 
     @Override
     public SqlDatabaseImpl fromSample(SampleName sampleName) {
-        this.inner().withSampleName(sampleName);
+        this.innerModel().withSampleName(sampleName);
         return this;
     }
 }

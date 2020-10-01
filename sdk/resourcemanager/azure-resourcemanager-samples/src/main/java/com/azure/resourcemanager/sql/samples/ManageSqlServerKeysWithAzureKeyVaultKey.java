@@ -16,13 +16,14 @@ import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,10 +43,10 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String objectId) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlsrv", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
-        final String vaultName = azureResourceManager.sdkContext().randomResourceName("sqlkv", 20);
-        final String keyName = azureResourceManager.sdkContext().randomResourceName("sqlkey", 20);
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "sqlsrv", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgsql", 20);
+        final String vaultName = Utils.randomResourceName(azureResourceManager, "sqlkv", 20);
+        final String keyName = Utils.randomResourceName(azureResourceManager, "sqlkey", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
 
@@ -84,7 +85,7 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                 .withSoftDeleteEnabled()
                 .create();
 
-            SdkContext.sleep(3 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
 
             Key keyBundle = vault.keys().define(keyName)
                 .withKeyTypeToCreate(KeyType.RSA_HSM)

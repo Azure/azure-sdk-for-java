@@ -4,14 +4,14 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -88,14 +88,18 @@ public class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return Flux.empty();
         } else {
-            return Flux.fromIterable(applicationGatewayResourceIds)
-                .flatMapDelayError(id -> {
-                    final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                    final String name = ResourceUtils.nameFromResourceId(id);
-                    return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
-                }, 32, 32)
+            return Flux
+                .fromIterable(applicationGatewayResourceIds)
+                .flatMapDelayError(
+                    id -> {
+                        final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                        final String name = ResourceUtils.nameFromResourceId(id);
+                        return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
+                    },
+                    32,
+                    32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
-                .subscribeOn(SdkContext.getReactorScheduler());
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }
     }
 
@@ -104,14 +108,18 @@ public class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return Flux.empty();
         } else {
-            return Flux.fromIterable(applicationGatewayResourceIds)
-                .flatMapDelayError(id -> {
-                    final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                    final String name = ResourceUtils.nameFromResourceId(id);
-                    return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
-                }, 32, 32)
+            return Flux
+                .fromIterable(applicationGatewayResourceIds)
+                .flatMapDelayError(
+                    id -> {
+                        final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                        final String name = ResourceUtils.nameFromResourceId(id);
+                        return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
+                    },
+                    32,
+                    32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
-                .subscribeOn(SdkContext.getReactorScheduler());
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }
     }
 }

@@ -22,7 +22,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -63,12 +63,13 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         AzureResourceManager.Authenticated azureAuthed =
-            AzureResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+            AzureResourceManager.authenticate(httpPipeline, profile);
         azureResourceManager = azureAuthed.withDefaultSubscription();
+        setInternalContext(internalContext, azureResourceManager);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway().new PrivateComplex(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PrivateComplex(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
@@ -93,16 +94,16 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysPublicUrlPathBased() throws Exception {
-        new TestApplicationGateway().new UrlPathBased(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new UrlPathBased(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testAppGatewayBackendHealthCheck() throws Exception {
-        String testId = azureResourceManager.applicationGateways().manager().sdkContext().randomResourceName("", 15);
+        String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = azureResourceManager.applicationGateways().manager().sdkContext().randomResourceName("Abc.123", 12);
+        String password = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("Abc.123", 12);
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 
@@ -202,7 +203,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                         .append("\n\t\t\tHTTP configuration name: ")
                         .append(backendConfigHealth.name())
                         .append("\n\t\t\tServers: ")
-                        .append(backendConfigHealth.inner().servers().size());
+                        .append(backendConfigHealth.innerModel().servers().size());
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
                     for (ApplicationGatewayBackendServerHealth serverHealth
                         : backendConfigHealth.serverHealths().values()) {
@@ -273,15 +274,15 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternalMinimal() throws Exception {
-        new TestApplicationGateway().new PrivateMinimal(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PrivateMinimal(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
     @Test
     public void testAppGatewaysStartStop() throws Exception {
-        String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 13);
+        String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
-        String name = azureResourceManager.sdkContext().randomResourceName("ag", 15);
+        String name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ag", 15);
         ApplicationGateway appGateway =
             azureResourceManager
                 .applicationGateways()
@@ -310,7 +311,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
 
     @Test
     public void testApplicationGatewaysInParallel() throws Exception {
-        String rgName = azureResourceManager.applicationGateways().manager().sdkContext().randomResourceName("rg", 13);
+        String rgName = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> resourceGroup = azureResourceManager.resourceGroups().define(rgName).withRegion(region);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
@@ -319,7 +320,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
             .add(
                 azureResourceManager
                     .applicationGateways()
-                    .define(azureResourceManager.applicationGateways().manager().sdkContext().randomResourceName("ag", 13))
+                    .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
@@ -334,7 +335,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
             .add(
                 azureResourceManager
                     .applicationGateways()
-                    .define(azureResourceManager.applicationGateways().manager().sdkContext().randomResourceName("ag", 13))
+                    .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
@@ -387,7 +388,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternetFacingMinimal() throws Exception {
-        new TestApplicationGateway().new PublicMinimal(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PublicMinimal(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 
@@ -398,7 +399,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      */
     @Test
     public void testAppGatewaysInternetFacingComplex() throws Exception {
-        new TestApplicationGateway().new PublicComplex(azureResourceManager.sdkContext())
+        new TestApplicationGateway().new PublicComplex(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
     }
 }

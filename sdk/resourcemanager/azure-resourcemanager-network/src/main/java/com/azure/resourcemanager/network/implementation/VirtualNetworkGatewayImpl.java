@@ -20,14 +20,14 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnClientParameters;
 import com.azure.resourcemanager.network.models.VpnType;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,21 +57,21 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withExpressRoute() {
-        inner().withGatewayType(VirtualNetworkGatewayType.EXPRESS_ROUTE);
+        innerModel().withGatewayType(VirtualNetworkGatewayType.EXPRESS_ROUTE);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayImpl withRouteBasedVpn() {
-        inner().withGatewayType(VirtualNetworkGatewayType.VPN);
-        inner().withVpnType(VpnType.ROUTE_BASED);
+        innerModel().withGatewayType(VirtualNetworkGatewayType.VPN);
+        innerModel().withVpnType(VpnType.ROUTE_BASED);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayImpl withPolicyBasedVpn() {
-        inner().withGatewayType(VirtualNetworkGatewayType.VPN);
-        inner().withVpnType(VpnType.POLICY_BASED);
+        innerModel().withGatewayType(VirtualNetworkGatewayType.VPN);
+        innerModel().withVpnType(VpnType.POLICY_BASED);
         return this;
     }
 
@@ -82,7 +82,7 @@ class VirtualNetworkGatewayImpl
                 .withName(skuName)
                 // same sku tier as sku name
                 .withTier(VirtualNetworkGatewaySkuTier.fromString(skuName.toString()));
-        this.inner().withSku(sku);
+        this.innerModel().withSku(sku);
         return this;
     }
 
@@ -111,7 +111,9 @@ class VirtualNetworkGatewayImpl
     @Override
     public VirtualNetworkGatewayImpl withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
         withNewNetwork(
-            this.manager().sdkContext().randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
+            this.manager().resourceManager().internalContext().randomResourceName("vnet", 8),
+            addressSpaceCidr,
+            subnetAddressSpaceCidr);
         return this;
     }
 
@@ -141,7 +143,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIpAddress() {
-        final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
+        final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
         this.creatablePip =
             this
                 .manager()
@@ -154,20 +156,20 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withoutBgp() {
-        inner().withBgpSettings(null);
-        inner().withEnableBgp(false);
+        innerModel().withBgpSettings(null);
+        innerModel().withEnableBgp(false);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayImpl withBgp(long asn, String bgpPeeringAddress) {
-        inner().withEnableBgp(true);
+        innerModel().withEnableBgp(true);
         ensureBgpSettings().withAsn(asn).withBgpPeeringAddress(bgpPeeringAddress);
         return this;
     }
 
     void attachPointToSiteConfiguration(PointToSiteConfigurationImpl pointToSiteConfiguration) {
-        inner().withVpnClientConfiguration(pointToSiteConfiguration.inner());
+        innerModel().withVpnClientConfiguration(pointToSiteConfiguration.innerModel());
     }
 
     @Override
@@ -198,8 +200,11 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().serviceClient().getVirtualNetworkGateways()
-            .listConnectionsAsync(this.resourceGroupName(), this.name());
+            this
+                .manager()
+                .serviceClient()
+                .getVirtualNetworkGateways()
+                .listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }
@@ -228,7 +233,7 @@ class VirtualNetworkGatewayImpl
             .manager()
             .serviceClient()
             .getVirtualNetworkGateways()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     @Override
@@ -241,41 +246,41 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayType gatewayType() {
-        return inner().gatewayType();
+        return innerModel().gatewayType();
     }
 
     @Override
     public VpnType vpnType() {
-        return inner().vpnType();
+        return innerModel().vpnType();
     }
 
     @Override
     public boolean isBgpEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableBgp());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableBgp());
     }
 
     @Override
     public boolean activeActive() {
-        return Utils.toPrimitiveBoolean(inner().active());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().active());
     }
 
     @Override
     public String gatewayDefaultSiteResourceId() {
-        return inner().gatewayDefaultSite() == null ? null : inner().gatewayDefaultSite().id();
+        return innerModel().gatewayDefaultSite() == null ? null : innerModel().gatewayDefaultSite().id();
     }
 
     @Override
     public VirtualNetworkGatewaySku sku() {
-        return this.inner().sku();
+        return this.innerModel().sku();
     }
 
     public VpnClientConfiguration vpnClientConfiguration() {
-        return inner().vpnClientConfiguration();
+        return innerModel().vpnClientConfiguration();
     }
 
     @Override
     public BgpSettings bgpSettings() {
-        return inner().bgpSettings();
+        return innerModel().bgpSettings();
     }
 
     @Override
@@ -333,7 +338,7 @@ class VirtualNetworkGatewayImpl
 
     private void initializeIPConfigsFromInner() {
         this.ipConfigs = new TreeMap<>();
-        List<VirtualNetworkGatewayIpConfigurationInner> inners = this.inner().ipConfigurations();
+        List<VirtualNetworkGatewayIpConfigurationInner> inners = this.innerModel().ipConfigurations();
         if (inners != null) {
             for (VirtualNetworkGatewayIpConfigurationInner inner : inners) {
                 VirtualNetworkGatewayIpConfigurationImpl config =
@@ -347,21 +352,21 @@ class VirtualNetworkGatewayImpl
     protected void beforeCreating() {
         // Reset and update IP configs
         ensureDefaultIPConfig();
-        this.inner().withIpConfigurations(innersFromWrappers(this.ipConfigs.values()));
+        this.innerModel().withIpConfigurations(innersFromWrappers(this.ipConfigs.values()));
     }
 
     private BgpSettings ensureBgpSettings() {
-        if (inner().bgpSettings() == null) {
-            inner().withBgpSettings(new BgpSettings());
+        if (innerModel().bgpSettings() == null) {
+            innerModel().withBgpSettings(new BgpSettings());
         }
-        return inner().bgpSettings();
+        return innerModel().bgpSettings();
     }
 
     private VirtualNetworkGatewayIpConfigurationImpl ensureDefaultIPConfig() {
         VirtualNetworkGatewayIpConfigurationImpl ipConfig =
             (VirtualNetworkGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().sdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
@@ -370,7 +375,7 @@ class VirtualNetworkGatewayImpl
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()
@@ -399,7 +404,8 @@ class VirtualNetworkGatewayImpl
         if (defaultIPConfig.publicIpAddressId() == null) {
             // If public ip not specified, then create a default PIP
             pipObservable =
-                ensureDefaultPipDefinition().createAsync()
+                ensureDefaultPipDefinition()
+                    .createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultIPConfig.withExistingPublicIpAddress(publicIPAddress);
@@ -418,7 +424,8 @@ class VirtualNetworkGatewayImpl
         } else if (creatableNetwork != null) {
             // But if default IP config does not have a subnet specified, then create a VNet
             networkObservable =
-                creatableNetwork.createAsync()
+                creatableNetwork
+                    .createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config
@@ -439,7 +446,7 @@ class VirtualNetworkGatewayImpl
                         .manager()
                         .serviceClient()
                         .getVirtualNetworkGateways()
-                        .createOrUpdateAsync(resourceGroupName(), name(), inner()));
+                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
     }
 
     @Override
@@ -449,6 +456,6 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public PointToSiteConfigurationImpl updatePointToSiteConfiguration() {
-        return new PointToSiteConfigurationImpl(inner().vpnClientConfiguration(), this);
+        return new PointToSiteConfigurationImpl(innerModel().vpnClientConfiguration(), this);
     }
 }

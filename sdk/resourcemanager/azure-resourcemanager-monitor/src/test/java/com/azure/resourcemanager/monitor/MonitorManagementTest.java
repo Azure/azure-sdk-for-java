@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -53,18 +53,19 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         monitorManager = MonitorManager.authenticate(httpPipeline, profile);
-        computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
+        computeManager = ComputeManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
+        setInternalContext(internalContext, computeManager);
 
         //        eventHubManager = EventHubManager
-        //                .authenticate(restClient, defaultSubscription, sdkContext);
+        //                .authenticate(restClient, defaultSubscription, internalContext);
     }
 
     @Override

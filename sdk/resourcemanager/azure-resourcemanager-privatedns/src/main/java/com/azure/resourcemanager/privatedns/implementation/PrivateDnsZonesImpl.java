@@ -4,7 +4,7 @@ package com.azure.resourcemanager.privatedns.implementation;
 
 import com.azure.resourcemanager.privatedns.PrivateDnsZoneManager;
 import com.azure.resourcemanager.privatedns.fluent.PrivateZonesClient;
-import com.azure.resourcemanager.privatedns.fluent.inner.PrivateZoneInner;
+import com.azure.resourcemanager.privatedns.fluent.models.PrivateZoneInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -85,7 +85,7 @@ public final class PrivateDnsZonesImpl
     }
 
     private PrivateDnsZoneImpl setDefaults(PrivateDnsZoneImpl privateDnsZone) {
-        privateDnsZone.inner().withLocation("global");
+        privateDnsZone.innerModel().withLocation("global");
         return privateDnsZone;
     }
 }

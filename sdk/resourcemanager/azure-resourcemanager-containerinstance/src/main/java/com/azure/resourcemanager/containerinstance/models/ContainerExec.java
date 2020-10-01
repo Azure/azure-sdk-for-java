@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerExec model. */
+/** The container execution command, for liveness or readiness probe. */
 @Fluent
 public final class ContainerExec {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerExec.class);

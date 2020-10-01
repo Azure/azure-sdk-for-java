@@ -32,6 +32,7 @@ public class BlobParallelUploadOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+    private boolean computeMd5;
     private Duration timeout;
 
     /**
@@ -211,6 +212,25 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * @return Whether or not the library should calculate the md5 and send it for the service to verify.
+     */
+    public boolean isComputeMd5() {
+        return computeMd5;
+    }
+
+    /**
+     * Sets the computeMd5 property.
+     *
+     * @param computeMd5 Whether or not the library should calculate the md5 and send it for the service to
+     * verify.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setComputeMd5(boolean computeMd5) {
+        this.computeMd5 = computeMd5;
         return this;
     }
 

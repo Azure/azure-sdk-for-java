@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The GalleryArtifactPublishingProfileBase model. */
+/** Describes the basic gallery artifact publishing profile. */
 @Fluent
 public class GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryArtifactPublishingProfileBase.class);

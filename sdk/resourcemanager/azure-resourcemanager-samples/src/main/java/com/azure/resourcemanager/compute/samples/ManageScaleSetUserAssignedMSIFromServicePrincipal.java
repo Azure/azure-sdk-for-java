@@ -22,7 +22,8 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.samples.Utils;
 
 /**
  * Azure Compute sample for assigning service identity to virtual machine scale set using newly created service principal
@@ -41,11 +42,11 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
      */
     public static boolean runSample(AzureResourceManager.Authenticated authenticated) {
         Region region = Region.US_WEST_CENTRAL;
-        String vmssName = authenticated.sdkContext().randomResourceName("vmss", 15);
-        String spName1 = authenticated.sdkContext().randomResourceName("sp1", 21);
-        String rgName = authenticated.sdkContext().randomResourceName("rg", 22);
-        String identityName1 = authenticated.sdkContext().randomResourceName("msi-id1", 15);
-        String identityName2 = authenticated.sdkContext().randomResourceName("msi-id1", 15);
+        String vmssName = Utils.randomResourceName(authenticated, "vmss", 15);
+        String spName1 = Utils.randomResourceName(authenticated, "sp1", 21);
+        String rgName = Utils.randomResourceName(authenticated, "rg", 22);
+        String identityName1 = Utils.randomResourceName(authenticated, "msi-id1", 15);
+        String identityName2 = Utils.randomResourceName(authenticated, "msi-id1", 15);
         ServicePrincipal servicePrincipal = null;
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
 
@@ -89,7 +90,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                     .definePasswordCredential("sppass")
                     .withPasswordValue("StrongPass!12")
                     .attach()
-                    .withNewRole(BuiltInRole.CONTRIBUTOR, Utils.resourceGroupId(virtualMachineScaleSet1.id()))
+                    .withNewRole(BuiltInRole.CONTRIBUTOR, resourceGroupId(virtualMachineScaleSet1.id()))
                     .create();
 
             Identity identity1 = azureResourceManager.identities().define(identityName1)
@@ -154,6 +155,17 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * @param id resource id
+     * @return resource group id for the resource id provided
+     */
+    private static String resourceGroupId(String id) {
+        final ResourceId resourceId = ResourceId.fromString(id);
+        return String.format("/subscriptions/%s/resourceGroups/%s",
+            resourceId.subscriptionId(),
+            resourceId.resourceGroupName());
     }
 
     /**

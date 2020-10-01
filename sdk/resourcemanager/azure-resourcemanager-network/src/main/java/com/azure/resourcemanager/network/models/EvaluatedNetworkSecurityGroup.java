@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EvaluatedNetworkSecurityGroup model. */
+/** Results of network security group evaluation. */
 @Fluent
 public final class EvaluatedNetworkSecurityGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EvaluatedNetworkSecurityGroup.class);

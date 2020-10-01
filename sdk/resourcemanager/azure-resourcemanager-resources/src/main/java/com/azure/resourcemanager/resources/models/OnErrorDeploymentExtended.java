@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OnErrorDeploymentExtended model. */
+/** Deployment on error behavior with additional details. */
 @Fluent
 public final class OnErrorDeploymentExtended {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OnErrorDeploymentExtended.class);

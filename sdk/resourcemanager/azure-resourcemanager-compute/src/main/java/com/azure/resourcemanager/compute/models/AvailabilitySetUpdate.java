@@ -12,7 +12,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailabilitySetUpdate model. */
+/**
+ * Specifies information about the availability set that the virtual machine should be assigned to. Only tags may be
+ * updated.
+ */
 @JsonFlatten
 @Fluent
 public class AvailabilitySetUpdate extends UpdateResource {

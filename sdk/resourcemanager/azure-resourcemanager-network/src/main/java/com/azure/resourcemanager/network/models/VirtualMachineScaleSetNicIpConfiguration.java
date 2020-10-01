@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An IP configuration in a network interface associated with a virtual machine scale set. */
 @Fluent
 public interface VirtualMachineScaleSetNicIpConfiguration
     extends NicIpConfigurationBase,
-        HasInner<NetworkInterfaceIpConfigurationInner>,
+        HasInnerModel<NetworkInterfaceIpConfigurationInner>,
         ChildResource<VirtualMachineScaleSetNetworkInterface>,
-    HasPrivateIpAddress,
+        HasPrivateIpAddress,
         HasSubnet {
 }

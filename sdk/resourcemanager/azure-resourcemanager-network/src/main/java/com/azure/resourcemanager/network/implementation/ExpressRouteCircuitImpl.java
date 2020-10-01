@@ -9,10 +9,11 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitAuthorizationInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,19 +52,19 @@ class ExpressRouteCircuitImpl
 
     @Override
     public ExpressRouteCircuitImpl withSku(ExpressRouteCircuitSkuType sku) {
-        inner().withSku(sku.sku());
+        innerModel().withSku(sku.sku());
         return this;
     }
 
     @Override
     public ExpressRouteCircuitImpl withClassicOperations() {
-        inner().withAllowClassicOperations(true);
+        innerModel().withAllowClassicOperations(true);
         return this;
     }
 
     @Override
     public ExpressRouteCircuitImpl withoutClassicOperations() {
-        inner().withAllowClassicOperations(false);
+        innerModel().withAllowClassicOperations(false);
         return this;
     }
 
@@ -74,17 +75,17 @@ class ExpressRouteCircuitImpl
     }
 
     private List<ExpressRouteCircuitAuthorizationInner> ensureAuthorizations() {
-        if (inner().authorizations() == null) {
-            inner().withAuthorizations(new ArrayList<ExpressRouteCircuitAuthorizationInner>());
+        if (innerModel().authorizations() == null) {
+            innerModel().withAuthorizations(new ArrayList<ExpressRouteCircuitAuthorizationInner>());
         }
-        return inner().authorizations();
+        return innerModel().authorizations();
     }
 
     private ExpressRouteCircuitServiceProviderProperties ensureServiceProviderProperties() {
-        if (inner().serviceProviderProperties() == null) {
-            inner().withServiceProviderProperties(new ExpressRouteCircuitServiceProviderProperties());
+        if (innerModel().serviceProviderProperties() == null) {
+            innerModel().withServiceProviderProperties(new ExpressRouteCircuitServiceProviderProperties());
         }
-        return inner().serviceProviderProperties();
+        return innerModel().serviceProviderProperties();
     }
 
     @Override
@@ -93,19 +94,22 @@ class ExpressRouteCircuitImpl
             .manager()
             .serviceClient()
             .getExpressRouteCircuits()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
     }
 
     @Override
     protected void initializeChildrenFromInner() {
         expressRouteCircuitPeerings = new HashMap<>();
-        if (inner().peerings() != null) {
-            for (ExpressRouteCircuitPeeringInner peering : inner().peerings()) {
+        if (innerModel().peerings() != null) {
+            for (ExpressRouteCircuitPeeringInner peering : innerModel().peerings()) {
                 expressRouteCircuitPeerings
                     .put(
                         peering.name(),
-                        new ExpressRouteCircuitPeeringImpl<>(this, peering,
-                            manager().serviceClient().getExpressRouteCircuitPeerings(), peering.peeringType()));
+                        new ExpressRouteCircuitPeeringImpl<>(
+                            this,
+                            peering,
+                            manager().serviceClient().getExpressRouteCircuitPeerings(),
+                            peering.peeringType()));
             }
         }
     }
@@ -137,7 +141,7 @@ class ExpressRouteCircuitImpl
             .manager()
             .serviceClient()
             .getExpressRouteCircuits()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     // Getters
@@ -152,42 +156,42 @@ class ExpressRouteCircuitImpl
 
     @Override
     public ExpressRouteCircuitSkuType sku() {
-        return ExpressRouteCircuitSkuType.fromSku(inner().sku());
+        return ExpressRouteCircuitSkuType.fromSku(innerModel().sku());
     }
 
     @Override
     public boolean isAllowClassicOperations() {
-        return Utils.toPrimitiveBoolean(inner().allowClassicOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().allowClassicOperations());
     }
 
     @Override
     public String circuitProvisioningState() {
-        return inner().circuitProvisioningState();
+        return innerModel().circuitProvisioningState();
     }
 
     @Override
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
-        return inner().serviceProviderProvisioningState();
+        return innerModel().serviceProviderProvisioningState();
     }
 
     @Override
     public String serviceKey() {
-        return inner().serviceKey();
+        return innerModel().serviceKey();
     }
 
     @Override
     public String serviceProviderNotes() {
-        return inner().serviceProviderNotes();
+        return innerModel().serviceProviderNotes();
     }
 
     @Override
     public ExpressRouteCircuitServiceProviderProperties serviceProviderProperties() {
-        return inner().serviceProviderProperties();
+        return innerModel().serviceProviderProperties();
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override

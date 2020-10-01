@@ -13,7 +13,24 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+
+  <name>Microsoft Azure client library for Digital Twins</name>
+  <description>This package contains the Microsoft Azure DigitalTwins client library.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
+  </scm>
 
   <dependencies>
     <dependency>

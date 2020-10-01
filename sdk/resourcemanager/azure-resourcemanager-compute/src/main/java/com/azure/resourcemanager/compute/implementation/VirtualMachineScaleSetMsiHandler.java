@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
@@ -64,16 +64,20 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
      * @return VirtualMachineScaleSetMsiHandler
      */
     VirtualMachineScaleSetMsiHandler withoutLocalManagedServiceIdentity() {
-        if (this.scaleSet.inner().identity() == null
-            || this.scaleSet.inner().identity().type() == null
-            || this.scaleSet.inner().identity().type().equals(ResourceIdentityType.NONE)
-            || this.scaleSet.inner().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
+        if (this.scaleSet.innerModel().identity() == null
+            || this.scaleSet.innerModel().identity().type() == null
+            || this.scaleSet.innerModel().identity().type().equals(ResourceIdentityType.NONE)
+            || this.scaleSet.innerModel().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
             return this;
-        } else if (this.scaleSet.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
-            this.scaleSet.inner().identity().withType(ResourceIdentityType.NONE);
-        } else if (this.scaleSet.inner().identity().type().equals(
-            ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
-            this.scaleSet.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
+        } else if (this.scaleSet.innerModel().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
+            this.scaleSet.innerModel().identity().withType(ResourceIdentityType.NONE);
+        } else if (this
+            .scaleSet
+            .innerModel()
+            .identity()
+            .type()
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+            this.scaleSet.innerModel().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
     }
@@ -133,7 +137,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
 
     void handleExternalIdentities() {
         if (!this.userAssignedIdentities.isEmpty()) {
-            this.scaleSet.inner().identity().withUserAssignedIdentities(this.userAssignedIdentities);
+            this.scaleSet.innerModel().identity().withUserAssignedIdentities(this.userAssignedIdentities);
         }
     }
 
@@ -154,7 +158,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             // 4. User want to add and remove (all or subset) some identities in 'VMSS.Identity.userAssignedIdentities'
             //      [this.userAssignedIdentities.empty() == false and this.scaleSet.inner().identity() != null]
             //
-            VirtualMachineScaleSetIdentity currentIdentity = this.scaleSet.inner().identity();
+            VirtualMachineScaleSetIdentity currentIdentity = this.scaleSet.innerModel().identity();
             vmssUpdate.withIdentity(currentIdentity);
             if (!this.userAssignedIdentities.isEmpty()) {
                 // At this point its guaranteed that 'currentIdentity' is not null so vmUpdate.identity() is.
@@ -196,7 +200,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             // Check if user request contains only request for removal of identities.
             if (containsRemoveOnly) {
                 Set<String> currentIds = new HashSet<>();
-                VirtualMachineScaleSetIdentity currentIdentity = this.scaleSet.inner().identity();
+                VirtualMachineScaleSetIdentity currentIdentity = this.scaleSet.innerModel().identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
                         currentIds.add(id.toLowerCase(Locale.ROOT));
@@ -255,7 +259,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
-        final VirtualMachineScaleSetInner scaleSetInner = this.scaleSet.inner();
+        final VirtualMachineScaleSetInner scaleSetInner = this.scaleSet.innerModel();
         if (scaleSetInner.identity() == null) {
             scaleSetInner.withIdentity(new VirtualMachineScaleSetIdentity());
         }

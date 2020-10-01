@@ -8,15 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
 public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
-    implements RoleAssignments, HasInner<RoleAssignmentsClient> {
+    implements RoleAssignments {
     private final AuthorizationManager manager;
 
     public RoleAssignmentsImpl(final AuthorizationManager manager) {
@@ -57,7 +56,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     @Override
     public PagedIterable<RoleAssignment> listByScope(String scope) {
-        return wrapList(inner().listForScope(scope, null));
+        return wrapList(inner().listForScope(scope));
     }
 
     @Override

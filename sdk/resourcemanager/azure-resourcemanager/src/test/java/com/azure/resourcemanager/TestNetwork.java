@@ -28,7 +28,7 @@ public class TestNetwork {
         @Override
         public Network createResource(Networks networks) throws Exception {
 
-            String postFix = networks.manager().sdkContext().randomResourceName("", 8);
+            String postFix = networks.manager().resourceManager().internalContext().randomResourceName("", 8);
             final String newName = "net" + postFix;
             Region region = Region.US_WEST;
             String groupName = "rg" + postFix;
@@ -91,7 +91,7 @@ public class TestNetwork {
                 resource
                     .manager()
                     .networkSecurityGroups()
-                    .define(resource.manager().sdkContext().randomResourceName("nsgB", 10))
+                    .define(resource.manager().resourceManager().internalContext().randomResourceName("nsgB", 10))
                     .withRegion(resource.region())
                     .withExistingResourceGroup(resource.resourceGroupName())
                     .create();
@@ -153,7 +153,7 @@ public class TestNetwork {
 
         @Override
         public Network createResource(Networks networks) throws Exception {
-            String postfix = networks.manager().sdkContext().randomResourceName("", 8);
+            String postfix = networks.manager().resourceManager().internalContext().randomResourceName("", 8);
             final String newName = "net" + postfix;
             Region region = Region.US_WEST;
             String groupName = "rg" + postfix;
@@ -250,10 +250,10 @@ public class TestNetwork {
         @Override
         public Network createResource(Networks networks) throws Exception {
             Region region = Region.US_EAST;
-            String groupName = networks.manager().sdkContext().randomResourceName("rg", 10);
+            String groupName = networks.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
-            String networkName = networks.manager().sdkContext().randomResourceName("net", 15);
-            String networkName2 = networks.manager().sdkContext().randomResourceName("net", 15);
+            String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
+            String networkName2 = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
 
             Creatable<Network> remoteNetworkDefinition =
                 networks
@@ -374,9 +374,9 @@ public class TestNetwork {
         @Override
         public Network createResource(Networks networks) throws Exception {
             Region region = Region.US_EAST2;
-            String groupName = networks.manager().sdkContext().randomResourceName("rg", 10);
+            String groupName = networks.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
-            String networkName = networks.manager().sdkContext().randomResourceName("net", 15);
+            String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
 
             Network network =
                 networks
@@ -413,9 +413,9 @@ public class TestNetwork {
         @Override
         public Network createResource(Networks networks) throws Exception {
             Region region = Region.US_SOUTH_CENTRAL;
-            String groupName = networks.manager().sdkContext().randomResourceName("rg", 10);
+            String groupName = networks.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
-            String networkName = networks.manager().sdkContext().randomResourceName("net", 15);
+            String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
 
             Network network =
                 networks

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeering.DefinitionStages.WithCreate;
@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -23,9 +23,7 @@ import java.util.List;
 class NetworkPeeringImpl
     extends IndependentChildImpl<
         NetworkPeering, Network, VirtualNetworkPeeringInner, NetworkPeeringImpl, NetworkManager>
-    implements NetworkPeering,
-        NetworkPeering.Definition,
-        NetworkPeering.Update {
+    implements NetworkPeering, NetworkPeering.Definition, NetworkPeering.Update {
 
     private NetworkImpl parent;
     private Network remoteNetwork;
@@ -59,17 +57,17 @@ class NetworkPeeringImpl
 
     @Override
     public VirtualNetworkPeeringState state() {
-        return this.inner().peeringState();
+        return this.innerModel().peeringState();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -79,35 +77,37 @@ class NetworkPeeringImpl
 
     @Override
     public List<String> remoteAddressSpaces() {
-        if (inner().remoteAddressSpace() == null || inner().remoteAddressSpace().addressPrefixes() == null) {
+        if (innerModel().remoteAddressSpace() == null || innerModel().remoteAddressSpace().addressPrefixes() == null) {
             return null;
         }
-        return Collections.unmodifiableList(inner().remoteAddressSpace().addressPrefixes());
+        return Collections.unmodifiableList(innerModel().remoteAddressSpace().addressPrefixes());
     }
 
     @Override
     public String remoteNetworkId() {
-        return (this.inner().remoteVirtualNetwork() != null) ? this.inner().remoteVirtualNetwork().id() : null;
+        return (this.innerModel().remoteVirtualNetwork() != null)
+            ? this.innerModel().remoteVirtualNetwork().id()
+            : null;
     }
 
     @Override
     public boolean isTrafficForwardingFromRemoteNetworkAllowed() {
-        return Utils.toPrimitiveBoolean(this.inner().allowForwardedTraffic());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowForwardedTraffic());
     }
 
     private boolean isAccessFromRemoteNetworkAllowed() {
-        return Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowVirtualNetworkAccess());
     }
 
     // Fluent setters
 
     private NetworkPeeringImpl withoutAccessFromRemoteNetwork() {
-        this.inner().withAllowVirtualNetworkAccess(false);
+        this.innerModel().withAllowVirtualNetworkAccess(false);
         return this;
     }
 
     private NetworkPeeringImpl withAccessFromRemoteNetwork() {
-        this.inner().withAllowVirtualNetworkAccess(true);
+        this.innerModel().withAllowVirtualNetworkAccess(true);
         return this;
     }
 
@@ -124,7 +124,7 @@ class NetworkPeeringImpl
     @Override
     public NetworkPeeringImpl withRemoteNetwork(String resourceId) {
         SubResource networkRef = new SubResource().withId(resourceId);
-        this.inner().withRemoteVirtualNetwork(networkRef);
+        this.innerModel().withRemoteVirtualNetwork(networkRef);
         return this;
     }
 
@@ -139,13 +139,13 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringImpl withTrafficForwardingFromRemoteNetwork() {
-        this.inner().withAllowForwardedTraffic(true);
+        this.innerModel().withAllowForwardedTraffic(true);
         return this;
     }
 
     @Override
     public NetworkPeeringImpl withoutTrafficForwardingFromRemoteNetwork() {
-        this.inner().withAllowForwardedTraffic(false);
+        this.innerModel().withAllowForwardedTraffic(false);
         return this;
     }
 
@@ -183,7 +183,7 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringImpl withGatewayUseByRemoteNetworkAllowed() {
-        this.inner().withAllowGatewayTransit(true).withUseRemoteGateways(false);
+        this.innerModel().withAllowGatewayTransit(true).withUseRemoteGateways(false);
         this.startGatewayUseByRemoteNetwork = null;
         this.allowGatewayUseOnRemoteNetwork = false;
         return this;
@@ -198,7 +198,7 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringImpl withGatewayUseOnRemoteNetworkStarted() {
-        this.inner().withAllowGatewayTransit(false).withUseRemoteGateways(true);
+        this.innerModel().withAllowGatewayTransit(false).withUseRemoteGateways(true);
         this.startGatewayUseByRemoteNetwork = false;
         this.allowGatewayUseOnRemoteNetwork = true;
         return this;
@@ -206,7 +206,7 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringImpl withoutAnyGatewayUse() {
-        this.inner().withAllowGatewayTransit(false);
+        this.innerModel().withAllowGatewayTransit(false);
         return this.withoutGatewayUseOnRemoteNetwork().withoutGatewayUseByRemoteNetwork();
     }
 
@@ -219,7 +219,7 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringImpl withoutGatewayUseOnRemoteNetwork() {
-        this.inner().withUseRemoteGateways(false);
+        this.innerModel().withUseRemoteGateways(false);
         return this;
     }
 
@@ -227,7 +227,7 @@ class NetworkPeeringImpl
 
     @Override
     public boolean checkAccessBetweenNetworks() {
-        if (!Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess())) {
+        if (!ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowVirtualNetworkAccess())) {
             // If network access is disabled on this peering, then it's disabled for both networks, regardless of what
             // the remote peering says
             return false;
@@ -240,7 +240,7 @@ class NetworkPeeringImpl
         } else {
             // Access is enabled on local peering, so up to the remote peering to determine whether it's enabled or
             // disabled overall
-            return Utils.toPrimitiveBoolean(remotePeering.inner().allowVirtualNetworkAccess());
+            return ResourceManagerUtils.toPrimitiveBoolean(remotePeering.innerModel().allowVirtualNetworkAccess());
         }
     }
 
@@ -252,7 +252,7 @@ class NetworkPeeringImpl
             .manager()
             .serviceClient()
             .getVirtualNetworkPeerings()
-            .createOrUpdateAsync(this.parent.resourceGroupName(), networkName, this.name(), this.inner())
+            .createOrUpdateAsync(this.parent.resourceGroupName(), networkName, this.name(), this.innerModel())
             // After successful creation, update the inner
             .doOnNext(
                 inner -> {
@@ -374,8 +374,8 @@ class NetworkPeeringImpl
                                 .defer(
                                     () -> {
                                         // No matching remote peering, so create one on the remote network
-                                        String peeringName =
-                                            this.manager().sdkContext().randomResourceName("peer", 15);
+                                        String peeringName = this.manager().resourceManager().internalContext()
+                                            .randomResourceName("peer", 15);
 
                                         WithCreate remotePeeringDefinition =
                                             remoteNetwork
@@ -446,7 +446,7 @@ class NetworkPeeringImpl
             .serviceClient()
             .getVirtualNetworkPeerings()
             .getAsync(
-                this.resourceGroupName(), ResourceUtils.nameFromResourceId(this.networkId()), this.inner().name());
+                this.resourceGroupName(), ResourceUtils.nameFromResourceId(this.networkId()), this.innerModel().name());
     }
 
     @Override
@@ -499,9 +499,9 @@ class NetworkPeeringImpl
 
     @Override
     public NetworkPeeringGatewayUse gatewayUse() {
-        if (Utils.toPrimitiveBoolean(this.inner().allowGatewayTransit())) {
+        if (ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowGatewayTransit())) {
             return NetworkPeeringGatewayUse.BY_REMOTE_NETWORK;
-        } else if (Utils.toPrimitiveBoolean(this.inner().useRemoteGateways())) {
+        } else if (ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().useRemoteGateways())) {
             return NetworkPeeringGatewayUse.ON_REMOTE_NETWORK;
         } else {
             return NetworkPeeringGatewayUse.NONE;

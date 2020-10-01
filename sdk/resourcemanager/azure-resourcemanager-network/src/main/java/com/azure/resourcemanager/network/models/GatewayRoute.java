@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GatewayRoute model. */
+/** Gateway routing details. */
 @Immutable
 public final class GatewayRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRoute.class);

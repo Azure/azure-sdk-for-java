@@ -48,6 +48,7 @@ override-client-name: PhoneNumberAdminClient
 ### Code generation settings
 
 ``` yaml
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/838c5092f11e8ca26e262b1f1099d5c5cdfedc3f/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/preview/2020-07-20-preview2/CommunicationIdentity.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL

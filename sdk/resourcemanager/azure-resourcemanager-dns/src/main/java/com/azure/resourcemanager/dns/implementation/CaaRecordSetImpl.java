@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.CaaRecord;
 import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,21 +22,21 @@ class CaaRecordSetImpl extends DnsRecordSetImpl implements CaaRecordSet {
 
     @Override
     public List<CaaRecord> records() {
-        if (this.inner().caaRecords() != null) {
-            return Collections.unmodifiableList(this.inner().caaRecords());
+        if (this.innerModel().caaRecords() != null) {
+            return Collections.unmodifiableList(this.innerModel().caaRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().caaRecords() != null && this.inner().caaRecords().size() > 0) {
+        if (this.innerModel().caaRecords() != null && this.innerModel().caaRecords().size() > 0) {
             if (resource.caaRecords() == null) {
                 resource.withCaaRecords(new ArrayList<>());
             }
 
-            resource.caaRecords().addAll(this.inner().caaRecords());
-            this.inner().caaRecords().clear();
+            resource.caaRecords().addAll(this.innerModel().caaRecords());
+            this.innerModel().caaRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.caaRecords().size() > 0) {

@@ -82,6 +82,11 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public Map<String, Object> extraProperties() {
+        return this.inner().extraProperties();
+    }
+
+    @Override
     public ManagedIdentity identity() {
         return this.inner().identity();
     }
@@ -136,6 +141,12 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public WorkspaceImpl withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
         this.inner().withDefaultDataLakeStorage(defaultDataLakeStorage);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withManagedResourceGroupName(String managedResourceGroupName) {
+        this.inner().withManagedResourceGroupName(managedResourceGroupName);
         return this;
     }
 
