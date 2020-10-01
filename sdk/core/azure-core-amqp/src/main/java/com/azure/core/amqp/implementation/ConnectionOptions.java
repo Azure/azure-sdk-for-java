@@ -32,7 +32,7 @@ public class ConnectionOptions {
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
             CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
             ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
-        SslDomain.VerifyMode verifyMode) {
+            SslDomain.VerifyMode verifyMode) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
