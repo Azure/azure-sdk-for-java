@@ -147,6 +147,43 @@ function Get-AllPkgProperties ([string]$ServiceDirectory = $null)
     return $pkgPropsResult
 }
 
+function GetMetaData($lang){
+    switch ($lang) {
+      "java" {
+        $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
+        break
+      }
+      ".net" {
+        $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/dotnet-packages.csv"
+        break
+      }
+      "python" {
+        $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/python-packages.csv"
+        break
+      }
+      "javascript" {
+        $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/js-packages.csv"
+        break
+      }
+      "cpp" {
+        $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/cpp-packages.csv"
+        break
+      }
+      "c" {
+        $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/c-packages.csv"
+        break
+      }
+      default {
+        Write-Host "Unrecognized Language: $language"
+        exit(1)
+      }
+    }
+  
+    $metadataResponse = Invoke-RestMethod -Uri $metadataUri -method "GET" -MaximumRetryCount 3 -RetryIntervalSec 10 | ConvertFrom-Csv
+  
+    return $metadataResponse
+}
+
 function Operate-OnPackages ($activePkgList, $ServiceDirectory, [Array]$pkgPropsResult)
 {
     foreach ($pkg in $activePkgList)

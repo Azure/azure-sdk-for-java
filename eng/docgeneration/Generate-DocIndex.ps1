@@ -1,8 +1,23 @@
+# Generates an index page for cataloging different versions of the Docs
 [CmdletBinding()]
 Param (
     $RepoRoot,
-    $DocGenDir
+    $DocGenDir,
+    $lang = ".net",
+    $packageNameRegex = "",
+    $packageNameReplacement = ""
 )
+. (Join-Path $PSScriptRoot ../../eng/common/scripts/Package-Properties.ps1)
+
+# A mapping is used to fill in 1. Title of home page, 2. The azure storage link
+$LangMapping = @{
+    ".net"       = @("NET", "dotnet")
+    "java"       = @("Java", "java")
+    "javascript" = @("JavaScript", "javascript")
+    "python"     = @("Python", "python")
+    "c"          = @("C", "c")
+    "cpp"        = @("CPP", "cpp")
+}
 
 Write-Verbose "Name Reccuring paths with variable names"
 $DocFxTool = "${RepoRoot}/docfx/docfx.exe"
@@ -12,151 +27,88 @@ Write-Verbose "Initializing Default DocFx Site..."
 & "${DocFxTool}" init -q -o "${DocOutDir}"
 
 Write-Verbose "Copying template and configuration..."
-New-Item -Path "${DocOutDir}" -Name "templates" -ItemType "directory"
+New-Item -Path "${DocOutDir}" -Name "templates" -ItemType "directory" -Force
 Copy-Item "${DocGenDir}/templates/*" -Destination "${DocOutDir}/templates" -Force -Recurse
 Copy-Item "${DocGenDir}/docfx.json" -Destination "${DocOutDir}/" -Force
-
-Write-Verbose "Creating Index using service directory and package names from repo..."
-# The service mapper is used to map the directory names to the service names to produce
-# a more friendly index. If something isn't in the mapper then the default will just be
-# the service name in all caps
-$serviceMapHash = Get-Content -Path "${DocGenDir}/service-mapper.json" | ConvertFrom-Json -AsHashtable
-
-# There are some artifact that show up, due to the way we do discovery, that are never shipped.
-# Keep a list of those here and anything we don't want to ship can be added to here which will
-# cause them to get skipped when generating the DocIndex
-$ArtifactsToSkip = (
-'azure-cosmos-benchmark',
-'azure-sdk-template'
-)
-
-# The list of services is being constructed from the directory list under the sdk folder
-# which, right now, only contains client/data directories. When management is moved to
-# the under sdk it'll automatically get picked up.
-$ServiceListData = Get-ChildItem "${RepoRoot}/sdk" -Directory
 $YmlPath = "${DocOutDir}/api"
 New-Item -Path $YmlPath -Name "toc.yml" -Force
-foreach ($Dir in $ServiceListData)
-{   
-    $mappedDir = ""
-    if ($serviceMapHash.ContainsKey($Dir.Name)) 
-    {
-        $mappedDir = $serviceMapHash[$Dir.Name]
+
+Write-Verbose "Reading artifact from storage blob ..."
+$metadata = GetMetaData -lang $lang
+$langRegex = $LangMapping[$lang][1]
+$regex = "^$langRegex/(.*)/$"
+$pageToken = ""
+# Used for sorting the toc display order
+$orderSet = @{}
+$orderArray = @()
+# This is a pagnation call as storage only return 5000 results as maximum.
+Do {
+    $resp = ""
+    if (!$pageToken) {
+        # First page call.
+        $resp = Invoke-RestMethod -Method Get -Uri "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=$langRegex%2F&delimiter=%2F"
     }
-    else
-    {
-        $mappedDir = $Dir.Name.ToUpper()
+    else {
+        # Next page call
+        $resp = Invoke-RestMethod -Method Get -Uri "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=$langRegex&marker=$pageToken"
     }
-
-    # Store the list of artifacts into the arrays and write them into the .md file
-    # after processing the list of subdirectories. This will allow the correct 
-    # division of the artifacts under the Client or Management headings
-    $clientArr = @()
-    $mgmtArr = @()
-
-    $PkgList = Get-ChildItem $Dir.FullName -Directory -Exclude changelog, faq, .github, build
-    if (($PkgList | Measure-Object).count -eq 0)
-    {
-        continue
-    }
-    foreach ($Pkg in $PkgList)
-    {
-        # Load the pom file to pull the artifact name and grab the
-        # parent's relative path to see which parent pom is being
-        # used to determine whether or not the artifact is client 
-        # or management.
-        $PomPath = Join-Path -Path $Pkg -ChildPath "pom.xml"
-
-        # no pom file = nothing to process
-        if (Test-Path -path $PomPath) 
-        {
-            $xml = New-Object xml
-            $xml.Load($PomPath)
-
-            # Get the artifactId from the POM
-            $artifactId = $xml.project.artifactId
-
-            $parent = $xml.project.parent.relativePath
-
-            # If this is an artifact that isn't shipping then just
-            # move on to the next one
-            if ($ArtifactsToSkip -contains $artifactId)
-            {
-                Write-Output "skipping $artifactId"
-                continue
-            }
-
-            # If the parent is null or empty then the pom isn't directly including 
-            # one of the pom.[client|data|management].xml and needs to be specially
-            # handled
-            if (("" -eq $parent) -or ($null -eq $parent))
-            {
-                # Cosmos has a root pom which includes pom.client.xml that won't
-                # be detected by this logic. It's easier to deal with specially
-                # than it is to try and climb the pom chain here.
-                if ($Dir.BaseName -eq 'cosmos') 
-                {
-                    $clientArr += $artifactId
-                } 
-                else 
-                {
-                    Write-Host "*snowflake* Pom $PomPath, has a null or empty relative path."
-                }
-            } 
-            else 
-            {
-                if (($parent.IndexOf('azure-client-sdk-parent') -ne -1) -or ($parent.IndexOf('azure-data-sdk-parent') -ne -1))
-                {
-                    $clientArr += $artifactId
-                } 
-                else 
-                {
-                    $mgmtArr += $artifactId
-                }
-            }
+    # Storage returns some weired encoded string at the begining of response which needs to cutoff before use.
+    $rawConent = $resp.Substring(3)
+    # Convert to xml documents.
+    $xmlDoc = [xml]$rawConent
+    foreach ($elem in $xmlDoc.EnumerationResults.Blobs.BlobPrefix) {
+        # What service return like "dotnet/Azure.AI.Anomalydetector/", needs to fetch out "Azure.AI.Anomalydetector"
+        $aritifact = $elem.Name -replace $regex, '$1'
+        # Some languages need to convert the artifact name, e.g azure-data-appconfiguration -> @azure/data-appconfiguration
+        if ($packageNameRegex) {
+            $aritifact = $aritifact -replace $packageNameRegex, $packageNameReplacement
+        }
+        # Read the artifact package infomation from csv of Azure/azure-sdk/_data/release/latest repo.
+        $packageInfo = ($metadata | ? { $_.Package -Contains $aritifact})
+        # Ignore the one marked as Hide
+        $hidden = $packageInfo.Hide
+        if ($hidden -and $hidden.Trim() -eq "true") {
+            continue
+        }
+        $serviceName = $packageInfo.ServiceName
+        # If no service name retrieved, print out warning message, and put it into Other page.
+        if (!$serviceName) {
+            Write-Warning "Please double check and update the artifact correct service name to corresponding repo: https://github.com/Azure/azure-sdk/tree/master/_data/releases/latest."
+            Write-Warning "If the package is not relavant, please set Hide value to true."
+            $serviceName = "Other"
+        }
+        $serviceName = $serviceName.Trim()
+        # The name of generating md files.
+        $dirName = ($serviceName -replace '\s', '').ToLower()
+        if ($orderSet.ContainsKey($dirName)) {
+            Add-Content -Path "$($YmlPath)/${dirName}.md" -Value "#### $aritifact"
+        }
+        else {
+            New-Item -Path $YmlPath -Name "${dirName}.md" -Force
+            Add-Content -Path "$($YmlPath)/${dirName}.md" -Value "#### $aritifact"
+            $orderArray += $dirName
+            $orderSet[$dirName] = $serviceName
         }
     }
-    # Only create this if there's something to create
-    #if (($clientArr.Count -gt 0) -or ($mgmtArr.Count -gt 0))
-    if ($clientArr.Count -gt 0)
-    {
-    New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
-    Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($mappedDir)`r`n  href: $($Dir.Name).md"
-    # loop through the arrays and add the appropriate artifacts under the appropriate headings
-    if ($clientArr.Count -gt 0)
-    {
-        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Client Libraries"
-        foreach($lib in $clientArr) 
-        {
-            Write-Host "Write $($lib) to $($Dir.Name).md"
-            Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
-        }
-    }
-    # For the moment there are no management docs and with the way some of the libraries
-    # in management are versioned is a bit wonky. They aren't versioned by releasing a new
-    # version with the same groupId/artifactId, they're versioned with the same artifactId
-    # and version with a different groupId and the groupId happens to include the date. For 
-    # example, the artifact/version of azure-mgmt-storage:1.0.0-beta has several different 
-    # groupIds. com.microsoft.azure.storage.v2016_01_01, com.microsoft.azure.storage.v2017_10_01,
-    # com.microsoft.azure.storage.v2018_11_01 etc.
-    #if ($mgmtArr.Count -gt 0) 
-    #{
-    #    Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# Management Libraries"
-    #    foreach($lib in $mgmtArr) 
-    #    {
-    #        Write-Output "Write $($lib) to $($Dir.Name).md"
-    #        Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $lib"
-    #    }
-    #}
-    }
+    # Fetch page token
+    $pageToken = $xmlDoc.EnumerationResults.NextMarker
+} while ($pageToken)
+
+# Sort and display toc service name by alphabetical order.
+$sortedDir = $orderArray | Sort-Object
+foreach ($service in $sortedDir) {
+    $serviceName = $orderSet[$service]
+    Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: ${serviceName}`r`n  href: ${service}.md"
 }
+
 
 Write-Verbose "Creating Site Title and Navigation..."
 New-Item -Path "${DocOutDir}" -Name "toc.yml" -Force
-Add-Content -Path "${DocOutDir}/toc.yml" -Value "- name: Azure SDK for Java APIs`r`n  href: api/`r`n  homepage: api/index.md"
+Add-Content -Path "${DocOutDir}/toc.yml" -Value "- name: Azure SDK for NET APIs`r`n  href: api/`r`n  homepage: api/index.md"
 
 Write-Verbose "Copying root markdowns"
 Copy-Item "$($RepoRoot)/README.md" -Destination "${DocOutDir}/api/index.md" -Force
+Copy-Item "$($RepoRoot)/CONTRIBUTING.md" -Destination "${DocOutDir}/api/CONTRIBUTING.md" -Force
 
 Write-Verbose "Building site..."
 & "${DocFxTool}" build "${DocOutDir}/docfx.json"

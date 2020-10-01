@@ -67,11 +67,15 @@ $(function () {
     });
 })
 
-function httpGetAsync(targetUrl, callback) {
+function httpGetAsync(targetUrl, callback, callbackOnNotFound) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             callback(xmlHttp.responseText);
+        } 
+        else if (xmlHttp.status == 404) {
+            callbackOnNotFound()
+        }
     }
     xmlHttp.open("GET", targetUrl, true); // true for asynchronous 
     xmlHttp.send(null);
@@ -81,7 +85,6 @@ function populateIndexList(selector, packageName) {
     url = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/versions"
 
     httpGetAsync(url, function (responseText) {
-
         var publishedversions = document.createElement("ul")
         if (responseText) {
             options = responseText.match(/[^\r\n]+/g)
@@ -95,6 +98,8 @@ function populateIndexList(selector, packageName) {
         }
 
         $(selector).after(publishedversions)
+    }, function() {
+        $(selector).hide()
     })
 }
 
