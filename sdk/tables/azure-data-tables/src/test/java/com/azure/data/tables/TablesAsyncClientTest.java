@@ -222,8 +222,8 @@ public class TablesAsyncClientTest extends TestBase {
     @Test
     void createEntitySubclassAsync() {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
         OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -250,7 +250,7 @@ public class TablesAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
-                final TableEntity entity = response.getValue();
+                TableEntity entity = response.getValue();
                 assertArrayEquals((byte[]) entity.getProperties().get("ByteField"), bytes);
                 assertEquals(entity.getProperties().get("BooleanField"), b);
                 assertTrue(dateTime.isEqual((OffsetDateTime) entity.getProperties().get("DateTimeField")));
@@ -407,10 +407,8 @@ public class TablesAsyncClientTest extends TestBase {
     @Test
     void getEntityWithResponseSubclassAsync() {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
-
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         byte[] bytes = new byte[]{1, 2, 3};
         boolean b = true;
         OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -432,16 +430,16 @@ public class TablesAsyncClientTest extends TestBase {
         props.put("StringField", s);
         props.put("EnumField", color);
 
+        TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         tableEntity.addProperties(props);
 
-
-        final int expectedStatusCode = 200;
+        int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, SampleEntity.class))
             .assertNext(response -> {
-                final SampleEntity entity = response.getValue();
+                SampleEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
 
                 assertNotNull(entity);
@@ -524,12 +522,12 @@ public class TablesAsyncClientTest extends TestBase {
     @Test
     void updateEntityWithResponseSubclassAsync() {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
-        final int expectedStatusCode = 204;
+        String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
+        int expectedStatusCode = 204;
+
         SingleFieldEntity tableEntity = new SingleFieldEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setSubclassProperty("InitialValue");
-
         tableClient.createEntity(tableEntity).block(TIMEOUT);
 
         // Act & Assert
@@ -541,7 +539,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
             .assertNext(entity -> {
-                final Map<String, Object> properties = entity.getProperties();
+                Map<String, Object> properties = entity.getProperties();
                 assertTrue(properties.containsKey("SubclassProperty"));
                 assertEquals("UpdatedValue", properties.get("SubclassProperty"));
             })
@@ -639,9 +637,9 @@ public class TablesAsyncClientTest extends TestBase {
     @Tag("ListEntities")
     void listEntitiesSubclassAsync() {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(TIMEOUT);
 
