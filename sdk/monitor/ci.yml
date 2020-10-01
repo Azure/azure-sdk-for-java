@@ -1,0 +1,32 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - master
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/monitor/
+      - eng/common/
+
+pr:
+  branches:
+    include:
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/monitor/
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: monitor
+    Artifacts:
+      - name: opentelemetry-exporter-azuremonitor
+        groupId: com.azure
+        safeName: opentelemetryexporterazuremonitor

@@ -53,11 +53,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-analytics-monitorexporter</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-monitorexporter;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
@@ -246,6 +241,12 @@
       <artifactId>azure-sdk-template</artifactId>
       <version>1.2.1-beta.3</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>opentelemetry-exporter-azuremonitor</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:opentelemetry-exporter-azuremonitor;current} -->
+    </dependency>
+
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
