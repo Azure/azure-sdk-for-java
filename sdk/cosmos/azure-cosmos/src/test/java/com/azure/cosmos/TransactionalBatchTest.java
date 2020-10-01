@@ -205,7 +205,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchReadsOnlyAsync() throws Exception {
+    public void batchReadsOnlyAsync() {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 
@@ -227,7 +227,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchCrud() throws Exception {
+    public void batchCrud() {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocsAsync(container);
 

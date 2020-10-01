@@ -59,7 +59,15 @@ public class BatchOperationResultTests {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void isSuccessStatusCodeTrueFor200To299() {
         for (int x = 100; x < 999; ++x) {
-            TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(x);
+            TransactionalBatchOperationResult<?> result = BridgeInternal.createTransactionBatchResult(
+                null,
+                null,
+                null,
+                x,
+                null,
+                null
+            );
+
             boolean success = x >= 200 && x <= 299;
             assertThat(result.isSuccessStatusCode()).isEqualTo(success);
         }

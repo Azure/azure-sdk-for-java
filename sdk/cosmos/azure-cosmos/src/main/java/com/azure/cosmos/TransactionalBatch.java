@@ -46,18 +46,18 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     .upsertItem<ToDoActivity>(test3)
  *     .deleteItem("reading");
  *
- * try (TransactionalBatchResponse response = container.executeTransactionalBatch(batch) {
+ * TransactionalBatchResponse response = container.executeTransactionalBatch(batch);
  *
- *     if (!response.IsSuccessStatusCode) {
- *        // Handle and log exception
- *        return;
- *     }
- *
- *     // Look up interested results - e.g., via typed access on operation results
- *
- *     TransactionalBatchOperationResult<ToDoActivity> result = response.getOperationResultAtIndex<ToDoActivity>(0, ToDoActivity.class);
- *     ToDoActivity readActivity = result.getItem();
+ * if (!response.IsSuccessStatusCode) {
+ *      // Handle and log exception
+ *      return;
  * }
+ *
+ * // Look up interested results - e.g., via typed access on operation results
+ *
+ * TransactionalBatchOperationResult<ToDoActivity> result = response.getOperationResultAtIndex<ToDoActivity>(0, ToDoActivity.class);
+ * ToDoActivity readActivity = result.getItem();
+ *
  * }</pre>
  *
  * <b>Example</b>
@@ -71,16 +71,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     .readItem("jogging")
  *     .readItem("running")
  *
- * try (TransactionalBatchResponse response = container.executeTransactionalBatch(batch) {
+ * TransactionalBatchResponse response = container.executeTransactionalBatch(batch);
  *
- *     // Look up interested results - eg. via direct access to operation result stream
+ * // Look up interested results - eg. via direct access to operation result stream
  *
- *     List<String> resultItems = new ArrayList<String>();
+ * List<String> resultItems = new ArrayList<String>();
  *
- *     for (TransactionalBatchOperationResult result : response) {
- *         resultItems.add(result.getResourceObject().toString())
- *     }
+ * for (TransactionalBatchOperationResult result : response) {
+ *     resultItems.add(result.getResourceObject().toString())
  * }
+ *
  * }</pre>
  * <p>
  * <b>See:</b>
@@ -132,6 +132,7 @@ public final class TransactionalBatch {
      *
      * @param item A JSON serializable object that must contain an id property.
      * @param requestOptions The options for the item request.
+     *
      * @return The transactional batch instance with the operation added.
      */
     public <T> TransactionalBatch createItem(T item, TransactionalBatchItemRequestOptions requestOptions) {
@@ -245,6 +246,7 @@ public final class TransactionalBatch {
      * @param id The unique id of the item.
      * @param item A JSON serializable object that must contain an id property.
      * @param requestOptions The options for the item request.
+     *
      * @return The transactional batch instance with the operation added.
      */
     public <T> TransactionalBatch replaceItem(
@@ -285,6 +287,7 @@ public final class TransactionalBatch {
      *
      * @param item A JSON serializable object that must contain an id property.
      * @param requestOptions The options for the item request.
+     *
      * @return The transactional batch instance with the operation added.
      */
     public <T> TransactionalBatch upsertItem(T item, TransactionalBatchItemRequestOptions requestOptions) {

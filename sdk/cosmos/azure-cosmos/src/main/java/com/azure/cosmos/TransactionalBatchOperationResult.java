@@ -26,18 +26,9 @@ public final class TransactionalBatchOperationResult<TResource> {
     private Integer subStatusCode;
 
     /**
-     * Instantiates a new Transactional batch operation result.
+     * Instantiates a new Transactional batch operation result using a TransactionalBatchOperationResult.
      *
-     * @param responseStatus the response status
-     */
-    TransactionalBatchOperationResult(final int responseStatus) {
-        this.responseStatus = responseStatus;
-    }
-
-    /**
-     * Instantiates a new Transactional batch operation result.
-     *
-     * @param other the other
+     * @param other the other TransactionalBatchOperationResult.
      */
     TransactionalBatchOperationResult(final TransactionalBatchOperationResult<?> other) {
 
@@ -52,10 +43,10 @@ public final class TransactionalBatchOperationResult<TResource> {
     }
 
     /**
-     * Instantiates a new Transactional batch operation result.
+     * Instantiates a new Transactional batch operation result using a TransactionalBatchOperationResult and item.
      *
-     * @param result the result
-     * @param item the item
+     * @param result the TransactionalBatchOperationResult.
+     * @param item the item.
      */
     TransactionalBatchOperationResult(TransactionalBatchOperationResult<?> result, TResource item) {
         this(result);
@@ -83,7 +74,7 @@ public final class TransactionalBatchOperationResult<TResource> {
 
     /**
      * Gets the entity tag associated with the current item.
-     * <p>
+     *
      * ETags are used for concurrency checking when updating resources.
      *
      * @return Entity tag associated with the current item.
@@ -104,7 +95,7 @@ public final class TransactionalBatchOperationResult<TResource> {
     /**
      * Gets the item associated with the current result.
      *
-     * @return Resource associated with the current result.
+     * @return item associated with the current result.
      */
     public TResource getItem() {
         return this.item;

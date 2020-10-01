@@ -15,18 +15,10 @@ public final class TransactionalBatchRequestOptions {
     private String sessionToken;
 
     /**
-     * Constructor
-     */
-    public TransactionalBatchRequestOptions() {
-        super();
-    }
-
-    /**
      * Gets the consistency level required for the request.
      *
      * @return the consistency level.
      */
-
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
@@ -35,7 +27,7 @@ public final class TransactionalBatchRequestOptions {
      * Sets the consistency level required for the request.
      *
      * @param consistencyLevel the consistency level.
-     * @return the CosmosItemRequestOptions.
+     * @return the TransactionalBatchRequestOptions.
      */
     TransactionalBatchRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
@@ -55,7 +47,7 @@ public final class TransactionalBatchRequestOptions {
      * Sets the token for use with session consistency.
      *
      * @param sessionToken the session token.
-     * @return the CosmosItemRequestOptions.
+     * @return the TransactionalBatchRequestOptions.
      */
     public TransactionalBatchRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;

@@ -497,7 +497,7 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Executes the transactional batch at the Azure Cosmos service as an asynchronous operation.
+     * Executes the transactional batch.
      *
      * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
      *
@@ -530,7 +530,7 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Executes the transactional batch at the Azure Cosmos service as an asynchronous operation.
+     * Executes the transactional batch.
      *
      * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
      * @param requestOptions Options that apply specifically to batch request.

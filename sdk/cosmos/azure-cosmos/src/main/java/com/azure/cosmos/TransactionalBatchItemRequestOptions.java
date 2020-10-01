@@ -15,7 +15,7 @@ public final class TransactionalBatchItemRequestOptions {
     private String ifNoneMatchETag;
 
     /**
-     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Gets the If-Match (ETag) associated with the operation in TransactionalBatch.
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
@@ -24,7 +24,7 @@ public final class TransactionalBatchItemRequestOptions {
     }
 
     /**
-     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Sets the If-Match (ETag) associated with the operation in TransactionalBatch.
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
@@ -35,7 +35,7 @@ public final class TransactionalBatchItemRequestOptions {
     }
 
     /**
-     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Gets the If-None-Match (ETag) associated with the request in operation in TransactionalBatch.
      *
      * @return the ifNoneMatchETag associated with the request.
      */
@@ -44,7 +44,7 @@ public final class TransactionalBatchItemRequestOptions {
     }
 
     /**
-     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Sets the If-None-Match (ETag) associated with the request in operation in TransactionalBatch.
      *
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
