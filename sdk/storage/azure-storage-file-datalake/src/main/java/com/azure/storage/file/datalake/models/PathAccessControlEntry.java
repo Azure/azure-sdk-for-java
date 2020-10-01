@@ -46,12 +46,12 @@ import java.util.Objects;
  */
 public class PathAccessControlEntry {
 
-    private static final String ACCESS_CONTROL_ENTRY_INVALID_SCOPE = "Scope must be default or otherwise omitted";
+    static final String ACCESS_CONTROL_ENTRY_INVALID_SCOPE = "Scope must be default or otherwise omitted";
 
     /**
      * The string to specify default scope for an Access Control Entry.
      */
-    private static final String DEFAULT_SCOPE = "default";
+    static final String DEFAULT_SCOPE = "default";
 
     /**
      * Indicates whether this entry belongs to the default ACL for a directory.
