@@ -1,7 +1,12 @@
 ## Release History
 
-## 4.6.0-beta.1 (Unreleased)
+## 4.7.0-beta.1 (Unreleased)
 
+
+### 4.6.0 (2020-09-30)
+#### New Features
+* Added new API to support AAD role-based access control in Cosmos. This is a preview feature which needs to be enabled at the account settings.
+* Added handler API(beta) to `CosmosPagedFlux`/`CosmosPagedIterable` to be invoked on every response.
 
 ### 4.5.2 (2020-09-29)
 #### Key Bug Fixes

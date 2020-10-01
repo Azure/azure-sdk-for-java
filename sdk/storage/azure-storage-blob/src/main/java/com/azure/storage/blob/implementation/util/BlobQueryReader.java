@@ -4,11 +4,15 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.models.ArrowConfiguration;
+import com.azure.storage.blob.implementation.models.ArrowField;
 import com.azure.storage.blob.implementation.models.DelimitedTextConfiguration;
 import com.azure.storage.blob.implementation.models.JsonTextConfiguration;
 import com.azure.storage.blob.implementation.models.QueryFormat;
 import com.azure.storage.blob.implementation.models.QueryFormatType;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
+import com.azure.storage.blob.models.BlobQueryArrowField;
+import com.azure.storage.blob.models.BlobQueryArrowSerialization;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
@@ -24,6 +28,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -201,12 +206,12 @@ public class BlobQueryReader {
     }
 
     /**
-     * Transforms a generic BlobQuickQuerySerialization into a QuickQuerySerialization.
+     * Transforms a generic input BlobQuerySerialization into a QuerySerialization.
      * @param userSerialization {@link BlobQuerySerialization}
      * @param logger {@link ClientLogger}
      * @return {@link QuerySerialization}
      */
-    public static QuerySerialization transformSerialization(BlobQuerySerialization userSerialization,
+    public static QuerySerialization transformInputSerialization(BlobQuerySerialization userSerialization,
         ClientLogger logger) {
         if (userSerialization == null) {
             return null;
@@ -229,6 +234,46 @@ public class BlobQueryReader {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("'input' must be one of %s or %s", BlobQueryJsonSerialization.class.getSimpleName(),
                     BlobQueryDelimitedSerialization.class.getSimpleName())));
+        }
+        return new QuerySerialization().setFormat(generatedFormat);
+    }
+
+    /**
+     * Transforms a generic input BlobQuerySerialization into a QuerySerialization.
+     * @param userSerialization {@link BlobQuerySerialization}
+     * @param logger {@link ClientLogger}
+     * @return {@link QuerySerialization}
+     */
+    public static QuerySerialization transformOutputSerialization(BlobQuerySerialization userSerialization,
+        ClientLogger logger) {
+        if (userSerialization == null) {
+            return null;
+        }
+
+        QueryFormat generatedFormat = new QueryFormat();
+        if (userSerialization instanceof BlobQueryDelimitedSerialization) {
+
+            generatedFormat.setType(QueryFormatType.DELIMITED);
+            generatedFormat.setDelimitedTextConfiguration(transformDelimited(
+                (BlobQueryDelimitedSerialization) userSerialization));
+
+        } else if (userSerialization instanceof BlobQueryJsonSerialization) {
+
+            generatedFormat.setType(QueryFormatType.JSON);
+            generatedFormat.setJsonTextConfiguration(transformJson(
+                (BlobQueryJsonSerialization) userSerialization));
+
+        } else if (userSerialization instanceof BlobQueryArrowSerialization) {
+
+            generatedFormat.setType(QueryFormatType.ARROW);
+            generatedFormat.setArrowConfiguration(transformArrow(
+                (BlobQueryArrowSerialization) userSerialization));
+
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("'output' must be one of %s, %s or %s", BlobQueryJsonSerialization.class.getSimpleName(),
+                    BlobQueryDelimitedSerialization.class.getSimpleName(),
+                    BlobQueryArrowSerialization.class.getSimpleName())));
         }
         return new QuerySerialization().setFormat(generatedFormat);
     }
@@ -264,6 +309,35 @@ public class BlobQueryReader {
         }
         return new JsonTextConfiguration()
             .setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
+    }
+
+    /**
+     * Transforms a BlobQueryArrowSerialization into a ArrowConfiguration.
+     *
+     * @param arrowSerialization {@link BlobQueryArrowSerialization}
+     * @return {@link ArrowConfiguration}
+     */
+    private static ArrowConfiguration transformArrow(BlobQueryArrowSerialization arrowSerialization) {
+        if (arrowSerialization == null) {
+            return null;
+        }
+        List<ArrowField> schema = arrowSerialization.getSchema() == null ? null
+            : new ArrayList<>(arrowSerialization.getSchema().size());
+        if (schema != null) {
+            for (BlobQueryArrowField field : arrowSerialization.getSchema()) {
+                if (field == null) {
+                    schema.add(null);
+                } else {
+                    schema.add(new ArrowField()
+                        .setName(field.getName())
+                        .setPrecision(field.getPrecision())
+                        .setScale(field.getScale())
+                        .setType(field.getType().toString())
+                    );
+                }
+            }
+        }
+        return new ArrowConfiguration().setSchema(schema);
     }
 
     private static String charToString(char c) {
