@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
- * This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
+ * This client is instantiated through {@link DigitalTwinsClientBuilder}.
  *
  * <p><strong>Code Samples</strong></p>
  *

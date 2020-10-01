@@ -40,7 +40,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client for interacting asynchronously with an Azure Digital Twins instance.
- * This client is instantiated through {@link DigitalTwinsClientBuilder}.</p>
+ * This client is instantiated through {@link DigitalTwinsClientBuilder}.
  *
  * <p><strong>Code Samples</strong></p>
  *
