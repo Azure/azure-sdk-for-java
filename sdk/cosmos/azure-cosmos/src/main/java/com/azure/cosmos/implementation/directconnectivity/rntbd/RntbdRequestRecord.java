@@ -224,7 +224,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     /**
      * Provides information whether the request could have been sent to the service
-     * @return fals if it is possible to guarantee that the request never arrived at the service - true otherwise
+     * @return false if it is possible to guarantee that the request never arrived at the service - true otherwise
      */
     public boolean hasSendingRequestStarted() {
         return this.sendingRequestHasStarted;

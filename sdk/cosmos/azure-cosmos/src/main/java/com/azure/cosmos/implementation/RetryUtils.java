@@ -89,11 +89,12 @@ public class RetryUtils {
                     final Throwable errorToReturn = shouldRetryResult.exception != null ? shouldRetryResult.exception : e;
                     final Mono<T> failure = Mono.error(errorToReturn);
 
-                    if (shouldRetryResult.policyArg != null &&
-                        shouldRetryResult.policyArg.getValue0() != null &&
-                        shouldRetryResult.policyArg.getValue0()) {
+                    if (shouldRetryResult.policyArg != null) {
+                        Boolean forceAddressRefresh = shouldRetryResult.policyArg.getValue0();
 
-                        startBackgroundAddressRefresh(rxDocumentServiceRequest, addressSelector);
+                        if (forceAddressRefresh != null && forceAddressRefresh) {
+                            startBackgroundAddressRefresh(rxDocumentServiceRequest, addressSelector);
+                        }
                     }
 
                     return failure;
