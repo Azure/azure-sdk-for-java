@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.2 (Unreleased)
+
+
 ## 1.0.0-beta.1 (2020-09-22)
 This is the initial release of Azure Communication Administration, which manages users and tokens for Azure Communication Services. For more information, please see the [README][read_me] and [documentation][documentation].
 
