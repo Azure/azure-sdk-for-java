@@ -27,7 +27,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -521,4 +523,37 @@ public final class PhoneNumberClient {
     public Response<Void> purchaseSearchWithResponse(String searchId, Context context) {
         return phoneNumberAsyncClient.purchaseSearchWithResponse(searchId, context).block();
     }
+
+    /**
+     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
+     * 
+     * @param options A {@link CreateSearchOptions} with the search options
+     * @param lroDuration The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<CreateSearchResponse, PhoneNumberSearch> beginCreateSearch(
+        CreateSearchOptions options, Duration lroDuration) {
+        return phoneNumberAsyncClient.beginCreateSearch(options, lroDuration).getSyncPoller();
+    }
+
+    /**
+     * Cancels the search associated with a given id. This means existing numbers in the search will be made available.
+     * This function returns a Long Running Operation poller that allows you to wait 
+     * indefinitely until the operation is complete.
+     *
+     * @param searchId ID of the search
+     * @param lroDuration The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<Void, PhoneNumberSearch> beginCancelSearch(
+        String searchId, Duration lroDuration) {
+        return phoneNumberAsyncClient.beginCancelSearch(searchId, lroDuration).getSyncPoller();
+    }
+
 }
