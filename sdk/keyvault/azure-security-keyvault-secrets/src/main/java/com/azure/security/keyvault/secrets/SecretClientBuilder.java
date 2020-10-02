@@ -3,20 +3,25 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.util.Configuration;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 
@@ -74,6 +79,7 @@ public final class SecretClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private SecretServiceVersion version;
+    private ClientOptions clientOptions;
 
     /**
      * The constructor with defaults.
@@ -146,12 +152,25 @@ public final class SecretClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
+
+        if (clientOptions != null) {
+            Iterable<Header> headers = clientOptions.getHeaders();
+
+            if (headers.iterator().hasNext()) {
+                List<HttpHeader> httpHeaderList = new ArrayList<>();
+                headers.forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+                policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            }
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
@@ -289,6 +308,17 @@ public final class SecretClientBuilder {
     public SecretClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the various {@link ClientOptions options} to be set on this client.
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on this client.
+     * @return The updated SecretClientBuilder object.
+     */
+    public SecretClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 

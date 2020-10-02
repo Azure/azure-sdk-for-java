@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -222,6 +223,17 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         builder.retryPolicy(retryPolicy);
+        return this;
+    }
+
+    /**
+     * Sets the various {@link ClientOptions options} to be set on this client.
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on this client.
+     * @return The updated KeyEncryptionKeyClientBuilder object.
+     */
+    public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
+        builder.clientOptions(clientOptions);
         return this;
     }
 }
