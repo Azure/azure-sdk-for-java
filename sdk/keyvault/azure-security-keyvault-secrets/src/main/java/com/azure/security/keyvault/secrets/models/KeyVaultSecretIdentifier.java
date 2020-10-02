@@ -76,7 +76,8 @@ public final class KeyVaultSecretIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 3 && pathSegments.length != 4) || !"secrets".equals(pathSegments[1])) {
+        if ((pathSegments.length != 3 && pathSegments.length != 4)
+            || (!"secrets".equals(pathSegments[1])) && !"deletedsecrets".equals(pathSegments[1])) {
             throw new IllegalArgumentException("secretId is not a valid Key Vault Secret identifier");
         }
 

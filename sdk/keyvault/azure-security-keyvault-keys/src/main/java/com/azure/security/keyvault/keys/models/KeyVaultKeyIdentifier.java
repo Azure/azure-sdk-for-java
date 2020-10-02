@@ -76,7 +76,8 @@ public final class KeyVaultKeyIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 3 && pathSegments.length != 4) || !"keys".equals(pathSegments[1])) {
+        if ((pathSegments.length != 3 && pathSegments.length != 4)
+            || (!"keys".equals(pathSegments[1])) && !"deletedkeys".equals(pathSegments[1])) {
             throw new IllegalArgumentException("keyId is not a valid Key Vault Key identifier");
         }
 

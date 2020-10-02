@@ -76,7 +76,8 @@ public final class KeyVaultCertificateIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 3 && pathSegments.length != 4) || !"certificates".equals(pathSegments[1])) {
+        if ((pathSegments.length != 3 && pathSegments.length != 4)
+            || (!"certificates".equals(pathSegments[1])) && !"deletedcertificates".equals(pathSegments[1])) {
             throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
         }
 

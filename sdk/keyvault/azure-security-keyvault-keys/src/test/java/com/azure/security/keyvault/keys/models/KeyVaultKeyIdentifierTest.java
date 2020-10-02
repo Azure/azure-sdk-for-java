@@ -35,6 +35,16 @@ class KeyVaultKeyIdentifierTest {
     }
 
     @Test
+    void parseForDeletedObject() throws MalformedURLException {
+        String keyId = "https://test-key-vault.vault.azure.net/deletedkeys/test-key";
+        KeyVaultKeyIdentifier keyVaultKeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
+
+        assertEquals(keyId, keyVaultKeyIdentifier.getKeyId());
+        assertEquals("https://test-key-vault.vault.azure.net", keyVaultKeyIdentifier.getVaultUrl());
+        assertEquals("test-key", keyVaultKeyIdentifier.getName());
+    }
+
+    @Test
     void parseNullIdentifier() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(null));
 
