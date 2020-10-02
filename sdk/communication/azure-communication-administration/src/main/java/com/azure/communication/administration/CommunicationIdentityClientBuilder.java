@@ -70,12 +70,12 @@ public final class CommunicationIdentityClientBuilder {
     /**
      * Set credential to use
      *
-     * @param credential credential for signing, overridden by the
-     * pipeline field.
+     * @param accessKey access key for initalizing CommunicationClientCredential
      * @return CommunicationIdentityClientBuilder
      */
-    public CommunicationIdentityClientBuilder credential(CommunicationClientCredential credential) {
-        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public CommunicationIdentityClientBuilder accessKey(String accessKey) {
+        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
+        this.credential = new CommunicationClientCredential(accessKey);
         return this;
     }
 

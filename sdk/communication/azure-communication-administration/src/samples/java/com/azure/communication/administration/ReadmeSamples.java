@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.CommunicationUser;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -24,8 +23,7 @@ public class ReadmeSamples {
      * @throws NoSuchAlgorithmException if Communcication Client Credential HMAC not available
      * @throws InvalidKeyException if Communcication Client Credential access key is not valid
      */
-    public CommunicationIdentityClient createCommunicationIdentityClient()
-            throws InvalidKeyException, NoSuchAlgorithmException {
+    public CommunicationIdentityClient createCommunicationIdentityClient() {
         // Your can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         String accessKey = "SECRET";
@@ -35,7 +33,7 @@ public class ReadmeSamples {
 
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .endpoint(endpoint)
-            .credential(new CommunicationClientCredential(accessKey))
+            .accessKey(accessKey)
             .httpClient(httpClient)
             .buildClient();
 
@@ -48,15 +46,10 @@ public class ReadmeSamples {
      * @return the created user
      */
     public CommunicationUser createNewUser() {
-        try {
-            CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-            CommunicationUser user = communicationIdentityClient.createUser();
-            System.out.println("User id: " + user.getId());
-            return user;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        CommunicationUser user = communicationIdentityClient.createUser();
+        System.out.println("User id: " + user.getId());
+        return user;
     }
 
     /**
@@ -65,47 +58,34 @@ public class ReadmeSamples {
      * @return the issued user token
      */
     public CommunicationUserToken issueUserToken() {
-        try {
-            CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-            CommunicationUser user = communicationIdentityClient.createUser();
-            List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-            CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
-            System.out.println("Token: " + userToken.getToken());
-            System.out.println("Expires On: " + userToken.getExpiresOn());
-            return userToken;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        CommunicationUser user = communicationIdentityClient.createUser();
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+        CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
+        System.out.println("Token: " + userToken.getToken());
+        System.out.println("Expires On: " + userToken.getExpiresOn());
+        return userToken;
     }
 
      /**
       * Sample code for revoking user token
       */
     public void revokeUserToken() {
-        try {
-            CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-            CommunicationUser user = createNewUser();
-            List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-            communicationIdentityClient.issueToken(user, scopes);
-            // revoke tokens issued for the user prior to now
-            communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        CommunicationUser user = createNewUser();
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+        communicationIdentityClient.issueToken(user, scopes);
+        // revoke tokens issued for the user prior to now
+        communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
     }
 
     /**
      * Sample code for deleting user
      */
     public void deleteUser() {
-        try {
-            CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-            CommunicationUser user = communicationIdentityClient.createUser();
-            // delete a previously created user
-            communicationIdentityClient.deleteUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        CommunicationUser user = communicationIdentityClient.createUser();
+        // delete a previously created user
+        communicationIdentityClient.deleteUser(user);
     }
 }

@@ -30,9 +30,9 @@ Azure Communication SMS is used to send simple text messages.
 To send messages with Azure Communication SMS Service a resource access key is used 
 for authentication. 
 
-SMS messaging uses HMAC authentication with resource access key. This is done via the 
-CommunicationClientCredentials The credentials must be provided to the SMSClientBuilder 
-via the credential() function. Endpoint and httpClient must also be set.
+SMS messaging uses HMAC authentication with resource access key. The access key must be provided
+via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
+functions respectively.
 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L26-L51 -->
 ```java

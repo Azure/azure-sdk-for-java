@@ -3,7 +3,6 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
@@ -17,10 +16,6 @@ import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidKeyException;
 
 public class SmsLiveTestBase extends TestBase {
 
@@ -35,25 +30,11 @@ public class SmsLiveTestBase extends TestBase {
     static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_ENDPOINT", "https://playback.sms.azurefd.net");
 
-    CommunicationClientCredential credential;
-
-    public SmsLiveTestBase() {
-        try {
-            credential = new CommunicationClientCredential(ACCESSKEY);
-        } catch (InvalidKeyException e) {
-            credential = null;
-            fail(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            credential = null;
-            fail(e.getMessage());
-        }
-    }
-
     protected SmsClientBuilder getSmsClientBuilder() {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
-               .credential(credential);
+               .accessKey(ACCESSKEY);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

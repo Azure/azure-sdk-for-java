@@ -27,12 +27,11 @@ Azure Communication Administration is used for managing users and tokens for Azu
 ## Key concepts
 To use the Admnistration SDK, a resource access key is required for authentication. 
 
-Administration uses HMAC authentication with the resource access key. This is done via the 
-CommunicationClientCredentials. The credentials must be provided to the CommunicationIdentityClientBuilder 
-via the credential() function. Endpoint and httpClient must also be set via the endpoint()
-and httpClient() functions respectively.
+Administration uses HMAC authentication with the resource access key. The access key must be provided
+via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
+functions respectively.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L29-L40 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L27-L38 -->
 ```java
 // Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -43,7 +42,7 @@ HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
 CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
     .endpoint(endpoint)
-    .credential(new CommunicationClientCredential(accessKey))
+    .accessKey(accessKey)
     .httpClient(httpClient)
     .buildClient();
 ```
@@ -54,7 +53,7 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
 Use the `createUser` function to create a new user. `user.getId()` gets the
 unique ID of the user that was created.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L53-L54 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L50-L51 -->
 ```java
 CommunicationUser user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
@@ -67,7 +66,7 @@ also takes in a list of communication token scopes. Scope options include:
 - `pstn` (Public switched telephone network)
 - `voip` (Voice over IP)
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L71-L74 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L63-L66 -->
 ```java
 List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
 CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
@@ -78,7 +77,7 @@ System.out.println("Expires On: " + userToken.getExpiresOn());
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L91-L92 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L78-L79 -->
 ```java
 // revoke tokens issued for the user prior to now
 communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
@@ -87,7 +86,7 @@ communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
 ### Deleting a user
 Use the `deleteUser` function to delete a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L105-L106 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L88-L89 -->
 ```java
 // delete a previously created user
 communicationIdentityClient.deleteUser(user);

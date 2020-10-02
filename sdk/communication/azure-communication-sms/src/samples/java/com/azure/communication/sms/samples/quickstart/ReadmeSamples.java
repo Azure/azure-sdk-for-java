@@ -2,13 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms.samples.quickstart;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.azure.communication.common.PhoneNumber;
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
@@ -29,22 +26,13 @@ public class ReadmeSamples {
 
         // Instantiate the http client
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-        
-        CommunicationClientCredential credential = null;
-        try {
-            credential = new CommunicationClientCredential(accessKey);
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
-        } catch (InvalidKeyException e) {
-            System.out.println(e.getMessage());
-        }
-        
+
         // Create a new SmsClientBuilder to instantiate an SmsClient
         SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
 
         // Set the endpoint, access key, and the HttpClient
         smsClientBuilder.endpoint(endpoint)
-            .credential(credential)
+            .accessKey(accessKey)
             .httpClient(httpClient);
 
         // Build a new SmsClient

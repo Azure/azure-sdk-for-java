@@ -68,12 +68,12 @@ public final class SmsClientBuilder {
     /**
      * Set credential to use
      *
-     * @param credential credential for signing, overridden by the
-     * pipeline field.
+     * @param accessKey access key for initalizing CommunicationClientCredential
      * @return SmsClientBuilder
      */
-    public SmsClientBuilder credential(CommunicationClientCredential credential) {
-        this.credential = credential;
+    public SmsClientBuilder accessKey(String accessKey) {
+        Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
+        this.credential = new CommunicationClientCredential(accessKey);
         return this;
     }
 
