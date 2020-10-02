@@ -22,7 +22,7 @@ public class VirtualMachineExtensionsListResultInner {
     private List<VirtualMachineExtensionInner> value;
 
     /**
-     * Get the value value.
+     * Get the list of extensions.
      *
      * @return the value value
      */
@@ -31,7 +31,7 @@ public class VirtualMachineExtensionsListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set the list of extensions.
      *
      * @param value the value value to set
      * @return the VirtualMachineExtensionsListResultInner object itself.
