@@ -532,7 +532,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
-        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, UpdateMode.MERGE, true))
+        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, UpdateMode.REPLACE, true))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
