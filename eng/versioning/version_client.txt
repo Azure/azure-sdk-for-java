@@ -137,7 +137,6 @@ com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-bet
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 unreleased_com.azure:azure-core-amqp;1.6.0-beta.1
-unreleased_com.azure:azure-identity;1.2.0-beta.2
 unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
