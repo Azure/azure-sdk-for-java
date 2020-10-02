@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchIndexerSkillset model. */
+/** A list of skills. */
 @Fluent
 public final class SearchIndexerSkillset {
     /*

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceCounter model. */
+/** Represents a resource's usage and quota. */
 @Fluent
 public final class ResourceCounter {
     /*
