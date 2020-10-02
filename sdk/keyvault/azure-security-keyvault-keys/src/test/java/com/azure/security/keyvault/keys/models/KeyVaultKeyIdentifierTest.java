@@ -25,23 +25,31 @@ class KeyVaultKeyIdentifierTest {
 
     @Test
     void parseWithVersion() throws MalformedURLException {
-        String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/test-version";
+        String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/version";
         KeyVaultKeyIdentifier keyVaultkeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
 
         assertEquals(keyId, keyVaultkeyIdentifier.getKeyId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultkeyIdentifier.getVaultUrl());
         assertEquals("test-key", keyVaultkeyIdentifier.getName());
-        assertEquals("test-version", keyVaultkeyIdentifier.getVersion());
+        assertEquals("version", keyVaultkeyIdentifier.getVersion());
     }
 
     @Test
-    void parseForDeletedObject() throws MalformedURLException {
+    void parseForDeletedKey() throws MalformedURLException {
         String keyId = "https://test-key-vault.vault.azure.net/deletedkeys/test-key";
         KeyVaultKeyIdentifier keyVaultKeyIdentifier = KeyVaultKeyIdentifier.parse(keyId);
 
         assertEquals(keyId, keyVaultKeyIdentifier.getKeyId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultKeyIdentifier.getVaultUrl());
         assertEquals("test-key", keyVaultKeyIdentifier.getName());
+    }
+
+    @Test
+    void parseInvalidIdentifierForDeletedKey() {
+        String keyId = "https://test-key-vault.vault.azure.net/deletedkeys/test-key/version";
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
+
+        assertEquals("keyId is not a valid Key Vault Key identifier", exception.getMessage());
     }
 
     @Test
@@ -61,7 +69,7 @@ class KeyVaultKeyIdentifierTest {
 
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
-        String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/test-key/extra";
+        String keyId = "https://test-key-vault.vault.azure.net/keys/test-key/version/extra";
         Exception exception = assertThrows(IllegalArgumentException.class, () -> KeyVaultKeyIdentifier.parse(keyId));
 
         assertEquals("keyId is not a valid Key Vault Key identifier", exception.getMessage());

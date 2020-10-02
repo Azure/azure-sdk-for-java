@@ -26,24 +26,33 @@ class KeyVaultCertificateIdentifierTest {
 
     @Test
     void parseWithVersion() throws MalformedURLException {
-        String certificateId = "https://test-key-vault.vault.azure.net/certificates/test-certificate/test-version";
+        String certificateId = "https://test-key-vault.vault.azure.net/certificates/test-certificate/version";
         KeyVaultCertificateIdentifier keyVaultCertificateIdentifier =
             KeyVaultCertificateIdentifier.parse(certificateId);
 
         assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
         assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
-        assertEquals("test-version", keyVaultCertificateIdentifier.getVersion());
+        assertEquals("version", keyVaultCertificateIdentifier.getVersion());
     }
 
     @Test
-    void parseForDeletedObject() throws MalformedURLException {
+    void parseForDeletedCertificate() throws MalformedURLException {
         String certificateId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate";
         KeyVaultCertificateIdentifier keyVaultCertificateIdentifier = KeyVaultCertificateIdentifier.parse(certificateId);
 
         assertEquals(certificateId, keyVaultCertificateIdentifier.getCertificateId());
         assertEquals("https://test-key-vault.vault.azure.net", keyVaultCertificateIdentifier.getVaultUrl());
         assertEquals("test-certificate", keyVaultCertificateIdentifier.getName());
+    }
+
+    @Test
+    void parseInvalidIdentifierForDeletedCertificate() {
+        String certificateId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate/version";
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> KeyVaultCertificateIdentifier.parse(certificateId));
+
+        assertEquals("certificateId is not a valid Key Vault Certificate identifier", exception.getMessage());
     }
 
     @Test
@@ -65,7 +74,7 @@ class KeyVaultCertificateIdentifierTest {
 
     @Test
     void parseInvalidIdentifierWithExtraSegment() {
-        String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate/test-version/extra";
+        String certificateId = "https://test-key-vault.vault.azure.net/keys/test-certificate/version/extra-segment";
         Exception exception = assertThrows(IllegalArgumentException.class,
             () -> KeyVaultCertificateIdentifier.parse(certificateId));
 

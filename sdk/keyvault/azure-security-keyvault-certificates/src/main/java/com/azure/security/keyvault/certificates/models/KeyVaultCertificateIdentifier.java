@@ -10,8 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Information about a {@link KeyVaultCertificate} parsed from the key URL. You can use this information when calling
- * methods of {@link CertificateClient} or {@link CertificateAsyncClient}.
+ * Information about a {@link KeyVaultCertificate} parsed from the certificate URL. You can use this information when
+ * calling methods of {@link CertificateClient} or {@link CertificateAsyncClient}.
  */
 public final class KeyVaultCertificateIdentifier {
     private final String certificateId, vaultUrl, name, version;
@@ -62,6 +62,15 @@ public final class KeyVaultCertificateIdentifier {
     /**
      * Create a new {@link KeyVaultCertificateIdentifier} from a given certificate identifier.
      *
+     * <p>Valid examples are:
+     *
+     * <ul>
+     *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/pending</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{unique-version-id}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/deletedcertificates/{deleted-certificate-name}</li>
+     * </ul>
+     *
      * @param certificateId The certificate identifier to extract information from.
      * @return a new instance of {@link KeyVaultCertificateIdentifier}.
      * @throws IllegalArgumentException if the given identifier is {@code null}.
@@ -76,9 +85,11 @@ public final class KeyVaultCertificateIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 3 && pathSegments.length != 4)
-            || (!"certificates".equals(pathSegments[1])) && !"deletedcertificates".equals(pathSegments[1])) {
-            throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
+        if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
+            || !"https".equals(url.getProtocol()) // Invalid protocol.
+            || (!"certificates".equals(pathSegments[1]) && !"deletedcertificates".equals(pathSegments[1])) // Invalid collection.
+            || ("deletedcertificates".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
+                throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
         }
 
         return new KeyVaultCertificateIdentifier(certificateId, url.getProtocol() + "://" + url.getHost(),

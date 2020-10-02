@@ -62,6 +62,15 @@ public final class KeyVaultKeyIdentifier {
     /**
      * Create a new {@link KeyVaultKeyIdentifier} from a given key identifier.
      *
+     * <p>Valid examples are:
+     *
+     * <ul>
+     *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}/pending</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}/{unique-version-id}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/deletedkeys/{deleted-key-name}</li>
+     * </ul>
+     *
      * @param keyId The key identifier to extract information from.
      * @return a new instance of {@link KeyVaultKeyIdentifier}.
      * @throws IllegalArgumentException if the given identifier is {@code null}.
@@ -76,9 +85,11 @@ public final class KeyVaultKeyIdentifier {
         // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
         String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 3 && pathSegments.length != 4)
-            || (!"keys".equals(pathSegments[1])) && !"deletedkeys".equals(pathSegments[1])) {
-            throw new IllegalArgumentException("keyId is not a valid Key Vault Key identifier");
+        if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
+            || !"https".equals(url.getProtocol()) // Invalid protocol.
+            || (!"keys".equals(pathSegments[1]) && !"deletedkeys".equals(pathSegments[1])) // Invalid collection.
+            || ("deletedkeys".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
+                throw new IllegalArgumentException("keyId is not a valid Key Vault Key identifier");
         }
 
         return new KeyVaultKeyIdentifier(keyId, url.getProtocol() + "://" + url.getHost(), pathSegments[2],
