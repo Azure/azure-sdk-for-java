@@ -446,13 +446,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     }
 
     private void sendFlow(final int credits) {
-        // slow down sending the flow - to make the protocol less-chat'y
-        int currentCredits = CREDIT_TO_FLOW.addAndGet(this, credits);
-        logger.verbose("{} - Current credits pending {} ", currentLink.getLinkName(), currentCredits);
-        if (this.shouldSendFlow(currentCredits)) {
-            this.currentLink.addCredits(currentCredits);
-            CREDIT_TO_FLOW.set(this, 0);
-            logger.info("Added {} credits to link {}.", currentCredits, currentLink.getLinkName());
+        AmqpReceiveLink link = currentLink;
+        if (link != null && !link.isDisposed() && !this.isTerminated()) {
+            // slow down sending the flow - to make the protocol less-chat'y
+            int currentCredits = CREDIT_TO_FLOW.addAndGet(this, credits);
+            logger.verbose("{} - Current credits pending {} ", link.getLinkName(), currentCredits);
+            if (this.shouldSendFlow(currentCredits)) {
+                link.addCredits(currentCredits);
+                CREDIT_TO_FLOW.set(this, 0);
+                logger.info("Added {} credits to link {}.", currentCredits, link.getLinkName());
+            }
         }
     }
 
