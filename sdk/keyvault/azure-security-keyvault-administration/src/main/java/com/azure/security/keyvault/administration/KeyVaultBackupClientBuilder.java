@@ -289,7 +289,7 @@ public final class KeyVaultBackupClientBuilder {
     }
 
     /**
-     * Sets the various {@link ClientOptions options} to be set on this client.
+     * Sets various {@link ClientOptions options} on this client.
      *
      * @param clientOptions the {@link ClientOptions} to be set on this client.
      * @return The updated KeyVaultBackupClientBuilder object.
