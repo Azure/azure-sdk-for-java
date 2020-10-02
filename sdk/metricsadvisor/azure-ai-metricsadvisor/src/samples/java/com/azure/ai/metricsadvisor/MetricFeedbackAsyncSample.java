@@ -10,6 +10,7 @@ import com.azure.ai.metricsadvisor.models.MetricCommentFeedback;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricPeriodFeedback;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
@@ -19,15 +20,15 @@ import static com.azure.ai.metricsadvisor.models.FeedbackType.COMMENT;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.PERIOD;
 
 /**
- * Sample demonstrates how to create, get and list metric feedbacks.
+ * Async sample demonstrates how to create, get and list metric feedbacks.
  */
-public class MetricFeedbackOperationsSample {
+public class MetricFeedbackAsyncSample {
     public static void main(String[] args) {
-        final MetricsAdvisorClient advisorClient =
+        final MetricsAdvisorAsyncClient advisorAsyncClient =
             new MetricsAdvisorClientBuilder()
                 .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
                 .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
-                .buildClient();
+                .buildAsyncClient();
 
         // Create Metric Feedback
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
@@ -37,39 +38,55 @@ public class MetricFeedbackOperationsSample {
             = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
 
         System.out.printf("Creating Metric Feedback%n");
-        final MetricFeedback createdFeedback
-            = advisorClient.createMetricFeedback(metricId, metricChangePointFeedback);
+        final Mono<MetricFeedback> createdFeedbackMono
+            = advisorAsyncClient.createMetricFeedback(metricId, metricChangePointFeedback);
 
-        System.out.printf("Created Metric Feedback: %s%n", createdFeedback.getId());
-
-        System.out.printf("Fetching Metric Feedback: %s%n", createdFeedback.getId());
+        createdFeedbackMono
+            .doOnSubscribe(__ ->
+                System.out.printf("Creating Metric Feedback%n"))
+            .doOnSuccess(feedback ->
+                System.out.printf("Created Metric Feedback: %s%n", feedback.getId()));
 
         // Retrieve the metric feedback that just created.
-        MetricFeedback fetchFeedback = advisorClient.getMetricFeedback(createdFeedback.getId());
-        System.out.printf("Fetched Metric Feedback%n");
+        Mono<MetricFeedback> fetchFeedbackMono =
+            createdFeedbackMono.flatMap(createdFeedback -> {
+                return advisorAsyncClient.getMetricFeedback(createdFeedback.getId())
+                    .doOnSubscribe(__ ->
+                        System.out.printf("Fetching Metric Feedback: %s%n", createdFeedback.getId()))
+                    .doOnSuccess(config ->
+                        System.out.printf("Fetched Metric Feedback%n"))
+                    .doOnNext(feedback -> {
+                        System.out.printf("Metric Feedback Id : %s%n", feedback.getId());
+                        System.out.printf("Metric Feedback created time : %s%n", feedback.getCreatedTime());
+                        System.out.printf("Metric Feedback user principal : %s%n", feedback.getUserPrincipal());
+                        System.out.printf("Metric feedback associated dimension filter: %s%n",
+                            feedback.getDimensionFilter().asMap());
 
-        System.out.printf("Metric Feedback Id : %s%n", fetchFeedback.getId());
-        System.out.printf("Metric Feedback created time : %s%n", fetchFeedback.getCreatedTime());
-        System.out.printf("Metric Feedback user principal : %s%n", fetchFeedback.getUserPrincipal());
-        System.out.printf("Metric feedback associated dimension filter: %s%n",
-            fetchFeedback.getDimensionFilter().asMap());
+                        if (CHANGE_POINT.equals(createdFeedback.getFeedbackType())) {
+                            MetricChangePointFeedback createdMetricChangePointFeedback
+                                = (MetricChangePointFeedback) createdFeedback;
+                            System.out.printf("Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
+                            System.out.printf("Metric feedback change point value: %s%n",
+                                createdMetricChangePointFeedback.getChangePointValue().toString());
+                            System.out.printf("Metric feedback start time: %s%n",
+                                createdMetricChangePointFeedback.getStartTime());
+                            System.out.printf("Metric feedback end time: %s%n",
+                                createdMetricChangePointFeedback.getEndTime());
+                        }
+                    });
+            });
 
-        if (CHANGE_POINT.equals(createdFeedback.getFeedbackType())) {
-            MetricChangePointFeedback createdMetricChangePointFeedback
-                = (MetricChangePointFeedback) createdFeedback;
-            System.out.printf("Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
-            System.out.printf("Metric feedback change point value: %s%n",
-                createdMetricChangePointFeedback.getChangePointValue().toString());
-            System.out.printf("Metric feedback start time: %s%n",
-                createdMetricChangePointFeedback.getStartTime());
-            System.out.printf("Metric feedback end time: %s%n",
-                createdMetricChangePointFeedback.getEndTime());
-        }
+        /*
+          This will block until all the above CRUD on operation on email hook is completed.
+          This is strongly discouraged for use in production as it eliminates the benefits
+          of asynchronous IO. It is used here to ensure the sample runs to completion.
+         */
+        fetchFeedbackMono.block();
 
         // List metric feedbacks.
         System.out.printf("Listing metric feedbacks%n");
-        advisorClient.listMetricFeedbacks(metricId)
-            .forEach(feedbackItem -> {
+        advisorAsyncClient.listMetricFeedbacks(metricId)
+            .doOnNext(feedbackItem -> {
                 System.out.printf("Metric Feedback Id : %s%n", feedbackItem.getId());
                 System.out.printf("Metric Feedback created time : %s%n", feedbackItem.getCreatedTime());
                 System.out.printf("Metric Feedback user principal : %s%n", feedbackItem.getUserPrincipal());

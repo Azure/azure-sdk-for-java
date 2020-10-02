@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /**
- * Async sample for listing time series data for a give metric filtered using specific set of dimensions.
+ * Async sample for listing time series data for a metric filtered using specific set of dimensions.
  */
 public class ListSeriesDataForMetricAsyncSample {
     public static void main(String[] args) {
