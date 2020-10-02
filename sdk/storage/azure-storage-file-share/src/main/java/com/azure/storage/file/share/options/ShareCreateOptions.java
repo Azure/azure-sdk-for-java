@@ -28,6 +28,7 @@ public class ShareCreateOptions {
 
     /**
      * @param quotaInGb Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
+     * @return The updated options.
      */
     public ShareCreateOptions setQuotaInGb(Integer quotaInGb) {
         this.quotaInGb = quotaInGb;
@@ -43,6 +44,7 @@ public class ShareCreateOptions {
 
     /**
      * @param metadata Metadata to associate with the share.
+     * @return The updated options.
      */
     public ShareCreateOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
