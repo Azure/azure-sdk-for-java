@@ -5,7 +5,7 @@ languages:
 products:
   - azure
   - opentelemetry-exporter-azuremonitor
-urlFragment: monitorexporter-java-samples
+urlFragment: exporter-azuremonitor-java-samples
 ---
 
 # Azure Monitor Exporter client library samples for Java
@@ -23,10 +23,11 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
 
-The following sections provide code samples covering common scenario operations with the Azure Anomaly Detector client library.
+The following sections provide code samples covering common operations with OpenTelemetry Azure Monitor Exporter client
+library.
 
-All of these samples need the endpoint to your Anomaly Detector resource, and your Anomaly Detector API key.
-
+[Export telemetry data using async client][async_client]
+[Export telemetry data using sync client][sync_client]
 ## Troubleshooting
 
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -47,3 +48,6 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/README.md#key-concepts
 [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/README.md#include-the-package
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/README.md#next-steps
+[async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/MonitorExporterAsyncSample.java
+[sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/MonitorExporterSample.java
+

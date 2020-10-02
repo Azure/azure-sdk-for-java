@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.opentelemetry.exporter.azuremonitor {
+module com.azure.opentelemetry.exporter.azuremonitor {
     requires transitive com.azure.core;
 
-    exports com.opentelemetry.exporter.azuremonitor;
-    exports com.opentelemetry.exporter.azuremonitor.models;
+    exports com.azure.opentelemetry.exporter.azuremonitor;
+    exports com.azure.opentelemetry.exporter.azuremonitor.models;
 }
