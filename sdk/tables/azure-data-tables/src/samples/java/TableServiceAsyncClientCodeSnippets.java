@@ -8,7 +8,7 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
 
 /**
- * async code snippets for the table service
+ * async code snippets for the Tables service
  */
 public class TableServiceAsyncClientCodeSnippets {
 
@@ -142,7 +142,7 @@ public class TableServiceAsyncClientCodeSnippets {
 
             //UpdateMode.REPLACE: so the entity will be replaced if it exists or the request fails if not found
             //ifUnchanged being false means the eTags must not match
-            return tableAsyncClient.updateEntity(tableEntity, false, UpdateMode.REPLACE);
+            return tableAsyncClient.updateEntity(tableEntity, UpdateMode.REPLACE, false);
         }).subscribe(
             Void -> { },
             error -> System.err.println("There was an error updating the Entity. Error: " + error),

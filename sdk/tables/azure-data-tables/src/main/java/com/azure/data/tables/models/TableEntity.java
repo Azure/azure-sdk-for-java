@@ -14,7 +14,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * table entity class
+ * An entity within a table.
+ *
+ * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
+ * {@link com.azure.data.tables.TableClient} and {@link com.azure.data.tables.TableAsyncClient} classes that accept and
+ * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
+ * {@link #addProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
+ * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
+ *
+ * As an alternative, developers can also create a subclass of {@code TableEntity} and add property getters and setters
+ * to it. If the properties' types are compatible with the Table service, they will automatically be included in any
+ * write operations, and will automatically be populated in any read operations. Any properties that expose enum types
+ * will be converted to string values for write operations, and will be converted back into enum values for read
+ * operations. See <a href="https://msdn.microsoft.com/library/azure/dd179338.aspx#property-types">Property Types</a>
+ * for more information about data types supported by the Tables service.
  */
 @Fluent
 public class TableEntity {
@@ -27,10 +40,10 @@ public class TableEntity {
     }
 
     /**
-     * Create a new instance.
+     * Construct a new {@code TableEntity}.
      *
-     * @param partitionKey the partition key
-     * @param rowKey the row key
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
      */
     public TableEntity(String partitionKey, String rowKey) {
         if (partitionKey == null || partitionKey.isEmpty()) {
@@ -53,31 +66,40 @@ public class TableEntity {
     }
 
     /**
-     * Gets a single property from the properties map
+     * Gets a single property from the entity's properties map.
+     *
+     * Only properties that have been added by calling {@link #addProperty(String, Object)} or
+     * {@link #addProperties(Map)} will be returned from this method. Calling this method on a subclass of
+     * {@code TableEntity} will not retrieve a property which is being supplied via a getter method on the subclass.
      *
      * @param key Key for the property.
      * @return Value of the property.
+     * @throws NullPointerException if {@code key} is null.
      */
     public final Object getProperty(String key) {
         return properties.get(key);
     }
 
     /**
-     * Gets the map of properties
+     * Gets the map of the entity's properties.
      *
-     * @return map of properties representing this entity
+     * Only properties that have been added by calling {@link #addProperty(String, Object)} or
+     * {@link #addProperties(Map)} will be returned from this method. Calling this method on a subclass of
+     * {@code TableEntity} will not retrieve properties which are being supplied via a getter methods on the subclass.
+     *
+     * @return A map of all properties representing this entity, including system properties.
      */
     public final Map<String, Object> getProperties() {
         return properties;
     }
 
     /**
-     * Adds a property to the entity.
+     * Adds a single property to the entity's properties map.
      *
      * @param key Key for the property.
      * @param value Value of the property.
      *
-     * @return The updated {@link TableEntity} object.
+     * @return The updated {@link TableEntity}.
      * @throws NullPointerException if {@code key} is null.
      */
     public final TableEntity addProperty(String key, Object value) {
@@ -87,11 +109,12 @@ public class TableEntity {
     }
 
     /**
-     * Adds properties to the entity.
+     * Adds the contents of the provided map to the entity's properties map.
      *
      * @param properties The map of properties to add.
      *
-     * @return The updated {@link TableEntity} object.
+     * @return The updated {@link TableEntity}.
+     * @throws NullPointerException if {@code properties} is null.
      */
     public final TableEntity addProperties(Map<String, Object> properties) {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
@@ -124,36 +147,42 @@ public class TableEntity {
     }
 
     /**
-     * gets the row key
+     * Gets the entity's row key.
      *
-     * @return the row key for the given entity
+     * @return The entity's row key.
      */
     public final String getRowKey() {
         return (String) properties.get(TablesConstants.ROW_KEY);
     }
 
     /**
-     * gets the partition key
+     * Gets the entity's partition key.
      *
-     * @return the partition key for the given entity
+     * @return The entity's partition key.
      */
     public final String getPartitionKey() {
         return (String) properties.get(TablesConstants.PARTITION_KEY);
     }
 
     /**
-     * gets the Timestamp
+     * Gets the entity's timestamp.
      *
-     * @return the Timestamp for the entity
+     * The timestamp is automatically populated by the service. New {@code TableEntity} instances will not have a
+     * timestamp, but a timestamp will be present on any {@code TableEntity} returned from the service.
+     *
+     * @return The entity's timestamp.
      */
     public final OffsetDateTime getTimestamp() {
         return (OffsetDateTime) properties.get(TablesConstants.TIMESTAMP_KEY);
     }
 
     /**
-     * gets the etag
+     * Gets the entity's eTag.
      *
-     * @return the etag for the entity
+     * The eTag is automatically populated by the service. New {@code TableEntity} instances will not have an eTag, but
+     * an eTag will be present on any {@code TableEntity} returned from the service.
+     *
+     * @return The entity's eTag.
      */
     public final String getETag() {
         return (String) properties.get(TablesConstants.ODATA_ETAG_KEY);
