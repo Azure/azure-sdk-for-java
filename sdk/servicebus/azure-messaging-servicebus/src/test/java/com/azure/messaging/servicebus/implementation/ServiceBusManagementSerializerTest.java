@@ -732,16 +732,16 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
-        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.isRequiresSession());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.isSessionRequired(), actual.isRequiresSession());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
 
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
-        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
+        assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
 
         assertEquals(expectedStatus, actual.getStatus());
     }

@@ -89,11 +89,11 @@ public class CreateTopicOptions {
         this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
         this.duplicateDetectionHistoryTimeWindow = topic.getDuplicateDetectionHistoryTimeWindow();
-        this.enableBatchedOperations = topic.enableBatchedOperations();
-        this.enablePartitioning = topic.enablePartitioning();
+        this.enableBatchedOperations = topic.isBatchedOperationsEnabled();
+        this.enablePartitioning = topic.isPartitioningEnabled();
         this.maxSizeInMegabytes = topic.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = topic.requiresDuplicateDetection();
-        this.supportOrdering = topic.supportOrdering();
+        this.requiresDuplicateDetection = topic.isDuplicateDetectionRequired();
+        this.supportOrdering = topic.isOrderingSupported();
         this.status = topic.getStatus();
         this.userMetadata = topic.getUserMetadata();
     }
@@ -184,7 +184,7 @@ public class CreateTopicOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean enableBatchedOperations() {
+    public Boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -207,7 +207,7 @@ public class CreateTopicOptions {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean enablePartitioning() {
+    public Boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 
@@ -344,7 +344,7 @@ public class CreateTopicOptions {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public Boolean requiresDuplicateDetection() {
+    public Boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -365,7 +365,7 @@ public class CreateTopicOptions {
      *
      * @return the requiresSession value.
      */
-    public Boolean requiresSession() {
+    public Boolean isSessionRequired() {
         return this.requiresSession;
     }
 

@@ -98,16 +98,16 @@ public class CreateQueueOptions {
         this.duplicateDetectionHistoryTimeWindow = queue.getDuplicateDetectionHistoryTimeWindow() != null
             ? queue.getDuplicateDetectionHistoryTimeWindow()
             : DEFAULT_DUPLICATE_DETECTION_DURATION;
-        this.enableBatchedOperations = queue.enableBatchedOperations();
-        this.enablePartitioning = queue.enablePartitioning();
+        this.enableBatchedOperations = queue.isBatchedOperationsEnabled();
+        this.enablePartitioning = queue.isPartitioningEnabled();
         this.forwardTo = queue.getForwardTo();
         this.forwardDeadLetteredMessagesTo = queue.getForwardDeadLetteredMessagesTo();
         this.lockDuration = queue.getLockDuration();
 
         this.maxDeliveryCount = queue.getMaxDeliveryCount();
         this.maxSizeInMegabytes = queue.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = queue.requiresDuplicateDetection();
-        this.requiresSession = queue.requiresSession();
+        this.requiresDuplicateDetection = queue.isDuplicateDetectionRequired();
+        this.requiresSession = queue.isSessionRequired();
         this.status = queue.getStatus();
         this.userMetadata = queue.getUserMetadata();
     }
@@ -175,7 +175,7 @@ public class CreateQueueOptions {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public boolean deadLetteringOnMessageExpiration() {
+    public boolean isDeadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -221,7 +221,7 @@ public class CreateQueueOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -244,7 +244,7 @@ public class CreateQueueOptions {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 
@@ -383,7 +383,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -404,7 +404,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
