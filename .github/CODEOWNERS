@@ -49,6 +49,9 @@
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang
 
+# PRLabel: %Cognitive - Metrics Advisor
+/sdk/metricsadvisor/                                @samvaity @anuchandy
+
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
 
