@@ -329,7 +329,6 @@ public final class ShareServiceClient {
      * with it.
      *
      * <p><strong>Code Samples</strong></p>
-
      *
      * {@codesnippet ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context}
      *

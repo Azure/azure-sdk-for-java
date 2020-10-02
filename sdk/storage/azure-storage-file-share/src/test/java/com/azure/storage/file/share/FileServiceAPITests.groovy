@@ -209,7 +209,6 @@ class FileServiceAPITests extends APISpec {
         item.getProperties().getAccessTierChangeTime().isAfter(time)
         item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
-
     }
 
     def "List shares with premium share"() {
