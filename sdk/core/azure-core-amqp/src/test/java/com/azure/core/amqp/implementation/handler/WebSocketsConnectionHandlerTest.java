@@ -9,6 +9,8 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -41,6 +43,7 @@ public class WebSocketsConnectionHandlerTest {
 
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
+    private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
     @Captor
     ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
@@ -48,7 +51,8 @@ public class WebSocketsConnectionHandlerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, CLIENT_OPTIONS);
+        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, VERIFY_MODE,
+            CLIENT_OPTIONS);
     }
 
     @AfterEach
@@ -100,7 +104,7 @@ public class WebSocketsConnectionHandlerTest {
             .verifyComplete();
 
         // Assert
-        verify(transport, times(1)).ssl(any());
+        verify(transport).ssl(any(SslDomain.class), any(SslPeerDetails.class));
     }
 
     @Test
