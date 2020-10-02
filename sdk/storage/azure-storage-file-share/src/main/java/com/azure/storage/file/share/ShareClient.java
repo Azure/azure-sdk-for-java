@@ -216,7 +216,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet ShareClient.createWithResponse#ShareCreateOptions}
+     * {@codesnippet ShareClient.createWithResponse#ShareCreateOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
