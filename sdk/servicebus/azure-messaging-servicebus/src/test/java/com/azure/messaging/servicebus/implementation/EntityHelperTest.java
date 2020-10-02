@@ -39,7 +39,7 @@ class EntityHelperTest {
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
             actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
-        assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnablePartitioning());
+        assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.getStatus(), actual.getStatus());
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
