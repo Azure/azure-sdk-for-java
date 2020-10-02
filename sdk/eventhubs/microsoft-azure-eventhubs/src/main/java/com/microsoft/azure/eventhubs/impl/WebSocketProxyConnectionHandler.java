@@ -12,6 +12,7 @@ import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.slf4j.Logger;
@@ -51,8 +52,9 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
      * @param proxyConfiguration Required. Proxy configuration to use.
      * @throws NullPointerException if {@code proxyConfiguration} is {@code null}.
      */
-    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection, ProxyConfiguration proxyConfiguration) {
-        super(amqpConnection);
+    public WebSocketProxyConnectionHandler(AmqpConnection amqpConnection, String connectionId,
+        SslDomain.VerifyMode verifyMode, ProxyConfiguration proxyConfiguration) {
+        super(amqpConnection, connectionId, verifyMode);
 
         this.proxyConfiguration = proxyConfiguration;
     }

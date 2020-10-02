@@ -29,38 +29,31 @@ public class ConnectionHandler extends BaseHandler {
 
     private final AmqpConnection amqpConnection;
     private final String connectionId;
+    private final SslDomain.VerifyMode verifyMode;
 
-    protected ConnectionHandler(final AmqpConnection amqpConnection, final String connectionId) {
-
+    protected ConnectionHandler(final AmqpConnection amqpConnection, final String connectionId,
+        final SslDomain.VerifyMode verifyMode) {
         add(new Handshaker());
         this.amqpConnection = amqpConnection;
         this.connectionId = connectionId;
+        this.verifyMode = verifyMode;
     }
 
     static ConnectionHandler create(TransportType transportType, AmqpConnection amqpConnection, String connectionId,
-                                    ProxyConfiguration proxyConfiguration) {
+                                    ProxyConfiguration proxyConfiguration, SslDomain.VerifyMode verifyMode) {
         switch (transportType) {
             case AMQP_WEB_SOCKETS:
+                final String id = StringUtil.getRandomString("WS");
                 if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
                     || WebSocketProxyConnectionHandler.shouldUseProxy(amqpConnection.getHostName())) {
-                    return new WebSocketProxyConnectionHandler(amqpConnection, proxyConfiguration);
+                    return new WebSocketProxyConnectionHandler(amqpConnection, id, verifyMode, proxyConfiguration);
                 } else {
-                    return new WebSocketConnectionHandler(amqpConnection);
+                    return new WebSocketConnectionHandler(amqpConnection, id, verifyMode);
                 }
             case AMQP:
             default:
-                return new ConnectionHandler(amqpConnection, connectionId);
+                return new ConnectionHandler(amqpConnection, connectionId, verifyMode);
         }
-    }
-
-    private static SslDomain makeDomain(SslDomain.Mode mode) {
-
-        final SslDomain domain = Proton.sslDomain();
-        domain.init(mode);
-
-        // TODO: VERIFY_PEER_NAME support
-        domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
-        return domain;
     }
 
     protected AmqpConnection getAmqpConnection() {
@@ -102,7 +95,11 @@ public class ConnectionHandler extends BaseHandler {
     }
 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
-        final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
+        final SslDomain domain = Proton.sslDomain();
+        domain.init(SslDomain.Mode.CLIENT);
+
+        // TODO: VERIFY_PEER_NAME support
+        domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         transport.ssl(domain);
     }
 
