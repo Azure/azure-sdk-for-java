@@ -6,7 +6,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -49,27 +49,27 @@ class VirtualMachineExtensionImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String publisherName() {
-        return this.inner().publisher();
+        return this.innerModel().publisher();
     }
 
     @Override
     public String typeName() {
-        return this.inner().typePropertiesType();
+        return this.innerModel().typePropertiesType();
     }
 
     @Override
     public String versionName() {
-        return this.inner().typeHandlerVersion();
+        return this.innerModel().typeHandlerVersion();
     }
 
     @Override
     public boolean autoUpgradeMinorVersionEnabled() {
-        return this.inner().autoUpgradeMinorVersion();
+        return this.innerModel().autoUpgradeMinorVersion();
     }
 
     @Override
@@ -97,7 +97,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().tags();
+        Map<String, String> tags = this.innerModel().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -106,25 +106,25 @@ class VirtualMachineExtensionImpl
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public VirtualMachineExtensionImpl withMinorVersionAutoUpgrade() {
-        this.inner().withAutoUpgradeMinorVersion(true);
+        this.innerModel().withAutoUpgradeMinorVersion(true);
         return this;
     }
 
     @Override
     public VirtualMachineExtensionImpl withoutMinorVersionAutoUpgrade() {
-        this.inner().withAutoUpgradeMinorVersion(false);
+        this.innerModel().withAutoUpgradeMinorVersion(false);
         return this;
     }
 
     @Override
     public VirtualMachineExtensionImpl withImage(VirtualMachineExtensionImage image) {
         this
-            .inner()
+            .innerModel()
             .withPublisher(image.publisherName())
             .withTypePropertiesType(image.typeName())
             .withTypeHandlerVersion(image.versionName());
@@ -133,7 +133,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl withPublisher(String extensionImagePublisherName) {
-        this.inner().withPublisher(extensionImagePublisherName);
+        this.innerModel().withPublisher(extensionImagePublisherName);
         return this;
     }
 
@@ -165,35 +165,35 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl withType(String extensionImageTypeName) {
-        this.inner().withTypePropertiesType(extensionImageTypeName);
+        this.innerModel().withTypePropertiesType(extensionImageTypeName);
         return this;
     }
 
     @Override
     public VirtualMachineExtensionImpl withVersion(String extensionImageVersionName) {
-        this.inner().withTypeHandlerVersion(extensionImageVersionName);
+        this.innerModel().withTypeHandlerVersion(extensionImageVersionName);
         return this;
     }
 
     @Override
     public final VirtualMachineExtensionImpl withTags(Map<String, String> tags) {
-        this.inner().withTags(new HashMap<>(tags));
+        this.innerModel().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public final VirtualMachineExtensionImpl withTag(String key, String value) {
-        if (this.inner().tags() == null) {
-            this.inner().withTags(new HashMap<>());
+        if (this.innerModel().tags() == null) {
+            this.innerModel().withTags(new HashMap<>());
         }
-        this.inner().tags().put(key, value);
+        this.innerModel().tags().put(key, value);
         return this;
     }
 
     @Override
     public final VirtualMachineExtensionImpl withoutTag(String key) {
-        if (this.inner().tags() != null) {
-            this.inner().tags().remove(key);
+        if (this.innerModel().tags() != null) {
+            this.innerModel().tags().remove(key);
         }
         return this;
     }
@@ -208,9 +208,9 @@ class VirtualMachineExtensionImpl
     protected Mono<VirtualMachineExtensionInner> getInnerAsync() {
         String name;
         if (this.isReference()) {
-            name = ResourceUtils.nameFromResourceId(this.inner().id());
+            name = ResourceUtils.nameFromResourceId(this.innerModel().id());
         } else {
-            name = this.inner().name();
+            name = this.innerModel().name();
         }
         return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), name);
     }
@@ -221,7 +221,8 @@ class VirtualMachineExtensionImpl
         final VirtualMachineExtensionImpl self = this;
         return this
             .client
-            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.inner())
+            .createOrUpdateAsync(
+                this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);
@@ -235,27 +236,27 @@ class VirtualMachineExtensionImpl
     public Mono<VirtualMachineExtension> updateResourceAsync() {
         this.nullifySettingsIfEmpty();
         if (this.isReference()) {
-            String extensionName = ResourceUtils.nameFromResourceId(this.inner().id());
+            String extensionName = ResourceUtils.nameFromResourceId(this.innerModel().id());
             return this
                 .client
                 .getAsync(this.parent().resourceGroupName(), this.parent().name(), extensionName)
                 .flatMap(
                     resource -> {
-                        inner()
+                        innerModel()
                             .withPublisher(resource.publisher())
                             .withTypePropertiesType(resource.typePropertiesType())
                             .withTypeHandlerVersion(resource.typeHandlerVersion());
-                        if (inner().autoUpgradeMinorVersion() == null) {
-                            inner().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());
+                        if (innerModel().autoUpgradeMinorVersion() == null) {
+                            innerModel().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());
                         }
                         LinkedHashMap<String, Object> publicSettings =
                             (LinkedHashMap<String, Object>) resource.settings();
                         if (publicSettings != null && publicSettings.size() > 0) {
                             LinkedHashMap<String, Object> innerPublicSettings =
-                                (LinkedHashMap<String, Object>) inner().settings();
+                                (LinkedHashMap<String, Object>) innerModel().settings();
                             if (innerPublicSettings == null) {
-                                inner().withSettings(new LinkedHashMap<String, Object>());
-                                innerPublicSettings = (LinkedHashMap<String, Object>) inner().settings();
+                                innerModel().withSettings(new LinkedHashMap<String, Object>());
+                                innerPublicSettings = (LinkedHashMap<String, Object>) innerModel().settings();
                             }
                             for (Map.Entry<String, Object> entry : publicSettings.entrySet()) {
                                 if (!innerPublicSettings.containsKey(entry.getKey())) {
@@ -281,34 +282,34 @@ class VirtualMachineExtensionImpl
      *     on a specific VM will return fully expanded extension details.
      */
     public boolean isReference() {
-        return this.inner().name() == null;
+        return this.innerModel().name() == null;
     }
 
     // Helper methods
     //
     private void nullifySettingsIfEmpty() {
         if (this.publicSettings.size() == 0) {
-            this.inner().withSettings(null);
+            this.innerModel().withSettings(null);
         }
         if (this.protectedSettings.size() == 0) {
-            this.inner().withProtectedSettings(null);
+            this.innerModel().withProtectedSettings(null);
         }
     }
 
     @SuppressWarnings("unchecked")
     private void initializeSettings() {
-        if (this.inner().settings() == null) {
+        if (this.innerModel().settings() == null) {
             this.publicSettings = new LinkedHashMap<>();
-            this.inner().withSettings(this.publicSettings);
+            this.innerModel().withSettings(this.publicSettings);
         } else {
-            this.publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
+            this.publicSettings = (LinkedHashMap<String, Object>) this.innerModel().settings();
         }
 
-        if (this.inner().protectedSettings() == null) {
+        if (this.innerModel().protectedSettings() == null) {
             this.protectedSettings = new LinkedHashMap<>();
-            this.inner().withProtectedSettings(this.protectedSettings);
+            this.innerModel().withProtectedSettings(this.protectedSettings);
         } else {
-            this.protectedSettings = (LinkedHashMap<String, Object>) this.inner().protectedSettings();
+            this.protectedSettings = (LinkedHashMap<String, Object>) this.innerModel().protectedSettings();
         }
     }
 }

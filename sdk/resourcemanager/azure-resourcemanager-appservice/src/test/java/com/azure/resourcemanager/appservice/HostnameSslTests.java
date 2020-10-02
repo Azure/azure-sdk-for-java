@@ -8,13 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class HostnameSslTests extends AppServiceTest {
     private String webappName = "";
@@ -83,7 +85,7 @@ public class HostnameSslTests extends AppServiceTest {
                     response = curl("https://" + webappName + "." + domainName);
                 } catch (SSLPeerUnverifiedException e) {
                     retryCount--;
-                    SdkContext.sleep(5000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 }
             }
             if (retryCount == 0) {

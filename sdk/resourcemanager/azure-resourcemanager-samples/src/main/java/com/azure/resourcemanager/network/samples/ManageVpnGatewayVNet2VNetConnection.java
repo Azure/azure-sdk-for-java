@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.network.models.ConnectivityCheck;
@@ -17,17 +17,18 @@ import com.azure.resourcemanager.network.models.Troubleshooting;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,30 +50,30 @@ public final class ManageVpnGatewayVNet2VNetConnection {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST2;
-        final String rgName = azure.sdkContext().randomResourceName("rg", 20);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 20);
-        final String vnet2Name = azure.sdkContext().randomResourceName("vnet", 20);
-        final String vpnGatewayName = azure.sdkContext().randomResourceName("vngw", 20);
-        final String vpnGateway2Name = azure.sdkContext().randomResourceName("vngw2", 20);
-        final String connectionName = azure.sdkContext().randomResourceName("con", 20);
-        final String connection2Name = azure.sdkContext().randomResourceName("con2", 20);
-        final String nwName = azure.sdkContext().randomResourceName("nw", 20);
-        final String vm1Name = azure.sdkContext().randomResourceName("vm1", 20);
-        final String vm2Name = azure.sdkContext().randomResourceName("vm2", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String vnet2Name = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String vpnGatewayName = Utils.randomResourceName(azureResourceManager, "vngw", 20);
+        final String vpnGateway2Name = Utils.randomResourceName(azureResourceManager, "vngw2", 20);
+        final String connectionName = Utils.randomResourceName(azureResourceManager, "con", 20);
+        final String connection2Name = Utils.randomResourceName(azureResourceManager, "con2", 20);
+        final String nwName = Utils.randomResourceName(azureResourceManager, "nw", 20);
+        final String vm1Name = Utils.randomResourceName(azureResourceManager, "vm1", 20);
+        final String vm2Name = Utils.randomResourceName(azureResourceManager, "vm2", 20);
         final String rootname = "tirekicker";
-        final String password = azure.sdkContext().randomResourceName("pWd!", 15);
+        final String password = Utils.password();
         final String storageContainerName = "results";
 
         try {
             //============================================================
             // Create 2 virtual networks with subnets and 2 virtual network gateways corresponding to each network
             System.out.println("Creating virtual network...");
-            Network network1 = azure.networks().define(vnetName)
+            Network network1 = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("10.11.0.0/16")
@@ -84,7 +85,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             Utils.print(network1);
 
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw1 = azure.virtualNetworkGateways().define(vpnGatewayName)
+            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways().define(vpnGatewayName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingNetwork(network1)
@@ -94,7 +95,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             System.out.println("Created virtual network gateway");
 
             System.out.println("Creating virtual network...");
-            Network network2 = azure.networks().define(vnet2Name)
+            Network network2 = azureResourceManager.networks().define(vnet2Name)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("10.41.0.0/16")
@@ -104,7 +105,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             System.out.println("Created virtual network");
 
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw2 = azure.virtualNetworkGateways().define(vpnGateway2Name)
+            VirtualNetworkGateway vngw2 = azureResourceManager.virtualNetworkGateways().define(vpnGateway2Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingNetwork(network2)
@@ -126,12 +127,12 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             // Troubleshoot the connection
 
             // create Network Watcher
-            NetworkWatcher nw = azure.networkWatchers().define(nwName)
+            NetworkWatcher nw = azureResourceManager.networkWatchers().define(nwName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .create();
             // Create storage account to store troubleshooting information
-            StorageAccount storageAccount = azure.storageAccounts().define("sa" + azure.sdkContext().randomResourceName("", 8))
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().define("sa" + Utils.randomResourceName(azureResourceManager, "", 8))
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .create();
@@ -162,7 +163,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .withSecondVirtualNetworkGateway(vngw1)
                     .withSharedKey("MySecretKey")
                     .create();
-            SdkContext.sleep(250000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(250));
             troubleshooting = nw.troubleshoot()
                     .withTargetResourceId(connection.id())
                     .withStorageAccount(storageAccount.id())
@@ -180,7 +181,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             // Create 2 virtual machines, each one in its network and verify connectivity between them
             List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
 
-            vmDefinitions.add(azure.virtualMachines().define(vm1Name)
+            vmDefinitions.add(azureResourceManager.virtualMachines().define(vm1Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network1)
@@ -196,7 +197,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .withType("NetworkWatcherAgentLinux")
                     .withVersion("1.4")
                     .attach());
-            vmDefinitions.add(azure.virtualMachines().define(vm2Name)
+            vmDefinitions.add(azureResourceManager.virtualMachines().define(vm2Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network2)
@@ -212,7 +213,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .withType("NetworkWatcherAgentLinux")
                     .withVersion("1.4")
                     .attach());
-            CreatedResources<VirtualMachine> createdVMs = azure.virtualMachines().create(vmDefinitions);
+            CreatedResources<VirtualMachine> createdVMs = azureResourceManager.virtualMachines().create(vmDefinitions);
             VirtualMachine vm1 = createdVMs.get(vmDefinitions.get(0).key());
             VirtualMachine vm2 = createdVMs.get(vmDefinitions.get(1).key());
 
@@ -226,7 +227,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -247,18 +248,19 @@ public final class ManageVpnGatewayVNet2VNetConnection {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisLinkedServerCreateParameters model. */
+/** Parameter required for creating a linked server to redis cache. */
 @JsonFlatten
 @Fluent
 public class RedisLinkedServerCreateParameters {

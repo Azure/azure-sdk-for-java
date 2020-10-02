@@ -13,7 +13,7 @@ import com.azure.search.documents.models.SearchMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchOptions model. */
+/** Parameter group. */
 @Fluent
 public final class SearchOptions {
     /*

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
-import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -16,7 +16,7 @@ public class NetworkWatchersImpl
     implements NetworkWatchers {
 
     public NetworkWatchersImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getNetworkWatchers(), networkManager);
+        super(networkManager.serviceClient().getNetworkWatchers(), networkManager);
     }
 
     @Override

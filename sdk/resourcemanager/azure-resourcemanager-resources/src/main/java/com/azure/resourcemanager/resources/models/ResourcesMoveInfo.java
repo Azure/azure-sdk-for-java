@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourcesMoveInfo model. */
+/** Parameters of move resources. */
 @Fluent
 public final class ResourcesMoveInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesMoveInfo.class);

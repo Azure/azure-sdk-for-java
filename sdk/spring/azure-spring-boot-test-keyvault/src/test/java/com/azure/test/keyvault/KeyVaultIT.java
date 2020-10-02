@@ -13,14 +13,10 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.test.management.ClientSecretAccess;
 import com.azure.test.utils.AppRunner;
 import com.azure.test.utils.MavenBasedProject;
-import com.azure.test.utils.SSHShell;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,10 +81,8 @@ public class KeyVaultIT {
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-
-            app.property("azure.keyvault.secret.keys", KEY_VAULT_SECRET_NAME + " , azure-cosmosdb-key");
-            LOGGER.info("====" + KEY_VAULT_SECRET_NAME + " , azure-cosmosdb-key");
-
+            app.property("azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME);
+            LOGGER.info("====" + KEY_VAULT_SECRET_NAME );
             app.start();
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));
             LOGGER.info("--------------------->test over");
@@ -133,30 +127,23 @@ public class KeyVaultIT {
     }
 
     @Test
-    @Ignore
-    public void keyVaultWithVirtualMachineMSI() throws Exception {
+    public void keyVaultWithVirtualMachineMSI() {
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
 
         final String host = vm.getPrimaryPublicIPAddress().ipAddress();
 
-        // Upload app.jar to virtual machine
-        final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
-        app.packageUp();
-
-        final File file = new File(app.artifact());
-
-        if (!file.exists()) {
-            throw new FileNotFoundException("There's no app.jar file found.");
-        }
-        try (SSHShell sshShell = SSHShell.open(host, 22, VM_USER_USERNAME, VM_USER_PASSWORD);
-            FileInputStream fis = new FileInputStream(file)) {
-            LOGGER.info("Uploading jar file...");
-            sshShell.upload(fis, "app.jar", "", true, "4095");
-        }
-
-        // run java application
         final List<String> commands = new ArrayList<>();
         commands.add(String.format("cd /home/%s", VM_USER_USERNAME));
+        commands.add("mkdir azure-sdk-for-java");
+        commands.add("cd azure-sdk-for-java");
+        commands.add("git init");
+        commands.add("git remote add origin https://github.com/Azure/azure-sdk-for-java.git");
+        commands.add("git config core.sparsecheckout true");
+        commands.add("echo sdk/spring > .git/info/sparse-checkout");
+        commands.add("git pull origin master");
+        commands.add("cd sdk/spring/");
+        commands.add("mvn package -Dmaven.test.skip=true");
+        commands.add("cd azure-spring-boot-test-application/target/");
         commands.add(String.format("nohup java -jar -Xdebug "
                 + "-Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n "
                 + "-Dazure.keyvault.uri=%s %s &"

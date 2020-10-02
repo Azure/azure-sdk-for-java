@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The ManagedDatabaseUpdate model. */
+/** An managed database update. */
 @JsonFlatten
 @Fluent
 public class ManagedDatabaseUpdate {
@@ -77,8 +77,6 @@ public class ManagedDatabaseUpdate {
      * StorageContainerSasToken must be specified. Recovery: Creates a database
      * by restoring a geo-replicated backup. RecoverableDatabaseId must be
      * specified as the recoverable database resource ID to restore.
-     * RestoreLongTermRetentionBackup: Create a database by restoring from a
-     * long term retention backup (longTermRetentionBackupResourceId required).
      */
     @JsonProperty(value = "properties.createMode")
     private ManagedDatabaseCreateMode createMode;
@@ -132,18 +130,6 @@ public class ManagedDatabaseUpdate {
      */
     @JsonProperty(value = "properties.longTermRetentionBackupResourceId")
     private String longTermRetentionBackupResourceId;
-
-    /*
-     * Whether to auto complete restore of this managed database.
-     */
-    @JsonProperty(value = "properties.autoCompleteRestore")
-    private Boolean autoCompleteRestore;
-
-    /*
-     * Last backup file name for restore of this managed database.
-     */
-    @JsonProperty(value = "properties.lastBackupName")
-    private String lastBackupName;
 
     /**
      * Get the tags property: Resource tags.
@@ -271,8 +257,7 @@ public class ManagedDatabaseUpdate {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
-     * (longTermRetentionBackupResourceId required).
+     * restore.
      *
      * @return the createMode value.
      */
@@ -286,8 +271,7 @@ public class ManagedDatabaseUpdate {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
-     * (longTermRetentionBackupResourceId required).
+     * restore.
      *
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseUpdate object itself.
@@ -436,46 +420,6 @@ public class ManagedDatabaseUpdate {
      */
     public ManagedDatabaseUpdate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
         this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
-        return this;
-    }
-
-    /**
-     * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
-     * @return the autoCompleteRestore value.
-     */
-    public Boolean autoCompleteRestore() {
-        return this.autoCompleteRestore;
-    }
-
-    /**
-     * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
-     * @param autoCompleteRestore the autoCompleteRestore value to set.
-     * @return the ManagedDatabaseUpdate object itself.
-     */
-    public ManagedDatabaseUpdate withAutoCompleteRestore(Boolean autoCompleteRestore) {
-        this.autoCompleteRestore = autoCompleteRestore;
-        return this;
-    }
-
-    /**
-     * Get the lastBackupName property: Last backup file name for restore of this managed database.
-     *
-     * @return the lastBackupName value.
-     */
-    public String lastBackupName() {
-        return this.lastBackupName;
-    }
-
-    /**
-     * Set the lastBackupName property: Last backup file name for restore of this managed database.
-     *
-     * @param lastBackupName the lastBackupName value to set.
-     * @return the ManagedDatabaseUpdate object itself.
-     */
-    public ManagedDatabaseUpdate withLastBackupName(String lastBackupName) {
-        this.lastBackupName = lastBackupName;
         return this;
     }
 

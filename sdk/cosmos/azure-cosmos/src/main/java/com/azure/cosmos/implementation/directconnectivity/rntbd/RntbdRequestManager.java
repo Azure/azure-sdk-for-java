@@ -492,6 +492,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
+            record.setSendingRequestHasStarted();
 
             context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                 record.stage(RntbdRequestRecord.Stage.SENT);
@@ -569,6 +570,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
+            record.pendingRequestQueueSize(pendingRequests.size());
 
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
@@ -670,7 +672,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddress().toString();
 
-            final GoneException error = new GoneException(message, cause, (Map<String, String>) null, requestUri);
+            final GoneException error = new GoneException(message, cause, null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
 
             record.completeExceptionally(error);
@@ -798,7 +800,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.REQUEST_TIMEOUT:
-                    cause = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    String resourceAddress = requestRecord.args().physicalAddress() != null ?
+                        requestRecord.args().physicalAddress().toString() : null;
+
+                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
                     break;
 
                 case StatusCodes.RETRY_WITH:

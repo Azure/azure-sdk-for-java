@@ -28,7 +28,7 @@ If you are an existing user of the older version of Azure management library for
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.4</version>
+  <version>2.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,7 +82,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
@@ -229,11 +229,9 @@ azure.storageAccounts().define(storageAccountName)
     .withGeneralPurposeAccountKindV2()
     .withOnlyHttpsTraffic()
     .createAsync()
-    .filter(indexable -> indexable instanceof StorageAccount)
-    .last()
-    .flatMapMany(indexable -> azure.storageBlobContainers()
+    .flatMap(storageAccount -> azure.storageBlobContainers()
         .defineContainer("container")
-        .withExistingBlobService(rgName, ((StorageAccount) indexable).name())
+        .withExistingBlobService(rgName, storageAccount.name())
         .withPublicAccess(PublicAccess.BLOB)
         .createAsync()
     )
@@ -253,7 +251,7 @@ azure.virtualMachines().listByResourceGroupAsync(rgName)
 You can customize various aspects of the client.
 
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withHttpClient(customizedHttpClient)
     .withPolicy(additionalPolicy)
@@ -272,7 +270,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.4</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -301,7 +299,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 Sample code to enable logging in Azure Management Libraries.
 ```java
-Azure azure = Azure
+AzureResourceManager azure = AzureResourceManager
     .configure()
     .withLogLevel(HttpLogDetailLevel.BASIC)
     .authenticate(credential, profile)

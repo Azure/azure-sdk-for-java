@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The MetricAlertStatusProperties model. */
+/** An alert status properties. */
 @Fluent
 public final class MetricAlertStatusProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatusProperties.class);

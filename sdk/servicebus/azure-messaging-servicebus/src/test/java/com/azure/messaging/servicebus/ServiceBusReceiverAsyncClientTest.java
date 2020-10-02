@@ -26,6 +26,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -145,7 +146,8 @@ class ServiceBusReceiverAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), CLIENT_OPTIONS,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -186,12 +188,12 @@ class ServiceBusReceiverAsyncClientTest {
     @SuppressWarnings("unchecked")
     @Test
     void peekTwoMessages() {
+        // Arrange
         final long sequence1 = 10;
         final long sequence2 = 12;
         final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
         when(receivedMessage.getSequenceNumber()).thenReturn(sequence1);
         when(receivedMessage2.getSequenceNumber()).thenReturn(sequence2);
-        // Arrange
         when(managementNode.peek(anyLong(), isNull(), isNull()))
             .thenReturn(Mono.just(receivedMessage), Mono.just(receivedMessage2));
 
@@ -200,7 +202,6 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext(receivedMessage)
             .verifyComplete();
 
-        // Act & Assert
         StepVerifier.create(receiver.peekMessage())
             .expectNext(receivedMessage2)
             .verifyComplete();
@@ -213,6 +214,20 @@ class ServiceBusReceiverAsyncClientTest {
         // Because we always add one when we fetch the next message.
         Assertions.assertTrue(allValues.contains(0L));
         Assertions.assertTrue(allValues.contains(11L));
+    }
+
+    /**
+     * Verifies that when no messages are returned, that it does not error.
+     */
+    @Test
+    void peekEmptyEntity() {
+        // Arrange
+        when(managementNode.peek(0, null, null))
+            .thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(receiver.peekMessage())
+            .verifyComplete();
     }
 
     /**
@@ -371,7 +386,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this peek batch of messages.
      */
     @Test
-    void peekBatchMessages() {
+    void peekMessages() {
         // Arrange
         final int numberOfEvents = 2;
 
@@ -381,6 +396,22 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .expectNextCount(numberOfEvents)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that this peek batch of messages.
+     */
+    @Test
+    void peekMessagesEmptyEntity() {
+        // Arrange
+        final int numberOfEvents = 2;
+
+        when(managementNode.peek(0, null, null, numberOfEvents))
+            .thenReturn(Flux.fromIterable(Collections.emptyList()));
+
+        // Act & Assert
+        StepVerifier.create(receiver.peekMessages(numberOfEvents))
             .verifyComplete();
     }
 
@@ -702,13 +733,13 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void renewSessionLock() {
         // Arrange
-        final Instant expiry = Instant.ofEpochSecond(1588011761L);
+        final OffsetDateTime expiry = Instant.ofEpochSecond(1588011761L).atOffset(ZoneOffset.UTC);
 
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.just(expiry));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(SESSION_ID))
-            .expectNext(expiry.atOffset(ZoneOffset.UTC))
+            .expectNext(expiry)
             .expectComplete()
             .verify();
     }
@@ -744,7 +775,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -767,7 +798,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn(null);
         when(managementNode.renewMessageLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -789,7 +820,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn("");
         when(managementNode.renewMessageLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
@@ -814,7 +845,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewSessionLock(sessionId, null))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
@@ -836,7 +867,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
         when(managementNode.renewSessionLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(null, maxDuration))
@@ -857,7 +888,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String sessionId = "";
 
         when(managementNode.renewSessionLock(anyString(), isNull()))
-            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+            .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))

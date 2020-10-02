@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.net.URL;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Set;
 /** An immutable client-side representation of an Azure AD application. */
 @Fluent
 public interface ActiveDirectoryApplication
-    extends ActiveDirectoryObject, HasInner<ApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
+    extends ActiveDirectoryObject, HasInnerModel<ApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
     /** @return the application ID */
     String applicationId();
 

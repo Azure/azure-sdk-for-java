@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotDifferenceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SlotDifferenceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SlotDifferenceCollection model. */
+/** Collection of slot differences. */
 @Fluent
 public final class SlotDifferenceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SlotDifferenceCollection.class);

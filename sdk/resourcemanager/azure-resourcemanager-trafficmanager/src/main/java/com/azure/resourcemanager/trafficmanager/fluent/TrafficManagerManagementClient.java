@@ -4,181 +4,79 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the TrafficManagerManagementClient type. */
-@ServiceClient(builder = TrafficManagerManagementClientBuilder.class)
-public final class TrafficManagerManagementClient extends AzureServiceClient {
-    private final ClientLogger logger = new ClientLogger(TrafficManagerManagementClient.class);
-
-    /**
-     * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     */
-    private final String subscriptionId;
-
+/** The interface for TrafficManagerManagementClient class. */
+public interface TrafficManagerManagementClient {
     /**
      * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /** server parameter. */
-    private final String endpoint;
+    String getSubscriptionId();
 
     /**
      * Gets server parameter.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
+    String getEndpoint();
 
     /**
      * Gets Api Version.
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /** The HTTP pipeline to send requests through. */
-    private final HttpPipeline httpPipeline;
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     *
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /** The default poll interval for long-running operation. */
-    private final Duration defaultPollInterval;
+    HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
      *
      * @return the defaultPollInterval value.
      */
-    public Duration getDefaultPollInterval() {
-        return this.defaultPollInterval;
-    }
-
-    /** The EndpointsClient object to access its operations. */
-    private final EndpointsClient endpoints;
+    Duration getDefaultPollInterval();
 
     /**
      * Gets the EndpointsClient object to access its operations.
      *
      * @return the EndpointsClient object.
      */
-    public EndpointsClient getEndpoints() {
-        return this.endpoints;
-    }
-
-    /** The ProfilesClient object to access its operations. */
-    private final ProfilesClient profiles;
+    EndpointsClient getEndpoints();
 
     /**
      * Gets the ProfilesClient object to access its operations.
      *
      * @return the ProfilesClient object.
      */
-    public ProfilesClient getProfiles() {
-        return this.profiles;
-    }
-
-    /** The GeographicHierarchiesClient object to access its operations. */
-    private final GeographicHierarchiesClient geographicHierarchies;
+    ProfilesClient getProfiles();
 
     /**
      * Gets the GeographicHierarchiesClient object to access its operations.
      *
      * @return the GeographicHierarchiesClient object.
      */
-    public GeographicHierarchiesClient getGeographicHierarchies() {
-        return this.geographicHierarchies;
-    }
-
-    /** The HeatMapsClient object to access its operations. */
-    private final HeatMapsClient heatMaps;
+    GeographicHierarchiesClient getGeographicHierarchies();
 
     /**
      * Gets the HeatMapsClient object to access its operations.
      *
      * @return the HeatMapsClient object.
      */
-    public HeatMapsClient getHeatMaps() {
-        return this.heatMaps;
-    }
-
-    /** The TrafficManagerUserMetricsKeysClient object to access its operations. */
-    private final TrafficManagerUserMetricsKeysClient trafficManagerUserMetricsKeys;
+    HeatMapsClient getHeatMaps();
 
     /**
      * Gets the TrafficManagerUserMetricsKeysClient object to access its operations.
      *
      * @return the TrafficManagerUserMetricsKeysClient object.
      */
-    public TrafficManagerUserMetricsKeysClient getTrafficManagerUserMetricsKeys() {
-        return this.trafficManagerUserMetricsKeys;
-    }
-
-    /**
-     * Initializes an instance of TrafficManagerManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param defaultPollInterval The default poll interval for long-running operation.
-     * @param environment The Azure environment.
-     */
-    TrafficManagerManagementClient(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
-        super(httpPipeline, serializerAdapter, environment);
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
-        this.endpoint = endpoint;
-        this.apiVersion = "2018-04-01";
-        this.endpoints = new EndpointsClient(this);
-        this.profiles = new ProfilesClient(this);
-        this.geographicHierarchies = new GeographicHierarchiesClient(this);
-        this.heatMaps = new HeatMapsClient(this);
-        this.trafficManagerUserMetricsKeys = new TrafficManagerUserMetricsKeysClient(this);
-    }
+    TrafficManagerUserMetricsKeysClient getTrafficManagerUserMetricsKeys();
 }

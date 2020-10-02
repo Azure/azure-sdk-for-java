@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Region model. */
+/** Class representing a region in the Geographic hierarchy used with the Geographic traffic routing method. */
 @Fluent
 public final class Region {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Region.class);

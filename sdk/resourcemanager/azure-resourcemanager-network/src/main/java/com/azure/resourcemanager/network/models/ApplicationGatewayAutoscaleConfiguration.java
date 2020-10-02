@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayAutoscaleConfiguration model. */
+/** Application Gateway autoscale configuration. */
 @Fluent
 public final class ApplicationGatewayAutoscaleConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayAutoscaleConfiguration.class);

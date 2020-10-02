@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The UpdateResourceDefinition model. */
+/** The Update Resource model definition. */
 @Fluent
 public class UpdateResourceDefinition extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateResourceDefinition.class);

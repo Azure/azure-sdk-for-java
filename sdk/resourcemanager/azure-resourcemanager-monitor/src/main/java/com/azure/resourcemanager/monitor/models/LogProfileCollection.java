@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.LogProfileResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LogProfileCollection model. */
+/** Represents a collection of log profiles. */
 @Fluent
 public final class LogProfileCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogProfileCollection.class);

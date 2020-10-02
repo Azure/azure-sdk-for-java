@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CsmOperationDescriptionProperties model. */
+/** Properties available for a Microsoft.Web resource provider operation. */
 @Fluent
 public final class CsmOperationDescriptionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmOperationDescriptionProperties.class);

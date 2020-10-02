@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The MSDeployLogEntry model. */
+/** MSDeploy log entry. */
 @Immutable
 public final class MSDeployLogEntry {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployLogEntry.class);

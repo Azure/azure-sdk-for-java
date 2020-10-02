@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisUpdateProperties model. */
+/** Patchable properties of the redis cache. */
 @Fluent
 public final class RedisUpdateProperties extends RedisCommonProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisUpdateProperties.class);

@@ -3,16 +3,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.TopologyInner;
+import com.azure.resourcemanager.network.fluent.models.TopologyInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure Topology info object, associated with network watcher. */
 @Fluent
-public interface Topology extends Executable<Topology>, HasInner<TopologyInner>, HasParent<NetworkWatcher> {
+public interface Topology extends Executable<Topology>, HasInnerModel<TopologyInner>, HasParent<NetworkWatcher> {
     /** @return GUID representing the id */
     String id();
 

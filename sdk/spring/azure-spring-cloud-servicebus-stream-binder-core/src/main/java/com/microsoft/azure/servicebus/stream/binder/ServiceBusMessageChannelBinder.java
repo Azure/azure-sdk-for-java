@@ -11,14 +11,16 @@ import com.microsoft.azure.spring.integration.core.DefaultMessageHandler;
 import com.microsoft.azure.spring.integration.core.api.CheckpointConfig;
 import com.microsoft.azure.spring.integration.core.api.SendOperation;
 import com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig;
-import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
-import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.expression.FunctionExpression;
+import org.springframework.integration.support.DefaultErrorMessageStrategy;
+import org.springframework.integration.support.ErrorMessageStrategy;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
@@ -29,12 +31,16 @@ import org.springframework.messaging.MessageHandler;
  */
 public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingProperties> extends
     AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-        ExtendedProducerProperties<ServiceBusProducerProperties>,
-        ServiceBusChannelProvisioner>
+            ExtendedProducerProperties<ServiceBusProducerProperties>,
+                ServiceBusChannelProvisioner>
         implements
-        ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
+    ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
     protected T bindingProperties;
+
+    private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
+
+    protected static final String EXCEPTION_MESSAGE = "exception-message";
 
     public ServiceBusMessageChannelBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
@@ -42,7 +48,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
 
     @Override
     protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
-            ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
+                                                          ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getSendOperation());
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
@@ -78,6 +84,11 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         return this.bindingProperties.getExtendedPropertiesEntryClass();
     }
 
+    @Override
+    protected ErrorMessageStrategy getErrorMessageStrategy() {
+        return DEFAULT_ERROR_MESSAGE_STRATEGY;
+    }
+
     public void setBindingProperties(T bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
@@ -96,4 +107,5 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     }
 
     abstract SendOperation getSendOperation();
+
 }

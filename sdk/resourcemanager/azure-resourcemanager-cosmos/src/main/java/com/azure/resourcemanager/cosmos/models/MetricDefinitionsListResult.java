@@ -6,12 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.cosmos.fluent.models.MetricDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricDefinitionsListResult model. */
+/** The response to a list metric definitions request. */
 @Immutable
 public final class MetricDefinitionsListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionsListResult.class);

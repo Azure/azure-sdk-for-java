@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ThroughputSettingsResource model. */
+/** Cosmos DB resource throughput object. */
 @Fluent
 public class ThroughputSettingsResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsResource.class);
