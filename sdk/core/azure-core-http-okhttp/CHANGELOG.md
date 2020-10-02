@@ -1,5 +1,8 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+
 ## 1.3.2 (2020-10-01)
 
 - Updated `azure-core` version.
