@@ -69,7 +69,7 @@ public class SqlRuleAction extends RuleAction {
      *
      * @return Whether or not requires preprocessing.
      */
-    Boolean getRequiresPreprocessing() {
+    Boolean isPreprocessingRequired() {
         return requiresPreprocessing;
     }
 

@@ -30,11 +30,11 @@ class CreateSubscriptionOptionsTest {
         // Assert
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
         assertEquals(MAX_DURATION, actual.getDefaultMessageTimeToLive());
-        assertTrue(actual.enableBatchedOperations());
+        assertTrue(actual.isBatchedOperationsEnabled());
         assertEquals(DEFAULT_LOCK_DURATION, actual.getLockDuration());
         assertEquals(DEFAULT_MAX_DELIVERY_COUNT, actual.getMaxDeliveryCount());
-        assertFalse(actual.requiresSession());
-        assertFalse(actual.deadLetteringOnMessageExpiration());
+        assertFalse(actual.isSessionRequired());
+        assertFalse(actual.isDeadLetteringOnMessageExpiration());
         assertEquals(EntityStatus.ACTIVE, actual.getStatus());
         assertNull(actual.getUserMetadata());
     }
@@ -62,13 +62,13 @@ class CreateSubscriptionOptionsTest {
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertFalse(actual.deadLetteringOnMessageExpiration());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
+        assertFalse(actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isBatchedOperationsEnabled());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.requiresSession(), actual.requiresSession());
+        assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
         assertEquals(expected.getStatus(), actual.getStatus());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
     }

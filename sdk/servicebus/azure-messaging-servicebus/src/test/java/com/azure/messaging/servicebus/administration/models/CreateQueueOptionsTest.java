@@ -38,14 +38,14 @@ class CreateQueueOptionsTest {
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
         assertEquals(MAX_DURATION, actual.getDefaultMessageTimeToLive());
         assertEquals(DEFAULT_DUPLICATE_DETECTION_DURATION, actual.getDuplicateDetectionHistoryTimeWindow());
-        assertTrue(actual.enableBatchedOperations());
-        assertFalse(actual.enablePartitioning());
+        assertTrue(actual.isBatchedOperationsEnabled());
+        assertFalse(actual.isPartitioningEnabled());
         assertEquals(DEFAULT_LOCK_DURATION, actual.getLockDuration());
         assertEquals(DEFAULT_MAX_DELIVERY_COUNT, actual.getMaxDeliveryCount());
         assertEquals(DEFAULT_QUEUE_SIZE, actual.getMaxSizeInMegabytes());
-        assertFalse(actual.requiresDuplicateDetection());
-        assertFalse(actual.requiresSession());
-        assertFalse(actual.deadLetteringOnMessageExpiration());
+        assertFalse(actual.isDuplicateDetectionRequired());
+        assertFalse(actual.isSessionRequired());
+        assertFalse(actual.isDeadLetteringOnMessageExpiration());
         assertNull(actual.getUserMetadata());
         assertEquals(EntityStatus.ACTIVE, actual.getStatus());
     }
@@ -98,17 +98,17 @@ class CreateQueueOptionsTest {
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertFalse(actual.deadLetteringOnMessageExpiration());
+        assertFalse(actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
             actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
-        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+        assertEquals(expected.isBatchedOperationsEnabled(), actual.isBatchedOperationsEnabled());
+        assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.requiresSession());
+        assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
+        assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
 

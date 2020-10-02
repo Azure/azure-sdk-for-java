@@ -63,7 +63,7 @@ public final class TopicProperties {
                     .setCreatedAt(topic.getCreatedAt())
                     .setDefaultMessageTimeToLive(topic.getDefaultMessageTimeToLive())
                     .setDuplicateDetectionHistoryTimeWindow(topic.getDuplicateDetectionHistoryTimeWindow())
-                    .setEnablePartitioning(topic.enablePartitioning())
+                    .setEnablePartitioning(topic.isPartitioningEnabled())
                     .setEnableSubscriptionPartitioning(topic.isEnableSubscriptionPartitioning())
                     .setEnableExpress(topic.enableExpress)
                     .setEnableBatchedOperations(topic.enableBatchedOperations)
@@ -76,7 +76,7 @@ public final class TopicProperties {
                     .setSubscriptionCount(topic.getSubscriptionCount())
                     .setStatus(topic.getStatus())
                     .setSizeInBytes(topic.getSizeInBytes())
-                    .setRequiresDuplicateDetection(topic.requiresDuplicateDetection())
+                    .setRequiresDuplicateDetection(topic.isDuplicateDetectionRequired())
                     .setUpdatedAt(topic.getUpdatedAt())
                     .setUserMetadata(topic.getUserMetadata());
 
@@ -199,7 +199,7 @@ public final class TopicProperties {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -242,7 +242,7 @@ public final class TopicProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -280,7 +280,7 @@ public final class TopicProperties {
      *
      * @return the supportOrdering value.
      */
-    public boolean supportOrdering() {
+    public boolean isOrderingSupported() {
         return this.supportOrdering;
     }
 
@@ -323,7 +323,7 @@ public final class TopicProperties {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 

@@ -53,8 +53,8 @@ public final class SubscriptionProperties {
                     .setAutoDeleteOnIdle(subscription.getAutoDeleteOnIdle())
                     .setCreatedAt(subscription.getCreatedAt())
                     .setDeadLetteringOnFilterEvaluationExceptions(
-                        subscription.enableDeadLetteringOnFilterEvaluationExceptions())
-                    .setDeadLetteringOnMessageExpiration(subscription.deadLetteringOnMessageExpiration())
+                        subscription.isDeadLetteringOnFilterEvaluationExceptions())
+                    .setDeadLetteringOnMessageExpiration(subscription.isDeadLetteringOnMessageExpiration())
                     .setDefaultMessageTimeToLive(subscription.getDefaultMessageTimeToLive())
                     .setEnableBatchedOperations(subscription.enableBatchedOperations)
                     .setEntityAvailabilityStatus(subscription.entityAvailabilityStatus)
@@ -65,7 +65,7 @@ public final class SubscriptionProperties {
                     .setMessageCount(subscription.messageCount)
                     .setMessageCountDetails(subscription.getMessageCountDetails())
                     .setStatus(subscription.getStatus())
-                    .setRequiresSession(subscription.requiresSession())
+                    .setRequiresSession(subscription.isSessionRequired())
                     .setUpdatedAt(subscription.getUpdatedAt())
                     .setUserMetadata(subscription.getUserMetadata());
             }
@@ -181,7 +181,7 @@ public final class SubscriptionProperties {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -215,7 +215,7 @@ public final class SubscriptionProperties {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public boolean deadLetteringOnMessageExpiration() {
+    public boolean isDeadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -237,7 +237,7 @@ public final class SubscriptionProperties {
      *
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
-    public boolean enableDeadLetteringOnFilterEvaluationExceptions() {
+    public boolean isDeadLetteringOnFilterEvaluationExceptions() {
         return this.deadLetteringOnFilterEvaluationExceptions;
     }
 
@@ -302,7 +302,7 @@ public final class SubscriptionProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
