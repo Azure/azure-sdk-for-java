@@ -13,12 +13,15 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.reactor.Handshaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -95,12 +98,42 @@ public class ConnectionHandler extends BaseHandler {
     }
 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
-        final SslDomain domain = Proton.sslDomain();
-        domain.init(SslDomain.Mode.CLIENT);
+        final SslDomain sslDomain = Proton.sslDomain();
+        sslDomain.init(SslDomain.Mode.CLIENT);
 
-        // TODO: VERIFY_PEER_NAME support
-        domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
-        transport.ssl(domain);
+        final SSLContext defaultSslContext;
+
+        if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
+            defaultSslContext = null;
+        } else {
+            try {
+                defaultSslContext = SSLContext.getDefault();
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
+            }
+        }
+
+        if (verifyMode == SslDomain.VerifyMode.VERIFY_PEER_NAME) {
+            final StrictTlsContextSpi serviceProvider = new StrictTlsContextSpi(defaultSslContext);
+            final SSLContext context = new StrictTlsContext(serviceProvider, defaultSslContext.getProvider(),
+                defaultSslContext.getProtocol());
+            final SslPeerDetails peerDetails = Proton.sslPeerDetails(amqpConnection.getHostName(), getProtocolPort());
+
+            sslDomain.setSslContext(context);
+            transport.ssl(sslDomain, peerDetails);
+            return;
+        }
+
+        if (verifyMode == SslDomain.VerifyMode.VERIFY_PEER) {
+            sslDomain.setSslContext(defaultSslContext);
+        } else if (verifyMode == SslDomain.VerifyMode.ANONYMOUS_PEER) {
+            TRACE_LOGGER.warn("{} is not secure.", verifyMode);
+        } else {
+            throw new UnsupportedOperationException("verifyMode is not supported: " + verifyMode);
+        }
+
+        sslDomain.setPeerAuthentication(verifyMode);
+        transport.ssl(sslDomain);
     }
 
     protected void notifyTransportErrors(final Event event) {
