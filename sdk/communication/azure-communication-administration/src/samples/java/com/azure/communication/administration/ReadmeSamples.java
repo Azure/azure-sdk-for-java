@@ -134,14 +134,14 @@ public class ReadmeSamples {
         throws NoSuchAlgorithmException, InvalidKeyException {
         // You can find your endpoint and access token from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessToken = "SECRET";
+        String accessKey = "SECRET";
 
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
         PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
             .endpoint(endpoint)
-            .credential(new CommunicationClientCredential(accessToken))
+            .credential(new CommunicationClientCredential(accessKey))
             .httpClient(httpClient)
             .buildClient();
 
