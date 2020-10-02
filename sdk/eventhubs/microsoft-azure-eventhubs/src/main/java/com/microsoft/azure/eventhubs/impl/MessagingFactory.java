@@ -253,6 +253,9 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
 
         public CompletableFuture<MessagingFactory> build() throws IOException {
+            final SslDomain.VerifyMode mode = verifyMode != null
+                ? verifyMode
+                : SslDomain.VerifyMode.VERIFY_PEER_NAME;
             final MessagingFactory messagingFactory = new MessagingFactory(this.hostname,
                 this.operationTimeout,
                 this.transportType,
@@ -262,7 +265,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 this.reactorFactory,
                 this.proxyConfiguration,
                 this.watchdogTriggerTime,
-                this.verifyMode);
+                mode);
             return MessagingFactory.factoryStartup(messagingFactory);
         }
     }
