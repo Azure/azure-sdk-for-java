@@ -65,13 +65,17 @@ Do {
             $aritifact = $aritifact -replace $packageNameRegex, $packageNameReplacement
         }
         # Read the artifact package infomation from csv of Azure/azure-sdk/_data/release/latest repo.
-        $packageInfo = ($metadata | ? { $_.Package -Contains $aritifact})
+        $packageInfo = $metadata | ? { $_.Package -Contains $aritifact}
+        if (!$packageInfo) {
+            Write-Error "Did not find the artifacts from release csv. Please check and update."
+        }
+       
         # Ignore the one marked as Hide
-        $hidden = $packageInfo.Hide
+        $hidden = $packageInfo[0].Hide
         if ($hidden -and $hidden.Trim() -eq "true") {
             continue
         }
-        $serviceName = $packageInfo.ServiceName
+        $serviceName = $packageInfo[0].ServiceName
         # If no service name retrieved, print out warning message, and put it into Other page.
         if (!$serviceName) {
             Write-Warning "Please double check and update the artifact correct service name to corresponding repo: https://github.com/Azure/azure-sdk/tree/master/_data/releases/latest."
