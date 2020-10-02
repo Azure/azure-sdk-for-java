@@ -4,6 +4,10 @@
 package com.azure.identity.implementation;
 
 import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.ITenantProfile;
+
+
+import java.util.Map;
 
 public class MsalAuthenticationAccount implements IAccount {
     private AuthenticationRecord authenticationRecord;
@@ -25,6 +29,11 @@ public class MsalAuthenticationAccount implements IAccount {
     @Override
     public String username() {
         return authenticationRecord.getUsername();
+    }
+
+    @Override
+    public Map<String, ITenantProfile> getTenantProfiles() {
+        return null;
     }
 
     public AuthenticationRecord getAuthenticationRecord() {
