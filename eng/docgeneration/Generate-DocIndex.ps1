@@ -19,6 +19,21 @@ $LangMapping = @{
     "cpp"        = @("CPP", "cpp")
 }
 
+# The sequence of Bom bytes differs by different encoding. 
+# The helper function here is only to strip the utf-8 encoding system as it is used by blob storage list api.
+# Return the original string if not in BOM utf-8 sequence.
+function removeBomFromString($bomAwareString) {
+    if ($bomAwareString.length -le 3) {
+        return $bomAwareString
+    }
+    $bomPatternByteArray = [byte[]] (0xef, 0xbb, 0xbf)
+    # The default encoding for powershell is ISO-8859-1, so converting bytes with the encoding.
+    $bomAwareBytes = [Text.Encoding]::GetEncoding(28591).GetBytes($bomAwareString.Substring(0, 3))
+    if (@(Compare-Object $bomPatternByteArray $bomAwareBytes -SyncWindow 0).Length -eq 0) {
+        return $bomAwareString.Substring(3)
+    }
+    return $bomAwareString
+}
 Write-Verbose "Name Reccuring paths with variable names"
 $DocFxTool = "${RepoRoot}/docfx/docfx.exe"
 $DocOutDir = "${RepoRoot}/docfx_project"
@@ -37,11 +52,10 @@ Write-Verbose "Reading artifact from storage blob ..."
 $metadata = GetMetaData -lang $lang
 $langRegex = $LangMapping[$lang][1]
 $titleRegex = $LangMapping[$lang][0]
-$regex = "^$langRegex/(.*)/$"
+$blobDirectoryRegex = "^$langRegex/(.*)/$"
 $pageToken = ""
 # Used for sorting the toc display order
 $orderSet = @{}
-$orderArray = @()
 # This is a pagnation call as storage only return 5000 results as maximum.
 Do {
     $resp = ""
@@ -54,9 +68,9 @@ Do {
         $resp = Invoke-RestMethod -Method Get -Uri "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=$langRegex&marker=$pageToken"
     }
     # Storage returns some weired encoded string at the begining of response which needs to cutoff before use.
-    $rawConent = $resp.Substring(3)
+    
     # Convert to xml documents.
-    $xmlDoc = [xml]$rawConent
+    $xmlDoc = [xml](removeBomFromString $resp)
     foreach ($elem in $xmlDoc.EnumerationResults.Blobs.BlobPrefix) {
         # What service return like "dotnet/Azure.AI.Anomalydetector/", needs to fetch out "Azure.AI.Anomalydetector"
         $aritifact = $elem.Name -replace $regex, '$1'
@@ -84,15 +98,14 @@ Do {
         }
         $serviceName = $serviceName.Trim()
         # The name of generating md files.
-        $dirName = ($serviceName -replace '\s', '').ToLower()
-        if ($orderSet.ContainsKey($dirName)) {
-            Add-Content -Path "$($YmlPath)/${dirName}.md" -Value "#### $aritifact"
+        $fileName = ($serviceName -replace '\s', '').ToLower().Trim()
+        if ($orderSet.ContainsKey($fileName)) {
+            Add-Content -Path "$($YmlPath)/${fileName}.md" -Value "#### $aritifact"
         }
         else {
-            New-Item -Path $YmlPath -Name "${dirName}.md" -Force
-            Add-Content -Path "$($YmlPath)/${dirName}.md" -Value "#### $aritifact"
-            $orderArray += $dirName
-            $orderSet[$dirName] = $serviceName
+            New-Item -Path $YmlPath -Name "${fileName}.md" -Force
+            Add-Content -Path "$($YmlPath)/${fileName}.md" -Value "#### $aritifact"
+            $orderSet[$fileName] = $serviceName
         }
     }
     # Fetch page token
@@ -100,12 +113,11 @@ Do {
 } while ($pageToken)
 
 # Sort and display toc service name by alphabetical order.
-$sortedDir = $orderArray | Sort-Object
-foreach ($service in $sortedDir) {
-    $serviceName = $orderSet[$service]
-    Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: ${serviceName}`r`n  href: ${service}.md"
+foreach ($serviceMapping in $orderSet.getEnumerator() | Sort Key) {
+    $fileName = $serviceMapping.Key
+    $serviceName = $serviceMapping.Value
+    Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: ${serviceName}`r`n  href: ${fileName}.md"
 }
-
 
 Write-Verbose "Creating Site Title and Navigation..."
 New-Item -Path "${DocOutDir}" -Name "toc.yml" -Force
