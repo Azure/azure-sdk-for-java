@@ -268,7 +268,7 @@ public final class CertificateAsyncClient {
      * @return A {@link PollerFlux} polling on the certificate operation status.
      */
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return getCertificateOperation(certificateName, Duration.ofSeconds(1));
+        return getCertificateOperation(certificateName, getDefaultPollingInterval());
     }
 
     /**
@@ -492,7 +492,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return beginDeleteCertificate(certificateName, Duration.ofSeconds(1));
+        return beginDeleteCertificate(certificateName, getDefaultPollingInterval());
     }
 
     /**
@@ -520,7 +520,6 @@ public final class CertificateAsyncClient {
             (context, firstResponse) -> Mono.empty(),
             (context) -> Mono.empty());
     }
-
 
     private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String certificateName) {
         return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(certificateName,
@@ -696,7 +695,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return beginRecoverDeletedCertificate(certificateName, Duration.ofSeconds(1));
+        return beginRecoverDeletedCertificate(certificateName, getDefaultPollingInterval());
     }
 
     /**
