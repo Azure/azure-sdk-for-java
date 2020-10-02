@@ -73,7 +73,7 @@ Do {
     $xmlDoc = [xml](removeBomFromString $resp)
     foreach ($elem in $xmlDoc.EnumerationResults.Blobs.BlobPrefix) {
         # What service return like "dotnet/Azure.AI.Anomalydetector/", needs to fetch out "Azure.AI.Anomalydetector"
-        $aritifact = $elem.Name -replace $regex, '$1'
+        $aritifact = $elem.Name -replace $blobDirectoryRegex, '$1'
         # Some languages need to convert the artifact name, e.g azure-data-appconfiguration -> @azure/data-appconfiguration
         if ($packageNameRegex) {
             $aritifact = $aritifact -replace $packageNameRegex, $packageNameReplacement
