@@ -2,6 +2,12 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
+### Added
+- Support directly passing connection string to the CommunicationIdentityClientBuilder using connectionString().
+
+### Breaking Change
+- Removed credential(CommunicationClientCredential credential) and replaced with 
+accessKey(String accessKey) within CommunicationIdentityClientBuilder.
 
 ## 1.0.0-beta.1 (2020-09-22)
 This is the initial release of Azure Communication Services for Telephony and SMS. For more information, please see the [README][read_me] and [documentation][documentation].

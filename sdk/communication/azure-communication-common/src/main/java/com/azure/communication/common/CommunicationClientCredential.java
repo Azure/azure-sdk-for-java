@@ -57,16 +57,16 @@ public final class CommunicationClientCredential {
     public CommunicationClientCredential(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null");
         byte[] key = Base64.getDecoder().decode(accessKey);
-        Mac sha256HMACTemp = null;
+        Mac sha256HMAC = null;
         try {
-            sha256HMACTemp = Mac.getInstance("HmacSHA256");
-            sha256HMACTemp.init(new SecretKeySpec(key, "HmacSHA256"));
+            sha256HMAC = Mac.getInstance("HmacSHA256");
+            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
-        sha256HMAC = sha256HMACTemp;
+        this.sha256HMAC = sha256HMAC;
     }
 
     Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {

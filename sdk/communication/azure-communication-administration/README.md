@@ -47,13 +47,24 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 
+Alternatively, you can provide the entire connection string using the connectionString() function of the builder instead of providing the endpoint and access key. 
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L54-L60 -->
+```java
+// Your can find your connection string from your resource in the Azure Portal
+String connectionString = "<connection_string>";
+
+CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+    .connectionString(connectionString)
+    .httpClient(httpClient)
+    .buildClient();
+```
 ## Examples
 
 ### Creating a new user
 Use the `createUser` function to create a new user. `user.getId()` gets the
 unique ID of the user that was created.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L50-L51 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L72-L73 -->
 ```java
 CommunicationUser user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
@@ -66,7 +77,7 @@ also takes in a list of communication token scopes. Scope options include:
 - `pstn` (Public switched telephone network)
 - `voip` (Voice over IP)
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L63-L66 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L85-L88 -->
 ```java
 List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
 CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
@@ -77,7 +88,7 @@ System.out.println("Expires On: " + userToken.getExpiresOn());
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L78-L79 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L100-L101 -->
 ```java
 // revoke tokens issued for the user prior to now
 communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
@@ -86,7 +97,7 @@ communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
 ### Deleting a user
 Use the `deleteUser` function to delete a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L88-L89 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L110-L111 -->
 ```java
 // delete a previously created user
 communicationIdentityClient.deleteUser(user);

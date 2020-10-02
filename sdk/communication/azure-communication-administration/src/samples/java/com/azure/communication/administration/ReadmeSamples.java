@@ -41,6 +41,28 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for creating a sync Communication Identity Client using connection string.
+     *
+     * @return the Communication Identity Client.
+     * @throws NoSuchAlgorithmException if Communcication Client Credential HMAC not available
+     * @throws InvalidKeyException if Communcication Client Credential access key is not valid
+     */
+    public CommunicationIdentityClient createCommunicationIdentityClientWithConnectionString() {
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        // Your can find your connection string from your resource in the Azure Portal
+        String connectionString = "<connection_string>";
+
+        CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(httpClient)
+            .buildClient();
+
+        return communicationIdentityClient;
+    }
+
+    /**
      * Sample code for creating a user
      *
      * @return the created user

@@ -4,6 +4,7 @@
 package com.azure.communication.administration;
 
 import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.communication.common.ConnectionString;
 import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
@@ -76,6 +77,24 @@ public final class CommunicationIdentityClientBuilder {
     public CommunicationIdentityClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
         this.credential = new CommunicationClientCredential(accessKey);
+        return this;
+    }
+
+     /**
+     * Set endpoint and credential to use
+     *
+     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
+     * @return CommunicationIdentityClientBuilder
+     */
+    public CommunicationIdentityClientBuilder connectionString(String connectionString) {
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        String endpoint = connectionStringObject.getEndpoint();
+        String accessKey = connectionStringObject.getAccessKey();
+
+        this
+            .endpoint(endpoint)
+            .accessKey(accessKey);
         return this;
     }
 

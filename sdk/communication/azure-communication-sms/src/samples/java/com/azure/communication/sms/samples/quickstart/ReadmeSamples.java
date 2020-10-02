@@ -56,4 +56,16 @@ public class ReadmeSamples {
 
         System.out.println("MessageId: " + response.getMessageId());
     }
+
+    public void createCommunicationIdentityClientWithConnectionString() {
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        // Your can find your connection string from your resource in the Azure Portal
+        String connectionString = "<connection_string>";
+
+        SmsClientBuilder smsClient = new SmsClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(httpClient);
+    }
 }

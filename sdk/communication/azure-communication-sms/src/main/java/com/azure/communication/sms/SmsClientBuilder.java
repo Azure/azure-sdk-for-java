@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.communication.common.ConnectionString;
 import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
@@ -76,6 +77,25 @@ public final class SmsClientBuilder {
         this.credential = new CommunicationClientCredential(accessKey);
         return this;
     }
+
+     /**
+     * Set endpoint and credential to use
+     *
+     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
+     * @return SmsClientBuilder
+     */
+    public SmsClientBuilder connectionString(String connectionString) {
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        String endpoint = connectionStringObject.getEndpoint();
+        String accessKey = connectionStringObject.getAccessKey();
+
+        this
+            .endpoint(endpoint)
+            .accessKey(accessKey);
+        return this;
+    }
+
 
     /**
      * Set httpClient to use

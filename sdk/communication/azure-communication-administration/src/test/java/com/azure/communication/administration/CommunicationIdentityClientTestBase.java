@@ -15,7 +15,8 @@ import java.util.Locale;
 
 public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-
+    protected static final String CONNECTIONSTRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://yourresource.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("ADMINISTRATION_SERVICE_ENDPOINT", "https://yourresource.communication.azure.com");
 
@@ -28,6 +29,25 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .accessKey(ACCESSKEY);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            return builder;
+        } else {
+            HttpClient client = new NettyAsyncHttpClientBuilder().build();
+            builder.httpClient(client);
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString() {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder.connectionString(CONNECTIONSTRING);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

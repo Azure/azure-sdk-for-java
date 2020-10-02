@@ -30,11 +30,34 @@ public class SmsLiveTestBase extends TestBase {
     static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_ENDPOINT", "https://playback.sms.azurefd.net");
 
+    static final String CONNECTIONSTRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://playback.sms.azurefd.net/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
+
     protected SmsClientBuilder getSmsClientBuilder() {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
                .accessKey(ACCESSKEY);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            return builder;
+        } else {
+            HttpClient client = new NettyAsyncHttpClientBuilder().build();
+            builder.httpClient(client);
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString() {
+        SmsClientBuilder builder = new SmsClientBuilder();
+
+        builder.connectionString(CONNECTIONSTRING);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

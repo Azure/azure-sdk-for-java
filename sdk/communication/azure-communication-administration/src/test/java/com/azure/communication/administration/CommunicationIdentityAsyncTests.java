@@ -29,6 +29,16 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = getCommunicationIdentityClient().buildAsyncClient();
     }
 
+    @Test void createAsyncClientUsingConnectionString() {
+        asyncClient = getCommunicationIdentityClientUsingConnectionString().buildAsyncClient();
+        assertNotNull(asyncClient);
+        // Smoke testing identity client by creating user
+        Mono<CommunicationUser> response = asyncClient.createUser();
+        String id = response.block().getId();
+        assertNotNull(id);
+        assertFalse(id.isEmpty());
+    }
+
     @Test
     public void createUser() {
         Mono<CommunicationUser> response = asyncClient.createUser();

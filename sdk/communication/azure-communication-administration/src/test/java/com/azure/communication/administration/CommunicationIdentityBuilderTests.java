@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 public class CommunicationIdentityBuilderTests {
     static final String MOCKURL = "https://chitchat.dev.communication.azure.net/";
     static final String MOCKACCESSKEY = "HuZVBcRKEA+TW30GBzdsmRyqitKk1dHj2OBtTsgRe2mzlxWUHGh06CdOVJwp07JKuss1k+/YeXL4dYXPF5El4Q==";
+    static final String MOCKCONNECTIONSTRING = "endpoint=https://chitchat.dev.communication.azure.net//;accesskey=HuZVBcRKEA+TW30GBzdsmRyqitKk1dHj2OBtTsgRe2mzlxWUHGh06CdOVJwp07JKuss1k+/YeXL4dYXPF5El4Q==";
 
     static class NoOpHttpClient implements HttpClient {
         @Override
@@ -81,6 +82,30 @@ public class CommunicationIdentityBuilderTests {
         CommunicationIdentityClient syncClient = builder.buildClient();
         assertNotNull(syncClient);
         syncClient.createUser();
+    }
+
+    @Test
+    public void buildAsyncClientTestUsingConnectionString() {
+        builder
+            .connectionString(MOCKCONNECTIONSTRING)
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    // It would be very difficult to test the actual header
+                    // values without re-creating the HMAC Policy. We will
+                    // just make sure they are present and have values.
+                    Map<String, String> headers = request.getHeaders().toMap();
+                    assertTrue(headers.containsKey("Authorization"));
+                    assertTrue(headers.containsKey("User-Agent"));
+                    assertTrue(headers.containsKey("x-ms-content-sha256"));
+                    assertNotNull(headers.get("Authorization"));
+                    assertNotNull(headers.get("x-ms-content-sha256"));
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            });
+        CommunicationIdentityAsyncClient asyncClient = builder.buildAsyncClient();
+        assertNotNull(asyncClient);
+        asyncClient.createUser();
     }
 
     @Test
