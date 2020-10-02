@@ -72,8 +72,6 @@ class WebJobsIdentityTest {
             "testMSIEndpointWithSystemAssigned - MSISecret not configured in the environment.");
         IdentityClient client = new IdentityClientBuilder().build();
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
-            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
-            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
@@ -139,8 +137,6 @@ class WebJobsIdentityTest {
                                     .build();
 
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
-            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
-            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
