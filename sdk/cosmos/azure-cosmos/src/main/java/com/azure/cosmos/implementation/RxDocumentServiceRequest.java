@@ -87,6 +87,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
+    public boolean isReadOnly() {
+        return this.isReadOnlyRequest() || this.isReadOnlyScript();
+    }
+
     /**
      * @param operationType          the operation type.
      * @param resourceIdOrFullName   the request id or full name.

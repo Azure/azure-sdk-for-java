@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The SearchDocumentsResult model. */
+/** Response containing search results from an index. */
 @Immutable
 public final class SearchDocumentsResult {
     /*
