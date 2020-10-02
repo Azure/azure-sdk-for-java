@@ -64,8 +64,8 @@ class AuthClient extends DelegateRestClient {
     public String getAuthorizationToken(String resource) {
         String result;
 
-        if (System.getenv("WEBSITE_SITE_NAME") != null &&
-                !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+        if (System.getenv("WEBSITE_SITE_NAME") != null
+                && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAuthorizationTokenOnAppService(resource);
         } else {
             result = getAuthorizationTokenOnOthers(resource);
@@ -115,7 +115,26 @@ class AuthClient extends DelegateRestClient {
      * @return the authorization token.
      */
     private String getAuthorizationTokenOnAppService(String resource) {
-        return null;
+        String result = null;
+
+        System.out.println("Using MSI_ENDPOINT: " + System.getenv("MSI_ENDPOINT"));
+
+        StringBuilder url = new StringBuilder();
+        url.append(System.getenv("MSI_ENDPOINT"))
+                .append("?api-version=2017-09-01")
+                .append(RESOURCE_FRAGMENT).append(resource);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Metadata", "true");
+        headers.put("Secret", System.getenv("MSI_SECRET"));
+        String body = get(url.toString(), headers);
+
+        if (body != null) {
+            JsonConverter converter = JsonConverterFactory.createJsonConverter();
+            OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
+            result = token.getAccess_token();
+        }
+        return result;
     }
 
     /**
@@ -134,7 +153,7 @@ class AuthClient extends DelegateRestClient {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");
         String body = get(url.toString(), headers);
-        
+
         if (body != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
