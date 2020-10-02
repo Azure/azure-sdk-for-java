@@ -170,13 +170,10 @@ public final class CryptographyClientBuilder {
         policies.addAll(this.policies);
 
         if (clientOptions != null) {
-            Iterable<Header> headers = clientOptions.getHeaders();
-
-            if (headers.iterator().hasNext()) {
-                List<HttpHeader> httpHeaderList = new ArrayList<>();
-                headers.forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-                policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-            }
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
