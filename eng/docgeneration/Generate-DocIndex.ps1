@@ -36,6 +36,7 @@ New-Item -Path $YmlPath -Name "toc.yml" -Force
 Write-Verbose "Reading artifact from storage blob ..."
 $metadata = GetMetaData -lang $lang
 $langRegex = $LangMapping[$lang][1]
+$titleRegex = $LangMapping[$lang][0]
 $regex = "^$langRegex/(.*)/$"
 $pageToken = ""
 # Used for sorting the toc display order
@@ -104,7 +105,7 @@ foreach ($service in $sortedDir) {
 
 Write-Verbose "Creating Site Title and Navigation..."
 New-Item -Path "${DocOutDir}" -Name "toc.yml" -Force
-Add-Content -Path "${DocOutDir}/toc.yml" -Value "- name: Azure SDK for NET APIs`r`n  href: api/`r`n  homepage: api/index.md"
+Add-Content -Path "${DocOutDir}/toc.yml" -Value "- name: Azure SDK for $titleRegex APIs`r`n  href: api/`r`n  homepage: api/index.md"
 
 Write-Verbose "Copying root markdowns"
 Copy-Item "$($RepoRoot)/README.md" -Destination "${DocOutDir}/api/index.md" -Force
