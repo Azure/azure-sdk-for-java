@@ -33,7 +33,7 @@ public class ApiErrorBase {
     private String message;
 
     /**
-     * Get the code value.
+     * Get the error code.
      *
      * @return the code value
      */
@@ -42,7 +42,7 @@ public class ApiErrorBase {
     }
 
     /**
-     * Set the code value.
+     * Set the error code.
      *
      * @param code the code value to set
      * @return the ApiErrorBase object itself.
@@ -53,7 +53,7 @@ public class ApiErrorBase {
     }
 
     /**
-     * Get the target value.
+     * Get the target of the particular error.
      *
      * @return the target value
      */
@@ -62,7 +62,7 @@ public class ApiErrorBase {
     }
 
     /**
-     * Set the target value.
+     * Set the target of the particular error.
      *
      * @param target the target value to set
      * @return the ApiErrorBase object itself.
@@ -73,7 +73,7 @@ public class ApiErrorBase {
     }
 
     /**
-     * Get the message value.
+     * Get the error message.
      *
      * @return the message value
      */
@@ -82,7 +82,7 @@ public class ApiErrorBase {
     }
 
     /**
-     * Set the message value.
+     * Set the error message.
      *
      * @param message the message value to set
      * @return the ApiErrorBase object itself.

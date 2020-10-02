@@ -11,7 +11,7 @@ package com.microsoft.azure.management.compute.v2017_03_30;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes The SKU capabilites object.
+ * Describes The SKU capabilities object.
  */
 public class ResourceSkuCapabilities {
     /**
@@ -27,7 +27,7 @@ public class ResourceSkuCapabilities {
     private String value;
 
     /**
-     * Get the name value.
+     * Get an invariant to describe the feature.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class ResourceSkuCapabilities {
     }
 
     /**
-     * Get the value value.
+     * Get an invariant if the feature is measured by quantity.
      *
      * @return the value value
      */
