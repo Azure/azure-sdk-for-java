@@ -3,7 +3,7 @@
 Param (
     $RepoRoot,
     $DocGenDir,
-    $lang = ".net",
+    $lang = "java",
     $packageNameRegex = "",
     $packageNameReplacement = ""
 )
