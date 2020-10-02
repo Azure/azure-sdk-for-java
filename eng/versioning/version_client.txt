@@ -138,7 +138,6 @@ com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-bet
 unreleased_com.azure:azure-core-amqp;1.6.0-beta.1
 unreleased_com.azure:azure-identity;1.2.0-beta.2
 unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
-unreleased_com.azure:azure-storage-common;12.9.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -148,3 +147,4 @@ unreleased_com.azure:azure-storage-common;12.9.0-beta.1
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.1
+beta_com.azure:azure-storage-common;12.9.0-beta.1
