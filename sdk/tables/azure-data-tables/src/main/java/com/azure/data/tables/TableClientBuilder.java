@@ -60,6 +60,7 @@ public class TableClientBuilder {
      * Creates a {@link TableClient} based on options set in the builder.
      *
      * @return A {@link TableClient} created from the configurations in this builder.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
      */
     public TableClient buildClient() {
         return new TableClient(buildAsyncClient());
@@ -69,6 +70,7 @@ public class TableClientBuilder {
      * Creates a {@link TableAsyncClient} based on options set in the builder.
      *
      * @return A {@link TableAsyncClient} created from the configurations in this builder.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
      */
     public TableAsyncClient buildAsyncClient() {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
@@ -85,7 +87,7 @@ public class TableClientBuilder {
      *
      * @param connectionString Connection string of the storage or CosmosDB table API account.
      * @return The updated {@code TableClientBuilder}.
-     * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
+     * @throws IllegalArgumentException if {@code connectionString} isn't a valid connection string.
      */
     public TableClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
@@ -94,7 +96,7 @@ public class TableClientBuilder {
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
             throw logger
                 .logExceptionAsError(new IllegalArgumentException(
-                    "connectionString missing required settings to derive blob service endpoint."));
+                    "connectionString missing required settings to derive tables service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
@@ -112,7 +114,7 @@ public class TableClientBuilder {
      *
      * @param endpoint The URL of the storage or CosmosDB table API account endpoint.
      * @return The updated {@code TableClientBuilder}.
-     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} isn't a valid URL.
      */
     public TableClientBuilder endpoint(String endpoint) {
         try {
@@ -144,7 +146,7 @@ public class TableClientBuilder {
      *
      * @param sasToken The SAS token to use for authenticating requests.
      * @return The updated {@code TableClientBuilder}.
-     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
@@ -172,7 +174,7 @@ public class TableClientBuilder {
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@code TableClientBuilder}.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public TableClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "credential cannot be null.");
@@ -200,7 +202,7 @@ public class TableClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
      * @return The updated {@code TableClientBuilder}.
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
+     * @throws NullPointerException if {@code logOptions} is {@code null}.
      */
     public TableClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -213,7 +215,7 @@ public class TableClientBuilder {
      *
      * @param pipelinePolicy A pipeline policy
      * @return The updated {@code TableClientBuilder}.
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
+     * @throws NullPointerException if {@code pipelinePolicy} is {@code null}.
      */
     public TableClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
@@ -242,7 +244,7 @@ public class TableClientBuilder {
      *
      * @param retryOptions {@link RequestRetryOptions}.
      * @return The updated {@code TableClientBuilder}.
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
     public TableClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
@@ -254,9 +256,10 @@ public class TableClientBuilder {
      *
      * @param tableName Name of the table.
      * @return The updated {@code TableClientBuilder}.
+     * @throws NullPointerException if {@code tableName} is {@code null}.
      */
     public TableClientBuilder tableName(String tableName) {
-        this.tableName = tableName;
+        this.tableName = Objects.requireNonNull(tableName, "'tableName' cannot be null.");
         return this;
     }
 }
