@@ -104,6 +104,7 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table.
      * @return A {@link TableAsyncClient} instance for the provided table in the account.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
      */
     public TableAsyncClient getTableClient(String tableName) {
         return new TableAsyncClient(tableName, implementation);
@@ -112,10 +113,10 @@ public class TableServiceAsyncClient {
     /**
      * Creates a table within the Tables service.
      *
-     * If a table with the same name already exists within the service, an exception will be thrown.
-     *
      * @param tableName The name of the table to create.
      * @return An empty reactive result.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTable(String tableName) {
@@ -125,10 +126,10 @@ public class TableServiceAsyncClient {
     /**
      * Creates a table within the Tables service.
      *
-     * If a table with the same name already exists within the service, an exception will be thrown.
-     *
      * @param tableName The name of the table to create.
      * @return A reactive result containing the HTTP response.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createTableWithResponse(String tableName) {
@@ -157,6 +158,7 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to create.
      * @return An empty reactive result.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTableIfNotExists(String tableName) {
@@ -168,6 +170,7 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table to create.
      * @return A reactive result containing the HTTP response.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createTableIfNotExistsWithResponse(String tableName) {
@@ -188,10 +191,10 @@ public class TableServiceAsyncClient {
     /**
      * Deletes a table within the Tables service.
      *
-     * If no table with the provided name exists within the service, an exception will be thrown.
-     *
      * @param tableName The name of the table to delete.
      * @return An empty reactive result.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTable(String tableName) {
@@ -201,10 +204,10 @@ public class TableServiceAsyncClient {
     /**
      * Deletes a table within the Tables service.
      *
-     * If no table with the provided name exists within the service, an exception will be thrown.
-     *
      * @param tableName The name of the table to delete.
      * @return A reactive result containing the HTTP response.
+     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws TableServiceErrorException if no table with the provided name exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTableWithResponse(String tableName) {
@@ -237,6 +240,7 @@ public class TableServiceAsyncClient {
      * @param options The `filter` and `top` OData query options to apply to this operation.
      *
      * @return A paged reactive result containing matching tables within the account.
+     * @throws IllegalArgumentException if one or more of the OData query options in {@code options} is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableItem> listTables(ListTablesOptions options) {

@@ -83,7 +83,7 @@ public class TableServiceClientBuilder {
      *
      * @param connectionString Connection string of the storage or CosmosDB table API account.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
+     * @throws IllegalArgumentException if {@code connectionString} isn't a valid connection string.
      */
     public TableServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
@@ -92,7 +92,7 @@ public class TableServiceClientBuilder {
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
             throw logger
                 .logExceptionAsError(new IllegalArgumentException(
-                    "connectionString missing required settings to derive blob service endpoint."));
+                    "connectionString missing required settings to derive tables service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
@@ -110,7 +110,7 @@ public class TableServiceClientBuilder {
      *
      * @param endpoint The URL of the storage or CosmosDB table API account endpoint.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} isn't a valid URL.
      */
     public TableServiceClientBuilder endpoint(String endpoint) {
         try {
@@ -143,7 +143,7 @@ public class TableServiceClientBuilder {
      *
      * @param sasToken The SAS token to use for authenticating requests.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableServiceClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
@@ -171,7 +171,7 @@ public class TableServiceClientBuilder {
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public TableServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -199,7 +199,7 @@ public class TableServiceClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
+     * @throws NullPointerException if {@code logOptions} is {@code null}.
      */
     public TableServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -212,7 +212,7 @@ public class TableServiceClientBuilder {
      *
      * @param pipelinePolicy A pipeline policy
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
+     * @throws NullPointerException if {@code pipelinePolicy} is {@code null}.
      */
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.policies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
@@ -241,7 +241,7 @@ public class TableServiceClientBuilder {
      *
      * @param retryOptions {@link RequestRetryOptions}.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
     public TableServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
