@@ -7,7 +7,7 @@ package com.azure.storage.file.share
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
-
+import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
@@ -19,6 +19,7 @@ import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareSmbSettings
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.SmbMultichannel
+import com.azure.storage.file.share.options.ShareCreateOptions
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -72,7 +73,8 @@ class FileServiceAPITests extends APISpec {
 
     def "Create share max overloads"() {
         when:
-        def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, testMetadata, 1, null, null)
+        def createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions()
+            .setQuotaInGb(1).setMetadata(testMetadata).setAccessTier(ShareAccessTier.HOT), null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(createShareResponse, 201)
@@ -187,6 +189,27 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().setIncludeMetadata(true)                                                   | 3      | true            | false           | false
         new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true)                         | 4      | true            | true            | false
         new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true).setIncludeDeleted(true) | 5      | true            | true            | true
+    }
+
+    def "List shares get access tier"() {
+        setup:
+        def shareName = generateShareName()
+        def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
+
+        def time = getUTCNow()
+        share.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED)
+
+        when:
+        def shares = primaryFileServiceClient.listShares(null, null, null).iterator()
+
+        then:
+        def item = shares.next()
+        item.getName() == shareName
+        item.getProperties().getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
+        item.getProperties().getAccessTierChangeTime().isAfter(time)
+        item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1))
+        item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
+
     }
 
     def "List shares with premium share"() {
