@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServiceAssociationLink model. */
+/** ServiceAssociationLink resource. */
 @JsonFlatten
 @Fluent
 public class ServiceAssociationLink extends SubResource {

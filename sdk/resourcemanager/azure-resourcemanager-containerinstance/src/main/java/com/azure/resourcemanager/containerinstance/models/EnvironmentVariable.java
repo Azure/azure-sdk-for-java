@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EnvironmentVariable model. */
+/** The environment variable to set within the container instance. */
 @Fluent
 public final class EnvironmentVariable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentVariable.class);

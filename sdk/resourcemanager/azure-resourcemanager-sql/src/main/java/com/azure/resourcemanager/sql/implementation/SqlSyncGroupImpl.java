@@ -18,7 +18,7 @@ import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
 import com.azure.resourcemanager.sql.models.SyncGroupsType;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
@@ -109,7 +109,7 @@ public class SqlSyncGroupImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -124,49 +124,49 @@ public class SqlSyncGroupImpl
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public int interval() {
-        return this.inner().interval();
+        return this.innerModel().interval();
     }
 
     @Override
     public OffsetDateTime lastSyncTime() {
-        return this.inner().lastSyncTime();
+        return this.innerModel().lastSyncTime();
     }
 
     @Override
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
-        return this.inner().conflictResolutionPolicy();
+        return this.innerModel().conflictResolutionPolicy();
     }
 
     @Override
     public String syncDatabaseId() {
-        return this.inner().syncDatabaseId();
+        return this.innerModel().syncDatabaseId();
     }
 
     @Override
     public String databaseUserName() {
-        return this.inner().hubDatabaseUsername();
+        return this.innerModel().hubDatabaseUsername();
     }
 
     @Override
     public SyncGroupState syncState() {
-        return this.inner().syncState();
+        return this.innerModel().syncState();
     }
 
     @Override
     public SyncGroupSchema schema() {
-        return this.inner().schema();
+        return this.innerModel().schema();
     }
 
     @Override
     public void refreshHubSchema() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .refreshHubSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -175,7 +175,7 @@ public class SqlSyncGroupImpl
     public Mono<Void> refreshHubSchemaAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .refreshHubSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -184,7 +184,7 @@ public class SqlSyncGroupImpl
     public PagedIterable<SqlSyncFullSchemaProperty> listHubSchemas() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
@@ -194,7 +194,7 @@ public class SqlSyncGroupImpl
     public PagedFlux<SqlSyncFullSchemaProperty> listHubSchemasAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
@@ -204,7 +204,7 @@ public class SqlSyncGroupImpl
     public PagedIterable<SqlSyncGroupLogProperty> listLogs(String startTime, String endTime, String type) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listLogs(
                 this.resourceGroupName,
@@ -221,7 +221,7 @@ public class SqlSyncGroupImpl
     public PagedFlux<SqlSyncGroupLogProperty> listLogsAsync(String startTime, String endTime, String type) {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .listLogsAsync(
                 this.resourceGroupName,
@@ -238,7 +238,7 @@ public class SqlSyncGroupImpl
     public void triggerSynchronization() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .triggerSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -247,7 +247,7 @@ public class SqlSyncGroupImpl
     public Mono<Void> triggerSynchronizationAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .triggerSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -256,7 +256,7 @@ public class SqlSyncGroupImpl
     public void cancelSynchronization() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .cancelSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -265,7 +265,7 @@ public class SqlSyncGroupImpl
     public Mono<Void> cancelSynchronizationAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .cancelSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -293,43 +293,43 @@ public class SqlSyncGroupImpl
 
     @Override
     public SqlSyncGroupImpl withSyncDatabaseId(String syncDatabaseId) {
-        this.inner().withSyncDatabaseId(syncDatabaseId);
+        this.innerModel().withSyncDatabaseId(syncDatabaseId);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withDatabaseUserName(String userName) {
-        this.inner().withHubDatabaseUsername(userName);
+        this.innerModel().withHubDatabaseUsername(userName);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withDatabasePassword(String password) {
-        this.inner().withHubDatabasePassword(password);
+        this.innerModel().withHubDatabasePassword(password);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withConflictResolutionPolicyHubWins() {
-        this.inner().withConflictResolutionPolicy(SyncConflictResolutionPolicy.HUB_WIN);
+        this.innerModel().withConflictResolutionPolicy(SyncConflictResolutionPolicy.HUB_WIN);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withConflictResolutionPolicyMemberWins() {
-        this.inner().withConflictResolutionPolicy(SyncConflictResolutionPolicy.MEMBER_WIN);
+        this.innerModel().withConflictResolutionPolicy(SyncConflictResolutionPolicy.MEMBER_WIN);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withInterval(int interval) {
-        this.inner().withInterval(interval);
+        this.innerModel().withInterval(interval);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withSchema(SyncGroupSchema schema) {
-        this.inner().withSchema(schema);
+        this.innerModel().withSchema(schema);
         return this;
     }
 
@@ -344,10 +344,10 @@ public class SqlSyncGroupImpl
         final SqlSyncGroupImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .createOrUpdateAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.inner())
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.innerModel())
             .map(
                 syncGroupInner -> {
                     self.setInner(syncGroupInner);
@@ -364,7 +364,7 @@ public class SqlSyncGroupImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -373,7 +373,7 @@ public class SqlSyncGroupImpl
     protected Mono<SyncGroupInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -382,7 +382,7 @@ public class SqlSyncGroupImpl
     public void delete() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getSyncGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }

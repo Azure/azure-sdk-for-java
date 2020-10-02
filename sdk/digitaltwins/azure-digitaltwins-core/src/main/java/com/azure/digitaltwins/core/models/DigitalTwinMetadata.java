@@ -4,10 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +23,8 @@ public final class DigitalTwinMetadata {
     @JsonProperty(value = "$model", required = true)
     private String modelId;
 
-    private final Map<String, Object> writeableProperties = new HashMap<>();
+    @JsonIgnore
+    private final Map<String, Object> writableProperties = new HashMap<>();
 
     /**
      * Creates an instance of digital twin metadata.
@@ -58,17 +56,19 @@ public final class DigitalTwinMetadata {
      * @return The model-defined writable properties' request state.
      */
     @JsonAnyGetter
-    public Map<String, Object> getWriteableProperties() {
-        return writeableProperties;
+    public Map<String, Object> getWritableProperties() {
+        return writableProperties;
     }
 
     /**
-     * Sets the model-defined writable properties' request state.
+     * Adds additional writable properties to the model-defined writable properties' request state.
+     * @param key The key of the additional property to be added to the component metadata.
+     * @param value The value of the additional property to be added to the component metadata.
      * @return The DigitalTwinMetadata object itself.
      */
     @JsonAnySetter
-    DigitalTwinMetadata setWritableProperties(String key, Object value) {
-        this.writeableProperties.put(key, value);
+    public DigitalTwinMetadata addWritableProperties(String key, Object value) {
+        this.writableProperties.put(key, value);
         return this;
     }
 }

@@ -11,9 +11,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-spring-boot-metrics-starter</artifactId>
-  <version>2.3.5</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-metrics-starter;current} -->
+  <groupId>com.azure</groupId>
+  <artifactId>azure-spring-boot-starter-metrics</artifactId>
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-metrics;current} -->
 
   <name>Azure Metrics Spring Boot Starter</name>
   <description>Spring Boot Starter for Micrometer Metrics</description>
@@ -31,9 +31,9 @@
       <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
+      <groupId>com.azure</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>2.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>io.micrometer</groupId>
@@ -57,7 +57,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-spring-boot:[2.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.5.4]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->

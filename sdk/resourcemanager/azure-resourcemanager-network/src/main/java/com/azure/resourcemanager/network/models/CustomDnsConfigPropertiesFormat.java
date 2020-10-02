@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CustomDnsConfigPropertiesFormat model. */
+/** Contains custom Dns resolution configuration from customer. */
 @Fluent
 public final class CustomDnsConfigPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDnsConfigPropertiesFormat.class);

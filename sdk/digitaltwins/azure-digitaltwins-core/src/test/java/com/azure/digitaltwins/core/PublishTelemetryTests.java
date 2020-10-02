@@ -56,12 +56,10 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
 
-            String telemetryStringPayload = new ObjectMapper().writeValueAsString(telemetryPayload);
-
             Response<Void> publishComponentTelemetryResponse = client.publishComponentTelemetryWithResponse(
                 roomWithWifiTwinId,
                 TestAssetDefaults.WIFI_COMPONENT_NAME,
-                telemetryStringPayload,
+                telemetryPayload,
                 componentTelemetryRequestOptions,
                 Context.NONE);
 
@@ -99,6 +97,6 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
 
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        client.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload);
+        client.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
     }
 }

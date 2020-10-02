@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterAgentPoolProfile model. */
+/** Profile for the container service agent pool. */
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfile.class);

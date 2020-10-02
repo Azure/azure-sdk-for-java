@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.models.Permission;
-import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
+import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 
@@ -16,21 +16,21 @@ class PermissionImpl extends WrapperImpl<PermissionInner> implements Permission 
 
     @Override
     public List<String> actions() {
-        return inner().actions();
+        return innerModel().actions();
     }
 
     @Override
     public List<String> notActions() {
-        return inner().notActions();
+        return innerModel().notActions();
     }
 
     @Override
     public List<String> dataActions() {
-        return inner().dataActions();
+        return innerModel().dataActions();
     }
 
     @Override
     public List<String> notDataActions() {
-        return inner().notDataActions();
+        return innerModel().notDataActions();
     }
 }

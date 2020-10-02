@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.models.CategoryType;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The Azure {@link DiagnosticSettingsCategory} wrapper class implementation. */
@@ -18,11 +18,11 @@ class DiagnosticSettingsCategoryImpl extends WrapperImpl<DiagnosticSettingsCateg
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public CategoryType type() {
-        return this.inner().categoryType();
+        return this.innerModel().categoryType();
     }
 }

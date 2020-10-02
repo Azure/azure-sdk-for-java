@@ -7,6 +7,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppSetting;
@@ -42,29 +54,21 @@ import com.azure.resourcemanager.appservice.models.VirtualApplication;
 import com.azure.resourcemanager.appservice.models.WebAppAuthentication;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebContainer;
-import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
-import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
@@ -82,10 +86,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * The implementation for WebAppBase.
@@ -154,7 +154,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
         webAppMsiHandler = new WebAppMsiHandler<>(manager.authorizationManager(), this);
         normalizeProperties();
-        isInCreateMode = inner() == null || inner().id() == null;
+        isInCreateMode = innerModel() == null || innerModel().id() == null;
         if (!isInCreateMode) {
             initializeKuduClient();
         }
@@ -182,8 +182,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         return new RoleAssignmentHelper.IdProvider() {
             @Override
             public String principalId() {
-                if (inner() != null && inner().identity() != null) {
-                    return inner().identity().principalId();
+                if (innerModel() != null && innerModel().identity() != null) {
+                    return innerModel().identity().principalId();
                 } else {
                     return null;
                 }
@@ -191,8 +191,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
             @Override
             public String resourceId() {
-                if (inner() != null) {
-                    return inner().id();
+                if (innerModel() != null) {
+                    return innerModel().id();
                 } else {
                     return null;
                 }
@@ -215,7 +215,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         this.diagnosticLogsToUpdate = false;
         this.sslBindingsToCreate = new TreeMap<>();
         this.msiHandler = null;
-        this.webSiteBase = new WebSiteBaseImpl(inner());
+        this.webSiteBase = new WebSiteBaseImpl(innerModel());
         this.hostNameSslStateMap = new HashMap<>(this.webSiteBase.hostnameSslStates());
         this.webAppMsiHandler.clear();
     }
@@ -322,8 +322,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public String defaultHostname() {
-        if (inner().defaultHostname() != null) {
-            return inner().defaultHostname();
+        if (innerModel().defaultHostname() != null) {
+            return innerModel().defaultHostname();
         } else {
             AzureEnvironment environment = manager().environment();
             String dns = DNS_MAP.get(environment);
@@ -380,7 +380,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.remoteDebuggingEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.remoteDebuggingEnabled());
     }
 
     @Override
@@ -396,7 +396,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.webSocketsEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.webSocketsEnabled());
     }
 
     @Override
@@ -404,7 +404,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.alwaysOn());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.alwaysOn());
     }
 
     @Override
@@ -490,7 +490,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.http20Enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.http20Enabled());
     }
 
     @Override
@@ -498,7 +498,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(siteConfig.localMySqlEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(siteConfig.localMySqlEnabled());
     }
 
     @Override
@@ -527,7 +527,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().kind() != null && inner().kind().toLowerCase(Locale.ROOT).contains("linux")) {
+        if (innerModel().kind() != null && innerModel().kind().toLowerCase(Locale.ROOT).contains("linux")) {
             return OperatingSystem.LINUX;
         } else {
             return OperatingSystem.WINDOWS;
@@ -536,26 +536,26 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     public String systemAssignedManagedServiceIdentityTenantId() {
-        if (inner().identity() == null) {
+        if (innerModel().identity() == null) {
             return null;
         }
-        return inner().identity().tenantId();
+        return innerModel().identity().tenantId();
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
-        if (inner().identity() == null) {
+        if (innerModel().identity() == null) {
             return null;
         }
-        return inner().identity().principalId();
+        return innerModel().identity().principalId();
     }
 
     @Override
     public Set<String> userAssignedManagedServiceIdentityIds() {
-        if (inner().identity() == null) {
+        if (innerModel().identity() == null) {
             return null;
         }
-        return inner().identity().userAssignedIdentities().keySet();
+        return innerModel().identity().userAssignedIdentities().keySet();
     }
 
     @Override
@@ -754,7 +754,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     public void beforeGroupCreateOrUpdate() {
         if (hostNameSslStateMap.size() > 0) {
-            inner().withHostnameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
+            innerModel().withHostnameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
         // Hostname and SSL bindings
         IndexableTaskItem rootTaskItem =
@@ -763,7 +763,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                     // Submit hostname bindings
                     return submitHostNameBindings()
                         // Submit SSL bindings
-                        .flatMap(fluentT -> submitSslBindings(fluentT.inner()));
+                        .flatMap(fluentT -> submitSslBindings(fluentT.innerModel()));
                 });
         IndexableTaskItem lastTaskItem = rootTaskItem;
         // Site config
@@ -808,7 +808,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     public Mono<FluentT> createResourceAsync() {
         this.webAppMsiHandler.processCreatedExternalIdentities();
         this.webAppMsiHandler.handleExternalIdentities();
-        return submitSite(inner())
+        return submitSite(innerModel())
             .map(
                 siteInner -> {
                     setInner(siteInner);
@@ -819,7 +819,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     @SuppressWarnings("unchecked")
     public Mono<FluentT> updateResourceAsync() {
-        SiteInner siteInner = this.inner();
+        SiteInner siteInner = this.innerModel();
         SitePatchResourceInner siteUpdate = new SitePatchResourceInner();
         siteUpdate.withHostnameSslStates(siteInner.hostnameSslStates());
         siteUpdate.withKind(siteInner.kind());
@@ -893,7 +893,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     Mono<FluentT> submitHostNameBindings() {
         final List<Mono<HostnameBinding>> bindingObservables = new ArrayList<>();
         for (HostnameBindingImpl<FluentT, FluentImplT> binding : hostNameBindingsToCreate.values()) {
-            bindingObservables.add(Utils.<HostnameBinding>rootResource(binding.createAsync().last()));
+            bindingObservables.add(binding.createAsync());
         }
         for (String binding : hostNameBindingsToDelete) {
             bindingObservables.add(deleteHostnameBinding(binding).then(Mono.empty()));
@@ -908,7 +908,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                     throwable -> {
                         if (throwable instanceof HttpResponseException
                             && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400) {
-                            return submitSite(inner())
+                            return submitSite(innerModel())
                                 .flatMap(
                                     ignored -> Flux.zip(bindingObservables, ignored1 -> WebAppBaseImpl.this).last());
                         } else {
@@ -923,7 +923,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         List<Mono<AppServiceCertificate>> certs = new ArrayList<>();
         for (final HostnameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
             certs.add(binding.newCertificate());
-            hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
+            hostNameSslStateMap.put(binding.innerModel().name(), binding.innerModel().withToUpdate(true));
         }
         if (certs.isEmpty()) {
             return Mono.just((Indexable) this);
@@ -1050,8 +1050,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         }
         return sourceControl
             .registerGithubAccessToken()
-            .then(createOrUpdateSourceControl(sourceControl.inner()))
-            .delayElement(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+            .then(createOrUpdateSourceControl(sourceControl.innerModel()))
+            .delayElement(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30)))
             .map(ignored -> WebAppBaseImpl.this);
     }
 
@@ -1066,7 +1066,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (!authenticationToUpdate) {
             return Mono.just((Indexable) this);
         }
-        return updateAuthentication(authentication.inner())
+        return updateAuthentication(authentication.innerModel())
             .map(
                 siteAuthSettingsInner -> {
                     WebAppBaseImpl.this.authentication =
@@ -1079,7 +1079,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (!diagnosticLogsToUpdate) {
             return Mono.just((Indexable) this);
         }
-        return updateDiagnosticLogsConfig(diagnosticLogs.inner())
+        return updateDiagnosticLogsConfig(diagnosticLogs.innerModel())
             .map(
                 siteLogsConfigInner -> {
                     WebAppBaseImpl.this.diagnosticLogs =
@@ -1163,25 +1163,25 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @SuppressWarnings("unchecked")
     public FluentImplT withAppDisabledOnCreation() {
-        inner().withEnabled(false);
+        innerModel().withEnabled(false);
         return (FluentImplT) this;
     }
 
     @SuppressWarnings("unchecked")
     public FluentImplT withScmSiteAlsoStopped(boolean scmSiteAlsoStopped) {
-        inner().withScmSiteAlsoStopped(scmSiteAlsoStopped);
+        innerModel().withScmSiteAlsoStopped(scmSiteAlsoStopped);
         return (FluentImplT) this;
     }
 
     @SuppressWarnings("unchecked")
     public FluentImplT withClientAffinityEnabled(boolean enabled) {
-        inner().withClientAffinityEnabled(enabled);
+        innerModel().withClientAffinityEnabled(enabled);
         return (FluentImplT) this;
     }
 
     @SuppressWarnings("unchecked")
     public FluentImplT withClientCertEnabled(boolean enabled) {
-        inner().withClientCertEnabled(enabled);
+        innerModel().withClientCertEnabled(enabled);
         return (FluentImplT) this;
     }
 
@@ -1358,7 +1358,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @SuppressWarnings("unchecked")
     public FluentImplT withHttpsOnly(boolean httpsOnly) {
-        inner().withHttpsOnly(httpsOnly);
+        innerModel().withHttpsOnly(httpsOnly);
         return (FluentImplT) this;
     }
 
@@ -1528,7 +1528,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutAuthentication() {
-        this.authentication.inner().withEnabled(false);
+        this.authentication.innerModel().withEnabled(false);
         authenticationToUpdate = true;
         return (FluentImplT) this;
     }

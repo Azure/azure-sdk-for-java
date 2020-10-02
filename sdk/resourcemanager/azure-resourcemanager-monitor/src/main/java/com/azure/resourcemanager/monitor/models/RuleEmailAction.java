@@ -13,7 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The RuleEmailAction model. */
+/**
+ * Specifies the action to send email when the rule condition is evaluated. The discriminator is always RuleEmailAction
+ * in this case.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
 @JsonFlatten

@@ -1,5 +1,6 @@
 package com.azure.digitaltwins.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import com.azure.core.http.HttpClient;
 
@@ -9,9 +10,9 @@ import com.azure.core.http.HttpClient;
 public abstract class TwinTestBase extends DigitalTwinsTestBase{
 
     @Test
-    public abstract void DigitalTwins_Lifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     @Test
-    public abstract void DigitalTwins_TwinNotExist_ThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
 }

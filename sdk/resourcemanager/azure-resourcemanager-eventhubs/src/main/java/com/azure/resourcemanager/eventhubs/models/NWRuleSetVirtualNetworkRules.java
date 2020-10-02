@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NWRuleSetVirtualNetworkRules model. */
+/** Description of VirtualNetworkRules - NetworkRules resource. */
 @Fluent
 public final class NWRuleSetVirtualNetworkRules {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NWRuleSetVirtualNetworkRules.class);

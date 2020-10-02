@@ -70,9 +70,9 @@ public class PublishTelemetrySyncSamples {
 
         ConsoleLogger.printHeader("Create Models");
         // We now create all the models (including components)
-        List<ModelData> modelList =  client.createModels(modelsList);
+        Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
 
-        for (ModelData model : modelList) {
+        for (DigitalTwinsModelData model : modelList) {
             ConsoleLogger.print("Created model: " + model.getId());
         }
 
@@ -81,9 +81,10 @@ public class PublishTelemetrySyncSamples {
         String twinPayload = SamplesConstants.TEMPORARY_TWIN_PAYLOAD
             .replace(SamplesConstants.MODEL_ID, modelId);
 
-        client.createDigitalTwin(digitalTwinId, twinPayload);
+        String digitalTwinResponse = client.createDigitalTwin(digitalTwinId, twinPayload, String.class);
 
-        ConsoleLogger.printSuccess("Created digital twin " + digitalTwinId);
+        ConsoleLogger.printSuccess("Created digital twin with Id: " + digitalTwinId + "\n" + digitalTwinResponse);
+
         try
         {
             ConsoleLogger.printHeader("Publish Telemetry");
@@ -97,12 +98,11 @@ public class PublishTelemetrySyncSamples {
             // construct your json telemetry payload using a hashtable.
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
-            String telemetryStringPayload = new ObjectMapper().writeValueAsString(telemetryPayload);
 
             Response<Void> publishComponentTelemetryResponse = client.publishComponentTelemetryWithResponse(
                 digitalTwinId,
                 "Component1",
-                telemetryStringPayload,
+                telemetryPayload,
                 componentTelemetryRequestOptions,
                 Context.NONE);
 

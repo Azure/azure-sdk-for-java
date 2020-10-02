@@ -8,10 +8,11 @@ import com.azure.resourcemanager.network.models.LoadBalancerHttpProbe;
 import com.azure.resourcemanager.network.models.LoadBalancerTcpProbe;
 import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
-import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,39 +36,39 @@ class LoadBalancerProbeImpl extends ChildResourceImpl<ProbeInner, LoadBalancerIm
 
     @Override
     public int intervalInSeconds() {
-        return Utils.toPrimitiveInt(this.inner().intervalInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().intervalInSeconds());
     }
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().port());
     }
 
     @Override
     public int numberOfProbes() {
-        return Utils.toPrimitiveInt(this.inner().numberOfProbes());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().numberOfProbes());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public ProbeProtocol protocol() {
-        return this.inner().protocol();
+        return this.innerModel().protocol();
     }
 
     @Override
     public String requestPath() {
-        return this.inner().requestPath();
+        return this.innerModel().requestPath();
     }
 
     @Override
     public Map<String, LoadBalancingRule> loadBalancingRules() {
         final Map<String, LoadBalancingRule> rules = new TreeMap<>();
-        if (this.inner().loadBalancingRules() != null) {
-            for (SubResource inner : this.inner().loadBalancingRules()) {
+        if (this.innerModel().loadBalancingRules() != null) {
+            for (SubResource inner : this.innerModel().loadBalancingRules()) {
                 String name = ResourceUtils.nameFromResourceId(inner.id());
                 LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
                 if (rule != null) {
@@ -83,25 +84,25 @@ class LoadBalancerProbeImpl extends ChildResourceImpl<ProbeInner, LoadBalancerIm
 
     @Override
     public LoadBalancerProbeImpl withPort(int port) {
-        this.inner().withPort(port);
+        this.innerModel().withPort(port);
         return this;
     }
 
     @Override
     public LoadBalancerProbeImpl withRequestPath(String requestPath) {
-        this.inner().withRequestPath(requestPath);
+        this.innerModel().withRequestPath(requestPath);
         return this;
     }
 
     @Override
     public LoadBalancerProbeImpl withIntervalInSeconds(int seconds) {
-        this.inner().withIntervalInSeconds(seconds);
+        this.innerModel().withIntervalInSeconds(seconds);
         return this;
     }
 
     @Override
     public LoadBalancerProbeImpl withNumberOfProbes(int probes) {
-        this.inner().withNumberOfProbes(probes);
+        this.innerModel().withNumberOfProbes(probes);
         return this;
     }
 

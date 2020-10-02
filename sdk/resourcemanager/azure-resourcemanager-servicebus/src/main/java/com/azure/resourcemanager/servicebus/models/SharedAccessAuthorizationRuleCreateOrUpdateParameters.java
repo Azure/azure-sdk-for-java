@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SharedAccessAuthorizationRuleCreateOrUpdateParameters model. */
+/** Parameters supplied to the Create Or Update Authorization Rules operation. */
 @JsonFlatten
 @Fluent
 public class SharedAccessAuthorizationRuleCreateOrUpdateParameters {

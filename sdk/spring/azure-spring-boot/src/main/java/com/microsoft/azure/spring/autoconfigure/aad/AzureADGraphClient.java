@@ -35,10 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -193,9 +190,7 @@ public class AzureADGraphClient {
         final IClientCredential clientCredential = ClientCredentialFactory.createFromSecret(clientSecret);
         final UserAssertion assertion = new UserAssertion(idToken);
         IAuthenticationResult result = null;
-        ExecutorService service = null;
         try {
-            service = Executors.newFixedThreadPool(1);
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
                 .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
@@ -204,8 +199,7 @@ public class AzureADGraphClient {
             final Set<String> scopes = new HashSet<>();
             scopes.add(graphApiVersionIsV2 ? MICROSOFT_GRAPH_SCOPE : AAD_GRAPH_API_SCOPE);
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
-            final CompletableFuture<IAuthenticationResult> future = application.acquireToken(onBehalfOfParameters);
-            result = future.get();
+            result = application.acquireToken(onBehalfOfParameters).get();
         } catch (ExecutionException | InterruptedException | MalformedURLException e) {
             // Handle conditional access policy
             final Throwable cause = e.getCause();
@@ -216,10 +210,6 @@ public class AzureADGraphClient {
                 }
             }
             LOGGER.error("acquire on behalf of token for graph api error", e);
-        } finally {
-            if (service != null) {
-                service.shutdown();
-            }
         }
         if (result == null) {
             throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client " + clientId);

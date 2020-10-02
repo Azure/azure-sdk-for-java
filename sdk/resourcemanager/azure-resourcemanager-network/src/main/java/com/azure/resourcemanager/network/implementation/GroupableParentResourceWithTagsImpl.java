@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.models.UpdatableWithTags;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -23,7 +23,7 @@ public abstract class GroupableParentResourceWithTagsImpl<
         InnerModelT extends com.azure.core.management.Resource,
         FluentModelImplT extends
             GroupableParentResourceWithTagsImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends ManagerBase>
+        ManagerT extends Manager<?>>
     extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>
     implements UpdatableWithTags<FluentModelT>, AppliableWithTags<FluentModelT> {
     protected GroupableParentResourceWithTagsImpl(String name, InnerModelT innerObject, ManagerT manager) {

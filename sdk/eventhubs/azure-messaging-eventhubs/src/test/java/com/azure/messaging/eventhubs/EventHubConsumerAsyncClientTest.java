@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -71,6 +72,7 @@ import static org.mockito.Mockito.when;
  * Unit tests to verify functionality of {@link EventHubConsumerAsyncClient}.
  */
 class EventHubConsumerAsyncClientTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     static final String PARTITION_ID_HEADER = "partition-id-sent";
 
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
@@ -125,7 +127,7 @@ class EventHubConsumerAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

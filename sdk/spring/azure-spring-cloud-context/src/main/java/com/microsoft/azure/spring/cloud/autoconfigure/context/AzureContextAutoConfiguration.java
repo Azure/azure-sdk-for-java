@@ -43,7 +43,7 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public Azure azure(AzureTokenCredentials credentials) throws IOException {
+    public Azure azure(AzureTokenCredentials credentials, AzureProperties azureProperties) throws IOException {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials).withSerializerAdapter(new AzureJacksonAdapter())
@@ -52,7 +52,11 @@ public class AzureContextAutoConfiguration {
                 .withInterceptor(new ResourceManagerThrottlingInterceptor()).withUserAgent(SPRING_CLOUD_USER_AGENT)
                 .build();
 
-        return Azure.authenticate(restClient, credentials.domain()).withDefaultSubscription();
+        if (azureProperties.getSubscriptionId() == null) {
+            return Azure.authenticate(restClient, credentials.domain()).withDefaultSubscription();
+        } else {
+            return Azure.authenticate(restClient, credentials.domain()).withSubscription(azureProperties.getSubscriptionId());
+        }
     }
 
 

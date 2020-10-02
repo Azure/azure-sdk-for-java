@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayProbeHealthResponseMatch model. */
+/** Application gateway probe health response match. */
 @Fluent
 public final class ApplicationGatewayProbeHealthResponseMatch {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeHealthResponseMatch.class);

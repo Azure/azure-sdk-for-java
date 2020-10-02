@@ -98,7 +98,7 @@ class ReactorConnectionTest {
     @BeforeEach
     void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null);
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(HOSTNAME, connectionHandler.getProtocolPort(), connectionHandler))
@@ -119,7 +119,7 @@ class ReactorConnectionTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, null);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
@@ -301,7 +301,7 @@ class ReactorConnectionTest {
     @Test
     void createCBSNodeTimeoutException() {
         // Arrange
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null);
         final ReactorHandlerProvider provider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler,
             null, null);
 
@@ -313,7 +313,7 @@ class ReactorConnectionTest {
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), null);
 
         // Act and Assert
         ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,

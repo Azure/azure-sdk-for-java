@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
-  <version>5.2.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+  <version>5.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
 
   <name>Microsoft Azure client library for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
@@ -37,19 +37,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.9.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-amqp;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.0-beta.2</version> <!-- {x-version-update;unreleased_com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -58,6 +58,7 @@
       <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>

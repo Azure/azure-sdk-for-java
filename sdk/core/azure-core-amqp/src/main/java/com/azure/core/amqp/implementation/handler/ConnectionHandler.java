@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -32,7 +33,6 @@ public class ConnectionHandler extends Handler {
     static final Symbol FRAMEWORK = Symbol.valueOf("framework");
     static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
 
-    static final int MAX_USER_AGENT_LENGTH = 128;
     static final int AMQPS_PORT = 5671;
     static final int MAX_FRAME_SIZE = 65536;
 
@@ -46,8 +46,10 @@ public class ConnectionHandler extends Handler {
      * @param hostname Hostname of the AMQP message broker to create a connection to.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
+     * @param clientOptions provided by user.
      */
-    public ConnectionHandler(final String connectionId, final String hostname, String product, String clientVersion) {
+    public ConnectionHandler(final String connectionId, final String hostname,
+        String product, String clientVersion, final ClientOptions clientOptions) {
         super(connectionId, hostname);
 
         add(new Handshaker());
@@ -58,7 +60,8 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
-        String userAgent = UserAgentUtil.toUserAgentString(null, product, clientVersion, null);
+        final String applicationId = clientOptions != null ? clientOptions.getApplicationId() : null;
+        String userAgent = UserAgentUtil.toUserAgentString(applicationId, product, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 

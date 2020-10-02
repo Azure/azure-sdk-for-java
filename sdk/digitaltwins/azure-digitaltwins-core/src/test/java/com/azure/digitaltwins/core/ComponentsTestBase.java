@@ -1,5 +1,6 @@
 package com.azure.digitaltwins.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
 import com.azure.core.http.HttpClient;
@@ -10,5 +11,5 @@ import com.azure.core.http.HttpClient;
  */
 public abstract class ComponentsTestBase extends DigitalTwinsTestBase {
     @Test
-    public abstract void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 }

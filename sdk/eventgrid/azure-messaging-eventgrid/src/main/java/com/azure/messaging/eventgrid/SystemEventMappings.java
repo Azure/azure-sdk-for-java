@@ -3,6 +3,16 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageEditedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatMessageReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadCreatedWithUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
@@ -15,6 +25,21 @@ import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDisconnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceTelemetryEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultAccessPolicyChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultCertificateExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultCertificateNearExpiryEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultCertificateNewVersionCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultKeyExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultKeyNearExpiryEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultKeyNewVersionCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultSecretExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultSecretNearExpiryEventData;
+import com.azure.messaging.eventgrid.systemevents.KeyVaultSecretNewVersionCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesDatasetDriftDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesModelDeployedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesModelRegisteredEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunStatusChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.MapsGeofenceEnteredEventData;
 import com.azure.messaging.eventgrid.systemevents.MapsGeofenceExitedEventData;
 import com.azure.messaging.eventgrid.systemevents.MapsGeofenceResultEventData;
@@ -57,6 +82,19 @@ import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
+import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebAppUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebBackupOperationCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebBackupOperationFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebBackupOperationStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewCancelledEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewStartedEventData;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -335,6 +373,62 @@ public final class SystemEventMappings {
      */
     public static final String STORAGE_BLOB_DELETED_EVENT = "Microsoft.Storage.BlobDeleted";
 
+    // Communication Services events.
+    public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatMemberAddedToThreadWithUser";
+    public static final String COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER =
+        "Microsoft.Communication.ChatMemberRemovedFromThreadWithUser";
+    public static final String COMMUNICATION_CHAT_MESSAGE_DELETED =
+        "Microsoft.Communication.ChatMessageDeleted";
+    public static final String COMMUNICATION_CHAT_MESSAGE_EDITED =
+        "Microsoft.Communication.ChatMessageEdited";
+    public static final String COMMUNICATION_CHAT_MESSAGE_RECEIVED =
+        "Microsoft.Communication.ChatMessageReceived";
+    public static final String COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER =
+        "Microsoft.Communication.ChatThreadCreatedWithUser";
+    public static final String COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER =
+        "Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser";
+    public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED =
+        "Microsoft.Communication.ChatThreadWithUserDeleted";
+    public static final String COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED =
+        "Microsoft.Communication.SMSDeliveryReportReceived";
+    public static final String COMMUNICATION_SMS_RECEIVED =
+        "Microsoft.Communication.SMSReceived";
+
+    // Web
+    public static final String WEB_APP_UPDATED = "Microsoft.Web.AppUpdated";
+    public static final String WEB_BACKUP_OPERATION_STARTED = "Microsoft.Web.BackupOperationStarted";
+    public static final String WEB_BACKUP_OPERATION_COMPLETED = "Microsoft.Web.BackupOperationCompleted";
+    public static final String WEB_BACKUP_OPERATION_FAILED = "Microsoft.Web.BackupOperationFailed";
+    public static final String WEB_RESTORE_OPERATION_STARTED = "Microsoft.Web.RestoreOperationStarted";
+    public static final String WEB_RESTORE_OPERATION_COMPLETED = "Microsoft.Web.RestoreOperationCompleted";
+    public static final String WEB_RESTORE_OPERATION_FAILED = "Microsoft.Web.RestoreOperationFailed";
+    public static final String WEB_SLOT_SWAP_STARTED = "Microsoft.Web.SlotSwapStarted";
+    public static final String WEB_SLOT_SWAP_COMPLETED = "Microsoft.Web.SlotSwapCompleted";
+    public static final String WEB_SLOT_SWAP_FAILED = "Microsoft.Web.SlotSwapFailed";
+    public static final String WEB_SLOT_SWAP_WITH_PREVIEW_STARTED = "Microsoft.Web.SlotSwapWithPreviewStarted";
+    public static final String WEB_SLOT_SWAP_WITH_PREVIEW_CANCELLED = "Microsoft.Web.SlotSwapWithPreviewCancelled";
+    public static final String WEB_APP_SERVICE_PLAN_UPDATED = "Microsoft.Web.AppServicePlanUpdated";
+
+    // Machine Learning
+    public static final String MACHINE_LEARNING_DATASET_DRIFT_DETECTED = "Microsoft.MachineLearningServices.DatasetDriftDetected";
+    public static final String MACHINE_LEARNING_MODEL_DEPLOYED = "Microsoft.MachineLearningServices.ModelDeployed";
+    public static final String MACHINE_LEARNING_MODEL_REGISTERED = "Microsoft.MachineLearningServices.ModelRegistered";
+    public static final String MACHINE_LEARNING_RUN_COMPLETED = "Microsoft.MachineLearningServices.RunCompleted";
+    public static final String MACHINE_LEARNING_RUN_STATUS_CHANGED = "Microsoft.MachineLearningServices.RunStatusChanged";
+
+    // Key Vault
+    public static final String KEY_VAULT_CERTIFICATE_NEW_VERSION_CREATED = "Microsoft.KeyVault.CertificateNewVersionCreated";
+    public static final String KEY_VAULT_CERTIFICATE_NEAR_EXPIRY = "Microsoft.KeyVault.CertificateNearExpiry";
+    public static final String KEY_VAULT_CERTIFICATE_EXPIRED = "Microsoft.KeyVault.CertificateExpired";
+    public static final String KEY_VAULT_KEY_NEW_VERSION_CREATED = "Microsoft.KeyVault.KeyNewVersionCreated";
+    public static final String KEY_VAULT_KEY_NEAR_EXPIRY = "Microsoft.KeyVault.KeyNearExpiry";
+    public static final String KEY_VAULT_KEY_EXPIRED = "Microsoft.KeyVault.KeyExpired";
+    public static final String KEY_VAULT_SECRET_NEW_VERSION_CREATED = "Microsoft.KeyVault.SecretNewVersionCreated";
+    public static final String KEY_VAULT_SECRET_NEAR_EXPIRY = "Microsoft.KeyVault.SecretNearExpiry";
+    public static final String KEY_VAULT_SECRET_EXPIRED = "Microsoft.KeyVault.SecretExpired";
+    public static final String KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED = "Microsoft.KeyVault.VaultAccessPolicyChanged";
+
     //TODO: When a new service adds an event, add a constant above and a mapping to the corresponding data class below.
 
     private static final Map<String, Class<?>> systemEventMappings = new HashMap<String, Class<?>>() {{
@@ -411,6 +505,52 @@ public final class SystemEventMappings {
         // Storage events.
         put(canonicalizeEventType(STORAGE_BLOB_CREATED_EVENT), StorageBlobCreatedEventData.class);
         put(canonicalizeEventType(STORAGE_BLOB_DELETED_EVENT), StorageBlobDeletedEventData.class);
+
+        // Communication service events.
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER), AcsChatMemberAddedToThreadWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER), AcsChatMemberRemovedFromThreadWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_DELETED), AcsChatMessageDeletedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_EDITED), AcsChatMessageEditedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_MESSAGE_RECEIVED), AcsChatMessageReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER), AcsChatThreadCreatedWithUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER), AcsChatThreadPropertiesUpdatedPerUserEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED), AcsChatThreadWithUserDeletedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED), AcsSmsDeliveryReportReceivedEventData.class);
+        put(canonicalizeEventType(COMMUNICATION_SMS_RECEIVED), AcsSmsReceivedEventData.class);
+
+        // Web events
+        put(canonicalizeEventType(WEB_APP_UPDATED), WebAppUpdatedEventData.class);
+        put(canonicalizeEventType(WEB_BACKUP_OPERATION_STARTED), WebBackupOperationStartedEventData.class);
+        put(canonicalizeEventType(WEB_BACKUP_OPERATION_COMPLETED), WebBackupOperationCompletedEventData.class);
+        put(canonicalizeEventType(WEB_BACKUP_OPERATION_FAILED), WebBackupOperationFailedEventData.class);
+        put(canonicalizeEventType(WEB_RESTORE_OPERATION_STARTED), WebRestoreOperationStartedEventData.class);
+        put(canonicalizeEventType(WEB_RESTORE_OPERATION_COMPLETED), WebRestoreOperationCompletedEventData.class);
+        put(canonicalizeEventType(WEB_RESTORE_OPERATION_FAILED), WebRestoreOperationFailedEventData.class);
+        put(canonicalizeEventType(WEB_SLOT_SWAP_STARTED), WebSlotSwapStartedEventData.class);
+        put(canonicalizeEventType(WEB_SLOT_SWAP_COMPLETED), WebSlotSwapCompletedEventData.class);
+        put(canonicalizeEventType(WEB_SLOT_SWAP_FAILED), WebSlotSwapFailedEventData.class);
+        put(canonicalizeEventType(WEB_SLOT_SWAP_WITH_PREVIEW_STARTED), WebSlotSwapWithPreviewStartedEventData.class);
+        put(canonicalizeEventType(WEB_SLOT_SWAP_WITH_PREVIEW_CANCELLED), WebSlotSwapWithPreviewCancelledEventData.class);
+        put(canonicalizeEventType(WEB_APP_SERVICE_PLAN_UPDATED), WebAppServicePlanUpdatedEventData.class);
+
+        // Machine Learning events
+        put(canonicalizeEventType(MACHINE_LEARNING_DATASET_DRIFT_DETECTED), MachineLearningServicesDatasetDriftDetectedEventData.class);
+        put(canonicalizeEventType(MACHINE_LEARNING_MODEL_DEPLOYED), MachineLearningServicesModelDeployedEventData.class);
+        put(canonicalizeEventType(MACHINE_LEARNING_MODEL_REGISTERED), MachineLearningServicesModelRegisteredEventData.class);
+        put(canonicalizeEventType(MACHINE_LEARNING_RUN_COMPLETED), MachineLearningServicesRunCompletedEventData.class);
+        put(canonicalizeEventType(MACHINE_LEARNING_RUN_STATUS_CHANGED), MachineLearningServicesRunStatusChangedEventData.class);
+
+        // Key Vault events
+        put(canonicalizeEventType(KEY_VAULT_CERTIFICATE_NEW_VERSION_CREATED), KeyVaultCertificateNewVersionCreatedEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_CERTIFICATE_NEAR_EXPIRY), KeyVaultCertificateNearExpiryEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_CERTIFICATE_EXPIRED), KeyVaultCertificateExpiredEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_KEY_NEW_VERSION_CREATED), KeyVaultKeyNewVersionCreatedEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_KEY_NEAR_EXPIRY), KeyVaultKeyNearExpiryEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_KEY_EXPIRED), KeyVaultKeyExpiredEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_SECRET_NEW_VERSION_CREATED), KeyVaultSecretNewVersionCreatedEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_SECRET_NEAR_EXPIRY), KeyVaultSecretNearExpiryEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_SECRET_EXPIRED), KeyVaultSecretExpiredEventData.class);
+        put(canonicalizeEventType(KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED), KeyVaultAccessPolicyChangedEventData.class);
     }};
 
     /**

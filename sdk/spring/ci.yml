@@ -31,31 +31,31 @@ extends:
         groupId: com.azure
         safeName: azurespringdatagremlin
       - name: azure-spring-boot
-        groupId: com.microsoft.azure
+        groupId: com.azure
         safeName: azurespringboot
       - name: azure-spring-boot-starter
-        groupId: com.microsoft.azure
+        groupId: com.azure
         safeName: azurespringbootstarter
-      - name: azure-active-directory-spring-boot-starter
-        groupId: com.microsoft.azure
+      - name: azure-spring-boot-starter-active-directory
+        groupId: com.azure
         safeName: azurespringbootstarteractivedirectory
-      - name: azure-active-directory-b2c-spring-boot-starter
-        groupId: com.microsoft.azure
+      - name: azure-spring-boot-starter-active-directory-b2c
+        groupId: com.azure
         safeName: azurespringbootstarteractivedirectoryb2c
-      - name: azure-cosmosdb-spring-boot-starter
-        groupId: com.microsoft.azure
-        safeName: azurespringbootstartercosmosdb
-      - name: azure-data-gremlin-spring-boot-starter
-        groupId: com.microsoft.azure
+      - name: azure-spring-boot-starter-cosmos
+        groupId: com.azure
+        safeName: azurespringbootstartercosmos
+      - name: azure-spring-boot-starter-data-gremlin
+        groupId: com.azure
         safeName: azurespringbootstarterdatagremlin
-      - name: azure-keyvault-secrets-spring-boot-starter
-        groupId: com.microsoft.azure
+      - name: azure-spring-boot-starter-keyvault-secrets
+        groupId: com.azure
         safeName: azurespringbootstarterkeyvaultsecrets
-      - name: azure-spring-boot-metrics-starter
-        groupId: com.microsoft.azure
+      - name: azure-spring-boot-starter-metrics
+        groupId: com.azure
         safeName: azurespringbootstartermetrics
-      - name: azure-servicebus-jms-spring-boot-starter
-        groupId: com.microsoft.azure
+      - name: azure-spring-boot-starter-servicebus-jms
+        groupId: com.azure
         safeName: azurespringbootstarterservicebusjms
       - name: spring-cloud-azure-context
         groupId: com.microsoft.azure
@@ -131,7 +131,7 @@ extends:
         groupId: com.azure
       - name: azure-spring-boot-sample-active-directory-stateless
         groupId: com.azure
-      - name: azure-spring-boot-sample-cosmosdb
+      - name: azure-spring-boot-sample-cosmos
         groupId: com.azure
       - name: azure-spring-boot-sample-data-gremlin
         groupId: com.azure

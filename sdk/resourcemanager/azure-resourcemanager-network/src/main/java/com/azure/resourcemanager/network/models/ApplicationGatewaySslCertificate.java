@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslCertificateInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /** A client-side representation of an application gateway SSL certificate. */
 @Fluent()
 public interface ApplicationGatewaySslCertificate
-    extends HasInner<ApplicationGatewaySslCertificateInner>, ChildResource<ApplicationGateway> {
+    extends HasInnerModel<ApplicationGatewaySslCertificateInner>, ChildResource<ApplicationGateway> {
 
     /** @return the public data of the certificate */
     String publicData();

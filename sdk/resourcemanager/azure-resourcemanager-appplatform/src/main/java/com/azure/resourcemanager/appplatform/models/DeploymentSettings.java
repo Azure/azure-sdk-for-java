@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DeploymentSettings model. */
+/** Deployment settings payload. */
 @Fluent
 public final class DeploymentSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentSettings.class);
@@ -34,6 +34,12 @@ public final class DeploymentSettings {
      */
     @JsonProperty(value = "jvmOptions")
     private String jvmOptions;
+
+    /*
+     * The path to the .NET executable relative to zip root
+     */
+    @JsonProperty(value = "netCoreMainEntryPath")
+    private String netCoreMainEntryPath;
 
     /*
      * Collection of environment variables
@@ -106,6 +112,26 @@ public final class DeploymentSettings {
      */
     public DeploymentSettings withJvmOptions(String jvmOptions) {
         this.jvmOptions = jvmOptions;
+        return this;
+    }
+
+    /**
+     * Get the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
+     *
+     * @return the netCoreMainEntryPath value.
+     */
+    public String netCoreMainEntryPath() {
+        return this.netCoreMainEntryPath;
+    }
+
+    /**
+     * Set the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
+     *
+     * @param netCoreMainEntryPath the netCoreMainEntryPath value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withNetCoreMainEntryPath(String netCoreMainEntryPath) {
+        this.netCoreMainEntryPath = netCoreMainEntryPath;
         return this;
     }
 

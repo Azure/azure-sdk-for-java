@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CassandraSchema model. */
+/** Cosmos DB Cassandra table schema. */
 @Fluent
 public final class CassandraSchema {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraSchema.class);

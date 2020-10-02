@@ -88,6 +88,7 @@ public final class EncryptedBlobClientBuilder {
     private String blobName;
     private String snapshot;
     private String versionId;
+    private boolean requiresEncryption;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -173,7 +174,7 @@ public final class EncryptedBlobClientBuilder {
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
@@ -186,7 +187,7 @@ public final class EncryptedBlobClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String clientName = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
@@ -202,7 +203,7 @@ public final class EncryptedBlobClientBuilder {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         } else if (tokenCredential != null) {
             BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
         } else if (sasTokenCredential != null) {
             policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
@@ -618,5 +619,17 @@ public final class EncryptedBlobClientBuilder {
         this.endpoint(endpoint);
         this.serviceVersion(version);
         return this.pipeline(httpPipeline);
+    }
+
+    /**
+     * Sets the requires encryption option.
+     *
+     * @param requiresEncryption Whether or not encryption is enforced by this client. Client will throw if data is
+     * downloaded and it is not encrypted.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
+        this.requiresEncryption = requiresEncryption;
+        return this;
     }
 }

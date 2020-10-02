@@ -5,11 +5,10 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.digitaltwins.core.models.EventRoute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EventRouteCollection model. */
+/** A collection of EventRoute objects. */
 @Fluent
 public final class EventRouteCollection {
     /*

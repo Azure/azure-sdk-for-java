@@ -7,9 +7,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
@@ -30,7 +30,7 @@ public class FunctionAppsImpl
     implements FunctionApps, SupportsBatchDeletion {
 
     public FunctionAppsImpl(final AppServiceManager manager) {
-        super(manager.inner().getWebApps(), manager);
+        super(manager.serviceClient().getWebApps(), manager);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class FunctionAppsImpl
     public PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name) {
         return this
             .manager()
-            .webApps()
-            .inner()
+            .serviceClient()
+            .getWebApps()
             .listFunctions(resourceGroupName, name)
             .mapPage(FunctionEnvelopeImpl::new);
     }

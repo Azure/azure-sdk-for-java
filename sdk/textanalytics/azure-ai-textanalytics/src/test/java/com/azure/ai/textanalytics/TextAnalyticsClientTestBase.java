@@ -39,6 +39,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -50,7 +51,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TestUtils.AZURE_TEXT_ANALYTICS_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
@@ -615,7 +615,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY)));
+            builder.credential((new DefaultAzureCredentialBuilder().build()));
         }
         return builder;
     }
@@ -740,7 +740,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
-        assertEquals(expectedCategorizedEntity.getLength(), actualCategorizedEntity.getLength());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
@@ -752,7 +751,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualPiiEntity PiiEntity returned by the API.
      */
     static void validatePiiEntity(PiiEntity expectedPiiEntity, PiiEntity actualPiiEntity) {
-        assertEquals(expectedPiiEntity.getLength() > 0, actualPiiEntity.getLength() > 0);
         assertEquals(expectedPiiEntity.getOffset(), actualPiiEntity.getOffset());
         assertEquals(expectedPiiEntity.getSubcategory(), actualPiiEntity.getSubcategory());
         assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
@@ -875,7 +873,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
-        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
 
         if (includeOpinionMining) {
             validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
@@ -912,7 +909,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
         assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
         assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
-        assertEquals(expectedAspectSentiment.getLength(), actualAspectSentiment.getLength());
         assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
     }
 
@@ -939,7 +935,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedAspectOpinion.getSentiment(), actualAspectOpinion.getSentiment());
         assertEquals(expectedAspectOpinion.getText(), actualAspectOpinion.getText());
         assertEquals(expectedAspectOpinion.isNegated(), actualAspectOpinion.isNegated());
-        assertEquals(expectedAspectOpinion.getLength(), actualAspectOpinion.getLength());
         assertEquals(expectedAspectOpinion.getOffset(), actualAspectOpinion.getOffset());
     }
 
@@ -1065,7 +1060,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
             assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
-            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
             assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }
