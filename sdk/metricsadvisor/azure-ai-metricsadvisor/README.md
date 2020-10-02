@@ -65,6 +65,23 @@ MetricsAdvisorAdministrationClient metricsAdvisorAdministrationClient =
 ```
 
 ## Key concepts
+### MetricsAdvisorClient
+`MetricsAdvisorClient` helps with:
+
+- listing incidents
+- listing root causes of incidents
+- retrieving original time series data and time series data enriched by the service.
+- listing alerts
+- adding feedback to tune your model
+
+### MetricsAdvisorAdministrationClient
+`MetricsAdvisorAdministrationClient` allows you to
+
+- manage data feeds
+- configure anomaly detection configurations
+- configure anomaly alerting configurations
+- manage hooks
+
 ### Data feed
 A `data feed` is what Metrics Advisor ingests from the user-specified data source such as Cosmos structure stream, SQL query result, and so on.
 A data feed contains rows of timestamps, zero or more dimensions, one or more metrics. Therefore, multiple metrics could share the same data source and even the same data feed.

@@ -11,7 +11,7 @@ urlFragment: metricsadvisor-java-samples
 
 # Azure Metrics Advisor client library samples for Java
 Azure Metrics Advisor samples are a set of self-contained Java programs that demonstrate interacting with Azure Metrics Advisor service
-using the client library. Each sample focuses on a specific scenario and can be executed independently. 
+using the client library. Each sample focuses on a specific scenario and can be executed independently.
 
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
@@ -33,8 +33,7 @@ All of these samples need the endpoint to your Metrics Advisor resource ([instru
 |[DatafeedIngestionSample][data_feed_ingestion_sample]
 & [DatafeedIngestionSampleAsyncSample][data_feed_ingestion_async_sample] | List, get progress, and refresh data feed ingestion|
 |[HookSample][hook_sample]
-& [HookAsyncSample][hook_async_sample] | Create, list, get, update, and delete hooks|
-|[MetricFeedbackSample][metric_feedback_sample]
+& [HookAsyncSample][hook_async_sample] | Create, list, get, update, and delete hooks||[MetricFeedbackSample][metric_feedback_sample]
 & [MetricFeedbackAsyncSample][metric_feedback_async_sample] | Create, get and list feedbacks|
 
 Querying API's
@@ -77,12 +76,12 @@ If you would like to become an active contributor to this project please refer t
 Guidelines][SDK_README_CONTRIBUTING] for more information.
 
 <!-- LINKS -->
-[SDK_README_CONTRIBUTING]: ../../README.md#contributing
-[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
-[SDK_README_TROUBLESHOOTING]: ../../README.md#troubleshooting
-[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
-[SDK_README_DEPENDENCY]: ../../README.md#include-the-package
-[SDK_README_NEXT_STEPS]: ../../README.md#next-steps
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#contributing
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#getting-started
+[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#troubleshooting
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#key-concepts
+[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#include-the-package
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#next-steps
 [java_ma_ref_docs]: https://aka.ms/azsdk-java-metricsadvisor-ref-docs
 [data_feed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedOperationsSample.java
 [data_feed_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedOperationsAsyncSample.java

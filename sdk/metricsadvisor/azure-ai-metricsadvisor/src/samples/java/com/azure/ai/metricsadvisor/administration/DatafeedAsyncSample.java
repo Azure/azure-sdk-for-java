@@ -22,7 +22,7 @@ import java.util.Arrays;
 /**
  * Async sample demonstrates how to create, get, update, delete and list datafeed.
  */
-public class DatafeedOperationsAsyncSample {
+public class DatafeedAsyncSample {
     public static void main(String[] args) {
         final MetricsAdvisorAdministrationAsyncClient advisorAdministrationAsyncClient =
             new MetricsAdvisorAdministrationClientBuilder()
