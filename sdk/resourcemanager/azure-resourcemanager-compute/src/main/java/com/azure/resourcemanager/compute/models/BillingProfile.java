@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BillingProfile model. */
+/**
+ * Specifies the billing related details of a Azure Spot VM or VMSS. &lt;br&gt;&lt;br&gt;Minimum api-version:
+ * 2019-03-01.
+ */
 @Fluent
 public final class BillingProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfile.class);

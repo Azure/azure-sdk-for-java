@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DatabaseBackupSetting model. */
+/** Database backup settings. */
 @Fluent
 public final class DatabaseBackupSetting {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseBackupSetting.class);

@@ -325,6 +325,12 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "IsSealed")
     private Boolean sealed;
 
+    /*
+     * The lastAccessedTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessedTime;
+
     /**
      * Get the lastModified property: Returns the date and time the container
      * was last modified. Any operation that modifies the blob, including an
@@ -1275,6 +1281,26 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setSealed(Boolean sealed) {
         this.sealed = sealed;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @return the lastAccessedTime value.
+     */
+    public OffsetDateTime getLastAccessedTime() {
+        return this.lastAccessedTime;
+    }
+
+    /**
+     * Set the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @param lastAccessedTime the lastAccessedTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setLastAccessedTime(OffsetDateTime lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
         return this;
     }
 }

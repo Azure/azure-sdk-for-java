@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitStats;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitStatsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** Implementation for {@link ExpressRouteCircuitStats}. */
 public class ExpressRouteCircuitStatsImpl extends WrapperImpl<ExpressRouteCircuitStatsInner>
@@ -16,21 +16,21 @@ public class ExpressRouteCircuitStatsImpl extends WrapperImpl<ExpressRouteCircui
 
     @Override
     public long primaryBytesIn() {
-        return Utils.toPrimitiveLong(inner().primarybytesIn());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().primarybytesIn());
     }
 
     @Override
     public long primaryBytesOut() {
-        return Utils.toPrimitiveLong(inner().primarybytesOut());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().primarybytesOut());
     }
 
     @Override
     public long secondaryBytesIn() {
-        return Utils.toPrimitiveLong(inner().secondarybytesIn());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().secondarybytesIn());
     }
 
     @Override
     public long secondaryBytesOut() {
-        return Utils.toPrimitiveLong(inner().secondarybytesOut());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().secondarybytesOut());
     }
 }

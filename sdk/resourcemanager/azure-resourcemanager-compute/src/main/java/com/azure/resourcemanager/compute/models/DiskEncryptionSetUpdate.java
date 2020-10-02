@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DiskEncryptionSetUpdate model. */
+/** disk encryption set update resource. */
 @JsonFlatten
 @Fluent
 public class DiskEncryptionSetUpdate {

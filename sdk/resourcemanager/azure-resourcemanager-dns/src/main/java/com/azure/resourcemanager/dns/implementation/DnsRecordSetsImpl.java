@@ -4,7 +4,7 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 /** Represents an record set collection associated with a DNS zone. */
@@ -31,8 +31,8 @@ class DnsRecordSetsImpl
     }
 
     void withCNameRecordSet(String name, String alias) {
-        CNameRecordSetImpl recordSet = CNameRecordSetImpl.newRecordSet(name, this.getParent());
-        recordSet.inner().cnameRecord().withCname(alias);
+        CnameRecordSetImpl recordSet = CnameRecordSetImpl.newRecordSet(name, this.getParent());
+        recordSet.innerModel().cnameRecord().withCname(alias);
         setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 
@@ -41,15 +41,15 @@ class DnsRecordSetsImpl
     }
 
     DnsRecordSetImpl defineCNameRecordSet(String name) {
-        return setDefaults(prepareInlineDefine(CNameRecordSetImpl.newRecordSet(name, this.getParent())));
+        return setDefaults(prepareInlineDefine(CnameRecordSetImpl.newRecordSet(name, this.getParent())));
     }
 
     DnsRecordSetImpl defineMXRecordSet(String name) {
-        return setDefaults(prepareInlineDefine(MXRecordSetImpl.newRecordSet(name, this.getParent())));
+        return setDefaults(prepareInlineDefine(MxRecordSetImpl.newRecordSet(name, this.getParent())));
     }
 
     DnsRecordSetImpl defineNSRecordSet(String name) {
-        return setDefaults(prepareInlineDefine(NSRecordSetImpl.newRecordSet(name, this.getParent())));
+        return setDefaults(prepareInlineDefine(NsRecordSetImpl.newRecordSet(name, this.getParent())));
     }
 
     DnsRecordSetImpl definePtrRecordSet(String name) {
@@ -73,7 +73,7 @@ class DnsRecordSetsImpl
     }
 
     DnsRecordSetImpl updateMXRecordSet(String name) {
-        return prepareInlineUpdate(MXRecordSetImpl.newRecordSet(name, this.getParent()));
+        return prepareInlineUpdate(MxRecordSetImpl.newRecordSet(name, this.getParent()));
     }
 
     DnsRecordSetImpl updateCaaRecordSet(String name) {
@@ -81,11 +81,11 @@ class DnsRecordSetsImpl
     }
 
     DnsRecordSetImpl updateCNameRecordSet(String name) {
-        return prepareInlineUpdate(CNameRecordSetImpl.newRecordSet(name, this.getParent()));
+        return prepareInlineUpdate(CnameRecordSetImpl.newRecordSet(name, this.getParent()));
     }
 
     DnsRecordSetImpl updateNSRecordSet(String name) {
-        return prepareInlineUpdate(NSRecordSetImpl.newRecordSet(name, this.getParent()));
+        return prepareInlineUpdate(NsRecordSetImpl.newRecordSet(name, this.getParent()));
     }
 
     DnsRecordSetImpl updatePtrRecordSet(String name) {
@@ -117,15 +117,15 @@ class DnsRecordSetsImpl
     }
 
     void withoutCNameRecordSet(String name, String eTagValue) {
-        prepareInlineRemove(CNameRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
+        prepareInlineRemove(CnameRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
     }
 
     void withoutMXRecordSet(String name, String eTagValue) {
-        prepareInlineRemove(MXRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
+        prepareInlineRemove(MxRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
     }
 
     void withoutNSRecordSet(String name, String eTagValue) {
-        prepareInlineRemove(NSRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
+        prepareInlineRemove(NsRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
     }
 
     void withoutPtrRecordSet(String name, String eTagValue) {

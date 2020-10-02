@@ -8,11 +8,11 @@ import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.ModelData;
-import com.azure.digitaltwins.core.serialization.BasicDigitalTwin;
-import com.azure.digitaltwins.core.serialization.DigitalTwinMetadata;
-import com.azure.digitaltwins.core.serialization.ModelProperties;
-import com.azure.digitaltwins.core.util.UpdateOperationUtility;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
+import com.azure.digitaltwins.core.models.DigitalTwinMetadata;
+import com.azure.digitaltwins.core.models.ModelProperties;
+import com.azure.digitaltwins.core.models.UpdateOperationUtility;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,9 +75,9 @@ public class ComponentSyncSamples {
 
         ConsoleLogger.printHeader("Create Models");
         // We now create all the models (including components)
-        List<ModelData> modelList =  client.createModels(modelsList);
+        Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
 
-        for (ModelData model : modelList) {
+        for (DigitalTwinsModelData model : modelList) {
             ConsoleLogger.print("Created model: " + model.getId());
         }
 
@@ -89,23 +89,23 @@ public class ComponentSyncSamples {
                 new DigitalTwinMetadata()
                     .setModelId(modelId)
             )
-            .setCustomProperties("Prop1", "Value1")
-            .setCustomProperties("Prop2", 987)
-            .setCustomProperties(
+            .addCustomProperty("Prop1", "Value1")
+            .addCustomProperty("Prop2", 987)
+            .addCustomProperty(
                 "Component1",
                 new ModelProperties()
-                    .setCustomProperties("ComponentProp1", "Component value 1")
-                    .setCustomProperties("ComponentProp2", 123)
+                    .addCustomProperties("ComponentProp1", "Component value 1")
+                    .addCustomProperties("ComponentProp2", 123)
             );
 
         String basicDigitalTwinPayload = mapper.writeValueAsString(basicTwin);
 
-        client.createDigitalTwin(basicDigitalTwinId, basicDigitalTwinPayload);
+        BasicDigitalTwin basicTwinResponse = client.createDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
 
-        ConsoleLogger.print("Created digital twin " + basicDigitalTwinId);
+        ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
-        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, Context.NONE);
+        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, Context.NONE);
         ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
         BasicDigitalTwin deserializedDigitalTwin = mapper.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
@@ -146,7 +146,7 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
         ConsoleLogger.printHeader("Get Component");
-        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1");
+        String getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1", String.class);
         ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :\n" + getComponentResponse);
 
         // Clean up

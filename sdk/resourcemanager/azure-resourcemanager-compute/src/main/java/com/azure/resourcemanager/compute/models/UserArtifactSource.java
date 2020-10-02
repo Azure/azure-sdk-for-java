@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserArtifactSource model. */
+/** The source image from which the Image Version is going to be created. */
 @Fluent
 public final class UserArtifactSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserArtifactSource.class);

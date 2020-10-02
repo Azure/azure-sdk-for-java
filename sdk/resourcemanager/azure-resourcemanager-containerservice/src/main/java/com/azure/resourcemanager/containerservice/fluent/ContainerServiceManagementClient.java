@@ -4,181 +4,79 @@
 
 package com.azure.resourcemanager.containerservice.fluent;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the ContainerServiceManagementClient type. */
-@ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
-public final class ContainerServiceManagementClient extends AzureServiceClient {
-    private final ClientLogger logger = new ClientLogger(ContainerServiceManagementClient.class);
-
-    /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
-    private final String subscriptionId;
-
+/** The interface for ContainerServiceManagementClient class. */
+public interface ContainerServiceManagementClient {
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /** server parameter. */
-    private final String endpoint;
+    String getSubscriptionId();
 
     /**
      * Gets server parameter.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
-    }
-
-    /** The HTTP pipeline to send requests through. */
-    private final HttpPipeline httpPipeline;
+    String getEndpoint();
 
     /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     *
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /** The default poll interval for long-running operation. */
-    private final Duration defaultPollInterval;
+    HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
      *
      * @return the defaultPollInterval value.
      */
-    public Duration getDefaultPollInterval() {
-        return this.defaultPollInterval;
-    }
-
-    /** The OpenShiftManagedClustersClient object to access its operations. */
-    private final OpenShiftManagedClustersClient openShiftManagedClusters;
+    Duration getDefaultPollInterval();
 
     /**
      * Gets the OpenShiftManagedClustersClient object to access its operations.
      *
      * @return the OpenShiftManagedClustersClient object.
      */
-    public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
-        return this.openShiftManagedClusters;
-    }
-
-    /** The ContainerServicesClient object to access its operations. */
-    private final ContainerServicesClient containerServices;
+    OpenShiftManagedClustersClient getOpenShiftManagedClusters();
 
     /**
      * Gets the ContainerServicesClient object to access its operations.
      *
      * @return the ContainerServicesClient object.
      */
-    public ContainerServicesClient getContainerServices() {
-        return this.containerServices;
-    }
-
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    ContainerServicesClient getContainerServices();
 
     /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The ManagedClustersClient object to access its operations. */
-    private final ManagedClustersClient managedClusters;
+    OperationsClient getOperations();
 
     /**
      * Gets the ManagedClustersClient object to access its operations.
      *
      * @return the ManagedClustersClient object.
      */
-    public ManagedClustersClient getManagedClusters() {
-        return this.managedClusters;
-    }
-
-    /** The AgentPoolsClient object to access its operations. */
-    private final AgentPoolsClient agentPools;
+    ManagedClustersClient getManagedClusters();
 
     /**
      * Gets the AgentPoolsClient object to access its operations.
      *
      * @return the AgentPoolsClient object.
      */
-    public AgentPoolsClient getAgentPools() {
-        return this.agentPools;
-    }
-
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
-    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+    AgentPoolsClient getAgentPools();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
      * @return the PrivateEndpointConnectionsClient object.
      */
-    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Initializes an instance of ContainerServiceManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param defaultPollInterval The default poll interval for long-running operation.
-     * @param environment The Azure environment.
-     */
-    ContainerServiceManagementClient(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
-        super(httpPipeline, serializerAdapter, environment);
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
-        this.endpoint = endpoint;
-        this.openShiftManagedClusters = new OpenShiftManagedClustersClient(this);
-        this.containerServices = new ContainerServicesClient(this);
-        this.operations = new OperationsClient(this);
-        this.managedClusters = new ManagedClustersClient(this);
-        this.agentPools = new AgentPoolsClient(this);
-        this.privateEndpointConnections = new PrivateEndpointConnectionsClient(this);
-    }
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 }

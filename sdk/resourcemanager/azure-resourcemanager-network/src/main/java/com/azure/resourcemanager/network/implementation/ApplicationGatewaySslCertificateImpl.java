@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslCertificateInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;
@@ -30,17 +30,17 @@ class ApplicationGatewaySslCertificateImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String publicData() {
-        return this.inner().publicCertData();
+        return this.innerModel().publicCertData();
     }
 
     @Override
     public String keyVaultSecretId() {
-        return this.inner().keyVaultSecretId();
+        return this.innerModel().keyVaultSecretId();
     }
 
     // Verbs
@@ -55,7 +55,7 @@ class ApplicationGatewaySslCertificateImpl
     @Override
     public ApplicationGatewaySslCertificateImpl withPfxFromBytes(byte[] pfxData) {
         String encoded = new String(Base64.getEncoder().encode(pfxData), StandardCharsets.UTF_8);
-        this.inner().withData(encoded);
+        this.innerModel().withData(encoded);
         return this;
     }
 
@@ -71,13 +71,13 @@ class ApplicationGatewaySslCertificateImpl
 
     @Override
     public ApplicationGatewaySslCertificateImpl withPfxPassword(String password) {
-        this.inner().withPassword(password);
+        this.innerModel().withPassword(password);
         return this;
     }
 
     @Override
     public ApplicationGatewaySslCertificateImpl withKeyVaultSecretId(String keyVaultSecretId) {
-        this.inner().withKeyVaultSecretId(keyVaultSecretId);
+        this.innerModel().withKeyVaultSecretId(keyVaultSecretId);
         return this;
     }
 }

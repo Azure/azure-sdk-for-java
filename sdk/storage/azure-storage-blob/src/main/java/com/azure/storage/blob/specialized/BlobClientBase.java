@@ -23,7 +23,9 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -40,6 +42,7 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -218,7 +221,7 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream() {
-        return openInputStream(new BlobRange(0), null);
+        return openInputStream(null, null);
     }
 
     /**
@@ -232,7 +235,23 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), requestConditions);
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        options = options == null ? new BlobInputStreamOptions() : options;
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            options.getRequestConditions(), getProperties());
     }
 
     /**
@@ -625,8 +644,37 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions, context);
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+            .setParallelTransferOptions(finalParallelTransferOptions)
+            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
+            .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDownloadToFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the blob properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(options, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 

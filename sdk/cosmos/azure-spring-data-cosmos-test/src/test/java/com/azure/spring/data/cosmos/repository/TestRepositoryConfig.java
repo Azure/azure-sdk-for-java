@@ -60,11 +60,6 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
                            .build();
     }
 
-    @Bean
-    public DynamicContainer dynamicContainer() {
-        return new DynamicContainer(TestConstants.DYNAMIC_BEAN_COLLECTION_NAME);
-    }
-
     @Override
     protected String getDatabaseName() {
         return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;

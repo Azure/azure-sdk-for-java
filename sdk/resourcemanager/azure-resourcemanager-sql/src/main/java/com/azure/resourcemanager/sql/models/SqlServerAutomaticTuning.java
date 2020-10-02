@@ -5,16 +5,16 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL Server automatic tuning object. */
 @Fluent
 public interface SqlServerAutomaticTuning
-    extends HasInner<ServerAutomaticTuningInner>,
+    extends HasInnerModel<ServerAutomaticTuningInner>,
         Refreshable<SqlServerAutomaticTuning>,
         Updatable<SqlServerAutomaticTuning.Update> {
 

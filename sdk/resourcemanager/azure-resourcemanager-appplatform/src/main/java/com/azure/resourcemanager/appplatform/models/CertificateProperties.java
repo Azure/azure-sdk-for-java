@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CertificateProperties model. */
+/** Certificate resource payload. */
 @Fluent
 public final class CertificateProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateProperties.class);

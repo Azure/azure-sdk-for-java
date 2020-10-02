@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -55,19 +55,19 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final int desiredVMCount = 6;
         final Region region = Region.US_WEST;
-        final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 15);
         final List<Throwable> errors = new ArrayList<>();
 
         try {
             // Create one resource group for everything for easier cleanup later
             System.out.println(String.format("Creating the resource group (`%s`)...", resourceGroupName));
-            ResourceGroup resourceGroup = azure.resourceGroups().define(resourceGroupName)
+            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(resourceGroupName)
                     .withRegion(region)
                     .create();
             System.out.println("Resource group created.");
@@ -95,23 +95,23 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                 Collection<Creatable<? extends Resource>> relatedDefinitions = new ArrayList<>();
 
                 // Define a network for each VM
-                String networkName = azure.sdkContext().randomResourceName("net", 14);
-                Creatable<Network> networkDefinition = azure.networks().define(networkName)
+                String networkName = Utils.randomResourceName(azureResourceManager, "net", 14);
+                Creatable<Network> networkDefinition = azureResourceManager.networks().define(networkName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withAddressSpace("10.0." + i + ".0/29"); // Make the address space unique
                 relatedDefinitions.add(networkDefinition);
 
                 // Define a PIP for each VM
-                String pipName = azure.sdkContext().randomResourceName("pip", 14);
-                Creatable<PublicIpAddress> pipDefinition = azure.publicIpAddresses().define(pipName)
+                String pipName = Utils.randomResourceName(azureResourceManager, "pip", 14);
+                Creatable<PublicIpAddress> pipDefinition = azureResourceManager.publicIpAddresses().define(pipName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(pipDefinition);
 
                 // Define a NIC for each VM
-                String nicName = azure.sdkContext().randomResourceName("nic", 14);
-                Creatable<NetworkInterface> nicDefinition = azure.networkInterfaces().define(nicName)
+                String nicName = Utils.randomResourceName(azureResourceManager, "nic", 14);
+                Creatable<NetworkInterface> nicDefinition = azureResourceManager.networkInterfaces().define(nicName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork(networkDefinition)
@@ -119,13 +119,13 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                         .withNewPrimaryPublicIPAddress(pipDefinition);
 
                 // Define an availability set for each VM
-                String availabilitySetName = azure.sdkContext().randomResourceName("as", 14);
-                Creatable<AvailabilitySet> availabilitySetDefinition = azure.availabilitySets().define(availabilitySetName)
+                String availabilitySetName = Utils.randomResourceName(azureResourceManager, "as", 14);
+                Creatable<AvailabilitySet> availabilitySetDefinition = azureResourceManager.availabilitySets().define(availabilitySetName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(availabilitySetDefinition);
 
-                String vmName = azure.sdkContext().randomResourceName("vm", 14);
+                String vmName = Utils.randomResourceName(azureResourceManager, "vm", 14);
 
                 // Define a VM
                 String userName;
@@ -136,7 +136,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                     userName = "tester";
                 }
 
-                Creatable<VirtualMachine> vmDefinition = azure.virtualMachines().define(vmName)
+                Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines().define(vmName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetworkInterface(nicDefinition)
@@ -156,36 +156,26 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             // Start the parallel creation of everything asynchronously
             //
             System.out.println("Creating the virtual machines and related required resources in parallel...");
-            azure
+            azureResourceManager
                 .virtualMachines()
                 .createAsync(new ArrayList<>(vmDefinitions.values()))
-                .map(createdResource -> {
-                    if (createdResource instanceof Resource) {
-                        Resource resource = (Resource) createdResource;
+                .map(virtualMachine -> {
 
-                        // Report the creation of a resource in the UI
-                        System.out.println(String.format("\tCreated resource of type %s named '%s'",
-                            ResourceUtils.resourceTypeFromResourceId(resource.id()),
-                            ResourceUtils.nameFromResourceId(resource.id())));
+                    // Report the creation of a resource in the UI
+                    System.out.println(String.format("\tCreated resource of type %s named '%s'",
+                        ResourceUtils.resourceTypeFromResourceId(virtualMachine.id()),
+                        ResourceUtils.nameFromResourceId(virtualMachine.id())));
 
-                        if (resource instanceof VirtualMachine) {
-                            // Track the successful creation of virtual machines, so that their related resources do not cleaned up later
-                            VirtualMachine virtualMachine = (VirtualMachine) resource;
+                    // Record that this VM was created successfully
+                    vmDefinitions.remove(virtualMachine.key());
 
-                            // Record that this VM was created successfully
-                            vmDefinitions.remove(virtualMachine.key());
+                    // Remove the associated resources from cleanup list
+                    vmNonNicResourceDefinitions.remove(virtualMachine.key());
 
-                            // Remove the associated resources from cleanup list
-                            vmNonNicResourceDefinitions.remove(virtualMachine.key());
+                    // Remove the associated NIC from cleanup list
+                    nicDefinitions.remove(virtualMachine.key());
 
-                            // Remove the associated NIC from cleanup list
-                            nicDefinitions.remove(virtualMachine.key());
-                        } else {
-                            // Since this is not a VM, add this resource to the potential cleanup list
-                            createdResourceIds.put(resource.key(), resource.id());
-                        }
-                    }
-                    return createdResource;
+                    return virtualMachine;
                 })
                 .onErrorResume(e -> {
                     errors.add(e);
@@ -220,7 +210,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             }
             if (!nicIdsToDelete.isEmpty()) {
                 // Delete the NICs in parallel for better performance
-                azure.networkInterfaces().deleteByIds(nicIdsToDelete);
+                azureResourceManager.networkInterfaces().deleteByIds(nicIdsToDelete);
             }
 
             // Delete remaining successfully created resources of failed VM creations in parallel
@@ -230,7 +220,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                     String createdResourceId = createdResourceIds.get(resource.key());
                     if (createdResourceId != null) {
                         // Prepare the deletion of each related resource (treating it as a generic resource) as a multi-threaded Observable
-                        deleteObservables.add(azure.genericResources().deleteByIdAsync(createdResourceId));
+                        deleteObservables.add(azureResourceManager.genericResources().deleteByIdAsync(createdResourceId));
                     }
                 }
             }
@@ -241,26 +231,26 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             System.out.println("Number of failed/cleaned up VM creations: " + vmNonNicResourceDefinitions.size());
 
             // Verifications
-            final int actualVMCount = Utils.getSize(azure.virtualMachines().listByResourceGroup(resourceGroupName));
+            final int actualVMCount = Utils.getSize(azureResourceManager.virtualMachines().listByResourceGroup(resourceGroupName));
             System.out.println("Number of successful VMs: " + actualVMCount);
 
-            final int actualNicCount = Utils.getSize(azure.networkInterfaces().listByResourceGroup(resourceGroupName));
+            final int actualNicCount = Utils.getSize(azureResourceManager.networkInterfaces().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining network interfaces (should be %d): %d", actualVMCount, actualNicCount));
 
-            final int actualNetworkCount = Utils.getSize(azure.networks().listByResourceGroup(resourceGroupName));
+            final int actualNetworkCount = Utils.getSize(azureResourceManager.networks().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining virtual networks (should be %d): %d", actualVMCount, actualNetworkCount));
 
-            final int actualPipCount = Utils.getSize(azure.publicIpAddresses().listByResourceGroup(resourceGroupName));
+            final int actualPipCount = Utils.getSize(azureResourceManager.publicIpAddresses().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining public IP addresses (should be %d): %d", actualVMCount, actualPipCount));
 
-            final int actualAvailabilitySetCount = Utils.getSize(azure.availabilitySets().listByResourceGroup(resourceGroupName));
+            final int actualAvailabilitySetCount = Utils.getSize(azureResourceManager.availabilitySets().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining availability sets (should be %d): %d", actualVMCount, actualAvailabilitySetCount));
 
             return true;
         } finally {
             try {
                 System.out.println("Starting the deletion of resource group: " + resourceGroupName);
-                azure.resourceGroups().beginDeleteByName(resourceGroupName);
+                azureResourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -281,18 +271,19 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             //
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

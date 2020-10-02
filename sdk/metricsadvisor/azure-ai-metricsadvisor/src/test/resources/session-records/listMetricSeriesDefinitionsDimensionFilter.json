@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23c2924e-cbba-4ca5-9db0-6cfb45c7cbed",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "0aa0350f-d095-43f7-8f96-b04a6c49c367",
+      "x-envoy-upstream-service-time" : "197",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0aa0350f-d095-43f7-8f96-b04a6c49c367",
+      "retry-after" : "0",
+      "Content-Length" : "2338",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Caucasian Fir\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blue Atlas Cedar\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Beech\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Bastard Service Tree\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry Laurel\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Chinese red-barked birch\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cider gum\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Alder\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Caucasian Lime\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Birch\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Ash\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Austrian Pine\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Black Birch (River Birch)\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Almond\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Walnut\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Black Poplar\",\"Dim2\":\"Angelfish\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=20\"}",
+      "Date" : "Mon, 14 Sep 2020 07:29:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae18e7d0-a3ad-49a4-ae8b-33d5fb08cd5b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "784d475a-98f5-4681-9dd8-27f69a797a3f",
+      "x-envoy-upstream-service-time" : "203",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "784d475a-98f5-4681-9dd8-27f69a797a3f",
+      "retry-after" : "0",
+      "Content-Length" : "353",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cockspur Thorn\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Algerian Fir\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Juniper\",\"Dim2\":\"Angelfish\"}}],\"@nextLink\":null}",
+      "Date" : "Mon, 14 Sep 2020 07:29:14 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

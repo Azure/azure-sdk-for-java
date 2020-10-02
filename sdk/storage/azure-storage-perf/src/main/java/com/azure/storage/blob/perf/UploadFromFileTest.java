@@ -3,17 +3,18 @@
 
 package com.azure.storage.blob.perf;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
-
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.BlobTestBase;
+import reactor.core.publisher.Mono;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import reactor.core.publisher.Mono;
+
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
 public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 

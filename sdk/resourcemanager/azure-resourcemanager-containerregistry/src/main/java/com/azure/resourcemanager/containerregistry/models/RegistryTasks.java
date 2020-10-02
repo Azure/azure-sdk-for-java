@@ -5,14 +5,12 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Interface to define the RegistryTasks collection. */
 @Fluent()
-public interface RegistryTasks extends HasInner<TasksClient>, SupportsCreating<RegistryTask.DefinitionStages.Blank> {
+public interface RegistryTasks extends SupportsCreating<RegistryTask.DefinitionStages.Blank> {
     /**
      * Lists the tasks in a registry asynchronously.
      *

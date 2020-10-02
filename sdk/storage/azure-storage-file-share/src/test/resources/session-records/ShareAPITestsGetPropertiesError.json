@@ -1,26 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsgetpropertieserror362679fba37d21b79?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetpropertieserror12376c37812e8d51d?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0a1b5451-735e-4f2c-a945-ab312a7e2129"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "660fe661-7ffa-460a-9efb-a44aa4273413"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9ba99ed1-201a-0011-75fa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:9ba99ed1-201a-0011-75fa-aa088f000000\nTime:2019-12-04T23:30:44.7380276Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:44 GMT",
-      "x-ms-client-request-id" : "0a1b5451-735e-4f2c-a945-ab312a7e2129",
+      "x-ms-request-id" : "8c89f87f-601a-0022-2c75-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f87f-601a-0022-2c75-761fdd000000\nTime:2020-08-19T22:09:36.9711730Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:36 GMT",
+      "x-ms-client-request-id" : "660fe661-7ffa-460a-9efb-a44aa4273413",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsgetpropertieserror362679fba37d21b79" ]
+  "variables" : [ "shareapitestsgetpropertieserror12376c37812e8d51d" ]
 }

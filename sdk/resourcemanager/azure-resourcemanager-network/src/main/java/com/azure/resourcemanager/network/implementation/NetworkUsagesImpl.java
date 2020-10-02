@@ -7,8 +7,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.models.NetworkUsage;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
-import com.azure.resourcemanager.network.fluent.inner.UsageInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.network.fluent.models.UsageInner;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /** The implementation of NetworkUsages. */

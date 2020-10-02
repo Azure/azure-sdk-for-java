@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureFirewallNatRule model. */
+/** Properties of a NAT rule. */
 @Fluent
 public final class AzureFirewallNatRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRule.class);

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BreakOutCategoryPolicies model. */
+/** Network Virtual Appliance Sku Properties. */
 @Fluent
 public final class BreakOutCategoryPolicies {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BreakOutCategoryPolicies.class);

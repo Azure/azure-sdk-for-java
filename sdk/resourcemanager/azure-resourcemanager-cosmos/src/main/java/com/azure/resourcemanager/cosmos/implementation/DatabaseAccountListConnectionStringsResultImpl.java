@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountConnectionString;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListConnectionStringsResultInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountListConnectionStringsResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 
@@ -18,6 +18,6 @@ public class DatabaseAccountListConnectionStringsResultImpl
 
     @Override
     public List<DatabaseAccountConnectionString> connectionStrings() {
-        return this.inner().connectionStrings();
+        return this.innerModel().connectionStrings();
     }
 }

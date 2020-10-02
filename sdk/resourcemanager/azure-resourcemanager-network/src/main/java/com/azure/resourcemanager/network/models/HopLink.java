@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The HopLink model. */
+/** Hop link. */
 @JsonFlatten
 @Immutable
 public class HopLink {

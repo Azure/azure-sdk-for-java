@@ -18,6 +18,6 @@ public class KeyVaultSampleTests extends SamplesTestBase {
             final Configuration configuration = Configuration.getGlobalConfiguration();
             clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         }
-        Assertions.assertTrue(ManageKeyVault.runSample(azure, clientId));
+        Assertions.assertTrue(ManageKeyVault.runSample(azureResourceManager, clientId));
     }
 }

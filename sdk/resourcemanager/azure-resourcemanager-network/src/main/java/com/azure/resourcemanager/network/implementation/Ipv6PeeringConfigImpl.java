@@ -43,13 +43,13 @@ class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuit
 
     @Override
     public Ipv6PeeringConfigImpl withPrimaryPeerAddressPrefix(String addressPrefix) {
-        inner().withPrimaryPeerAddressPrefix(addressPrefix);
+        innerModel().withPrimaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
     public Ipv6PeeringConfigImpl withSecondaryPeerAddressPrefix(String addressPrefix) {
-        inner().withSecondaryPeerAddressPrefix(addressPrefix);
+        innerModel().withSecondaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
@@ -61,13 +61,13 @@ class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuit
 
     @Override
     public Ipv6PeeringConfigImpl withRouteFilter(String routeFilterId) {
-        inner().withRouteFilter(new SubResource().withId(routeFilterId));
+        innerModel().withRouteFilter(new SubResource().withId(routeFilterId));
         return this;
     }
 
     @Override
     public Ipv6PeeringConfigImpl withoutRouteFilter() {
-        inner().withRouteFilter(null);
+        innerModel().withRouteFilter(null);
         return this;
     }
 
@@ -78,10 +78,10 @@ class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuit
     }
 
     private ExpressRouteCircuitPeeringConfig ensureMicrosoftPeeringConfig() {
-        if (inner().microsoftPeeringConfig() == null) {
-            inner().withMicrosoftPeeringConfig(new ExpressRouteCircuitPeeringConfig());
+        if (innerModel().microsoftPeeringConfig() == null) {
+            innerModel().withMicrosoftPeeringConfig(new ExpressRouteCircuitPeeringConfig());
         }
-        return inner().microsoftPeeringConfig();
+        return innerModel().microsoftPeeringConfig();
     }
 
     @Override
