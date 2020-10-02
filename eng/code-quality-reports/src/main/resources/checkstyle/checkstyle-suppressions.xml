@@ -440,6 +440,18 @@
 
   <suppress checks="GoodLoggingCheck" files="com.azure.ai.formrecognizer.models.FieldValueType.java" />
 
+  <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl" />
+  <!-- Supress  Method name 'refreshDataFeedIngestion' should follow a common vocabulary -->
+  <suppress checks="ServiceClient" files="com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.java" />
+  <suppress checks="ServiceClient" files="com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.java" />
+
+  <!-- static logger suppression utility files  -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.PrivateFieldAccessHelper.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.Utility.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms.java" />
+
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
