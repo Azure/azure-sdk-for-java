@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -48,7 +49,9 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public final class SearchIndexClientBuilder {
     private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
@@ -106,7 +109,7 @@ public final class SearchIndexClientBuilder {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         HttpPipeline pipeline = Utility.buildHttpPipeline(httpLogOptions, configuration, retryPolicy, credential,
-            policies, httpClient);
+            perCallPolicies, perRetryPolicies, httpClient);
 
         return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
@@ -175,7 +178,14 @@ public final class SearchIndexClientBuilder {
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
         return this;
     }
 

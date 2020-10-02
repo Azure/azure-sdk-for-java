@@ -66,8 +66,8 @@ public final class Utility {
     }
 
     public static HttpPipeline buildHttpPipeline(HttpLogOptions logOptions, Configuration configuration,
-        RetryPolicy retryPolicy, AzureKeyCredential credential, List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
+        RetryPolicy retryPolicy, AzureKeyCredential credential, List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies,  HttpClient httpClient) {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -82,6 +82,7 @@ public final class Utility {
             buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
 
+        httpPipelinePolicies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
         httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
@@ -89,8 +90,7 @@ public final class Utility {
 
         httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", credential));
 
-        httpPipelinePolicies.addAll(policies);
-
+        httpPipelinePolicies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
