@@ -113,7 +113,10 @@ public final class DigitalTwinModelsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PagedModelDataCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("x-ms-max-item-count") Integer maxItemCount,
+                Context context);
     }
 
     /**
@@ -129,6 +132,10 @@ public final class DigitalTwinModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<ModelData>>> addWithResponseAsync(List<Object> models, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
         return service.add(this.client.getHost(), this.client.getApiVersion(), models, context);
     }
 
@@ -151,6 +158,13 @@ public final class DigitalTwinModelsImpl {
             Boolean includeModelDefinition,
             DigitalTwinModelsListOptions digitalTwinModelsListOptions,
             Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (digitalTwinModelsListOptions != null) {
+            digitalTwinModelsListOptions.validate();
+        }
         Integer maxItemCountInternal = null;
         if (digitalTwinModelsListOptions != null) {
             maxItemCountInternal = digitalTwinModelsListOptions.getMaxItemCount();
@@ -191,6 +205,13 @@ public final class DigitalTwinModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ModelData>> getByIdWithResponseAsync(
             String id, Boolean includeModelDefinition, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.getById(this.client.getHost(), id, includeModelDefinition, this.client.getApiVersion(), context);
     }
 
@@ -208,6 +229,16 @@ public final class DigitalTwinModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String id, List<Object> updateModel, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
+        if (updateModel == null) {
+            return Mono.error(new IllegalArgumentException("Parameter updateModel is required and cannot be null."));
+        }
         return service.update(this.client.getHost(), id, this.client.getApiVersion(), updateModel, context);
     }
 
@@ -225,6 +256,13 @@ public final class DigitalTwinModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (id == null) {
+            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        }
         return service.delete(this.client.getHost(), id, this.client.getApiVersion(), context);
     }
 
@@ -232,6 +270,7 @@ public final class DigitalTwinModelsImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param digitalTwinModelsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -239,8 +278,24 @@ public final class DigitalTwinModelsImpl {
      * @return a collection of ModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(String nextLink, Context context) {
-        return service.listNext(nextLink, context)
+    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(
+            String nextLink, DigitalTwinModelsListOptions digitalTwinModelsListOptions, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (digitalTwinModelsListOptions != null) {
+            digitalTwinModelsListOptions.validate();
+        }
+        Integer maxItemCountInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            maxItemCountInternal = digitalTwinModelsListOptions.getMaxItemCount();
+        }
+        Integer maxItemCount = maxItemCountInternal;
+        return service.listNext(nextLink, this.client.getHost(), maxItemCount, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

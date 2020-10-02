@@ -7,13 +7,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -32,16 +32,16 @@ public final class ManageIPAddress {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String publicIPAddressName1 = azure.sdkContext().randomResourceName("pip1", 20);
-        final String publicIPAddressName2 = azure.sdkContext().randomResourceName("pip2", 20);
-        final String publicIPAddressLeafDNS1 = azure.sdkContext().randomResourceName("pip1", 20);
-        final String publicIPAddressLeafDNS2 = azure.sdkContext().randomResourceName("pip2", 20);
-        final String vmName = azure.sdkContext().randomResourceName("vm", 8);
-        final String rgName = azure.sdkContext().randomResourceName("rgNEMP", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String publicIPAddressName1 = Utils.randomResourceName(azureResourceManager, "pip1", 20);
+        final String publicIPAddressName2 = Utils.randomResourceName(azureResourceManager, "pip2", 20);
+        final String publicIPAddressLeafDNS1 = Utils.randomResourceName(azureResourceManager, "pip1", 20);
+        final String publicIPAddressLeafDNS2 = Utils.randomResourceName(azureResourceManager, "pip2", 20);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 8);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMP", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
@@ -54,7 +54,7 @@ public final class ManageIPAddress {
 
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIPAddressName1)
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(publicIPAddressName1)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withLeafDomainLabel(publicIPAddressLeafDNS1)
@@ -71,7 +71,7 @@ public final class ManageIPAddress {
 
             Date t1 = new Date();
 
-            VirtualMachine vm = azure.virtualMachines().define(vmName)
+            VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -103,7 +103,7 @@ public final class ManageIPAddress {
 
             // Define a new public IP address
 
-            PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIPAddressName2)
+            PublicIpAddress publicIpAddress2 = azureResourceManager.publicIpAddresses().define(publicIPAddressName2)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withLeafDomainLabel(publicIPAddressLeafDNS2)
@@ -145,13 +145,13 @@ public final class ManageIPAddress {
             //============================================================
             // Delete the public ip
             System.out.println("Deleting the public IP address");
-            azure.publicIpAddresses().deleteById(publicIPAddress.id());
+            azureResourceManager.publicIpAddresses().deleteById(publicIPAddress.id());
             System.out.println("Deleted the public IP address");
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -176,18 +176,19 @@ public final class ManageIPAddress {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

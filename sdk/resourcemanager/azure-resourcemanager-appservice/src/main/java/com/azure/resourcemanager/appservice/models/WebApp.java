@@ -8,7 +8,6 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.io.File;
 import java.io.InputStream;
@@ -16,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App. */
 @Fluent
-public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebApp.Update> {
+public interface WebApp extends WebAppBasic, WebAppBase, Updatable<WebApp.Update> {
     /** @return the entry point to deployment slot management API under the web app */
     DeploymentSlots deploymentSlots();
 
@@ -37,18 +36,24 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      */
-    void warDeploy(InputStream warFile);
+    void warDeploy(InputStream warFile, long length);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @return a completable of the operation
      */
-    Mono<Void> warDeployAsync(InputStream warFile);
+    Mono<Void> warDeployAsync(InputStream warFile, long length);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
@@ -69,20 +74,26 @@ public interface WebApp extends WebAppBase, Refreshable<WebApp>, Updatable<WebAp
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @param appName the name of the app, default to "ROOT" when not provided
      */
-    void warDeploy(InputStream warFile, String appName);
+    void warDeploy(InputStream warFile, long length, String appName);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     * <p>
+     * Retry by client is required if error happens, due to nature of the stream.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @param appName the name of the app, default to "ROOT" when not provided
      * @return a completable of the operation
      */
-    Mono<Void> warDeployAsync(InputStream warFile, String appName);
+    Mono<Void> warDeployAsync(InputStream warFile, long length, String appName);
 
     /**************************************************************
      * Fluent interfaces to provision a Web App

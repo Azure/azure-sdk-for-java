@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.models.PacketCaptureStatus;
 import com.azure.resourcemanager.network.models.PcError;
 import com.azure.resourcemanager.network.models.PcStatus;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureQueryStatusResultInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureQueryStatusResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,31 +18,31 @@ class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatusResult
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public OffsetDateTime captureStartTime() {
-        return inner().captureStartTime();
+        return innerModel().captureStartTime();
     }
 
     @Override
     public PcStatus packetCaptureStatus() {
-        return inner().packetCaptureStatus();
+        return innerModel().packetCaptureStatus();
     }
 
     @Override
     public String stopReason() {
-        return inner().stopReason();
+        return innerModel().stopReason();
     }
 
     @Override
     public List<PcError> packetCaptureErrors() {
-        return inner().packetCaptureError();
+        return innerModel().packetCaptureError();
     }
 }

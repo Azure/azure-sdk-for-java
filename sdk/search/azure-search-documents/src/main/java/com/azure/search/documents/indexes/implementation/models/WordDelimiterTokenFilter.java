@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The WordDelimiterTokenFilter model. */
+/**
+ * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
+ * using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.WordDelimiterTokenFilter")
 @JsonFlatten
@@ -94,9 +97,13 @@ public class WordDelimiterTokenFilter extends TokenFilter {
     @JsonProperty(value = "protectedWords")
     private List<String> protectedWords;
 
-    /** Creates an instance of WordDelimiterTokenFilter class. */
+    /**
+     * Creates an instance of WordDelimiterTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public WordDelimiterTokenFilter(@JsonProperty(value = "name") String name) {
+    public WordDelimiterTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -314,15 +321,5 @@ public class WordDelimiterTokenFilter extends TokenFilter {
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

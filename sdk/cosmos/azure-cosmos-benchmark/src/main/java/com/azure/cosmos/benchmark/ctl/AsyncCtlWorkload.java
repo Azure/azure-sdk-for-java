@@ -36,6 +36,7 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
@@ -188,9 +189,9 @@ public class AsyncCtlWorkload {
         writeFailureMeter = metricsRegistry.meter("#Write Unsuccessful Operations");
         querySuccessMeter = metricsRegistry.meter("#Query Successful Operations");
         queryFailureMeter = metricsRegistry.meter("#Query Unsuccessful Operations");
-        readLatency = metricsRegistry.timer("Read Latency");
-        writeLatency = metricsRegistry.timer("Write Latency");
-        queryLatency = metricsRegistry.timer("Query Latency");
+        readLatency = metricsRegistry.register("Read Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+        writeLatency = metricsRegistry.register("Write Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+        queryLatency = metricsRegistry.register("Query Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
 
         reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         long startTime = System.currentTimeMillis();

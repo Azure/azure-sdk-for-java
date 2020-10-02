@@ -573,12 +573,6 @@
     },
     {
       "owner": "yaohaizh",
-      "filePath": "azure-samples/src/main/java/com/microsoft/azure/management/graphrbac/samples/ManageServicePrincipal.java",
-      "githubPath": "Azure-Samples/aad-java-manage-service-principals",
-      "description": "Getting started with managing service principals using Java."
-    },
-    {
-      "owner": "yaohaizh",
       "filePath": "azure-samples/src/main/java/com/microsoft/azure/management/graphrbac/samples/ManageServicePrincipalCredentials.java",
       "githubPath": "Azure-Samples/aad-java-manage-service-principal-credentials",
       "description": "Getting started with managing credentials for service principals using Java."

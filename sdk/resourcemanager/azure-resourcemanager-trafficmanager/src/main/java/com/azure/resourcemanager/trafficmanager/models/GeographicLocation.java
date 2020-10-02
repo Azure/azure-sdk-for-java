@@ -4,11 +4,11 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** Type representing Geographic Hierarchy region (location). */
-public interface GeographicLocation extends HasName, HasInner<Region> {
+public interface GeographicLocation extends HasName, HasInnerModel<Region> {
     /** @return the location code. */
     String code();
     /** @return list of immediate child locations grouped under this location in the Geographic Hierarchy. */

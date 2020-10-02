@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An immutable client-side representation of an Azure Virtual Network Link. */
 @Fluent
 public interface VirtualNetworkLink
-    extends ExternalChildResource<VirtualNetworkLink, PrivateDnsZone>, HasInner<VirtualNetworkLinkInner> {
+    extends ExternalChildResource<VirtualNetworkLink, PrivateDnsZone>, HasInnerModel<VirtualNetworkLinkInner> {
     /**
      * @return the ETag of the virtual network link.
      */

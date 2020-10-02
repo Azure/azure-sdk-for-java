@@ -4,18 +4,18 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpPrefixInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
 import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 public class PublicIpPrefixesImpl
     extends TopLevelModifiableResourcesImpl<
-    PublicIpPrefix, PublicIpPrefixImpl, PublicIpPrefixInner, PublicIpPrefixesClient, NetworkManager>
+        PublicIpPrefix, PublicIpPrefixImpl, PublicIpPrefixInner, PublicIpPrefixesClient, NetworkManager>
     implements PublicIpPrefixes {
 
     public PublicIpPrefixesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getPublicIpPrefixes(), networkManager);
+        super(networkManager.serviceClient().getPublicIpPrefixes(), networkManager);
     }
 
     @Override
@@ -32,5 +32,4 @@ public class PublicIpPrefixesImpl
     protected PublicIpPrefixImpl wrapModel(String name) {
         return new PublicIpPrefixImpl(name, new PublicIpPrefixInner(), this.manager());
     }
-
 }

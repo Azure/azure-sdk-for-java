@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/dimension/query?$skip=20&$top=20",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "68798545-5b6a-4e4c-a9de-8458b7caa13b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "1cb68b54-99ba-42fe-90c4-fbf9134fa490",
+      "x-envoy-upstream-service-time" : "5192",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1cb68b54-99ba-42fe-90c4-fbf9134fa490",
+      "retry-after" : "0",
+      "Content-Length" : "161",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Common Alder\",\"Common Ash\",\"Common Beech\",\"Common Hazel\",\"Common Juniper\",\"Common Lime\",\"Common Walnut\",\"Common Yew\",\"Copper Beech\"],\"@nextLink\":null}",
+      "Date" : "Mon, 14 Sep 2020 06:31:44 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

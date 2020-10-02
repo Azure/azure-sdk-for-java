@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomRegistryCredentials model. */
+/** Describes the credentials that will be used to access a custom registry during a run. */
 @Fluent
 public final class CustomRegistryCredentials {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomRegistryCredentials.class);

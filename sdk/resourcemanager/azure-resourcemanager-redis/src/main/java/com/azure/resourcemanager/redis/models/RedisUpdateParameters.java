@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The RedisUpdateParameters model. */
+/** Parameters supplied to the Update Redis operation. */
 @JsonFlatten
 @Fluent
 public class RedisUpdateParameters {

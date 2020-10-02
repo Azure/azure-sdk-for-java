@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The NGramTokenFilter model. */
+/** Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenFilter")
 @JsonFlatten
@@ -32,9 +32,13 @@ public class NGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
-    /** Creates an instance of NGramTokenFilter class. */
+    /**
+     * Creates an instance of NGramTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public NGramTokenFilter(@JsonProperty(value = "name") String name) {
+    public NGramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -76,15 +80,5 @@ public class NGramTokenFilter extends TokenFilter {
     public NGramTokenFilter setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

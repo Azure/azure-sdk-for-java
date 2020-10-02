@@ -37,31 +37,31 @@ class VirtualMachineScaleSetUnmanagedDataDiskImpl
 
     @Override
     public VirtualMachineScaleSetUnmanagedDataDiskImpl withNewVhd(int sizeInGB) {
-        this.inner().withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(sizeInGB);
+        this.innerModel().withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(sizeInGB);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetUnmanagedDataDiskImpl fromImage(int imageLun) {
-        this.inner().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withLun(imageLun);
+        this.innerModel().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withLun(imageLun);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetUnmanagedDataDiskImpl withSizeInGB(Integer sizeInGB) {
-        this.inner().withDiskSizeGB(sizeInGB);
+        this.innerModel().withDiskSizeGB(sizeInGB);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetUnmanagedDataDiskImpl withLun(Integer lun) {
-        this.inner().withLun(lun);
+        this.innerModel().withLun(lun);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetUnmanagedDataDiskImpl withCaching(CachingTypes cachingType) {
-        this.inner().withCaching(cachingType);
+        this.innerModel().withCaching(cachingType);
         return this;
     }
 
@@ -72,7 +72,7 @@ class VirtualMachineScaleSetUnmanagedDataDiskImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     protected static void setDataDisksDefaults(List<VirtualMachineScaleSetDataDisk> dataDisks, String namePrefix) {

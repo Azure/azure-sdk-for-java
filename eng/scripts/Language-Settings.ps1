@@ -92,7 +92,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
 }
 
 # Stage and Upload Docs to blob Storage
-function Publish-java-GithubIODocs ()
+function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
 {
   $PublishedDocs = Get-ChildItem "$DocLocation" | Where-Object -FilterScript {$_.Name.EndsWith("-javadoc.jar")}
   foreach ($Item in $PublishedDocs)

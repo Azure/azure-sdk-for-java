@@ -27,16 +27,17 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/
 
 output-folder: "./"
 license-header: MICROSOFT_MIT_SMALL
-use: '@autorest/java@4.0.2'
+use: '@autorest/java@4.0.3'
 java:
     add-context-parameter: true
     namespace: com.azure.digitaltwins.core
     add-credentials: true
     sync-methods: none
+    client-side-validations: true
     generate-client-as-impl: true
     implementation-subpackage: implementation
     models-subpackage: implementation.models
     context-client-method-parameter: true
     custom-types-subpackage: models
-    custom-types: IncomingRelationship
+    required-fields-as-ctor-args: true
 ```

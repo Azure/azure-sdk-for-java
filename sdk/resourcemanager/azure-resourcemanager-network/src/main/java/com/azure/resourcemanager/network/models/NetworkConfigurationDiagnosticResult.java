@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NetworkConfigurationDiagnosticResult model. */
+/** Network configuration diagnostic result corresponded to provided traffic query. */
 @Fluent
 public final class NetworkConfigurationDiagnosticResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResult.class);

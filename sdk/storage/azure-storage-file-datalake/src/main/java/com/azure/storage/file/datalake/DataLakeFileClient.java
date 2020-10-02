@@ -13,6 +13,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
@@ -32,6 +33,7 @@ import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -160,7 +162,9 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long}
      *
-     * @param data The data to write to the file.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark
+     * support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @return Information about the uploaded path.
@@ -176,7 +180,9 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.upload#InputStream-long-boolean}
      *
-     * @param data The data to write to the file.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark
+     * support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param overwrite Whether or not to overwrite, should data exist on the bfilelob.
@@ -559,10 +565,11 @@ public class DataLakeFileClient extends DataLakePathClient {
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                filePath, Transforms.toBlobRange(range),
-                Transforms.toBlobParallelTransferOptions(parallelTransferOptions),
-                Transforms.toBlobDownloadRetryOptions(downloadRetryOptions),
-                Transforms.toBlobRequestConditions(requestConditions), rangeGetContentMd5, openOptions, timeout,
+                new BlobDownloadToFileOptions(filePath)
+                    .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
+                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
+                    .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
+                    .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, logger);
@@ -709,5 +716,38 @@ public class DataLakeFileClient extends DataLakePathClient {
                 Transforms.toBlobQueryOptions(queryOptions), timeout, context);
             return Transforms.toFileQueryResponse(response);
         }, logger);
+    }
+
+    // TODO (kasobol-msft) add REST DOCS
+    /**
+     * Schedules the file for deletion.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions}
+     *
+     * @param options Schedule deletion parameters.
+     */
+    public void scheduleDeletion(FileScheduleDeletionOptions options) {
+        this.scheduleDeletionWithResponse(options, null, Context.NONE);
+    }
+
+    // TODO (kasobol-msft) add REST DOCS
+    /**
+     * Schedules the file for deletion.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context}
+     *
+     * @param options Schedule deletion parameters.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
+        Duration timeout, Context context) {
+        Mono<Response<Void>> response = this.dataLakeFileAsyncClient.scheduleDeletionWithResponse(options, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -161,7 +161,6 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
-    @Ignore // Container soft delete
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
@@ -188,7 +187,6 @@ class ServiceAPITest extends APISpec {
         listResult.size() == NUM_CONTAINERS
     }
 
-    @Ignore // Container soft delete
     def "List with all details"() {
         given:
         def NUM_CONTAINERS = 5
@@ -739,7 +737,6 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore // Container soft delete
     def "Restore Container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -766,7 +763,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container into other container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -795,7 +791,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container with response"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -826,7 +821,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container async"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
@@ -857,7 +851,6 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
-    @Ignore // Container soft delete
     def "Restore Container async with response"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
@@ -891,7 +884,6 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
-    @Ignore // Container soft delete
     def "Restore Container error"() {
         when:
         primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
@@ -900,7 +892,6 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException.class)
     }
 
-    @Ignore // Container soft delete
     def "Restore Container into existing container error"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())

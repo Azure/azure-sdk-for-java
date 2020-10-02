@@ -127,7 +127,7 @@ class PartitionPumpManager {
      */
     void startPartitionPump(PartitionOwnership claimedOwnership, Checkpoint checkpoint) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
-            logger.verbose("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
+            logger.verbose("Consumer is already running for this partition {}", claimedOwnership.getPartitionId());
             return;
         }
 

@@ -10,11 +10,11 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** Implementation for LoadBalancerInboundNatRule. */
 class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl, LoadBalancer>
@@ -31,45 +31,45 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String backendNicIpConfigurationName() {
-        if (this.inner().backendIpConfiguration() == null) {
+        if (this.innerModel().backendIpConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.nameFromResourceId(this.inner().backendIpConfiguration().id());
+            return ResourceUtils.nameFromResourceId(this.innerModel().backendIpConfiguration().id());
         }
     }
 
     @Override
     public int backendPort() {
-        return Utils.toPrimitiveInt(this.inner().backendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().backendPort());
     }
 
     @Override
     public String backendNetworkInterfaceId() {
-        if (this.inner().backendIpConfiguration() == null) {
+        if (this.innerModel().backendIpConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.parentResourceIdFromResourceId(this.inner().backendIpConfiguration().id());
+            return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().backendIpConfiguration().id());
         }
     }
 
     @Override
     public TransportProtocol protocol() {
-        return this.inner().protocol();
+        return this.innerModel().protocol();
     }
 
     @Override
     public int frontendPort() {
-        return Utils.toPrimitiveInt(this.inner().frontendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().frontendPort());
     }
 
     @Override
     public boolean floatingIPEnabled() {
-        return this.inner().enableFloatingIp().booleanValue();
+        return this.innerModel().enableFloatingIp().booleanValue();
     }
 
     @Override
@@ -77,19 +77,19 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
         return this
             .parent()
             .frontends()
-            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIpConfiguration().id()));
+            .get(ResourceUtils.nameFromResourceId(this.innerModel().frontendIpConfiguration().id()));
     }
 
     @Override
     public int idleTimeoutInMinutes() {
-        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().idleTimeoutInMinutes());
     }
 
     // Fluent setters
 
     @Override
     public LoadBalancerInboundNatRuleImpl toBackendPort(int port) {
-        this.inner().withBackendPort(port);
+        this.innerModel().withBackendPort(port);
         return this;
     }
 
@@ -105,13 +105,13 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl withFloatingIP(boolean enabled) {
-        this.inner().withEnableFloatingIp(enabled);
+        this.innerModel().withEnableFloatingIp(enabled);
         return this;
     }
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromFrontendPort(int port) {
-        this.inner().withFrontendPort(port);
+        this.innerModel().withFrontendPort(port);
         if (this.backendPort() == 0) {
             // By default, assume the same backend port
             return this.toBackendPort(port);
@@ -122,13 +122,13 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl withIdleTimeoutInMinutes(int minutes) {
-        this.inner().withIdleTimeoutInMinutes(minutes);
+        this.innerModel().withIdleTimeoutInMinutes(minutes);
         return this;
     }
 
     @Override
     public LoadBalancerInboundNatRuleImpl withProtocol(TransportProtocol protocol) {
-        this.inner().withProtocol(protocol);
+        this.innerModel().withProtocol(protocol);
         return this;
     }
 
@@ -136,7 +136,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
     public LoadBalancerInboundNatRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
-            this.inner().withFrontendIpConfiguration(frontendRef);
+            this.innerModel().withFrontendIpConfiguration(frontendRef);
         }
         return this;
     }
@@ -162,7 +162,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         this.fromFrontend(frontendName);
         return this;
@@ -170,7 +170,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         this.fromFrontend(frontendName);
         return this;
@@ -178,7 +178,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 

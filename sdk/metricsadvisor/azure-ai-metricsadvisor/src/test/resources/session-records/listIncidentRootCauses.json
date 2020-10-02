@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//enrichment/anomalyDetection/configurations/59f26a57-55f7-41eb-8899-a7268d125557/incidents/1516ffd506462aca05198391bb279aff-1746b031c00/rootCause",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8c21d5a3-894b-4721-a159-883f54a09e34"
+    },
+    "Response" : {
+      "x-request-id" : "1e8d825a-0430-4f97-85cf-ee925e678a61",
+      "x-envoy-upstream-service-time" : "5339",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1e8d825a-0430-4f97-85cf-ee925e678a61",
+      "retry-after" : "0",
+      "Content-Length" : "273",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"city\":\"Chicago\"}},\"path\":[\"category\"],\"score\":0.23402075133615907,\"description\":\"Increase on category = Shoes Handbags & Sunglasses | city = Chicago contributes the most to current incident.\"}]}",
+      "Date" : "Fri, 18 Sep 2020 01:04:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

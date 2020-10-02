@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayWebApplicationFirewallConfiguration model. */
+/** Application gateway web application firewall configuration. */
 @Fluent
 public final class ApplicationGatewayWebApplicationFirewallConfiguration {
     @JsonIgnore

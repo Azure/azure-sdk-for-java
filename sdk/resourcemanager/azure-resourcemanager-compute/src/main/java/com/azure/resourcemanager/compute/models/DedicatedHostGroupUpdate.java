@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DedicatedHostGroupUpdate model. */
+/**
+ * Specifies information about the dedicated host group that the dedicated host should be assigned to. Only tags may be
+ * updated.
+ */
 @JsonFlatten
 @Fluent
 public class DedicatedHostGroupUpdate extends UpdateResource {

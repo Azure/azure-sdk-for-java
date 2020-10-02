@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Operation model. */
+/** Microsoft Insights API operation definition. */
 @Fluent
 public final class Operation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
