@@ -187,8 +187,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         CertificatePolicy certificatePolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
         Map<String, String> certificateTags = new HashMap<>();
         certificateTags.put("foo", "bar");
-        certificateAsyncClient.beginCreateCertificate("certificateName", certificatePolicy, true, certificateTags, Duration.ofSeconds(1))
-            .subscribe(pollResponse -> {
+        certificateAsyncClient.beginCreateCertificate("certificateName", certificatePolicy, true, certificateTags,
+            Duration.ofSeconds(1)).subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());

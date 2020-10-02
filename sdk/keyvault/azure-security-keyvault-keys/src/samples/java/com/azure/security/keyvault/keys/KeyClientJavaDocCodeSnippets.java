@@ -316,7 +316,8 @@ public final class KeyClientJavaDocCodeSnippets {
         // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String
 
         // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String-Duration
-        SyncPoller<KeyVaultKey, Void> recoverDeletedKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName", Duration.ofSeconds(1));
+        SyncPoller<KeyVaultKey, Void> recoverDeletedKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName",
+            Duration.ofSeconds(1));
 
         PollResponse<KeyVaultKey> recoverDeletedKeyPollResponse = recoverDeletedKeyPoller.poll();
 

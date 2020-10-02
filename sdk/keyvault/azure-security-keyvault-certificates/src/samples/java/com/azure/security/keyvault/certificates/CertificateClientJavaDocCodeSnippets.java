@@ -148,7 +148,8 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificatePolicy certificatePolicy = new CertificatePolicy("Self",
             "CN=SelfSignedJavaPkcs12");
         SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
-            certificateClient.beginCreateCertificate("certificateName", certificatePolicy, true, new HashMap<>(), Duration.ofSeconds(1));
+            certificateClient.beginCreateCertificate("certificateName", certificatePolicy, true, new HashMap<>(),
+                Duration.ofSeconds(1));
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         KeyVaultCertificate certificate = certificatePoller.getFinalResult();
         System.out.printf("Certificate created with name %s", certificate.getName());
@@ -324,8 +325,8 @@ public final class CertificateClientJavaDocCodeSnippets {
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> deleteCertPollResponse = deleteCertPoller.poll();
-        System.out.printf("Deleted certificate with name %s and recovery id %s", deleteCertPollResponse.getValue().getName(),
-            deleteCertPollResponse.getValue().getRecoveryId());
+        System.out.printf("Deleted certificate with name %s and recovery id %s",
+            deleteCertPollResponse.getValue().getName(), deleteCertPollResponse.getValue().getRecoveryId());
         deleteCertPoller.waitForCompletion();
         // END: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String
 
@@ -415,8 +416,9 @@ public final class CertificateClientJavaDocCodeSnippets {
             .beginRecoverDeletedCertificate("deletedCertificateName");
         // Recovered certificate is accessible as soon as polling beings
         PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertPollResponse = recoverDeletedCertPoller.poll();
-        System.out.printf(" Recovered Deleted certificate with name %s and id %s", recoverDeletedCertPollResponse.getValue()
-                .getProperties().getName(), recoverDeletedCertPollResponse.getValue().getProperties().getId());
+        System.out.printf(" Recovered Deleted certificate with name %s and id %s",
+            recoverDeletedCertPollResponse.getValue().getProperties().getName(),
+            recoverDeletedCertPollResponse.getValue().getProperties().getId());
         recoverDeletedCertPoller.waitForCompletion();
         // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
 
@@ -424,9 +426,11 @@ public final class CertificateClientJavaDocCodeSnippets {
         SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverDeletedCertificatePoller = certificateClient
             .beginRecoverDeletedCertificate("deletedCertificateName", Duration.ofSeconds(1));
         // Recovered certificate is accessible as soon as polling beings
-        PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollResponse = recoverDeletedCertificatePoller.poll();
-        System.out.printf(" Recovered Deleted certificate with name %s and id %s", recoverDeletedCertificatePollResponse.getValue()
-            .getProperties().getName(), recoverDeletedCertificatePollResponse.getValue().getProperties().getId());
+        PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollResponse =
+            recoverDeletedCertificatePoller.poll();
+        System.out.printf(" Recovered Deleted certificate with name %s and id %s",
+            recoverDeletedCertificatePollResponse.getValue().getProperties().getName(),
+            recoverDeletedCertificatePollResponse.getValue().getProperties().getId());
         recoverDeletedCertificatePoller.waitForCompletion();
         // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String-Duration
     }

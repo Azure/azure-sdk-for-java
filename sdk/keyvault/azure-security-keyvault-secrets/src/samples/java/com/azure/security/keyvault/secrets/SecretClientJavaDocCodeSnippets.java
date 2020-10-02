@@ -170,7 +170,8 @@ public final class SecretClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.secretclient.deleteSecret#String
 
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#String-Duration
-        SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName", Duration.ofSeconds(1));
+        SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName",
+            Duration.ofSeconds(1));
 
         // Deleted Secret is accessible as soon as polling begins.
         PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
