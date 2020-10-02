@@ -89,7 +89,7 @@ public final class KeyVaultKeyIdentifier {
             || !"https".equals(url.getProtocol()) // Invalid protocol.
             || (!"keys".equals(pathSegments[1]) && !"deletedkeys".equals(pathSegments[1])) // Invalid collection.
             || ("deletedkeys".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
-                throw new IllegalArgumentException("keyId is not a valid Key Vault Key identifier");
+            throw new IllegalArgumentException("keyId is not a valid Key Vault Key identifier");
         }
 
         return new KeyVaultKeyIdentifier(keyId, url.getProtocol() + "://" + url.getHost(), pathSegments[2],
