@@ -499,11 +499,11 @@ public class TablesAsyncClientTest extends TestBase {
         // Act & Assert
         if (mode == UpdateMode.MERGE && tableClient.getTableUrl().contains("cosmos.azure.com")) {
             // This scenario is currently broken when using the CosmosDB Table API
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, true, mode))
+            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
                 .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
                 .verify();
         } else {
-            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, true, mode))
+            StepVerifier.create(tableClient.updateEntityWithResponse(createdEntity, mode, true))
                 .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
                 .expectComplete()
                 .verify();
@@ -532,7 +532,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
-        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, true, UpdateMode.MERGE))
+        StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, UpdateMode.REPLACE, true))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();

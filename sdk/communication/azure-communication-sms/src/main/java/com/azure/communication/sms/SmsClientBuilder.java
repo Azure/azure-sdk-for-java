@@ -89,7 +89,6 @@ public final class SmsClientBuilder {
         ConnectionString connectionStringObject = new ConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-
         this
             .endpoint(endpoint)
             .accessKey(accessKey);

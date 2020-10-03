@@ -15,6 +15,8 @@
 - The `getEntity` methods have gained the `select` query option to allow for more efficient existence checks for a table
   entity. [#15289](https://github.com/Azure/azure-sdk-for-java/issues/15289)
 - The non-functional `TableClient.listEntities(options, timeout)` method was removed.
+- The JavaDoc API documentation has been significantly improved
+  [#13684](https://github.com/Azure/azure-sdk-for-java/issues/13684)
 
 ### Fixed
 

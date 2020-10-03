@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds?status=Active",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d4d9aab0-964d-43c1-ad46-0ed3e9b7f847"
+    },
+    "Response" : {
+      "x-request-id" : "99dc1f67-8a86-42bd-9346-81c95b0af778",
+      "x-envoy-upstream-service-time" : "240",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "99dc1f67-8a86-42bd-9346-81c95b0af778",
+      "retry-after" : "0",
+      "Content-Length" : "3661",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"dataFeedId\":\"4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c\",\"dataFeedName\":\"testDataFeed1\",\"metrics\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"metricName\":\"Metric1\",\"metricDisplayName\":\"Metric1\",\"metricDescription\":\"\"},{\"metricId\":\"6b593f73-345c-40eb-a15c-7ec1fc73b028\",\"metricName\":\"Metric2\",\"metricDisplayName\":\"Metric2\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"Dim1\",\"dimensionDisplayName\":\"Dim1\"},{\"dimensionName\":\"Dim2\",\"dimensionDisplayName\":\"Dim2\"}],\"dataStartFrom\":\"2020-08-09T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"Timestamp\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":null,\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"SmartFilling\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":-1,\"viewMode\":\"Private\",\"admins\":[\"savaity@microsoft.com\",\"krpratic@microsoft.com\",\"yumeng@microsoft.com\",\"xiangyan@microsoft.com\",\"anuchan@microsoft.com\",\"chriss@microsoft.com\",\"mayurid@microsoft.com\",\"johanste@microsoft.com\",\"camaiaor@microsoft.com\",\"kaolsze@microsoft.com\",\"kaghiya@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-09-12T00:43:30Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"adsample\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"%Y/%m/%d/%h/JsonFormatV2.json\",\"jsonFormatVersion\":\"V2\"}},{\"dataFeedId\":\"b9dae651-63bc-4a98-a7c5-d8322b20c962\",\"dataFeedName\":\"azsqlDatafeed\",\"metrics\":[{\"metricId\":\"802153a9-1671-4a6f-901e-66bbf09384d9\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"f05c2f81-1e96-47ed-baa1-ab1a2d35562a\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2020-08-11T00:00:00Z\",\"dataSourceType\":\"SqlServer\",\"timestampColumn\":\"timestamp\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":\"__SUM__\",\"needRollup\":\"NeedRollup\",\"fillMissingPointType\":\"SmartFilling\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"Sum\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":-1,\"viewMode\":\"Private\",\"admins\":[\"kaolsze@microsoft.com\",\"camaiaor@microsoft.com\",\"mayurid@microsoft.com\",\"krpratic@microsoft.com\",\"kaghiya@microsoft.com\",\"xiangyan@microsoft.com\",\"chriss@microsoft.com\",\"yumeng@microsoft.com\",\"johanste@microsoft.com\",\"anuchan@microsoft.com\",\"savaity@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-09-12T00:41:00Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"connectionString\":\"REDACTED\",\"query\":\"select * from adsample2 where Timestamp = @StartTime\"}}],\"@nextLink\":null}",
+      "Date" : "Sat, 12 Sep 2020 21:12:59 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

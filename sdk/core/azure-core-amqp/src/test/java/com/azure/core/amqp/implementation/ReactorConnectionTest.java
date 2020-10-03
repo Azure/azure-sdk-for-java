@@ -13,6 +13,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -23,6 +24,7 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.engine.SslDomain.VerifyMode;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
@@ -45,6 +47,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,8 +65,12 @@ class ReactorConnectionTest {
     private static final Scheduler SCHEDULER = Schedulers.elastic();
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
+    private static final VerifyMode VERIFY_MODE = VerifyMode.VERIFY_PEER_NAME;
+
+    private final ClientOptions clientOptions = new ClientOptions();
 
     private ReactorConnection connection;
+    private ConnectionHandler connectionHandler;
     private SessionHandler sessionHandler;
 
     @Mock
@@ -83,7 +91,8 @@ class ReactorConnectionTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ReactorProvider reactorProvider;
-    private ConnectionHandler connectionHandler;
+    @Mock
+    private ReactorHandlerProvider reactorHandlerProvider;
 
     @BeforeAll
     static void beforeAll() {
@@ -98,28 +107,34 @@ class ReactorConnectionTest {
     @BeforeEach
     void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null);
+
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
+        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+            tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, clientOptions, VERIFY_MODE);
+
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
+            VERIFY_MODE, clientOptions);
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(HOSTNAME, connectionHandler.getProtocolPort(), connectionHandler))
             .thenReturn(connectionProtonJ);
         when(reactor.process()).thenReturn(true);
 
-
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
 
+        when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
+            connectionOptions.getTransportType(), connectionOptions.getProxyOptions(), PRODUCT, CLIENT_VERSION,
+            VERIFY_MODE, connectionOptions.getClientOptions()))
+            .thenReturn(connectionHandler);
+
         sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, reactorDispatcher, TEST_DURATION);
+        when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
+            .thenReturn(sessionHandler);
 
-        final ReactorHandlerProvider reactorHandlerProvider = new MockReactorHandlerProvider(reactorProvider,
-            connectionHandler, sessionHandler, null, null);
-
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
-        final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, null);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
@@ -193,7 +208,7 @@ class ReactorConnectionTest {
                 Assertions.assertSame(session, ((ReactorSession) s).session());
             }).verifyComplete();
 
-        verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
+        verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
 
     /**
@@ -215,7 +230,7 @@ class ReactorConnectionTest {
             .expectNext(true)
             .verifyComplete();
 
-        verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
+        verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
 
     /**
@@ -237,7 +252,7 @@ class ReactorConnectionTest {
             .expectNext(false)
             .verifyComplete();
 
-        verify(record, Mockito.times(1)).set(Handler.class, Handler.class, sessionHandler);
+        verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
 
     /**
@@ -301,19 +316,24 @@ class ReactorConnectionTest {
     @Test
     void createCBSNodeTimeoutException() {
         // Arrange
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null);
-        final ReactorHandlerProvider provider = new MockReactorHandlerProvider(reactorProvider, handler, sessionHandler,
-            null, null);
-
-        Duration timeout = Duration.ofSeconds(2);
-        AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+        final Duration timeout = Duration.ofSeconds(2);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMaxRetries(1)
             .setDelay(Duration.ofMillis(200))
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
-        ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
+        final ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), null);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), clientOptions, VERIFY_MODE);
+
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION,
+            VERIFY_MODE, clientOptions);
+        final ReactorHandlerProvider provider = mock(ReactorHandlerProvider.class);
+
+        when(provider.createConnectionHandler(CONNECTION_ID, HOSTNAME, parameters.getTransportType(),
+            parameters.getProxyOptions(), PRODUCT, CLIENT_VERSION, VERIFY_MODE, clientOptions))
+            .thenReturn(handler);
+        when(provider.createSessionHandler(CONNECTION_ID, HOSTNAME, SESSION_NAME, timeout)).thenReturn(sessionHandler);
 
         // Act and Assert
         ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,

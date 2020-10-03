@@ -91,7 +91,6 @@ public final class CommunicationIdentityClientBuilder {
         ConnectionString connectionStringObject = new ConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-
         this
             .endpoint(endpoint)
             .accessKey(accessKey);
