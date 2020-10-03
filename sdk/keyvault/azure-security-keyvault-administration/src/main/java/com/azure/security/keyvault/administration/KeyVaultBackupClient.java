@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 
@@ -67,6 +68,18 @@ public final class KeyVaultBackupClient {
     }
 
     /**
+     * Gets a pending {@link KeyVaultBackupOperation backup operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @throws KeyVaultErrorException when a backup operation for a given {@code jobId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on the backup operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<KeyVaultBackupOperation, String> getBackupOperation(String jobId) {
+        return asyncClient.getBackupOperation(jobId).getSyncPoller();
+    }
+
+    /**
      * Initiates a full restore of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
@@ -95,6 +108,18 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String blobStorageUrl, String sasToken, String folderName, Duration pollingInterval) {
         return asyncClient.beginRestore(blobStorageUrl, sasToken, folderName, pollingInterval).getSyncPoller();
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation full or selective restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @throws KeyVaultErrorException when a restore operation for a given {@code jobId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on the restore operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<KeyVaultRestoreOperation, Void> getRestoreOperation(String jobId) {
+        return asyncClient.getRestoreOperation(jobId).getSyncPoller();
     }
 
     /**

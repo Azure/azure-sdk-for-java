@@ -244,6 +244,36 @@ public final class KeyVaultBackupAsyncClient {
     }
 
     /**
+     * Gets a pending {@link KeyVaultBackupOperation backup operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @throws KeyVaultErrorException when a backup operation for a given {@code jobId} doesn't exist.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultBackupOperation, String> getBackupOperation(String jobId) {
+        Objects.requireNonNull(jobId,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'jobId'"));
+
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            (pollingContext) -> Mono.empty(),
+            backupStatusPollOperation(jobId),
+            (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            backupFetchOperation());
+    }
+
+    private Function<PollingContext<KeyVaultBackupOperation>, Mono<PollResponse<KeyVaultBackupOperation>>> backupStatusPollOperation(String jobId) {
+        return (pollingContext) ->
+            withContext(context -> clientImpl.fullBackupStatusWithResponseAsync(vaultUrl, jobId,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())))
+                .flatMap(KeyVaultBackupAsyncClient::processBackupOperationResponse);
+    }
+
+    /**
      * Initiates a full restore of the Key Vault.
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup is located.
@@ -373,6 +403,36 @@ public final class KeyVaultBackupAsyncClient {
 
         return Mono.just(new PollResponse<>(
             toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
+    }
+
+    /**
+     * Gets a pending {@link KeyVaultRestoreOperation full or selective restore operation} from the Key Vault.
+     *
+     * @param jobId The operation identifier.
+     * @throws KeyVaultErrorException when a restore operation for a given {@code jobId} doesn't exist.
+     * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultRestoreOperation, Void> getRestoreOperation(String jobId) {
+        Objects.requireNonNull(jobId,
+            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                "'jobId'"));
+
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            (pollingContext) -> Mono.empty(),
+            restoreStatusPollOperation(jobId),
+            (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (pollingContext) -> Mono.empty());
+    }
+
+    private Function<PollingContext<KeyVaultRestoreOperation>, Mono<PollResponse<KeyVaultRestoreOperation>>> restoreStatusPollOperation(String jobId) {
+        return (pollingContext) ->
+            withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
+                .flatMap(KeyVaultBackupAsyncClient::processRestoreOperationResponse);
     }
 
     /**

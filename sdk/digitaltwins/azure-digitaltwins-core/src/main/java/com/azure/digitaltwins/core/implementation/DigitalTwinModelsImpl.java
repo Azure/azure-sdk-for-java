@@ -113,7 +113,10 @@ public final class DigitalTwinModelsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PagedModelDataCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                @HeaderParam("x-ms-max-item-count") Integer maxItemCount,
+                Context context);
     }
 
     /**
@@ -267,6 +270,7 @@ public final class DigitalTwinModelsImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param digitalTwinModelsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -274,11 +278,24 @@ public final class DigitalTwinModelsImpl {
      * @return a collection of ModelData objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<ModelData>> listNextSinglePageAsync(
+            String nextLink, DigitalTwinModelsListOptions digitalTwinModelsListOptions, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return service.listNext(nextLink, context)
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (digitalTwinModelsListOptions != null) {
+            digitalTwinModelsListOptions.validate();
+        }
+        Integer maxItemCountInternal = null;
+        if (digitalTwinModelsListOptions != null) {
+            maxItemCountInternal = digitalTwinModelsListOptions.getMaxItemCount();
+        }
+        Integer maxItemCount = maxItemCountInternal;
+        return service.listNext(nextLink, this.client.getHost(), maxItemCount, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
