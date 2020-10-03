@@ -134,6 +134,7 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
 
                 --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
+                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.models=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
