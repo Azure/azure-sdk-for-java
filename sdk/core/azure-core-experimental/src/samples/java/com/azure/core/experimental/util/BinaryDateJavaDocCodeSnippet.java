@@ -80,9 +80,9 @@ public class BinaryDateJavaDocCodeSnippet {
     }
 
     /**
-     * Codesnippets for {@link BinaryData#fromStream(InputStream)}.
+     * Codesnippets for {@link BinaryData#toStream()}.
      */
-    public void createToStream() throws IOException {
+    public void toStream() throws IOException {
         // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#Stream
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
         BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
@@ -132,6 +132,19 @@ public class BinaryDateJavaDocCodeSnippet {
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();;
         // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#toStream()}.
+     */
+    public void toObject() throws IOException {
+        // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#Stream
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
+        final byte[] bytes = new byte[data.length];
+        (binaryData.toStream()).read(bytes, 0, data.length);
+        System.out.println(new String(bytes));
+        // END: com.azure.core.experimental.util.BinaryDocument.to#Stream
     }
 
     public static void main(String[] a) throws IOException, InterruptedException {

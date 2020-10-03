@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.experimental.util;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
@@ -19,10 +21,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
- * This is binary representation of data. This provides convenience API to
+ * This is binary representation of data from different sources. The example of such sources are {@link InputStream} ,
+ * {@link Flux<ByteBuffer>} , {@link String} and byte array. One of the important API it provides is to serialize and
+ * deserialize an {@link Object} into {@link BinaryData} given an {@link ObjectSerializer}.Following  are some examples
+ * on how to use this class.
  *
- * <p><strong>Create an instance of sender</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.instantiation}
+ * <p><strong>Create an instance from Bytes</strong></p>
+ * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
+ *
+ * <p><strong>Create an instance from String</strong></p>
+ * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#String}
+ *
+ * <p><strong>Create an instance from InputStream</strong></p>
+ * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Stream}
+ *
+ * @see ObjectSerializer
  */
 final public class BinaryData {
     private byte[] data;
@@ -32,36 +45,44 @@ final public class BinaryData {
         // This exists, so no one is able to create instance, user need to use static function to create instances.
     }
 
+    /**
+     * Create instance of {@link BinaryData} given the data.
+     * @param data to represent as bytes.
+     */
     BinaryData(byte[] data) {
         this.data = data;
     }
 
     /**
+     * Provides {@Link InputStream} for the data represented by this {@link BinaryData} object.
      *
-     * @return
+     * <p><strong>Get InputStream from BinaryData</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Stream}
+     *
+     * @return {@link InputStream} representing the binary data.
      */
     public InputStream toStream() {
-        InputStream outStream = new ByteArrayInputStream(this.data);
-        try {
-            outStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outStream;
+        return new ByteArrayInputStream(this.data);
     }
 
     /**
+     * Provides {@Link Mono<InputStream>} for the data represented by this {@link BinaryData} object.
      *
-     * @return
+     * @return {@link InputStream} representation of the data.
      */
     public Mono<InputStream> toStreamAsync() {
         return Mono.fromCallable(() -> toStream()) ;
     }
 
     /**
+     * Create {@link BinaryData} instance with given {@link InputStream} as source of data. The {@link InputStream} is
+     * not closed by this function.
      *
-     * @param inputStream
-     * @return
+     * <p><strong>Create an instance from InputStream</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Stream}
+     *
+     * @param inputStream to read bytes from.
+     * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromStream(InputStream inputStream) {
         final int bufferSize = 1024;
@@ -80,19 +101,25 @@ final public class BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given value.
+     * Asynchronously create {@link BinaryData} instance with given {@link InputStream} as source of data. The {@link InputStream} is
+     * not closed by this function.
      *
-     * @param inputStream to use.
+     * @param inputStream to read bytes from.
+     * @return {@link Mono<BinaryData>} representing binary data.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
         return Mono.fromCallable(() -> fromStream(inputStream)) ;
-       // return fromStreamAsync(inputStream, 4096);
     }
 
     /**
-     * Create {@link BinaryData} instance with given value.
+     * Create {@link BinaryData} instance with given {@link Flux<ByteBuffer>} as source of data. It will collect all
+     * the bytes from {@link ByteBuffer} into {@link BinaryData}.
+     *
+     * <p><strong>Create an instance from String</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Flux}
      *
      * @param data to use.
+     * @return {@link Mono<BinaryData>} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
         return FluxUtil.collectBytesInByteBufferStream(data)
@@ -100,15 +127,21 @@ final public class BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given value.
+     * Create {@link BinaryData} instance with given data and character set.
+     *
+     * <p><strong>Create an instance from String</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#String}
      *
      * @param data to use.
+     * @param charSet to use.
      */
     public static BinaryData fromString(String data, Charset charSet) {
         return new BinaryData(data.getBytes(charSet));
     }
+
     /**
-     * Create {@link BinaryData} instance with given value.
+     * Create {@link BinaryData} instance with given data. The {@link String} is converted into bytes  using
+     * {@link StandardCharsets#UTF_8} character set.
      *
      * @param data to use.
      */
@@ -126,21 +159,22 @@ final public class BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given object and {@link JsonSerializer}.
+     * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link ObjectSerializer}.
      *
-     * @param data to use.
+     * @param data The {@link Object} which needs to be serialized into bytes.
+     * @param serializer to use for serializing the object.
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         serializer.serialize(outputStream, data);
         return new BinaryData(outputStream.toByteArray());
-
     }
 
     /**
-     * Asynchronously, create {@link BinaryData} instance with given object and {@link JsonSerializer}.
+     * Serialize the given {@link Object} into {@link Mono<BinaryData>} using the provided {@link ObjectSerializer}.
      *
-     * @param data to use.
+     * @param data The {@link Object} which needs to be serialized into bytes.
+     * @param serializer to use for serializing the object.
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
         return Mono.fromCallable(() -> fromObject(data, serializer)) ;
@@ -148,38 +182,41 @@ final public class BinaryData {
     }
 
     /**
-     * Gets the binary data.
+     * Provides byte array representation of this {@link BinaryData} object.
      *
-     * @return byte array representing {@link BinaryData}.
+     * @return byte array representation of the data.
      */
     public byte[] toBytes() {
         return Arrays.copyOf(this.data, this.data.length);
     }
 
     /**
-     * Gets the binary data.
+     * Provides {@link String} representation of this {@link BinaryData} object. The bytes are converted into
+     * {@link String} using {@link StandardCharsets#UTF_8} character set.
      *
-     * @return byte array representing {@link BinaryData}.
+     * @return {@link String} representation of the data.
      */
     public String toString() {
         return new String(this.data, StandardCharsets.UTF_8);
     }
 
     /**
-     * Gets the binary data.
+     * Provides {@link String} representation of this {@link BinaryData} object given a character set.
      *
-     * @return byte array representing {@link BinaryData}.
+     * @param charSet to use to convert bytes into {@link String}.
+     * @return {@link String} representation of the data.
      */
     public String toString(Charset charSet) {
         return new String(this.data, charSet);
     }
 
     /**
-     * Apply the {@link ObjectSerializer} on the bytes representation of the data.
+     * Deserialize the bytes into the {@link Object} of given type by applying the provided {@link ObjectSerializer} on
+     * the data.
      *
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
-     * @return The type
+     * @return The {@link Object} of given type after deserializing the bytes.
      */
     public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
         TypeReference<T>  ref = TypeReference.createInstance(clazz);
@@ -188,11 +225,15 @@ final public class BinaryData {
     }
 
     /**
-     * Asynchronously, apply the {@link ObjectSerializer} on the bytes representation of the data.
+     * Return a {@link Mono} by deserialize the bytes into the {@link Object} of given type after applying the provided
+     * {@link ObjectSerializer} on the {@link BinaryData}.
+     *
+     * <p><strong>Gets the specified object</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
      *
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
-     * @return The type
+     * @return The {@link Object} of given type after deserializing the bytes.
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
         return Mono.fromCallable(() -> toObject(clazz, serializer)) ;
