@@ -28,10 +28,10 @@ public class SmsLiveTestBase extends TestBase {
         .get("SMS_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
 
     static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_ENDPOINT", "https://playback.sms.azurefd.net");
+        .get("SMS_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
-    static final String CONNECTIONSTRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://playback.sms.azurefd.net/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
+    static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
     protected SmsClientBuilder getSmsClientBuilder() {
         SmsClientBuilder builder = new SmsClientBuilder();
@@ -57,7 +57,7 @@ public class SmsLiveTestBase extends TestBase {
     protected SmsClientBuilder getSmsClientBuilderWithConnectionString() {
         SmsClientBuilder builder = new SmsClientBuilder();
 
-        builder.connectionString(CONNECTIONSTRING);
+        builder.connectionString(CONNECTION_STRING);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

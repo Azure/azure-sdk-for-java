@@ -3,7 +3,7 @@
 ## 1.0.0-beta.2 (Unreleased)
 
 ### Added
-- Support directly passing connection string to the CommunicationIdentityClientBuilder using connectionString().
+- Support directly passing connection string to the SmsClientBuilder using connectionString().
 
 ### Breaking Change
 - Removed credential(CommunicationClientCredential credential) and replaced with 

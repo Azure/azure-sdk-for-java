@@ -292,7 +292,7 @@ public class PhoneNumberClientBuilderTest {
     }
 
     @Test()
-    public void setCredentialNull() {
+    public void setAccessKeyNull() {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.accessKey(null);
         });

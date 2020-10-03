@@ -2,24 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.communication.administration;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import static org.junit.jupiter.api.Assertions.fail;
-
 public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");
     private static final String ENV_ENDPOINT =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-        protected static final String CONNECTIONSTRING = Configuration.getGlobalConfiguration()
+    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String COUNTRY_CODE =
@@ -101,7 +95,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
         builder
             .httpClient(httpClient)
-            .connectionString(CONNECTIONSTRING);
+            .connectionString(CONNECTION_STRING);
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

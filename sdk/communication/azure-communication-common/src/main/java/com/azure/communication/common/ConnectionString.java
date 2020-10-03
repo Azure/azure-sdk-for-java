@@ -4,6 +4,9 @@ package com.azure.communication.common;
 
 import java.util.Objects;
 
+/**
+ * Parse and store Connection String values
+ */
 public class ConnectionString {
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
@@ -18,7 +21,7 @@ public class ConnectionString {
      * 
      * @param connectionString The connection string to the Event Hub instance.
      *
-     * @throws NullPointerException     if {@code connectionString} is null.
+     * @throws NullPointerException if {@code connectionString} is null.
      * @throws IllegalArgumentException if {@code connectionString} is an empty
      *                                  string or the connection string has an
      *                                  invalid format.
