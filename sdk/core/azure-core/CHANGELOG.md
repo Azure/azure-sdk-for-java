@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.9.0-beta.1 (Unreleased)
-
+- Added : BinaryData, abstraction over many different ways that binary data can be represented. 
 
 ## 1.8.1 (2020-09-08)
 

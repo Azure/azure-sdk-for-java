@@ -155,7 +155,7 @@ public class BinaryDataTest {
     static Stream<Arguments> anyTypeToObject() {
         return Stream.of(
             Arguments.of("10", "10"),
-            Arguments.of(Long.valueOf("10"), Long.valueOf("10")) ,
+            Arguments.of(Long.valueOf("10"), Long.valueOf("10")),
             Arguments.of(Double.valueOf("10.1"), Double.valueOf("10.1")),
             Arguments.of(Boolean.TRUE, Boolean.TRUE),
             Arguments.of(new Person().setName("John Doe").setAge(50), new Person().setName("John Doe").setAge(50))

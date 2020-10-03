@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.experimental.util;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
@@ -75,7 +78,7 @@ public class BinaryDateJavaDocCodeSnippet {
             .subscribe();
 
         TimeUnit.SECONDS.sleep(5);
-        subscriber.dispose();;
+        subscriber.dispose();
         // END: com.azure.core.experimental.util.BinaryDocument.from#Flux
     }
 
@@ -130,7 +133,7 @@ public class BinaryDateJavaDocCodeSnippet {
             .subscribe();
 
         TimeUnit.SECONDS.sleep(5);
-        subscriber.dispose();;
+        subscriber.dispose();
         // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
     }
 
