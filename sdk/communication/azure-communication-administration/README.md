@@ -30,8 +30,8 @@ Acquired phone numbers can come with many capabilities, depending on the country
 
 To use the Admnistration SDK, a resource access key is required for authentication. 
 
-Administration uses HMAC authentication with the resource access key. This is done via the 
-CommunicationClientCredentials. The access key must be provided to the CommunicationIdentityClientBuilder 
+Administration uses HMAC authentication with the resource access key.
+The access key must be provided to the CommunicationIdentityClientBuilder 
 or the PhoneNumberClientBuilder via the accessKey() function. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
