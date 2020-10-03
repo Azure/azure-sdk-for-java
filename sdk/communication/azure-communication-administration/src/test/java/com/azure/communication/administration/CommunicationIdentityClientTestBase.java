@@ -48,7 +48,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString() {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder.connectionString(CONNECTIONSTRING);
+        builder.connectionString(CONNECTION_STRING);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
