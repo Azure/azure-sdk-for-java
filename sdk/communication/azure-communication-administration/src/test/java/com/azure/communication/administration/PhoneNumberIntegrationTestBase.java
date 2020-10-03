@@ -15,12 +15,10 @@ import java.security.NoSuchAlgorithmException;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumberIntegrationTestBase extends TestBase {
-    private static final String PLAYBACK_ACCESS_KEY = "QWNjZXNzS2V5";
-    private static final String PLAYBACK_ENDPOINT = "https://REDACTED.communication.azure.com";
     private static final String ENV_ACCESS_KEY =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY");
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");
     private static final String ENV_ENDPOINT =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT");
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
         protected static final String CONNECTIONSTRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
@@ -70,21 +68,18 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-LA");
 
     protected PhoneNumberClientBuilder getClientBuilder() {
-        String endpoint;
         HttpClient httpClient;
 
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
-            endpoint = PLAYBACK_ENDPOINT;
         } else {
             httpClient = new NettyAsyncHttpClientBuilder().build();
-            endpoint = ENV_ENDPOINT;
         }
 
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
         builder
             .httpClient(httpClient)
-            .endpoint(endpoint)
+            .endpoint(ENV_ENDPOINT)
             .accessKey(ENV_ACCESS_KEY);
 
         if (getTestMode() == TestMode.RECORD) {
