@@ -36,8 +36,6 @@ public class ManagedIdentityCredentialLiveTest {
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
-            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
-            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
@@ -74,8 +72,6 @@ public class ManagedIdentityCredentialLiveTest {
             .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
             .build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
-            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
-            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
