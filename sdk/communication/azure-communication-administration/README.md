@@ -180,8 +180,10 @@ for (PhonePlanGroup phonePlanGroup
 
 Unlike Toll-Free phone plans, area codes for Geographic Phone Plans are empty. Area codes are found in the Area Codes API.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L218-L227 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L216-L227 -->
 ```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
 PagedIterable<PhonePlan> phonePlans = phoneNumberClient
     .listPhonePlans(countryCode, phonePlanGroupId, locale);
 

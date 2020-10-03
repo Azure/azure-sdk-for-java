@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     matches = "(?i)(true)")
 public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegrationTestBase {
     @Test()
-    public void createClientWithConnectionString() {
+    public void createAsyncPhoneNumberClientWithConnectionString() {
         PhoneNumberAsyncClient phoneNumberAsyncClient = getClientBuilderWithConnectionString().buildAsyncClient();
         assertNotNull(phoneNumberAsyncClient);
 
