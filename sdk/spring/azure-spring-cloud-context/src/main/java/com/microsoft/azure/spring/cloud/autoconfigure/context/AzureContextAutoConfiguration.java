@@ -6,6 +6,7 @@ package com.microsoft.azure.spring.cloud.autoconfigure.context;
 import java.io.IOException;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,6 +35,7 @@ import com.microsoft.rest.RestClient;
 @EnableConfigurationProperties(AzureProperties.class)
 @ConditionalOnClass(Azure.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
+@ConditionalOnExpression("#{ ${spring.cloud.azure.msi-enabled:false} or !'${spring.cloud.azure.credential-file-path:}'.isEmpty() }")
 public class AzureContextAutoConfiguration {
 
     private static final String PROJECT_VERSION = AzureContextAutoConfiguration.class.getPackage()
