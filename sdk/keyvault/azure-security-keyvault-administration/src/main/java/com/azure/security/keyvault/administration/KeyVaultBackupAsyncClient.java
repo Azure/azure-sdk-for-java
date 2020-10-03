@@ -247,7 +247,7 @@ public final class KeyVaultBackupAsyncClient {
      * Gets a pending {@link KeyVaultBackupOperation backup operation} from the Key Vault.
      *
      * @param jobId The operation identifier.
-     * @throws KeyVaultErrorException when a backup operation for a given {@code jobId} doesn't exist.
+     * @throws NullPointerException if the {@code jobId} is null.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -409,7 +409,7 @@ public final class KeyVaultBackupAsyncClient {
      * Gets a pending {@link KeyVaultRestoreOperation full or selective restore operation} from the Key Vault.
      *
      * @param jobId The operation identifier.
-     * @throws KeyVaultErrorException when a restore operation for a given {@code jobId} doesn't exist.
+     * @throws NullPointerException if the {@code jobId} is null.
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation restore operation} status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

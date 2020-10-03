@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 
@@ -71,7 +70,7 @@ public final class KeyVaultBackupClient {
      * Gets a pending {@link KeyVaultBackupOperation backup operation} from the Key Vault.
      *
      * @param jobId The operation identifier.
-     * @throws KeyVaultErrorException when a backup operation for a given {@code jobId} doesn't exist.
+     * @throws NullPointerException if the {@code jobId} is null.
      * @return A {@link SyncPoller} to poll on the backup operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -114,7 +113,7 @@ public final class KeyVaultBackupClient {
      * Gets a pending {@link KeyVaultRestoreOperation full or selective restore operation} from the Key Vault.
      *
      * @param jobId The operation identifier.
-     * @throws KeyVaultErrorException when a restore operation for a given {@code jobId} doesn't exist.
+     * @throws NullPointerException if the {@code jobId} is null.
      * @return A {@link SyncPoller} to poll on the restore operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
