@@ -1,5 +1,8 @@
 # Release History
 
+## 11.2.0-beta.1 (Unreleased)
+
+
 ## 11.1.1 (2020-10-02)
 
 - Updated `azure-core` version.
