@@ -306,9 +306,13 @@ public final class KeyClientBuilder {
     }
 
     /**
-     * Sets various {@link ClientOptions options} on this client.
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
      *
-     * @param clientOptions the {@link ClientOptions} to be set on this client.
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated KeyClientBuilder object.
      */
     public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
