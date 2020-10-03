@@ -21,7 +21,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 
