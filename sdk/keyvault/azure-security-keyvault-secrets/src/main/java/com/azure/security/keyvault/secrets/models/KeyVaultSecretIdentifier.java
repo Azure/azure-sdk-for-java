@@ -73,26 +73,33 @@ public final class KeyVaultSecretIdentifier {
      *
      * @param secretId The secret identifier to extract information from.
      * @return a new instance of {@link KeyVaultSecretIdentifier}.
-     * @throws IllegalArgumentException if the given identifier is {@code null}.
-     * @throws MalformedURLException if the given identifier is not a valid Key Vault Secret identifier
+     * @throws IllegalArgumentException if the given identifier is {@code null} or an invalid Key Vault Secret
+     * identifier.
      */
-    public static KeyVaultSecretIdentifier parse(String secretId) throws IllegalArgumentException, MalformedURLException {
+    public static KeyVaultSecretIdentifier parse(String secretId) throws IllegalArgumentException {
         if (secretId == null) {
             throw new IllegalArgumentException("secretId cannot be null");
         }
 
-        URL url = new URL(secretId);
-        // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
-        String[] pathSegments = url.getPath().split("/");
+        try {
+            final URL url = new URL(secretId);
+            // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
+            final String[] pathSegments = url.getPath().split("/");
 
-        if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
-            || !"https".equals(url.getProtocol()) // Invalid protocol.
-            || (!"secrets".equals(pathSegments[1]) && !"deletedsecrets".equals(pathSegments[1])) // Invalid collection.
-            || ("deletedsecrets".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
-            throw new IllegalArgumentException("secretId is not a valid Key Vault Secret identifier");
+            if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
+                || !"https".equals(url.getProtocol()) // Invalid protocol.
+                || (!"secrets".equals(pathSegments[1]) && !"deletedsecrets".equals(pathSegments[1])) // Invalid collection.
+                || ("deletedsecrets".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
+                throw new IllegalArgumentException("secretId is not a valid Key Vault Secret identifier");
+            }
+
+            final String vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
+            final String secretName = pathSegments[2];
+            final String secretVersion = pathSegments.length == 4 ? pathSegments[3] : null;
+
+            return new KeyVaultSecretIdentifier(secretId, vaultUrl, secretName, secretVersion);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Could not parse secretId", e);
         }
-
-        return new KeyVaultSecretIdentifier(secretId, url.getProtocol() + "://" + url.getHost(), pathSegments[2],
-            pathSegments.length == 4 ? pathSegments[3] : null);
     }
 }
