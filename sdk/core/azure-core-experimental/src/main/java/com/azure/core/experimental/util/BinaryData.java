@@ -54,7 +54,7 @@ public final class BinaryData {
     }
 
     /**
-     * Provides {@Link InputStream} for the data represented by this {@link BinaryData} object.
+     * Provides {@link InputStream} for the data represented by this {@link BinaryData} object.
      *
      * <p><strong>Get InputStream from BinaryData</strong></p>
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Stream}
@@ -66,7 +66,7 @@ public final class BinaryData {
     }
 
     /**
-     * Provides {@Link Mono<InputStream>} for the data represented by this {@link BinaryData} object.
+     * Provides {@link Mono} of {@link InputStream} for the data represented by this {@link BinaryData} object.
      *
      * @return {@link InputStream} representation of the data.
      */

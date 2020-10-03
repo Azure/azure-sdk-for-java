@@ -3,18 +3,26 @@
 
 package com.azure.core.experimental.util;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
@@ -26,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test class for {@link BinaryData}.
  */
 public class BinaryDataTest {
-    private static final JacksonJsonSerializer DEFAULT_SERIALIZER = new JacksonJsonSerializerBuilder().build();
+    //private static final JacksonJsonSerializer DEFAULT_SERIALIZER = new JacksonJsonSerializerBuilder().build();
+    private static final ObjectSerializer DEFAULT_SERIALIZER = new MyJsonSerializer();
 
     @MethodSource()
     @ParameterizedTest
@@ -160,5 +169,49 @@ public class BinaryDataTest {
             Arguments.of(Boolean.TRUE, Boolean.TRUE),
             Arguments.of(new Person().setName("John Doe").setAge(50), new Person().setName("John Doe").setAge(50))
         );
+    }
+
+    public static class MyJsonSerializer implements JsonSerializer {
+        private final ClientLogger logger = new ClientLogger(MyJsonSerializer.class);
+        private final ObjectMapper mapper;
+        private final TypeFactory typeFactory;
+
+        public MyJsonSerializer() {
+            this.mapper = new ObjectMapper();
+            this.typeFactory = mapper.getTypeFactory();
+        }
+
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            if (stream == null) {
+                return null;
+            }
+
+            try {
+                return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            return Mono.fromCallable(() -> deserialize(stream, typeReference));
+        }
+
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                mapper.writeValue(stream, value);
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
     }
 }

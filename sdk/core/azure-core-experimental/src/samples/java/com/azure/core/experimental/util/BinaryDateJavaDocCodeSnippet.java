@@ -3,12 +3,15 @@
 
 package com.azure.core.experimental.util;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,6 +19,8 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -118,10 +123,13 @@ public class BinaryDateJavaDocCodeSnippet {
         }
         final Person data = new Person().setName("John");
 
-        // Serializer to use to serialize object.
-        final JacksonJsonSerializer serializer = new JacksonJsonSerializerBuilder().build();
+        // Ensure your classpath have the Serializer to use to serialize object.
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // final ObjectSerializer serializer = new JacksonJsonSerializerBuilder().build();
 
-        BinaryData binaryData = BinaryData.fromObject(data, new JacksonJsonSerializerBuilder().build());
+        final ObjectSerializer serializer = new MyJsonSerializer();
+        BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         // Lets print the value of BinaryData
         Disposable subscriber = binaryData
@@ -137,22 +145,53 @@ public class BinaryDateJavaDocCodeSnippet {
         // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
     }
 
-    /**
-     * Codesnippets for {@link BinaryData#toStream()}.
-     */
-    public void toObject() throws IOException {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#Stream
-        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
-        final byte[] bytes = new byte[data.length];
-        (binaryData.toStream()).read(bytes, 0, data.length);
-        System.out.println(new String(bytes));
-        // END: com.azure.core.experimental.util.BinaryDocument.to#Stream
+    public static class MyJsonSerializer implements JsonSerializer {
+        private final ClientLogger logger = new ClientLogger(BinaryDataTest.MyJsonSerializer.class);
+        private final ObjectMapper mapper;
+        private final TypeFactory typeFactory;
+
+        public MyJsonSerializer() {
+            this.mapper = new ObjectMapper();
+            this.typeFactory = mapper.getTypeFactory();
+        }
+
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            if (stream == null) {
+                return null;
+            }
+
+            try {
+                return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            return Mono.fromCallable(() -> deserialize(stream, typeReference));
+        }
+
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                mapper.writeValue(stream, value);
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
     }
 
     public static void main(String[] a) throws IOException, InterruptedException {
-        //BinaryDateJavaDocCodeSnippet codeSnippet =  new BinaryDateJavaDocCodeSnippet();
-        //codeSnippet.createFromStream();
+        BinaryDateJavaDocCodeSnippet codeSnippet =  new BinaryDateJavaDocCodeSnippet();
+        codeSnippet.createFromStream();
         //codeSnippet.createToStream();
         //codeSnippet.createFromFlux();
         //codeSnippet.createFromString();
