@@ -1,14 +1,21 @@
 # Release History
 
-## 12.9.0-beta.1 (Unreleased)
+## 12.9.0-beta.2 (Unreleased)
+
+
+## 12.9.0-beta.1 (2020-10-01)
+- Added support for the 2020-02-10 service version.
+- Added support to specify Arrow Output Serialization when querying a blob. 
+- Added support to undelete a container. 
 - Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.
 - Added support to specify block size when using BlobInputStream.
-
+- Added support to specify block size when using BlobInputStream.
 - Fixed a bug where users could not download more than 5000MB of data in one shot in the downloadToFile API.
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
 - Fixed a bug where Default Azure Credential would not work with Azurite.
 - Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
 - Fixed a bug where BlockBlobOutputStream would not handle certain errors.
+- Added BlobImmutableDueToPolicy to the BlobErrorCode enum.
 
 ## 12.8.0 (2020-08-13)
 - Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.

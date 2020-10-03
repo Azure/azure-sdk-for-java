@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -143,11 +145,43 @@ abstract class AsyncBenchmark<T> {
                     dataFieldValue,
                     partitionKey,
                     configuration.getDocumentDataFieldCount());
-                Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
-                    PojoizedJson x =
-                        resp.getItem();
-                    return x;
-                }).flux();
+                Flux<PojoizedJson> obs = cosmosAsyncContainer
+                    .createItem(newDoc)
+                    .retryWhen(Retry.max(5).filter((error) -> {
+                        if (!(error instanceof CosmosException)) {
+                            return false;
+                        }
+                        final CosmosException cosmosException = (CosmosException)error;
+                        if (cosmosException.getStatusCode() == 410 ||
+                                cosmosException.getStatusCode() == 408 ||
+                                cosmosException.getStatusCode() == 429 ||
+                                cosmosException.getStatusCode() == 503) {
+                            return true;
+                        }
+
+                        return false;
+                    }))
+                    .onErrorResume(
+                        (error) -> {
+                            if (!(error instanceof CosmosException)) {
+                                return false;
+                            }
+                            final CosmosException cosmosException = (CosmosException)error;
+                            if (cosmosException.getStatusCode() == 409) {
+                                return true;
+                            }
+
+                            return false;
+                        },
+                        (conflictException) -> cosmosAsyncContainer.readItem(
+                            uuid, new PartitionKey(partitionKey), PojoizedJson.class)
+                    )
+                    .map(resp -> {
+                        PojoizedJson x =
+                            resp.getItem();
+                        return x;
+                    })
+                    .flux();
                 createDocumentObservables.add(obs);
             }
         }

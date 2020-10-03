@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MagnitudeScoringParameters model. */
+/** Provides parameter values to a magnitude scoring function. */
 @Fluent
 public final class MagnitudeScoringParameters {
     /*

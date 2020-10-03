@@ -1,6 +1,10 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
+
+- Added : BinaryData, abstraction over many different ways that binary data can be represented. 
+
+## 1.0.0-beta.5 (2020-10-01)
 
 - Added `JsonPatchDocument` to support JSON Patch functionality.
 

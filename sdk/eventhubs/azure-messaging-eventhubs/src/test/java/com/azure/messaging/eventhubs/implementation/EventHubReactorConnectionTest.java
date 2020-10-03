@@ -25,6 +25,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +42,6 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
-import java.util.concurrent.RejectedExecutionException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -91,7 +91,7 @@ public class EventHubReactorConnectionTest {
     @BeforeEach
     public void setup() throws IOException {
         final ConnectionHandler connectionHandler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, product,
-            clientVersion, CLIENT_OPTIONS);
+            clientVersion, SslDomain.VerifyMode.VERIFY_PEER_NAME, CLIENT_OPTIONS);
 
         MockitoAnnotations.initMocks(this);
 
@@ -101,13 +101,10 @@ public class EventHubReactorConnectionTest {
         when(reactor.process()).thenReturn(true);
         when(reactor.attachments()).thenReturn(record);
 
-        final RejectedExecutionException rejectedException = this.reactor.attachments()
-            .get(RejectedExecutionException.class, RejectedExecutionException.class);
-
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
-            scheduler, CLIENT_OPTIONS);
+            scheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -119,7 +116,7 @@ public class EventHubReactorConnectionTest {
             reactorDispatcher, Duration.ofSeconds(20));
 
         when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, product,
-            clientVersion, CLIENT_OPTIONS))
+            clientVersion, SslDomain.VerifyMode.VERIFY_PEER_NAME, CLIENT_OPTIONS))
             .thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);

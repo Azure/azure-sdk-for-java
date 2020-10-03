@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The ModelData model. */
+/** A model definition and metadata for that model. */
 @Fluent
 public final class ModelData {
     /*
@@ -52,7 +52,11 @@ public final class ModelData {
     @JsonProperty(value = "model")
     private Object model;
 
-    /** Creates an instance of ModelData class. */
+    /**
+     * Creates an instance of ModelData class.
+     *
+     * @param id the id value to set.
+     */
     @JsonCreator
     public ModelData(@JsonProperty(value = "id", required = true) String id) {
         this.id = id;
