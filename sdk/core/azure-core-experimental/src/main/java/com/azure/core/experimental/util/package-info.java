@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing GeoJSON classes.
+ * Package containing utilities classes.
  */
 package com.azure.core.experimental.util;

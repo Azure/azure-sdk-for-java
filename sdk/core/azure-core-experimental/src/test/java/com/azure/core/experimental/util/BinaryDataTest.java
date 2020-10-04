@@ -11,9 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -25,7 +22,6 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,43 +30,82 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test class for {@link BinaryData}.
  */
 public class BinaryDataTest {
-    //private static final JacksonJsonSerializer DEFAULT_SERIALIZER = new JacksonJsonSerializerBuilder().build();
     private static final ObjectSerializer DEFAULT_SERIALIZER = new MyJsonSerializer();
 
-    @MethodSource()
-    @ParameterizedTest
-    public void anyTypeToObject(Object actualValue, Object expectedValue) {
+    @Test
+    public void fromCustomObject() {
+        // Arrange
+        final Person actualValue = new Person().setName("John Doe").setAge(50);
+        final Person expectedValue = new Person().setName("John Doe").setAge(50);
+
+        // Act
         final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
+
+        // Assert
         assertEquals(expectedValue, data.toObject(expectedValue.getClass(), DEFAULT_SERIALIZER));
     }
 
-    @MethodSource()
-    @ParameterizedTest
-    public void anyTypeToByteArray(Object actualValue, byte[] expectedValue) {
+    @Test
+    public void fromDouble() {
+        // Arrange
+        final Double actualValue = Double.valueOf("10.1");
+        final Double expectedValue = Double.valueOf("10.1");
+
+        // Act
         final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
+
+        // Assert
+        assertEquals(expectedValue, data.toObject(expectedValue.getClass(), DEFAULT_SERIALIZER));
+    }
+
+    @Test
+    public void anyTypeToByteArray() {
+        // Assert
+        final Person actualValue = new Person().setName("John Doe").setAge(50);
+        final byte[] expectedValue = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
+
+        // Assert
         assertArrayEquals(expectedValue, data.toBytes());
     }
 
     @Test
     public void createFromString() {
+        // Arrange
         final String expected = "Doe";
+
+        // Act
         final BinaryData data = BinaryData.fromString(expected);
+
+        // Assert
         assertArrayEquals(expected.getBytes(), data.toBytes());
         assertEquals(expected, data.toString());
     }
 
     @Test
     public void createFromStringCharSet() {
+        // Arrange
         final String expected = "Doe";
+
+        // Act
         final BinaryData data = BinaryData.fromString(expected, StandardCharsets.UTF_8);
+
+        // Assert
         assertArrayEquals(expected.getBytes(), data.toBytes());
         assertEquals(expected, data.toString(StandardCharsets.UTF_8));
     }
 
     @Test
     public void createFromByteArray() {
+        // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
+
+        // Act
         final BinaryData data = new BinaryData(expected);
+
+        // Assert
         assertArrayEquals(expected, data.toBytes());
     }
 
@@ -152,23 +187,6 @@ public class BinaryDataTest {
                 Assertions.assertEquals(expected, actual);
             })
             .verifyComplete();
-    }
-
-    static Stream<Arguments> anyTypeToByteArray() {
-        return Stream.of(
-            Arguments.of(new Person().setName("John Doe"), "{\"name\":\"John Doe\",\"age\":0}".getBytes(StandardCharsets.UTF_8)),
-            Arguments.of(new Person().setName("John Doe").setAge(50), "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8))
-        );
-    }
-
-    static Stream<Arguments> anyTypeToObject() {
-        return Stream.of(
-            Arguments.of("10", "10"),
-            Arguments.of(Long.valueOf("10"), Long.valueOf("10")),
-            Arguments.of(Double.valueOf("10.1"), Double.valueOf("10.1")),
-            Arguments.of(Boolean.TRUE, Boolean.TRUE),
-            Arguments.of(new Person().setName("John Doe").setAge(50), new Person().setName("John Doe").setAge(50))
-        );
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

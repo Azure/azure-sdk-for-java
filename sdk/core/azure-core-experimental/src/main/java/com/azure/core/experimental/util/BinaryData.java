@@ -19,12 +19,15 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
- * This class is an abstraction over many different ways that binary data can be represented. For example
- * {@link InputStream}, {@link Flux} of {@link ByteBuffer} , {@link String} and byte array. One of the important API it
- * provides is to serialize and deserialize an {@link Object} into {@link BinaryData} given an {@link ObjectSerializer}.
- * Following are some examples.
+ * This class is an abstraction over many different ways that binary data can be represented. The {@link BinaryData}
+ * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object} and byte
+ * array. The data is collected from provided sources and stored into a byte array.
+ * <p>
+ * It also provides a way to to serialize and deserialize an {@link Object} into {@link BinaryData} given an
+ * {@link ObjectSerializer}. Following are some examples for your reference.
  *
  * <p><strong>Create an instance from Bytes</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
@@ -34,6 +37,9 @@ import java.util.Arrays;
  *
  * <p><strong>Create an instance from InputStream</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Stream}
+ *
+ * <p><strong>Get an Object from {@link BinaryData}</strong></p>
+ * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
  *
  * @see ObjectSerializer
  */
@@ -68,7 +74,7 @@ public final class BinaryData {
     /**
      * Provides {@link Mono} of {@link InputStream} for the data represented by this {@link BinaryData} object.
      *
-     * @return {@link InputStream} representation of the data.
+     * @return {@link InputStream} representation of the {@link BinaryData}.
      */
     public Mono<InputStream> toStreamAsync() {
         return Mono.fromCallable(() -> toStream());
@@ -83,9 +89,12 @@ public final class BinaryData {
      *
      * @param inputStream to read bytes from.
      * @throws UncheckedIOException If any error in reading from {@link InputStream}.
-     * @return {@link BinaryData} representing binary data.
+     * @throws NullPointerException if {@code inputStream} is null.
+     * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromStream(InputStream inputStream) {
+        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
+
         final int bufferSize = 1024;
         try {
             ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
@@ -107,9 +116,12 @@ public final class BinaryData {
      * {@link InputStream} is not closed by this function.
      *
      * @param inputStream to read bytes from.
-     * @return {@link Mono} of {@link BinaryData} representing binary data.
+     * @throws NullPointerException if {@code inputStream} is null.
+     * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
+        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
+
         return Mono.fromCallable(() -> fromStream(inputStream));
     }
 
@@ -121,9 +133,12 @@ public final class BinaryData {
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Flux}
      *
      * @param data to use.
+     * @throws NullPointerException if {@code inputStream} is null.
      * @return {@link Mono} of {@link BinaryData} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+
         return FluxUtil.collectBytesInByteBufferStream(data)
             .flatMap(bytes -> Mono.just(fromBytes(bytes)));
     }
@@ -136,9 +151,12 @@ public final class BinaryData {
      *
      * @param data to use.
      * @param charSet to use.
-     * @return {@link BinaryData} representing binary data.
+     * @throws NullPointerException if {@code inputStream} is null.
+     * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromString(String data, Charset charSet) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+
         return new BinaryData(data.getBytes(charSet));
     }
 
@@ -147,9 +165,12 @@ public final class BinaryData {
      * {@link StandardCharsets#UTF_8} character set.
      *
      * @param data to use.
+     * @throws NullPointerException if {@code inputStream} is null.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromString(String data) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+
         return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -157,7 +178,7 @@ public final class BinaryData {
      * Create {@link BinaryData} instance with given byte array data.
      *
      * @param data to use.
-     * @return {@link BinaryData} representing binary data.
+     * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromBytes(byte[] data) {
         return new BinaryData(data);
@@ -168,10 +189,14 @@ public final class BinaryData {
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
+     * @throws NullPointerException if {@code inputStream} or {@code serializer} is null.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         serializer.serialize(outputStream, data);
         return new BinaryData(outputStream.toByteArray());
     }
@@ -182,9 +207,13 @@ public final class BinaryData {
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
-     * @return {@link Mono} of {@link BinaryData} representing binary data.
+     * @throws NullPointerException if {@code inputStream} or {@code serializer} is null.
+     * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+
         return Mono.fromCallable(() -> fromObject(data, serializer));
 
     }
@@ -192,7 +221,7 @@ public final class BinaryData {
     /**
      * Provides byte array representation of this {@link BinaryData} object.
      *
-     * @return byte array representation of the data.
+     * @return byte array representation of the the data.
      */
     public byte[] toBytes() {
         return Arrays.copyOf(this.data, this.data.length);
@@ -212,7 +241,7 @@ public final class BinaryData {
      * Provides {@link String} representation of this {@link BinaryData} object given a character set.
      *
      * @param charSet to use to convert bytes into {@link String}.
-     * @return {@link String} representation of the data.
+     * @return {@link String} representation of the the binary data.
      */
     public String toString(Charset charSet) {
         return new String(this.data, charSet);
@@ -228,6 +257,9 @@ public final class BinaryData {
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
+        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+
         TypeReference<T>  ref = TypeReference.createInstance(clazz);
         InputStream jsonStream = new ByteArrayInputStream(this.data);
         return serializer.deserialize(jsonStream, ref);
@@ -243,6 +275,7 @@ public final class BinaryData {
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
+     * @throws NullPointerException if {@code clazz} or {@code serializer} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {

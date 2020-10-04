@@ -47,7 +47,7 @@ public class BinaryDateJavaDocCodeSnippet {
     public void createFromString() {
         // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#String
         final String data = "Some Data";
-        // Following will use default StandardCharsets.UTF_8
+        // Following will use default character set as StandardCharsets.UTF_8
         BinaryData binaryData = BinaryData.fromString(data);
         System.out.println(binaryData.toString());
         // END: com.azure.core.experimental.util.BinaryDocument.from#String
@@ -70,9 +70,9 @@ public class BinaryDateJavaDocCodeSnippet {
     public void createFromFlux() throws InterruptedException {
         // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#Flux
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        final Flux<ByteBuffer> expectedFlux = Flux.just(ByteBuffer.wrap(data));
+        final Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
 
-        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(expectedFlux);
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(dataFlux);
 
         // Lets print the value of BinaryData
         Disposable subscriber = binaryDataMono
@@ -82,6 +82,7 @@ public class BinaryDateJavaDocCodeSnippet {
             })
             .subscribe();
 
+        // So that your program wait for above subscribe to complete.
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.experimental.util.BinaryDocument.from#Flux
@@ -123,12 +124,13 @@ public class BinaryDateJavaDocCodeSnippet {
         }
         final Person data = new Person().setName("John");
 
-        // Ensure your classpath have the Serializer to use to serialize object.
+        // Ensure your classpath have the Serializer to use to serialize object. For example you can use one of
+        // following library.
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
-        // final ObjectSerializer serializer = new JacksonJsonSerializerBuilder().build();
 
-        final ObjectSerializer serializer = new MyJsonSerializer();
+        final ObjectSerializer serializer =
+            new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         // Lets print the value of BinaryData
@@ -140,6 +142,7 @@ public class BinaryDateJavaDocCodeSnippet {
             })
             .subscribe();
 
+        // So that your program wait for above subscribe to complete.
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
