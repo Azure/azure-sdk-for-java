@@ -10,19 +10,11 @@ import java.util.Map;
 /**
  * Options to specify while putting message in dead-letter queue.
  */
-final public class DeadLetterOptions extends SettlementOptions {
+public final class DeadLetterOptions extends SettlementOptions {
 
     private String deadLetterReason;
     private String deadLetterErrorDescription;
     private Map<String, Object> propertiesToModify;
-
-    public DeadLetterOptions() {
-        this(null);
-    }
-
-    public DeadLetterOptions(ServiceBusTransactionContext transactionContext) {
-        super(transactionContext);
-    }
 
     /**
      * Sets the reason while putting message in dead letter sub-queue.
@@ -85,5 +77,18 @@ final public class DeadLetterOptions extends SettlementOptions {
      */
     public Map<String, Object> getPropertiesToModify() {
         return propertiesToModify;
+    }
+
+    /**
+     * Sets the {@link ServiceBusTransactionContext} to the options.
+     *
+     * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to dead letter a message.
+     *
+     * @return The Updated {@link DeadLetterOptions} object.
+     */
+    @Override
+    public DeadLetterOptions setTransactionContext(ServiceBusTransactionContext transactionContext) {
+        super.setTransactionContext(transactionContext);
+        return this;
     }
 }

@@ -5,9 +5,12 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -302,7 +305,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send, receive one message and settle on non session entity.
      */
-    /*@ParameterizedTest
+    @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void transactionMessageAndSettle(DispositionStatus dispositionStatus) {
 
@@ -332,18 +335,21 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         switch (dispositionStatus) {
             case COMPLETED:
-                receiver.complete(receivedMessage, transaction);
+                receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction));
                 messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
-                receiver.abandon(receivedMessage, null, transaction);
+                receiver.abandon(receivedMessage, new AbandonOptions()
+                    .setTransactionContext(transaction));
                 break;
             case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                receiver.deadLetter(receivedMessage, deadLetterOptions, transaction);
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions()
+                    .setDeadLetterReason(deadLetterReason)
+                    .setTransactionContext(transaction);
+                receiver.deadLetter(receivedMessage, deadLetterOptions);
                 break;
             case DEFERRED:
-                receiver.defer(receivedMessage, null, transaction);
+                receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction));
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -351,7 +357,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
 
         receiver.commitTransaction(transaction);
-    }*/
+    }
 
     /**
      * Verifies that we can send and receive one messages.

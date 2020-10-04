@@ -285,7 +285,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.complete(messageContext.getMessage(), new CompleteOptions(transactionContext))
+        Disposable subscriber = receiver.complete(messageContext.getMessage(), new CompleteOptions()
+            .setTransactionContext(transactionContext))
             .subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
@@ -315,7 +316,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage(), new AbandonOptions(transactionContext)
+        Disposable subscriber = receiver.abandon(messageContext.getMessage(), new AbandonOptions()
+            .setTransactionContext(transactionContext)
             .setPropertiesToModify(propertiesToModify)).subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.

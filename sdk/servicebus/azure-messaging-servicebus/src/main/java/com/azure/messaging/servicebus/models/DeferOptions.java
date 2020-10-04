@@ -1,19 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.models;
 
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 import java.util.Map;
 
-final public class DeferOptions extends SettlementOptions {
+/**
+ * Options to specify while deferring message.
+ */
+public final class DeferOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
-
-    public DeferOptions() {
-        this(null);
-    }
-
-    public DeferOptions(ServiceBusTransactionContext transactionContext) {
-        super(transactionContext);
-    }
 
     /**
      * Sets the message properties to modify while abandoning message.
@@ -34,5 +32,18 @@ final public class DeferOptions extends SettlementOptions {
      */
     public Map<String, Object> getPropertiesToModify() {
         return propertiesToModify;
+    }
+
+    /**
+     * Sets the {@link ServiceBusTransactionContext} to the options.
+     *
+     * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to defer a message.
+     *
+     * @return The Updated {@link DeferOptions} object.
+     */
+    @Override
+    public DeferOptions setTransactionContext(ServiceBusTransactionContext transactionContext) {
+        super.setTransactionContext(transactionContext);
+        return this;
     }
 }

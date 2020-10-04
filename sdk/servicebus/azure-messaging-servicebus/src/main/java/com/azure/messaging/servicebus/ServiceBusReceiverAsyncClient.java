@@ -303,7 +303,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
-        return defer(message, null);
+        return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
+            null, null);
     }
 
     /**
@@ -390,7 +391,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     *
+     * @param options The {@link DeadLetterOptions} used to perform this operation.
      * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
      *     transactionContext.transactionId} is null.
