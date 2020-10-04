@@ -47,6 +47,7 @@ import java.util.UUID;
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
@@ -501,5 +502,15 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testArrayContains() {
+        Criteria hasHobby = Criteria.getInstance(CriteriaType.ARRAY_CONTAINS, "hobbies",
+            Collections.singletonList(HOBBY1), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(hasHobby), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
     }
 }
