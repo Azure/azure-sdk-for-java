@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -29,16 +28,16 @@ public final class BatchResponseParser {
     private final static Logger logger = LoggerFactory.getLogger(BatchResponseParser.class);
     private final static char HYBRID_V1 = 129;
 
-    /** Creates a transactional batch response} from a response message
+    /** Creates a transactional batch response from a documentServiceResponse.
      *
      * @param documentServiceResponse the {@link RxDocumentServiceResponse response message}.
      * @param request the {@link ServerBatchRequest batch request} that produced {@code message}.
      * @param shouldPromoteOperationStatus indicates whether the operation status should be promoted.
      *
-     * @return a Mono that provides the {@link TransactionalBatchResponse transactional batch response} created
+     * @return the {@link TransactionalBatchResponse transactional batch response} created
      * from {@link RxDocumentServiceResponse message} when the batch operation completes.
      */
-    public static Mono<TransactionalBatchResponse> fromDocumentServiceResponseAsync(
+    public static TransactionalBatchResponse fromDocumentServiceResponse(
         final RxDocumentServiceResponse documentServiceResponse,
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
@@ -47,7 +46,7 @@ public final class BatchResponseParser {
         final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
         if (responseContent != null && responseContent.length > 0) {
-            response = BatchResponseParser.populateFromResponseContentAsync(documentServiceResponse, request, shouldPromoteOperationStatus);
+            response = BatchResponseParser.populateFromResponseContent(documentServiceResponse, request, shouldPromoteOperationStatus);
 
             if (response == null) {
                 // Convert any payload read failures as InternalServerError
@@ -96,10 +95,10 @@ public final class BatchResponseParser {
         checkState(response.size() == request.getOperations().size(),
             "Number of responses should be equal to number of operations in request.");
 
-        return Mono.just(response);
+        return response;
     }
 
-    private static TransactionalBatchResponse populateFromResponseContentAsync(
+    private static TransactionalBatchResponse populateFromResponseContent(
         final RxDocumentServiceResponse documentServiceResponse,
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {

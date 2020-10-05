@@ -71,10 +71,10 @@ public class TransactionalBatchResponseTests {
             new ArrayList<>(headers.entrySet()),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponseAsync(
+        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
             batchRequest,
-            true).block();
+            true);
 
         // Validate response fields
         assertThat(batchResponse.getActivityId()).isEqualTo(activityId);
@@ -126,10 +126,10 @@ public class TransactionalBatchResponseTests {
             new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponseAsync(
+        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
             batchRequest,
-            true).block();
+            true);
 
         // Validate response fields
         assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
