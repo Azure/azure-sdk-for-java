@@ -6,4 +6,7 @@ module com.azure.opentelemetry.exporter.azuremonitor {
 
     exports com.azure.opentelemetry.exporter.azuremonitor;
     exports com.azure.opentelemetry.exporter.azuremonitor.models;
+
+    opens com.azure.opentelemetry.exporter.azuremonitor.models to com.fasterxml.jackson.databind;
+
 }

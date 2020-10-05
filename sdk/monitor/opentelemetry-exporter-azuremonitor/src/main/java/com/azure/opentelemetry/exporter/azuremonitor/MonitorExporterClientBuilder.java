@@ -31,8 +31,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {MonitorExporterClient.class, MonitorExporterAsyncClient.class})
 public final class MonitorExporterClientBuilder {
     private final ClientLogger logger = new ClientLogger(MonitorExporterClientBuilder.class);
-
-    private ApplicationInsightsClientImplBuilder restServiceClientBuilder;
+    private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
 
     /**
      * Creates an instance of {@link MonitorExporterClientBuilder}.

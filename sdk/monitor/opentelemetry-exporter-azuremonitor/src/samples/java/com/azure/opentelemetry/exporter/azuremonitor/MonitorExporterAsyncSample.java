@@ -34,14 +34,14 @@ public class MonitorExporterAsyncSample {
 
         monitorExporterAsyncClient.export(telemetryItems)
             .subscribe(result -> {
-                    System.out.println("Items received " + result.getItemsReceived());
-                    System.out.println("Items accepted " + result.getItemsAccepted());
-                    System.out.println("Errors " + result.getErrors().size());
-                    result.getErrors()
-                        .forEach(
-                            error -> System.out.println(error.getStatusCode() + " " + error.getMessage()
-                                + " " + error.getIndex()));
-                }, ex -> System.out.println("Error occured exporting telemetry data " + ex.getMessage()),
+                System.out.println("Items received " + result.getItemsReceived());
+                System.out.println("Items accepted " + result.getItemsAccepted());
+                System.out.println("Errors " + result.getErrors().size());
+                result.getErrors()
+                    .forEach(
+                        error -> System.out.println(error.getStatusCode() + " " + error.getMessage()
+                            + " " + error.getIndex()));
+            }, ex -> System.out.println("Error occured exporting telemetry data " + ex.getMessage()),
                 () -> System.out.println("Successfully completed exporting telemetry data"));
 
         Thread.sleep(5000);

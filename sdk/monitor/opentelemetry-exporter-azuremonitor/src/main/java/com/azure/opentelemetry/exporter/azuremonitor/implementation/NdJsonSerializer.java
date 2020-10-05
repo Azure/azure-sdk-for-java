@@ -15,28 +15,30 @@ import java.util.List;
  */
 public class NdJsonSerializer extends StdSerializer<List<?>> {
 
-  /** NDJSON is JSON (non-pretty printed) with a new line delimiter after each line. */
-  private static final String NEW_LINE_DELIMITER = System.lineSeparator();
+    /** NDJSON is JSON (non-pretty printed) with a new line delimiter after each line. */
+    private static final String NEW_LINE_DELIMITER = System.lineSeparator();
 
-  /** Classes serial ID. */
-  private static final long serialVersionUID = 1L;
+    /** Classes serial ID. */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new instance of the serializer.
      */
-  public NdJsonSerializer() {
-    super(List.class, false);
-  }
-
-  @Override
-  public void serialize( final List<?> values, final JsonGenerator gen, final SerializerProvider provider )
-      throws IOException {
-
-    if (values == null) { return; }
-
-    for (Object o : values) {
-      gen.writeObject(o);
-      gen.writeRawValue(NEW_LINE_DELIMITER);
+    public NdJsonSerializer() {
+        super(List.class, false);
     }
-  }
+
+    @Override
+    public void serialize(final List<?> values, final JsonGenerator gen, final SerializerProvider provider)
+        throws IOException {
+
+        if (values == null) {
+            return;
+        }
+
+        for (Object o : values) {
+            gen.writeObject(o);
+            gen.writeRawValue(NEW_LINE_DELIMITER);
+        }
+    }
 }
