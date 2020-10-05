@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.v2020_06_01;
 
 import rx.Observable;
+import rx.Completable;
 import com.microsoft.azure.management.resources.v2020_06_01.implementation.ProvidersInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -24,6 +25,16 @@ public interface Providers extends HasInner<ProvidersInner> {
      * @return the observable for the request
      */
     Observable<Provider> unregisterAsync(String resourceProviderNamespace);
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId);
 
     /**
      * Registers a subscription with a resource provider.
