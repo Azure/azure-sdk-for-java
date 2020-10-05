@@ -47,11 +47,6 @@ public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     private final byte[] data;
 
-    BinaryData() {
-        // This exists, so no one is able to create instance, user need to use static function to create instances.
-        this.data = null;
-    }
-
     /**
      * Create instance of {@link BinaryData} given the data.
      * @param data to represent as bytes.
