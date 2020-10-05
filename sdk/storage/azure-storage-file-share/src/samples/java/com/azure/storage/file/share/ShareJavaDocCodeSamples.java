@@ -6,6 +6,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -14,11 +15,13 @@ import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
+import com.azure.storage.file.share.options.ShareSetAccessTierOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetQuotaOptions;
 import com.azure.storage.file.share.sas.ShareSasPermission;
@@ -152,6 +155,20 @@ public class ShareJavaDocCodeSamples {
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete creating the shares with status code: " + response.getStatusCode());
         // END: ShareClient.createWithResponse#map-integer-duration-context.quota
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#createWithResponse(ShareCreateOptions,
+     * Duration, Context)} with Quota.
+     */
+    public void createWithResponseOptions() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: ShareClient.createWithResponse#ShareCreateOptions-Duration-Context
+        Response<ShareInfo> response = shareClient.createWithResponse(new ShareCreateOptions()
+                .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+                .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Complete creating the shares with status code: " + response.getStatusCode());
+        // END: ShareClient.createWithResponse#ShareCreateOptions-Duration-Context
     }
 
     /**
@@ -446,6 +463,28 @@ public class ShareJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Setting the share quota completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareClient.setQuotaWithResponse#ShareSetQuotaOptions-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#setAccessTier(ShareAccessTier)}
+     */
+    public void setAccessTier() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: ShareClient.setAccessTier#ShareAccessTier
+        System.out.println("Setting the share access tier completed." + shareClient.setAccessTier(ShareAccessTier.HOT));
+        // END: ShareClient.setAccessTier#ShareAccessTier
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#setAccessTierWithResponse(ShareSetAccessTierOptions, Duration, Context)}
+     */
+    public void setAccessTierWithResponse() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.setAccessTierWithResponse#ShareSetAccessTierOptions-Duration-Context
+        Response<ShareInfo> response = shareClient.setAccessTierWithResponse(
+            new ShareSetAccessTierOptions(ShareAccessTier.HOT), Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.printf("Setting the share access tier completed with status code %d", response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareClient.setAccessTierWithResponse#ShareSetAccessTierOptions-Duration-Context
     }
 
     /**

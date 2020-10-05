@@ -3,12 +3,12 @@ Azure Metrics Advisor is a new Cognitive  Service that uses time series based de
 trouble shooting the incidents of online services, and monitor the business health by automating the slice and dice
 of business metrics.
 
-[Source code]<!--TODO: (savaity:reenable once moved to public)--> | [Package (Maven)]<!--TODO: (savaity:reenable once moved to public)--> | [API reference documentation]<!--TODO: (savaity:reenable once moved to public)--> | [Product Documentation][product_documentation] | [Samples]<!--TODO: (savaity:reenable once moved to public)-->
+[Source code][source_code] | [Package (Maven)]<!--TODO: (once available)--> | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples]
 
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit [JDK]() with version 8 or above
+- Java Development Kit [JDK][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
 
@@ -65,6 +65,23 @@ MetricsAdvisorAdministrationClient metricsAdvisorAdministrationClient =
 ```
 
 ## Key concepts
+### MetricsAdvisorClient
+`MetricsAdvisorClient` helps with:
+
+- listing incidents
+- listing root causes of incidents
+- retrieving original time series data and time series data enriched by the service.
+- listing alerts
+- adding feedback to tune your model
+
+### MetricsAdvisorAdministrationClient
+`MetricsAdvisorAdministrationClient` allows you to
+
+- manage data feeds
+- configure anomaly detection configurations
+- configure anomaly alerting configurations
+- manage hooks
+
 ### Data feed
 A `data feed` is what Metrics Advisor ingests from the user-specified data source such as Cosmos structure stream, SQL query result, and so on.
 A data feed contains rows of timestamps, zero or more dimensions, one or more metrics. Therefore, multiple metrics could share the same data source and even the same data feed.
@@ -288,7 +305,7 @@ the client library to use the Netty HTTP client. Configuring or changing the HTT
 [HTTP clients wiki][http_clients_wiki].
 
 ## Next steps
-For more details see the [samples README]<!--TODO: (savaity:reenable once moved to public)--> .
+For more details see the [samples README][samples_readme].
 
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
@@ -317,7 +334,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[api_reference_doc]: https://aka.ms/azsdk-java-metricsadvisor-ref-docs
+[api_reference_doc]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/glossary
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
@@ -332,5 +349,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%metricsadvisor%2Fazure-ai-metricsadvisor%2FREADME.png)
