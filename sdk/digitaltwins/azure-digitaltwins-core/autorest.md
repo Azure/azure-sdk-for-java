@@ -20,10 +20,10 @@ Run `generate.ps1` in this directory to generate the code.
 
 ``` yaml
 #When generating from the official specifications repository
-input-file: 2020-10-31/digitaltwins.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/stable/2020-10-31/digitaltwins.json
 
 #When generating from the local copy:
-#input-file: 2020-05-31-preview/digitaltwins.json
+#input-file: swagger/2020-05-31-preview/digitaltwins.json
 
 output-folder: "./"
 license-header: MICROSOFT_MIT_SMALL
@@ -40,4 +40,5 @@ java:
     context-client-method-parameter: true
     custom-types-subpackage: models
     required-fields-as-ctor-args: true
+    custom-types: DigitalTwinModelsAddOptions,DigitalTwinModelsDeleteOptions,DigitalTwinModelsGetByIdOptions,DigitalTwinModelsUpdateOptions,DigitalTwinsAddOptions,DigitalTwinsAddRelationshipOptions,DigitalTwinsDeleteOptions,DigitalTwinsDeleteRelationshipOptions,DigitalTwinsGetByIdOptions,DigitalTwinsGetComponentOptions,DigitalTwinsGetRelationshipByIdOptions,DigitalTwinsListIncomingRelationshipsOptions,DigitalTwinsListRelationshipsOptions,DigitalTwinsUpdateComponentOptions,DigitalTwinsUpdateOptions,DigitalTwinsUpdateRelationshipOptions,EventRoutesAddOptions,EventRoutesDeleteOptions,EventRoutesGetByIdOptions,EventRoutesListOptions,QueryTwinsOptions
 ```
