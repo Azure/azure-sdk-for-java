@@ -4,7 +4,30 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl;
-import com.azure.communication.administration.models.*;
+import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
+import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
+import com.azure.communication.administration.models.AcquiredPhoneNumber;
+import com.azure.communication.administration.models.SearchStatus;
+import com.azure.communication.administration.models.AreaCodes;
+import com.azure.communication.administration.models.LocationOptionsQuery;
+import com.azure.communication.administration.models.LocationOptionsQueries;
+import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
+import com.azure.communication.administration.models.NumberUpdateCapabilities;
+import com.azure.communication.administration.models.PhoneNumberCountry;
+import com.azure.communication.administration.models.NumberConfigurationResponse;
+import com.azure.communication.administration.models.NumberConfigurationPhoneNumber;
+import com.azure.communication.administration.models.PstnConfiguration;
+import com.azure.communication.administration.models.NumberConfiguration;
+import com.azure.communication.administration.models.PhonePlanGroup;
+import com.azure.communication.administration.models.PhonePlan;
+import com.azure.communication.administration.models.LocationOptionsResponse;
+import com.azure.communication.administration.models.PhoneNumberRelease;
+import com.azure.communication.administration.models.ReleaseResponse;
+import com.azure.communication.administration.models.PhoneNumberEntity;
+import com.azure.communication.administration.models.ReleaseRequest;
+import com.azure.communication.administration.models.CreateSearchResponse;
+import com.azure.communication.administration.models.CreateSearchOptions;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -29,7 +52,9 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.*;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
