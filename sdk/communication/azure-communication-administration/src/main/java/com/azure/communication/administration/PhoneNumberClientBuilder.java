@@ -104,7 +104,7 @@ public final class PhoneNumberClientBuilder {
      *
      * @param accessKey access key for initalizing CommunicationClientCredential
      * @return The updated {@link PhoneNumberClientBuilder} object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code accessKey} is {@code null}.
      */
     public PhoneNumberClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
@@ -117,7 +117,7 @@ public final class PhoneNumberClientBuilder {
      *
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
      * @return The updated {@link PhoneNumberClientBuilder} object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public PhoneNumberClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");

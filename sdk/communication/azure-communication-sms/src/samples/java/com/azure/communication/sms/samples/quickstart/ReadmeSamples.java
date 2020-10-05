@@ -64,8 +64,9 @@ public class ReadmeSamples {
         // Your can find your connection string from your resource in the Azure Portal
         String connectionString = "<connection_string>";
 
-        SmsClientBuilder smsClient = new SmsClientBuilder()
+        SmsClient smsClient = new SmsClientBuilder()
             .connectionString(connectionString)
-            .httpClient(httpClient);
+            .httpClient(httpClient)
+            .buildClient();
     }
 }
