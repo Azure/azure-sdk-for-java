@@ -498,4 +498,18 @@ class QueueAPITests extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "Per call policy"() {
+        given:
+        def queueClient = queueBuilderHelper(interceptorManager)
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+        queueClient.create()
+
+        when:
+        def response = queueClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(QueueStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

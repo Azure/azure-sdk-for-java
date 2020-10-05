@@ -356,4 +356,15 @@ class FileServiceAPITests extends APISpec {
         then:
         thrown(ShareStorageException.class)
     }
+
+    def "Per call policy"() {
+        def serviceClient = getServiceClient(primaryCredential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+
+        when:
+        def response = serviceClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

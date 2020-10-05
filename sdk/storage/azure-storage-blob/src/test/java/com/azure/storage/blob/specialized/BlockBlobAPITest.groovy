@@ -1852,4 +1852,17 @@ class BlockBlobAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+            .buildBlockBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

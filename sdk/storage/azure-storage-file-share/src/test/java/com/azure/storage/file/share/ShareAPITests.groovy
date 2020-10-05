@@ -941,4 +941,19 @@ class ShareAPITests extends APISpec {
         expect:
         shareName == primaryShareClient.getShareName()
     }
+
+    def "Per call policy"() {
+        given:
+        primaryShareClient.create()
+
+        def shareClient = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = shareClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

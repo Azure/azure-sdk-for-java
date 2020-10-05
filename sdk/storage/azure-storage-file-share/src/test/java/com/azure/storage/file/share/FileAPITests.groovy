@@ -977,4 +977,19 @@ class FileAPITests extends APISpec {
         expect:
         filePath == primaryFileClient.getFilePath()
     }
+
+    def "Per call policy"() {
+        given:
+        primaryFileClient.create(512)
+
+        def fileClient = fileBuilderHelper(interceptorManager, primaryFileClient.getShareName(), primaryFileClient.getFilePath())
+            .addPolicy(getPerCallVersionPolicy()).buildFileClient()
+
+        when:
+        def response = fileClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

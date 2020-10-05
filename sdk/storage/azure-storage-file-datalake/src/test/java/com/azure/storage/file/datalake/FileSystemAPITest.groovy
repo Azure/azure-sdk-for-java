@@ -1218,4 +1218,23 @@ class FileSystemAPITest extends APISpec {
         resp.getLastModified()
     }
 
+    def "Per call policy"() {
+        setup:
+        def fsc = getFileSystemClientBuilder(fsc.getFileSystemUrl()).addPolicy(getPerCallVersionPolicy()).credential(primaryCredential).buildClient()
+
+        when: "blob endpoint"
+        def response = fsc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = fsc.getAccessPolicyWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
 }

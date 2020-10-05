@@ -3695,4 +3695,23 @@ class FileAPITest extends APISpec {
         then:
         thrown(IllegalStateException)
     }
+
+    def "Per call policy"() {
+        setup:
+        def fileClient = getFileClient(primaryCredential, fc.getFileUrl(), getPerCallVersionPolicy())
+
+        when: "blob endpoint"
+        def response = fileClient.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = fileClient.getAccessControlWithResponse(false, null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
 }

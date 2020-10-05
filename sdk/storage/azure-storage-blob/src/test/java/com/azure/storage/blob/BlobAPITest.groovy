@@ -2692,4 +2692,15 @@ class BlobAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
+
+     def "Per call policy"() {
+         bc = getBlobClient(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+
+         when:
+         def response = bc.getPropertiesWithResponse(null, null, null)
+
+         then:
+         notThrown(BlobStorageException)
+         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+     }
 }

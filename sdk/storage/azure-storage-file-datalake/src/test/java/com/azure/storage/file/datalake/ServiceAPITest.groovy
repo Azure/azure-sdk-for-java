@@ -185,4 +185,15 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    def "Per call policy"() {
+        def serviceClient = getServiceClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
+
+        when: "blob endpoint"
+        def response = serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
 }
