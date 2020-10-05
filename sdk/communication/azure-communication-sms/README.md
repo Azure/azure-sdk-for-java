@@ -55,7 +55,7 @@ smsClientBuilder.endpoint(endpoint)
 SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
-Alternatively, you can provide the entire connection string using the connectionString() function of the builder instead of providing the endpoint and access key. 
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L69 -->
 ```java
 // Your can find your connection string from your resource in the Azure Portal
