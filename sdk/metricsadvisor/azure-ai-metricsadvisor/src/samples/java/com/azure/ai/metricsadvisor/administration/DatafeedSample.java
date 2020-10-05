@@ -21,7 +21,7 @@ import java.util.Arrays;
 /**
  * Sample demonstrates how to create, get, update, delete and list datafeed.
  */
-public class DatafeedOperationsSample {
+public class DatafeedSample {
     public static void main(String[] args) {
         final MetricsAdvisorAdministrationClient advisorAdministrationClient =
             new MetricsAdvisorAdministrationClientBuilder()
