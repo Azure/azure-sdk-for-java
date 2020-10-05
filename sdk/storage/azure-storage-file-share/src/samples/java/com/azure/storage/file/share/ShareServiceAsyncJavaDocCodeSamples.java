@@ -138,7 +138,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
                     response.getStatusCode()),
                 error -> System.err.print(error.toString()),
                 () -> System.out.println("Complete creating the share!")
-            );
+        );
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.createShareWithResponse#String-ShareCreateOptions
     }
 

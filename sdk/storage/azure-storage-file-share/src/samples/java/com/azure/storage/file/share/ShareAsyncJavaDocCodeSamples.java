@@ -152,7 +152,8 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.createWithResponse(new ShareCreateOptions()
             .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
             .setAccessTier(ShareAccessTier.HOT)).subscribe(
-            response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
+                response -> System.out.printf("Creating the share completed with status code %d",
+                    response.getStatusCode()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete creating the share!")
         );
