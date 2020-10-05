@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -59,6 +60,7 @@ public final class SearchIndexClientBuilder {
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
     private HttpLogOptions httpLogOptions;
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
     private JsonSerializer jsonSerializer;
@@ -108,8 +110,8 @@ public final class SearchIndexClientBuilder {
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
 
-        HttpPipeline pipeline = Utility.buildHttpPipeline(httpLogOptions, configuration, retryPolicy, credential,
-            perCallPolicies, perRetryPolicies, httpClient);
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
+            credential, perCallPolicies, perRetryPolicies, httpClient);
 
         return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
@@ -165,6 +167,17 @@ public final class SearchIndexClientBuilder {
      */
     public static HttpLogOptions getDefaultLogOptions() {
         return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
+    }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
     }
 
     /**
