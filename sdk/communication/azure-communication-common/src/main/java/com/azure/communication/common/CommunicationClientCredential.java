@@ -62,9 +62,9 @@ public final class CommunicationClientCredential {
             sha256HMAC = Mac.getInstance("HmacSHA256");
             sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw logger.logExceptionAsError(new RuntimeException(e));
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
         this.sha256HMAC = sha256HMAC;
     }
