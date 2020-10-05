@@ -12,6 +12,7 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class BatchTestBase extends TestSuiteBase {
     private Random random = new Random();
     String partitionKey1 = "TBD1";
 
-    // Documents in partitionKey1
+    // items in partitionKey1
     TestDoc TestDocPk1ExistingA;
     TestDoc TestDocPk1ExistingB ;
     TestDoc TestDocPk1ExistingC;
@@ -32,11 +33,11 @@ public class BatchTestBase extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    void createJsonTestDocsAsync(CosmosContainer container) {
-        this.TestDocPk1ExistingA =  this.createJsonTestDocAsync(container, this.partitionKey1);
-        this.TestDocPk1ExistingB =  this.createJsonTestDocAsync(container, this.partitionKey1);
-        this.TestDocPk1ExistingC =  this.createJsonTestDocAsync(container, this.partitionKey1);
-        this.TestDocPk1ExistingD =  this.createJsonTestDocAsync(container, this.partitionKey1);
+    void createJsonTestDocs(CosmosContainer container) {
+        this.TestDocPk1ExistingA =  this.createJsonTestDoc(container, this.partitionKey1);
+        this.TestDocPk1ExistingB =  this.createJsonTestDoc(container, this.partitionKey1);
+        this.TestDocPk1ExistingC =  this.createJsonTestDoc(container, this.partitionKey1);
+        this.TestDocPk1ExistingD =  this.createJsonTestDoc(container, this.partitionKey1);
     }
 
     TestDoc populateTestDoc(String partitionKey) {
@@ -52,11 +53,11 @@ public class BatchTestBase extends TestSuiteBase {
         return new TestDoc(testDoc.getId(), testDoc.getCost(), testDoc.getDescription(), testDoc.getStatus());
     }
 
-    void verifyByReadAsync(CosmosContainer container, TestDoc doc) {
-        verifyByReadAsync(container, doc, null);
+    void verifyByRead(CosmosContainer container, TestDoc doc) {
+        verifyByRead(container, doc, null);
     }
 
-    void verifyByReadAsync(CosmosContainer container, TestDoc doc, String eTag) {
+    void verifyByRead(CosmosContainer container, TestDoc doc, String eTag) {
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
         CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class);
@@ -69,7 +70,7 @@ public class BatchTestBase extends TestSuiteBase {
         }
     }
 
-    void verifyNotFoundAsync(CosmosContainer container, TestDoc doc) {
+    void verifyNotFound(CosmosContainer container, TestDoc doc) {
         String id = doc.getId();
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
@@ -87,11 +88,11 @@ public class BatchTestBase extends TestSuiteBase {
         return new PartitionKey(partitionKey);
     }
 
-    private TestDoc createJsonTestDocAsync(CosmosContainer container, String partitionKey) {
-        return createJsonTestDocAsync(container, partitionKey, 20);
+    private TestDoc createJsonTestDoc(CosmosContainer container, String partitionKey) {
+        return createJsonTestDoc(container, partitionKey, 20);
     }
 
-    private TestDoc createJsonTestDocAsync(CosmosContainer container, String partitionKey, int minDesiredSize) {
+    TestDoc createJsonTestDoc(CosmosContainer container, String partitionKey, int minDesiredSize) {
         TestDoc doc = this.populateTestDoc(partitionKey, minDesiredSize);
         CosmosItemResponse<TestDoc> createResponse = container.createItem(doc, this.getPartitionKey(partitionKey), null);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
@@ -180,6 +181,87 @@ public class BatchTestBase extends TestSuiteBase {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+    }
+
+    public static class EventDoc {
+
+        public String id;
+        int clicks;
+        int views;
+        String type;
+
+        @JsonProperty("mypk")
+        public String partitionKey;
+
+
+        public EventDoc() {
+
+        }
+
+        public EventDoc(String id, int clicks, int views, String type, String partitionKey) {
+            this.id = id;
+            this.clicks = clicks;
+            this.views = views;
+            this.type = type;
+            this.partitionKey = partitionKey;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public int getClicks() {
+            return clicks;
+        }
+
+        public int getViews() {
+            return views;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getPartitionKey() {
+            return partitionKey;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setClicks(int clicks) {
+            this.clicks = clicks;
+        }
+
+        public void setViews(int views) {
+            this.views = views;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public void setPartitionKey(String partitionKey) {
+            this.partitionKey = partitionKey;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            EventDoc eventDoc = (EventDoc) o;
+            return clicks == eventDoc.clicks &&
+                views == eventDoc.views &&
+                Objects.equals(id, eventDoc.id) &&
+                Objects.equals(type, eventDoc.type) &&
+                Objects.equals(partitionKey, eventDoc.partitionKey);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, clicks, views, type, partitionKey);
         }
     }
 }

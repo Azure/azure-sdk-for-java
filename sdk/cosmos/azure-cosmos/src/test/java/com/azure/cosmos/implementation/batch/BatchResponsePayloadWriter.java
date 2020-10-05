@@ -36,10 +36,14 @@ class BatchResponsePayloadWriter {
     private JsonSerializable writeResult(TransactionalBatchOperationResult<?> result) {
 
         JsonSerializable jsonSerializable = new JsonSerializable();
-        jsonSerializable.set(BatchRequestResponseConstant.FIELD_STATUS_CODE, result.getResponseStatus());
+        jsonSerializable.set(BatchRequestResponseConstant.FIELD_STATUS_CODE, result.getStatusCode());
         jsonSerializable.set(BatchRequestResponseConstant.FIELD_SUBSTATUS_CODE, result.getSubStatusCode());
         jsonSerializable.set(BatchRequestResponseConstant.FIELD_ETAG, result.getETag());
-        jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, result.getResourceObject());
+        jsonSerializable.set(BatchRequestResponseConstant.FIELD_REQUEST_CHARGE, result.getRequestCharge());
+
+        if(result.getRetryAfter() != null) {
+            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RETRY_AFTER_MILLISECONDS, result.getRetryAfter().toMillis());
+        }
 
         return jsonSerializable;
     }

@@ -3,7 +3,14 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_CREATE;
 import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_DELETE;
@@ -14,7 +21,9 @@ import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant
 /**
  * Util methods for batch requests/response.
  */
-class BatchExecUtils {
+public final class BatchExecUtils {
+
+    private final static Logger logger = LoggerFactory.getLogger(BatchExecUtils.class);
 
     static String getStringOperationType(OperationType operationType) {
         switch (operationType) {
@@ -31,5 +40,74 @@ class BatchExecUtils {
         }
 
         return null;
+    }
+
+    public static Duration getRetryAfter(Map<String, String> responseHeaders) {
+        long retryIntervalInMilliseconds = 0;
+
+        if (responseHeaders != null) {
+            String header = responseHeaders.get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
+
+            if (StringUtils.isNotEmpty(header)) {
+                try {
+                    retryIntervalInMilliseconds = Long.parseLong(header);
+                } catch (NumberFormatException e) {
+                    // If the value cannot be parsed as long, return 0.
+                }
+            }
+        }
+
+        return Duration.ofMillis(retryIntervalInMilliseconds);
+    }
+
+    public static String getSessionToken(Map<String, String> responseHeaders) {
+        if (responseHeaders != null) {
+            return responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        }
+
+        return null;
+    }
+
+    public static String getActivityId(Map<String, String> responseHeaders) {
+        if (responseHeaders != null) {
+            return responseHeaders.get(HttpConstants.HttpHeaders.ACTIVITY_ID);
+        }
+
+        return null;
+    }
+
+    public static double getRequestCharge(Map<String, String> responseHeaders) {
+        if (responseHeaders == null) {
+            return 0;
+        }
+
+        final String value = responseHeaders.get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+
+        try {
+            return Double.valueOf(value);
+        } catch (NumberFormatException e) {
+            logger.warn("INVALID x-ms-request-charge value {}.", value);
+            return 0;
+        }
+    }
+
+    public static int getSubStatusCode(Map<String, String> responseHeaders) {
+        int code = HttpConstants.SubStatusCodes.UNKNOWN;
+
+        if (responseHeaders != null) {
+            String subStatusString = responseHeaders.get(HttpConstants.HttpHeaders.SUB_STATUS);
+            if (StringUtils.isNotEmpty(subStatusString)) {
+                try {
+                    code = Integer.parseInt(subStatusString);
+                } catch (NumberFormatException e) {
+                    // If value cannot be parsed as Integer, return Unknown.
+                }
+            }
+        }
+
+        return code;
     }
 }

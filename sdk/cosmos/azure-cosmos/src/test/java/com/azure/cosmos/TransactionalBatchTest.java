@@ -8,15 +8,16 @@ import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Offset;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +25,6 @@ public class TransactionalBatchTest extends BatchTestBase {
 
     private CosmosClient batchClient;
     private CosmosContainer batchContainer;
-    private CosmosAsyncContainer batchAsyncContainer;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public TransactionalBatchTest(CosmosClientBuilder clientBuilder) {
@@ -35,7 +35,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     public void before_TransactionalBatchTest() {
         assertThat(this.batchClient).isNull();
         this.batchClient = getClientBuilder().buildClient();
-        batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
+        CosmosAsyncContainer batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
         batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
     }
 
@@ -45,38 +45,9 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchExecutionRepeat() {
-        CosmosContainer container = this.batchContainer;
-        this.createJsonTestDocsAsync(container);
-
-        TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
-        TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
-        replaceDoc.setCost(replaceDoc.getCost() + 1);
-
-        Mono<TransactionalBatchResponse> batchResponseMono = batchAsyncContainer.executeTransactionalBatch(
-            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .createItem(firstDoc)
-                .replaceItem(replaceDoc.getId(), replaceDoc));
-
-        TransactionalBatchResponse batchResponse1 = batchResponseMono.block();
-        this.verifyBatchProcessed(batchResponse1, 2);
-
-        assertThat(batchResponse1.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse1.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
-
-        // Block again.
-        TransactionalBatchResponse batchResponse2 = batchResponseMono.block();
-        assertThat(batchResponse2.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CONFLICT.code());
-        assertThat(batchResponse2.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
-
-        // Ensure that the replace overwrote the doc from the first operation
-        this.verifyByReadAsync(container, replaceDoc);
-    }
-
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchOrdered() {
         CosmosContainer container = this.batchContainer;
-        this.createJsonTestDocsAsync(container);
+        this.createJsonTestDocs(container);
 
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
 
@@ -90,17 +61,57 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         // Ensure that the replace overwrote the doc from the first operation
-        this.verifyByReadAsync(container, replaceDoc);
+        this.verifyByRead(container, replaceDoc);
+    }
+
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void batchMultipleItemExecution() {
+        CosmosContainer container = this.batchContainer;
+        this.createJsonTestDocs(container);
+
+        TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
+        TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
+        replaceDoc.setCost(replaceDoc.getCost() + 1);
+
+        EventDoc eventDoc1 = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", this.partitionKey1);
+        EventDoc readEventDoc = new EventDoc(UUID.randomUUID().toString(), 6, 14, "type2", this.partitionKey1);
+        CosmosItemResponse<EventDoc> createResponse = container.createItem(readEventDoc, this.getPartitionKey(this.partitionKey1), null);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+
+        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                .createItem(firstDoc)
+                .createItem(eventDoc1)
+                .replaceItem(replaceDoc.getId(), replaceDoc)
+                .readItem(readEventDoc.getId()));
+
+        this.verifyBatchProcessed(batchResponse, 4);
+
+        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getOperationResultAtIndex(0, TestDoc.class).getItem()).isEqualTo(firstDoc);
+
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getOperationResultAtIndex(1, EventDoc.class).getItem()).isEqualTo(eventDoc1);
+
+        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getOperationResultAtIndex(2, TestDoc.class).getItem()).isEqualTo(replaceDoc);
+
+        assertThat(batchResponse.get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getOperationResultAtIndex(3, EventDoc.class).getItem()).isEqualTo(readEventDoc);
+
+        // Ensure that the replace overwrote the doc from the first operation
+        this.verifyByRead(container, replaceDoc);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchItemETagAsync() {
+    public void batchItemETagTest() {
         CosmosContainer container = batchContainer;
-        this.createJsonTestDocsAsync(container);
+        this.createJsonTestDocs(container);
 
         {
             BatchTestBase.TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
@@ -125,12 +136,12 @@ public class TransactionalBatchTest extends BatchTestBase {
 
             this.verifyBatchProcessed(batchResponse, 2);
 
-            assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
-            assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
             // Ensure that the replace overwrote the doc from the first operation
-            this.verifyByReadAsync(container, testDocToCreate, batchResponse.get(0).getETag());
-            this.verifyByReadAsync(container, testDocToReplace, batchResponse.get(1).getETag());
+            this.verifyByRead(container, testDocToCreate, batchResponse.get(0).getETag());
+            this.verifyByRead(container, testDocToReplace, batchResponse.get(1).getETag());
         }
 
         {
@@ -146,17 +157,17 @@ public class TransactionalBatchTest extends BatchTestBase {
 
             this.verifyBatchProcessed(batchResponse, 1, HttpResponseStatus.PRECONDITION_FAILED);
 
-            assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
 
-            // ensure the document was not updated
-            this.verifyByReadAsync(container, this.TestDocPk1ExistingB);
+            // ensure the item was not updated
+            this.verifyByRead(container, this.TestDocPk1ExistingB);
         }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchItemSessionTokenAsync() {
+    public void batchItemSessionTokenTest() {
         CosmosContainer container = batchContainer;
-        this.createJsonTestDocsAsync(container);
+        this.createJsonTestDocs(container);
 
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
 
@@ -179,8 +190,8 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         ISessionToken afterRequestSessionToken = this.getSessionToken(batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
         assertThat(afterRequestSessionToken.getLSN())
@@ -189,8 +200,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchWithTooManyOperationsAsync() {
-        CosmosContainer container = batchContainer;
+    public void batchWithTooManyOperationsTest() {
         int operationCount = MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST + 1;
 
         // Increase the doc size by a bit so all docs won't fit in one server request.
@@ -200,14 +210,57 @@ public class TransactionalBatchTest extends BatchTestBase {
             batch.readItem("someId");
         }
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
-        assertThat(batchResponse.getResponseStatus()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+        try {
+            batchContainer.executeTransactionalBatch(batch);
+            Assertions.fail("Should throw bad request exception");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
+    public void batchLargerThanServerRequest() {
+        int operationCount = 20;
+        int appxDocSize = (MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES * 11) / operationCount;
+
+        // Increase the doc size by a bit so all docs won't fit in one server request.
+        appxDocSize = (int)(appxDocSize * 1.05);
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+
+        for (int i = 0; i < operationCount; i++) {
+            TestDoc doc = this.populateTestDoc(this.partitionKey1, appxDocSize);
+            batch.createItem(doc);
+        }
+
+        try {
+            batchContainer.executeTransactionalBatch(batch);
+            Assertions.fail("Should throw REQUEST_ENTITY_TOO_LARGE exception");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code());
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
+    public void batchServerResponseTooLarge() {
+        int operationCount = 10;
+        int appxDocSizeInBytes = 1 * 1024 * 1024;
+
+        TestDoc doc = this.createJsonTestDoc(batchContainer, this.partitionKey1, appxDocSizeInBytes);
+
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        for (int i = 0; i < operationCount; i++) {
+            batch.readItem(doc.getId());
+        }
+
+        TransactionalBatchResponse batchResponse = batchContainer.executeTransactionalBatch(batch);
+        assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code());
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchReadsOnlyAsync() {
+    public void batchReadsOnlyTest() {
         CosmosContainer container = batchContainer;
-        this.createJsonTestDocsAsync(container);
+        this.createJsonTestDocs(container);
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
             TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
@@ -217,9 +270,9 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 3);
 
-        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(2).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
         assertThat(batchResponse.getOperationResultAtIndex(0, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingA);
         assertThat(batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingB);
@@ -229,7 +282,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchCrud() {
         CosmosContainer container = batchContainer;
-        this.createJsonTestDocsAsync(container);
+        this.createJsonTestDocs(container);
 
         BatchTestBase.TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
         BatchTestBase.TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
@@ -252,42 +305,42 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 6);
 
-        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(2).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(3).getResponseStatus()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(4).getResponseStatus()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(5).getResponseStatus()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(3).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
         assertThat(batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingC);
 
-        this.verifyByReadAsync(container, testDocToCreate);
-        this.verifyByReadAsync(container, testDocToReplace);
-        this.verifyByReadAsync(container, testDocToUpsert);
-        this.verifyByReadAsync(container, anotherTestDocToUpsert);
-        this.verifyNotFoundAsync(container, this.TestDocPk1ExistingD);
+        this.verifyByRead(container, testDocToCreate);
+        this.verifyByRead(container, testDocToReplace);
+        this.verifyByRead(container, testDocToUpsert);
+        this.verifyByRead(container, anotherTestDocToUpsert);
+        this.verifyNotFound(container, this.TestDocPk1ExistingD);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchWithInvalidCreateAsync() {
+    public void batchWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
-        this.runWithErrorAsync(
+        this.runWithError(
             batchContainer,
             batch -> batch.createItem(this.populateTestDoc(UUID.randomUUID().toString())),
             HttpResponseStatus.BAD_REQUEST);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchWithReadOfNonExistentEntityAsync() {
-        this.runWithErrorAsync(
+    public void batchWithReadOfNonExistentEntityTest() {
+        this.runWithError(
             batchContainer,
             batch -> batch.readItem(UUID.randomUUID().toString()),
             HttpResponseStatus.NOT_FOUND);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchWithReplaceOfStaleEntityAsync() {
-        this.createJsonTestDocsAsync(batchContainer);
+    public void batchWithReplaceOfStaleEntity() {
+        this.createJsonTestDocs(batchContainer);
 
         TestDoc staleTestDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
         staleTestDocToReplace.setCost(staleTestDocToReplace.getCost() + 1);
@@ -295,42 +348,42 @@ public class TransactionalBatchTest extends BatchTestBase {
         TransactionalBatchItemRequestOptions staleReplaceOptions = new TransactionalBatchItemRequestOptions();
         staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
 
-        this.runWithErrorAsync(
+        this.runWithError(
             batchContainer,
             batch -> batch.replaceItem(staleTestDocToReplace.getId(), staleTestDocToReplace, staleReplaceOptions),
             HttpResponseStatus.PRECONDITION_FAILED);
 
         // make sure the stale doc hasn't changed
-        this.verifyByReadAsync(batchContainer, this.TestDocPk1ExistingA);
+        this.verifyByRead(batchContainer, this.TestDocPk1ExistingA);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchWithDeleteOfNonExistentEntityAsync() {
-        this.runWithErrorAsync(
+    public void batchWithDeleteOfNonExistentEntity() {
+        this.runWithError(
             batchContainer,
             batch -> batch.deleteItem(UUID.randomUUID().toString()),
             HttpResponseStatus.NOT_FOUND);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchWithCreateConflictAsync() {
-        this.createJsonTestDocsAsync(batchContainer);
+    public void batchWithCreateConflict() {
+        this.createJsonTestDocs(batchContainer);
 
         // try to create a doc with id that already exists (should return a Conflict)
         TestDoc conflictingTestDocToCreate = this.getTestDocCopy(this.TestDocPk1ExistingA);
         conflictingTestDocToCreate.setCost(conflictingTestDocToCreate.getCost());
 
-        this.runWithErrorAsync(
+        this.runWithError(
             batchContainer,
             batch -> batch.createItem(conflictingTestDocToCreate),
             HttpResponseStatus.CONFLICT);
 
         // make sure the conflicted doc hasn't changed
-        this.verifyByReadAsync(batchContainer, this.TestDocPk1ExistingA);
+        this.verifyByRead(batchContainer, this.TestDocPk1ExistingA);
     }
 
 
-    private void runWithErrorAsync(
+    private void runWithError(
         CosmosContainer container,
         Function<TransactionalBatch, TransactionalBatch> appendOperation,
         HttpResponseStatus expectedFailedOperationStatusCode) {
@@ -348,12 +401,12 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyBatchProcessed(batchResponse, 3, expectedFailedOperationStatusCode);
 
-        assertThat(batchResponse.get(0).getResponseStatus()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
-        assertThat(batchResponse.get(1).getResponseStatus()).isEqualTo(expectedFailedOperationStatusCode.code());
-        assertThat(batchResponse.get(2).getResponseStatus()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(expectedFailedOperationStatusCode.code());
+        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
-        this.verifyNotFoundAsync(container, testDocToCreate);
-        this.verifyNotFoundAsync(container, anotherTestDocToCreate);
+        this.verifyNotFound(container, testDocToCreate);
+        this.verifyNotFound(container, anotherTestDocToCreate);
     }
 
     private void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations) {
@@ -362,13 +415,14 @@ public class TransactionalBatchTest extends BatchTestBase {
 
     private void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
         assertThat(batchResponse).isNotNull();
-        assertThat(batchResponse.getResponseStatus())
-            .as("Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}")
+        assertThat(batchResponse.getStatusCode())
+            .as("Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}",
+                batchResponse.getStatusCode(), expectedStatusCode.code())
             .isEqualTo(expectedStatusCode.code());
 
         assertThat(batchResponse.size()).isEqualTo(numberOfOperations);
         assertThat(batchResponse.getRequestCharge()).isPositive();
-        assertThat(batchResponse.getCosmosDiagnostics().toString()).isNotEmpty();
+        assertThat(batchResponse.getDiagnostics().toString()).isNotEmpty();
 
         // Allow a delta since we round both the total charge and the individual operation
         // charges to 2 decimal places.

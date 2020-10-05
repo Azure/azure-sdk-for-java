@@ -48,7 +48,7 @@ public abstract class ServerBatchRequest {
      *
      * @return Any pending operations that were not included in the request.
      */
-    final List<ItemBatchOperation<?>> createBodyStreamAsync(final List<ItemBatchOperation<?>> operations) {
+    final List<ItemBatchOperation<?>> createBodyOfBatchRequest(final List<ItemBatchOperation<?>> operations) {
 
         checkNotNull(operations, "expected non-null operations");
 

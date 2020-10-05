@@ -474,21 +474,21 @@ public class CosmosContainer {
      * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
      * <p>
      * If an operation within the transactional batch fails during execution, no changes from the batch will be
      * committed and the status of the failing operation is made available by {@link
-     * TransactionalBatchResponse#getResponseStatus}. To obtain information about the operations that failed, the
+     * TransactionalBatchResponse#getStatusCode}. To obtain information about the operations that failed, the
      * response can be enumerated. This returns {@link TransactionalBatchOperationResult} instances corresponding to
      * each operation in the transactional batch in the order they were added to the transactional batch. For a result
      * corresponding to an operation within the transactional batch, use
-     * {@link TransactionalBatchOperationResult#getResponseStatus}
+     * {@link TransactionalBatchOperationResult#getStatusCode}
      * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
      * another operation within the transactional batch, the value of this field will be 424;
      * for the operation that caused the batch to abort, the value of this field
      * will indicate the cause of failure.
      * <p>
-     * The value returned by {@link TransactionalBatchResponse#getResponseStatus} on the response returned may also have
+     * The value returned by {@link TransactionalBatchResponse#getStatusCode} on the response returned may also have
      * values such as 500 in case of server errors and 429.
      * <p>
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
@@ -508,21 +508,21 @@ public class CosmosContainer {
      * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
      * <p>
      * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getResponseStatus} on the response returned will be set to 200}.
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
      * <p>
      * If an operation within the transactional batch fails during execution, no changes from the batch will be
      * committed and the status of the failing operation is made available by {@link
-     * TransactionalBatchResponse#getResponseStatus}. To obtain information about the operations that failed, the
+     * TransactionalBatchResponse#getStatusCode}. To obtain information about the operations that failed, the
      * response can be enumerated. This returns {@link TransactionalBatchOperationResult} instances corresponding to
      * each operation in the transactional batch in the order they were added to the transactional batch. For a result
      * corresponding to an operation within the transactional batch, use
-     * {@link TransactionalBatchOperationResult#getResponseStatus}
+     * {@link TransactionalBatchOperationResult#getStatusCode}
      * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
      * another operation within the transactional batch, the value of this field will be 424;
      * for the operation that caused the batch to abort, the value of this field
      * will indicate the cause of failure.
      * <p>
-     * The value returned by {@link TransactionalBatchResponse#getResponseStatus} on the response returned may also have
+     * The value returned by {@link TransactionalBatchResponse#getStatusCode} on the response returned may also have
      * values such as 500 in case of server errors and 429.
      * <p>
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the

@@ -618,17 +618,17 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TransactionalBatchOperationResult<?> createTransactionBatchResult(
         String eTag,
-        Double requestCharge,
+        double requestCharge,
         ObjectNode resourceObject,
-        int responseStatus,
+        int statusCode,
         Duration retryAfter,
-        Integer subStatusCode) {
+        int subStatusCode) {
 
         return new TransactionalBatchOperationResult<>(
             eTag,
             requestCharge,
             resourceObject,
-            responseStatus,
+            statusCode,
             retryAfter,
             subStatusCode);
     }
@@ -636,19 +636,17 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TransactionalBatchResponse createTransactionBatchResponse(
         int responseStatusCode,
-        Integer responseSubStatusCode,
+        int responseSubStatusCode,
         String errorMessage,
         Map<String, String> responseHeaders,
-        CosmosDiagnostics cosmosDiagnostics,
-        List<ItemBatchOperation<?>> operations) {
+        CosmosDiagnostics cosmosDiagnostics) {
 
         return new TransactionalBatchResponse(
             responseStatusCode,
             responseSubStatusCode,
             errorMessage,
             responseHeaders,
-            cosmosDiagnostics,
-            operations);
+            cosmosDiagnostics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

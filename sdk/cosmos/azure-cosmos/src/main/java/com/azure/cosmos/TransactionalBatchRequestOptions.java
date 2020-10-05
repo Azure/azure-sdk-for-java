@@ -19,7 +19,7 @@ public final class TransactionalBatchRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 

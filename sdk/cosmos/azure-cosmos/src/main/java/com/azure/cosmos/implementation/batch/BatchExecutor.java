@@ -41,7 +41,7 @@ public final class BatchExecutor {
         List<ItemBatchOperation<?>> operations = BridgeInternal.getOperationsFromTransactionalBatch(this.transactionalBatch);
         checkArgument(operations.size() > 0, "Number of operations should be more than 0.");
 
-        final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createAsync(
+        final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createBatchRequest(
             BridgeInternal.getPartitionKeyFromTransactionalBatch(this.transactionalBatch),
             operations);
         request.setAtomicBatch(true);

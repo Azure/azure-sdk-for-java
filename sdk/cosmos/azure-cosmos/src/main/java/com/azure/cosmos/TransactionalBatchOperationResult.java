@@ -18,12 +18,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class TransactionalBatchOperationResult<TResource> {
 
     private String eTag;
-    private Double requestCharge;
+    private double requestCharge;
     private TResource item;
     private ObjectNode resourceObject;
-    private int responseStatus;
+    private int statusCode;
     private Duration retryAfter;
-    private Integer subStatusCode;
+    private int subStatusCode;
 
     /**
      * Instantiates a new Transactional batch operation result using a TransactionalBatchOperationResult.
@@ -34,7 +34,7 @@ public final class TransactionalBatchOperationResult<TResource> {
 
         checkNotNull(other, "expected non-null other");
 
-        this.responseStatus = other.responseStatus;
+        this.statusCode = other.statusCode;
         this.subStatusCode = other.subStatusCode;
         this.eTag = other.eTag;
         this.requestCharge = other.requestCharge;
@@ -57,17 +57,17 @@ public final class TransactionalBatchOperationResult<TResource> {
      * Initializes a new instance of the {@link TransactionalBatchOperationResult} class.
      */
     TransactionalBatchOperationResult(String eTag,
-                                      Double requestCharge,
+                                      double requestCharge,
                                       ObjectNode resourceObject,
-                                      int responseStatus,
+                                      int statusCode,
                                       Duration retryAfter,
-                                      Integer subStatusCode) {
-        checkNotNull(responseStatus, "expected non-null responseStatus");
+                                      int subStatusCode) {
+        checkNotNull(statusCode, "expected non-null statusCode");
 
         this.eTag = eTag;
         this.requestCharge = requestCharge;
         this.resourceObject = resourceObject;
-        this.responseStatus = responseStatus;
+        this.statusCode = statusCode;
         this.retryAfter = retryAfter;
         this.subStatusCode = subStatusCode;
     }
@@ -84,11 +84,14 @@ public final class TransactionalBatchOperationResult<TResource> {
     }
 
     /**
-     * Gets the request charge in request units for the current operation.
+     * Gets the request charge as request units (RU) consumed by the current operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
      *
-     * @return Request charge in request units for the current operation.
+     * @return the request charge.
      */
-    public Double getRequestCharge() {
+    public double getRequestCharge() {
         return this.requestCharge;
     }
 
@@ -111,11 +114,11 @@ public final class TransactionalBatchOperationResult<TResource> {
     }
 
     /**
-     * Gets sub status code.
+     * Gets sub status code associated with the current result.
      *
      * @return the sub status code
      */
-    public Integer getSubStatusCode() {
+    public int getSubStatusCode() {
         return this.subStatusCode;
     }
 
@@ -125,19 +128,19 @@ public final class TransactionalBatchOperationResult<TResource> {
      * @return {@code true} if the current operation completed successfully; {@code false} otherwise.
      */
     public boolean isSuccessStatusCode() {
-        return 200 <= this.responseStatus && this.responseStatus <= 299;
+        return 200 <= this.statusCode && this.statusCode <= 299;
     }
 
     /**
-     * Gets response status.
+     * Gets the HTTP status code associated with the current result.
      *
-     * @return the response status
+     * @return the status code.
      */
-    public int getResponseStatus() {
-        return this.responseStatus;
+    public int getStatusCode() {
+        return this.statusCode;
     }
 
-    public ObjectNode getResourceObject() {
+    ObjectNode getResourceObject() {
         return resourceObject;
     }
 }

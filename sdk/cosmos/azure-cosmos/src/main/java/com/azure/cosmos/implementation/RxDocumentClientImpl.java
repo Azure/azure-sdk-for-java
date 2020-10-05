@@ -2484,12 +2484,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
 
             return responseObservable
-                .flatMap(serviceResponse -> BatchResponseParser.fromDocumentServiceResponseAsync(serviceResponse, serverBatchRequest, true))
-                .onErrorResume(throwable -> BatchResponseParser.fromErrorResponseAsync(throwable, serverBatchRequest));
+                .flatMap(serviceResponse -> BatchResponseParser.fromDocumentServiceResponseAsync(serviceResponse, serverBatchRequest, true));
 
         } catch (Exception ex) {
             logger.debug("Failure in executing a batch due to [{}]", ex.getMessage(), ex);
-            return BatchResponseParser.fromErrorResponseAsync(ex, serverBatchRequest);
+            return Mono.error(ex);
         }
     }
 

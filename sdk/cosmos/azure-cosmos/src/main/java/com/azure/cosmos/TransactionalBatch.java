@@ -18,10 +18,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Represents a batch of operations against items with the same {@link PartitionKey} in a container that will be performed
  * in a transactional manner at the Azure Cosmos DB service.
  * <p>
- * Use {@link TransactionalBatch#createTransactionalBatch(PartitionKey)} or new {@link #TransactionalBatch(PartitionKey)}
- * to create an instance of TransactionalBatch
+ * Use {@link TransactionalBatch#createTransactionalBatch(PartitionKey)} to create an instance of TransactionalBatch.
  * <b>Example</b>
- * This example atomically modifies a set of documents as a batch.
+ * This example atomically modifies a set of items as a batch.
  * <pre>{@code
  * public class ToDoActivity {
  *     public final String type;
@@ -61,7 +60,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * }</pre>
  *
  * <b>Example</b>
- * <p>This example atomically reads a set of documents as a batch.
+ * <p>This example atomically reads a set of items as a batch.
  * <pre>{@code
  * String activityType = "personal";
  *
@@ -72,13 +71,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     .readItem("running")
  *
  * TransactionalBatchResponse response = container.executeTransactionalBatch(batch);
+ * List<ToDoActivity> resultItems = new ArrayList<ToDoActivity>();
  *
- * // Look up interested results - eg. via direct access to operation result stream
- *
- * List<String> resultItems = new ArrayList<String>();
- *
- * for (TransactionalBatchOperationResult result : response) {
- *     resultItems.add(result.getResourceObject().toString())
+ * for (int i = 0; i < response.size(); i++) {
+ *     TransactionalBatchOperationResult<ToDoActivity> result = response.getOperationResultAtIndex<ToDoActivity>(0, ToDoActivity.class);
+ *     resultItems.add(result.getItem());
  * }
  *
  * }</pre>
@@ -89,10 +86,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @Beta(Beta.SinceVersion.V4_7_0)
 public final class TransactionalBatch {
 
-    private final ArrayList<ItemBatchOperation<?>> operations;
+    private final List<ItemBatchOperation<?>> operations;
     private final PartitionKey partitionKey;
 
-    public TransactionalBatch(PartitionKey partitionKey) {
+    TransactionalBatch(PartitionKey partitionKey) {
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
         this.operations = new ArrayList<>();
