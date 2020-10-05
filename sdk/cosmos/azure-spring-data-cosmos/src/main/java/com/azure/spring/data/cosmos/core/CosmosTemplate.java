@@ -722,7 +722,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
-        return getJsonNodeFluxFromQuerySpec(domainType.getSimpleName(), querySpec, returnType)
+        return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec, returnType)
                    .collectList()
                    .block();
     }
