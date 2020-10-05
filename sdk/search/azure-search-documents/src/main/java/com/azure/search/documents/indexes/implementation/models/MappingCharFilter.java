@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The MappingCharFilter model. */
+/**
+ * A character filter that applies mappings defined with the mappings option. Matching is greedy (longest pattern
+ * matching at a given point wins). Replacement is allowed to be the empty string. This character filter is implemented
+ * using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.MappingCharFilter")
 @JsonFlatten

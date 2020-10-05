@@ -77,7 +77,7 @@ public class ModelsTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
-        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        final String nonExistentModelId = "dtmi:doesnotexist:fakemodel;1000";
         getModelRunner(nonExistentModelId, (modelId) -> assertRestException(() -> client.getModel(modelId), HttpURLConnection.HTTP_NOT_FOUND));
     }
 

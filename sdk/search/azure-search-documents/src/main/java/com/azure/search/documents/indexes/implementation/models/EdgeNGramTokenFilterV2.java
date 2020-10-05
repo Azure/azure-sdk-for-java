@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The EdgeNGramTokenFilterV2 model. */
+/**
+ * Generates n-grams of the given size(s) starting from the front or the back of an input token. This token filter is
+ * implemented using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.EdgeNGramTokenFilterV2")
 @JsonFlatten

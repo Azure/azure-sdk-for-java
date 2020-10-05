@@ -255,6 +255,16 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> boolean hasSendingRequestStarted(E e) {
+        return e.hasSendingRequestStarted();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> void setSendingRequestStarted(E e, boolean hasSendingRequestStarted) {
+        e.setSendingRequestHasStarted(hasSendingRequestStarted);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static boolean isEnableMultipleWriteLocations(DatabaseAccount account) {
         return account.getEnableMultipleWriteLocations();
     }
