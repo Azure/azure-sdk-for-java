@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.7.0-beta.2 (Unreleased)
-
+- Added support for setting access tier on a share through ShareClient.create, ShareClient.setAccessTier.
+- Added support for getting access tier on a share through ShareClient.getProperties, ShareServiceClient.listShares
 
 ## 12.7.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version. 
