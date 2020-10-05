@@ -94,7 +94,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param options to abandon the message. You can specify
      *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
      *     {@code transactionContext} can be set using
-     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     {@link AbandonOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
      *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
      *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
@@ -159,7 +159,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
      *     to modify on the Message. The {@code transactionContext} can be set using
-     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     {@link DeferOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
      *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
      *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
@@ -196,7 +196,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param options to deadLetter the message. You can specify
      *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
      *     {@code transactionContext} can be set using
-     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     {@link DeadLetterOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
      *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
      *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
