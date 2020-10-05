@@ -155,6 +155,12 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
      * @return a Flux of {@link ContinuablePage}
      */
     private Flux<P> retrievePages(ContinuationState<C> state, PageRetriever<C, P> pageRetriever, Integer pageSize) {
+        /*
+         * The second argument for 'expand' is an initial capacity hint to the expand subscriber to indicate what size
+         * buffer it should instantiate. 4 is used as PageRetriever's 'get' returns a Flux so an implementation may
+         * return multiple pages, but in the case only one page is retrieved the buffer won't need to be resized or
+         * request additional pages from the service.
+         */
         return retrievePage(state, pageRetriever, pageSize)
             .expand(page -> {
                 state.setLastContinuationToken(page.getContinuationToken());
