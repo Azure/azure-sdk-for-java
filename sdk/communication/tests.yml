@@ -13,3 +13,4 @@ jobs:
     ServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: RECORD
+      SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE

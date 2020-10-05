@@ -24,7 +24,7 @@
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
 # PRLabel: %Communication
-/sdk/communication/                                 @RezaJooyandeh @JianpingChen
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy

@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * Sample for listing series definition for a give metric filtered using specific set of dimension combinations.
+ * Sample for listing series definition for a metric filtered using specific set of dimension combinations.
  */
 public class ListSeriesDefinitionsForMetricSample {
     public static void main(String[] args) {
