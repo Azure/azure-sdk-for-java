@@ -16,7 +16,7 @@ module com.azure.core.test {
 
     opens com.azure.core.test.implementation to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.core.test.implementation.entities to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.core.test to com.fasterxml.jackson.databind;
+    opens com.azure.core.test to com.fasterxml.jackson.databind, org.junit.platform.commons;
 
     uses com.azure.core.http.HttpClientProvider;
 }

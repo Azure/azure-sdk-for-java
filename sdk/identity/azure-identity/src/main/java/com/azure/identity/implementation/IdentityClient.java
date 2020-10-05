@@ -64,6 +64,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -179,9 +181,16 @@ public class IdentityClient {
             try {
                 if (certificatePassword == null) {
                     byte[] pemCertificateBytes = getCertificateBytes();
-                    credential = ClientCredentialFactory.createFromCertificate(
-                        CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                        CertificateUtil.publicKeyFromPem(pemCertificateBytes));
+
+                    List<X509Certificate> x509CertificateList =  CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                    if (x509CertificateList.size() == 1) {
+                        credential = ClientCredentialFactory.createFromCertificate(
+                            privateKey, x509CertificateList.get(0));
+                    } else {
+                        credential = ClientCredentialFactory.createFromCertificateChain(
+                            privateKey, x509CertificateList);
+                    }
                 } else {
                     InputStream pfxCertificateStream = getCertificateInputStream();
                     credential = ClientCredentialFactory.createFromCertificate(
@@ -195,6 +204,7 @@ public class IdentityClient {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path"));
         }
+
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
@@ -202,6 +212,8 @@ public class IdentityClient {
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsWarning(new IllegalStateException(e));
         }
+
+        applicationBuilder.sendX5c(options.isIncludeX5c());
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
