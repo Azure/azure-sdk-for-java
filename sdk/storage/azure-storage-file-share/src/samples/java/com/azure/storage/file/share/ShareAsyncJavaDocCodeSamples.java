@@ -154,8 +154,8 @@ public class ShareAsyncJavaDocCodeSamples {
             .setAccessTier(ShareAccessTier.HOT)).subscribe(
                 response -> System.out.printf("Creating the share completed with status code %d",
                     response.getStatusCode()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the share!")
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete creating the share!")
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions
     }
