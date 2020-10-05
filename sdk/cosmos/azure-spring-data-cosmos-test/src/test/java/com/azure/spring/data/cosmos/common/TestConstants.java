@@ -90,6 +90,8 @@ public final class TestConstants {
     public static final String COURSE_NAME = "test-course";
     public static final String DEPARTMENT = "test-department";
 
+    public static final Integer AGE = 24;
+
     private TestConstants() {
     }
 }
