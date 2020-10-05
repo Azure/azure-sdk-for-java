@@ -279,7 +279,6 @@ class ServiceBusReceiverAsyncClientTest {
     @EnumSource(DispositionStatus.class)
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
-        byte[] emptyArray = new byte[0];
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
