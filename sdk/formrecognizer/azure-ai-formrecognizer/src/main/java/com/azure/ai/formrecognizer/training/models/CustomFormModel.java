@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -13,7 +12,6 @@ import java.util.List;
 /**
  * The CustomFormModel
  */
-@Immutable
 public final class CustomFormModel {
 
     /*
@@ -51,6 +49,10 @@ public final class CustomFormModel {
      * List of the documents used to train the model.
      */
     private final List<TrainingDocumentInfo> trainingDocuments;
+
+    private String modelDisplayName;
+
+    private CustomModelProperties customModelProperties;
 
     /**
      * Constructs a CustomFormModel object.
@@ -140,5 +142,23 @@ public final class CustomFormModel {
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
+    }
+
+    /**
+     * Get model metadata properties.
+     *
+     * @return the custom model metadata properties.
+     */
+    public CustomModelProperties getCustomModelProperties() {
+        return customModelProperties;
+    }
+
+    /**
+     * Get the user defined model display name.
+     *
+     * @return the modelDisplayName value.
+     */
+    public String getModelDisplayName() {
+        return modelDisplayName;
     }
 }

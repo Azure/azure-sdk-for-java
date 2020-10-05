@@ -6,6 +6,8 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
@@ -19,9 +21,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * This class provides a synchronous client that contains model management the operations that apply
@@ -342,5 +346,59 @@ public final class FormTrainingClient {
     public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
         Context context) {
         return client.getCopyAuthorizationWithResponse(resourceId, resourceRegion, context).block();
+    }
+
+    /**
+     * Create a composed model from the provided list of existing models in the account.
+     *
+     * <p>This operations fails if list consists of an invalid or non-existing model Id.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list}
+     *
+     * @param modelIds The list of models Ids to form the composed model.
+     *
+     * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModel}.
+     * @throws FormRecognizerException If create composed model operation fails and model with
+     * {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If the list of {@code modelIds} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds) {
+        return beginCreateComposedModel(modelIds, null, null);
+    }
+
+    /**
+     * Create a composed model from the provided list of existing models in the account.
+     *
+     * <p>This operations fails if list consists of an invalid or non-existing model Id.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposeModelOptions-Context}
+     *
+     * @param modelIds The list of models Ids to form the composed model.
+     * @param createComposeModelOptions The configurable {@link CreateComposeModelOptions options} to pass when
+     * creating a composed model.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModel}.
+     * @throws FormRecognizerException If create composed model operation fails and model with
+     * {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If the list of {@code modelIds} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
+        CreateComposeModelOptions createComposeModelOptions, Context context) {
+        return client.beginCreateComposedModel(modelIds, createComposeModelOptions, context).getSyncPoller();
     }
 }

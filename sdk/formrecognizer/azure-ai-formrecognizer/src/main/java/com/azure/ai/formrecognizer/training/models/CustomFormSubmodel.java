@@ -31,6 +31,8 @@ public final class CustomFormSubmodel {
      */
     private final String formType;
 
+    private String modelId;
+
     /**
      * Constructs a CustomFormSubmodel object.
      *
@@ -72,5 +74,14 @@ public final class CustomFormSubmodel {
      */
     public Map<String, CustomFormModelField> getFields() {
         return this.fields;
+    }
+
+    /**
+     * Get the unique identifier for the submodel.
+     *
+     * @return the modelId value.
+     */
+    public String getModelId() {
+        return modelId;
     }
 }

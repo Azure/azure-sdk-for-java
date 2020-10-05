@@ -35,6 +35,8 @@ public final class TrainingDocumentInfo {
      */
     private final List<FormRecognizerError> errors;
 
+    private String modelId;
+
     /**
      * Constructs a TrainingDocumentInfo object.
      *
@@ -87,4 +89,14 @@ public final class TrainingDocumentInfo {
     public List<FormRecognizerError> getErrors() {
         return this.errors;
     }
+
+    /**
+     * Get the Model identifier.
+     *
+     * @return the {@code modelId} value.
+     */
+    public String getModelId() {
+        return this.modelId;
+    }
+
 }
