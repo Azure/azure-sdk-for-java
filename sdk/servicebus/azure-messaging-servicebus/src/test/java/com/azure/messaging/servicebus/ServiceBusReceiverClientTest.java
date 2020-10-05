@@ -125,7 +125,7 @@ class ServiceBusReceiverClientTest {
         verify(asyncClient).abandon(eq(message));
     }
 
-   @Test
+    @Test
     void abandonMessageWithProperties() {
         AbandonOptions options = new AbandonOptions().setPropertiesToModify(propertiesToModify);
         // Arrange

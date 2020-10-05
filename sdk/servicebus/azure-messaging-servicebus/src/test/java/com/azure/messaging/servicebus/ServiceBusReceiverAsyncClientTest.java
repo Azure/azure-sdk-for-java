@@ -15,6 +15,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
@@ -23,6 +25,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
@@ -270,53 +273,15 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that we error if we try to settle a message with null transaction.
-     */
-   /* @ParameterizedTest
-    @EnumSource(DispositionStatus.class)
-    void settleWithNullTransaction(DispositionStatus dispositionStatus) {
-        // Arrange
-        ServiceBusTransactionContext nullTransaction = null;
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-        when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
-            isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
-
-        final Mono<Void> operation;
-        switch (dispositionStatus) {
-            case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransaction);
-                break;
-            case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransaction);
-                break;
-            case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransaction);
-                break;
-            case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransaction);
-                break;
-            default:
-                throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
-        }
-
-        StepVerifier.create(operation)
-            .expectError(NullPointerException.class)
-            .verify();
-
-        verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
-            isNull(), isNull(), isNull(), isNull());
-    }*/
-
-    /**
      * Verifies that we error if we try to settle a message with null transaction-id.
      */
-   /* @ParameterizedTest
+    @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
+        byte[] emptyArray = new byte[0];
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
+
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
         when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
             isNull(), isNull(), isNull()))
@@ -326,16 +291,16 @@ class ServiceBusReceiverAsyncClientTest {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, nullTransactionId);
+                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(nullTransactionId));
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, nullTransactionId);
+                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(nullTransactionId));
                 break;
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, nullTransactionId);
+                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(nullTransactionId));
                 break;
             case SUSPENDED:
-                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransactionId);
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions().setTransactionContext(nullTransactionId));
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -347,7 +312,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
             isNull(), isNull(), isNull(), isNull());
-    }*/
+    }
 
     /**
      * Verifies that we error if we try to complete a null message.

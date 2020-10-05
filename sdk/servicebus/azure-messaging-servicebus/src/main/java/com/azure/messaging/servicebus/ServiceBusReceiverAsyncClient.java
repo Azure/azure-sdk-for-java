@@ -211,16 +211,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options Options to modify on the message.
+     * @param options to abandon the message. You can specify
+     *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
+     *     {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         if (Objects.isNull(options)) {
             return monoError(logger, new NullPointerException("'settlementOptions' cannot be null."));
+        } else if (!Objects.isNull(options.getTransactionContext())
+            && Objects.isNull(options.getTransactionContext().getTransactionId())) {
+            return monoError(logger, new NullPointerException(
+                "'options.transactionContext.transactionId' cannot be null."));
         }
 
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
@@ -247,49 +257,29 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to complete this operation. The {@code transactionContext} can be set using
-     * {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be created
-     * first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options to complete the message. The {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         if (Objects.isNull(options)) {
-            return monoError(logger, new NullPointerException("'settlementOptions' cannot be null."));
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        } else if (!Objects.isNull(options.getTransactionContext())
+            && Objects.isNull(options.getTransactionContext().getTransactionId())) {
+            return monoError(logger, new NullPointerException(
+                "'options.transactionContext.transactionId' cannot be null."));
         }
+
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
             null, options.getTransactionContext());
     }
-
-    /**
-     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the
-     * service.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
-     *
-     * @return A {@link Mono} that finishes when the message is completed on Service Bus.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or
-     * {@code transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     */
-    /*public Mono<Void> complete(ServiceBusReceivedMessage message, ServiceBusTransactionContext transactionContext) {
-        if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
-        } else if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
-        }
-        return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
-            null, transactionContext);
-    }*/
 
     /**
      * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred subqueue.
@@ -298,8 +288,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
@@ -312,64 +301,31 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to complete this operation.
+     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
+     *     to modify on the Message. The {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the defer operation finishes.
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, DeferOptions options) {
+        if (Objects.isNull(options)) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        } else if (!Objects.isNull(options.getTransactionContext())
+            && Objects.isNull(options.getTransactionContext().getTransactionId())) {
+            return monoError(logger, new NullPointerException(
+                "'options.transactionContext.transactionId' cannot be null."));
+        }
+
         return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
             options.getPropertiesToModify(), options.getTransactionContext());
     }
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
-     * the deferred subqueue.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Message properties to modify.
-     *
-     * @return A {@link Mono} that completes when the defer operation finishes.
-     * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    /*public Mono<Void> defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, null);
-    }*/
-
-    /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
-     * the deferred subqueue.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param propertiesToModify Message properties to modify.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
-     *
-     * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
-     */
-    /*public Mono<Void> defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify,
-        ServiceBusTransactionContext transactionContext) {
-        if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
-        } else if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
-        }
-        return updateDisposition(message, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, transactionContext);
-    }*/
 
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
@@ -391,10 +347,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options The {@link DeadLetterOptions} used to perform this operation.
+     * @param options to deadLetter the message. You can specify
+     *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
+     *     {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
@@ -403,80 +364,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
         if (Objects.isNull(options)) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
+        } else if (!Objects.isNull(options.getTransactionContext())
+            && Objects.isNull(options.getTransactionContext().getTransactionId())) {
+            return monoError(logger, new NullPointerException(
+                "'options.transactionContext.transactionId' cannot be null."));
         }
         return  updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
             options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
             options.getTransactionContext());
     }
-
-    /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
-     *
-     * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
-     *     queues</a>
-     */
-    /*public Mono<Void> deadLetter(ServiceBusReceivedMessage message, ServiceBusTransactionContext transactionContext) {
-        return deadLetter(message, DEFAULT_DEAD_LETTER_OPTIONS, transactionContext);
-    }*/
-
-    /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
-     * description, and/or modified properties.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     *
-     * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     */
-    /*public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
-        if (Objects.isNull(deadLetterOptions)) {
-            return monoError(logger, new NullPointerException("'deadLetterOptions' cannot be null."));
-        }
-
-        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
-            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(),
-            null);
-    }*/
-
-    /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
-     * description, and/or modified properties.
-     *
-     * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
-     * @param transactionContext in which this operation is taking part in. The transaction should be created first by
-     * {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     * {@link ServiceBusSenderAsyncClient#createTransaction()}.
-     *
-     * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     */
-    /*public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions,
-        ServiceBusTransactionContext transactionContext) {
-        if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
-        } else if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
-        }
-        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
-            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(),
-            transactionContext);
-    }*/
 
     /**
      * Gets the state of a session given its identifier.

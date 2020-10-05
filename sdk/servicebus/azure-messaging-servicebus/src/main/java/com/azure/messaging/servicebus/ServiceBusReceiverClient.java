@@ -17,6 +17,7 @@ import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -90,9 +91,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options Properties to modify on the message.
+     * @param options to abandon the message. You can specify
+     *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
+     *     {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
@@ -117,12 +124,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options in which this operation is taking part in. The transaction should be created first
-     *     by {@link ServiceBusReceiverClient#createTransaction()} or
-     *     {@link ServiceBusSenderClient#createTransaction()}.
+     * @param options to complete the message. The {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message}, {@code transactionContext} or {@code
-     *     transactionContext.transactionId} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
@@ -149,9 +157,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * move message into the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options Message properties to modify.
+     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
+     *     to modify on the Message. The {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
@@ -180,14 +193,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * description, and/or modified properties.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
+     * @param options to deadLetter the message. You can specify
+     *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
+     *     {@code transactionContext} can be set using
+     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
+     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
-     * @throws NullPointerException if {@code message} is null.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
+     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      */
-    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
-        asyncClient.deadLetter(message, deadLetterOptions).block(operationTimeout);
+    public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
+        asyncClient.deadLetter(message, options).block(operationTimeout);
     }
 
     /**
