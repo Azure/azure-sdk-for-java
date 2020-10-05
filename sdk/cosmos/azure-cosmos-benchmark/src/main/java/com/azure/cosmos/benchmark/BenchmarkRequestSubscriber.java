@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
@@ -15,26 +18,50 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
     final static Logger logger = LoggerFactory.getLogger(BenchmarkRequestSubscriber.class);
+    private final StopWatch durationTimer = new StopWatch();
     private Meter successMeter;
     private Meter failureMeter;
     private Semaphore concurrencyControlSemaphore;
     private AtomicLong count;
+    private int thresholdForDiagnosticsInMs;
     public Timer.Context context;
 
-    public BenchmarkRequestSubscriber(Meter successMeter, Meter failureMeter, Semaphore concurrencyControlSemaphore,  AtomicLong count) {
+    public BenchmarkRequestSubscriber(Meter successMeter,
+                                      Meter failureMeter,
+                                      Semaphore concurrencyControlSemaphore,
+                                      AtomicLong count,
+                                      int thresholdForDiagnosticsInMs) {
         this.successMeter = successMeter;
         this.failureMeter = failureMeter;
         this.concurrencyControlSemaphore = concurrencyControlSemaphore;
         this.count = count;
+        this.thresholdForDiagnosticsInMs = thresholdForDiagnosticsInMs;
     }
 
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
         super.hookOnSubscribe(subscription);
+        durationTimer.start();
     }
 
     @Override
     protected void hookOnNext(T value) {
+        if (durationTimer.isStarted()) {
+            durationTimer.stop();
+        }
+
+        if (durationTimer != null && durationTimer.getTime() > thresholdForDiagnosticsInMs) {
+            if (value instanceof CosmosItemResponse) {
+                CosmosItemResponse itemResponse = (CosmosItemResponse) value;
+                logger.info("Request taking longer than {}ms diagnostic = {}", thresholdForDiagnosticsInMs, itemResponse.getDiagnostics().toString());
+            } else if (value instanceof FeedResponse) {
+                durationTimer.reset();
+                durationTimer.start();
+                FeedResponse feedResponse = (FeedResponse) value;
+                logger.info("Request taking longer than {}ms diagnostic = {}", thresholdForDiagnosticsInMs, feedResponse.getCosmosDiagnostics().toString());
+            }
+        }
+
         logger.debug("hookOnNext: {}, count:{}", value, count.get());
     }
 
