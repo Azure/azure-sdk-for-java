@@ -44,6 +44,7 @@ import java.util.Objects;
  * @see ObjectSerializer
  */
 public final class BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     private final byte[] data;
 
     BinaryData() {
@@ -54,9 +55,11 @@ public final class BinaryData {
     /**
      * Create instance of {@link BinaryData} given the data.
      * @param data to represent as bytes.
+     * @throws NullPointerException If {@code data} is null.
      */
     BinaryData(byte[] data) {
-        this.data = data;
+        Objects.requireNonNull(data, "'data' cannot be null.");
+        this.data = Arrays.copyOf(data, data.length);
     }
 
     /**
@@ -106,8 +109,7 @@ public final class BinaryData {
 
             return fromBytes(dataOutputBuffer.toByteArray());
         } catch (IOException ex) {
-            ClientLogger logger = new ClientLogger(BinaryData.class);
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
