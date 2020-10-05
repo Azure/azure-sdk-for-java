@@ -191,14 +191,5 @@ public class BinaryDateJavaDocCodeSnippet {
             return Mono.fromRunnable(() -> serialize(stream, value));
         }
     }
-
-    public static void main(String[] a) throws IOException, InterruptedException {
-        BinaryDateJavaDocCodeSnippet codeSnippet =  new BinaryDateJavaDocCodeSnippet();
-        codeSnippet.createFromStream();
-        //codeSnippet.createToStream();
-        //codeSnippet.createFromFlux();
-        //codeSnippet.createFromString();
-        //codeSnippet.createToObjectAsync();
-    }
 }
 

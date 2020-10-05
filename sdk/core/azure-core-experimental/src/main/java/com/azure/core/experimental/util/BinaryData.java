@@ -26,8 +26,8 @@ import java.util.Objects;
  * can be created from {@link InputStream}, {@link Flux} of {@link ByteBuffer}, {@link String}, {@link Object} and byte
  * array. The data is collected from provided sources and stored into a byte array.
  * <p>
- * It also provides a way to to serialize and deserialize an {@link Object} into {@link BinaryData} given an
- * {@link ObjectSerializer}. Following are some examples for your reference.
+ * It also provides a way to serialize and deserialize an {@link Object} into {@link BinaryData} given an
+ * {@link ObjectSerializer}. Code samples are explained below.
  *
  * <p><strong>Create an instance from Bytes</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
