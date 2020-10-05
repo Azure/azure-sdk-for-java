@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.fluent.inner.EdgeNodeInner;
+import com.azure.resourcemanager.cdn.fluent.models.EdgeNodeInner;
 
 import java.util.List;
 

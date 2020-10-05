@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ManagedClusterAddonProfileIdentity model. */
+/** Information of user assigned identity used by this add-on. */
 @Immutable
 public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfileIdentity.class);

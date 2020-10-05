@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.UsageState;
 import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -47,7 +47,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public String state() {
-        return inner().state();
+        return innerModel().state();
     }
 
     @Override
@@ -57,17 +57,17 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public String repositorySiteName() {
-        return inner().repositorySiteName();
+        return innerModel().repositorySiteName();
     }
 
     @Override
     public UsageState usageState() {
-        return inner().usageState();
+        return innerModel().usageState();
     }
 
     @Override
     public boolean enabled() {
-        return inner().enabled() == null || inner().enabled();
+        return innerModel().enabled() == null || innerModel().enabled();
     }
 
     @Override
@@ -77,7 +77,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public SiteAvailabilityState availabilityState() {
-        return inner().availabilityState();
+        return innerModel().availabilityState();
     }
 
     @Override
@@ -87,7 +87,7 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return inner().lastModifiedTimeUtc();
+        return innerModel().lastModifiedTimeUtc();
     }
 
     @Override
@@ -97,27 +97,27 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public boolean scmSiteAlsoStopped() {
-        return Utils.toPrimitiveBoolean(inner().scmSiteAlsoStopped());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().scmSiteAlsoStopped());
     }
 
     @Override
     public String targetSwapSlot() {
-        return inner().targetSwapSlot();
+        return innerModel().targetSwapSlot();
     }
 
     @Override
     public boolean clientAffinityEnabled() {
-        return Utils.toPrimitiveBoolean(inner().clientAffinityEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().clientAffinityEnabled());
     }
 
     @Override
     public boolean clientCertEnabled() {
-        return Utils.toPrimitiveBoolean(inner().clientCertEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().clientCertEnabled());
     }
 
     @Override
     public boolean hostnamesDisabled() {
-        return Utils.toPrimitiveBoolean(inner().hostNamesDisabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().hostNamesDisabled());
     }
 
     @Override
@@ -127,51 +127,51 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public int containerSize() {
-        return Utils.toPrimitiveInt(inner().containerSize());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().containerSize());
     }
 
     @Override
     public CloningInfo cloningInfo() {
-        return inner().cloningInfo();
+        return innerModel().cloningInfo();
     }
 
     @Override
     public boolean isDefaultContainer() {
-        return inner().isDefaultContainer() == null || inner().isDefaultContainer();
+        return innerModel().isDefaultContainer() == null || innerModel().isDefaultContainer();
     }
 
     @Override
     public String defaultHostname() {
-        return inner().defaultHostname();
+        return innerModel().defaultHostname();
     }
 
     @Override
     public boolean httpsOnly() {
-        return Utils.toPrimitiveBoolean(inner().httpsOnly());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().httpsOnly());
     }
 
     @Override
     public String appServicePlanId() {
-        return inner().serverFarmId();
+        return innerModel().serverFarmId();
     }
 
     @Override
     public ManagedServiceIdentity identity() {
-        return inner().identity();
+        return innerModel().identity();
     }
 
     private boolean reserved() {
-        return Utils.toPrimitiveBoolean(inner().reserved());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().reserved());
     }
 
     @Override
     public boolean hyperV() {
-        return Utils.toPrimitiveBoolean(inner().hyperV());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().hyperV());
     }
 
     @Override
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return inner().hostingEnvironmentProfile();
+        return innerModel().hostingEnvironmentProfile();
     }
 
     @Override
@@ -186,27 +186,27 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public int dailyMemoryTimeQuota() {
-        return Utils.toPrimitiveInt(inner().dailyMemoryTimeQuota());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().dailyMemoryTimeQuota());
     }
 
     @Override
     public OffsetDateTime suspendedTill() {
-        return inner().suspendedTill();
+        return innerModel().suspendedTill();
     }
 
     @Override
     public int maxNumberOfWorkers() {
-        return Utils.toPrimitiveInt(inner().maxNumberOfWorkers());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().maxNumberOfWorkers());
     }
 
     @Override
     public SlotSwapStatus slotSwapStatus() {
-        return inner().slotSwapStatus();
+        return innerModel().slotSwapStatus();
     }
 
     @Override
     public RedundancyMode redundancyMode() {
-        return inner().redundancyMode();
+        return innerModel().redundancyMode();
     }
 
     @Override
@@ -216,17 +216,17 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public String resourceGroupName() {
-        return inner().resourceGroup();
+        return innerModel().resourceGroup();
     }
 
     @Override
     public String type() {
-        return inner().type();
+        return innerModel().type();
     }
 
     @Override
     public String regionName() {
-        return inner().location();
+        return innerModel().location();
     }
 
     @Override
@@ -236,21 +236,21 @@ class WebSiteBaseImpl implements WebSiteBase {
 
     @Override
     public Map<String, String> tags() {
-        return Collections.unmodifiableMap(inner().tags());
+        return Collections.unmodifiableMap(innerModel().tags());
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public String name() {
-        return inner().name();
+        return innerModel().name();
     }
 
     @Override
-    public SiteInner inner() {
+    public SiteInner innerModel() {
         return innerObject;
     }
 
@@ -258,29 +258,29 @@ class WebSiteBaseImpl implements WebSiteBase {
         this.innerObject = innerObject;
 
         this.hostNamesSet.clear();
-        if (inner().hostNames() != null) {
-            this.hostNamesSet.addAll(inner().hostNames());
+        if (innerModel().hostNames() != null) {
+            this.hostNamesSet.addAll(innerModel().hostNames());
         }
         this.enabledHostNamesSet.clear();
-        if (inner().enabledHostNames() != null) {
-            this.enabledHostNamesSet.addAll(inner().enabledHostNames());
+        if (innerModel().enabledHostNames() != null) {
+            this.enabledHostNamesSet.addAll(innerModel().enabledHostNames());
         }
         this.trafficManagerHostNamesSet.clear();
-        if (inner().trafficManagerHostNames() != null) {
-            this.trafficManagerHostNamesSet.addAll(inner().trafficManagerHostNames());
+        if (innerModel().trafficManagerHostNames() != null) {
+            this.trafficManagerHostNamesSet.addAll(innerModel().trafficManagerHostNames());
         }
         this.outboundIPAddressesSet.clear();
-        if (inner().outboundIpAddresses() != null) {
-            this.outboundIPAddressesSet.addAll(Arrays.asList(inner().outboundIpAddresses().split(",[ ]*")));
+        if (innerModel().outboundIpAddresses() != null) {
+            this.outboundIPAddressesSet.addAll(Arrays.asList(innerModel().outboundIpAddresses().split(",[ ]*")));
         }
         this.possibleOutboundIPAddressesSet.clear();
-        if (inner().possibleOutboundIpAddresses() != null) {
+        if (innerModel().possibleOutboundIpAddresses() != null) {
             this.possibleOutboundIPAddressesSet.addAll(Arrays.asList(
-                inner().possibleOutboundIpAddresses().split(",[ ]*")));
+                innerModel().possibleOutboundIpAddresses().split(",[ ]*")));
         }
         this.hostNameSslStateMap.clear();
-        if (inner().hostnameSslStates() != null) {
-            for (HostnameSslState hostNameSslState : inner().hostnameSslStates()) {
+        if (innerModel().hostnameSslStates() != null) {
+            for (HostnameSslState hostNameSslState : innerModel().hostnameSslStates()) {
                 // Server returns null sometimes, invalid on update, so we set default
                 if (hostNameSslState.sslState() == null) {
                     hostNameSslState.withSslState(SslState.DISABLED);
@@ -289,9 +289,9 @@ class WebSiteBaseImpl implements WebSiteBase {
             }
         }
         this.clientCertExclusionPathSet.clear();
-        if (inner().clientCertExclusionPaths() != null) {
+        if (innerModel().clientCertExclusionPaths() != null) {
             this.clientCertExclusionPathSet.addAll(Arrays.asList(
-                inner().clientCertExclusionPaths().split(",[ ]*")));
+                innerModel().clientCertExclusionPaths().split(",[ ]*")));
         }
     }
 

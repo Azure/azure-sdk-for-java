@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtector;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorInner;
+import com.azure.resourcemanager.sql.fluent.models.EncryptionProtectorInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -96,7 +96,7 @@ public class SqlEncryptionProtectorImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -111,50 +111,50 @@ public class SqlEncryptionProtectorImpl
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public String kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.fromName(this.innerModel().location());
     }
 
     @Override
     public String serverKeyName() {
-        return this.inner().serverKeyName();
+        return this.innerModel().serverKeyName();
     }
 
     @Override
     public ServerKeyType serverKeyType() {
-        return this.inner().serverKeyType();
+        return this.innerModel().serverKeyType();
     }
 
     @Override
     public String uri() {
-        return this.inner().uri();
+        return this.innerModel().uri();
     }
 
     @Override
     public String thumbprint() {
-        return this.inner().thumbprint();
+        return this.innerModel().thumbprint();
     }
 
     @Override
     public SqlEncryptionProtectorImpl withAzureKeyVaultServerKey(String serverKeyName) {
-        this.inner().withServerKeyName(serverKeyName);
-        this.inner().withServerKeyType(ServerKeyType.AZURE_KEY_VAULT);
+        this.innerModel().withServerKeyName(serverKeyName);
+        this.innerModel().withServerKeyType(ServerKeyType.AZURE_KEY_VAULT);
         return this;
     }
 
     @Override
     public SqlEncryptionProtectorImpl withServiceManagedServerKey() {
-        this.inner().withServerKeyName("ServiceManaged");
-        this.inner().withServerKeyType(ServerKeyType.SERVICE_MANAGED);
+        this.innerModel().withServerKeyName("ServiceManaged");
+        this.innerModel().withServerKeyType(ServerKeyType.SERVICE_MANAGED);
         return this;
     }
 
@@ -166,7 +166,7 @@ public class SqlEncryptionProtectorImpl
             .serviceClient()
             .getEncryptionProtectors()
             .createOrUpdateAsync(
-                this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT, this.inner())
+                this.resourceGroupName, this.sqlServerName, EncryptionProtectorName.CURRENT, this.innerModel())
             .map(
                 encryptionProtectorInner -> {
                     self.setInner(encryptionProtectorInner);

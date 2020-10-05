@@ -6,9 +6,9 @@ package com.azure.resourcemanager.redis.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.RedisManager;
-import com.azure.resourcemanager.redis.fluent.inner.RedisAccessKeysInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisLinkedServerWithPropertiesInner;
-import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerWithPropertiesInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
@@ -32,8 +32,7 @@ import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -90,62 +89,62 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState().toString();
+        return this.innerModel().provisioningState().toString();
     }
 
     @Override
     public String hostname() {
-        return this.inner().hostname();
+        return this.innerModel().hostname();
     }
 
     @Override
     public int port() {
-        return Utils.toPrimitiveInt(this.inner().port());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().port());
     }
 
     @Override
     public int sslPort() {
-        return Utils.toPrimitiveInt(this.inner().sslPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().sslPort());
     }
 
     @Override
     public String redisVersion() {
-        return this.inner().redisVersion();
+        return this.innerModel().redisVersion();
     }
 
     @Override
     public Sku sku() {
-        return this.inner().sku();
+        return this.innerModel().sku();
     }
 
     @Override
     public boolean nonSslPort() {
-        return this.inner().enableNonSslPort();
+        return this.innerModel().enableNonSslPort();
     }
 
     @Override
     public int shardCount() {
-        return Utils.toPrimitiveInt(this.inner().shardCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().shardCount());
     }
 
     @Override
     public String subnetId() {
-        return this.inner().subnetId();
+        return this.innerModel().subnetId();
     }
 
     @Override
     public String staticIp() {
-        return this.inner().staticIp();
+        return this.innerModel().staticIp();
     }
 
     @Override
     public TlsVersion minimumTlsVersion() {
-        return this.inner().minimumTlsVersion();
+        return this.innerModel().minimumTlsVersion();
     }
 
     @Override
     public Map<String, String> redisConfiguration() {
-        return Collections.unmodifiableMap(this.inner().redisConfiguration());
+        return Collections.unmodifiableMap(this.innerModel().redisConfiguration());
     }
 
     @Override
@@ -269,8 +268,8 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public RedisCacheImpl withFirewallRule(String name, String lowestIp, String highestIp) {
         RedisFirewallRuleImpl rule = this.firewallRules.defineInlineFirewallRule(name);
-        rule.inner().withStartIp(lowestIp);
-        rule.inner().withEndIp(highestIp);
+        rule.innerModel().withStartIp(lowestIp);
+        rule.innerModel().withEndIp(highestIp);
         return this.withFirewallRule(rule);
     }
 
@@ -459,7 +458,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         if (this.patchSchedules.patchSchedulesAsMap().isEmpty()) {
             psch = this.patchSchedules.defineInlinePatchSchedule();
             this.patchScheduleAdded = true;
-            psch.inner().withScheduleEntries(new ArrayList<>());
+            psch.innerModel().withScheduleEntries(new ArrayList<>());
             this.patchSchedules.addPatchSchedule(psch);
         } else if (!this.patchScheduleAdded) {
             psch = this.patchSchedules.updateInlinePatchSchedule();
@@ -467,7 +466,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             psch = this.patchSchedules.getPatchSchedule();
         }
 
-        psch.inner().scheduleEntries().add(scheduleEntry);
+        psch.innerModel().scheduleEntries().add(scheduleEntry);
         return this;
     }
 
@@ -523,7 +522,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public Mono<RedisCache> updateResourceAsync() {
-        updateParameters.withTags(this.inner().tags());
+        updateParameters.withTags(this.innerModel().tags());
         this.patchScheduleAdded = false;
         return this
             .manager()
@@ -536,8 +535,9 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             .flatMapMany(
                 redisCache ->
                     Mono
-                        .delay(SdkContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
-                        .flatMap(o -> 
+                        .delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
+                            manager().serviceClient().getDefaultPollInterval()))
+                        .flatMap(o ->
                             manager().serviceClient().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
                         .doOnNext(this::setInner)
                         .repeat()
@@ -555,7 +555,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public Mono<RedisCache> createResourceAsync() {
         createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().tags());
+        createParameters.withTags(this.innerModel().tags());
         this.patchScheduleAdded = false;
         return this
             .manager()
@@ -596,7 +596,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             || innerLinkedResource.provisioningState() != ProvisioningState.SUCCEEDED
             || innerResource == null
             || innerResource.provisioningState() != ProvisioningState.SUCCEEDED) {
-            SdkContext.sleep(30 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             innerLinkedResource =
                 this

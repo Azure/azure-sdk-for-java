@@ -41,9 +41,9 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaks", 15);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnetaks", 20);
-        final String aksName = azureResourceManager.sdkContext().randomResourceName("akssample", 30);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgaks", 15);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnetaks", 20);
+        final String aksName = Utils.randomResourceName(azureResourceManager, "akssample", 30);
         final Region region = Region.US_CENTRAL;
         String servicePrincipalClientId = clientId; // replace it with a real service principal client id
         String servicePrincipalSecret = secret; // and the corresponding secret

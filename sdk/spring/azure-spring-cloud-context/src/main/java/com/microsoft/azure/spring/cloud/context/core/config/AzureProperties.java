@@ -41,7 +41,7 @@ public class AzureProperties implements CredentialSupplier {
         }
 
         if (msiEnabled && Strings.isNullOrEmpty(subscriptionId)) {
-            Assert.hasText(this.region, "When msi is enabled, spring.cloud.azure.subscription-id must be provided");
+            Assert.hasText(this.subscriptionId, "When msi is enabled, spring.cloud.azure.subscription-id must be provided");
         }
     }
 

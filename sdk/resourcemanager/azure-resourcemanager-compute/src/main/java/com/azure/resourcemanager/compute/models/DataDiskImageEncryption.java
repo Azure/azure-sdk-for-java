@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataDiskImageEncryption model. */
+/** Contains encryption settings for a data disk image. */
 @Fluent
 public final class DataDiskImageEncryption extends DiskImageEncryption {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskImageEncryption.class);

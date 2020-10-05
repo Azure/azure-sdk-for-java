@@ -34,12 +34,12 @@ public final class ManageZonalVirtualMachine {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String vmName1 = azureResourceManager.sdkContext().randomResourceName("lVM1", 15);
-        final String vmName2 = azureResourceManager.sdkContext().randomResourceName("lVM2", 15);
-        final String pipName1 = azureResourceManager.sdkContext().randomResourceName("pip1", 15);
-        final String pipName2 = azureResourceManager.sdkContext().randomResourceName("pip2", 15);
-        final String diskName = azureResourceManager.sdkContext().randomResourceName("ds", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        final String vmName1 = Utils.randomResourceName(azureResourceManager, "lVM1", 15);
+        final String vmName2 = Utils.randomResourceName(azureResourceManager, "lVM2", 15);
+        final String pipName1 = Utils.randomResourceName(azureResourceManager, "pip1", 15);
+        final String pipName2 = Utils.randomResourceName(azureResourceManager, "pip2", 15);
+        final String diskName = Utils.randomResourceName(azureResourceManager, "ds", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

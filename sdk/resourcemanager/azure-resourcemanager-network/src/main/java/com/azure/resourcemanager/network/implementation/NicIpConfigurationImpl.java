@@ -14,11 +14,11 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,10 +68,10 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public String publicIpAddressId() {
-        if (this.inner().publicIpAddress() == null) {
+        if (this.innerModel().publicIpAddress() == null) {
             return null;
         }
-        return this.inner().publicIpAddress().id();
+        return this.innerModel().publicIpAddress().id();
     }
 
     @Override
@@ -123,15 +123,15 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressDynamic() {
-        this.inner().withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC);
-        this.inner().withPrivateIpAddress(null);
+        this.innerModel().withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC);
+        this.innerModel().withPrivateIpAddress(null);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressStatic(String staticPrivateIPAddress) {
-        this.inner().withPrivateIpAllocationMethod(IpAllocationMethod.STATIC);
-        this.inner().withPrivateIpAddress(staticPrivateIPAddress);
+        this.innerModel().withPrivateIpAllocationMethod(IpAllocationMethod.STATIC);
+        this.innerModel().withPrivateIpAddress(staticPrivateIPAddress);
         return this;
     }
 
@@ -182,7 +182,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     @Override
     public NicIpConfigurationImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
         if (loadBalancer != null) {
-            for (BackendAddressPoolInner pool : loadBalancer.inner().backendAddressPools()) {
+            for (BackendAddressPoolInner pool : loadBalancer.innerModel().backendAddressPools()) {
                 if (pool.name().equalsIgnoreCase(backendName)) {
                     ensureLoadBalancerBackendAddressPools().add(pool);
                     return this;
@@ -197,7 +197,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     public NicIpConfigurationImpl withExistingApplicationGatewayBackend(
         ApplicationGateway appGateway, String backendName) {
         if (appGateway != null) {
-            for (ApplicationGatewayBackendAddressPool pool : appGateway.inner().backendAddressPools()) {
+            for (ApplicationGatewayBackendAddressPool pool : appGateway.innerModel().backendAddressPools()) {
                 if (pool.name().equalsIgnoreCase(backendName)) {
                     ensureAppGatewayBackendAddressPools().add(pool);
                     return this;
@@ -212,7 +212,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     public NicIpConfigurationImpl withExistingLoadBalancerInboundNatRule(
         LoadBalancer loadBalancer, String inboundNatRuleName) {
         if (loadBalancer != null) {
-            for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
+            for (InboundNatRuleInner rule : loadBalancer.innerModel().inboundNatRules()) {
                 if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
                     ensureInboundNatRules().add(rule);
                     return this;
@@ -224,28 +224,28 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     }
 
     private List<ApplicationGatewayBackendAddressPool> ensureAppGatewayBackendAddressPools() {
-        List<ApplicationGatewayBackendAddressPool> poolRefs = this.inner().applicationGatewayBackendAddressPools();
+        List<ApplicationGatewayBackendAddressPool> poolRefs = this.innerModel().applicationGatewayBackendAddressPools();
         if (poolRefs == null) {
             poolRefs = new ArrayList<>();
-            this.inner().withApplicationGatewayBackendAddressPools(poolRefs);
+            this.innerModel().withApplicationGatewayBackendAddressPools(poolRefs);
         }
         return poolRefs;
     }
 
     private List<BackendAddressPoolInner> ensureLoadBalancerBackendAddressPools() {
-        List<BackendAddressPoolInner> poolRefs = this.inner().loadBalancerBackendAddressPools();
+        List<BackendAddressPoolInner> poolRefs = this.innerModel().loadBalancerBackendAddressPools();
         if (poolRefs == null) {
             poolRefs = new ArrayList<>();
-            this.inner().withLoadBalancerBackendAddressPools(poolRefs);
+            this.innerModel().withLoadBalancerBackendAddressPools(poolRefs);
         }
         return poolRefs;
     }
 
     private List<InboundNatRuleInner> ensureInboundNatRules() {
-        List<InboundNatRuleInner> natRefs = this.inner().loadBalancerInboundNatRules();
+        List<InboundNatRuleInner> natRefs = this.innerModel().loadBalancerInboundNatRules();
         if (natRefs == null) {
             natRefs = new ArrayList<>();
-            this.inner().withLoadBalancerInboundNatRules(natRefs);
+            this.innerModel().withLoadBalancerInboundNatRules(natRefs);
         }
         return natRefs;
     }
@@ -253,8 +253,8 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations) {
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
-            config.inner().withSubnet(config.subnetToAssociate());
-            config.inner().withPublicIpAddress(config.publicIPToAssociate());
+            config.innerModel().withSubnet(config.subnetToAssociate());
+            config.innerModel().withPublicIpAddress(config.publicIPToAssociate());
         }
     }
 
@@ -286,30 +286,32 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         if (this.isInCreateMode) {
             if (this.creatableVirtualNetworkKey != null) {
                 Network network = (Network) parent().createdDependencyResource(this.creatableVirtualNetworkKey);
-                subnetInner.withId(network.inner().subnets().get(0).id());
+                subnetInner.withId(network.innerModel().subnets().get(0).id());
                 return subnetInner;
             }
 
-            for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.inner().subnets()) {
+            for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.innerModel().subnets()) {
                 if (subnet.name().equalsIgnoreCase(this.subnetToAssociate)) {
                     subnetInner.withId(subnet.id());
                     return subnetInner;
                 }
             }
 
-            throw logger.logExceptionAsError(new RuntimeException(
-                "A subnet with name '"
-                    + subnetToAssociate
-                    + "' not found under the network '"
-                    + this.existingVirtualNetworkToAssociate.name()
-                    + "'"));
+            throw logger
+                .logExceptionAsError(
+                    new RuntimeException(
+                        "A subnet with name '"
+                            + subnetToAssociate
+                            + "' not found under the network '"
+                            + this.existingVirtualNetworkToAssociate.name()
+                            + "'"));
 
         } else {
             if (subnetToAssociate != null) {
-                int idx = this.inner().subnet().id().lastIndexOf('/');
-                subnetInner.withId(this.inner().subnet().id().substring(0, idx + 1) + subnetToAssociate);
+                int idx = this.innerModel().subnet().id().lastIndexOf('/');
+                subnetInner.withId(this.innerModel().subnet().id().substring(0, idx + 1) + subnetToAssociate);
             } else {
-                subnetInner.withId(this.inner().subnet().id());
+                subnetInner.withId(this.innerModel().subnet().id());
             }
             return subnetInner;
         }
@@ -337,7 +339,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         if (pipId != null) {
             return new PublicIpAddressInner().withId(pipId);
         } else if (!this.isInCreateMode) {
-            return this.inner().publicIpAddress();
+            return this.innerModel().publicIpAddress();
         } else {
             return null;
         }
@@ -345,25 +347,25 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public NicIpConfigurationImpl withPrivateIpVersion(IpVersion ipVersion) {
-        this.inner().withPrivateIpAddressVersion(ipVersion);
+        this.innerModel().withPrivateIpAddressVersion(ipVersion);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withoutApplicationGatewayBackends() {
-        this.inner().withApplicationGatewayBackendAddressPools(null);
+        this.innerModel().withApplicationGatewayBackendAddressPools(null);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withoutLoadBalancerBackends() {
-        this.inner().withLoadBalancerBackendAddressPools(null);
+        this.innerModel().withLoadBalancerBackendAddressPools(null);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
-        this.inner().withLoadBalancerInboundNatRules(null);
+        this.innerModel().withLoadBalancerInboundNatRules(null);
         return this;
     }
 }

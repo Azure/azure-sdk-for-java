@@ -12,13 +12,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAutomaticTuningInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.IdentityType;
@@ -97,7 +97,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             .manager()
             .serviceClient()
             .getServers()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(
                 serverInner -> {
                     setInner(serverInner);
@@ -158,42 +158,43 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public String fullyQualifiedDomainName() {
-        return this.inner().fullyQualifiedDomainName();
+        return this.innerModel().fullyQualifiedDomainName();
     }
 
     @Override
     public String administratorLogin() {
-        return this.inner().administratorLogin();
+        return this.innerModel().administratorLogin();
     }
 
     @Override
     public String kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public String state() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public boolean isManagedServiceIdentityEnabled() {
-        return this.inner().identity() != null && this.inner().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
+        return this.innerModel().identity() != null
+            && this.innerModel().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityTenantId() {
-        return this.inner().identity() != null ? this.inner().identity().tenantId().toString() : null;
+        return this.innerModel().identity() != null ? this.innerModel().identity().tenantId().toString() : null;
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
-        return this.inner().identity() != null ? this.inner().identity().principalId().toString() : null;
+        return this.innerModel().identity() != null ? this.innerModel().identity().principalId().toString() : null;
     }
 
     @Override
     public IdentityType managedServiceIdentityType() {
-        return this.inner().identity() != null ? this.inner().identity().type() : null;
+        return this.innerModel().identity() != null ? this.innerModel().identity().type() : null;
     }
 
     @Override
@@ -279,7 +280,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public String version() {
-        return this.inner().version();
+        return this.innerModel().version();
     }
 
     @Override
@@ -400,13 +401,13 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withAdministratorLogin(String administratorLogin) {
-        this.inner().withAdministratorLogin(administratorLogin);
+        this.innerModel().withAdministratorLogin(administratorLogin);
         return this;
     }
 
     @Override
     public SqlServerImpl withAdministratorPassword(String administratorLoginPassword) {
-        this.inner().withAdministratorLoginPassword(administratorLoginPassword);
+        this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -456,7 +457,9 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress) {
         return this
             .withNewFirewallRule(
-                startIPAddress, endIPAddress, this.manager().sdkContext().randomResourceName("firewall_", 15));
+                startIPAddress,
+                endIPAddress,
+                this.manager().resourceManager().internalContext().randomResourceName("firewall_", 15));
     }
 
     @Override
@@ -583,7 +586,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
-        this.inner().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
+        this.innerModel().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
         return this;
     }
 }

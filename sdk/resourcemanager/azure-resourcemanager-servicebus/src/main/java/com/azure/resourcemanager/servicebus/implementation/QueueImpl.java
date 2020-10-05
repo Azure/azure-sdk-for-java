@@ -6,9 +6,9 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
@@ -54,151 +54,151 @@ class QueueImpl
 
     @Override
     public OffsetDateTime createdAt() {
-        return this.inner().createdAt();
+        return this.innerModel().createdAt();
     }
 
     @Override
     public OffsetDateTime accessedAt() {
-        return this.inner().accessedAt();
+        return this.innerModel().accessedAt();
     }
 
     @Override
     public OffsetDateTime updatedAt() {
-        return this.inner().updatedAt();
+        return this.innerModel().updatedAt();
     }
 
     @Override
     public long maxSizeInMB() {
-        return Utils.toPrimitiveLong(this.inner().maxSizeInMegabytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxSizeInMegabytes());
     }
 
     @Override
     public long currentSizeInBytes() {
-        return Utils.toPrimitiveLong(this.inner().sizeInBytes());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().sizeInBytes());
     }
 
     @Override
     public boolean isBatchedOperationsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableBatchedOperations());
     }
 
     @Override
     public boolean isDeadLetteringEnabledForExpiredMessages() {
-        return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnMessageExpiration());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().deadLetteringOnMessageExpiration());
     }
 
     @Override
     public boolean isExpressEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableExpress());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableExpress());
     }
 
     @Override
     public boolean isPartitioningEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enablePartitioning());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enablePartitioning());
     }
 
     @Override
     public boolean isSessionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresSession());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().requiresSession());
     }
 
     @Override
     public boolean isDuplicateDetectionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresDuplicateDetection());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().requiresDuplicateDetection());
     }
 
     @Override
     public long lockDurationInSeconds() {
-        if (this.inner().lockDuration() == null) {
+        if (this.innerModel().lockDuration() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().lockDuration());
+        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().lockDuration());
         return (long) timeSpan.totalSeconds();
     }
 
     @Override
     public long deleteOnIdleDurationInMinutes() {
-        if (this.inner().autoDeleteOnIdle() == null) {
+        if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().autoDeleteOnIdle());
+        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().autoDeleteOnIdle());
         return (long) timeSpan.totalMinutes();
     }
 
     @Override
     public Duration defaultMessageTtlDuration() {
-        if (this.inner().defaultMessageTimeToLive() == null) {
+        if (this.innerModel().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).toDuration();
+        return TimeSpan.parse(this.innerModel().defaultMessageTimeToLive()).toDuration();
     }
 
     @Override
     public Duration duplicateMessageDetectionHistoryDuration() {
-        if (this.inner().duplicateDetectionHistoryTimeWindow() == null) {
+        if (this.innerModel().duplicateDetectionHistoryTimeWindow() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().duplicateDetectionHistoryTimeWindow()).toDuration();
+        return TimeSpan.parse(this.innerModel().duplicateDetectionHistoryTimeWindow()).toDuration();
     }
 
     @Override
     public int maxDeliveryCountBeforeDeadLetteringMessage() {
-        return Utils.toPrimitiveInt(this.inner().maxDeliveryCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().maxDeliveryCount());
     }
 
     @Override
     public long messageCount() {
-        return Utils.toPrimitiveLong(this.inner().messageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().messageCount());
     }
 
     @Override
     public long activeMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().activeMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().activeMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().activeMessageCount());
     }
 
     @Override
     public long deadLetterMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().deadLetterMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().deadLetterMessageCount());
     }
 
     @Override
     public long scheduledMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().scheduledMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().scheduledMessageCount());
     }
 
     @Override
     public long transferDeadLetterMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().transferDeadLetterMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferDeadLetterMessageCount());
     }
 
     @Override
     public long transferMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().transferMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().transferMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferMessageCount());
     }
 
     @Override
     public EntityStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
@@ -212,100 +212,100 @@ class QueueImpl
 
     @Override
     public QueueImpl withSizeInMB(long sizeInMB) {
-        this.inner().withMaxSizeInMegabytes(sizeInMB);
+        this.innerModel().withMaxSizeInMegabytes(sizeInMB);
         return this;
     }
 
     @Override
     public QueueImpl withPartitioning() {
-        this.inner().withEnablePartitioning(true);
+        this.innerModel().withEnablePartitioning(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutPartitioning() {
-        this.inner().withEnablePartitioning(false);
+        this.innerModel().withEnablePartitioning(false);
         return this;
     }
 
     @Override
     public QueueImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
         TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.inner().withAutoDeleteOnIdle(timeSpan.toString());
+        this.innerModel().withAutoDeleteOnIdle(timeSpan.toString());
         return this;
     }
 
     @Override
     public QueueImpl withMessageLockDurationInSeconds(int durationInSeconds) {
         TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
-        this.inner().withLockDuration(timeSpan.toString());
+        this.innerModel().withLockDuration(timeSpan.toString());
         return this;
     }
 
     @Override
     public QueueImpl withDefaultMessageTTL(Duration ttl) {
-        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
+        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
         return this;
     }
 
     @Override
     public QueueImpl withSession() {
-        this.inner().withRequiresSession(true);
+        this.innerModel().withRequiresSession(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutSession() {
-        this.inner().withRequiresSession(false);
+        this.innerModel().withRequiresSession(false);
         return this;
     }
 
     @Override
     public QueueImpl withExpressMessage() {
-        this.inner().withEnableExpress(true);
+        this.innerModel().withEnableExpress(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutExpressMessage() {
-        this.inner().withEnableExpress(false);
+        this.innerModel().withEnableExpress(false);
         return this;
     }
 
     @Override
     public QueueImpl withMessageBatching() {
-        this.inner().withEnableBatchedOperations(true);
+        this.innerModel().withEnableBatchedOperations(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutMessageBatching() {
-        this.inner().withEnableBatchedOperations(false);
+        this.innerModel().withEnableBatchedOperations(false);
         return this;
     }
 
     @Override
     public QueueImpl withExpiredMessageMovedToDeadLetterQueue() {
-        this.inner().withDeadLetteringOnMessageExpiration(true);
+        this.innerModel().withDeadLetteringOnMessageExpiration(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutExpiredMessageMovedToDeadLetterQueue() {
-        this.inner().withDeadLetteringOnMessageExpiration(false);
+        this.innerModel().withDeadLetteringOnMessageExpiration(false);
         return this;
     }
 
     @Override
     public QueueImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
-        this.inner().withMaxDeliveryCount(deliveryCount);
+        this.innerModel().withMaxDeliveryCount(deliveryCount);
         return this;
     }
 
     @Override
     public QueueImpl withDuplicateMessageDetection(Duration duplicateDetectionHistoryDuration) {
-        this.inner().withRequiresDuplicateDetection(true);
-        this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
+        this.innerModel().withRequiresDuplicateDetection(true);
+        this.innerModel().withDuplicateDetectionHistoryTimeWindow(TimeSpan
                 .fromDuration(duplicateDetectionHistoryDuration)
                 .toString());
         return this;
@@ -318,7 +318,7 @@ class QueueImpl
 
     @Override
     public QueueImpl withoutDuplicateMessageDetection() {
-        this.inner().withRequiresDuplicateDetection(false);
+        this.innerModel().withRequiresDuplicateDetection(false);
         return this;
     }
 
@@ -361,7 +361,7 @@ class QueueImpl
             .createOrUpdateAsync(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
-                prepareForCreate(this.inner()))
+                prepareForCreate(this.innerModel()))
             .map(inner -> {
                 setInner(inner);
                 return inner;

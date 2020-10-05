@@ -6,8 +6,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
@@ -22,7 +22,7 @@ class ExpressRouteCircuitPeeringsImpl
         ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>,
         ExpressRouteCircuitPeeringInner,
         ExpressRouteCircuitPeeringsClient,
-    NetworkManager,
+        NetworkManager,
         ExpressRouteCircuit>
     implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;
@@ -39,52 +39,53 @@ class ExpressRouteCircuitPeeringsImpl
 
     @Override
     public final PagedIterable<ExpressRouteCircuitPeering> list() {
-        return wrapList(inner().list(parent.resourceGroupName(), parent.name()));
+        return wrapList(innerModel().list(parent.resourceGroupName(), parent.name()));
     }
 
     /** @return an observable emits packet captures in this collection */
     @Override
     public PagedFlux<ExpressRouteCircuitPeering> listAsync() {
-        return wrapPageAsync(inner().listAsync(parent.resourceGroupName(), parent.name()));
+        return wrapPageAsync(innerModel().listAsync(parent.resourceGroupName(), parent.name()));
     }
 
     @Override
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         wrapModel(String name) {
         return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.fromString(name));
+            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.fromString(name));
     }
 
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         wrapModel(ExpressRouteCircuitPeeringInner inner) {
-        return (inner == null) ? null
-            : new ExpressRouteCircuitPeeringImpl<>(parent, inner, inner(), inner.peeringType());
+        return (inner == null)
+            ? null
+            : new ExpressRouteCircuitPeeringImpl<>(parent, inner, innerModel(), inner.peeringType());
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         defineAzurePrivatePeering() {
         return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
+            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         defineAzurePublicPeering() {
         return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
+            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         defineMicrosoftPeering() {
         return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
+            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.MICROSOFT_PEERING);
     }
 
     @Override
     public Mono<ExpressRouteCircuitPeering> getByNameAsync(String name) {
-        return inner().getAsync(parent.resourceGroupName(), parent.name(), name).map(inner -> wrapModel(inner));
+        return innerModel().getAsync(parent.resourceGroupName(), parent.name(), name).map(inner -> wrapModel(inner));
     }
 
     @Override
@@ -99,7 +100,7 @@ class ExpressRouteCircuitPeeringsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(parent.resourceGroupName(), parent.name(), name);
+        return this.innerModel().deleteAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
     @Override
@@ -109,16 +110,16 @@ class ExpressRouteCircuitPeeringsImpl
 
     @Override
     public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.inner().deleteAsync(groupName, parentName, name);
+        return this.innerModel().deleteAsync(groupName, parentName, name);
     }
 
     @Override
     public Mono<ExpressRouteCircuitPeering> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return inner().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel((inner)));
+        return innerModel().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel((inner)));
     }
 
     @Override
     public PagedIterable<ExpressRouteCircuitPeering> listByParent(String resourceGroupName, String parentName) {
-        return wrapList(this.inner().list(resourceGroupName, parentName));
+        return wrapList(this.innerModel().list(resourceGroupName, parentName));
     }
 }

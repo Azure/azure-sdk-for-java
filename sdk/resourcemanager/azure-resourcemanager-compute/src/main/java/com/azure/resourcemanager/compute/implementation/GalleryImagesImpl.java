@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.GalleryImage;
 import com.azure.resourcemanager.compute.models.GalleryImages;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryImageInner;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
@@ -41,19 +41,17 @@ public class GalleryImagesImpl extends WrapperImpl<GalleryImagesClient> implemen
 
     @Override
     public PagedFlux<GalleryImage> listByGalleryAsync(final String resourceGroupName, final String galleryName) {
-        return inner().listByGalleryAsync(resourceGroupName, galleryName).mapPage(this::wrapModel);
+        return innerModel().listByGalleryAsync(resourceGroupName, galleryName).mapPage(this::wrapModel);
     }
 
     @Override
     public PagedIterable<GalleryImage> listByGallery(String resourceGroupName, String galleryName) {
-        return inner().listByGallery(resourceGroupName, galleryName).mapPage(this::wrapModel);
+        return innerModel().listByGallery(resourceGroupName, galleryName).mapPage(this::wrapModel);
     }
 
     @Override
     public Mono<GalleryImage> getByGalleryAsync(String resourceGroupName, String galleryName, String galleryImageName) {
-        return inner()
-            .getAsync(resourceGroupName, galleryName, galleryImageName)
-            .map(this::wrapModel);
+        return innerModel().getAsync(resourceGroupName, galleryName, galleryImageName).map(this::wrapModel);
     }
 
     @Override
@@ -63,7 +61,7 @@ public class GalleryImagesImpl extends WrapperImpl<GalleryImagesClient> implemen
 
     @Override
     public Mono<Void> deleteByGalleryAsync(String resourceGroupName, String galleryName, String galleryImageName) {
-        return inner().deleteAsync(resourceGroupName, galleryName, galleryImageName);
+        return innerModel().deleteAsync(resourceGroupName, galleryName, galleryImageName);
     }
 
     @Override

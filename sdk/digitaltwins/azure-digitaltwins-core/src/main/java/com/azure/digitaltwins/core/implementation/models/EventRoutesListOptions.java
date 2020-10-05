@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EventRoutesListOptions model. */
+/** Parameter group. */
 @Fluent
 public final class EventRoutesListOptions {
     /*

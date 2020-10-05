@@ -8,6 +8,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -15,10 +16,12 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -812,6 +815,36 @@ public class ShareFileJavaDocCodeSamples {
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
         // END: com.azure.storage.file.share.ShareFileClient.listRanges#ShareFileRange-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#listRangesDiff(String)}
+     */
+    public void listRangesDiffOverload() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRangesDiff#String
+        ShareFileRangeList rangeList = fileClient.listRangesDiff("previoussnapshot");
+        System.out.println("Valid Share File Ranges are:");
+        for (FileRange range : rangeList.getRanges()) {
+            System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
+        }
+        // END: com.azure.storage.file.share.ShareFileClient.listRangesDiff#String
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#listRangesDiffWithResponse(ShareFileListRangesDiffOptions, Duration, Context)}
+     */
+    public void listRangesDiffOptionalOverload() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions-Duration-Context
+        ShareFileRangeList rangeList = fileClient.listRangesDiffWithResponse(
+            new ShareFileListRangesDiffOptions("previoussnapshot")
+            .setRange(new ShareFileRange(1024, 2048L)), Duration.ofSeconds(1), new Context(key1, value1)).getValue();
+        System.out.println("Valid Share File Ranges are:");
+        for (FileRange range : rangeList.getRanges()) {
+            System.out.printf("Start: %s, End: %s%n", range.getStart(), range.getEnd());
+        }
+        // END: com.azure.storage.file.share.ShareFileClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions-Duration-Context
     }
 
     /**

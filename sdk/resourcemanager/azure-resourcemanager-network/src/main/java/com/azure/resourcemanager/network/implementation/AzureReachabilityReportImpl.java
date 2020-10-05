@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportParameters;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
-import com.azure.resourcemanager.network.fluent.inner.AzureReachabilityReportInner;
+import com.azure.resourcemanager.network.fluent.models.AzureReachabilityReportInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -52,7 +52,7 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
     }
 
     @Override
-    public AzureReachabilityReportInner inner() {
+    public AzureReachabilityReportInner innerModel() {
         return this.inner;
     }
 

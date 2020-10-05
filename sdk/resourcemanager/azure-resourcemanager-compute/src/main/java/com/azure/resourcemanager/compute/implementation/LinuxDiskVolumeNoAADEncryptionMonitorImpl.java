@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import reactor.core.publisher.Mono;
 
@@ -125,11 +125,8 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return computeManager
-            .serviceClient()
-            .getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName);
-            // Exception if vm not found
+        return computeManager.serviceClient().getVirtualMachines().getByResourceGroupAsync(rgName, vmName);
+        // Exception if vm not found
     }
 
     private boolean hasEncryptionExtensionInstanceView() {

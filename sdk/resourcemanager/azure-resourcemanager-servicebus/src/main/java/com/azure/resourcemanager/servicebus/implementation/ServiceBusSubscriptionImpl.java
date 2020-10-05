@@ -5,9 +5,9 @@ package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;
@@ -52,202 +52,202 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public OffsetDateTime createdAt() {
-        return this.inner().createdAt();
+        return this.innerModel().createdAt();
     }
 
     @Override
     public OffsetDateTime accessedAt() {
-        return this.inner().accessedAt();
+        return this.innerModel().accessedAt();
     }
 
     @Override
     public OffsetDateTime updatedAt() {
-        return this.inner().updatedAt();
+        return this.innerModel().updatedAt();
     }
 
     @Override
     public boolean isBatchedOperationsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableBatchedOperations());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableBatchedOperations());
     }
 
     @Override
     public boolean isDeadLetteringEnabledForExpiredMessages() {
-        return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnMessageExpiration());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().deadLetteringOnMessageExpiration());
     }
 
     @Override
     public boolean isSessionEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().requiresSession());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().requiresSession());
     }
 
     @Override
     public long lockDurationInSeconds() {
-        if (this.inner().lockDuration() == null) {
+        if (this.innerModel().lockDuration() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().lockDuration());
+        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().lockDuration());
         return (long) timeSpan.totalSeconds();
     }
 
     @Override
     public long deleteOnIdleDurationInMinutes() {
-        if (this.inner().autoDeleteOnIdle() == null) {
+        if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.inner().autoDeleteOnIdle());
+        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().autoDeleteOnIdle());
         return (long) timeSpan.totalMinutes();
     }
 
     @Override
     public Duration defaultMessageTtlDuration() {
-        if (this.inner().defaultMessageTimeToLive() == null) {
+        if (this.innerModel().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.inner().defaultMessageTimeToLive()).toDuration();
+        return TimeSpan.parse(this.innerModel().defaultMessageTimeToLive()).toDuration();
     }
 
     @Override
     public int maxDeliveryCountBeforeDeadLetteringMessage() {
-        return Utils.toPrimitiveInt(this.inner().maxDeliveryCount());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().maxDeliveryCount());
     }
 
     @Override
     public long messageCount() {
-        return Utils.toPrimitiveLong(this.inner().messageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().messageCount());
     }
 
     @Override
     public long activeMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().activeMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().activeMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().activeMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().activeMessageCount());
     }
 
     @Override
     public long deadLetterMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().deadLetterMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().deadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().deadLetterMessageCount());
     }
 
     @Override
     public long scheduledMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().scheduledMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().scheduledMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().scheduledMessageCount());
     }
 
     @Override
     public long transferDeadLetterMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().transferDeadLetterMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferDeadLetterMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferDeadLetterMessageCount());
     }
 
     @Override
     public long transferMessageCount() {
-        if (this.inner().countDetails() == null
-                || this.inner().countDetails().transferMessageCount() == null) {
+        if (this.innerModel().countDetails() == null
+                || this.innerModel().countDetails().transferMessageCount() == null) {
             return 0;
         }
-        return Utils.toPrimitiveLong(this.inner().countDetails().transferMessageCount());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferMessageCount());
     }
 
     @Override
     public EntityStatus status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages() {
-        return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnFilterEvaluationExceptions());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().deadLetteringOnFilterEvaluationExceptions());
     }
 
     @Override
     public ServiceBusSubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
         TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.inner().withAutoDeleteOnIdle(timeSpan.toString());
+        this.innerModel().withAutoDeleteOnIdle(timeSpan.toString());
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageLockDurationInSeconds(int durationInSeconds) {
         TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
-        this.inner().withLockDuration(timeSpan.toString());
+        this.innerModel().withLockDuration(timeSpan.toString());
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withDefaultMessageTTL(Duration ttl) {
-        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
+        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withSession() {
-        this.inner().withRequiresSession(true);
+        this.innerModel().withRequiresSession(true);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withoutSession() {
-        this.inner().withRequiresSession(false);
+        this.innerModel().withRequiresSession(false);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageBatching() {
-        this.inner().withEnableBatchedOperations(true);
+        this.innerModel().withEnableBatchedOperations(true);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withoutMessageBatching() {
-        this.inner().withEnableBatchedOperations(false);
+        this.innerModel().withEnableBatchedOperations(false);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(int deliveryCount) {
-        this.inner().withMaxDeliveryCount(deliveryCount);
+        this.innerModel().withMaxDeliveryCount(deliveryCount);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
-        this.inner().withDeadLetteringOnFilterEvaluationExceptions(true);
+        this.innerModel().withDeadLetteringOnFilterEvaluationExceptions(true);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withoutMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
-        this.inner().withDeadLetteringOnFilterEvaluationExceptions(false);
+        this.innerModel().withDeadLetteringOnFilterEvaluationExceptions(false);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withExpiredMessageMovedToDeadLetterSubscription() {
-        this.inner().withDeadLetteringOnMessageExpiration(true);
+        this.innerModel().withDeadLetteringOnMessageExpiration(true);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withoutExpiredMessageMovedToDeadLetterSubscription() {
-        this.inner().withDeadLetteringOnMessageExpiration(false);
+        this.innerModel().withDeadLetteringOnMessageExpiration(false);
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
-        this.inner().withMaxDeliveryCount(deliveryCount);
+        this.innerModel().withMaxDeliveryCount(deliveryCount);
         return this;
     }
 
@@ -268,7 +268,7 @@ class ServiceBusSubscriptionImpl extends
                     this.namespaceName,
                     this.parentName,
                     this.name(),
-                    prepareForCreate(this.inner()))
+                    prepareForCreate(this.innerModel()))
             .map(inner -> {
                 setInner(inner);
                 return self;

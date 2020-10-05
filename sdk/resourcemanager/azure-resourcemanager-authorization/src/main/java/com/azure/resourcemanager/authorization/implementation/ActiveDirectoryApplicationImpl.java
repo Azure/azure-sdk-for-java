@@ -9,9 +9,9 @@ import com.azure.resourcemanager.authorization.models.ApplicationCreateParameter
 import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -112,42 +112,42 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public String applicationId() {
-        return inner().appId();
+        return innerModel().appId();
     }
 
     @Override
     public List<String> applicationPermissions() {
-        if (inner().appPermissions() == null) {
+        if (innerModel().appPermissions() == null) {
             return null;
         }
-        return Collections.unmodifiableList(inner().appPermissions());
+        return Collections.unmodifiableList(innerModel().appPermissions());
     }
 
     @Override
     public boolean availableToOtherTenants() {
-        return inner().availableToOtherTenants();
+        return innerModel().availableToOtherTenants();
     }
 
     @Override
     public Set<String> identifierUris() {
-        if (inner().identifierUris() == null) {
+        if (innerModel().identifierUris() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet<>(inner().identifierUris()));
+        return Collections.unmodifiableSet(new HashSet<>(innerModel().identifierUris()));
     }
 
     @Override
     public Set<String> replyUrls() {
-        if (inner().replyUrls() == null) {
+        if (innerModel().replyUrls() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet<>(inner().replyUrls()));
+        return Collections.unmodifiableSet(new HashSet<>(innerModel().replyUrls()));
     }
 
     @Override
     public URL signOnUrl() {
         try {
-            return new URL(inner().homepage());
+            return new URL(innerModel().homepage());
         } catch (MalformedURLException e) {
             return null;
         }
@@ -248,14 +248,14 @@ class ActiveDirectoryApplicationImpl
             cachedPasswordCredentials.remove(name);
             List<PasswordCredentialInner> updatePasswordCredentials = new ArrayList<>();
             for (PasswordCredential passwordCredential : cachedPasswordCredentials.values()) {
-                updatePasswordCredentials.add(passwordCredential.inner());
+                updatePasswordCredentials.add(passwordCredential.innerModel());
             }
             updateParameters.withPasswordCredentials(updatePasswordCredentials);
         } else if (cachedCertificateCredentials.containsKey(name)) {
             cachedCertificateCredentials.remove(name);
             List<KeyCredentialInner> updateCertificateCredentials = new ArrayList<>();
             for (CertificateCredential certificateCredential : cachedCertificateCredentials.values()) {
-                updateCertificateCredentials.add(certificateCredential.inner());
+                updateCertificateCredentials.add(certificateCredential.innerModel());
             }
             updateParameters.withKeyCredentials(updateCertificateCredentials);
         }
@@ -268,12 +268,12 @@ class ActiveDirectoryApplicationImpl
             if (createParameters.keyCredentials() == null) {
                 createParameters.withKeyCredentials(new ArrayList<>());
             }
-            createParameters.keyCredentials().add(credential.inner());
+            createParameters.keyCredentials().add(credential.innerModel());
         } else {
             if (updateParameters.keyCredentials() == null) {
                 updateParameters.withKeyCredentials(new ArrayList<>());
             }
-            updateParameters.keyCredentials().add(credential.inner());
+            updateParameters.keyCredentials().add(credential.innerModel());
         }
         return this;
     }
@@ -284,12 +284,12 @@ class ActiveDirectoryApplicationImpl
             if (createParameters.passwordCredentials() == null) {
                 createParameters.withPasswordCredentials(new ArrayList<>());
             }
-            createParameters.passwordCredentials().add(credential.inner());
+            createParameters.passwordCredentials().add(credential.innerModel());
         } else {
             if (updateParameters.passwordCredentials() == null) {
                 updateParameters.withPasswordCredentials(new ArrayList<>());
             }
-            updateParameters.passwordCredentials().add(credential.inner());
+            updateParameters.passwordCredentials().add(credential.innerModel());
         }
         return this;
     }
@@ -306,7 +306,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

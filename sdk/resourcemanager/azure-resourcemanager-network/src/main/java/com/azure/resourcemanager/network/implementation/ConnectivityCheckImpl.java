@@ -9,10 +9,11 @@ import com.azure.resourcemanager.network.models.ConnectivityHop;
 import com.azure.resourcemanager.network.models.ConnectivityParameters;
 import com.azure.resourcemanager.network.models.ConnectivitySource;
 import com.azure.resourcemanager.network.models.Protocol;
-import com.azure.resourcemanager.network.fluent.inner.ConnectivityInformationInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectivityInformationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -101,27 +102,27 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
 
     @Override
     public int avgLatencyInMs() {
-        return Utils.toPrimitiveInt(result.avgLatencyInMs());
+        return ResourceManagerUtils.toPrimitiveInt(result.avgLatencyInMs());
     }
 
     @Override
     public int minLatencyInMs() {
-        return Utils.toPrimitiveInt(result.minLatencyInMs());
+        return ResourceManagerUtils.toPrimitiveInt(result.minLatencyInMs());
     }
 
     @Override
     public int maxLatencyInMs() {
-        return Utils.toPrimitiveInt(result.maxLatencyInMs());
+        return ResourceManagerUtils.toPrimitiveInt(result.maxLatencyInMs());
     }
 
     @Override
     public int probesSent() {
-        return Utils.toPrimitiveInt(result.probesSent());
+        return ResourceManagerUtils.toPrimitiveInt(result.probesSent());
     }
 
     @Override
     public int probesFailed() {
-        return Utils.toPrimitiveInt(result.probesFailed());
+        return ResourceManagerUtils.toPrimitiveInt(result.probesFailed());
     }
 
     @Override

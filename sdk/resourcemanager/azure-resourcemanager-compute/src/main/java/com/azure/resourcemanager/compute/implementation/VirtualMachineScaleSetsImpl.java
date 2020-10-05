@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetOSProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -32,7 +32,7 @@ public class VirtualMachineScaleSetsImpl
         VirtualMachineScaleSetImpl,
         VirtualMachineScaleSetInner,
         VirtualMachineScaleSetsClient,
-    ComputeManager>
+        ComputeManager>
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;

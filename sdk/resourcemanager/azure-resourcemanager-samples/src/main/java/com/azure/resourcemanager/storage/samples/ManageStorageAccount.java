@@ -40,10 +40,10 @@ public final class ManageStorageAccount {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("sa", 8);
-        final String storageAccountName2 = azureResourceManager.sdkContext().randomResourceName("sa2", 8);
-        final String storageAccountName3 = azureResourceManager.sdkContext().randomResourceName("sa3", 8);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSTMS", 8);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "sa", 8);
+        final String storageAccountName2 = Utils.randomResourceName(azureResourceManager, "sa2", 8);
+        final String storageAccountName3 = Utils.randomResourceName(azureResourceManager, "sa3", 8);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgSTMS", 8);
         try {
 
             // ============================================================

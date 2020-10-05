@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The TimeSeriesInformation model. */
+/** The time series info needed for calculating the baseline. */
 @Fluent
 public final class TimeSeriesInformation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesInformation.class);

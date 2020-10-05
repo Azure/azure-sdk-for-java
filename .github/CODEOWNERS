@@ -23,6 +23,9 @@
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
+# PRLabel: %Communication
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @Azure/azure-sdk-communication-code-reviewers
+
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 
@@ -46,11 +49,16 @@
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang
 
+# PRLabel: %Cognitive - Metrics Advisor
+/sdk/metricsadvisor/                                @samvaity @anuchandy
+
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+
+/sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak

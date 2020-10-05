@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerServiceSshPublicKey model. */
+/** Contains information about SSH certificate public key data. */
 @Fluent
 public final class ContainerServiceSshPublicKey {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceSshPublicKey.class);

@@ -37,8 +37,8 @@ public class ManageKubernetesCluster {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaks", 15);
-        final String aksName = azureResourceManager.sdkContext().randomResourceName("akssample", 30);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgaks", 15);
+        final String aksName = Utils.randomResourceName(azureResourceManager, "akssample", 30);
         final Region region = Region.US_EAST;
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret

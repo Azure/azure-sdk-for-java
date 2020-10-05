@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/query?$top=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (1.8.0_221; Mac OS X; 10.15.5)",
+      "x-ms-client-request-id" : "79c317ee-c87c-424e-a345-ff0275296158",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "07c2f7b4-6bd2-4e6d-a420-ab0a78d661ba",
+      "x-envoy-upstream-service-time" : "10189",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "07c2f7b4-6bd2-4e6d-a420-ab0a78d661ba",
+      "retry-after" : "0",
+      "Content-Length" : "1501",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Blue Atlas Cedar\",\"Dim2\":\"Arrow crab\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Black Poplar\",\"Dim2\":\"Beaver\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Algerian Fir\",\"Dim2\":\"Aardwolf\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Austrian Pine\",\"Dim2\":\"Black panther\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Ash\",\"Dim2\":\"Bear\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Almond\",\"Dim2\":\"American robin\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Bug\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Almond\",\"Dim2\":\"Animals by size\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Ash\",\"Dim2\":\"Arctic Fox\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Ash\",\"Dim2\":\"Anaconda\"},\"property\":{\"anomalySeverity\":\"Low\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/query?$top=10&$skip=10\"}",
+      "Date" : "Thu, 01 Oct 2020 01:34:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/query?$top=10&$skip=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (1.8.0_221; Mac OS X; 10.15.5)",
+      "x-ms-client-request-id" : "fc2ab8b3-3083-44cb-8408-067a30b2dfc3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "6abe4351-d0ca-47fa-9478-ef84c79bf55f",
+      "x-envoy-upstream-service-time" : "5258",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "6abe4351-d0ca-47fa-9478-ef84c79bf55f",
+      "retry-after" : "0",
+      "Content-Length" : "1499",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Arrow crab\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Almond\",\"Dim2\":\"Basilisk\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Buzzard\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Black Poplar\",\"Dim2\":\"Anaconda\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Hazel\",\"Dim2\":\"Beetle\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Cider gum\",\"Dim2\":\"Basilisk\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Cherry\",\"Dim2\":\"African leopard\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Beech\",\"Dim2\":\"Arrow crab\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Common Ash\",\"Dim2\":\"African leopard\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-09-09T00:00:00Z\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Aphid\"},\"property\":{\"anomalySeverity\":\"Medium\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/c0f2539f-b804-4ab9-a70f-0da0c89c76d8/anomalies/query?$top=10&$skip=20\"}",
+      "Date" : "Thu, 01 Oct 2020 01:34:59 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

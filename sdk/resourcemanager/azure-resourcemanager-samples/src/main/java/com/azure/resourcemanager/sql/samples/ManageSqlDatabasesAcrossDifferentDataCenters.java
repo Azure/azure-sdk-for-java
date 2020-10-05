@@ -49,12 +49,12 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName =  azureResourceManager.sdkContext().randomResourceName("rgRSSDRE", 20);
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "sqlserver", 20);
+        final String rgName =  Utils.randomResourceName(azureResourceManager, "rgRSSDRE", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
-        final String slaveSqlServer1Name =  azureResourceManager.sdkContext().randomResourceName("slave1sql", 20);
-        final String slaveSqlServer2Name =  azureResourceManager.sdkContext().randomResourceName("slave2sql", 20);
+        final String slaveSqlServer1Name =  Utils.randomResourceName(azureResourceManager, "slave1sql", 20);
+        final String slaveSqlServer2Name =  Utils.randomResourceName(azureResourceManager, "slave2sql", 20);
         final String databaseName = "mydatabase";
         final String networkPrefix =  "network";
         final String virtualMachinePrefix =  "samplevm";
@@ -134,7 +134,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating virtual networks in different regions.");
 
             for (Region region: regions) {
-                creatableNetworks.add(azureResourceManager.networks().define(azureResourceManager.sdkContext().randomResourceName(networkPrefix, 20))
+                creatableNetworks.add(azureResourceManager.networks().define(Utils.randomResourceName(azureResourceManager, networkPrefix, 20))
                         .withRegion(region)
                         .withExistingResourceGroup(rgName));
             }
@@ -146,7 +146,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating virtual machines in different regions.");
 
             for (Network network: networks) {
-                String virtualMachineName = azureResourceManager.sdkContext().randomResourceName(virtualMachinePrefix, 20);
+                String virtualMachineName = Utils.randomResourceName(azureResourceManager, virtualMachinePrefix, 20);
                 Creatable<PublicIpAddress> publicIPAddressCreatable = azureResourceManager.publicIpAddresses().define(virtualMachineName)
                         .withRegion(network.region())
                         .withExistingResourceGroup(rgName)

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerServiceAgentPoolProfile model. */
+/** Profile for the container service agent pool. */
 @Fluent
 public final class ContainerServiceAgentPoolProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceAgentPoolProfile.class);

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -30,5 +30,5 @@ public interface Identities extends
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Identity>,
         SupportsBatchDeletion,
-        HasManager<MSIManager> {
+        HasManager<MsiManager> {
 }

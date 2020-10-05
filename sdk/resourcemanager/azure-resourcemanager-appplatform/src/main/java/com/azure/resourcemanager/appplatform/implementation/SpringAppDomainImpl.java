@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDomain;
@@ -50,12 +50,12 @@ public class SpringAppDomainImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public CustomDomainProperties properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     private AppPlatformManager manager() {

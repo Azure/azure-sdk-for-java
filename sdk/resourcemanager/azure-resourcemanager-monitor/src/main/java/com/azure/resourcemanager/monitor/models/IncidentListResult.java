@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.IncidentInner;
+import com.azure.resourcemanager.monitor.fluent.models.IncidentInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IncidentListResult model. */
+/** The List incidents operation response. */
 @Fluent
 public final class IncidentListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentListResult.class);

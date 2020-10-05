@@ -6,9 +6,9 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
+import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
 import com.azure.resourcemanager.network.models.DhcpOptions;
@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeerings;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     protected void initializeChildrenFromInner() {
         // Initialize subnets
         this.subnets = new TreeMap<>();
-        List<SubnetInner> inners = this.inner().subnets();
+        List<SubnetInner> inners = this.innerModel().subnets();
         if (inners != null) {
             for (SubnetInner inner : inners) {
                 SubnetImpl subnet = new SubnetImpl(inner, this);
@@ -79,8 +79,11 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().serviceClient().getVirtualNetworks()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     @Override
@@ -127,15 +130,15 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withDnsServer(String ipAddress) {
-        if (this.inner().dhcpOptions() == null) {
-            this.inner().withDhcpOptions(new DhcpOptions());
+        if (this.innerModel().dhcpOptions() == null) {
+            this.innerModel().withDhcpOptions(new DhcpOptions());
         }
 
-        if (this.inner().dhcpOptions().dnsServers() == null) {
-            this.inner().dhcpOptions().withDnsServers(new ArrayList<String>());
+        if (this.innerModel().dhcpOptions().dnsServers() == null) {
+            this.innerModel().dhcpOptions().withDnsServers(new ArrayList<String>());
         }
 
-        this.inner().dhcpOptions().dnsServers().add(ipAddress);
+        this.innerModel().dhcpOptions().dnsServers().add(ipAddress);
         return this;
     }
 
@@ -161,15 +164,15 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withAddressSpace(String cidr) {
-        if (this.inner().addressSpace() == null) {
-            this.inner().withAddressSpace(new AddressSpace());
+        if (this.innerModel().addressSpace() == null) {
+            this.innerModel().withAddressSpace(new AddressSpace());
         }
 
-        if (this.inner().addressSpace().addressPrefixes() == null) {
-            this.inner().addressSpace().withAddressPrefixes(new ArrayList<String>());
+        if (this.innerModel().addressSpace().addressPrefixes() == null) {
+            this.innerModel().addressSpace().withAddressPrefixes(new ArrayList<String>());
         }
 
-        this.inner().addressSpace().addressPrefixes().add(cidr);
+        this.innerModel().addressSpace().addressPrefixes().add(cidr);
         return this;
     }
 
@@ -181,9 +184,10 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withoutAddressSpace(String cidr) {
-        if (cidr != null && this.inner().addressSpace() != null
-            && this.inner().addressSpace().addressPrefixes() != null) {
-            this.inner().addressSpace().addressPrefixes().remove(cidr);
+        if (cidr != null
+            && this.innerModel().addressSpace() != null
+            && this.innerModel().addressSpace().addressPrefixes() != null) {
+            this.innerModel().addressSpace().addressPrefixes().remove(cidr);
         }
         return this;
     }
@@ -193,24 +197,24 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     @Override
     public List<String> addressSpaces() {
         List<String> addressSpaces = new ArrayList<String>();
-        if (this.inner().addressSpace() == null) {
+        if (this.innerModel().addressSpace() == null) {
             return Collections.unmodifiableList(addressSpaces);
-        } else if (this.inner().addressSpace().addressPrefixes() == null) {
+        } else if (this.innerModel().addressSpace().addressPrefixes() == null) {
             return Collections.unmodifiableList(addressSpaces);
         } else {
-            return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
+            return Collections.unmodifiableList(this.innerModel().addressSpace().addressPrefixes());
         }
     }
 
     @Override
     public List<String> dnsServerIPs() {
         List<String> ips = new ArrayList<String>();
-        if (this.inner().dhcpOptions() == null) {
+        if (this.innerModel().dhcpOptions() == null) {
             return Collections.unmodifiableList(ips);
-        } else if (this.inner().dhcpOptions().dnsServers() == null) {
+        } else if (this.innerModel().dhcpOptions().dnsServers() == null) {
             return Collections.unmodifiableList(ips);
         } else {
-            return this.inner().dhcpOptions().dnsServers();
+            return this.innerModel().dhcpOptions().dnsServers();
         }
     }
 
@@ -234,7 +238,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         }
 
         // Reset and update subnets
-        this.inner().withSubnets(innersFromWrappers(this.subnets.values()));
+        this.innerModel().withSubnets(innersFromWrappers(this.subnets.values()));
     }
 
     @Override
@@ -253,7 +257,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
             .manager()
             .serviceClient()
             .getVirtualNetworks()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(
                 virtualNetworkInner -> {
                     NetworkImpl.this.ddosProtectionPlanCreatable = null;
@@ -268,26 +272,26 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public boolean isDdosProtectionEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableDdosProtection());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableDdosProtection());
     }
 
     @Override
     public boolean isVmProtectionEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableVmProtection());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableVmProtection());
     }
 
     @Override
     public String ddosProtectionPlanId() {
-        return inner().ddosProtectionPlan() == null ? null : inner().ddosProtectionPlan().id();
+        return innerModel().ddosProtectionPlan() == null ? null : innerModel().ddosProtectionPlan().id();
     }
 
     @Override
     public NetworkImpl withNewDdosProtectionPlan() {
-        inner().withEnableDdosProtection(true);
+        innerModel().withEnableDdosProtection(true);
         DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup =
             manager()
                 .ddosProtectionPlans()
-                .define(this.manager().sdkContext().randomResourceName(name(), 20))
+                .define(this.manager().resourceManager().internalContext().randomResourceName(name(), 20))
                 .withRegion(region());
         if (super.creatableGroup != null && isInCreateMode()) {
             ddosProtectionPlanCreatable = ddosProtectionPlanWithGroup.withNewResourceGroup(super.creatableGroup);
@@ -300,25 +304,25 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withExistingDdosProtectionPlan(String planId) {
-        inner().withEnableDdosProtection(true).withDdosProtectionPlan(new SubResource().withId(planId));
+        innerModel().withEnableDdosProtection(true).withDdosProtectionPlan(new SubResource().withId(planId));
         return this;
     }
 
     @Override
     public NetworkImpl withoutDdosProtectionPlan() {
-        inner().withEnableDdosProtection(false).withDdosProtectionPlan(null);
+        innerModel().withEnableDdosProtection(false).withDdosProtectionPlan(null);
         return this;
     }
 
     @Override
     public NetworkImpl withVmProtection() {
-        inner().withEnableVmProtection(true);
+        innerModel().withEnableVmProtection(true);
         return this;
     }
 
     @Override
     public NetworkImpl withoutVmProtection() {
-        inner().withEnableVmProtection(false);
+        innerModel().withEnableVmProtection(false);
         return this;
     }
 }

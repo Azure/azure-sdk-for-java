@@ -9,10 +9,11 @@ import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,7 +74,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
         DiskEncryptionSettings encryptionSettings = virtualMachine.storageProfile().osDisk().encryptionSettings();
         if (encryptionSettings.diskEncryptionKey() != null
             && encryptionSettings.diskEncryptionKey().secretUrl() != null
-            && Utils.toPrimitiveBoolean(encryptionSettings.enabled())) {
+            && ResourceManagerUtils.toPrimitiveBoolean(encryptionSettings.enabled())) {
             return EncryptionStatus.ENCRYPTED;
         }
         return EncryptionStatus.NOT_ENCRYPTED;
@@ -149,12 +150,8 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return this
-            .computeManager
-            .serviceClient()
-            .getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName);
-            // Exception if vm not found
+        return this.computeManager.serviceClient().getVirtualMachines().getByResourceGroupAsync(rgName, vmName);
+        // Exception if vm not found
     }
 
     private boolean hasEncryptionDetails() {

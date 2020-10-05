@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.AutoscaleSettingResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AutoscaleSettingResourceCollection model. */
+/** Represents a collection of autoscale setting resources. */
 @Fluent
 public final class AutoscaleSettingResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSettingResourceCollection.class);

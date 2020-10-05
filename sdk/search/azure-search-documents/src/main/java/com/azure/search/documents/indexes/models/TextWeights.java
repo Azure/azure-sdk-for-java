@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TextWeights model. */
+/** Defines weights on index fields for which matches should boost scoring in search queries. */
 @Fluent
 public final class TextWeights {
     /*

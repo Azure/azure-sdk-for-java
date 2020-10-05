@@ -8,7 +8,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class LockContainer<T> implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(LockContainer.class);
-    private final ConcurrentHashMap<String, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, OffsetDateTime> lockTokenExpirationMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, T> lockTokenItemMap = new ConcurrentHashMap<>();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Disposable cleanupOperation;
@@ -42,7 +42,7 @@ public class LockContainer<T> implements AutoCloseable {
                 return;
             }
 
-            final Instant now = Instant.now();
+            final OffsetDateTime now = OffsetDateTime.now();
             final List<String> expired = lockTokenExpirationMap.entrySet().stream()
                 .filter(entry -> entry.getValue() != null && entry.getValue().isBefore(now))
                 .map(Map.Entry::getKey)
@@ -63,7 +63,7 @@ public class LockContainer<T> implements AutoCloseable {
      * @return The updated value in the container. If the expiration time in the container is larger than {@code
      *     lockTokenExpiration}, then the current container value is used.
      */
-    public Instant addOrUpdate(String lockToken, Instant lockTokenExpiration, T item) {
+    public OffsetDateTime addOrUpdate(String lockToken, OffsetDateTime lockTokenExpiration, T item) {
         if (isDisposed.get()) {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot perform operations on a disposed set."));
         }
@@ -73,7 +73,7 @@ public class LockContainer<T> implements AutoCloseable {
         Objects.requireNonNull(lockTokenExpiration, "'lockTokenExpiration' cannot be null.");
 
 
-        final Instant computed = lockTokenExpirationMap.compute(lockToken, (key, existing) -> {
+        final OffsetDateTime computed = lockTokenExpirationMap.compute(lockToken, (key, existing) -> {
             if (existing == null) {
                 return lockTokenExpiration;
             } else {
@@ -100,8 +100,8 @@ public class LockContainer<T> implements AutoCloseable {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot perform operations on a disposed set."));
         }
 
-        final Instant value = lockTokenExpirationMap.getOrDefault(lockToken, Instant.MIN);
-        return value.isAfter(Instant.now());
+        final OffsetDateTime value = lockTokenExpirationMap.getOrDefault(lockToken, OffsetDateTime.MIN);
+        return value.isAfter(OffsetDateTime.now());
     }
 
     /**
