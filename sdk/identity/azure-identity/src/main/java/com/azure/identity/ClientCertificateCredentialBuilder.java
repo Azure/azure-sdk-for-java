@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.io.InputStream;
@@ -17,6 +18,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private String clientCertificatePath;
     private InputStream clientCertificate;
     private String clientCertificatePassword;
+    private final ClientLogger logger = new ClientLogger(ClientCertificateCredentialBuilder.class);
 
     /**
      * Sets the path of the PEM certificate for authenticating to AAD.
@@ -104,6 +106,11 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
                 put("tenantId", tenantId);
                 put("clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
             }});
+        if (clientCertificate != null && clientCertificatePath != null) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
+                    + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                    + "be provided."));
+        }
         return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath, clientCertificate,
             clientCertificatePassword, identityClientOptions);
     }
