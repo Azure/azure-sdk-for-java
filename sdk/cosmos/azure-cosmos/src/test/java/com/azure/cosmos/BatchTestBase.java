@@ -11,6 +11,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.assertj.core.api.Assertions;
 
 import java.util.Objects;
 import java.util.Random;
@@ -76,9 +77,7 @@ public class BatchTestBase extends TestSuiteBase {
 
         try {
             CosmosItemResponse<TestDoc> response =  container.readItem(id, partitionKey, TestDoc.class);
-
-            // Gateway returns response instead of exception
-            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            Assertions.fail("Should throw NOT_FOUND exception");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
         }

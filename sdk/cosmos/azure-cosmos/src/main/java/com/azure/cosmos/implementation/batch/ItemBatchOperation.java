@@ -19,12 +19,12 @@ public final class ItemBatchOperation<TResource> {
 
     private TResource resource;
 
-    private String id;
-    private int operationIndex;
-    private PartitionKey partitionKey;
+    private final String id;
+    private final int operationIndex;
+    private final PartitionKey partitionKey;
     private String partitionKeyJson;
     private final OperationType operationType;
-    private RequestOptions requestOptions;
+    private final RequestOptions requestOptions;
 
     private ItemBatchOperation(
         final OperationType operationType,

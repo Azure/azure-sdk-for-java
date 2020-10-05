@@ -68,7 +68,6 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.verifyByRead(container, replaceDoc);
     }
 
-
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchMultipleItemExecution() {
         CosmosContainer container = this.batchContainer;
@@ -218,7 +217,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
     public void batchLargerThanServerRequest() {
         int operationCount = 20;
         int appxDocSize = (MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES * 11) / operationCount;
@@ -240,7 +239,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
     public void batchServerResponseTooLarge() {
         int operationCount = 10;
         int appxDocSizeInBytes = 1 * 1024 * 1024;

@@ -17,13 +17,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @Beta(Beta.SinceVersion.V4_7_0)
 public final class TransactionalBatchOperationResult<TResource> {
 
-    private String eTag;
-    private double requestCharge;
+    private final String eTag;
+    private final double requestCharge;
     private TResource item;
-    private ObjectNode resourceObject;
-    private int statusCode;
-    private Duration retryAfter;
-    private int subStatusCode;
+    private final ObjectNode resourceObject;
+    private final int statusCode;
+    private final Duration retryAfter;
+    private final int subStatusCode;
 
     /**
      * Instantiates a new Transactional batch operation result using a TransactionalBatchOperationResult.

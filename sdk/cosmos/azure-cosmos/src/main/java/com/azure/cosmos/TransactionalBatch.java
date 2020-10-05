@@ -47,7 +47,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * TransactionalBatchResponse response = container.executeTransactionalBatch(batch);
  *
- * if (!response.IsSuccessStatusCode) {
+ * if (!response.isSuccessStatusCode()) {
  *      // Handle and log exception
  *      return;
  * }
