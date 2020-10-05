@@ -4,9 +4,9 @@ package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.domain.Role;
+import com.azure.spring.data.cosmos.domain.Book;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.RoleRepository;
+import com.azure.spring.data.cosmos.repository.repository.BookRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,20 +19,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class RoleRepositoryIT {
+public class BookRepositoryIT {
 
-    private static final Role TEST_ROLE_1 = new Role(TestConstants.ID_1, true, TestConstants.LEVEL,
-                                                     TestConstants.ROLE_NAME);
-    private static final Role TEST_ROLE_2 = new Role(TestConstants.ID_2, false, TestConstants.LEVEL,
-                                                     TestConstants.ROLE_NAME);
+    private static final Book TEST_BOOK_1 = new Book(TestConstants.ID_1, UUID.randomUUID().toString(),
+                                                     "title1");
+    private static final Book TEST_BOOK_2 = new Book(TestConstants.ID_2, UUID.randomUUID().toString(),
+                                                     "title2");
 
-    private static final CosmosEntityInformation<Role, String> entityInformation =
-        new CosmosEntityInformation<>(Role.class);
+    private static final CosmosEntityInformation<Book, String> entityInformation =
+        new CosmosEntityInformation<>(Book.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -41,7 +42,7 @@ public class RoleRepositoryIT {
     private CosmosTemplate template;
 
     @Autowired
-    private RoleRepository repository;
+    private BookRepository repository;
 
     @AfterClass
     public static void afterClassCleanup() {
@@ -54,7 +55,7 @@ public class RoleRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2));
+        repository.saveAll(Arrays.asList(TEST_BOOK_1, TEST_BOOK_2));
         isSetupDone = true;
     }
 
@@ -65,9 +66,9 @@ public class RoleRepositoryIT {
 
     @Test
     public void testAnnotatedQuery() {
-        final List<Role> result = repository.annotatedFindRoleById(TEST_ROLE_1.getId());
+        final List<Book> result = repository.annotatedFindBookById(TEST_BOOK_1.getId());
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0)).isEqualTo(TEST_ROLE_1);
+        assertThat(result.get(0).getId()).isEqualTo(TEST_BOOK_1.getId());
     }
 }
