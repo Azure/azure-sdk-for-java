@@ -61,8 +61,8 @@ public class Configuration {
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
-    @Parameter(names = "-thresholdForDiagnosticsInMs", description = "Latency threshold for printing diagnostics")
-    private Integer thresholdForDiagnosticsInMs = 60000;
+    @Parameter(names = "-diagnosticsThresholdDuration", description = "Latency threshold for printing diagnostics", converter = DurationConverter.class)
+    private Duration diagnosticsThresholdDuration = Duration.ofSeconds(60);
 
     @Parameter(names = "-disablePassingPartitionKeyAsOptionOnWrite", description = "Disables passing partition in request options for write operation;" +
         " in this case, json will be parsed and partition key will be extracted (this requires more computational overhead).")
@@ -320,8 +320,8 @@ public class Configuration {
         return printingInterval;
     }
 
-    public int getThresholdForDiagnosticsInMs() {
-        return thresholdForDiagnosticsInMs;
+    public Duration getDiagnosticsThresholdDuration() {
+        return diagnosticsThresholdDuration;
     }
 
     public File getReportingDirectory() {

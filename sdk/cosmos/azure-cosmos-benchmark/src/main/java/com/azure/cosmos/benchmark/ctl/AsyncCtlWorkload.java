@@ -206,7 +206,7 @@ public class AsyncCtlWorkload {
                     readFailureMeter,
                     concurrencyControlSemaphore,
                     count,
-                    configuration.getThresholdForDiagnosticsInMs());
+                    configuration.getDiagnosticsThresholdDuration());
                 readSubscriber.context = readLatency.time();
                 performWorkload(readSubscriber, OperationType.Read, i);
             } else if (index < writeRange) {
@@ -214,7 +214,7 @@ public class AsyncCtlWorkload {
                     writeFailureMeter,
                     concurrencyControlSemaphore,
                     count,
-                    configuration.getThresholdForDiagnosticsInMs());
+                    configuration.getDiagnosticsThresholdDuration());
                 writeSubscriber.context = writeLatency.time();
                 performWorkload(writeSubscriber, OperationType.Create, i);
 
@@ -223,7 +223,7 @@ public class AsyncCtlWorkload {
                     queryFailureMeter,
                     concurrencyControlSemaphore,
                     count,
-                    configuration.getThresholdForDiagnosticsInMs());
+                    configuration.getDiagnosticsThresholdDuration());
                 querySubscriber.context = queryLatency.time();
                 performWorkload(querySubscriber, OperationType.Query, i);
             }
