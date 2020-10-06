@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
@@ -283,7 +285,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.complete(messageContext.getMessage(), transactionContext)
+        Disposable subscriber = receiver.complete(messageContext.getMessage(), new CompleteOptions()
+            .setTransactionContext(transactionContext))
             .subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
@@ -313,8 +316,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage(), propertiesToModify,
-            transactionContext).subscribe();
+        Disposable subscriber = receiver.abandon(messageContext.getMessage(), new AbandonOptions()
+            .setTransactionContext(transactionContext)
+            .setPropertiesToModify(propertiesToModify)).subscribe();
 
         // When all the messages are processed and settled, you should commit/rollback this transaction.
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.abandonMessageWithTransaction

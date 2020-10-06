@@ -26,6 +26,7 @@ import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotRe
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -35,11 +36,13 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
+import com.azure.storage.file.share.options.ShareSetAccessTierOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetQuotaOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -235,7 +238,7 @@ public class ShareAsyncClient {
      */
     public Mono<ShareInfo> create() {
         try {
-            return createWithResponse(null, null).flatMap(FluxUtil::toMono);
+            return createWithResponse(null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -266,17 +269,44 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB) {
         try {
-            return withContext(context -> createWithResponse(metadata, quotaInGB, context));
+            return withContext(context -> createWithResponse(new ShareCreateOptions().setMetadata(metadata)
+                .setQuotaInGb(quotaInGB), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Context context) {
+    /**
+     * Creates the share in the storage account with the specified options.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the share with optional parameters</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareCreateOptions}
+     * @return A response containing information about the {@link ShareInfo share} and the status its creation.
+     * @throws ShareStorageException If the share already exists with different metadata or {@code quotaInGB} is outside
+     * the allowed range.
+     */
+    public Mono<Response<ShareInfo>> createWithResponse(ShareCreateOptions options) {
+        try {
+            return withContext(context -> createWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareInfo>> createWithResponse(ShareCreateOptions options, Context context) {
         context = context == null ? Context.NONE : context;
+        options = options == null ? new ShareCreateOptions() : options;
         return azureFileStorageClient.shares()
-            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .createWithRestResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
+                options.getAccessTier(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -572,19 +602,66 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setQuotaWithResponse(ShareSetQuotaOptions options) {
         try {
-            return withContext(context -> setQuotaWithResponse(options, context));
+            StorageImplUtils.assertNotNull("options", options);
+            return withContext(context -> setPropertiesWithResponse(options.getQuotaInGb(), null,
+                options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareInfo>> setQuotaWithResponse(ShareSetQuotaOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
+    /**
+     * Sets the share's access tier.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessTier#ShareAccessTier}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-properties">Azure Docs</a>.</p>
+     *
+     * @param accessTier {@link ShareAccessTier}
+     * @return The {@link ShareInfo information about the share}
+     */
+    public Mono<ShareInfo> setAccessTier(ShareAccessTier accessTier) {
+        try {
+            return setAccessTierWithResponse(new ShareSetAccessTierOptions(accessTier))
+                .map(Response::getValue);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets the share's access tier.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessTierWithResponse#ShareSetAccessTierOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-properties">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareSetQuotaOptions}
+     * @return A response containing the {@link ShareInfo information about the share} with headers and response status
+     * code
+     */
+    public Mono<Response<ShareInfo>> setAccessTierWithResponse(ShareSetAccessTierOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return withContext(context -> setPropertiesWithResponse(null, options.getAccessTier(),
+                options.getRequestConditions(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareInfo>> setPropertiesWithResponse(Integer quotaInGb, ShareAccessTier accessTier,
+        ShareRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null,
-            options.getQuotaInGb(), requestConditions.getLeaseId(),
+        return azureFileStorageClient.shares().setPropertiesWithRestResponseAsync(shareName, null,
+            quotaInGb, accessTier, requestConditions.getLeaseId(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -1431,7 +1508,10 @@ public class ShareAsyncClient {
             .setProvisionedIops(headers.getProvisionedIops())
             .setLeaseDuration(headers.getLeaseDuration())
             .setLeaseState(headers.getLeaseState())
-            .setLeaseStatus(headers.getLeaseStatus());
+            .setLeaseStatus(headers.getLeaseStatus())
+            .setAccessTier(headers.getAccessTier())
+            .setAccessTierChangeTime(headers.getAccessTierChangeTime())
+            .setAccessTierTransitionState(headers.getAccessTierTransitionState());
 
         return new SimpleResponse<>(response, shareProperties);
     }
