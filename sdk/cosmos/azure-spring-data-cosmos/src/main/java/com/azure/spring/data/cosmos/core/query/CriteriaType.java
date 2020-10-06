@@ -35,7 +35,8 @@ public enum CriteriaType {
     STARTS_WITH("STARTSWITH"),
     TRUE("= true"),
     FALSE("= false"),
-    BETWEEN("BETWEEN");
+    BETWEEN("BETWEEN"),
+    ARRAY_CONTAINS("ARRAY_CONTAINS");
 
     private String sqlKeyword;
 
@@ -159,6 +160,7 @@ public enum CriteriaType {
             case CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
+            case ARRAY_CONTAINS:
                 return true;
             default:
                 return false;
@@ -178,6 +180,7 @@ public enum CriteriaType {
             case STARTS_WITH:
             case IS_NULL:
             case IS_NOT_NULL:
+            case ARRAY_CONTAINS:
                 return true;
             default:
                 return false;
