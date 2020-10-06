@@ -11,17 +11,6 @@ To build and install the starter use the following command line:
   mvn clean install -DskipTests=true
 ```
 
-## Maven dependency
-
-All usage requires you to add the following dependency to your Maven POM file.
-
-```xml
-    <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
-    </dependency>
-```
-
 ## Server side SSL
 
 ### Using a managed identity
@@ -38,6 +27,15 @@ server.ssl.key-store-type=< DKS when running on Tomcat, AzureKeyVault otherwise>
 
 Note make sure the managed identity has access to the Azure KeyVault to access
 keys, secrets and certificates.
+
+Add then add the following Maven dependency to your POM file.
+
+```xml
+    <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
+    </dependency>
+```
 
 ### Using a client ID and client secret
 
@@ -57,6 +55,15 @@ server.ssl.key-store-type=< DKS when running on Tomcat, AzureKeyVault otherwise>
 Note make sure the client ID has access to the Azure KeyVault to access
 keys, secrets and certificates.
 
+Add then add the following Maven dependency to your POM file.
+
+```xml
+    <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
+    </dependency>
+```
+
 ## Client side SSL
 
 ### Using a managed identity
@@ -67,8 +74,19 @@ your application.properties
 ```
 azure.keyvault.uri=<the URI of the Azure KeyVault to use>
 ```
+Note make sure the managed identity has access to the Azure KeyVault to access
+keys, secrets and certificates.
 
-And then if you are using RestTemplate use code similar to the example below.
+Add then add the following Maven dependency to your POM file.
+
+```xml
+    <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
+    </dependency>
+```
+
+And if you are using RestTemplate use code similar to the example below.
 
 ```java
     @Bean
@@ -103,6 +121,18 @@ azure.keyvault.uri=<the URI of the Azure KeyVault to use>
 azure.keyvault.tenantId=<the ID of your Azure tenant>
 azure.keyvault.clientId=<the client ID with access to Azure KeyVault>
 azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+```
+
+Note make sure the client ID has access to the Azure KeyVault to access
+keys, secrets and certificates.
+
+Add then add the following Maven dependency to your POM file.
+
+```xml
+    <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
+    </dependency>
 ```
 
 And then if you are using RestTemplate use code similar to the example below.
