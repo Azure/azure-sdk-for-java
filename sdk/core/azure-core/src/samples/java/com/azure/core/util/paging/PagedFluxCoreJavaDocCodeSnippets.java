@@ -90,21 +90,18 @@ public class PagedFluxCoreJavaDocCodeSnippets {
             Flux<FilePage> getFilePages(FileContinuationToken token) {
                 List<File> files = Collections.singletonList(new File(UUID.randomUUID().toString()));
                 if (token.getNextLinkId() < 10) {
-                    return Flux.just(new FilePage(files, new FileContinuationToken(0)));
+                    return Flux.just(new FilePage(files, null));
                 } else {
-                    return Flux.just(new FilePage(files, new FileContinuationToken((int) Math.floor(Math.random() * 20))));
+                    return Flux.just(new FilePage(files,
+                        new FileContinuationToken((int) Math.floor(Math.random() * 20))));
                 }
             }
         }
-        FileShareServiceClient client = null; // Initialize client
 
-        Supplier<PageRetriever<FileContinuationToken, FilePage>> pageRetrieverProvider
-            = new Supplier<PageRetriever<FileContinuationToken, FilePage>>() {
-            @Override
-            public PageRetriever<FileContinuationToken, FilePage> get() {
-                return (continuationToken, pageSize) -> client.getFilePages(continuationToken);
-            }
-        };
+        FileShareServiceClient client = new FileShareServiceClient();
+
+        Supplier<PageRetriever<FileContinuationToken, FilePage>> pageRetrieverProvider = () ->
+            (continuationToken, pageSize) -> client.getFilePages(continuationToken);
 
         class FilePagedFlux extends ContinuablePagedFluxCore<FileContinuationToken, File, FilePage> {
             FilePagedFlux(Supplier<PageRetriever<FileContinuationToken, FilePage>>
