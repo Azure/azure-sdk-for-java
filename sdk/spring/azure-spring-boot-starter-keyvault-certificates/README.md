@@ -22,7 +22,7 @@ your application.properties
 azure.keyvault.uri=<the URI of the Azure KeyVault to use>
 
 server.ssl.key-alias=<the name of the certificate in Azure KeyVault to use>
-server.ssl.key-store-type=< DKS when running on Tomcat, AzureKeyVault otherwise>
+server.ssl.key-store-type=<DKS when running on Tomcat, AzureKeyVault otherwise>
 ```
 
 Note make sure the managed identity has access to the Azure KeyVault to access
@@ -49,7 +49,7 @@ azure.keyvault.clientId=<the client ID with access to Azure KeyVault>
 azure.keyvault.clientSecret=<the client secret associated wit the client ID>
 
 server.ssl.key-alias=<the name of the certificate in Azure KeyVault to use>
-server.ssl.key-store-type=< DKS when running on Tomcat, AzureKeyVault otherwise>
+server.ssl.key-store-type=<DKS when running on Tomcat, AzureKeyVault otherwise>
 ```
 
 Note make sure the client ID has access to the Azure KeyVault to access
