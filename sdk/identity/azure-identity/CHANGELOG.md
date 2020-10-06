@@ -9,7 +9,9 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to 1.9.0
-- Upgraded `jna-platform` dependency to 5.6.0. 
+- Upgraded `jna-platform` dependency to 5.6.0
+- Upgraded `msal4j` dependency to 1.7.1
+
 
 
 
