@@ -32,8 +32,8 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
     static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-01-01T00:00:00Z");
     static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2020-09-09T00:00:00Z");
     static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {{
-            put("city", "Mumbai");
-            put("category", "Shoes Handbags & Sunglasses");
+            put("Dim1", "Common Lime");
+            put("Dim2", "Amphibian");
         }};
 
     // Pre-configured test resource.
