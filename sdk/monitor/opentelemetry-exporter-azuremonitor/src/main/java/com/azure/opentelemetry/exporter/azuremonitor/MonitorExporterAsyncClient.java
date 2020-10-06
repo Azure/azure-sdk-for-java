@@ -4,8 +4,8 @@
 package com.azure.opentelemetry.exporter.azuremonitor;
 
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImpl;
-import com.azure.opentelemetry.exporter.azuremonitor.models.TelemetryItem;
-import com.azure.opentelemetry.exporter.azuremonitor.models.ExportResult;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.TelemetryItem;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.ExportResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * This class contains asynchronous operations to interact with the Azure Monitor Exporter service.
  */
-@ServiceClient(builder = MonitorExporterClientBuilder.class, isAsync = true)
-public class MonitorExporterAsyncClient {
+@ServiceClient(builder = AzureMonitorExporterBuilder.class, isAsync = true)
+class MonitorExporterAsyncClient {
     private final ApplicationInsightsClientImpl restServiceClient;
 
     MonitorExporterAsyncClient(ApplicationInsightsClientImpl restServiceClient) {

@@ -37,83 +37,27 @@ In order to export telemetry data to Azure Monitor, you will need the instrument
 search for your resource. On the overview page of your resource, you will find the instrumentation key on the top
 right corner.
 
-### Creating an Async client
-<!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L32-L33 -->
+### Creating exporter for Azure Monitor
+<!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L25-L27 -->
 ```java
-MonitorExporterAsyncClient monitorExporterAsyncClient = new MonitorExporterClientBuilder()
-    .buildAsyncClient();
+AzureMonitorExporter azureMonitorExporter = new MonitorExporterClientBuilder()
+    .instrumentationKey("{instrumentation-key}")
+    .buildExporter();
 ```
 
-#### Creating a Sync client
-<!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L40-L40 -->
+#### Exporting span data
+
+The following example shows how to export a collection of available SpanData to Azure Monitor thorugh the
+ `AzureMonitorExporter`
+
+<!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L34-L39 -->
 ```java
-MonitorExporterClient monitorExporterClient = new MonitorExporterClientBuilder().buildClient();
-```
+AzureMonitorExporter azureMonitorExporter = new MonitorExporterClientBuilder()
+    .instrumentationKey("{instrumentation-key}")
+    .buildExporter();
 
-#### Creating a telemetry data instance
-
-The following example shows how to create a telemetry item for exporting request data. Similarly, other types of data
- like exception data, event data, metrics data etc. can be created.
-
-<!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L43-L80 -->
-```java
-/**
- * Create a telemetry item of type {@link RequestData}.
- *
- * @param responseCode The response code.
- * @param requestName The name of the request.
- * @param success The completion status of the request.
- * @param duration The duration for completing the request.
- * @return The telemetry event representing the provided request data.
- */
-private TelemetryItem createRequestData(String responseCode, String requestName, boolean success,
-                                               Duration duration) {
-    MonitorDomain requestData = new RequestData()
-        .setId(UUID.randomUUID().toString())
-        .setDuration(getFormattedDuration(duration))
-        .setResponseCode(responseCode)
-        .setSuccess(success)
-        .setUrl("http://localhost:8080/")
-        .setName(requestName)
-        .setVersion(2);
-
-    MonitorBase monitorBase = new MonitorBase()
-        .setBaseType("RequestData")
-        .setBaseData(requestData);
-
-    TelemetryItem telemetryItem = new TelemetryItem()
-        .setVersion(1)
-        .setInstrumentationKey("{instrumentation-key}")
-        .setName("test-event-name")
-        .setSampleRate(100.0f)
-        .setTime(OffsetDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
-        .setData(monitorBase);
-    return telemetryItem;
-}
-
-private static String getFormattedDuration(Duration duration) {
-    return duration.toDays() + "." + duration.toHours() + ":" + duration.toMinutes() + ":" + duration.getSeconds()
-        + "." + duration.toMillis();
-}
-```
-#### Exporting telemetry data
-<!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L83-L97 -->
-```java
-MonitorExporterClient monitorExporterClient = new MonitorExporterClientBuilder().buildClient();
-
-List<TelemetryItem> telemetryItems = new ArrayList<>();
-telemetryItems.add(createRequestData("200", "GET /service/resource-name", true, Duration.ofMillis(100)));
-telemetryItems.add(createRequestData("400", "GET /service/resource-name", false, Duration.ofMillis(50)));
-telemetryItems.add(createRequestData("202", "GET /service/resource-name", true, Duration.ofMillis(125)));
-
-ExportResult result = monitorExporterClient.export(telemetryItems);
-System.out.println("Items received " + result.getItemsReceived());
-System.out.println("Items accepted " + result.getItemsAccepted());
-System.out.println("Errors " + result.getErrors().size());
-result.getErrors()
-    .forEach(
-        error -> System.out.println(error.getStatusCode() + " " + error.getMessage()
-            + " " + error.getIndex()));
+CompletableResultCode resultCode = azureMonitorExporter.export(getSpanDataCollection());
+System.out.println(resultCode.isSuccess());
 ```
 
 ## Key concepts

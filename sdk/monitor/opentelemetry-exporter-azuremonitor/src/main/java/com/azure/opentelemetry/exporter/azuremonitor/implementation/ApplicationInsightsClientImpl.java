@@ -24,9 +24,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.opentelemetry.exporter.azuremonitor.models.ExportResult;
-import com.azure.opentelemetry.exporter.azuremonitor.models.ExportResultException;
-import com.azure.opentelemetry.exporter.azuremonitor.models.TelemetryItem;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.ExportResult;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.ExportResultException;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.TelemetryItem;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

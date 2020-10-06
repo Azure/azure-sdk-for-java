@@ -3,10 +3,14 @@
 
 module com.azure.opentelemetry.exporter.azuremonitor {
     requires transitive com.azure.core;
+    requires transitive io.opentelemetry.sdk;
+    requires transitive io.opentelemetry.sdk.tracing;
+    requires transitive io.opentelemetry.sdk.common;
+    requires transitive io.opentelemetry.api;
 
     exports com.azure.opentelemetry.exporter.azuremonitor;
-    exports com.azure.opentelemetry.exporter.azuremonitor.models;
 
-    opens com.azure.opentelemetry.exporter.azuremonitor.models to com.fasterxml.jackson.databind;
-
+    opens com.azure.opentelemetry.exporter.azuremonitor.implementation.models to
+        com.fasterxml.jackson.databind,
+        com.azure.core;
 }

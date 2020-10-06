@@ -41,6 +41,16 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>0.8.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>0.8.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the clients for OpenTelemetry Exporter for Azure Monitor.
+ * Package containing the OpenTelemetry Exporter for Azure Monitor.
  */
 package com.azure.opentelemetry.exporter.azuremonitor;

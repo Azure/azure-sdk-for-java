@@ -8,10 +8,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.opentelemetry.exporter.azuremonitor.models.MonitorBase;
-import com.azure.opentelemetry.exporter.azuremonitor.models.MonitorDomain;
-import com.azure.opentelemetry.exporter.azuremonitor.models.RequestData;
-import com.azure.opentelemetry.exporter.azuremonitor.models.TelemetryItem;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.MonitorBase;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.MonitorDomain;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.RequestData;
+import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.TelemetryItem;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class MonitorExporterClientTestBase extends TestBase {
 
-    MonitorExporterClientBuilder getClientBuilder() {
+    AzureMonitorExporterBuilder getClientBuilder() {
         HttpClient httpClient;
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
             httpClient = HttpClient.createDefault();
@@ -37,7 +37,7 @@ public class MonitorExporterClientTestBase extends TestBase {
             .httpClient(httpClient)
             .policies(interceptorManager.getRecordPolicy()).build();
 
-        return new MonitorExporterClientBuilder().pipeline(httpPipeline);
+        return new AzureMonitorExporterBuilder().pipeline(httpPipeline);
     }
 
     List<TelemetryItem> getAllInvalidTelemetryItems() {

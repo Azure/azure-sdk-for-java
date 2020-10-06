@@ -26,8 +26,8 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 The following sections provide code samples covering common operations with OpenTelemetry Azure Monitor Exporter client
 library.
 
-[Export telemetry data using async client][async_client]
-[Export telemetry data using sync client][sync_client]
+[Export telemetry data using AzureMonitorExporter][monitor_exporter]
+
 ## Troubleshooting
 
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -48,6 +48,5 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/README.md#key-concepts
 [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/README.md#include-the-package
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/README.md#next-steps
-[async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/MonitorExporterAsyncSample.java
-[sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/MonitorExporterSample.java
+[monitor_exporter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/opentelemetry-exporter-azuremonitor/src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/AzureMonitorExporterSample.java
 

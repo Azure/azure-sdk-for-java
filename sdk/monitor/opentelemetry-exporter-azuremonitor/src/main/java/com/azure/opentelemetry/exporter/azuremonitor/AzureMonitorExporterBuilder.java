@@ -6,7 +6,6 @@ package com.azure.opentelemetry.exporter.azuremonitor;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImpl;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImplBuilder;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.NdJsonSerializer;
-import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -17,37 +16,36 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link MonitorExporterClient
- * MonitorExporterClients} and {@link MonitorExporterAsyncClient MonitorExporterAsyncClients}, call
- * {@link #buildClient()} buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
- * instance of the desired client.
+ * This class provides a fluent builder API to instantiate {@link AzureMonitorExporter} that implements
+ * {@link SpanExporter} interface defined by OpenTelemetry API specification.
  */
-@ServiceClientBuilder(serviceClients = {MonitorExporterClient.class, MonitorExporterAsyncClient.class})
-public final class MonitorExporterClientBuilder {
-    private final ClientLogger logger = new ClientLogger(MonitorExporterClientBuilder.class);
+public final class AzureMonitorExporterBuilder {
+    private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
+    private String instrumentationKey;
 
     /**
-     * Creates an instance of {@link MonitorExporterClientBuilder}.
+     * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
-    public MonitorExporterClientBuilder() {
+    public AzureMonitorExporterBuilder() {
         restServiceClientBuilder = new ApplicationInsightsClientImplBuilder();
     }
 
     /**
      * Sets the service endpoint for the Azure Monitor Exporter.
      * @param endpoint The URL of the Azure Monitor Exporter endpoint.
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
-    public MonitorExporterClientBuilder endpoint(String endpoint) {
+    public AzureMonitorExporterBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
@@ -65,9 +63,9 @@ public final class MonitorExporterClientBuilder {
      * ignored, apart from {@link #endpoint(String) endpoint}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public MonitorExporterClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public AzureMonitorExporterBuilder pipeline(HttpPipeline httpPipeline) {
         restServiceClientBuilder.pipeline(httpPipeline);
         return this;
     }
@@ -76,9 +74,9 @@ public final class MonitorExporterClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public MonitorExporterClientBuilder httpClient(HttpClient client) {
+    public AzureMonitorExporterBuilder httpClient(HttpClient client) {
         restServiceClientBuilder.httpClient(client);
         return this;
     }
@@ -89,9 +87,9 @@ public final class MonitorExporterClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      *
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public MonitorExporterClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions logOptions) {
         restServiceClientBuilder.httpLogOptions(logOptions);
         return this;
     }
@@ -99,12 +97,12 @@ public final class MonitorExporterClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided to build {@link MonitorExporterClientBuilder} .
+     * The default retry policy will be used if not provided to build {@link AzureMonitorExporterBuilder} .
      * @param retryPolicy user's retry policy applied to each request.
      *
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public MonitorExporterClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public AzureMonitorExporterBuilder retryPolicy(RetryPolicy retryPolicy) {
         restServiceClientBuilder.retryPolicy(retryPolicy);
         return this;
     }
@@ -113,10 +111,10 @@ public final class MonitorExporterClientBuilder {
      * Adds a policy to the set of existing policies that are executed after required policies.
      * @param policy The retry policy for service requests.
      *
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public MonitorExporterClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public AzureMonitorExporterBuilder addPolicy(HttpPipelinePolicy policy) {
         restServiceClientBuilder.addPolicy(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
@@ -128,25 +126,20 @@ public final class MonitorExporterClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public MonitorExporterClientBuilder configuration(Configuration configuration) {
+    public AzureMonitorExporterBuilder configuration(Configuration configuration) {
         restServiceClientBuilder.configuration(configuration);
         return this;
     }
 
     /**
-     * Sets the {@link MonitorExporterServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
-     * @param version {@link MonitorExporterServiceVersion} of the service to be used when making requests.
-     *
-     * @return The updated {@link MonitorExporterClientBuilder} object.
+     * Sets the instrumentation key to use for exporting telemetry events to Azure Monitor.
+     * @param instrumentationKey The instrumentation key of the Azure Monitor resource.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public MonitorExporterClientBuilder serviceVersion(MonitorExporterServiceVersion version) {
-        // no-op as the rest client doesn't support setting service version yet and there's only one version
+    public AzureMonitorExporterBuilder instrumentationKey(String instrumentationKey) {
+        this.instrumentationKey = instrumentationKey;
         return this;
     }
 
@@ -162,7 +155,7 @@ public final class MonitorExporterClientBuilder {
      * @return A {@link MonitorExporterClient} with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} has not been set.
      */
-    public MonitorExporterClient buildClient() {
+    MonitorExporterClient buildClient() {
         return new MonitorExporterClient(buildAsyncClient());
     }
 
@@ -177,8 +170,7 @@ public final class MonitorExporterClientBuilder {
      * </p>
      * @return A {@link MonitorExporterAsyncClient} with the options set from the builder.
      */
-    public MonitorExporterAsyncClient buildAsyncClient() {
-
+    MonitorExporterAsyncClient buildAsyncClient() {
         // Customize serializer to use NDJSON
         final SimpleModule ndjsonModule = new SimpleModule("Ndjson List Serializer");
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
@@ -188,6 +180,18 @@ public final class MonitorExporterClientBuilder {
         ApplicationInsightsClientImpl restServiceClient = restServiceClientBuilder.buildClient();
 
         return new MonitorExporterAsyncClient(restServiceClient);
+    }
+
+    /**
+     * Creates an {@link AzureMonitorExporter} based on the options set in the builder. This exporter is an
+     * implementation of OpenTelemetry {@link SpanExporter}.
+     *
+     * @return An instance of {@link AzureMonitorExporter}.
+     * @throws NullPointerException if the instrumentation key is not set.
+     */
+    public AzureMonitorExporter buildExporter() {
+        Objects.requireNonNull(instrumentationKey, "'instrumentationKey' cannot be null");
+        return new AzureMonitorExporter(buildClient(), instrumentationKey);
     }
 
 }
