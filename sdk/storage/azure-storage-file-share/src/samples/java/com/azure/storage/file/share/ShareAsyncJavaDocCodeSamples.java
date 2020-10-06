@@ -4,15 +4,18 @@ package com.azure.storage.file.share;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
+import com.azure.storage.file.share.options.ShareSetAccessTierOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetQuotaOptions;
 import com.azure.storage.file.share.sas.ShareSasPermission;
@@ -138,6 +141,23 @@ public class ShareAsyncJavaDocCodeSamples {
             () -> System.out.println("Complete creating the share!")
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.metadata
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#createWithResponse(ShareCreateOptions)}
+     */
+    public void createWithResponseOptions() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions
+        shareAsyncClient.createWithResponse(new ShareCreateOptions()
+            .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+            .setAccessTier(ShareAccessTier.HOT)).subscribe(
+                response -> System.out.printf("Creating the share completed with status code %d",
+                    response.getStatusCode()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete creating the share!")
+        );
+        // END: com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions
     }
 
     /**
@@ -469,6 +489,32 @@ public class ShareAsyncJavaDocCodeSamples {
                 System.out.printf("Setting the share quota completed with status code %d", response.getStatusCode())
             );
         // END: com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#ShareSetQuotaOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#setAccessTier(ShareAccessTier)}
+     */
+    public void setAccessTierAsync() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setAccessTier#ShareAccessTier
+        shareAsyncClient.setAccessTier(ShareAccessTier.HOT).doOnSuccess(response ->
+            System.out.println("Setting the share access tier completed.")
+        );
+        // END: com.azure.storage.file.share.ShareAsyncClient.setAccessTier#ShareAccessTier
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#setAccessTierWithResponse(ShareSetAccessTierOptions)}
+     */
+    public void setAccessTierWithResponse() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.setAccessTierWithResponse#ShareSetAccessTierOptions
+        shareAsyncClient.setAccessTierWithResponse(new ShareSetAccessTierOptions(ShareAccessTier.HOT)
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))
+            .subscribe(response ->
+                System.out.printf("Setting the share quota completed with status code %d", response.getStatusCode())
+            );
+        // END: com.azure.storage.file.share.ShareAsyncClient.setAccessTierWithResponse#ShareSetAccessTierOptions
     }
 
     /**

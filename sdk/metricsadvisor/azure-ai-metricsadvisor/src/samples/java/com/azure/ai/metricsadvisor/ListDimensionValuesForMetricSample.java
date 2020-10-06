@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.util.Context;
 
 /**
- * Sample for listing series definition for a give metric filtered using specific set of dimension combinations.
+ * Sample for listing dimension values for a give metric filtered using specific set of dimension combinations.
  */
 public class ListDimensionValuesForMetricSample {
     public static void main(String[] args) {

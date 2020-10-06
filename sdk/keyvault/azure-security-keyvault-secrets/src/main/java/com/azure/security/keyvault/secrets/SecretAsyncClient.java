@@ -63,7 +63,7 @@ public final class SecretAsyncClient {
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
-    private static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(1);
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
     private final String vaultUrl;
     private final SecretService service;
@@ -92,8 +92,8 @@ public final class SecretAsyncClient {
         return vaultUrl;
     }
 
-    Duration getPollDuration() {
-        return DEFAULT_POLL_DURATION;
+    Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
@@ -388,7 +388,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code sample</strong></p>
      * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted
      * secret details when a response is received.</p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#string}
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#String}
      *
      * @param name The name of the secret to be deleted.
      * @return A {@link PollerFlux} to poll on and retrieve {@link DeletedSecret deleted secret}.
@@ -397,7 +397,29 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return new PollerFlux<>(getPollDuration(),
+        return beginDeleteSecret(name, getDefaultPollingInterval());
+    }
+
+    /**
+     * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the
+     * deleted state and for permanent deletion, needs to be purged. Otherwise, the secret is permanently deleted.
+     * All versions of a secret are deleted. This cannot be applied to individual versions of a secret.
+     * This operation requires the {@code secrets/delete} permission.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted
+     * secret details when a response is received.</p>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#String-Duration}
+     *
+     * @param name The name of the secret to be deleted.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link PollerFlux} to poll on and retrieve {@link DeletedSecret deleted secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a secret with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name, Duration pollingInterval) {
+        return new PollerFlux<>(pollingInterval,
             activationOperation(name),
             createPollOperation(name),
             (pollingContext, firstResponse) -> Mono.empty(),
@@ -560,7 +582,7 @@ public final class SecretAsyncClient {
      * <p>Recovers the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the recovered secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String}
      *
      * @param name The name of the deleted secret to be recovered.
      * @return A {@link PollerFlux} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
@@ -569,7 +591,28 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(getPollDuration(),
+        return beginRecoverDeletedSecret(name, getDefaultPollingInterval());
+    }
+
+    /**
+     * Recovers the deleted secret in the key vault to its latest version. Can only be performed on a <b>soft-delete
+     * enabled</b> vault. This operation requires the {@code secrets/recover} permission.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recovers the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
+     * asynchronously and prints out the recovered secret details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String-Duration}
+     *
+     * @param name The name of the deleted secret to be recovered.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link PollerFlux} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a secret with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name, Duration pollingInterval) {
+        return new PollerFlux<>(pollingInterval,
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (pollerContext, firstResponse) -> Mono.empty(),
