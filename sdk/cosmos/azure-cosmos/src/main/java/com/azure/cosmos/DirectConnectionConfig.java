@@ -15,6 +15,7 @@ import java.time.Duration;
  */
 public final class DirectConnectionConfig {
     //  Constants
+    private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = true;
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
@@ -33,7 +34,7 @@ public final class DirectConnectionConfig {
      * Constructor
      */
     public DirectConnectionConfig() {
-        this.connectionEndpointRediscoveryEnabled = true;
+        this.connectionEndpointRediscoveryEnabled = DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED;
         this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
         this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
@@ -52,6 +53,8 @@ public final class DirectConnectionConfig {
      * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
      * </ul>
      *
+     * By default, connection endpoint rediscovery is enabled.
+     *
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
     public boolean isConnectionEndpointRediscoveryEnabled() {
@@ -67,6 +70,8 @@ public final class DirectConnectionConfig {
      * <li>During rolling upgrades of a Cosmos instance or
      * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
      * </ul>
+     *
+     * By default, connection endpoint rediscovery is enabled.
      *
      * @param connectionEndpointRediscoveryEnabled {@code true} if connection endpoint rediscovery is enabled; {@code
      *                                             false} otherwise.
