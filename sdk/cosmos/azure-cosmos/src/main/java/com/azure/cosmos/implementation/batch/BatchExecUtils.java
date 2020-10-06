@@ -42,7 +42,7 @@ public final class BatchExecUtils {
         return null;
     }
 
-    public static Duration getRetryAfter(Map<String, String> responseHeaders) {
+    public static Duration getRetryAfterDuration(Map<String, String> responseHeaders) {
         long retryIntervalInMilliseconds = 0;
 
         if (responseHeaders != null) {

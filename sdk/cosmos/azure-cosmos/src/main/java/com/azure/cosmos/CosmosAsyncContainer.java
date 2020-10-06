@@ -519,6 +519,9 @@ public class CosmosAsyncContainer {
      * for the operation that caused the batch to abort, the value of this field
      * will indicate the cause of failure.
      * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then the Mono will return error instead of TransactionalBatchResponse.
+     * <p>
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
@@ -550,6 +553,9 @@ public class CosmosAsyncContainer {
      * another operation within the transactional batch, the value of this field will be 424;
      * for the operation that caused the batch to abort, the value of this field
      * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then the Mono will return error instead of TransactionalBatchResponse.
      * <p>
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.

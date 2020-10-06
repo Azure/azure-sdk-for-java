@@ -17,8 +17,8 @@ public class BatchOperationResultTests {
     private static final int TIMEOUT = 40000;
     private ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
 
-    private TransactionalBatchOperationResult<?> createTestResult() {
-        TransactionalBatchOperationResult<?> result = BridgeInternal.createTransactionBatchResult(
+    private TransactionalBatchOperationResult createTestResult() {
+        TransactionalBatchOperationResult result = BridgeInternal.createTransactionBatchResult(
             "TestETag",
             1.4,
             objectNode,
@@ -32,48 +32,20 @@ public class BatchOperationResultTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void propertiesAreSetThroughCtor() {
-        TransactionalBatchOperationResult<?> result = createTestResult();
+        TransactionalBatchOperationResult result = createTestResult();
 
         assertThat(result.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(result.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
         assertThat(result.getETag()).isEqualTo("TestETag");
         assertThat(result.getRequestCharge()).isEqualTo(1.4);
-        assertThat(result.getRetryAfter()).isEqualTo(Duration.ofMillis(1234));
+        assertThat(result.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(1234));
         assertThat(result.getResourceObject()).isSameAs(objectNode);
-    }
-
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void propertiesAreSetThroughCopyCtor() {
-        TransactionalBatchOperationResult<?> other = createTestResult();
-        TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(other);
-
-        assertThat(other.getStatusCode()).isEqualTo(result.getStatusCode());
-        assertThat(other.getSubStatusCode()).isEqualTo(result.getSubStatusCode());
-        assertThat(other.getETag()).isEqualTo(result.getETag());
-        assertThat(other.getRequestCharge()).isEqualTo(result.getRequestCharge());
-        assertThat(other.getRetryAfter()).isEqualTo(result.getRetryAfter());
-        assertThat(other.getResourceObject()).isSameAs(result.getResourceObject());
-    }
-
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void propertiesAreSetThroughGenericCtor() {
-        TransactionalBatchOperationResult<?> other = createTestResult();
-        Object testObject = new Object();
-        TransactionalBatchOperationResult<Object> result = new TransactionalBatchOperationResult<Object>(other, testObject);
-
-        assertThat(other.getStatusCode()).isEqualTo(result.getStatusCode());
-        assertThat(other.getSubStatusCode()).isEqualTo(result.getSubStatusCode());
-        assertThat(other.getETag()).isEqualTo(result.getETag());
-        assertThat(other.getRequestCharge()).isEqualTo(result.getRequestCharge());
-        assertThat(other.getRetryAfter()).isEqualTo(result.getRetryAfter());
-        assertThat(other.getResourceObject()).isSameAs(result.getResourceObject());
-        assertThat(testObject).isSameAs(result.getItem());
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void isSuccessStatusCodeTrueFor200To299() {
         for (int x = 100; x < 999; ++x) {
-            TransactionalBatchOperationResult<?> result = BridgeInternal.createTransactionBatchResult(
+            TransactionalBatchOperationResult result = BridgeInternal.createTransactionBatchResult(
                 null,
                 0.0,
                 null,

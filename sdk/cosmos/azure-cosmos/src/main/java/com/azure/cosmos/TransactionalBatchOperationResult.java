@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Duration;
@@ -11,47 +12,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 /**
  * Represents a result for a specific operation that was part of a {@link TransactionalBatch} request.
- *
- * @param <TResource> the type parameter
  */
 @Beta(Beta.SinceVersion.V4_7_0)
-public final class TransactionalBatchOperationResult<TResource> {
+public final class TransactionalBatchOperationResult {
 
     private final String eTag;
     private final double requestCharge;
-    private TResource item;
     private final ObjectNode resourceObject;
     private final int statusCode;
     private final Duration retryAfter;
     private final int subStatusCode;
-
-    /**
-     * Instantiates a new Transactional batch operation result using a TransactionalBatchOperationResult.
-     *
-     * @param other the other TransactionalBatchOperationResult.
-     */
-    TransactionalBatchOperationResult(final TransactionalBatchOperationResult<?> other) {
-
-        checkNotNull(other, "expected non-null other");
-
-        this.statusCode = other.statusCode;
-        this.subStatusCode = other.subStatusCode;
-        this.eTag = other.eTag;
-        this.requestCharge = other.requestCharge;
-        this.retryAfter = other.retryAfter;
-        this.resourceObject = other.resourceObject;
-    }
-
-    /**
-     * Instantiates a new Transactional batch operation result using a TransactionalBatchOperationResult and item.
-     *
-     * @param result the TransactionalBatchOperationResult.
-     * @param item the item.
-     */
-    TransactionalBatchOperationResult(TransactionalBatchOperationResult<?> result, TResource item) {
-        this(result);
-        this.item = item;
-    }
 
     /**
      * Initializes a new instance of the {@link TransactionalBatchOperationResult} class.
@@ -98,10 +68,20 @@ public final class TransactionalBatchOperationResult<TResource> {
     /**
      * Gets the item associated with the current result.
      *
+     * @param <T> the type parameter
+     *
+     * @param type class type for which deserialization is needed.
+     *
      * @return item associated with the current result.
      */
-    public TResource getItem() {
-        return this.item;
+    public <T> T getItem(final Class<T> type) {
+        T item = null;
+
+        if (this.getResourceObject() != null) {
+            item = new JsonSerializable(this.getResourceObject()).toObject(type);
+        }
+
+        return item;
     }
 
     /**
@@ -109,7 +89,7 @@ public final class TransactionalBatchOperationResult<TResource> {
      *
      * @return the retry after
      */
-    public Duration getRetryAfter() {
+    public Duration getRetryAfterDuration() {
         return this.retryAfter;
     }
 

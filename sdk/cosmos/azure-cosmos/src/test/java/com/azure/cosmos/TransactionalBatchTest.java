@@ -46,10 +46,8 @@ public class TransactionalBatchTest extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchOrdered() {
         CosmosContainer container = this.batchContainer;
-        this.createJsonTestDocs(container);
 
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
-
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
         replaceDoc.setCost(replaceDoc.getCost() + 1);
 
@@ -70,7 +68,6 @@ public class TransactionalBatchTest extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchMultipleItemExecution() {
         CosmosContainer container = this.batchContainer;
-        this.createJsonTestDocs(container);
 
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
@@ -91,16 +88,16 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.verifyBatchProcessed(batchResponse, 4);
 
         assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.getOperationResultAtIndex(0, TestDoc.class).getItem()).isEqualTo(firstDoc);
+        assertThat(batchResponse.get(0).getItem(TestDoc.class)).isEqualTo(firstDoc);
 
         assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.getOperationResultAtIndex(1, EventDoc.class).getItem()).isEqualTo(eventDoc1);
+        assertThat(batchResponse.get(1).getItem(EventDoc.class)).isEqualTo(eventDoc1);
 
         assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.getOperationResultAtIndex(2, TestDoc.class).getItem()).isEqualTo(replaceDoc);
+        assertThat(batchResponse.get(2).getItem(TestDoc.class)).isEqualTo(replaceDoc);
 
         assertThat(batchResponse.get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.getOperationResultAtIndex(3, EventDoc.class).getItem()).isEqualTo(readEventDoc);
+        assertThat(batchResponse.get(3).getItem(EventDoc.class)).isEqualTo(readEventDoc);
 
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByRead(container, replaceDoc);
@@ -456,9 +453,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-        assertThat(batchResponse.getOperationResultAtIndex(0, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingA);
-        assertThat(batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingB);
-        assertThat(batchResponse.getOperationResultAtIndex(2, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingC);
+        assertThat(batchResponse.get(0).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingA);
+        assertThat(batchResponse.get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
+        assertThat(batchResponse.get(2).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -494,7 +491,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(batchResponse.get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-        assertThat(batchResponse.getOperationResultAtIndex(1, TestDoc.class).getItem()).isEqualTo(this.TestDocPk1ExistingC);
+        assertThat(batchResponse.get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
 
         this.verifyByRead(container, testDocToCreate);
         this.verifyByRead(container, testDocToReplace);

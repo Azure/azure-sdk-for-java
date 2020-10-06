@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.util.Beta;
 
@@ -13,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -25,7 +23,7 @@ public class TransactionalBatchResponse {
     private final Map<String, String> responseHeaders;
     private final int statusCode;
     private final String errorMessage;
-    private final List<TransactionalBatchOperationResult<?>> results;
+    private final List<TransactionalBatchOperationResult> results;
     private final int subStatusCode;
     private final CosmosDiagnostics cosmosDiagnostics;
 
@@ -54,33 +52,6 @@ public class TransactionalBatchResponse {
         this.responseHeaders = responseHeaders;
         this.cosmosDiagnostics = cosmosDiagnostics;
         this.results = new ArrayList<>();
-    }
-
-    /**
-     * Gets the result of the operation at the provided index in the current {@link TransactionalBatchResponse batch}.
-     * <p>
-     * @param <T> the type parameter.
-     * @param index 0-based index of the operation in the batch whose result needs to be returned.
-     * de-serialized, when present.
-     * @param type class type for which deserialization is needed.
-     *
-     * @return TransactionalBatchOperationResult containing the individual result of operation.
-     */
-    public <T> TransactionalBatchOperationResult<T> getOperationResultAtIndex(
-        final int index,
-        final Class<T> type) {
-
-        checkArgument(index >= 0, "expected non-negative index");
-        checkNotNull(type, "expected non-null type");
-
-        final TransactionalBatchOperationResult<?> result = this.results.get(index);
-        T item = null;
-
-        if (result.getResourceObject() != null) {
-            item = new JsonSerializable(result.getResourceObject()).toObject(type);
-        }
-
-        return new TransactionalBatchOperationResult<T>(result, item);
     }
 
     /**
@@ -172,8 +143,8 @@ public class TransactionalBatchResponse {
      *
      * @return the amount of time to wait before retrying this or any other request due to throttling.
      */
-    public Duration getRetryAfter() {
-        return BatchExecUtils.getRetryAfter(this.responseHeaders);
+    public Duration getRetryAfterDuration() {
+        return BatchExecUtils.getRetryAfterDuration(this.responseHeaders);
     }
 
     /**
@@ -190,7 +161,7 @@ public class TransactionalBatchResponse {
      *
      * @return Results of operation in batch.
      */
-    public List<TransactionalBatchOperationResult<?>> getResults() {
+    public List<TransactionalBatchOperationResult> getResults() {
         return this.results;
     }
 
@@ -201,7 +172,7 @@ public class TransactionalBatchResponse {
      *
      * @return Result of operation at the provided index in the batch.
      */
-    public TransactionalBatchOperationResult<?> get(int index) {
+    public TransactionalBatchOperationResult get(int index) {
         return this.results.get(index);
     }
 
@@ -218,7 +189,7 @@ public class TransactionalBatchResponse {
         return this.cosmosDiagnostics.getDuration();
     }
 
-    boolean addAll(Collection<? extends TransactionalBatchOperationResult<?>> collection) {
+    boolean addAll(Collection<? extends TransactionalBatchOperationResult> collection) {
         return this.results.addAll(collection);
     }
 }

@@ -39,9 +39,6 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchExecutionRepeat() {
-        CosmosAsyncContainer container = this.batchAsyncContainer;
-        this.createJsonTestDocs(container);
-
         TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
         replaceDoc.setCost(replaceDoc.getCost() + 1);

@@ -12,9 +12,9 @@ import java.util.List;
 
 class BatchResponsePayloadWriter {
 
-    private List<TransactionalBatchOperationResult<?>> results;
+    private List<TransactionalBatchOperationResult> results;
 
-    BatchResponsePayloadWriter(List<TransactionalBatchOperationResult<?>> results) {
+    BatchResponsePayloadWriter(List<TransactionalBatchOperationResult> results) {
         this.results = results;
     }
 
@@ -25,7 +25,7 @@ class BatchResponsePayloadWriter {
     private ArrayNode writeOperationResult() {
         ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
-        for(TransactionalBatchOperationResult<?> result : results) {
+        for(TransactionalBatchOperationResult result : results) {
             JsonSerializable operationJsonSerializable = writeResult(result);
 
             arrayNode.add(operationJsonSerializable.getPropertyBag());
@@ -33,7 +33,7 @@ class BatchResponsePayloadWriter {
         return arrayNode;
     }
 
-    private JsonSerializable writeResult(TransactionalBatchOperationResult<?> result) {
+    private JsonSerializable writeResult(TransactionalBatchOperationResult result) {
 
         JsonSerializable jsonSerializable = new JsonSerializable();
         jsonSerializable.set(BatchRequestResponseConstant.FIELD_STATUS_CODE, result.getStatusCode());
@@ -41,8 +41,8 @@ class BatchResponsePayloadWriter {
         jsonSerializable.set(BatchRequestResponseConstant.FIELD_ETAG, result.getETag());
         jsonSerializable.set(BatchRequestResponseConstant.FIELD_REQUEST_CHARGE, result.getRequestCharge());
 
-        if(result.getRetryAfter() != null) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RETRY_AFTER_MILLISECONDS, result.getRetryAfter().toMillis());
+        if(result.getRetryAfterDuration() != null) {
+            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RETRY_AFTER_MILLISECONDS, result.getRetryAfterDuration().toMillis());
         }
 
         return jsonSerializable;

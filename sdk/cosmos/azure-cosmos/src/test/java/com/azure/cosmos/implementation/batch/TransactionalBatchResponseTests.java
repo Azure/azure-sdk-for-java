@@ -31,7 +31,7 @@ public class TransactionalBatchResponseTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateAllSetValuesInResponse() {
-        List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
+        List<TransactionalBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Read,0)
@@ -45,7 +45,7 @@ public class TransactionalBatchResponseTests {
             Arrays.asList(arrayOperations));
 
         // Create dummy result
-        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+        TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
             operation.getId(),
             5.0,
             null,
@@ -82,20 +82,20 @@ public class TransactionalBatchResponseTests {
         assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(batchResponse.getSessionToken()).isEqualTo("token123");
         assertThat(batchResponse.getResponseHeaders()).isEqualTo(headers);
-        assertThat(batchResponse.getRetryAfter()).isEqualTo(Duration.ofMillis(1234));
+        assertThat(batchResponse.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(1234));
         assertThat(batchResponse.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
 
         // Validate result fields
         assertThat(batchResponse.get(0).getETag()).isEqualTo(operation.getId());
         assertThat(batchResponse.get(0).getRequestCharge()).isEqualTo(5.0);
-        assertThat(batchResponse.get(0).getRetryAfter()).isEqualTo(Duration.ofMillis(100));
+        assertThat(batchResponse.get(0).getRetryAfterDuration()).isEqualTo(Duration.ofMillis(100));
         assertThat(batchResponse.get(0).getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH);
         assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateEmptyHeaderInResponse() {
-        List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
+        List<TransactionalBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Read,0)
@@ -109,7 +109,7 @@ public class TransactionalBatchResponseTests {
             Arrays.asList(arrayOperations));
 
         // Create dummy result
-        TransactionalBatchOperationResult<?> transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+        TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
             null,
             5.0,
             null,
@@ -137,13 +137,13 @@ public class TransactionalBatchResponseTests {
         assertThat(batchResponse.getRequestCharge()).isEqualTo(0);
         assertThat(batchResponse.getSessionToken()).isNull();
         assertThat(batchResponse.getResponseHeaders()).isEmpty();
-        assertThat(batchResponse.getRetryAfter()).isEqualTo(Duration.ZERO);
+        assertThat(batchResponse.getRetryAfterDuration()).isEqualTo(Duration.ZERO);
         assertThat(batchResponse.getSubStatusCode()).isEqualTo(0);
 
         // Validate result fields
         assertThat(batchResponse.get(0).getETag()).isNull();
         assertThat(batchResponse.get(0).getRequestCharge()).isEqualTo(5.0);
-        assertThat(batchResponse.get(0).getRetryAfter()).isEqualTo(Duration.ZERO);
+        assertThat(batchResponse.get(0).getRetryAfterDuration()).isEqualTo(Duration.ZERO);
         assertThat(batchResponse.get(0).getSubStatusCode()).isEqualTo(0);
         assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
     }

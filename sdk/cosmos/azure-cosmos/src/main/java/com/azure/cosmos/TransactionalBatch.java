@@ -54,8 +54,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * // Look up interested results - e.g., via typed access on operation results
  *
- * TransactionalBatchOperationResult<ToDoActivity> result = response.getOperationResultAtIndex<ToDoActivity>(0, ToDoActivity.class);
- * ToDoActivity readActivity = result.getItem();
+ * TransactionalBatchOperationResult result = response.get(0);
+ * ToDoActivity readActivity = result.getItem(ToDoActivity.class);
  *
  * }</pre>
  *
@@ -74,8 +74,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * List<ToDoActivity> resultItems = new ArrayList<ToDoActivity>();
  *
  * for (int i = 0; i < response.size(); i++) {
- *     TransactionalBatchOperationResult<ToDoActivity> result = response.getOperationResultAtIndex<ToDoActivity>(0, ToDoActivity.class);
- *     resultItems.add(result.getItem());
+ *     TransactionalBatchOperationResult result = response.get(0);
+ *     resultItems.add(result.getItem(ToDoActivity.class));
  * }
  *
  * }</pre>

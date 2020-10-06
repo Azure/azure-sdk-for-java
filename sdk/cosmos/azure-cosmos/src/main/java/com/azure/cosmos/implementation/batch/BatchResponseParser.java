@@ -86,7 +86,7 @@ public final class BatchResponseParser {
             // When the overall response status code is TooManyRequests, propagate the RetryAfter into the individual operations.
             Duration retryAfterDuration = Duration.ZERO;
             if (responseStatusCode == HttpResponseStatus.TOO_MANY_REQUESTS.code()) {
-                retryAfterDuration = BatchExecUtils.getRetryAfter(documentServiceResponse.getResponseHeaders());
+                retryAfterDuration = BatchExecUtils.getRetryAfterDuration(documentServiceResponse.getResponseHeaders());
             }
 
             BatchResponseParser.createAndPopulateResults(response, request.getOperations(), retryAfterDuration);
@@ -103,7 +103,7 @@ public final class BatchResponseParser {
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
 
-        final ArrayList<TransactionalBatchOperationResult<?>> results = new ArrayList<>(request.getOperations().size());
+        final ArrayList<TransactionalBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
         final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
         if (responseContent[0] != (byte)HYBRID_V1) {
@@ -113,7 +113,7 @@ public final class BatchResponseParser {
             try {
                 final ObjectNode[] objectNodes = mapper.readValue(responseContent, ObjectNode[].class);
                 for (ObjectNode objectInArray : objectNodes) {
-                    final TransactionalBatchOperationResult<?> batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
+                    final TransactionalBatchOperationResult batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
                     results.add(batchOperationResult);
                 }
             } catch (IOException ex) {
@@ -132,7 +132,7 @@ public final class BatchResponseParser {
 
         // Status code of the exact operation which failed.
         if (responseStatusCode == HttpResponseStatus.MULTI_STATUS.code() && shouldPromoteOperationStatus) {
-            for (TransactionalBatchOperationResult<?> result : results) {
+            for (TransactionalBatchOperationResult result : results) {
                 if (result.getStatusCode() !=  HttpResponseStatus.FAILED_DEPENDENCY.code() &&
                     result.getStatusCode() >= 400) {
                     responseStatusCode = result.getStatusCode();
@@ -163,7 +163,7 @@ public final class BatchResponseParser {
      *
      * @return the result
      */
-    private static TransactionalBatchOperationResult<?> createBatchOperationResultFromJson(ObjectNode objectNode) {
+    private static TransactionalBatchOperationResult createBatchOperationResultFromJson(ObjectNode objectNode) {
         final JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
 
         final int statusCode = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_STATUS_CODE);
@@ -200,7 +200,7 @@ public final class BatchResponseParser {
     private static void createAndPopulateResults(final TransactionalBatchResponse response,
                                                  final List<ItemBatchOperation<?>> operations,
                                                  final Duration retryAfterDuration) {
-        final List<TransactionalBatchOperationResult<?>> results = new ArrayList<>(operations.size());
+        final List<TransactionalBatchOperationResult> results = new ArrayList<>(operations.size());
         for (int i = 0; i < operations.size(); i++) {
             results.add(
                 BridgeInternal.createTransactionBatchResult(
