@@ -49,7 +49,7 @@ public class VirtualMachineScaleSetIdentity {
     private List<String> identityIds;
 
     /**
-     * Get the principalId value.
+     * Get the principal id of virtual machine scale set identity. This property will only be provided for a system assigned identity.
      *
      * @return the principalId value
      */
@@ -58,7 +58,7 @@ public class VirtualMachineScaleSetIdentity {
     }
 
     /**
-     * Get the tenantId value.
+     * Get the tenant id associated with the virtual machine scale set. This property will only be provided for a system assigned identity.
      *
      * @return the tenantId value
      */
@@ -67,7 +67,7 @@ public class VirtualMachineScaleSetIdentity {
     }
 
     /**
-     * Get the type value.
+     * Get the type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssigned', 'None'.
      *
      * @return the type value
      */
@@ -76,7 +76,7 @@ public class VirtualMachineScaleSetIdentity {
     }
 
     /**
-     * Set the type value.
+     * Set the type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssigned', 'None'.
      *
      * @param type the type value to set
      * @return the VirtualMachineScaleSetIdentity object itself.
@@ -87,7 +87,7 @@ public class VirtualMachineScaleSetIdentity {
     }
 
     /**
-     * Get the identityIds value.
+     * Get the list of user identities associated with the virtual machine scale set. The user identity references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/identities/{identityName}'.
      *
      * @return the identityIds value
      */
@@ -96,7 +96,7 @@ public class VirtualMachineScaleSetIdentity {
     }
 
     /**
-     * Set the identityIds value.
+     * Set the list of user identities associated with the virtual machine scale set. The user identity references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/identities/{identityName}'.
      *
      * @param identityIds the identityIds value to set
      * @return the VirtualMachineScaleSetIdentity object itself.
