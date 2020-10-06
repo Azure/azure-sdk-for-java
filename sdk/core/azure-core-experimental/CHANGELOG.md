@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.6 (Unreleased)
 
+- Added : `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
+
 ## 1.0.0-beta.5 (2020-10-01)
 
 - Added `JsonPatchDocument` to support JSON Patch functionality.
