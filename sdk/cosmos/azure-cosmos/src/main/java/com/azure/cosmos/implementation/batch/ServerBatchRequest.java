@@ -80,14 +80,10 @@ public abstract class ServerBatchRequest {
         return pendingOperations;
     }
 
-    public final String transferRequestBody() {
-
+    public final String getRequestBody() {
         checkState(this.requestBody != null, "expected non-null body");
 
-        final String requestBody = this.requestBody;
-        this.requestBody = null;
-
-        return requestBody;
+        return this.requestBody;
     }
 
     /**

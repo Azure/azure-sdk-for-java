@@ -133,7 +133,8 @@ public final class BatchResponseParser {
         // Status code of the exact operation which failed.
         if (responseStatusCode == HttpResponseStatus.MULTI_STATUS.code() && shouldPromoteOperationStatus) {
             for (TransactionalBatchOperationResult<?> result : results) {
-                if (result.getStatusCode()!=  HttpResponseStatus.FAILED_DEPENDENCY.code()) {
+                if (result.getStatusCode() !=  HttpResponseStatus.FAILED_DEPENDENCY.code() &&
+                    result.getStatusCode() >= 400) {
                     responseStatusCode = result.getStatusCode();
                     responseSubStatusCode = result.getSubStatusCode();
                     break;

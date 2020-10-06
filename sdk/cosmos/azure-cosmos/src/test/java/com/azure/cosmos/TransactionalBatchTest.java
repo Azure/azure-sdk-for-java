@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.data.Offset;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -164,38 +163,222 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void batchItemSessionTokenTest() {
+    public void batchSessionTokenPropertiesTest() throws Exception {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocs(container);
 
-        TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+        TestDoc sampleDoc = this.populateTestDoc(this.partitionKey1);
 
-        BatchTestBase.TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
-        testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+        CosmosItemResponse<TestDoc> createResponse =  container.createItem(
+            sampleDoc,
+            this.getPartitionKey(this.partitionKey1),
+            null);
+
+        String ownerIdCreate = createResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(ownerIdCreate).isNotEmpty();
 
         CosmosItemResponse<TestDoc> readResponse = container.readItem(
-            this.TestDocPk1ExistingA.getId(),
+            this.TestDocPk1ExistingC.getId(),
             this.getPartitionKey(this.partitionKey1),
             TestDoc.class);
 
         assertThat(readResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-        ISessionToken beforeRequestSessionToken = this.getSessionToken(readResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
+        ISessionToken beforeRequestSessionToken = this.getSessionToken(readResponse.getSessionToken());
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+        String readEtagValue = readResponse.getETag();
+        TransactionalBatchItemRequestOptions readRequestOption = new TransactionalBatchItemRequestOptions()
+            .setIfMatchETag(readEtagValue);
+
+        String oldSessionToken = this.getDifferentLSNToken(readResponse.getSessionToken(), -10);
+
+        {
+            // Batch with only Read operation
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                    .readItem(this.TestDocPk1ExistingA.getId())
+                    .readItem(this.TestDocPk1ExistingC.getId(), readRequestOption),
+                new TransactionalBatchRequestOptions().setSessionToken(oldSessionToken));
+
+            this.verifyBatchProcessed(batchResponse, 2, HttpResponseStatus.MULTI_STATUS);
+
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
+
+            ISessionToken afterRequestSessionToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(afterRequestSessionToken.getLSN())
+                .as("Response session token should be more than or equal to request session token")
+                .isGreaterThanOrEqualTo(beforeRequestSessionToken.getLSN());
+
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNotEmpty();
+            assertThat(ownerIdBatch).isEqualTo(ownerIdCreate);
+        }
+
+        {
+            // Batch with write-read operations
+            TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+
+            TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingB);
+            testDocToReplace.setCost(testDocToReplace.getCost() + 1);
+            TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                    .createItem(testDocToCreate)
+                    .replaceItem(testDocToReplace.getId(), testDocToReplace)
+                    .upsertItem(testDocToUpsert)
+                    .deleteItem(this.TestDocPk1ExistingD.getId())
+                    .readItem(this.TestDocPk1ExistingA.getId())
+                    .readItem(this.TestDocPk1ExistingC.getId(), readRequestOption),
+                new TransactionalBatchRequestOptions().setSessionToken(oldSessionToken));
+
+            this.verifyBatchProcessed(batchResponse, 6, HttpResponseStatus.MULTI_STATUS);
+
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.get(3).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+            assertThat(batchResponse.get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
+
+            ISessionToken afterRequestSessionToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(afterRequestSessionToken.getLSN())
+                .as("Response session token should be more than request session token")
+                .isGreaterThan(beforeRequestSessionToken.getLSN());
+
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNotEmpty();
+            assertThat(ownerIdBatch).isEqualTo(ownerIdCreate);
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void batchErrorSessionToken() {
+        CosmosContainer container = batchContainer;
+        this.createJsonTestDocs(container);
+
+        ISessionToken readResponseNotExistsToken = null;
+        try {
+            container.readItem(
+                UUID.randomUUID().toString(),
+                this.getPartitionKey(this.partitionKey1),
+                TestDoc.class);
+        } catch (CosmosException ex) {
+            readResponseNotExistsToken = this.getSessionToken(ex.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
+
+            // When this is changed to return non null, batch needs to be modified too.
+            String ownerIdRead = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdRead).isNull();
+        }
+
+        {
+            // Only errored read
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
             TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .createItem(testDocToCreate)
-                .replaceItem(testDocToReplace.getId(), testDocToReplace));
+                .readItem(UUID.randomUUID().toString()));
 
-        this.verifyBatchProcessed(batchResponse, 2);
+            assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
 
-        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNull();
 
-        ISessionToken afterRequestSessionToken = this.getSessionToken(batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
-        assertThat(afterRequestSessionToken.getLSN())
-            .as("Response session token should be more than request session token")
-            .isGreaterThan(beforeRequestSessionToken.getLSN());
+            ISessionToken batchResponseToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(batchResponseToken.getLSN())
+                .as("Response session token should be more than or equal to request session token")
+                .isGreaterThanOrEqualTo(readResponseNotExistsToken.getLSN());
+        }
+
+        {
+            // One valid read one error read
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                    .readItem(this.TestDocPk1ExistingA.getId())
+                    .readItem(UUID.randomUUID().toString()));
+
+            assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNull();
+
+            ISessionToken batchResponseToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(batchResponseToken.getLSN())
+                .as("Response session token should be more than or equal to request session token")
+                .isGreaterThanOrEqualTo(readResponseNotExistsToken.getLSN());
+        }
+
+        {
+            // One error one valid read
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                    .readItem(UUID.randomUUID().toString())
+                    .readItem(this.TestDocPk1ExistingA.getId()));
+
+            assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNull();
+
+            ISessionToken batchResponseToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(batchResponseToken.getLSN())
+                .as("Response session token should be more than or equal to request session token")
+                .isGreaterThanOrEqualTo(readResponseNotExistsToken.getLSN());
+        }
+
+        {
+            // One valid write and one error
+            TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                    .createItem(testDocToCreate)
+                    .readItem(UUID.randomUUID().toString()));
+
+            assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNull();
+
+            ISessionToken batchResponseToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(batchResponseToken.getLSN())
+                .as("Response session token should be more than or equal to request session token")
+                .isGreaterThanOrEqualTo(readResponseNotExistsToken.getLSN());
+        }
+
+        {
+            // One error one valid write
+            TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
+                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
+                    .readItem(UUID.randomUUID().toString())
+                    .createItem(testDocToCreate));
+
+            assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+
+            String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
+            assertThat(ownerIdBatch).isNull();
+
+            ISessionToken batchResponseToken = this.getSessionToken(batchResponse.getSessionToken());
+
+            assertThat(batchResponseToken.getLSN())
+                .as("Response session token should be more than or equal to request session token")
+                .isGreaterThanOrEqualTo(readResponseNotExistsToken.getLSN());
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -406,27 +589,5 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.verifyNotFound(container, testDocToCreate);
         this.verifyNotFound(container, anotherTestDocToCreate);
-    }
-
-    private void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations) {
-        this.verifyBatchProcessed(batchResponse, numberOfOperations, HttpResponseStatus.OK);
-    }
-
-    private void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
-        assertThat(batchResponse).isNotNull();
-        assertThat(batchResponse.getStatusCode())
-            .as("Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}",
-                batchResponse.getStatusCode(), expectedStatusCode.code())
-            .isEqualTo(expectedStatusCode.code());
-
-        assertThat(batchResponse.size()).isEqualTo(numberOfOperations);
-        assertThat(batchResponse.getRequestCharge()).isPositive();
-        assertThat(batchResponse.getDiagnostics().toString()).isNotEmpty();
-
-        // Allow a delta since we round both the total charge and the individual operation
-        // charges to 2 decimal places.
-        assertThat(batchResponse.getRequestCharge())
-            .isCloseTo(batchResponse.getResults().stream().mapToDouble(TransactionalBatchOperationResult::getRequestCharge).sum(),
-            Offset.offset(0.1));
     }
 }

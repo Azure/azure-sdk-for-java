@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.SessionTokenHelper;
+import com.azure.cosmos.implementation.VectorSessionToken;
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -12,7 +14,10 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.data.Offset;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -35,6 +40,13 @@ public class BatchTestBase extends TestSuiteBase {
     }
 
     void createJsonTestDocs(CosmosContainer container) {
+        this.TestDocPk1ExistingA =  this.createJsonTestDoc(container, this.partitionKey1);
+        this.TestDocPk1ExistingB =  this.createJsonTestDoc(container, this.partitionKey1);
+        this.TestDocPk1ExistingC =  this.createJsonTestDoc(container, this.partitionKey1);
+        this.TestDocPk1ExistingD =  this.createJsonTestDoc(container, this.partitionKey1);
+    }
+
+    void createJsonTestDocs(CosmosAsyncContainer container) {
         this.TestDocPk1ExistingA =  this.createJsonTestDoc(container, this.partitionKey1);
         this.TestDocPk1ExistingB =  this.createJsonTestDoc(container, this.partitionKey1);
         this.TestDocPk1ExistingC =  this.createJsonTestDoc(container, this.partitionKey1);
@@ -98,13 +110,75 @@ public class BatchTestBase extends TestSuiteBase {
         return doc;
     }
 
+    private TestDoc createJsonTestDoc(CosmosAsyncContainer container, String partitionKey) {
+        return createJsonTestDoc(container, partitionKey, 20);
+    }
+
+    TestDoc createJsonTestDoc(CosmosAsyncContainer container, String partitionKey, int minDesiredSize) {
+        TestDoc doc = this.populateTestDoc(partitionKey, minDesiredSize);
+        CosmosItemResponse<TestDoc> createResponse = container.createItem(doc, this.getPartitionKey(partitionKey), null).block();
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        return doc;
+    }
+
     public Random getRandom() {
         return random;
     }
 
     ISessionToken getSessionToken(String sessionToken) {
-        String[] tokenParts = sessionToken.split(":");
+        String[] tokenParts = org.apache.commons.lang3.StringUtils.split(sessionToken, ':');
         return SessionTokenHelper.parse(tokenParts[1]);
+    }
+
+    String getDifferentLSNToken(String token, long lsnDifferent) throws Exception {
+        String[] tokenParts = org.apache.commons.lang3.StringUtils.split(token, ':');
+        ISessionToken sessionToken = SessionTokenHelper.parse(tokenParts[1]);
+        ISessionToken differentSessionToken = createSessionToken(sessionToken, sessionToken.getLSN() + lsnDifferent);
+        return String.format("%s:%s", tokenParts[0], differentSessionToken.convertToString());
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static ISessionToken createSessionToken(ISessionToken from, long globalLSN) throws Exception {
+        // Creates session token with specified GlobalLSN
+        if (from instanceof VectorSessionToken) {
+            VectorSessionToken fromSessionToken = (VectorSessionToken) from;
+            Field fieldVersion = VectorSessionToken.class.getDeclaredField("version");
+            fieldVersion.setAccessible(true);
+            Long version = (Long) fieldVersion.get(fromSessionToken);
+
+            Field fieldLocalLsnByRegion = VectorSessionToken.class.getDeclaredField("localLsnByRegion");
+            fieldLocalLsnByRegion.setAccessible(true);
+            UnmodifiableMap<Integer, Long> localLsnByRegion = (UnmodifiableMap<Integer, Long>) fieldLocalLsnByRegion.get(fromSessionToken);
+
+            Constructor<VectorSessionToken> constructor = VectorSessionToken.class.getDeclaredConstructor(long.class, long.class, UnmodifiableMap.class);
+            constructor.setAccessible(true);
+            VectorSessionToken vectorSessionToken = constructor.newInstance(version, globalLSN, localLsnByRegion);
+            return vectorSessionToken;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations) {
+        this.verifyBatchProcessed(batchResponse, numberOfOperations, HttpResponseStatus.OK);
+    }
+
+    void verifyBatchProcessed(TransactionalBatchResponse batchResponse, int numberOfOperations, HttpResponseStatus expectedStatusCode) {
+        assertThat(batchResponse).isNotNull();
+        assertThat(batchResponse.getStatusCode())
+            .as("Batch server response had StatusCode {0} instead of {1} expected and had ErrorMessage {2}",
+                batchResponse.getStatusCode(), expectedStatusCode.code())
+            .isEqualTo(expectedStatusCode.code());
+
+        assertThat(batchResponse.size()).isEqualTo(numberOfOperations);
+        assertThat(batchResponse.getRequestCharge()).isPositive();
+        assertThat(batchResponse.getDiagnostics().toString()).isNotEmpty();
+
+        // Allow a delta since we round both the total charge and the individual operation
+        // charges to 2 decimal places.
+        assertThat(batchResponse.getRequestCharge())
+            .isCloseTo(batchResponse.getResults().stream().mapToDouble(TransactionalBatchOperationResult::getRequestCharge).sum(),
+                Offset.offset(0.1));
     }
 
     public static class TestDoc {

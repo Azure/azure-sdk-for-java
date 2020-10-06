@@ -1272,7 +1272,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = ByteBuffer.wrap(serverBatchRequest.transferRequestBody().getBytes(StandardCharsets.UTF_8));
+        ByteBuffer content = ByteBuffer.wrap(serverBatchRequest.getRequestBody().getBytes(StandardCharsets.UTF_8));
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
