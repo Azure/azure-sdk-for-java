@@ -45,11 +45,7 @@ public class RntbdConnectionStateListener {
 
     public void onException(final RxDocumentServiceRequest request, Throwable exception) {
         checkNotNull(request, "expect non-null request");
-        checkNotNull(exception, "expect non-null error");
-
-        if (exception == null) {
-            return;
-        }
+        checkNotNull(exception, "expect non-null exception");
 
         if (exception instanceof GoneException) {
             final Throwable cause = exception.getCause();
@@ -66,6 +62,8 @@ public class RntbdConnectionStateListener {
                 // * a request timed out in pending acquisition queue
                 // * a request failed fast in admission control layer due to high load
                 // * channel connect timed out
+                //
+                // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
 
                 if (cause instanceof IOException) {
                     final Class<?> type = cause.getClass();
