@@ -770,6 +770,14 @@ public final class PhoneNumberAsyncClient {
 
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
+    /**
+     * Long Running Operation for the purchaseSearch.
+     *
+     * @param searchId ID of the search
+     * @param lroDuration Timelapse of the poll request.
+     * @return A {@link Mono} containing a {@link Response} for the operation
+     */
+
     public PollerFlux<Void, PhoneNumberSearch> beginPurchaseSearch(String searchId, Duration lroDuration) {
 
         final Duration duration = lroDuration != null ? lroDuration : DEFAULT_POLL_INTERVAL;
@@ -780,9 +788,9 @@ public final class PhoneNumberAsyncClient {
             fetchResultOperation(searchId));
     }
 
-    private Function<PollingContext<Void>, Mono<Void>> activationOperation (String searchId) {
+    private Function<PollingContext<Void>, Mono<Void>> activationOperation(String searchId) {
 
-        return (pollingContext) ->withContext(context ->   purchaseSearchWithResponse(searchId,context)
+        return (pollingContext) -> withContext(context -> purchaseSearchWithResponse(searchId, context)
             .flatMap(response -> Mono.just(response.getValue())));
     }
 
@@ -800,18 +808,19 @@ public final class PhoneNumberAsyncClient {
     private Mono<PollResponse<Void>> getSearchByIdStatus(Response<PhoneNumberSearch> phoneNumberSearchResponse) {
         LongRunningOperationStatus status = null;
         SearchStatus statusResponse = phoneNumberSearchResponse.getValue().getStatus();
-        if (statusResponse.equals( SearchStatus.RESERVED))
+        if (statusResponse.equals(SearchStatus.RESERVED)) {
             status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        else if(statusResponse.equals( SearchStatus.EXPIRED))
+        } else if (statusResponse.equals(SearchStatus.EXPIRED)) {
             status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        else if(statusResponse.equals( SearchStatus.SUCCESS))
+        } else if (statusResponse.equals(SearchStatus.SUCCESS)) {
             status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        else if(statusResponse.equals( SearchStatus.ERROR))
+        } else if (statusResponse.equals(SearchStatus.ERROR)) {
             status = LongRunningOperationStatus.FAILED;
-        else
+        } else {
             status = LongRunningOperationStatus.IN_PROGRESS;
+        }
 
-        return Mono.just(new PollResponse<>(status,null));
+        return Mono.just(new PollResponse<>(status, null));
 
 
     }
@@ -829,7 +838,7 @@ public final class PhoneNumberAsyncClient {
                         return Mono.empty();
                     });
             } catch (HttpResponseException e) {
-                return Mono.error(new RuntimeException("HTTP response error "+e));
+                return Mono.error(new RuntimeException("HTTP response error " + e));
             }
         };
 
