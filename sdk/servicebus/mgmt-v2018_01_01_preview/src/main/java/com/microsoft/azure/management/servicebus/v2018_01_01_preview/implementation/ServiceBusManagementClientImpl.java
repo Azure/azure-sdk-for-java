@@ -51,18 +51,6 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Client API version. */
-    private String apiVersion;
-
-    /**
-     * Gets Client API version.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -133,6 +121,45 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The NamespacesInner object to access its operations.
+     */
+    private NamespacesInner namespaces;
+
+    /**
+     * Gets the NamespacesInner object to access its operations.
+     * @return the NamespacesInner object.
+     */
+    public NamespacesInner namespaces() {
+        return this.namespaces;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsInner privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsInner object.
+     */
+    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesInner object to access its operations.
+     */
+    private PrivateLinkResourcesInner privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * @return the PrivateLinkResourcesInner object.
+     */
+    public PrivateLinkResourcesInner privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
      * The OperationsInner object to access its operations.
      */
     private OperationsInner operations;
@@ -146,16 +173,120 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The NamespacesInner object to access its operations.
+     * The QueuesInner object to access its operations.
      */
-    private NamespacesInner namespaces;
+    private QueuesInner queues;
 
     /**
-     * Gets the NamespacesInner object to access its operations.
-     * @return the NamespacesInner object.
+     * Gets the QueuesInner object to access its operations.
+     * @return the QueuesInner object.
      */
-    public NamespacesInner namespaces() {
-        return this.namespaces;
+    public QueuesInner queues() {
+        return this.queues;
+    }
+
+    /**
+     * The TopicsInner object to access its operations.
+     */
+    private TopicsInner topics;
+
+    /**
+     * Gets the TopicsInner object to access its operations.
+     * @return the TopicsInner object.
+     */
+    public TopicsInner topics() {
+        return this.topics;
+    }
+
+    /**
+     * The DisasterRecoveryConfigsInner object to access its operations.
+     */
+    private DisasterRecoveryConfigsInner disasterRecoveryConfigs;
+
+    /**
+     * Gets the DisasterRecoveryConfigsInner object to access its operations.
+     * @return the DisasterRecoveryConfigsInner object.
+     */
+    public DisasterRecoveryConfigsInner disasterRecoveryConfigs() {
+        return this.disasterRecoveryConfigs;
+    }
+
+    /**
+     * The EventHubsInner object to access its operations.
+     */
+    private EventHubsInner eventHubs;
+
+    /**
+     * Gets the EventHubsInner object to access its operations.
+     * @return the EventHubsInner object.
+     */
+    public EventHubsInner eventHubs() {
+        return this.eventHubs;
+    }
+
+    /**
+     * The MigrationConfigsInner object to access its operations.
+     */
+    private MigrationConfigsInner migrationConfigs;
+
+    /**
+     * Gets the MigrationConfigsInner object to access its operations.
+     * @return the MigrationConfigsInner object.
+     */
+    public MigrationConfigsInner migrationConfigs() {
+        return this.migrationConfigs;
+    }
+
+    /**
+     * The PremiumMessagingRegionsInner object to access its operations.
+     */
+    private PremiumMessagingRegionsInner premiumMessagingRegions;
+
+    /**
+     * Gets the PremiumMessagingRegionsInner object to access its operations.
+     * @return the PremiumMessagingRegionsInner object.
+     */
+    public PremiumMessagingRegionsInner premiumMessagingRegions() {
+        return this.premiumMessagingRegions;
+    }
+
+    /**
+     * The RegionsInner object to access its operations.
+     */
+    private RegionsInner regions;
+
+    /**
+     * Gets the RegionsInner object to access its operations.
+     * @return the RegionsInner object.
+     */
+    public RegionsInner regions() {
+        return this.regions;
+    }
+
+    /**
+     * The SubscriptionsInner object to access its operations.
+     */
+    private SubscriptionsInner subscriptions;
+
+    /**
+     * Gets the SubscriptionsInner object to access its operations.
+     * @return the SubscriptionsInner object.
+     */
+    public SubscriptionsInner subscriptions() {
+        return this.subscriptions;
+    }
+
+    /**
+     * The RulesInner object to access its operations.
+     */
+    private RulesInner rules;
+
+    /**
+     * Gets the RulesInner object to access its operations.
+     * @return the RulesInner object.
+     */
+    public RulesInner rules() {
+        return this.rules;
     }
 
     /**
@@ -189,12 +320,22 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-01-01-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.namespaces = new NamespacesInner(restClient().retrofit(), this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
+        this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.queues = new QueuesInner(restClient().retrofit(), this);
+        this.topics = new TopicsInner(restClient().retrofit(), this);
+        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsInner(restClient().retrofit(), this);
+        this.eventHubs = new EventHubsInner(restClient().retrofit(), this);
+        this.migrationConfigs = new MigrationConfigsInner(restClient().retrofit(), this);
+        this.premiumMessagingRegions = new PremiumMessagingRegionsInner(restClient().retrofit(), this);
+        this.regions = new RegionsInner(restClient().retrofit(), this);
+        this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
+        this.rules = new RulesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -205,6 +346,6 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ServiceBusManagementClient", "2018-01-01-preview");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ServiceBusManagementClient", "2018-01-01-preiew");
     }
 }

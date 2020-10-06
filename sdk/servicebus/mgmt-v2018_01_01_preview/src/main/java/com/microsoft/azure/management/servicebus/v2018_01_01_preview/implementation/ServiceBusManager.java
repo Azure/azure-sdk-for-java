@@ -16,8 +16,19 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Operations;
 import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Namespaces;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.PrivateEndpointConnections;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.PrivateLinkResources;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Operations;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Queues;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Topics;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.DisasterRecoveryConfigs;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.EventHubs;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.MigrationConfigs;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.PremiumMessagingRegions;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Regions;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Subscriptions;
+import com.microsoft.azure.management.servicebus.v2018_01_01_preview.Rules;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -25,8 +36,19 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure ServiceBus resource management.
  */
 public final class ServiceBusManager extends ManagerCore<ServiceBusManager, ServiceBusManagementClientImpl> {
-    private Operations operations;
     private Namespaces namespaces;
+    private PrivateEndpointConnections privateEndpointConnections;
+    private PrivateLinkResources privateLinkResources;
+    private Operations operations;
+    private Queues queues;
+    private Topics topics;
+    private DisasterRecoveryConfigs disasterRecoveryConfigs;
+    private EventHubs eventHubs;
+    private MigrationConfigs migrationConfigs;
+    private PremiumMessagingRegions premiumMessagingRegions;
+    private Regions regions;
+    private Subscriptions subscriptions;
+    private Rules rules;
     /**
     * Get a Configurable instance that can be used to create ServiceBusManager with optional configuration.
     *
@@ -75,6 +97,36 @@ public final class ServiceBusManager extends ManagerCore<ServiceBusManager, Serv
     }
 
     /**
+     * @return Entry point to manage Namespaces.
+     */
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(this);
+        }
+        return this.namespaces;
+    }
+
+    /**
+     * @return Entry point to manage PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
+        }
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(this);
+        }
+        return this.privateLinkResources;
+    }
+
+    /**
      * @return Entry point to manage Operations.
      */
     public Operations operations() {
@@ -85,13 +137,93 @@ public final class ServiceBusManager extends ManagerCore<ServiceBusManager, Serv
     }
 
     /**
-     * @return Entry point to manage Namespaces.
+     * @return Entry point to manage Queues.
      */
-    public Namespaces namespaces() {
-        if (this.namespaces == null) {
-            this.namespaces = new NamespacesImpl(this);
+    public Queues queues() {
+        if (this.queues == null) {
+            this.queues = new QueuesImpl(this);
         }
-        return this.namespaces;
+        return this.queues;
+    }
+
+    /**
+     * @return Entry point to manage Topics.
+     */
+    public Topics topics() {
+        if (this.topics == null) {
+            this.topics = new TopicsImpl(this);
+        }
+        return this.topics;
+    }
+
+    /**
+     * @return Entry point to manage DisasterRecoveryConfigs.
+     */
+    public DisasterRecoveryConfigs disasterRecoveryConfigs() {
+        if (this.disasterRecoveryConfigs == null) {
+            this.disasterRecoveryConfigs = new DisasterRecoveryConfigsImpl(this);
+        }
+        return this.disasterRecoveryConfigs;
+    }
+
+    /**
+     * @return Entry point to manage EventHubs.
+     */
+    public EventHubs eventHubs() {
+        if (this.eventHubs == null) {
+            this.eventHubs = new EventHubsImpl(this);
+        }
+        return this.eventHubs;
+    }
+
+    /**
+     * @return Entry point to manage MigrationConfigs.
+     */
+    public MigrationConfigs migrationConfigs() {
+        if (this.migrationConfigs == null) {
+            this.migrationConfigs = new MigrationConfigsImpl(this);
+        }
+        return this.migrationConfigs;
+    }
+
+    /**
+     * @return Entry point to manage PremiumMessagingRegions.
+     */
+    public PremiumMessagingRegions premiumMessagingRegions() {
+        if (this.premiumMessagingRegions == null) {
+            this.premiumMessagingRegions = new PremiumMessagingRegionsImpl(this);
+        }
+        return this.premiumMessagingRegions;
+    }
+
+    /**
+     * @return Entry point to manage Regions.
+     */
+    public Regions regions() {
+        if (this.regions == null) {
+            this.regions = new RegionsImpl(this);
+        }
+        return this.regions;
+    }
+
+    /**
+     * @return Entry point to manage Subscriptions.
+     */
+    public Subscriptions subscriptions() {
+        if (this.subscriptions == null) {
+            this.subscriptions = new SubscriptionsImpl(this);
+        }
+        return this.subscriptions;
+    }
+
+    /**
+     * @return Entry point to manage Rules.
+     */
+    public Rules rules() {
+        if (this.rules == null) {
+            this.rules = new RulesImpl(this);
+        }
+        return this.rules;
     }
 
     /**
