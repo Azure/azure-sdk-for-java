@@ -499,6 +499,7 @@ class QueueAPITests extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         given:
         def queueClient = queueBuilderHelper(interceptorManager)
