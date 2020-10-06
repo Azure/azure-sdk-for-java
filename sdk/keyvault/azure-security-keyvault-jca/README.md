@@ -79,7 +79,7 @@ connections, see the Apache HTTP client example below.
         HttpGet httpGet = new HttpGet("https://localhost:8766");
         HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
             int status = response.getCode();
-            String result1 = null;
+            String result1 = "Not success";
             if (status == 204) {
                 result1 = "Success";
             }
@@ -91,8 +91,8 @@ connections, see the Apache HTTP client example below.
     }
 ```
 
-Note if you want to use a Azure managed identity you would only pass the value
-of the `azure.keyvault.uri` and the rest of the parameters would be `null`.
+Note if you want to use an Azure managed identity you only need to pass the value
+of the `azure.keyvault.uri` and let the remaining parameters be `null`.
 
 ## Spring Boot
 
