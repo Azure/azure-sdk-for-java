@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of ModelData objects. */
+/** A collection of DigitalTwinsModelData objects. */
 @Fluent
-public final class PagedModelDataCollection {
+public final class PagedDigitalTwinsModelDataCollection {
     /*
-     * The ModelData objects.
+     * The DigitalTwinsModelData objects.
      */
     @JsonProperty(value = "value")
-    private List<ModelData> value;
+    private List<DigitalTwinsModelData> value;
 
     /*
      * A URI to retrieve the next page of objects.
@@ -24,21 +24,21 @@ public final class PagedModelDataCollection {
     private String nextLink;
 
     /**
-     * Get the value property: The ModelData objects.
+     * Get the value property: The DigitalTwinsModelData objects.
      *
      * @return the value value.
      */
-    public List<ModelData> getValue() {
+    public List<DigitalTwinsModelData> getValue() {
         return this.value;
     }
 
     /**
-     * Set the value property: The ModelData objects.
+     * Set the value property: The DigitalTwinsModelData objects.
      *
      * @param value the value value to set.
-     * @return the PagedModelDataCollection object itself.
+     * @return the PagedDigitalTwinsModelDataCollection object itself.
      */
-    public PagedModelDataCollection setValue(List<ModelData> value) {
+    public PagedDigitalTwinsModelDataCollection setValue(List<DigitalTwinsModelData> value) {
         this.value = value;
         return this;
     }
@@ -56,9 +56,9 @@ public final class PagedModelDataCollection {
      * Set the nextLink property: A URI to retrieve the next page of objects.
      *
      * @param nextLink the nextLink value to set.
-     * @return the PagedModelDataCollection object itself.
+     * @return the PagedDigitalTwinsModelDataCollection object itself.
      */
-    public PagedModelDataCollection setNextLink(String nextLink) {
+    public PagedDigitalTwinsModelDataCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

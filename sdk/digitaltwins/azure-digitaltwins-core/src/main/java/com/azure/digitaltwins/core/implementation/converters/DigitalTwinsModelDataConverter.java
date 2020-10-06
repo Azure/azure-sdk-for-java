@@ -5,16 +5,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * A converter between {@link com.azure.digitaltwins.core.implementation.models.ModelData} and
+ * A converter between {@link com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData} and
  * {@link DigitalTwinsModelData}.
  */
-public final class ModelDataConverter {
+public final class DigitalTwinsModelDataConverter {
 
     /**
-     * Maps from {@link com.azure.digitaltwins.core.implementation.models.ModelData} to
-     * {@link DigitalTwinsModelData}.
+     * Maps from {@link com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData} to
+     * {@link DigitalTwinsModelData}. If the input is null, then the output will be null as well.
      */
-    public static DigitalTwinsModelData map(com.azure.digitaltwins.core.implementation.models.ModelData input) {
+    public static DigitalTwinsModelData map(com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData input) {
+        if (input == null) {
+            return null;
+        }
+
         String modelStringValue = null;
 
         if (input.getModel() != null){
@@ -34,5 +38,5 @@ public final class ModelDataConverter {
             .setModel(modelStringValue);
     }
 
-    private ModelDataConverter() {}
+    private DigitalTwinsModelDataConverter() {}
 }

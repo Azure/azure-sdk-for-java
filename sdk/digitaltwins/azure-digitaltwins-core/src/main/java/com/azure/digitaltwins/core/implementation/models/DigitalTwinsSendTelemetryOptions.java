@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter group. */
 @Fluent
-public final class DigitalTwinModelsListOptions {
+public final class DigitalTwinsSendTelemetryOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -22,13 +22,6 @@ public final class DigitalTwinModelsListOptions {
      */
     @JsonProperty(value = "tracestate")
     private String tracestate;
-
-    /*
-     * The maximum number of items to retrieve per request. The server may
-     * choose to return less than the requested number.
-     */
-    @JsonProperty(value = "MaxItemsPerPage")
-    private Integer maxItemsPerPage;
 
     /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
@@ -43,9 +36,9 @@ public final class DigitalTwinModelsListOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the DigitalTwinModelsListOptions object itself.
+     * @return the DigitalTwinsSendTelemetryOptions object itself.
      */
-    public DigitalTwinModelsListOptions setTraceparent(String traceparent) {
+    public DigitalTwinsSendTelemetryOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,32 +58,10 @@ public final class DigitalTwinModelsListOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the DigitalTwinModelsListOptions object itself.
+     * @return the DigitalTwinsSendTelemetryOptions object itself.
      */
-    public DigitalTwinModelsListOptions setTracestate(String tracestate) {
+    public DigitalTwinsSendTelemetryOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
-        return this;
-    }
-
-    /**
-     * Get the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested number.
-     *
-     * @return the maxItemsPerPage value.
-     */
-    public Integer getMaxItemsPerPage() {
-        return this.maxItemsPerPage;
-    }
-
-    /**
-     * Set the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested number.
-     *
-     * @param maxItemsPerPage the maxItemsPerPage value to set.
-     * @return the DigitalTwinModelsListOptions object itself.
-     */
-    public DigitalTwinModelsListOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
-        this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }
 

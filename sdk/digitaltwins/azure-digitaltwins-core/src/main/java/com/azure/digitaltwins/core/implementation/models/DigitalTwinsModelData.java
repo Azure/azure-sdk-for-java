@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** A model definition and metadata for that model. */
 @Fluent
-public final class ModelData {
+public final class DigitalTwinsModelData {
     /*
      * A language map that contains the localized display names as specified in
      * the model definition.
@@ -53,12 +53,12 @@ public final class ModelData {
     private Object model;
 
     /**
-     * Creates an instance of ModelData class.
+     * Creates an instance of DigitalTwinsModelData class.
      *
      * @param id the id value to set.
      */
     @JsonCreator
-    public ModelData(@JsonProperty(value = "id", required = true) String id) {
+    public DigitalTwinsModelData(@JsonProperty(value = "id", required = true) String id) {
         this.id = id;
     }
 
@@ -77,9 +77,9 @@ public final class ModelData {
      * definition.
      *
      * @param displayName the displayName value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setDisplayName(Map<String, String> displayName) {
+    public DigitalTwinsModelData setDisplayName(Map<String, String> displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -99,9 +99,9 @@ public final class ModelData {
      * definition.
      *
      * @param description the description value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setDescription(Map<String, String> description) {
+    public DigitalTwinsModelData setDescription(Map<String, String> description) {
         this.description = description;
         return this;
     }
@@ -128,9 +128,9 @@ public final class ModelData {
      * Set the uploadTime property: The time the model was uploaded to the service.
      *
      * @param uploadTime the uploadTime value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setUploadTime(OffsetDateTime uploadTime) {
+    public DigitalTwinsModelData setUploadTime(OffsetDateTime uploadTime) {
         this.uploadTime = uploadTime;
         return this;
     }
@@ -150,9 +150,9 @@ public final class ModelData {
      * referenced by newly created digital twins.
      *
      * @param decommissioned the decommissioned value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setDecommissioned(Boolean decommissioned) {
+    public DigitalTwinsModelData setDecommissioned(Boolean decommissioned) {
         this.decommissioned = decommissioned;
         return this;
     }
@@ -170,9 +170,9 @@ public final class ModelData {
      * Set the model property: The model definition.
      *
      * @param model the model value to set.
-     * @return the ModelData object itself.
+     * @return the DigitalTwinsModelData object itself.
      */
-    public ModelData setModel(Object model) {
+    public DigitalTwinsModelData setModel(Object model) {
         this.model = model;
         return this;
     }
@@ -184,7 +184,7 @@ public final class ModelData {
      */
     public void validate() {
         if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model ModelData");
+            throw new IllegalArgumentException("Missing required property id in model DigitalTwinsModelData");
         }
     }
 }
