@@ -526,8 +526,7 @@ public final class PhoneNumberClient {
 
     /**
      * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
-     * This function returns a Long Running Operation poller that allows you to 
-     * wait indefinitely until the operation is complete.
+     * This function returns a Long Running Operation poller.
      * 
      * @param options A {@link CreateSearchOptions} with the search options
      * @param lroDuration The time our long running operation will keep on polling 
@@ -535,7 +534,7 @@ public final class PhoneNumberClient {
      * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<CreateSearchResponse, PhoneNumberSearch> beginCreateSearch(
+    public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration lroDuration) {
         return phoneNumberAsyncClient.beginCreateSearch(options, lroDuration).getSyncPoller();
     }
