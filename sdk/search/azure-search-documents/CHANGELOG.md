@@ -11,7 +11,7 @@
 
 ### Breaking Changes
 
-- Renamed `SeachBatchClient` and `SearchBatchAsyncClient` to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+- Renamed `SearchBatchClient` and `SearchBatchAsyncClient` to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
 - Removed `SearchBatchClientBuilder` for options bag `SearchIndexingBufferedSenderOptions`.
 - Renamed `getSearchBatchClient` to `getSearchIndexingBufferedSender` in `SearchClient`.
 - Made `SearchIdexingBufferedSender` generic typed.
