@@ -4,7 +4,6 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.common.PhoneNumber;
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.core.http.HttpHeaders;
@@ -29,9 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidKeyException;
 
 public class SmsTestBase {
 
@@ -60,23 +56,14 @@ public class SmsTestBase {
         HttpClient httpClient = getHttpClient(from, to, body, smsOptions);
 
         SmsClientBuilder builder = new SmsClientBuilder();
-        try {
-            CommunicationClientCredential credential = new CommunicationClientCredential(ACCESSKEY);
 
-            builder.endpoint(PROTOCOL + ENDPOINT)
-                .credential(credential)
-                .httpClient(httpClient);
+        builder.endpoint(PROTOCOL + ENDPOINT)
+            .accessKey(ACCESSKEY)
+            .httpClient(httpClient);
 
-            if (policy != null) {
-                builder.addPolicy(policy);
-            }
-        } catch (NoSuchAlgorithmException e) {
-            fail(e.getMessage());
-        } catch (InvalidKeyException e) {
-            fail(e.getMessage());
+        if (policy != null) {
+            builder.addPolicy(policy);
         }
-
-        assertNotNull(builder);
         return builder;
     }
 

@@ -31,18 +31,17 @@ import static org.mockito.Mockito.*;
 @Execution(value = ExecutionMode.SAME_THREAD)
 public class PhoneNumberClientBuilderTest {
     private static final String ENDPOINT = "https://mycommunication.eastus.dev.communications.azure.net/";
+    private static final String ACCESSKEY = "QWNjZXNzS2V5";
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-communication-administration.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private CommunicationClientCredential credential;
     private HttpClient httpClient;
     private PhoneNumberClientBuilder clientBuilder;
 
     @BeforeEach
     void setUp() {
-        this.credential = mock(CommunicationClientCredential.class);
         this.httpClient = mock(HttpClient.class);
         this.clientBuilder = Mockito.spy(new PhoneNumberClientBuilder());
     }
@@ -153,7 +152,7 @@ public class PhoneNumberClientBuilderTest {
     @Test()
     public void buildClientNoPipelineNoHttpClient() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.endpoint(ENDPOINT).credential(this.credential).buildClient();
+            this.clientBuilder.endpoint(ENDPOINT).accessKey(ACCESSKEY).buildClient();
         });
     }
 
@@ -267,7 +266,7 @@ public class PhoneNumberClientBuilderTest {
     @Test()
     public void buildAsyncClientNoPipelineNoHttpClient() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.endpoint(ENDPOINT).credential(this.credential).buildClient();
+            this.clientBuilder.endpoint(ENDPOINT).accessKey(ACCESSKEY).buildClient();
         });
     }
 
@@ -293,9 +292,9 @@ public class PhoneNumberClientBuilderTest {
     }
 
     @Test()
-    public void setCredentialNull() {
+    public void setAccessKeyNull() {
         assertThrows(NullPointerException.class, () -> {
-            this.clientBuilder.credential(null);
+            this.clientBuilder.accessKey(null);
         });
     }
 
@@ -310,7 +309,7 @@ public class PhoneNumberClientBuilderTest {
         return clientBuilder
             .endpoint(ENDPOINT)
             .httpClient(this.httpClient)
-            .credential(this.credential);
+            .accessKey(ACCESSKEY);
     }
 
     private PhoneNumberClientBuilder setupBuilderWithPolicies(
@@ -334,12 +333,10 @@ public class PhoneNumberClientBuilderTest {
         spyHelper.capturePhoneNumberAdminClientImpl();
         spyHelper.captureHttpPipelineSettings();
         PhoneNumberAdminClientImpl phoneNumberManagementClient = spyHelper.phoneNumberAdminClientArg.getValue();
-        CommunicationClientCredential communicationClientCredential = spyHelper.credentialArg.getValue();
 
         // Validate required settings
         assertEquals(ENDPOINT, phoneNumberManagementClient.getEndpoint());
         assertEquals(this.httpClient, phoneNumberManagementClient.getHttpPipeline().getHttpClient());
-        assertEquals(this.credential, communicationClientCredential);
 
         // Validate HttpPipelinePolicy settings
         assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
