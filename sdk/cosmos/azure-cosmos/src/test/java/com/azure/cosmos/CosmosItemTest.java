@@ -102,6 +102,28 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithEventualConsistency() throws Exception {
+        this.client = getClientBuilder()
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .gatewayMode()
+            .buildClient();
+
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            new CosmosItemRequestOptions(),
+            InternalObjectNode.class);
+        System.out.println("REQUEST DIAGNOSTICS: " + readResponse1.getDiagnostics().toString());
+        validateItemResponse(properties, readResponse1);
+
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -154,7 +176,6 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -173,6 +194,41 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
                 container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryItemsWithEventualConsistency() throws Exception{
+
+        this.client = getClientBuilder()
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .gatewayMode()
+            .buildClient();
+
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+            container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
+        feedResponseIterator1.handle((r) -> System.out.println("Query RequestDiagnostics: " + r.getCosmosDiagnostics().toString()));
+        System.out.println("hello world");
+
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+        assertThat(feedResponseIterator1.stream().count() == 1);
+
+        SqlQuerySpec querySpec = new SqlQuerySpec(query);
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
+            container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
+        feedResponseIterator3.handle((r) -> System.out.println("Query RequestDiagnostics: " + r.getCosmosDiagnostics().toString()));
+        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+        assertThat(feedResponseIterator3.stream().count() == 1);
+
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
