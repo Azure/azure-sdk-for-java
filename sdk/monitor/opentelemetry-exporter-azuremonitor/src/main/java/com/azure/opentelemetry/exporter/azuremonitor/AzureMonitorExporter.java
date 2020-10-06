@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +71,7 @@ public class AzureMonitorExporter implements SpanExporter {
         dbSystems.add("hsqldb");
         dbSystems.add("h2");
 
-        SQL_DB_SYSTEMS = dbSystems;
+        SQL_DB_SYSTEMS = Collections.unmodifiableSet(dbSystems);
     }
 
     private final MonitorExporterClient client;

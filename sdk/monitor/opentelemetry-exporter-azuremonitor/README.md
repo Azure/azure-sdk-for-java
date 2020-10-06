@@ -1,4 +1,4 @@
-# OpenTelemetry Azure Monitor Exporter client library for Java
+# Azure Monitor OpenTelemetry Exporter client library for Java
 
 This client library provides support for exporting OpenTelemetry data to Azure Monitor. This package assumes your
  application is already instrumented with the [OpenTelemetry SDK][opentelemetry_sdk] following the [OpenTelemetry
