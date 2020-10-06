@@ -16,6 +16,7 @@ public final class TestConstants {
     public static final List<Address> ADDRESSES = Arrays.asList(ADDRESS_1, ADDRESS_2);
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
+    public static final String BOOK_COLLECTION_NAME = "BookCollectionName";
     public static final int TIME_TO_LIVE = 5;
     public static final boolean INDEXING_POLICY_AUTOMATIC = true;
     public static final IndexingMode INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
