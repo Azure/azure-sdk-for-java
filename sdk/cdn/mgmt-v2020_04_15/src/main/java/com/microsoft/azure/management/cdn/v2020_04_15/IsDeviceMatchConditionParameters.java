@@ -36,7 +36,7 @@ public class IsDeviceMatchConditionParameters {
     /**
      * The match value for the condition of the delivery rule.
      */
-    @JsonProperty(value = "matchValues", required = true)
+    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /**
@@ -47,7 +47,6 @@ public class IsDeviceMatchConditionParameters {
 
     /**
      * Creates an instance of IsDeviceMatchConditionParameters class.
-     * @param matchValues the match value for the condition of the delivery rule.
      */
     public IsDeviceMatchConditionParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleIsDeviceConditionParameters";
