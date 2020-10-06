@@ -12,13 +12,14 @@ import com.microsoft.azure.management.netapp.v2020_02_01.Volume;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.netapp.v2020_02_01.VolumePatch;
-import com.microsoft.azure.management.netapp.v2020_02_01.ServiceLevel;
+import com.microsoft.azure.management.netapp.v2020_02_01.VolumeServiceLevel;
 import com.microsoft.azure.management.netapp.v2020_02_01.VolumePropertiesExportPolicy;
 import java.util.List;
 import com.microsoft.azure.management.netapp.v2020_02_01.MountTargetProperties;
 import com.microsoft.azure.management.netapp.v2020_02_01.VolumePropertiesDataProtection;
 import java.util.Map;
 import com.microsoft.azure.management.netapp.v2020_02_01.VolumePatchPropertiesExportPolicy;
+import com.microsoft.azure.management.netapp.v2020_02_01.ServiceLevel;
 import rx.functions.Func1;
 
 class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl> implements Volume, Volume.Definition, Volume.Update {
@@ -161,7 +162,7 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
-    public ServiceLevel serviceLevel() {
+    public VolumeServiceLevel serviceLevel() {
         return this.inner().serviceLevel();
     }
 
@@ -263,6 +264,12 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
+    public VolumeImpl withServiceLevel(VolumeServiceLevel serviceLevel) {
+        this.inner().withServiceLevel(serviceLevel);
+        return this;
+    }
+
+    @Override
     public VolumeImpl withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
         this.inner().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
         return this;
@@ -287,18 +294,14 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
-    public VolumeImpl withUsageThreshold(Long usageThreshold) {
-        this.updateParameter.withUsageThreshold(usageThreshold);
+    public VolumeImpl withServiceLevel(ServiceLevel serviceLevel) {
+        this.updateParameter.withServiceLevel(serviceLevel);
         return this;
     }
 
     @Override
-    public VolumeImpl withServiceLevel(ServiceLevel serviceLevel) {
-        if (isInCreateMode()) {
-            this.inner().withServiceLevel(serviceLevel);
-        } else {
-            this.updateParameter.withServiceLevel(serviceLevel);
-        }
+    public VolumeImpl withUsageThreshold(Long usageThreshold) {
+        this.updateParameter.withUsageThreshold(usageThreshold);
         return this;
     }
 
