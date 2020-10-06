@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2020-10-06)
 
 - Added : `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
 
