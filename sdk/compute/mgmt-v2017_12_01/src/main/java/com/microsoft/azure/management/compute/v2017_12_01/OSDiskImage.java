@@ -22,7 +22,7 @@ public class OSDiskImage {
     private OperatingSystemTypes operatingSystem;
 
     /**
-     * Get the operatingSystem value.
+     * Get the operating system of the osDiskImage. Possible values include: 'Windows', 'Linux'.
      *
      * @return the operatingSystem value
      */
@@ -31,7 +31,7 @@ public class OSDiskImage {
     }
 
     /**
-     * Set the operatingSystem value.
+     * Set the operating system of the osDiskImage. Possible values include: 'Windows', 'Linux'.
      *
      * @param operatingSystem the operatingSystem value to set
      * @return the OSDiskImage object itself.
