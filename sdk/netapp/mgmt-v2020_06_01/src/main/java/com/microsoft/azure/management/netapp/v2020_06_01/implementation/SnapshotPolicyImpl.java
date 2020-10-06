@@ -13,6 +13,10 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.netapp.v2020_06_01.SnapshotPolicyPatch;
 import java.util.Map;
+import com.microsoft.azure.management.netapp.v2020_06_01.HourlySchedule;
+import com.microsoft.azure.management.netapp.v2020_06_01.DailySchedule;
+import com.microsoft.azure.management.netapp.v2020_06_01.WeeklySchedule;
+import com.microsoft.azure.management.netapp.v2020_06_01.MonthlySchedule;
 import rx.functions.Func1;
 
 class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, SnapshotPolicyInner, SnapshotPolicyImpl> implements SnapshotPolicy, SnapshotPolicy.Definition, SnapshotPolicy.Update {
@@ -93,7 +97,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public Object dailySchedule() {
+    public DailySchedule dailySchedule() {
         return this.inner().dailySchedule();
     }
 
@@ -103,7 +107,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public Object hourlySchedule() {
+    public HourlySchedule hourlySchedule() {
         return this.inner().hourlySchedule();
     }
 
@@ -118,13 +122,23 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public Object monthlySchedule() {
+    public MonthlySchedule monthlySchedule() {
         return this.inner().monthlySchedule();
     }
 
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public String name1() {
+        return this.inner().name1();
+    }
+
+    @Override
+    public String provisioningState() {
+        return this.inner().provisioningState();
     }
 
     @Override
@@ -138,7 +152,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public Object weeklySchedule() {
+    public WeeklySchedule weeklySchedule() {
         return this.inner().weeklySchedule();
     }
 
@@ -160,7 +174,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public SnapshotPolicyImpl withDailySchedule(Object dailySchedule) {
+    public SnapshotPolicyImpl withDailySchedule(DailySchedule dailySchedule) {
         if (isInCreateMode()) {
             this.inner().withDailySchedule(dailySchedule);
         } else {
@@ -180,7 +194,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public SnapshotPolicyImpl withHourlySchedule(Object hourlySchedule) {
+    public SnapshotPolicyImpl withHourlySchedule(HourlySchedule hourlySchedule) {
         if (isInCreateMode()) {
             this.inner().withHourlySchedule(hourlySchedule);
         } else {
@@ -190,7 +204,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public SnapshotPolicyImpl withMonthlySchedule(Object monthlySchedule) {
+    public SnapshotPolicyImpl withMonthlySchedule(MonthlySchedule monthlySchedule) {
         if (isInCreateMode()) {
             this.inner().withMonthlySchedule(monthlySchedule);
         } else {
@@ -210,7 +224,7 @@ class SnapshotPolicyImpl extends CreatableUpdatableImpl<SnapshotPolicy, Snapshot
     }
 
     @Override
-    public SnapshotPolicyImpl withWeeklySchedule(Object weeklySchedule) {
+    public SnapshotPolicyImpl withWeeklySchedule(WeeklySchedule weeklySchedule) {
         if (isInCreateMode()) {
             this.inner().withWeeklySchedule(weeklySchedule);
         } else {

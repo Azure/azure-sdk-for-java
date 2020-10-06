@@ -8,6 +8,10 @@
 
 package com.microsoft.azure.management.netapp.v2020_06_01.implementation;
 
+import com.microsoft.azure.management.netapp.v2020_06_01.HourlySchedule;
+import com.microsoft.azure.management.netapp.v2020_06_01.DailySchedule;
+import com.microsoft.azure.management.netapp.v2020_06_01.WeeklySchedule;
+import com.microsoft.azure.management.netapp.v2020_06_01.MonthlySchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -18,32 +22,38 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class SnapshotPolicyInner extends Resource {
     /**
+     * Snapshot policy name.
+     */
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name1;
+
+    /**
      * hourlySchedule.
      * Schedule for hourly snapshots.
      */
     @JsonProperty(value = "properties.hourlySchedule")
-    private Object hourlySchedule;
+    private HourlySchedule hourlySchedule;
 
     /**
      * dailySchedule.
      * Schedule for daily snapshots.
      */
     @JsonProperty(value = "properties.dailySchedule")
-    private Object dailySchedule;
+    private DailySchedule dailySchedule;
 
     /**
      * weeklySchedule.
      * Schedule for weekly snapshots.
      */
     @JsonProperty(value = "properties.weeklySchedule")
-    private Object weeklySchedule;
+    private WeeklySchedule weeklySchedule;
 
     /**
      * monthlySchedule.
      * Schedule for monthly snapshots.
      */
     @JsonProperty(value = "properties.monthlySchedule")
-    private Object monthlySchedule;
+    private MonthlySchedule monthlySchedule;
 
     /**
      * The property to decide policy is enabled or not.
@@ -52,11 +62,26 @@ public class SnapshotPolicyInner extends Resource {
     private Boolean enabled;
 
     /**
+     * Azure lifecycle management.
+     */
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
+
+    /**
+     * Get snapshot policy name.
+     *
+     * @return the name1 value
+     */
+    public String name1() {
+        return this.name1;
+    }
+
+    /**
      * Get schedule for hourly snapshots.
      *
      * @return the hourlySchedule value
      */
-    public Object hourlySchedule() {
+    public HourlySchedule hourlySchedule() {
         return this.hourlySchedule;
     }
 
@@ -66,7 +91,7 @@ public class SnapshotPolicyInner extends Resource {
      * @param hourlySchedule the hourlySchedule value to set
      * @return the SnapshotPolicyInner object itself.
      */
-    public SnapshotPolicyInner withHourlySchedule(Object hourlySchedule) {
+    public SnapshotPolicyInner withHourlySchedule(HourlySchedule hourlySchedule) {
         this.hourlySchedule = hourlySchedule;
         return this;
     }
@@ -76,7 +101,7 @@ public class SnapshotPolicyInner extends Resource {
      *
      * @return the dailySchedule value
      */
-    public Object dailySchedule() {
+    public DailySchedule dailySchedule() {
         return this.dailySchedule;
     }
 
@@ -86,7 +111,7 @@ public class SnapshotPolicyInner extends Resource {
      * @param dailySchedule the dailySchedule value to set
      * @return the SnapshotPolicyInner object itself.
      */
-    public SnapshotPolicyInner withDailySchedule(Object dailySchedule) {
+    public SnapshotPolicyInner withDailySchedule(DailySchedule dailySchedule) {
         this.dailySchedule = dailySchedule;
         return this;
     }
@@ -96,7 +121,7 @@ public class SnapshotPolicyInner extends Resource {
      *
      * @return the weeklySchedule value
      */
-    public Object weeklySchedule() {
+    public WeeklySchedule weeklySchedule() {
         return this.weeklySchedule;
     }
 
@@ -106,7 +131,7 @@ public class SnapshotPolicyInner extends Resource {
      * @param weeklySchedule the weeklySchedule value to set
      * @return the SnapshotPolicyInner object itself.
      */
-    public SnapshotPolicyInner withWeeklySchedule(Object weeklySchedule) {
+    public SnapshotPolicyInner withWeeklySchedule(WeeklySchedule weeklySchedule) {
         this.weeklySchedule = weeklySchedule;
         return this;
     }
@@ -116,7 +141,7 @@ public class SnapshotPolicyInner extends Resource {
      *
      * @return the monthlySchedule value
      */
-    public Object monthlySchedule() {
+    public MonthlySchedule monthlySchedule() {
         return this.monthlySchedule;
     }
 
@@ -126,7 +151,7 @@ public class SnapshotPolicyInner extends Resource {
      * @param monthlySchedule the monthlySchedule value to set
      * @return the SnapshotPolicyInner object itself.
      */
-    public SnapshotPolicyInner withMonthlySchedule(Object monthlySchedule) {
+    public SnapshotPolicyInner withMonthlySchedule(MonthlySchedule monthlySchedule) {
         this.monthlySchedule = monthlySchedule;
         return this;
     }
@@ -149,6 +174,15 @@ public class SnapshotPolicyInner extends Resource {
     public SnapshotPolicyInner withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Get azure lifecycle management.
+     *
+     * @return the provisioningState value
+     */
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
 }
