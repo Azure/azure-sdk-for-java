@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public class CommunicationIdentityBuilderTests {
-    static final String MOCKURL = "https://chitchat.dev.communication.azure.net/";
-    static final String MOCKACCESSKEY = "HuZVBcRKEA+TW30GBzdsmRyqitKk1dHj2OBtTsgRe2mzlxWUHGh06CdOVJwp07JKuss1k+/YeXL4dYXPF5El4Q==";
-    static final String MOCKCONNECTIONSTRING = "endpoint=https://chitchat.dev.communication.azure.net//;accesskey=HuZVBcRKEA+TW30GBzdsmRyqitKk1dHj2OBtTsgRe2mzlxWUHGh06CdOVJwp07JKuss1k+/YeXL4dYXPF5El4Q==";
+    static final String MOCK_URL = "https://REDACTED.communication.azure.com";
+    static final String MOCK_ACCESS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
+    static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
 
     static class NoOpHttpClient implements HttpClient {
         @Override
@@ -37,8 +37,8 @@ public class CommunicationIdentityBuilderTests {
     @Test
     public void buildAsyncClientTest() {
         builder
-            .endpoint(MOCKURL)
-            .accessKey(MOCKACCESSKEY)
+            .endpoint(MOCK_URL)
+            .accessKey(MOCK_ACCESS_KEY)
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -62,8 +62,8 @@ public class CommunicationIdentityBuilderTests {
     @Test
     public void buildSyncClientTest() {
         builder
-            .endpoint(MOCKURL)
-            .accessKey(MOCKACCESSKEY)
+            .endpoint(MOCK_URL)
+            .accessKey(MOCK_ACCESS_KEY)
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -87,7 +87,7 @@ public class CommunicationIdentityBuilderTests {
     @Test
     public void buildAsyncClientTestUsingConnectionString() {
         builder
-            .connectionString(MOCKCONNECTIONSTRING)
+            .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -112,7 +112,7 @@ public class CommunicationIdentityBuilderTests {
     public void missingTokenCredentialTest()
         throws NullPointerException, MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
         builder
-            .endpoint(MOCKURL)
+            .endpoint(MOCK_URL)
             .httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, () -> {
             builder.buildAsyncClient();
@@ -123,7 +123,7 @@ public class CommunicationIdentityBuilderTests {
     public void missingUrlTest()
         throws NullPointerException, MalformedURLException {
         builder
-            .accessKey(MOCKACCESSKEY)
+            .accessKey(MOCK_ACCESS_KEY)
             .httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, () -> {
             builder.buildAsyncClient();
