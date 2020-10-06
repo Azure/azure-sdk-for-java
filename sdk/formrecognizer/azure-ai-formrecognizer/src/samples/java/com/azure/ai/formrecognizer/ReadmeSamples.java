@@ -136,7 +136,7 @@ public class ReadmeSamples {
         }
     }
 
-    public void recognizeReceipt() {
+    public void recognizeReceiptFromUrl() {
         String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -196,7 +196,7 @@ public class ReadmeSamples {
         }
     }
 
-    public void recognizeBusinessCard() {
+    public void recognizeBusinessCardFromUrl() {
         String businessCardUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";

@@ -75,7 +75,7 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes receipt data from documents using optical character recognition (OCR)
+     * Recognizes form data from documents using optical character recognition (OCR)
      * and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
@@ -416,7 +416,7 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes data from the provided document data using optical character recognition (OCR)
+     * Recognizes business card data from the provided document data using optical character recognition (OCR)
      * and a prebuilt trained business card model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
@@ -441,8 +441,8 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes data from the provided document data using optical character recognition (OCR) and a prebuilt
-     * trained business card model.
+     * Recognizes business card data from the provided document data using optical character recognition (OCR)
+     * and a prebuilt trained business card model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
