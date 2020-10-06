@@ -13,7 +13,7 @@ following command line:
 If you are looking to integrate the JCA provider to create a SSLServerSocket
 see the example below.
 
-```
+```java
     KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
     Security.addProvider(provider);
 
@@ -43,7 +43,7 @@ of the `azure.keyvault.uri` and the rest of the parameters would be `null`.
 If you are looking to integrate the JCA provider for client side socket 
 connections, see the Apache HTTP client example below.
 
-```
+```java
     KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
     Security.addProvider(provider);
 
