@@ -139,7 +139,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.metrics = new RntbdMetrics(provider.transportClient, this);
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
-        this.connectionStateListener = config.isConnectionEndpointRediscoveryEnabled()
+        this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
             ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
             : null;
     }
@@ -481,7 +481,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
             checkNotNull(sslContext, "expected non-null sslContext");
-            checkNotNull(addressResolver, "expected non-null addressResolver");
 
             final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
             final LogLevel wireLogLevel;

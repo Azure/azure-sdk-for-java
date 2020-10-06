@@ -86,7 +86,6 @@ public class GoneException extends CosmosException {
         this(message, cause, null, requestUri);
     }
 
-
     GoneException(Exception innerException) {
         this(RMResources.Gone, innerException, new HashMap<>(), null);
     }

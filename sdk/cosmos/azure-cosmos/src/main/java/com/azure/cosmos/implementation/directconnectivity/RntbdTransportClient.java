@@ -114,7 +114,6 @@ public final class RntbdTransportClient extends TransportClient {
             addressResolver);
     }
 
-
     RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
         this.endpointProvider = endpointProvider;
         this.id = instanceCount.incrementAndGet();
