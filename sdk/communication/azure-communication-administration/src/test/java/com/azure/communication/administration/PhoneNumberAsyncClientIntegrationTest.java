@@ -23,12 +23,15 @@ import com.azure.communication.administration.models.UpdatePhoneNumberCapabiliti
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -461,6 +464,29 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertNotNull(item.getValue().getReleaseId());
             })
             .verifyComplete();
+    }
+
+    @Test()
+    public void beginCreateSearch() {
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add("27b53eec-8ff4-4070-8900-fbeaabfd158a");
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode(AREA_CODE_FOR_SEARCH)
+            .setDescription("testsearch20200014")
+            .setDisplayName("testsearch20200014")
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+
+        Duration duration = Duration.ofSeconds(5);
+        PhoneNumberAsyncClient client = this.getClient();
+        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> res = client.beginCreateSearch(createSearchOptions, duration);
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> sync = res.getSyncPoller();
+        sync.waitForCompletion();
+        PhoneNumberSearch testResult = sync.getFinalResult();
+        assertEquals(testResult.getPhoneNumbers().size(), 2);
+        assertNotNull(testResult.getSearchId());
     }
 
     private PhoneNumberAsyncClient getClient() {
