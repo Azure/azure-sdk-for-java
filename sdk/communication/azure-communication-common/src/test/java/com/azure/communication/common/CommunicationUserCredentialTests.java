@@ -99,7 +99,7 @@ public class CommunicationUserCredentialTests {
 
         @Override
         public String get() throws InterruptedException, ExecutionException {
-            return tokenMocker.generateRawToken("Mock", "user", 610);
+            return tokenMocker.generateRawToken("Mock", "user", 12*60);
         }
 
         @Override
