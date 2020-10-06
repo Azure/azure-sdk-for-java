@@ -11,6 +11,17 @@ To build and install the starter use the following command line:
   mvn clean install -DskipTests=true
 ```
 
+## Maven dependency
+
+All usage requires you to add the following dependency to your Maven POM file.
+
+```xml
+    <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
+    </dependency>
+```
+
 ## Server side SSL
 
 ### Using a managed identity
