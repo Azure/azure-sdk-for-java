@@ -11,59 +11,32 @@ package com.microsoft.azure.management.servicebus.v2017_04_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Error response indicates ServiceBus service is not able to process the
- * incoming request. The reason is provided in the error message.
+ * The resource management error response.
  */
 public class ErrorResponse {
     /**
-     * Error code.
+     * The error object.
      */
-    @JsonProperty(value = "code")
-    private String code;
+    @JsonProperty(value = "error")
+    private ErrorResponseError error;
 
     /**
-     * Error message indicating why the operation failed.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /**
-     * Get error code.
+     * Get the error object.
      *
-     * @return the code value
+     * @return the error value
      */
-    public String code() {
-        return this.code;
+    public ErrorResponseError error() {
+        return this.error;
     }
 
     /**
-     * Set error code.
+     * Set the error object.
      *
-     * @param code the code value to set
+     * @param error the error value to set
      * @return the ErrorResponse object itself.
      */
-    public ErrorResponse withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get error message indicating why the operation failed.
-     *
-     * @return the message value
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set error message indicating why the operation failed.
-     *
-     * @param message the message value to set
-     * @return the ErrorResponse object itself.
-     */
-    public ErrorResponse withMessage(String message) {
-        this.message = message;
+    public ErrorResponse withError(ErrorResponseError error) {
+        this.error = error;
         return this;
     }
 
