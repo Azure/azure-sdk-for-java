@@ -336,7 +336,7 @@ public class CommunicationUserCredentialTests {
         public String get() throws InterruptedException, ExecutionException {
             synchronized (synchedList) {
                 synchedList.wait();
-                return tokenMocker.generateRawToken("Mock", "user", 6 * 60);
+                return tokenMocker.generateRawToken("Mock", "user", 12 * 60);
             }
         }
 
