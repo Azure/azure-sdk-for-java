@@ -7,6 +7,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import static com.azure.core.util.FluxUtil.monoError;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,7 +45,7 @@ import java.util.Objects;
  *
  * @see ObjectSerializer
  */
-public final class BinaryData {
+public final class  BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     private final byte[] data;
 
@@ -134,7 +136,9 @@ public final class BinaryData {
      * @return {@link Mono} of {@link BinaryData} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
+        if (Objects.isNull(data)) {
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
+        }
 
         return FluxUtil.collectBytesInByteBufferStream(data)
             .flatMap(bytes -> Mono.just(fromBytes(bytes)));
