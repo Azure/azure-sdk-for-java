@@ -52,7 +52,7 @@ public class DiskUpdate {
     private DiskSku sku;
 
     /**
-     * Get the osType value.
+     * Get the Operating System type. Possible values include: 'Windows', 'Linux'.
      *
      * @return the osType value
      */
@@ -61,7 +61,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Set the osType value.
+     * Set the Operating System type. Possible values include: 'Windows', 'Linux'.
      *
      * @param osType the osType value to set
      * @return the DiskUpdate object itself.
@@ -72,7 +72,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Get the diskSizeGB value.
+     * Get if creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
      *
      * @return the diskSizeGB value
      */
@@ -81,7 +81,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Set the diskSizeGB value.
+     * Set if creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the DiskUpdate object itself.
@@ -92,7 +92,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Get the encryptionSettings value.
+     * Get encryption settings for disk or snapshot.
      *
      * @return the encryptionSettings value
      */
@@ -101,7 +101,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Set the encryptionSettings value.
+     * Set encryption settings for disk or snapshot.
      *
      * @param encryptionSettings the encryptionSettings value to set
      * @return the DiskUpdate object itself.
@@ -112,7 +112,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Get the tags value.
+     * Get resource tags.
      *
      * @return the tags value
      */
@@ -121,7 +121,7 @@ public class DiskUpdate {
     }
 
     /**
-     * Set the tags value.
+     * Set resource tags.
      *
      * @param tags the tags value to set
      * @return the DiskUpdate object itself.
