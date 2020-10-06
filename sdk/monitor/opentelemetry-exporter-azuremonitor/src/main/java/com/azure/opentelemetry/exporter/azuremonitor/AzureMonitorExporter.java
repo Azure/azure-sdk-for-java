@@ -89,7 +89,8 @@ public class AzureMonitorExporter implements SpanExporter {
     AzureMonitorExporter(MonitorExporterClient client, String instrumentationKey) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
-        this.telemetryItemNamePrefix = "Microsoft.ApplicationInsights." + instrumentationKey + ".";
+        String formattedInstrumentationKey = instrumentationKey.replace("-", "");
+        this.telemetryItemNamePrefix = "Microsoft.ApplicationInsights." + formattedInstrumentationKey + ".";
     }
 
     /**
@@ -140,9 +141,7 @@ public class AzureMonitorExporter implements SpanExporter {
             return;
         }
         if (kind == Span.Kind.INTERNAL) {
-            if (span.getName().equals("log.message")) {
-                exportLogSpan(span, telemetryItems);
-            } else if (!span.getParentSpanId().isValid()) {
+            if (!span.getParentSpanId().isValid()) {
                 // TODO revisit this decision
                 // maybe user-generated telemetry?
                 // otherwise this top-level span won't show up in Performance blade
@@ -160,53 +159,6 @@ public class AzureMonitorExporter implements SpanExporter {
         } else {
             throw new UnsupportedOperationException(kind.name());
         }
-    }
-
-    private void exportLogSpan(SpanData span, List<TelemetryItem> telemetryItems) {
-        Map<String, AttributeValue> attributes = getAttributesCopy(span.getAttributes());
-        String message = removeAttributeString(attributes, "message");
-        String level = removeAttributeString(attributes, "level");
-        String loggerName = removeAttributeString(attributes, "loggerName");
-        String errorStack = removeAttributeString(attributes, "error.stack");
-        Double samplingPercentage = removeAiSamplingPercentage(attributes);
-        if (errorStack == null) {
-            trackTrace(message, span.getStartEpochNanos(), level, loggerName, span.getTraceId(),
-                span.getParentSpanId(), samplingPercentage, attributes, telemetryItems);
-        } else {
-            trackTraceAsException(message, span.getStartEpochNanos(), level, loggerName, errorStack, span.getTraceId(),
-                span.getParentSpanId(), samplingPercentage, attributes, telemetryItems);
-        }
-    }
-
-    private void trackTrace(String message, long timeEpochNanos, String level, String loggerName, TraceId traceId,
-                            SpanId parentSpanId, Double samplingPercentage, Map<String, AttributeValue> attributes,
-                            List<TelemetryItem> telemetryItems) {
-
-        TelemetryItem telemetryItem = new TelemetryItem();
-        MessageData messageData = new MessageData();
-        MonitorBase monitorBase = new MonitorBase();
-
-        telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName(telemetryItemNamePrefix + "Message");
-        telemetryItem.setVersion(1);
-        telemetryItem.setInstrumentationKey(instrumentationKey);
-        telemetryItem.setData(monitorBase);
-
-        messageData.setProperties(new HashMap<>());
-        messageData.setVersion(2);
-        monitorBase.setBaseType("MessageData");
-        monitorBase.setBaseData(messageData);
-        messageData.setSeverityLevel(toSeverityLevel(level));
-        messageData.setMessage(message);
-
-        if (parentSpanId.isValid()) {
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), traceId.toLowerBase16());
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId.toLowerBase16());
-        }
-
-        setProperties(messageData.getProperties(), timeEpochNanos, level, loggerName, attributes);
-        telemetryItem.setSampleRate(samplingPercentage.floatValue());
-        telemetryItems.add(telemetryItem);
     }
 
     private static void setProperties(Map<String, String> properties, long timeEpochNanos, String level,
@@ -254,39 +206,6 @@ public class AzureMonitorExporter implements SpanExporter {
                 }
             }
         }
-    }
-
-    private void trackTraceAsException(String message, long timeEpochNanos, String level, String loggerName,
-                                       String errorStack, TraceId traceId, SpanId parentSpanId,
-                                       Double samplingPercentage, Map<String, AttributeValue> attributes,
-                                       List<TelemetryItem> telemetryItems) {
-
-        TelemetryItem telemetryItem = new TelemetryItem();
-        TelemetryExceptionData exceptionData = new TelemetryExceptionData();
-        MonitorBase monitorBase = new MonitorBase();
-
-        telemetryItem.setTags(new HashMap<>());
-        telemetryItem.setName(telemetryItemNamePrefix + "Exception");
-        telemetryItem.setVersion(1);
-        telemetryItem.setInstrumentationKey(instrumentationKey);
-        telemetryItem.setData(monitorBase);
-
-        exceptionData.setProperties(new HashMap<>());
-        exceptionData.setVersion(2);
-        monitorBase.setBaseType("ExceptionData");
-        monitorBase.setBaseData(exceptionData);
-
-        if (parentSpanId.isValid()) {
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), traceId.toLowerBase16());
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId.toLowerBase16());
-        }
-
-        exceptionData.setExceptions(minimalParse(errorStack));
-        exceptionData.setSeverityLevel(toSeverityLevel(level));
-        exceptionData.getProperties().put("Logger Message", message);
-        setProperties(exceptionData.getProperties(), timeEpochNanos, level, loggerName, attributes);
-        telemetryItem.setSampleRate(samplingPercentage.floatValue());
-        telemetryItems.add(telemetryItem);
     }
 
     private static List<TelemetryExceptionDetails> minimalParse(String errorStack) {
@@ -727,34 +646,6 @@ public class AzureMonitorExporter implements SpanExporter {
         }
         sb.append(values.get(values.size() - 1));
         return sb.toString();
-    }
-
-    private static SeverityLevel toSeverityLevel(String level) {
-        if (level == null) {
-            return null;
-        }
-        switch (level) {
-            case "FATAL":
-                return SeverityLevel.CRITICAL;
-            case "ERROR":
-            case "SEVERE":
-                return SeverityLevel.ERROR;
-            case "WARN":
-            case "WARNING":
-                return SeverityLevel.WARNING;
-            case "INFO":
-                return SeverityLevel.INFORMATION;
-            case "DEBUG":
-            case "TRACE":
-            case "CONFIG":
-            case "FINE":
-            case "FINER":
-            case "FINEST":
-            case "ALL":
-                return SeverityLevel.VERBOSE;
-            default:
-                return SeverityLevel.VERBOSE;
-        }
     }
 
     private static Double removeAiSamplingPercentage(Map<String, AttributeValue> attributes) {
