@@ -33,6 +33,10 @@ public final class CustomFormModelInfo {
      */
     private final OffsetDateTime trainingCompletedOn;
 
+    private String modelDisplayName;
+
+    private CustomModelProperties customModelProperties;
+
     /**
      * Constructs a {@link CustomFormModelInfo} object.
      *
@@ -85,4 +89,21 @@ public final class CustomFormModelInfo {
         return this.trainingCompletedOn;
     }
 
+    /**
+     * Get model metadata properties.
+     *
+     * @return the custom model metadata properties.
+     */
+    public CustomModelProperties getCustomModelProperties() {
+        return customModelProperties;
+    }
+
+    /**
+     * Get the user defined model display name.
+     *
+     * @return the modelDisplayName value.
+     */
+    public String getModelDisplayName() {
+        return modelDisplayName;
+    }
 }

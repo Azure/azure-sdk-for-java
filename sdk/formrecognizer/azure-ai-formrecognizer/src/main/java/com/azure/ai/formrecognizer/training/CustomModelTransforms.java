@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.PrivateFieldAccessHelper;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
+import com.azure.ai.formrecognizer.implementation.models.TrainResult;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
@@ -56,6 +57,7 @@ final class CustomModelTransforms {
 
         List<TrainingDocumentInfo> trainingDocumentInfoList = null;
         List<FormRecognizerError> modelErrors = null;
+        final String modelId = modelInfo.getModelId().toString();
 
         if (modelResponse.getTrainResult() != null) {
             trainingDocumentInfoList =
@@ -69,52 +71,40 @@ final class CustomModelTransforms {
             modelErrors = transformTrainingErrors(modelResponse.getTrainResult().getErrors());
         }
 
-        List<TrainingDocumentInfo> composedTrainingResult = null;
-        if (modelResponse.getComposedTrainResults() != null) {
-            for (int i = 0; i < trainingDocumentInfoList.size(); i++) {
-                final TrainingDocumentInfo trainingDocumentItem = trainingDocumentInfoList.get(i);
-                TrainingDocumentInfo documentInfo = new TrainingDocumentInfo(
-                    trainingDocumentItem.getName(),
-                    TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
-                    trainingDocumentItem.getPageCount(),
-                    trainingDocumentItem.getErrors());
-                PrivateFieldAccessHelper.set(documentInfo, "modelId",
-                    modelResponse.getComposedTrainResults().get(i).getModelId());
-                composedTrainingResult.add(documentInfo);
-            }
-        }
 
         List<CustomFormSubmodel> subModelList = new ArrayList<>();
-        String formType = "form-";
-        // unlabeled model
+        String formType = "custom:";
         if (modelResponse.getKeys() != null) {
-            Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
-            modelResponse.getKeys().getClusters().forEach((clusterKey, clusterFields) -> {
-                forEachWithIndex(clusterFields, (index, eachField) -> {
-                    String fieldName = "field-" + index;
-                    fieldMap.put(fieldName, new CustomFormModelField(eachField, fieldName, null));
-                });
-                CustomFormSubmodel customFormSubmodel = new CustomFormSubmodel(
-                    null,
-                    fieldMap,
-                    formType + clusterKey);
-                PrivateFieldAccessHelper.set(customFormSubmodel, "modelId",
-                    modelInfo.getModelId().toString());
-                subModelList.add(customFormSubmodel);
-            });
+            // unlabeled model
+            subModelList = getUnlabeledSubmodels(modelResponse.getKeys().getClusters(), modelId, formType);
         } else if (modelResponse.getTrainResult() != null && modelResponse.getTrainResult().getFields() != null) {
             // labeled model
-            Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
-            modelResponse.getTrainResult().getFields()
-                .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
-                    new CustomFormModelField(null, formFieldsReport.getFieldName(),
-                        formFieldsReport.getAccuracy())));
-            CustomFormSubmodel customFormSubmodel = new CustomFormSubmodel(
-                modelResponse.getTrainResult().getAverageModelAccuracy(),
-                fieldMap,
-                formType + modelInfo.getModelId());
-            PrivateFieldAccessHelper.set(customFormSubmodel, "modelId", modelInfo.getModelId().toString());
-            subModelList.add(customFormSubmodel);
+            if (modelInfo.getModelName() != null) {
+                formType = formType + modelInfo.getModelName();
+            } else {
+                formType = formType + modelInfo.getModelId();
+            }
+            subModelList = getLabeledSubmodels(modelResponse, modelId, formType);
+        } else if (!CoreUtils.isNullOrEmpty(modelResponse.getComposedTrainResults())) {
+            // composed model
+            subModelList = getComposedSubmodels(modelResponse);
+            trainingDocumentInfoList = new ArrayList<>();
+            for (int i = 0; i < modelResponse.getComposedTrainResults().size(); i++) {
+                final TrainResult composedTrainResultItem = modelResponse.getComposedTrainResults().get(i);
+                final List<TrainingDocumentInfo> trainingDocumentSubModelList
+                    = composedTrainResultItem.getTrainingDocuments().stream()
+                    .map(trainingDocumentItem ->
+                        new TrainingDocumentInfo(trainingDocumentItem.getDocumentName(),
+                            TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
+                            trainingDocumentItem.getPages(),
+                            transformTrainingErrors(trainingDocumentItem.getErrors())))
+                    .peek(trainingDocumentInfo ->
+                        PrivateFieldAccessHelper.set(trainingDocumentInfo,
+                            "modelId",
+                            composedTrainResultItem.getModelId().toString()))
+                    .collect(Collectors.toList());
+                trainingDocumentInfoList.addAll(trainingDocumentSubModelList);
+            }
         }
 
         CustomFormModel customFormModel = new CustomFormModel(
@@ -134,7 +124,7 @@ final class CustomModelTransforms {
                 customModelProperties);
             if (modelInfo.getAttributes().isComposed()) {
                 PrivateFieldAccessHelper.set(customFormModel, "trainingDocuments",
-                    composedTrainingResult);
+                    trainingDocumentInfoList);
             }
         }
         if (modelInfo.getModelName() != null) {
@@ -142,6 +132,78 @@ final class CustomModelTransforms {
                 modelInfo.getModelName());
         }
         return customFormModel;
+    }
+
+    /** Creates a submodel list from composed models service data **/
+    private static List<CustomFormSubmodel> getComposedSubmodels(Model modelResponse) {
+        List<CustomFormSubmodel> subModelList = new ArrayList<>();
+        for (TrainResult composedTrainResultItem : modelResponse.getComposedTrainResults()) {
+            String formType = "custom:";
+            if (modelResponse.getModelInfo().getModelName() != null) {
+                formType = formType + modelResponse.getModelInfo().getModelName();
+            } else {
+                formType = formType + composedTrainResultItem.getModelId().toString();
+            }
+            Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
+            composedTrainResultItem.getFields()
+                .forEach(formFieldsReport -> fieldMap.put(
+                    formFieldsReport.getFieldName(),
+                    new CustomFormModelField(
+                        null,
+                        formFieldsReport.getFieldName(),
+                        formFieldsReport.getAccuracy())));
+
+            CustomFormSubmodel customFormSubmodel =
+                new CustomFormSubmodel(
+                    composedTrainResultItem.getAverageModelAccuracy(),
+                    fieldMap,
+                    formType);
+            PrivateFieldAccessHelper.set(customFormSubmodel, "modelId",
+                composedTrainResultItem.getModelId().toString());
+            subModelList.add(customFormSubmodel);
+        }
+        return subModelList;
+    }
+
+    /** Creates a submodel list from labeled models service data **/
+    private static List<CustomFormSubmodel> getLabeledSubmodels(Model modelResponse, String modelId, String formType) {
+        Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
+        List<CustomFormSubmodel> subModelList = new ArrayList<>();
+        modelResponse.getTrainResult().getFields()
+            .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
+                new CustomFormModelField(null,
+                    formFieldsReport.getFieldName(),
+                    formFieldsReport.getAccuracy())));
+
+        CustomFormSubmodel customFormSubmodel =
+            new CustomFormSubmodel(
+                modelResponse.getTrainResult().getAverageModelAccuracy(),
+                fieldMap,
+                formType);
+        PrivateFieldAccessHelper.set(customFormSubmodel, "modelId", modelId);
+        subModelList.add(customFormSubmodel);
+        return subModelList;
+    }
+
+    /** Creates a submodel list from unlabeled models service data **/
+    private static List<CustomFormSubmodel> getUnlabeledSubmodels(Map<String, List<String>> modelResponseClusters,
+        String modelId, String formType) {
+        List<CustomFormSubmodel> subModelList = new ArrayList<>();
+        modelResponseClusters
+            .forEach((clusterKey, clusterFields) -> {
+                Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
+                forEachWithIndex(clusterFields, (index, eachField) -> {
+                    String fieldName = "field-" + index;
+                    fieldMap.put(fieldName, new CustomFormModelField(eachField, fieldName, null));
+                });
+                CustomFormSubmodel customFormSubmodel = new CustomFormSubmodel(
+                    null,
+                    fieldMap,
+                    formType + clusterKey);
+                PrivateFieldAccessHelper.set(customFormSubmodel, "modelId", modelId);
+                subModelList.add(customFormSubmodel);
+        });
+        return subModelList;
     }
 
     /**
@@ -152,10 +214,25 @@ final class CustomModelTransforms {
      * @return A list of {@link CustomFormModelInfo}.
      */
     static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> modelInfoList) {
-        return modelInfoList.stream().map(modelInfo -> new CustomFormModelInfo(modelInfo.getModelId().toString(),
-            CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
-            modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime())).collect(Collectors.toList());
-
+        return modelInfoList.stream()
+            .map(modelInfo -> {
+                CustomFormModelInfo customFormModelInfo = new CustomFormModelInfo(modelInfo.getModelId().toString(),
+                    CustomFormModelStatus.fromString(modelInfo.getStatus().toString()),
+                    modelInfo.getCreatedDateTime(),
+                    modelInfo.getLastUpdatedDateTime());
+                if (modelInfo.getAttributes() != null) {
+                    CustomModelProperties customModelProperties = new CustomModelProperties();
+                    PrivateFieldAccessHelper.set(customModelProperties, "isComposed",
+                        modelInfo.getAttributes().isComposed());
+                    PrivateFieldAccessHelper.set(customFormModelInfo, "customModelProperties",
+                        customModelProperties);
+                }
+                if (modelInfo.getModelName() != null) {
+                    PrivateFieldAccessHelper.set(customFormModelInfo, "modelDisplayName",
+                        modelInfo.getModelName());
+                }
+                return customFormModelInfo;
+            }).collect(Collectors.toList());
     }
 
     /**

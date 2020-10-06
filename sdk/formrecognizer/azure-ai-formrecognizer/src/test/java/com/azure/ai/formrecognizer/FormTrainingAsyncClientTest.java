@@ -121,7 +121,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId())).assertNext(customFormModelResponse -> {
                 assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                validateCustomModelData(syncPoller.getFinalResult(), false);
+                validateCustomModelData(syncPoller.getFinalResult(), false, false);
             });
         });
     }
@@ -141,7 +141,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedUnlabeledModel.getModelId()))
                 .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
-                    false));
+                    false, false));
         });
     }
 
@@ -160,7 +160,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel trainedLabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedLabeledModel.getModelId()))
                 .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
-                    true));
+                    true, false));
         });
     }
 
@@ -427,7 +427,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
-            validateCustomModelData(trainingPoller.getFinalResult(), true);
+            validateCustomModelData(trainingPoller.getFinalResult(), true, false);
         });
     }
 
@@ -443,7 +443,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
-            validateCustomModelData(trainingPoller.getFinalResult(), false);
+            validateCustomModelData(trainingPoller.getFinalResult(), false, false);
         });
     }
 
@@ -459,7 +459,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 true, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
-            validateCustomModelData(trainingPoller.getFinalResult(), true);
+            validateCustomModelData(trainingPoller.getFinalResult(), true, false);
         });
     }
 
@@ -475,7 +475,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 false, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
-            validateCustomModelData(trainingPoller.getFinalResult(), false);
+            validateCustomModelData(trainingPoller.getFinalResult(), false, false);
         });
     }
 
@@ -495,7 +495,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     .setTrainingFileFilter(new TrainingFileFilter().setSubfoldersIncluded(true)
                         .setPrefix(PREFIX_SUBFOLDER))).getSyncPoller();
             trainingPoller.waitForCompletion();
-            validateCustomModelData(trainingPoller.getFinalResult(), false);
+            validateCustomModelData(trainingPoller.getFinalResult(), false, false);
         });
     }
 
@@ -514,7 +514,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     .setTrainingFileFilter(new TrainingFileFilter().setPrefix(PREFIX_SUBFOLDER))
                     .setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
-            validateCustomModelData(trainingPoller.getFinalResult(), false);
+            validateCustomModelData(trainingPoller.getFinalResult(), false, false);
         });
     }
 
@@ -564,17 +564,23 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginCreateComposedModel(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels,
+                new TrainingOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            CustomFormModel model1 = syncPoller.getFinalResult();
+            syncPoller1.waitForCompletion();
+            CustomFormModel model1 = syncPoller1.getFinalResult();
 
-            client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
-                .setPollInterval(durationTestMode)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            CustomFormModel model2 = syncPoller.getFinalResult();
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels,
+                new TrainingOptions()
+                    .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller2.waitForCompletion();
+            CustomFormModel model2 = syncPoller2.getFinalResult();
+
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
             CustomFormModel composedModel
@@ -583,13 +589,14 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 new CreateComposeModelOptions()
                     .setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
+
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
             assertEquals(2, composedModel.getSubmodels().stream().count());
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
-            validateCustomModelData(composedModel, useTrainingLabels);
+            validateCustomModelData(composedModel, false, true);
         });
     }
 
@@ -600,33 +607,48 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginCreateComposedModelWithOptions(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels,
+                new TrainingOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            CustomFormModel model1 = syncPoller.getFinalResult();
+            syncPoller1.waitForCompletion();
+            CustomFormModel model1 = syncPoller1.getFinalResult();
 
-            client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
-                .setPollInterval(durationTestMode)).getSyncPoller();
-            syncPoller.waitForCompletion();
-            CustomFormModel model2 = syncPoller.getFinalResult();
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels,
+                new TrainingOptions()
+                    .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller2.waitForCompletion();
+            CustomFormModel model2 = syncPoller2.getFinalResult();
+
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                     modelIdList,
                 new CreateComposeModelOptions()
-                    .setModelDisplayName("modelDisplayName")
+                    .setModelDisplayName("composedModelDisplayName")
                     .setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
+
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
+            assertEquals("composedModelDisplayName", composedModel.getModelDisplayName());
             assertEquals(2, composedModel.getSubmodels().stream().count());
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
-            validateCustomModelData(composedModel, useTrainingLabels);
+            validateCustomModelData(composedModel, false, true);
         });
     }
+
+    // Add tests
+    // compose using invalid ids
+    // compose using unlabeled model ids
+    // compose with duplicate model ids
+    // List with displayName and composed
+
 }

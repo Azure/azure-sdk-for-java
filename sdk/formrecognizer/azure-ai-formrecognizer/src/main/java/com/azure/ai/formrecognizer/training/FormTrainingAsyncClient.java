@@ -536,7 +536,8 @@ public final class FormTrainingAsyncClient {
             creatComposeModelOptions = getCreateComposeModelOptions(creatComposeModelOptions);
 
             final ComposeRequest composeRequest = new ComposeRequest()
-                .setModelIds(modelIds.stream().map(UUID::fromString).collect(Collectors.toList()))
+                .setModelIds(modelIds.stream()
+                    .map(UUID::fromString).collect(Collectors.toList()))
                 .setModelName(creatComposeModelOptions.getModelDisplayName());
 
             return new PollerFlux<FormRecognizerOperationResult, CustomFormModel>(

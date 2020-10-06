@@ -28,7 +28,9 @@ public final class CreateComposeModelOptions {
     /**
      * Set the optional model name defined by the user. (max length: 1024).
      *
-     * @return the modelDisplayName.
+     * @param modelDisplayName the user defined model display name to set.
+     *
+     * @return the updated {@code CreateComposeModelOptions} value.
      */
     public CreateComposeModelOptions setModelDisplayName(final String modelDisplayName) {
         this.modelDisplayName = modelDisplayName;
@@ -51,7 +53,7 @@ public final class CreateComposeModelOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code RecognizeReceiptsOptions} value.
+     * @return the updated {@code CreateComposeModelOptions} value.
      */
     public CreateComposeModelOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
