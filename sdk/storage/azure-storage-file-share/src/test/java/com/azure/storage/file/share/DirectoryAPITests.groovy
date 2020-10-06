@@ -653,4 +653,20 @@ class DirectoryAPITests extends APISpec {
         expect:
         directoryPath == primaryDirectoryClient.getDirectoryPath()
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        primaryDirectoryClient.create()
+
+        def directoryClient = directoryBuilderHelper(interceptorManager, primaryDirectoryClient.getShareName(), primaryDirectoryClient.getDirectoryPath())
+            .addPolicy(getPerCallVersionPolicy()).buildDirectoryClient()
+
+        when:
+        def response = directoryClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

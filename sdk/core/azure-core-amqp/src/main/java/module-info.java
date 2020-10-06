@@ -3,6 +3,7 @@
 
 module com.azure.core.amqp {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
 
     requires transitive com.microsoft.azure.qpid.protonj.extensions;
     requires transitive org.reactivestreams;

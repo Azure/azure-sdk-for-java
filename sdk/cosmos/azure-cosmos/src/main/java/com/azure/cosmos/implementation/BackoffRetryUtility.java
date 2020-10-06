@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -51,15 +52,22 @@ public class BackoffRetryUtility {
     }
 
     static public <T> Mono<T> executeAsync(
-            Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy,
-            Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
-            Duration minBackoffForInBackoffCallback,
-            RxDocumentServiceRequest request) {
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy,
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
+        Duration minBackoffForInBackoffCallback,
+        RxDocumentServiceRequest request,
+        AddressSelector addressSelector) {
 
         return Mono.defer(() -> {
             // TODO: is defer required?
             return callbackMethod.apply(InitialArgumentValuePolicyArg).onErrorResume(
-                RetryUtils.toRetryWithAlternateFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request));
+                RetryUtils.toRetryWithAlternateFunc(
+                    callbackMethod,
+                    retryPolicy,
+                    inBackoffAlternateCallbackMethod,
+                    minBackoffForInBackoffCallback,
+                    request,
+                    addressSelector));
         });
     }
 

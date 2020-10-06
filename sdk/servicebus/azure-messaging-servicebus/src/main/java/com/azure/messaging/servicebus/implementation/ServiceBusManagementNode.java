@@ -10,7 +10,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
+import java.util.List;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -19,13 +19,13 @@ import java.util.Map;
  */
 public interface ServiceBusManagementNode extends AutoCloseable {
     /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
+     * Cancels the enqueuing of an already sent scheduled messages, if it was not already enqueued.
      *
-     * @param sequenceNumber The sequence number of the scheduled message.
+     * @param sequenceNumbers The sequence number of the scheduled messages.
      *
      * @return {@link Void} The successful completion represents the pending cancellation.
      */
-    Mono<Void> cancelScheduledMessage(long sequenceNumber, String associatedLinkName);
+    Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName);
 
     /**
      * Gets the session state.
@@ -74,9 +74,9 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
      * @param messageLock The lock token of the message {@link ServiceBusReceivedMessage} to be renewed.
-     * @return {@link Instant} representing the pending renew.
+     * @return {@link OffsetDateTime} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(String messageLock, String associatedLinkName);
+    Mono<OffsetDateTime> renewMessageLock(String messageLock, String associatedLinkName);
 
     /**
      * Renews the lock on the session.
@@ -84,23 +84,23 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @param sessionId Identifier for the session.
      * @return The next expiration time for the session.
      */
-    Mono<Instant> renewSessionLock(String sessionId, String associatedLinkName);
+    Mono<OffsetDateTime> renewSessionLock(String sessionId, String associatedLinkName);
 
     /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time. This is an asynchronous method
-     * returning a CompletableFuture which completes when the message is sent to the entity. The CompletableFuture, on
-     * completion, returns the sequence number of the scheduled message which can be used to cancel the scheduling of
-     * the message.
+     * Sends a scheduled {@link List} of messages to the Azure Service Bus entity this sender is connected to.
+     * Scheduled messages are enqueued and made available to receivers only at the scheduled enqueue time.
+     * This is an asynchronous method returning a CompletableFuture which completes when the message is sent to the
+     * entity. The CompletableFuture, on completion, returns the sequence numbers of the scheduled messages which can be
+     * used to cancel the scheduling of the message.
      *
-     * @param message The message to be sent to the entity.
+     * @param messages The messages to be sent to the entity.
      * @param scheduledEnqueueTime The {@link OffsetDateTime} at which the message should be enqueued in the entity.
      * @param transactionContext to be set on message before sending to Service Bus.
      *
-     * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
-     *     message. This sequence number can be used to cancel the scheduling of the message.
+     * @return The sequence numbers representing the pending send, which returns the sequence numbers of the scheduled
+     *     messages. These sequence numbers can be used to cancel the scheduling of the messages.
      */
-    Mono<Long> schedule(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime, int maxSendLinkSize,
+    Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime, int maxSendLinkSize,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**

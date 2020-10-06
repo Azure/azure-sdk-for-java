@@ -4,6 +4,7 @@
 package com.azure.core.amqp.models;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.experimental.util.BinaryData;
 
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
  * This is amqp message body which represents {@link AmqpBodyType#DATA} type.
  */
 public final class AmqpDataBody implements AmqpMessageBody {
-    private final IterableStream<byte[]> data;
+    private final IterableStream<BinaryData> data;
 
     /**
      * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of {@link BinaryData}.
@@ -20,7 +21,7 @@ public final class AmqpDataBody implements AmqpMessageBody {
      *
      * @throws NullPointerException if {@code data} is null.
      */
-    public AmqpDataBody(Iterable<byte[]> data) {
+    public AmqpDataBody(Iterable<BinaryData> data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         this.data = new IterableStream<>(data);
     }
@@ -35,7 +36,7 @@ public final class AmqpDataBody implements AmqpMessageBody {
      *
      * @return data set on {@link AmqpDataBody}.
      */
-    public IterableStream<byte[]> getData() {
+    public IterableStream<BinaryData> getData() {
         return data;
     }
 }

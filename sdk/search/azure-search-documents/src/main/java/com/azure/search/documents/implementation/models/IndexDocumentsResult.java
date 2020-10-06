@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IndexDocumentsResult model. */
+/** Response containing the status of operations for all documents in the indexing request. */
 @Immutable
 public final class IndexDocumentsResult {
     /*

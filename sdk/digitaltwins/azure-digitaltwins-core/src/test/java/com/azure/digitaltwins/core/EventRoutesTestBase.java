@@ -32,6 +32,9 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     @Test
     public abstract void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
+    @Test
+    public abstract void listEventRoutesPaginationWorks(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+
     // Azure Digital Twins instances have a low cap on the number of event routes allowed, so we need to delete the existing
     // event routes before each test to make sure that we can add an event route in each test.
     @BeforeEach

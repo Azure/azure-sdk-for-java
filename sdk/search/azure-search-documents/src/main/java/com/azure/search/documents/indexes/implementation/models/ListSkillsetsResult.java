@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListSkillsetsResult model. */
+/** Response from a list skillset request. If successful, it includes the full definitions of all skillsets. */
 @Immutable
 public final class ListSkillsetsResult {
     /*

@@ -21,6 +21,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class ReplicatedResourceClientTest {
     protected static final int TIMEOUT = 60000;
@@ -46,10 +47,10 @@ public class ReplicatedResourceClientTest {
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void invokeAsyncWithGoneException() {
         Configs configs = new Configs();
-        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(configs, new AddressSelector(addressResolver, Protocol.HTTPS), null,
+        ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(mockDiagnosticsClientContext(), configs, new AddressSelector(addressResolver, Protocol.HTTPS), null,
                 transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false);
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
-        RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document));
+        RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document));
 
         Mockito.when(addressResolver.resolveAsync(Matchers.any(), Matchers.anyBoolean()))
                 .thenReturn(Mono.error(new GoneException()));

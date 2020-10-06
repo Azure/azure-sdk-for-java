@@ -6,7 +6,7 @@ import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 
 /**
- * class for a table object
+ * A table within a storage or CosmosDB table API account.
  */
 public class TableItem {
     private final String name;
@@ -31,9 +31,9 @@ public class TableItem {
     }
 
     /**
-     * returns the name of this table
+     * Gets the name of the table.
      *
-     * @return table name
+     * @return The name of the table.
      */
     public String getName() {
         return name;

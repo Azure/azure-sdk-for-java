@@ -16,7 +16,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -374,7 +373,7 @@ public class ServiceBusMessage {
     public OffsetDateTime getScheduledEnqueueTime() {
         Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue());
         return value != null
-            ? ((Date) value).toInstant().atOffset(ZoneOffset.UTC)
+            ? ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC)
             : null;
     }
 

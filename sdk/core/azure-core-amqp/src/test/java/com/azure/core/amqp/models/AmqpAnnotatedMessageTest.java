@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 public class AmqpAnnotatedMessageTest {
 
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
+    private static final BinaryData DATA_BYTES = BinaryData.fromBytes(CONTENTS_BYTES);
     private final ClientLogger logger = new ClientLogger(AmqpAnnotatedMessageTest.class);
 
     /**
@@ -36,8 +38,8 @@ public class AmqpAnnotatedMessageTest {
     public void copyConstructorTest() {
         // Arrange
         final int expectedBinaryDataSize = 1;
-        List<byte[]> expectedBinaryData = new ArrayList<>();
-        expectedBinaryData.add(CONTENTS_BYTES);
+        List<BinaryData> expectedBinaryData = new ArrayList<>();
+        expectedBinaryData.add(DATA_BYTES);
 
         final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
@@ -112,7 +114,7 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
+        final List<BinaryData> expectedBinaryData = Collections.singletonList(DATA_BYTES);
         final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
 
         // Act
@@ -128,7 +130,7 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorAmqpValidValues() {
         // Arrange
-        final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
+        final List<BinaryData> expectedBinaryData = Collections.singletonList(DATA_BYTES);
         final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
 
@@ -170,9 +172,9 @@ public class AmqpAnnotatedMessageTest {
         final AmqpBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
-                List<byte[]> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+                List<BinaryData> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
                 assertEquals(expectedMessageSize, actualData.size());
-                assertArrayEquals(expectedbody, actualData.get(0));
+                assertArrayEquals(expectedbody, actualData.get(0).toBytes());
                 break;
             case VALUE:
             case SEQUENCE:

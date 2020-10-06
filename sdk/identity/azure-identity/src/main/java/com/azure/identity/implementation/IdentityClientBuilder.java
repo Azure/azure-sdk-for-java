@@ -5,6 +5,8 @@ package com.azure.identity.implementation;
 
 import com.azure.identity.SharedTokenCacheCredential;
 
+import java.io.InputStream;
+
 /**
  * Fluent client builder for instantiating an {@link IdentityClient}.
  *
@@ -16,6 +18,7 @@ public final class IdentityClientBuilder {
     private String clientId;
     private String clientSecret;
     private String certificatePath;
+    private InputStream certificate;
     private String certificatePassword;
     private boolean sharedTokenCacheCred;
 
@@ -63,6 +66,17 @@ public final class IdentityClientBuilder {
     /**
      * Sets the client certificate for the client.
      *
+     * @param certificate the PEM/PFX certificate
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder certificate(InputStream certificate) {
+        this.certificate = certificate;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for the client.
+     *
      * @param certificatePassword the password protecting the PFX file
      * @return the IdentityClientBuilder itself
      */
@@ -96,7 +110,7 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath,
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, certificate,
             certificatePassword, sharedTokenCacheCred, identityClientOptions);
     }
 }

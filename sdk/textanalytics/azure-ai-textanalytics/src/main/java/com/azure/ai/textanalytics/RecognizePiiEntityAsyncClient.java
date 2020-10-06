@@ -153,7 +153,7 @@ class RecognizePiiEntityAsyncClient {
             // Pii entities list
             final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
                 new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset(), entity.getLength()))
+                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
                 .collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
