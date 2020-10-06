@@ -21,6 +21,8 @@
 
 ## 11.1.1 (2020-10-02)
 
+### Dependency Updates
+
 - Updated `azure-core` version.
 
 ## 11.2.0-beta.1 (2020-09-10)
