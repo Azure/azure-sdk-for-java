@@ -14,7 +14,7 @@ class DelegateRestClient implements RestClient {
     /**
      * Stores the delegate.
      */
-    private final RestClient delegate;
+    private RestClient delegate;
     
     /**
      * Constructor.
@@ -40,5 +40,14 @@ class DelegateRestClient implements RestClient {
     @Override
     public String post(String url, String body, String contentType) {
         return delegate.post(url, body, contentType);
+    }
+    
+    /**
+     * Set the delegate.
+     * 
+     * @param delegate the delegate.
+     */
+    public void setDelegate(RestClient delegate) {
+        this.delegate = delegate;
     }
 }

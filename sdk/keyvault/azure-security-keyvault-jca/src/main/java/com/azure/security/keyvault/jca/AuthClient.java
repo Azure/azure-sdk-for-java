@@ -50,6 +50,10 @@ class AuthClient extends DelegateRestClient {
 
     /**
      * Constructor.
+     *
+     * <p>
+     * The constructor creates a default RestClient.
+     * </p>
      */
     public AuthClient() {
         super(RestClientFactory.createClient());
@@ -116,8 +120,6 @@ class AuthClient extends DelegateRestClient {
      */
     private String getAuthorizationTokenOnAppService(String resource) {
         String result = null;
-
-        System.out.println("Using MSI_ENDPOINT: " + System.getenv("MSI_ENDPOINT"));
 
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))

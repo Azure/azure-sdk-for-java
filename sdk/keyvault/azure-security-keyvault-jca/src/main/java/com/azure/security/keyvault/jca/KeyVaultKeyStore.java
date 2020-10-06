@@ -54,6 +54,14 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Constructor.
+     *
+     * <p>
+     * The constructor uses System.getProperty for
+     * <code>azure.keyvault.uri</code>, <code>azure.keyvault.tenantId</code>,
+     * <code>azure.keyvault.clientId</code>,
+     * <code>azure.keyvault.clientSecret</code> to initialize the keyvault
+     * client.
+     * </p>
      */
     public KeyVaultKeyStore() {
         creationDate = new Date();
@@ -61,7 +69,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId", null);
         String clientSecret = System.getProperty("azure.keyvault.clientSecret", null);
-        keyVault = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);        
+        keyVault = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
     }
 
     @Override
