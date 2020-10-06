@@ -21,6 +21,7 @@ public final class DirectConnectionConfig {
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
+    private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
@@ -32,6 +33,7 @@ public final class DirectConnectionConfig {
      * Constructor
      */
     public DirectConnectionConfig() {
+        this.connectionEndpointRediscoveryEnabled = true;
         this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
         this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
@@ -39,6 +41,43 @@ public final class DirectConnectionConfig {
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
         this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     }
+
+    /**
+     * Gets a value indicating whether Direct TCP connection endpoint rediscovery is enabled.
+     * <p>
+     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that are likely
+     * to occur:
+     * <ul>
+     * <li>During rolling upgrades of a Cosmos instance or
+     * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
+     * </ul>
+     *
+     * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
+     */
+    public boolean isConnectionEndpointRediscoveryEnabled() {
+        return this.connectionEndpointRediscoveryEnabled;
+    }
+
+    /**
+     * Sets a value indicating whether Direct TCP connection endpoint rediscovery should be enabled.
+     * <p>
+     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that are likely
+     * to occur:
+     * <ul>
+     * <li>During rolling upgrades of a Cosmos instance or
+     * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
+     * </ul>
+     *
+     * @param connectionEndpointRediscoveryEnabled {@code true} if connection endpoint rediscovery is enabled; {@code
+     *                                             false} otherwise.
+     *
+     * @return the {@linkplain DirectConnectionConfig}.
+     */
+    public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
+        this.connectionEndpointRediscoveryEnabled = connectionEndpointRediscoveryEnabled;
+        return this;
+    }
+
 
     /**
      * Gets the default DIRECT connection configuration.

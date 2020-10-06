@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -43,8 +45,6 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final GatewayServiceConfigurationReader serviceConfigReader;
     final Map<URI, EndpointCache> addressCacheByEndpoint;
 
-    private GatewayAddressCache gatewayAddressCache;
-    private AddressResolver addressResolver;
     private HttpClient httpClient;
 
     public GlobalAddressResolver(
@@ -94,10 +94,30 @@ public class GlobalAddressResolver implements IAddressResolver {
             for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
             }
-            @SuppressWarnings({"rawtypes", "unchecked"})
+            @SuppressWarnings({ "rawtypes", "unchecked" })
             Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
             return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
         });
+    }
+
+    @Override
+    public void remove(
+        final RxDocumentServiceRequest request,
+        final Set<PartitionKeyRangeIdentity> partitionKeyRangeIdentitySet) {
+
+        Objects.requireNonNull(request, "expected non-null request");
+        Objects.requireNonNull(partitionKeyRangeIdentitySet, "expected non-null partitionKeyRangeIdentitySet");
+
+        if (partitionKeyRangeIdentitySet.size() > 0) {
+
+            URI addressResolverURI = this.endpointManager.resolveServiceEndpoint(request);
+
+            this.addressCacheByEndpoint.computeIfPresent(addressResolverURI, (ignored, endpointCache) -> {
+                final GatewayAddressCache addressCache = endpointCache.addressCache;
+                partitionKeyRangeIdentitySet.forEach(partitionKeyRangeIdentity -> addressCache.removeAddress(partitionKeyRangeIdentity));
+                return endpointCache;
+            });
+        }
     }
 
     @Override
@@ -135,9 +155,9 @@ public class GlobalAddressResolver implements IAddressResolver {
             LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (endpoints.size() > 0) {
-                    URI dequeueEnpoint = endpoints.pop();
-                    if (this.addressCacheByEndpoint.get(dequeueEnpoint) != null) {
-                        this.addressCacheByEndpoint.remove(dequeueEnpoint);
+                    URI dequeueEndpoint = endpoints.pop();
+                    if (this.addressCacheByEndpoint.get(dequeueEndpoint) != null) {
+                        this.addressCacheByEndpoint.remove(dequeueEndpoint);
                     }
                 } else {
                     break;

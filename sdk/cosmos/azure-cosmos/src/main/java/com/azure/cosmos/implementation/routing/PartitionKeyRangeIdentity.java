@@ -5,12 +5,14 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Objects;
+
 /**
  * Used internally to represents the identity of a partition key range in the Azure Cosmos DB database service.
  */
 public final class PartitionKeyRangeIdentity {
-    private String collectionRid;
-    private String partitionKeyRangeId;
+    private final String collectionRid;
+    private final String partitionKeyRangeId;
 
     public PartitionKeyRangeIdentity(String collectionRid, String partitionKeyRangeId) {
         if (collectionRid == null) {
@@ -40,6 +42,7 @@ public final class PartitionKeyRangeIdentity {
             throw new IllegalArgumentException("partitionKeyRangeId");
         }
 
+        this.collectionRid = null;
         this.partitionKeyRangeId = partitionKeyRangeId;
     }
 
@@ -72,21 +75,28 @@ public final class PartitionKeyRangeIdentity {
 
     @Override
     public boolean equals(Object other) {
-        if (null == other) {
-            return false;
-        }
         if (this == other) {
             return true;
         }
-        return other instanceof PartitionKeyRangeIdentity
-                && ((PartitionKeyRangeIdentity) other).collectionRid.equals(this.collectionRid)
-                && ((PartitionKeyRangeIdentity) other).partitionKeyRangeId.equals(this.partitionKeyRangeId);
+
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+
+        PartitionKeyRangeIdentity that = (PartitionKeyRangeIdentity) other;
+
+        if (!Objects.equals(this.collectionRid, that.collectionRid)) {
+            return false;
+        }
+
+        return partitionKeyRangeId.equals(that.partitionKeyRangeId);
     }
 
     @Override
     public int hashCode() {
-        return ((this.collectionRid != null ? this.collectionRid.hashCode() : 0) * 397)
-                ^ (this.partitionKeyRangeId != null ? this.partitionKeyRangeId.hashCode() : 0);
+        int result = collectionRid != null ? collectionRid.hashCode() : 0;
+        result = (397 * result) ^ partitionKeyRangeId.hashCode();
+        return result;
     }
 
     public String getCollectionRid() {

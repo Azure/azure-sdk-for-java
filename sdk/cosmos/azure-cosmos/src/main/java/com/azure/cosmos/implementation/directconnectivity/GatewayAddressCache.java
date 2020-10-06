@@ -38,7 +38,6 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -55,6 +54,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -140,6 +140,18 @@ public class GatewayAddressCache implements IAddressCache {
              userAgent,
              httpClient,
              DefaultSuboptimalPartitionForceRefreshIntervalInSeconds);
+    }
+
+    @Override
+    public void removeAddress(final PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
+
+        Objects.requireNonNull(partitionKeyRangeIdentity, "expected non-null partitionKeyRangeIdentity");
+
+        if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
+            this.masterPartitionAddressCache = null;
+        } else {
+            this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
+        }
     }
 
     @Override

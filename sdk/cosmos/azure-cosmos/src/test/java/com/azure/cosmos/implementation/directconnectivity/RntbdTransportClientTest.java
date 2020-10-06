@@ -4,10 +4,12 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -15,23 +17,21 @@ import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RequestVerb;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
-import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
@@ -69,6 +69,7 @@ import reactor.core.publisher.Mono;
 import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -80,6 +81,7 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -617,7 +619,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -735,7 +737,7 @@ public final class RntbdTransportClientTest {
             throw new AssertionError(String.format("%s: %s", error.getClass(), error.getMessage()));
         }
 
-        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected));
+        return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected, null));
     }
 
     private void validateFailure(final Mono<? extends StoreResponse> responseMono, final FailureValidator validator) {
@@ -816,12 +818,27 @@ public final class RntbdTransportClientTest {
         final RntbdRequestTimer requestTimer;
         final FakeChannel fakeChannel;
         final URI physicalAddress;
+        final URI remoteURI;
         final Tag tag;
 
         private FakeEndpoint(
             final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
             final RntbdResponse... expected
         ) {
+            try {
+                this.remoteURI = new URI(
+                    physicalAddress.getScheme(),
+                    null,
+                    physicalAddress.getHost(),
+                    physicalAddress.getPort(),
+                    null,
+                    null,
+                    null);
+            } catch (URISyntaxException error) {
+                throw new IllegalArgumentException(
+                    lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                    error);
+            }
 
             final ArrayBlockingQueue<RntbdResponse> responses = new ArrayBlockingQueue<>(
                 expected.length, true, Arrays.asList(expected)
@@ -909,6 +926,9 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public URI remoteURI() { return this.remoteURI; }
+
+        @Override
         public int requestQueueLength() {
             return 0;
         }
@@ -953,13 +973,15 @@ public final class RntbdTransportClientTest {
             final Config config;
             final RntbdResponse expected;
             final RntbdRequestTimer timer;
+            final IAddressResolver addressResolver;
 
-            Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected) {
+            Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
                 this.timer = new RntbdRequestTimer(
                     config.requestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());
                 this.expected = expected;
+                this.addressResolver = addressResolver;
             }
 
             @Override
@@ -985,6 +1007,11 @@ public final class RntbdTransportClientTest {
             @Override
             public RntbdEndpoint get(URI physicalAddress) {
                 return new FakeEndpoint(config, timer, physicalAddress, expected);
+            }
+
+            @Override
+            public IAddressResolver getAddressResolver() {
+                return this.addressResolver;
             }
 
             @Override
