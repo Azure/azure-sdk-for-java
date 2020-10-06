@@ -469,17 +469,17 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @Test()
     public void beginCreateSearch() {
         List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add("27b53eec-8ff4-4070-8900-fbeaabfd158a");
+        phonePlanIds.add(PHONE_PLAN_ID);
 
         CreateSearchOptions createSearchOptions = new CreateSearchOptions();
         createSearchOptions
             .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("testsearch20200014")
-            .setDisplayName("testsearch20200014")
+            .setDescription(SEARCH_OPTIONS_DESCRIPTION)
+            .setDisplayName(SEARCH_OPTIONS_NAME)
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(2);
 
-        Duration duration = Duration.ofSeconds(5);
+        Duration duration = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient();
         PollerFlux<PhoneNumberSearch, PhoneNumberSearch> res = client.beginCreateSearch(createSearchOptions, duration);
         SyncPoller<PhoneNumberSearch, PhoneNumberSearch> sync = res.getSyncPoller();
