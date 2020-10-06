@@ -1,1 +1,120 @@
 # Azure Key Vault Certificates Spring Boot starter 
+
+If you want to test the current version under development you will have to
+
+1. Build and install the Microsoft Azure JCA Provider for KeyVault
+1. Build and install this Starter.
+
+To build and install the starter use the following command line:
+
+```
+  mvn clean install -DskipTests=true
+```
+
+## Server side SSL
+
+### Using a managed identity
+
+To use the starter for server side SSL you will need to add the following to
+your application.properties
+
+```
+azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+
+server.ssl.key-alias=<the name of the certificate in Azure KeyVault to use>
+server.ssl.key-store-type=< DKS when running on Tomcat, AzureKeyVault otherwise>
+```
+
+Note make sure the managed identity has access to the Azure KeyVault to access
+keys, secrets and certificates.
+
+### Using a client ID and client secret
+
+To use the starter for server side SSL you will need to add the following to
+your application.properties
+
+```
+azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+azure.keyvault.tenantId=<the ID of your Azure tenant>
+azure.keyvault.clientId=<the client ID with access to Azure KeyVault>
+azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+
+server.ssl.key-alias=<the name of the certificate in Azure KeyVault to use>
+server.ssl.key-store-type=< DKS when running on Tomcat, AzureKeyVault otherwise>
+```
+
+Note make sure the client ID has access to the Azure KeyVault to access
+keys, secrets and certificates.
+
+## Client side SSL
+
+### Using a managed identity
+
+To use the starter for client side SSL you will need to add the following to
+your application.properties
+
+```
+azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+```
+
+And then if you are using RestTemplate use code similar to the example below.
+
+```java
+    @Bean
+    public RestTemplate restTemplate() throws Exception {
+        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        SSLContext sslContext = SSLContexts.custom()
+            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+            .build();
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+            .setSSLSocketFactory(csf)
+            .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                        new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        return restTemplate;
+    }
+```
+
+### Using a client ID and client secret
+
+To use the starter for client side SSL you will need to add the following to
+your application.properties
+
+```
+azure.keyvault.uri=<the URI of the Azure KeyVault to use>
+azure.keyvault.tenantId=<the ID of your Azure tenant>
+azure.keyvault.clientId=<the client ID with access to Azure KeyVault>
+azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+```
+
+And then if you are using RestTemplate use code similar to the example below.
+
+```java
+    @Bean
+    public RestTemplate restTemplate() throws Exception {
+        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        SSLContext sslContext = SSLContexts.custom()
+            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+            .build();
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+            .setSSLSocketFactory(csf)
+            .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                        new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        return restTemplate;
+    }
+```
