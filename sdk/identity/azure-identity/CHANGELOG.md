@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (2020-10-05)
+## 1.2.0-beta.2 (2020-10-06)
 
 ### New Features
 - Added the methods `pfxCertificate(InputStream certificate, String clientCertificatePassword)` and `pemCertificate(InputStream certificate)` in `ClientCertificateCredentialBuilder`.
