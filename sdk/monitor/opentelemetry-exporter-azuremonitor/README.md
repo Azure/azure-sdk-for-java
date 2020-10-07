@@ -47,7 +47,7 @@ AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
 
 #### Exporting span data
 
-The following example shows how to export a collection of available [Spans](span_data) to Azure Monitor through the
+The following example shows how to export a collection of available [Spans][span_data] to Azure Monitor through the
  `AzureMonitorExporter`
 
 <!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L34-L39 -->
