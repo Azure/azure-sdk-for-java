@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;

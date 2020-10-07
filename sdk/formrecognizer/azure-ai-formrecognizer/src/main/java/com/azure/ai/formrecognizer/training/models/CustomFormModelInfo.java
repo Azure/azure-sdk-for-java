@@ -3,8 +3,6 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.time.OffsetDateTime;
 
 /**

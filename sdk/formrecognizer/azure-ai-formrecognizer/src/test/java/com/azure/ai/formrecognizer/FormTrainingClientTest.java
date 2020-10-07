@@ -29,7 +29,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -546,6 +545,10 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
             validateCustomModelData(composedModel, false, true);
+
+            client.deleteModel(model1.getModelId());
+            client.deleteModel(model2.getModelId());
+            client.deleteModel(composedModel.getModelId());
         });
     }
 
@@ -594,6 +597,10 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
             validateCustomModelData(composedModel, false, true);
+
+            client.deleteModel(model1.getModelId());
+            client.deleteModel(model2.getModelId());
+            client.deleteModel(composedModel.getModelId());
         });
     }
 
@@ -630,6 +637,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     new CreateComposeModelOptions()
                         .setPollInterval(durationTestMode), Context.NONE));
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+
+            client.deleteModel(model1.getModelId());
+            client.deleteModel(model2.getModelId());
         });
     }
 
@@ -657,51 +667,58 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                         .setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+
+            client.deleteModel(model1.getModelId());
         });
     }
 
-    /**
-     * Verifies the composed model attributes are returned when listing models.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void listComposedModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
-            syncPoller1.waitForCompletion();
-            CustomFormModel model1 = syncPoller1.getFinalResult();
-
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
-                = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels,
-                new TrainingOptions()
-                    .setPollInterval(durationTestMode), Context.NONE);
-            syncPoller2.waitForCompletion();
-            CustomFormModel model2 = syncPoller2.getFinalResult();
-
-            final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
-
-            CustomFormModel composedModel
-                = client.beginCreateComposedModel(
-                modelIdList,
-                new CreateComposeModelOptions()
-                    .setModelDisplayName("composedModelDisplayName")
-                    .setPollInterval(durationTestMode), Context.NONE)
-                .getFinalResult();
-
-            client.listCustomModels()
-                .stream()
-                .filter(customFormModelInfo ->
-                    Objects.equals(composedModel.getModelId(), customFormModelInfo.getModelId()))
-                .forEach(customFormModelInfo -> {
-                    assertEquals("composedModelDisplayName", customFormModelInfo.getModelDisplayName());
-                    assertTrue(customFormModelInfo.getCustomModelProperties().isComposed());
-                });
-        });
-    }
+    // APIM bug - 8404889
+    // /**
+    //  * Verifies the composed model attributes are returned when listing models.
+    //  */
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    // public void listComposedModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    //     client = getFormTrainingClient(httpClient, serviceVersion);
+    //     beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+    //         SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+    //             = client.beginTraining(trainingFilesUrl,
+    //             useTrainingLabels,
+    //             new TrainingOptions()
+    //                 .setPollInterval(durationTestMode), Context.NONE);
+    //         syncPoller1.waitForCompletion();
+    //         CustomFormModel model1 = syncPoller1.getFinalResult();
+    //
+    //         SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+    //             = client.beginTraining(trainingFilesUrl,
+    //             useTrainingLabels,
+    //             new TrainingOptions()
+    //                 .setPollInterval(durationTestMode), Context.NONE);
+    //         syncPoller2.waitForCompletion();
+    //         CustomFormModel model2 = syncPoller2.getFinalResult();
+    //
+    //         final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
+    //
+    //         CustomFormModel composedModel
+    //             = client.beginCreateComposedModel(
+    //             modelIdList,
+    //             new CreateComposeModelOptions()
+    //                 .setModelDisplayName("composedModelDisplayName")
+    //                 .setPollInterval(durationTestMode), Context.NONE)
+    //             .getFinalResult();
+    //
+    //         client.listCustomModels()
+    //             .stream()
+    //             .filter(customFormModelInfo ->
+    //                 Objects.equals(composedModel.getModelId(), customFormModelInfo.getModelId()))
+    //             .forEach(customFormModelInfo -> {
+    //                 assertEquals("composedModelDisplayName", customFormModelInfo.getModelDisplayName());
+    //                 assertTrue(customFormModelInfo.getCustomModelProperties().isComposed());
+    //             });
+    //
+    //         client.deleteModel(model1.getModelId());
+    //         client.deleteModel(model2.getModelId());
+    //         client.deleteModel(composedModel.getModelId());
+    //     });
+    // }
 }

@@ -109,6 +109,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         } else {
             // TODO: (savaity) switch back to AAD once fixed on service - side.
             builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
+            // builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }
