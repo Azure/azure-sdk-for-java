@@ -212,6 +212,12 @@
         "code": "java.method.defaultMethodAddedToInterface",
         "new": "method com.azure.core.http.HttpPipelinePosition com.azure.core.http.policy.HttpPipelinePolicy::getPipelinePosition()",
         "justification": "Default interface method"
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) io\\.opentelemetry.*",
+        "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
       }
     ]
   }
