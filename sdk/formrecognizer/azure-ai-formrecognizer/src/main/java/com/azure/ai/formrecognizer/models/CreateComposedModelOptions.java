@@ -11,7 +11,7 @@ import java.time.Duration;
  * The configurable options to pass when creating a composed model.
  */
 @Fluent
-public final class CreateComposeModelOptions {
+public final class CreateComposedModelOptions {
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private String modelDisplayName;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
@@ -30,9 +30,9 @@ public final class CreateComposeModelOptions {
      *
      * @param modelDisplayName the user defined model display name to set.
      *
-     * @return the updated {@code CreateComposeModelOptions} value.
+     * @return the updated {@code CreateComposedModelOptions} value.
      */
-    public CreateComposeModelOptions setModelDisplayName(final String modelDisplayName) {
+    public CreateComposedModelOptions setModelDisplayName(final String modelDisplayName) {
         this.modelDisplayName = modelDisplayName;
         return this;
     }
@@ -53,9 +53,9 @@ public final class CreateComposeModelOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code CreateComposeModelOptions} value.
+     * @return the updated {@code CreateComposedModelOptions} value.
      */
-    public CreateComposeModelOptions setPollInterval(final Duration pollInterval) {
+    public CreateComposedModelOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }

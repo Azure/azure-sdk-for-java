@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -534,7 +534,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                 modelIdList,
-                new CreateComposeModelOptions()
+                new CreateComposedModelOptions()
                     .setPollInterval(durationTestMode), Context.NONE)
                 .getFinalResult();
 
@@ -583,7 +583,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                 modelIdList,
-                new CreateComposeModelOptions()
+                new CreateComposedModelOptions()
                     .setModelDisplayName("composedModelDisplayName")
                     .setPollInterval(durationTestMode),
                 Context.NONE)
@@ -634,7 +634,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 = assertThrows(HttpResponseException.class, () ->
                 client.beginCreateComposedModel(
                     modelIdList,
-                    new CreateComposeModelOptions()
+                    new CreateComposedModelOptions()
                         .setPollInterval(durationTestMode), Context.NONE));
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
@@ -663,7 +663,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             HttpResponseException httpResponseException
                 = assertThrows(HttpResponseException.class, () -> client.beginCreateComposedModel(
                     modelIdList,
-                    new CreateComposeModelOptions()
+                    new CreateComposedModelOptions()
                         .setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
@@ -702,7 +702,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     //         CustomFormModel composedModel
     //             = client.beginCreateComposedModel(
     //             modelIdList,
-    //             new CreateComposeModelOptions()
+    //             new CreateComposedModelOptions()
     //                 .setModelDisplayName("composedModelDisplayName")
     //                 .setPollInterval(durationTestMode), Context.NONE)
     //             .getFinalResult();
@@ -721,4 +721,27 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     //         client.deleteModel(composedModel.getModelId());
     //     });
     // }
+
+    /**
+     * Verifies the result contains the user defined model display name for labeled model.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingLabeledModelDisplayName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels,
+                new TrainingOptions().setPollInterval(durationTestMode).setModelDisplayName("modelDisplayName"),
+                Context.NONE);
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+
+            CustomFormModel customFormModel = client.getCustomModel(createdModel.getModelId());
+            assertEquals("modelDisplayName", customFormModel.getModelDisplayName());
+
+            validateCustomModelData(createdModel, true, false);
+        });
+    }
 }

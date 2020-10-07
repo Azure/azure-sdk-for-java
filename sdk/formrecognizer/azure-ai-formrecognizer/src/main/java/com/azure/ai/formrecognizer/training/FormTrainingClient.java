@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
-import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
@@ -384,10 +384,10 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposeModelOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context}
      *
      * @param modelIds The list of models Ids to form the composed model.
-     * @param createComposeModelOptions The configurable {@link CreateComposeModelOptions options} to pass when
+     * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -399,7 +399,7 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
-        CreateComposeModelOptions createComposeModelOptions, Context context) {
-        return client.beginCreateComposedModel(modelIds, createComposeModelOptions, context).getSyncPoller();
+        CreateComposedModelOptions createComposedModelOptions, Context context) {
+        return client.beginCreateComposedModel(modelIds, createComposedModelOptions, context).getSyncPoller();
     }
 }

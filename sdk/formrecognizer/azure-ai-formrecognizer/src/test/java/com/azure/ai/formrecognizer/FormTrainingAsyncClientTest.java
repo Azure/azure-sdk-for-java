@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -586,7 +586,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                     modelIdList,
-                new CreateComposeModelOptions()
+                new CreateComposedModelOptions()
                     .setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
 
@@ -633,7 +633,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel
                 = client.beginCreateComposedModel(
                     modelIdList,
-                new CreateComposeModelOptions()
+                new CreateComposedModelOptions()
                     .setModelDisplayName("composedModelDisplayName")
                     .setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
@@ -681,7 +681,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.beginCreateComposedModel(
                     modelIdList,
-                new CreateComposeModelOptions()
+                new CreateComposedModelOptions()
                     .setPollInterval(durationTestMode)))
                 .thenAwait()
                 .verifyErrorSatisfies(throwable -> {
@@ -714,7 +714,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             HttpResponseException httpResponseException
                 = assertThrows(HttpResponseException.class, () -> client.beginCreateComposedModel(
                 modelIdList,
-                new CreateComposeModelOptions()
+                new CreateComposedModelOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().waitForCompletion());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
@@ -752,7 +752,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     //         CustomFormModel composedModel
     //             = client.beginCreateComposedModel(
     //             modelIdList,
-    //             new CreateComposeModelOptions()
+    //             new CreateComposedModelOptions()
     //                 .setModelDisplayName("composedModelDisplayName")
     //                 .setPollInterval(durationTestMode))
     //             .getSyncPoller().getFinalResult();
@@ -771,4 +771,53 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     //         client.deleteModel(composedModel.getModelId()).block();
     //     });
     // }
+
+    // TODO: (savaity) Service bug - doesn't return model display name.
+    // /**
+    //  * Verifies the result contains the user defined model display name for unlabeled model.
+    //  */
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    // public void beginTrainingUnlabeledModelDisplayName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    //     client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+    //     beginTrainingUnlabeledRunner((trainingFilesUrl, notUseTrainingLabels) -> {
+    //         SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+    //             = client.beginTraining(trainingFilesUrl,
+    //             notUseTrainingLabels,
+    //             new TrainingOptions().setPollInterval(durationTestMode).setModelDisplayName("modelDisplayName"))
+    //             .getSyncPoller();
+    //         syncPoller.waitForCompletion();
+    //         CustomFormModel createdModel = syncPoller.getFinalResult();
+    //
+    //         StepVerifier.create(client.getCustomModel(createdModel.getModelId()))
+    //             .assertNext(response -> assertEquals("modelDisplayName", response.getModelDisplayName()))
+    //             .verifyComplete();
+    //
+    //         validateCustomModelData(createdModel, true, false);
+    //     });
+    // }
+
+    /**
+     * Verifies the result contains the user defined model display name for labeled model.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingLabeledModelDisplayName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels,
+                new TrainingOptions().setPollInterval(durationTestMode).setModelDisplayName("modelDisplayName"))
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+
+            StepVerifier.create(client.getCustomModel(createdModel.getModelId()))
+                .assertNext(response -> assertEquals("modelDisplayName", response.getModelDisplayName()))
+                .verifyComplete();
+
+            validateCustomModelData(createdModel, true, false);
+        });
+    }
 }

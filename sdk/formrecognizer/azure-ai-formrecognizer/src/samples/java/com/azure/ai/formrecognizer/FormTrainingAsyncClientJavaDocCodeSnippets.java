@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
@@ -301,8 +301,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list
         String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
-        String labledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
-        formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labledModelId2))
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(customFormModel -> {
@@ -320,15 +320,15 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginCreateComposedModel(List, CreateComposeModelOptions)}
+     * Code snippet for {@link FormTrainingAsyncClient#beginCreateComposedModel(List, CreateComposedModelOptions)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposeModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
         String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
-        String labledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
-        formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labledModelId2),
-            new CreateComposeModelOptions()
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
+            new CreateComposedModelOptions()
                 .setModelDisplayName("my composed model name")
                 .setPollInterval(Duration.ofSeconds(5)))
             // if training polling operation completed, retrieve the final result.
@@ -345,6 +345,6 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                             System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
-        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposeModelOptions
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
     }
 }

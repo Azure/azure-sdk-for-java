@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
@@ -293,9 +293,9 @@ public class FormTrainingClientJavaDocCodeSnippets {
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list
         String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
-        String labledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
         final CustomFormModel customFormModel
-            = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labledModelId2))
+            = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2))
             .getFinalResult();
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
@@ -310,16 +310,16 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginCreateComposedModel(List, CreateComposeModelOptions, Context)}
+     * Code snippet for {@link FormTrainingClient#beginCreateComposedModel(List, CreateComposedModelOptions, Context)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposeModelOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
         String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
-        String labledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
         final CustomFormModel customFormModel
-            = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labledModelId2),
-            new CreateComposeModelOptions()
+            = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
+            new CreateComposedModelOptions()
                 .setModelDisplayName("my composed model name")
                 .setPollInterval(Duration.ofSeconds(5)),
             Context.NONE)
@@ -334,6 +334,6 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 .forEach((key, customFormModelField) ->
                     System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposeModelOptions-Context
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
     }
 }

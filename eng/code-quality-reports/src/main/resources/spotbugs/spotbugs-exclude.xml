@@ -1279,6 +1279,49 @@
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
 
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="modelDisplayName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="customModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="modelDisplayName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="customModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomModelProperties" />
+    <Field name="isComposed" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
