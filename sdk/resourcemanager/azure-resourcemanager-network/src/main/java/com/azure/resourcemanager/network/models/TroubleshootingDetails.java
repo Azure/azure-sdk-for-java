@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TroubleshootingDetails model. */
+/** Information gained from troubleshooting of specified resource. */
 @Fluent
 public final class TroubleshootingDetails {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingDetails.class);

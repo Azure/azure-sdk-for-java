@@ -15,7 +15,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The LanguageDetectionSkill model. */
+/**
+ * A skill that detects the language of input text and reports a single language code for every document submitted on
+ * the request. The language code is paired with a score indicating the confidence of the analysis.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Text.LanguageDetectionSkill")
 @JsonFlatten

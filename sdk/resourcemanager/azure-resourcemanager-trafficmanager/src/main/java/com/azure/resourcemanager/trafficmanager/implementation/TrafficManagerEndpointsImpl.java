@@ -6,7 +6,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerEndpoint;
@@ -48,7 +48,7 @@ class TrafficManagerEndpointsImpl
     List<EndpointInner> allEndpointsInners() {
         List<EndpointInner> allEndpoints = new ArrayList<>();
         for (TrafficManagerEndpointImpl epImpl : this.collection().values()) {
-            allEndpoints.add(epImpl.inner());
+            allEndpoints.add(epImpl.innerModel());
         }
         return allEndpoints;
     }
@@ -61,7 +61,7 @@ class TrafficManagerEndpointsImpl
             if (endpoint.endpointType() == EndpointType.AZURE) {
                 TrafficManagerAzureEndpoint azureEndpoint =
                     new TrafficManagerAzureEndpointImpl(
-                        entry.getKey(), this.getParent(), endpoint.inner(), this.client);
+                        entry.getKey(), this.getParent(), endpoint.innerModel(), this.client);
                 result.put(entry.getKey(), azureEndpoint);
             }
         }
@@ -76,7 +76,7 @@ class TrafficManagerEndpointsImpl
             if (endpoint.endpointType() == EndpointType.EXTERNAL) {
                 TrafficManagerExternalEndpoint externalEndpoint =
                     new TrafficManagerExternalEndpointImpl(
-                        entry.getKey(), this.getParent(), endpoint.inner(), this.client);
+                        entry.getKey(), this.getParent(), endpoint.innerModel(), this.client);
                 result.put(entry.getKey(), externalEndpoint);
             }
         }
@@ -91,7 +91,7 @@ class TrafficManagerEndpointsImpl
             if (endpoint.endpointType() == EndpointType.NESTED_PROFILE) {
                 TrafficManagerNestedProfileEndpoint nestedProfileEndpoint =
                     new TrafficManagerNestedProfileEndpointImpl(
-                        entry.getKey(), this.getParent(), endpoint.inner(), this.client);
+                        entry.getKey(), this.getParent(), endpoint.innerModel(), this.client);
                 result.put(entry.getKey(), nestedProfileEndpoint);
             }
         }
@@ -199,8 +199,8 @@ class TrafficManagerEndpointsImpl
     @Override
     protected List<TrafficManagerEndpointImpl> listChildResources() {
         List<TrafficManagerEndpointImpl> childResources = new ArrayList<>();
-        if (getParent().inner().endpoints() != null) {
-            for (EndpointInner inner : getParent().inner().endpoints()) {
+        if (getParent().innerModel().endpoints() != null) {
+            for (EndpointInner inner : getParent().innerModel().endpoints()) {
                 childResources.add(new TrafficManagerEndpointImpl(inner.name(), this.getParent(), inner, this.client));
             }
         }

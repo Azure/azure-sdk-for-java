@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ConnectionMonitorResultProperties model. */
+/** Describes the properties of a connection monitor. */
 @Immutable
 public final class ConnectionMonitorResultProperties extends ConnectionMonitorParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultProperties.class);

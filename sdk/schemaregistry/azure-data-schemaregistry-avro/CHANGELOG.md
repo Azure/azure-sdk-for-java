@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2020-09-21)
+- Added 4-byte format identifier prefix to serialized payload
+- Updated `module-info` to require `azure-data-schemaregistry` module transitively 
+
 ## 1.0.0-beta.3 (2020-09-10)
 - Updated to use `azure-core` for `ObjectSerializer`.
 - Removed `AvroSchemaRegistrySerializer` and `AvroSchemaRegistryCodec`

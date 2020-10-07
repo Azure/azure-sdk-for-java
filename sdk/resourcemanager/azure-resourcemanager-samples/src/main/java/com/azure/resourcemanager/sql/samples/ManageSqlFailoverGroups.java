@@ -6,16 +6,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.models.SqlServer;
+
+import java.time.Duration;
 
 /**
  * Azure SQL sample for managing SQL Failover Groups
@@ -29,14 +31,14 @@ import com.azure.resourcemanager.sql.models.SqlServer;
 public class ManageSqlFailoverGroups {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String sqlPrimaryServerName = azure.sdkContext().randomResourceName("sqlpri", 20);
-        final String sqlSecondaryServerName = azure.sdkContext().randomResourceName("sqlsec", 20);
-        final String rgName = azure.sdkContext().randomResourceName("rgsql", 20);
-        final String failoverGroupName = azure.sdkContext().randomResourceName("fog", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String sqlPrimaryServerName = Utils.randomResourceName(azureResourceManager, "sqlpri", 20);
+        final String sqlSecondaryServerName = Utils.randomResourceName(azureResourceManager, "sqlsec", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgsql", 20);
+        final String failoverGroupName = Utils.randomResourceName(azureResourceManager, "fog", 20);
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
@@ -47,7 +49,7 @@ public class ManageSqlFailoverGroups {
             // Create a primary SQL Server with a sample database.
             System.out.println("Creating a primary SQL Server with a sample database");
 
-            SqlServer sqlPrimaryServer = azure.sqlServers().define(sqlPrimaryServerName)
+            SqlServer sqlPrimaryServer = azureResourceManager.sqlServers().define(sqlPrimaryServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -64,7 +66,7 @@ public class ManageSqlFailoverGroups {
             // Create a secondary SQL Server with a sample database.
             System.out.println("Creating a secondary SQL Server with a sample database");
 
-            SqlServer sqlSecondaryServer = azure.sqlServers().define(sqlSecondaryServerName)
+            SqlServer sqlSecondaryServer = azureResourceManager.sqlServers().define(sqlSecondaryServerName)
                 .withRegion(Region.US_EAST2)
                 .withExistingResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -136,7 +138,7 @@ public class ManageSqlFailoverGroups {
             // ============================================================
             // Get the database from the secondary SQL server.
             System.out.println("Getting the database from the secondary server");
-            SdkContext.sleep(3 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(3));
 
             db = sqlSecondaryServer.databases().get(dbName);
 
@@ -152,13 +154,13 @@ public class ManageSqlFailoverGroups {
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Servers");
-            azure.sqlServers().deleteById(sqlPrimaryServer.id());
-            azure.sqlServers().deleteById(sqlSecondaryServer.id());
+            azureResourceManager.sqlServers().deleteById(sqlPrimaryServer.id());
+            azureResourceManager.sqlServers().deleteById(sqlSecondaryServer.id());
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -174,18 +176,19 @@ public class ManageSqlFailoverGroups {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -34,6 +34,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
@@ -69,6 +70,7 @@ import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -77,6 +79,7 @@ import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -109,7 +112,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -135,7 +138,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -161,7 +164,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -187,7 +190,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -213,7 +216,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -239,7 +242,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -265,7 +268,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -291,7 +294,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -318,7 +321,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -345,7 +348,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -372,7 +375,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -399,7 +402,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -426,7 +429,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -452,7 +455,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -478,7 +481,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -504,7 +507,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -530,7 +533,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -556,7 +559,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -582,7 +585,7 @@ public final class RntbdTransportClientTest {
                     .lsn(lsn)
                     .partitionKeyRangeId(partitionKeyRangeId)
                     .resourceAddress(null),
-                RxDocumentServiceRequest.create(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     "/dbs/db/colls/col",
@@ -637,7 +640,7 @@ public final class RntbdTransportClientTest {
 
             builder.put(HttpHeaders.AUTHORIZATION, token);
 
-            final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+            final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
                 ResourceType.DatabaseAccount,
                 Paths.DATABASE_ACCOUNT_PATH_SEGMENT,
                 builder.build()
@@ -856,6 +859,36 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public int gettingEstablishedConnectionsMetrics() {
+            return 0;
+        }
+
+        @Override
+        public Instant getCreatedTime() {
+            return null;
+        }
+
+        @Override
+        public long lastRequestNanoTime() {
+            return 0;
+        }
+
+        @Override
+        public long lastSuccessfulRequestNanoTime() {
+            return 0;
+        }
+
+        @Override
+        public int channelsMetrics() {
+            return 0;
+        }
+
+        @Override
+        public int executorTaskQueueMetrics() {
+            return 0;
+        }
+
+        @Override
         public long id() {
             return 0L;
         }
@@ -863,6 +896,11 @@ public final class RntbdTransportClientTest {
         @Override
         public boolean isClosed() {
             return !this.fakeChannel.isOpen();
+        }
+
+        @Override
+        public int maxChannels() {
+            return 0;
         }
 
         @Override
@@ -901,7 +939,7 @@ public final class RntbdTransportClientTest {
 
         @Override
         public RntbdRequestRecord request(final RntbdRequestArgs requestArgs) {
-            final RntbdRequestRecord requestRecord = new RntbdRequestRecord(requestArgs, this.requestTimer);
+            final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
             this.fakeChannel.writeOutbound(requestRecord);
             return requestRecord;
         }

@@ -9,9 +9,12 @@ import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
@@ -167,7 +170,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
             .verifyComplete();
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
@@ -212,19 +215,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, transaction.get());
+                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
                 messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, transaction.get());
+                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
                 break;
             case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
+                    .setDeadLetterReason(deadLetterReason);
+                operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
                 messagesPending.decrementAndGet();
                 break;
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, transaction.get());
+                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -275,7 +279,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
             .verifyComplete();
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
@@ -363,6 +367,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.peekMessage())
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an empty entity does not error when peeking.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+
+        final int fromSequenceNumber = 1;
+
+        // Assert & Act
+        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
             .verifyComplete();
     }
 
@@ -463,7 +483,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekBatchMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
@@ -515,7 +535,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
+    void peekMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
@@ -529,6 +549,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
             .expectNextCount(maxMessages)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an empty entity does not error when peeking.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void peekMessagesFromSequenceEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+
+        final int maxMessages = 10;
+        final int fromSequenceNumber = 1;
+
+        // Assert & Act
+        StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
             .verifyComplete();
     }
 

@@ -25,6 +25,8 @@ public final class SchemaRegistryClient {
     }
 
     /**
+     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
+     * exists in this schema group, a new version with the updated schema string will be registered.
      *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
@@ -40,6 +42,8 @@ public final class SchemaRegistryClient {
     }
 
     /**
+     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
+     * exists in this schema group, a new version with the updated schema string will be registered.
      *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
@@ -75,10 +79,11 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
-        return this.asyncClient.getSchemaWithResponse(schemaId).block();
+        return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
 
     /**
+     * Gets the schema identifier associated with the given schema.
      *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.
@@ -95,6 +100,7 @@ public final class SchemaRegistryClient {
     }
 
     /**
+     * Gets the schema identifier associated with the given schema.
      *
      * @param schemaGroup The schema group.
      * @param schemaName The schema name.

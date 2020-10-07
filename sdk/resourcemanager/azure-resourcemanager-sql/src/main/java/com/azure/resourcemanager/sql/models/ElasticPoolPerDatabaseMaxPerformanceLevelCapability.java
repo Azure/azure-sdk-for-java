@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ElasticPoolPerDatabaseMaxPerformanceLevelCapability model. */
+/** The max per-database performance level capability. */
 @Fluent
 public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
     @JsonIgnore

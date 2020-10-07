@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRules;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -48,7 +48,7 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
     @Override
     public Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(
         String resourceGroupName, String namespaceName, String pairingName, String name) {
-        return this.manager.inner().getDisasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
+        return this.manager.serviceClient().getDisasterRecoveryConfigs().getAuthorizationRuleAsync(resourceGroupName,
             namespaceName,
             pairingName,
             name)
@@ -81,7 +81,7 @@ public final class DisasterRecoveryPairingAuthorizationRulesImpl
     }
 
     public DisasterRecoveryConfigsClient inner() {
-        return this.manager.inner().getDisasterRecoveryConfigs();
+        return this.manager.serviceClient().getDisasterRecoveryConfigs();
     }
 
     @Override

@@ -35,6 +35,6 @@ public class StorageSkusImpl implements StorageSkus {
     }
 
     public SkusClient inner() {
-        return manager.inner().getSkus();
+        return manager.serviceClient().getSkus();
     }
 }

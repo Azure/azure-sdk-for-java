@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreateDatabaseRestorePointDefinition model. */
+/** Contains the information necessary to perform a create database restore point operation. */
 @Fluent
 public final class CreateDatabaseRestorePointDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateDatabaseRestorePointDefinition.class);

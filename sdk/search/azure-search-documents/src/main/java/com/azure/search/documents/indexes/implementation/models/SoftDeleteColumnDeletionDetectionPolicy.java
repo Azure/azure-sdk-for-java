@@ -12,7 +12,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The SoftDeleteColumnDeletionDetectionPolicy model. */
+/**
+ * Defines a data deletion detection policy that implements a soft-deletion strategy. It determines whether an item
+ * should be deleted based on the value of a designated 'soft delete' column.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy")
 @JsonFlatten

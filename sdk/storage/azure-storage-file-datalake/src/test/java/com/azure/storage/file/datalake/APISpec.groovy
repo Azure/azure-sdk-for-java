@@ -3,8 +3,10 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
@@ -451,6 +453,52 @@ class APISpec extends Specification {
         return builder.sasToken(sasToken).buildFileClient()
     }
 
+    DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildDirectoryClient()
+    }
+
+    DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, String pathName, HttpPipelinePolicy... policies) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildDirectoryClient()
+    }
+
+    DataLakeDirectoryClient getDirectoryClient(String sasToken, String endpoint, String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .pathName(pathName)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.sasToken(sasToken).buildDirectoryClient()
+    }
+
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
         getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
     }
@@ -706,6 +754,14 @@ class APISpec extends Specification {
         }
     }
 
+    def getMockRequest() {
+        HttpHeaders headers = new HttpHeaders()
+        headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
+        URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url, headers, null)
+        return request
+    }
+
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {
@@ -851,6 +907,20 @@ class APISpec extends Specification {
             @Override
             Mono<String> getBodyAsString(Charset charset) {
                 return Mono.just("")
+            }
+        }
+    }
+
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2019-02-02")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
             }
         }
     }

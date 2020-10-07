@@ -4,22 +4,23 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceCollectionInner;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceCollectionInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -65,14 +66,14 @@ public class DiagnosticSettingsImpl
     }
 
     public DiagnosticSettingsClient inner() {
-        return this.manager().inner().getDiagnosticSettings();
+        return this.manager().serviceClient().getDiagnosticSettings();
     }
 
     @Override
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
         DiagnosticSettingsCategoryResourceCollectionInner collection =
-            this.manager().inner().getDiagnosticSettingsCategorys().list(resourceId);
+            this.manager().serviceClient().getDiagnosticSettingsCategories().list(resourceId);
         if (collection != null) {
             for (DiagnosticSettingsCategoryResourceInner category : collection.value()) {
                 categories.add(new DiagnosticSettingsCategoryImpl(category));
@@ -87,25 +88,26 @@ public class DiagnosticSettingsImpl
             .convertListToPagedFlux(
                 this
                     .manager
-                    .inner()
-                    .getDiagnosticSettingsCategorys()
-                    .listAsync(resourceId)
-                    .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
+                    .serviceClient()
+                    .getDiagnosticSettingsCategories()
+                    .listWithResponseAsync(resourceId)
+                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
             .mapPage(DiagnosticSettingsCategoryImpl::new);
     }
 
     @Override
     public DiagnosticSettingsCategory getCategory(String resourceId, String name) {
         return new DiagnosticSettingsCategoryImpl(
-            this.manager().inner().getDiagnosticSettingsCategorys().get(resourceId, name));
+            this.manager().serviceClient().getDiagnosticSettingsCategories().get(resourceId, name));
     }
 
     @Override
     public Mono<DiagnosticSettingsCategory> getCategoryAsync(String resourceId, String name) {
         return this
             .manager()
-            .inner()
-            .getDiagnosticSettingsCategorys()
+            .serviceClient()
+            .getDiagnosticSettingsCategories()
             .getAsync(resourceId, name)
             .map(DiagnosticSettingsCategoryImpl::new);
     }
@@ -121,38 +123,39 @@ public class DiagnosticSettingsImpl
             .convertListToPagedFlux(
                 this
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getDiagnosticSettings()
-                    .listAsync(resourceId)
-                    .map(DiagnosticSettingsResourceCollectionInner::value))
+                    .listWithResponseAsync(resourceId)
+                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())))
             .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
     }
 
     @Override
     public void delete(String resourceId, String name) {
-        this.manager().inner().getDiagnosticSettings().delete(resourceId, name);
+        this.manager().serviceClient().getDiagnosticSettings().delete(resourceId, name);
     }
 
     @Override
     public Mono<Void> deleteAsync(String resourceId, String name) {
-        return this.manager().inner().getDiagnosticSettings().deleteAsync(resourceId, name);
+        return this.manager().serviceClient().getDiagnosticSettings().deleteAsync(resourceId, name);
     }
 
     @Override
     public DiagnosticSetting get(String resourceId, String name) {
-        return wrapModel(this.manager().inner().getDiagnosticSettings().get(resourceId, name));
+        return wrapModel(this.manager().serviceClient().getDiagnosticSettings().get(resourceId, name));
     }
 
     @Override
     public Mono<DiagnosticSetting> getAsync(String resourceId, String name) {
-        return this.manager().inner().getDiagnosticSettings().getAsync(resourceId, name).map(this::wrapModel);
+        return this.manager().serviceClient().getDiagnosticSettings().getAsync(resourceId, name).map(this::wrapModel);
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDiagnosticSettings()
             .deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
     }

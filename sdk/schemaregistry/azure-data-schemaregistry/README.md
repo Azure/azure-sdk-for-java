@@ -10,7 +10,7 @@ schema identifiers rather than full schemas.
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
 - An [Event Hubs namespace][event_hubs_namespace]
 
@@ -188,8 +188,8 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[samples]: src/samples/java/com/azure/data/schemaregistry
-[source_code]: src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/src/samples/java/com/azure/data/schemaregistry
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/schemaregistry/azure-data-schemaregistry/src
 [samples_code]: src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://aka.ms/schemaregistry
@@ -198,6 +198,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md#defaultazurecredential
 [event_hubs_namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fschemaregistry%2Fazure-data-schemaregistry%2FREADME.png)

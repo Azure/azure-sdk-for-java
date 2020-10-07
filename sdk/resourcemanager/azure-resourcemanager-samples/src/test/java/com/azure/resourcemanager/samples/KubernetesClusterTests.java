@@ -22,7 +22,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
             return;
         } else {
-            Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "", ""));
+            Assertions.assertTrue(ManageKubernetesCluster.runSample(azureResourceManager, "", ""));
         }
     }
 
@@ -34,14 +34,14 @@ public class KubernetesClusterTests extends SamplesTestBase {
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
             return;
         } else {
-            Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azure, "", ""));
+            Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azureResourceManager, "", ""));
         }
     }
 
     @Test
     public void testDeployImageFromContainerRegistryToKubernetes() throws InterruptedException, JSchException, IOException {
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azure, "", ""));
+            Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azureResourceManager, "", ""));
         }
     }
 }

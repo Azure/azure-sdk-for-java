@@ -76,9 +76,9 @@ public class RelationshipsSyncSamples {
             .replace(SamplesConstants.RELATIONSHIP_NAME, "containedIn")
             .replace(SamplesConstants.RELATIONSHIP_TARGET_MODEL_ID, sampleBuildingModelId);
 
-        List<ModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
+        Iterable<DigitalTwinsModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
 
-        for (ModelData model : createdModels) {
+        for (DigitalTwinsModelData model : createdModels) {
             ConsoleLogger.print("Created model " + model.getId());
         }
 
@@ -97,9 +97,9 @@ public class RelationshipsSyncSamples {
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
-        client.createDigitalTwin(floorTwinId, mapper.writeValueAsString(floorDigitalTwin));
+        BasicDigitalTwin createdTwin = client.createDigitalTwin(floorTwinId, floorDigitalTwin, BasicDigitalTwin.class);
 
-        ConsoleLogger.print("Created twin" + floorDigitalTwin.getId());
+        ConsoleLogger.print("Created twin with Id:" + createdTwin.getId());
 
         ConsoleLogger.printHeader("Create relationships");
 
@@ -140,7 +140,7 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.printHeader("List incoming relationships");
         // Get all incoming relationships in the graph where floorTwinId is the target of the relationship.
 
-        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId);
+        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
             ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());

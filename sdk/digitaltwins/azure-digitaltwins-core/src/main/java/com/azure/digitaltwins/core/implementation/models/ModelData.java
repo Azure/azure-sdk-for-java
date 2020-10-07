@@ -5,11 +5,12 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The ModelData model. */
+/** A model definition and metadata for that model. */
 @Fluent
 public final class ModelData {
     /*
@@ -50,6 +51,16 @@ public final class ModelData {
      */
     @JsonProperty(value = "model")
     private Object model;
+
+    /**
+     * Creates an instance of ModelData class.
+     *
+     * @param id the id value to set.
+     */
+    @JsonCreator
+    public ModelData(@JsonProperty(value = "id", required = true) String id) {
+        this.id = id;
+    }
 
     /**
      * Get the displayName property: A language map that contains the localized display names as specified in the model
@@ -102,17 +113,6 @@ public final class ModelData {
      */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: The id of the model as specified in the model definition.
-     *
-     * @param id the id value to set.
-     * @return the ModelData object itself.
-     */
-    public ModelData setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**

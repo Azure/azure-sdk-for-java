@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchIndexerError model. */
+/** Represents an item- or document-level indexing error. */
 @Immutable
 public final class SearchIndexerError {
     /*

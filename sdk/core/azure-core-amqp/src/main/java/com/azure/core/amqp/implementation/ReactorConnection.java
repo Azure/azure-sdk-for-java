@@ -98,7 +98,9 @@ public class ReactorConnection implements AmqpConnection {
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId,
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyOptions(), product, clientVersion);
+            connectionOptions.getProxyOptions(), product, clientVersion, connectionOptions.getSslVerifyMode(),
+            connectionOptions.getClientOptions());
+
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;

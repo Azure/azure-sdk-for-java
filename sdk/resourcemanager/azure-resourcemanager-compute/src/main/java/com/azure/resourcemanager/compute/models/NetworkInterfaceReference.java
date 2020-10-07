@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NetworkInterfaceReference model. */
+/** Describes a network interface reference. */
 @JsonFlatten
 @Fluent
 public class NetworkInterfaceReference extends SubResource {
