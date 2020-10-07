@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/monitor/
-      - eng/common/
     exclude:
       - sdk/monitor/mgmt-v2015_04_01
       - sdk/monitor/mgmt-v2015_07_01
