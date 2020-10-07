@@ -938,10 +938,10 @@
                 <exclude>module-info.java</exclude>
               </excludes>
 
-              <source>8</source>
-              <target>8</target>
-              <testSource>8</testSource>
-              <testTarget>8</testTarget>
+              <source>1.8</source>
+              <target>1.8</target>
+              <testSource>1.8</testSource>
+              <testTarget>1.8</testTarget>
             </configuration>
           </plugin>
           <plugin>

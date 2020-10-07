@@ -140,7 +140,7 @@
                 <compilerArgs>
                   <arg>-warn:-unused</arg>
                 </compilerArgs>
-                <release>8</release>
+                <failOnWarning>false</failOnWarning>
               </configuration>
             </execution>
           </executions>
@@ -149,12 +149,12 @@
             <dependency>
               <groupId>org.codehaus.groovy</groupId>
               <artifactId>groovy-eclipse-compiler</artifactId>
-              <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
+              <version>3.6.0-03</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>org.codehaus.groovy</groupId>
               <artifactId>groovy-eclipse-batch</artifactId>
-              <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
+              <version>2.5.8-03</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -170,6 +170,15 @@
       </activation>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <testRelease>8</testRelease>
+            </configuration>
+          </plugin>
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>

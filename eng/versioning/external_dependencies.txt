@@ -70,8 +70,8 @@ org.apache.qpid:proton-j;0.33.4
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
-org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
-org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
+org.codehaus.groovy:groovy-eclipse-batch;2.5.8-03
+org.codehaus.groovy:groovy-eclipse-compiler;3.6.0-03
 org.hibernate.validator:hibernate-validator;6.1.5.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
