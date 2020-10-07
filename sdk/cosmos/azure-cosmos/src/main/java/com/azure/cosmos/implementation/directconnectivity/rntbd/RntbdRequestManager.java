@@ -404,7 +404,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 // javax.net.ssl.SSLException: SSLEngine closed already
                 // Reducing the noise level here because multiple concurrent closes can happen due to race conditions
                 // and there is no harm in this case
-                if (exception instanceof  SSLException) {
+                if (exception instanceof SSLException) {
                     logger.debug(
                         "SslException when attempting to close the outbound SSL connection: {}",
                         exception.toString());
