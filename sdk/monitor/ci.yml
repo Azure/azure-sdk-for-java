@@ -9,7 +9,17 @@ trigger:
   paths:
     include:
       - sdk/monitor/
-      - eng/common/
+    exclude:
+      - sdk/monitor/mgmt-v2015_04_01
+      - sdk/monitor/mgmt-v2015_07_01
+      - sdk/monitor/mgmt-v2016_03_01
+      - sdk/monitor/mgmt-v2017_03_01_preview
+      - sdk/monitor/mgmt-v2017_04_01
+      - sdk/monitor/mgmt-v2017_05_01_preview
+      - sdk/monitor/mgmt-v2018_01_01
+      - sdk/monitor/mgmt-v2018_03_01
+      - sdk/monitor/mgmt-v2018_04_16
+      - sdk/monitor/mgmt-v2018_09_01
 
 pr:
   branches:
@@ -21,6 +31,17 @@ pr:
   paths:
     include:
       - sdk/monitor/
+    exclude:
+      - sdk/monitor/mgmt-v2015_04_01
+      - sdk/monitor/mgmt-v2015_07_01
+      - sdk/monitor/mgmt-v2016_03_01
+      - sdk/monitor/mgmt-v2017_03_01_preview
+      - sdk/monitor/mgmt-v2017_04_01
+      - sdk/monitor/mgmt-v2017_05_01_preview
+      - sdk/monitor/mgmt-v2018_01_01
+      - sdk/monitor/mgmt-v2018_03_01
+      - sdk/monitor/mgmt-v2018_04_16
+      - sdk/monitor/mgmt-v2018_09_01
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

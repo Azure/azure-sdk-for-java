@@ -40,19 +40,19 @@ right corner.
 ### Creating exporter for Azure Monitor
 <!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L25-L27 -->
 ```java
-AzureMonitorExporter azureMonitorExporter = new MonitorExporterClientBuilder()
+AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
     .instrumentationKey("{instrumentation-key}")
     .buildExporter();
 ```
 
 #### Exporting span data
 
-The following example shows how to export a collection of available SpanData to Azure Monitor thorugh the
+The following example shows how to export a collection of available [Spans](span_data) to Azure Monitor through the
  `AzureMonitorExporter`
 
 <!-- embedme ./src/samples/java/com/azure/opentelemetry/exporter/azuremonitor/ReadmeSamples.java#L34-L39 -->
 ```java
-AzureMonitorExporter azureMonitorExporter = new MonitorExporterClientBuilder()
+AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
     .instrumentationKey("{instrumentation-key}")
     .buildExporter();
 
@@ -111,5 +111,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents
 [opentelemetry_io]: https://opentelemetry.io/ 
+[span_data]: https://opentelemetry.lightstep.com/spans
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%monitor%2Fopentelemetry-exporter-azuremonitor%2FREADME.png)
