@@ -20,6 +20,7 @@ import com.microsoft.azure.management.resourcehealth.v2017_07_01.AvailabilitySta
 import com.microsoft.azure.management.resourcehealth.v2017_07_01.ChildAvailabilityStatuses;
 import com.microsoft.azure.management.resourcehealth.v2017_07_01.ChildResources;
 import com.microsoft.azure.management.resourcehealth.v2017_07_01.Operations;
+import com.microsoft.azure.management.resourcehealth.v2017_07_01.EmergingIssues;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -31,6 +32,7 @@ public final class ResourceHealthManager extends ManagerCore<ResourceHealthManag
     private ChildAvailabilityStatuses childAvailabilityStatuses;
     private ChildResources childResources;
     private Operations operations;
+    private EmergingIssues emergingIssues;
     /**
     * Get a Configurable instance that can be used to create ResourceHealthManager with optional configuration.
     *
@@ -116,6 +118,16 @@ public final class ResourceHealthManager extends ManagerCore<ResourceHealthManag
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage EmergingIssues.
+     */
+    public EmergingIssues emergingIssues() {
+        if (this.emergingIssues == null) {
+            this.emergingIssues = new EmergingIssuesImpl(this);
+        }
+        return this.emergingIssues;
     }
 
     /**
