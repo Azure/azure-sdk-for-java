@@ -229,6 +229,12 @@
         "code": "java.class.removed",
         "old": "class com.azure.core.amqp.models.BinaryData",
         "justification": "Remove BinaryData to perform GA release."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) io\\.opentelemetry.*",
+        "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
       }
     ]
   }
