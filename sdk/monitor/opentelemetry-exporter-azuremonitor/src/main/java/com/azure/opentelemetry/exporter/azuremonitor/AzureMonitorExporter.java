@@ -6,11 +6,9 @@ package com.azure.opentelemetry.exporter.azuremonitor;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.ContextTagKeys;
-import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.MessageData;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.MonitorBase;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.RemoteDependencyData;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.RequestData;
-import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.SeverityLevel;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.TelemetryEventData;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.TelemetryExceptionData;
 import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.TelemetryExceptionDetails;
@@ -24,7 +22,6 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanId;
-import io.opentelemetry.trace.TraceId;
 import io.opentelemetry.trace.attributes.SemanticAttributes;
 
 import java.net.URI;
@@ -89,7 +86,7 @@ public class AzureMonitorExporter implements SpanExporter {
     AzureMonitorExporter(MonitorExporterClient client, String instrumentationKey) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
-        String formattedInstrumentationKey = instrumentationKey.replace("-", "");
+        String formattedInstrumentationKey = instrumentationKey.replaceAll("-", "");
         this.telemetryItemNamePrefix = "Microsoft.ApplicationInsights." + formattedInstrumentationKey + ".";
     }
 
