@@ -1,9 +1,7 @@
 # Release History
 
-## 1.0.0 (Unreleased)
-- Regenerate protocol layer from GA service swagger
-- Update service API version to use GA service version
-- Add optional parameters for traceparent and tracestate to all service request APIs
+## 1.0.0-beta.4 (Unreleased)
+
 
 ## 1.0.0-beta.3 (2020-10-01)
 
