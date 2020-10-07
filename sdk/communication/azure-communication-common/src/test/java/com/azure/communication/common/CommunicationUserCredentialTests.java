@@ -291,6 +291,7 @@ public class CommunicationUserCredentialTests {
     class MockLongRunningRefresher implements TokenRefresher {
         private int numCalls = 0;
         private Runnable onCallReturn;
+        public LongRunningFuture longRunningFuture;
         
         public int numCalls() {
             return numCalls;
@@ -307,15 +308,18 @@ public class CommunicationUserCredentialTests {
         @Override
         public Future<String> getFetchTokenFuture() {
             numCalls++;
-            if (this.onCallReturn != null) {
-                this.onCallReturn.run();
-            }
-            return new LongRunningFuture();
+            longRunningFuture = new LongRunningFuture(onCallReturn);
+            return longRunningFuture;
         }
     }
 
     class LongRunningFuture implements Future<String> {
-        private List<String> synchedList = Collections.synchronizedList(new ArrayList<String>());
+        //private List<String> synchedList = Collections.synchronizedList(new ArrayList<String>());
+        private Runnable onCallReturn;
+
+        public LongRunningFuture(Runnable onCallReturn) {
+            this.onCallReturn = onCallReturn;
+        }
 
         @Override
         public boolean cancel(boolean mayInterruptIfRunning) {
@@ -332,12 +336,18 @@ public class CommunicationUserCredentialTests {
             return false;
         }
 
+        public void setOnCallReturn(Runnable onCallReturn) {
+            this.onCallReturn = onCallReturn;
+        }
+
         @Override
         public String get() throws InterruptedException, ExecutionException {
-            synchronized (synchedList) {
-                synchedList.wait();
+            
+                if (this.onCallReturn != null) {
+                    this.onCallReturn.run();
+                }
                 return tokenMocker.generateRawToken("Mock", "user", 12 * 60);
-            }
+           // }
         }
 
         @Override
@@ -353,9 +363,10 @@ public class CommunicationUserCredentialTests {
     public void shouldCallRefresherOnlyOnceWhileRefreshingIsInProgress()
         throws InterruptedException, ExecutionException, IOException {
         longRunningRefresher.resetCallCount();
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -5 * 60);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         longRunningRefresher.setOnCallReturn(countDownLatch::countDown);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -5 * 60);
+
         CommunicationUserCredential userCredential = new CommunicationUserCredential(longRunningRefresher, tokenStr, true);
 
         countDownLatch.await();
