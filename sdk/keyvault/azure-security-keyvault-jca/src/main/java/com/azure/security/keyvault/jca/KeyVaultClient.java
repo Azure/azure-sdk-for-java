@@ -7,10 +7,14 @@ import com.azure.security.keyvault.jca.rest.CertificateItem;
 import com.azure.security.keyvault.jca.rest.CertificateBundle;
 import com.azure.security.keyvault.jca.rest.SecretBundle;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -19,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
+import java.util.logging.Logger;
 
 /**
  * The REST client specific to Azure KeyVault.
@@ -26,6 +34,11 @@ import java.util.List;
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class KeyVaultClient extends DelegateRestClient {
+    
+    /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultClient.class.getName());
 
     /**
      * Stores the API version postfix.
@@ -59,6 +72,7 @@ class KeyVaultClient extends DelegateRestClient {
      */
     public KeyVaultClient(String keyVaultUri) {
         super(RestClientFactory.createClient());
+        LOGGER.log(FINE, "KeyVault URI: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
@@ -75,6 +89,8 @@ class KeyVaultClient extends DelegateRestClient {
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
         this(keyVaultUri);
+        LOGGER.log(FINE, "\nKeyVault URI: {0}\nTenant ID: {1}\nClient ID: {2}\nClient Secret: {3}",
+                new Object[] {keyVaultUri, tenantId, clientId, clientSecret});
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -91,13 +107,14 @@ class KeyVaultClient extends DelegateRestClient {
             AuthClient authClient = new AuthClient();
             String resource = URLEncoder.encode("https://vault.azure.net", "UTF-8");
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = authClient.getAuthorizationToken(resource, tenantId, clientId, clientSecret);
+                accessToken = authClient.getAccessToken(resource, tenantId, clientId, clientSecret);
             } else {
-                accessToken = authClient.getAuthorizationToken(resource);
+                accessToken = authClient.getAccessToken(resource);
             }
         } catch (UnsupportedEncodingException uee) {
-            uee.printStackTrace();
+            LOGGER.log(WARNING, "Unsupported encoding", uee);
         }
+        LOGGER.log(FINE, "Access token: {0}", accessToken);
         return accessToken;
     }
 
@@ -181,7 +198,7 @@ class KeyVaultClient extends DelegateRestClient {
                             new ByteArrayInputStream(Base64.getDecoder()
                                     .decode(certificateBundle.getCer())));
                 } catch (CertificateException ce) {
-                    ce.printStackTrace();
+                    LOGGER.log(WARNING, "Certificate error", ce);
                 }
             }
         }
@@ -222,8 +239,8 @@ class KeyVaultClient extends DelegateRestClient {
                             Base64.getDecoder().decode(secretBundle.getValue())), "".toCharArray());
                     alias = keyStore.aliases().nextElement();
                     key = keyStore.getKey(alias, "".toCharArray());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (IOException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException ex) {
+                    LOGGER.log(WARNING, "Unable to decode key", ex);
                 }
             }
         } else {

@@ -5,14 +5,22 @@ package com.azure.security.keyvault.jca;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import static java.util.logging.Level.FINEST;
+import static java.util.logging.Level.WARNING;
+import java.util.logging.Logger;
 
 /**
- * The JSON-B JsonConverter.
+ * The Jackson JsonConverter.
  *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class JacksonJsonConverter implements JsonConverter {
 
+    /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JacksonJsonConverter.class.getName());
+    
     /**
      * From JSON.
      *
@@ -22,14 +30,16 @@ class JacksonJsonConverter implements JsonConverter {
      */
     @Override
     public Object fromJson(String string, Class<?> resultClass) {
+        LOGGER.log(FINEST, "Result Class: {1}, Json:\n {0}", new Object[] {string, resultClass});
         Object result = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             result = objectMapper.readValue(string, resultClass);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.log(WARNING, "Unable to convert from JSON", e);
         }
+        LOGGER.log(FINEST, "Object: {0}", result);
         return result;
     }
 
@@ -41,13 +51,15 @@ class JacksonJsonConverter implements JsonConverter {
      */
     @Override
     public String toJson(Object object) {
+        LOGGER.log(FINEST, "Object: {0}", object);
         String result = null;
         try {
             ObjectMapper mapper = new ObjectMapper();
             result = mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            // consider logging.
+            LOGGER.log(WARNING, "Unable to convert to JSON", e);
         }
+        LOGGER.log(FINEST, "Json:\n {0}", result);
         return result;
     }
 }

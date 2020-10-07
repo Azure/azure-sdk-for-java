@@ -2,10 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import static java.util.logging.Level.ALL;
+import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -23,42 +28,29 @@ public class KeyVaultKeyStoreTest {
     @Test
     public void testEngineGetCertificate() throws Exception {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        keystore.engineLoad(null, null);
-        assertNull(keystore.engineGetCertificate("myalias"));
-    }
-
-    /**
-     * Test engineGetCertificate method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
-    @Test
-    public void testEngineGetCertificate2() throws Exception {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
-        keystore.engineLoad(null, null);
-        assertNull(keystore.engineGetCertificate("myalias"));
-    }
-
-    /**
-     * Test engineGetCertificate method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
-    @Test
-    public void testEngineGetCertificate3() throws Exception {
-        KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"), null, null, null);
+                System.getProperty("azure.keyvault.uri"),
+                System.getProperty("azure.tenant.id"),
+                System.getProperty("azure.client.id"),
+                System.getProperty("azure.client.secret"));
         keystore.engineLoad(parameter);
         assertNull(keystore.engineGetCertificate("myalias"));
     }
 
     /**
      * Test engineGetCertificateAlias method.
+     *
+     * @throws Exception when an error occurs.
      */
     @Test
-    public void testEngineGetCertificateAlias() {
+    public void testEngineGetCertificateAlias() throws Exception {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+                System.getProperty("azure.keyvault.uri"),
+                System.getProperty("azure.tenant.id"),
+                System.getProperty("azure.client.id"),
+                System.getProperty("azure.client.secret"));
+        keystore.engineLoad(parameter);
         assertNull(keystore.engineGetCertificateAlias(null));
     }
 
@@ -71,7 +63,10 @@ public class KeyVaultKeyStoreTest {
     public void testEngineGetCertificateChain() throws Exception {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"), null, null, null);
+                System.getProperty("azure.keyvault.uri"),
+                System.getProperty("azure.tenant.id"),
+                System.getProperty("azure.client.id"),
+                System.getProperty("azure.client.secret"));
         keystore.engineLoad(parameter);
         assertNull(keystore.engineGetCertificateChain("myalias"));
     }
@@ -90,7 +85,6 @@ public class KeyVaultKeyStoreTest {
                 System.getProperty("azure.client.id"),
                 System.getProperty("azure.client.secret"));
         keystore.engineLoad(parameter);
-
         assertFalse(keystore.engineIsCertificateEntry("myalias"));
     }
 

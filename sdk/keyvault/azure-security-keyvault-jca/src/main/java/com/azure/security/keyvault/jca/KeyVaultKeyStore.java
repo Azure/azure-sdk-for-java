@@ -30,7 +30,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the list of aliases.
      */
-    private List<String> certificateAliases;
+    private List<String> aliases;
 
     /**
      * Stores the certificates by alias.
@@ -48,7 +48,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     private final Date creationDate;
 
     /**
-     * Stores the key vault.
+     * Stores the key vault client.
      */
     private KeyVaultClient keyVault;
 
@@ -67,17 +67,17 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         String tenantId = System.getProperty("azure.keyvault.tenantId");
-        String clientId = System.getProperty("azure.keyvault.clientId", null);
-        String clientSecret = System.getProperty("azure.keyvault.clientSecret", null);
+        String clientId = System.getProperty("azure.keyvault.clientId");
+        String clientSecret = System.getProperty("azure.keyvault.clientSecret");
         keyVault = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
     }
 
     @Override
     public Enumeration<String> engineAliases() {
-        if (certificateAliases == null) {
-            certificateAliases = keyVault.getAliases();
+        if (aliases == null) {
+            aliases = keyVault.getAliases();
         }
-        return Collections.enumeration(certificateAliases);
+        return Collections.enumeration(aliases);
     }
 
     @Override
@@ -103,8 +103,8 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
             certificate = keyVault.getCertificate(alias);
             if (certificate != null) {
                 certificates.put(alias, certificate);
-                if (!certificateAliases.contains(alias)) {
-                    certificateAliases.add(alias);
+                if (!aliases.contains(alias)) {
+                    aliases.add(alias);
                 }
             }
         }
@@ -155,8 +155,8 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
             key = keyVault.getKey(alias, password);
             if (key != null) {
                 certificateKeys.put(alias, key);
-                if (!certificateAliases.contains(alias)) {
-                    certificateAliases.add(alias);
+                if (!aliases.contains(alias)) {
+                    aliases.add(alias);
                 }
             }
         }
@@ -165,10 +165,10 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public boolean engineIsCertificateEntry(String alias) {
-        if (certificateAliases == null) {
-            certificateAliases = keyVault.getAliases();
+        if (aliases == null) {
+            aliases = keyVault.getAliases();
         }
-        return certificateAliases.contains(alias);
+        return aliases.contains(alias);
     }
 
     @Override
@@ -181,8 +181,10 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             keyVault = new KeyVaultClient(
-                    parameter.getUri(), parameter.getTenantId(),
-                    parameter.getClientId(), parameter.getClientSecret());
+                    parameter.getUri(),
+                    parameter.getTenantId(),
+                    parameter.getClientId(),
+                    parameter.getClientSecret());
         }
     }
 
@@ -195,6 +197,11 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
+    public void engineSetEntry(String alias, KeyStore.Entry entry, KeyStore.ProtectionParameter protParam) throws KeyStoreException {
+        super.engineSetEntry(alias, entry, protParam);
+    }
+
+    @Override
     public void engineSetKeyEntry(String alias, Key key, char[] password, Certificate[] chain) throws KeyStoreException {
     }
 
@@ -204,10 +211,14 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public int engineSize() {
-        return certificateAliases != null ? certificateAliases.size() : 0;
+        return aliases != null ? aliases.size() : 0;
     }
 
     @Override
     public void engineStore(OutputStream stream, char[] password) throws IOException, NoSuchAlgorithmException, CertificateException {
+    }
+
+    @Override
+    public void engineStore(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException, CertificateException {
     }
 }

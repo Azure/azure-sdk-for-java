@@ -4,6 +4,8 @@ package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.OAuthToken;
 import java.util.HashMap;
+import static java.util.logging.Level.FINER;
+import java.util.logging.Logger;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -49,6 +51,11 @@ class AuthClient extends DelegateRestClient {
             = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01";
 
     /**
+     * Stores our logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AuthClient.class.getName());
+    
+    /**
      * Constructor.
      *
      * <p>
@@ -60,26 +67,27 @@ class AuthClient extends DelegateRestClient {
     }
 
     /**
-     * Get an authorization token for a managed identity.
+     * Get an access token for a managed identity.
      *
      * @param resource the resource.
      * @return the authorization token.
      */
-    public String getAuthorizationToken(String resource) {
+    public String getAccessToken(String resource) {
+        LOGGER.log(FINER, "Resource: {0}", resource);
         String result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
                 && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
-            result = getAuthorizationTokenOnAppService(resource);
+            result = getAccessTokenOnAppService(resource);
         } else {
-            result = getAuthorizationTokenOnOthers(resource);
+            result = getAccessTokenOnOthers(resource);
         }
-
+        LOGGER.log(FINER, "Access token: {0}", result);
         return result;
     }
 
     /**
-     * Get an authorization token.
+     * Get an access token.
      *
      * @param resource the resource.
      * @param tenantId the tenant ID.
@@ -87,9 +95,10 @@ class AuthClient extends DelegateRestClient {
      * @param clientSecret the client secret.
      * @return the authorization token.
      */
-    public String getAuthorizationToken(String resource, String tenantId,
+    public String getAccessToken(String resource, String tenantId,
             String clientId, String clientSecret) {
-
+        LOGGER.log(FINER, "\nResource: {0}\nTenant ID: {1}\nClient ID: {2}\nClient secret: {3}", 
+                new Object[] {resource, tenantId, clientId, clientSecret});
         String result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
@@ -109,16 +118,18 @@ class AuthClient extends DelegateRestClient {
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
             result = token.getAccess_token();
         }
+        LOGGER.log(FINER, "Access token: {0}", result);
         return result;
     }
 
     /**
-     * Get the authorization token on Azure App Service.
+     * Get the access token on Azure App Service.
      *
      * @param resource the resource.
      * @return the authorization token.
      */
-    private String getAuthorizationTokenOnAppService(String resource) {
+    private String getAccessTokenOnAppService(String resource) {
+        LOGGER.log(FINER, "Resource: {0}", resource);
         String result = null;
 
         StringBuilder url = new StringBuilder();
@@ -136,6 +147,7 @@ class AuthClient extends DelegateRestClient {
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
             result = token.getAccess_token();
         }
+        LOGGER.log(FINER, "Access Token: {0}", result);
         return result;
     }
 
@@ -145,7 +157,8 @@ class AuthClient extends DelegateRestClient {
      * @param resource the resource.
      * @return the authorization token.
      */
-    private String getAuthorizationTokenOnOthers(String resource) {
+    private String getAccessTokenOnOthers(String resource) {
+        LOGGER.log(FINER, "Resource: {0}", resource);
         String result = null;
 
         StringBuilder url = new StringBuilder();
@@ -161,6 +174,7 @@ class AuthClient extends DelegateRestClient {
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
             result = token.getAccess_token();
         }
+        LOGGER.log(FINER, "Access token: {0}", result);
         return result;
     }
 }

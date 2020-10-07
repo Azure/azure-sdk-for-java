@@ -22,7 +22,7 @@ public class AuthClientTest {
         String clientId = "2b8f123b-b18a-4077-bce0-42e10ce8bbab";
         String clientSecret = "72-~tZ9~cG~rimDI0EkQSMQ1D9DYmGmI_I";
         AuthClient authClient = new AuthClient();
-        String result = authClient.getAuthorizationToken(
+        String result = authClient.getAccessToken(
                 "https://management.azure.com/", tenantId, clientId,  
                 URLEncoder.encode(clientSecret, "UTF-8"));
         assertNotNull(result);

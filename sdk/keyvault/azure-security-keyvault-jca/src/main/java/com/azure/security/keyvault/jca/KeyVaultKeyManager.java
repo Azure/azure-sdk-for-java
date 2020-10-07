@@ -12,6 +12,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import static java.util.logging.Level.FINEST;
+import java.util.logging.Logger;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedKeyManager;
 
@@ -23,10 +25,15 @@ import javax.net.ssl.X509ExtendedKeyManager;
 public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyManager.class.getName());
+
+    /**
      * Stores the keystore.
      */
     private KeyStore keystore;
-    
+
     /**
      * Stores the password.
      */
@@ -44,12 +51,15 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String[] getClientAliases(String keyType, Principal[] issuers) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LOGGER.log(FINEST, "Key type: {0}, issuers: {1}", new Object[]{keyType, issuers});
+        return null;
     }
 
     @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LOGGER.log(FINEST, "Key type: {0}, issuers: {1}, socket: {2}", 
+                new Object[]{keyType, issuers, socket});
+        return null;
     }
 
     @Override
@@ -65,7 +75,9 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LOGGER.log(FINEST, "Key type: {0}, issuers: {1}, socket: {2}", 
+                new Object[]{keyType, issuers, socket});
+        return null;
     }
 
     @Override
@@ -74,7 +86,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         try {
             Certificate[] keystoreChain = keystore.getCertificateChain(alias);
             if (keystoreChain.length > 0) {
-                for(int i=0; i<keystoreChain.length; i++) {
+                for (int i = 0; i < keystoreChain.length; i++) {
                     if (keystoreChain[i] instanceof X509Certificate) {
                         chain.add((X509Certificate) keystoreChain[i]);
                     }

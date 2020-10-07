@@ -32,8 +32,13 @@ public class KeyVaultJcaProviderTest {
     @Test
     public void testGetCertificate() throws Exception {
         Security.addProvider(new KeyVaultJcaProvider());
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        keyStore.load(null, null);
-        assertNull(keyStore.getCertificate("myalias"));
+        KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+                System.getProperty("azure.keyvault.uri"),
+                System.getProperty("azure.tenant.id"),
+                System.getProperty("azure.client.id"),
+                System.getProperty("azure.client.secret"));
+        keystore.load(parameter);
+        assertNull(keystore.getCertificate("myalias"));
     }
 }
