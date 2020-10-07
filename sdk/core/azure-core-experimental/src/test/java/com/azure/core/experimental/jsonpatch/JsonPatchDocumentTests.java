@@ -52,6 +52,14 @@ public class JsonPatchDocumentTests {
             .appendMove("/a/b/c", "/a/b/d")
             .appendCopy("/a/b/d", "/a/b/e");
 
+        JsonPatchDocument complexDocumentRaw = new JsonPatchDocument()
+            .appendTestRaw("/a/b/c", "\"foo\"")
+            .appendRemove("/a/b/c")
+            .appendAddRaw("/a/b/c", "[\"foo\",\"bar\"]")
+            .appendReplaceRaw("/a/b/c", "42")
+            .appendMove("/a/b/c", "/a/b/d")
+            .appendCopy("/a/b/d", "/a/b/e");
+
         String complexExpected = "["
             + "{\"op\":\"test\",\"path\":\"/a/b/c\",\"value\":\"foo\"},"
             + "{\"op\":\"remove\",\"path\":\"/a/b/c\"},"
@@ -75,6 +83,18 @@ public class JsonPatchDocumentTests {
             Arguments.of(new JsonPatchDocument().appendAdd("/foo/-", new String[] {"abc", "def"}),
                 constructExpectedOperation("add", null, "/foo/-", "[\"abc\",\"def\"]", false)),
 
+            Arguments.of(new JsonPatchDocument().appendAddRaw("/baz", "\"qux\""),
+                constructExpectedOperation("add", null, "/baz", "qux")),
+
+            Arguments.of(new JsonPatchDocument().appendAddRaw("/foo/1", "\"qux\""),
+                constructExpectedOperation("add", null, "/foo/1", "qux")),
+
+            Arguments.of(new JsonPatchDocument().appendAddRaw("/child", "{\"grandchild\":{}}"),
+                constructExpectedOperation("add", null, "/child", "{\"grandchild\":{}}", false)),
+
+            Arguments.of(new JsonPatchDocument().appendAddRaw("/foo/-", "[\"abc\",\"def\"]"),
+                constructExpectedOperation("add", null, "/foo/-", "[\"abc\",\"def\"]", false)),
+
             Arguments.of(new JsonPatchDocument().appendReplace("/bar", "foo"),
                 constructExpectedOperation("replace", null, "/bar", "foo")),
 
@@ -82,6 +102,15 @@ public class JsonPatchDocumentTests {
                 constructExpectedOperation("replace", null, "/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]", false)),
 
             Arguments.of(new JsonPatchDocument().appendReplace("/baz", "foo"),
+                constructExpectedOperation("replace", null, "/baz", "foo")),
+
+            Arguments.of(new JsonPatchDocument().appendReplaceRaw("/bar", "\"foo\""),
+                constructExpectedOperation("replace", null, "/bar", "foo")),
+
+            Arguments.of(new JsonPatchDocument().appendReplaceRaw("/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]"),
+                constructExpectedOperation("replace", null, "/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]", false)),
+
+            Arguments.of(new JsonPatchDocument().appendReplaceRaw("/baz", "\"foo\""),
                 constructExpectedOperation("replace", null, "/baz", "foo")),
 
             Arguments.of(new JsonPatchDocument().appendCopy("/foo", "/copy"),
@@ -123,7 +152,18 @@ public class JsonPatchDocumentTests {
             Arguments.of(new JsonPatchDocument().appendTest("/baz", "bar"),
                 constructExpectedOperation("test", null, "/baz", "bar")),
 
-            Arguments.of(complexDocument, complexExpected)
+            Arguments.of(new JsonPatchDocument().appendTestRaw("/foo", "\"bar\""),
+                constructExpectedOperation("test", null, "/foo", "bar")),
+
+            Arguments.of(new JsonPatchDocument().appendTestRaw("/foo", "42"),
+                constructExpectedOperation("test", null, "/foo", "42", false)),
+
+            Arguments.of(new JsonPatchDocument().appendTestRaw("/baz", "\"bar\""),
+                constructExpectedOperation("test", null, "/baz", "bar")),
+
+            Arguments.of(complexDocument, complexExpected),
+
+            Arguments.of(complexDocumentRaw, complexExpected)
         );
     }
 

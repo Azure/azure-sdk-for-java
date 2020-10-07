@@ -356,4 +356,16 @@ class FileServiceAPITests extends APISpec {
         then:
         thrown(ShareStorageException.class)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def serviceClient = getServiceClient(primaryCredential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+
+        when:
+        def response = serviceClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }
