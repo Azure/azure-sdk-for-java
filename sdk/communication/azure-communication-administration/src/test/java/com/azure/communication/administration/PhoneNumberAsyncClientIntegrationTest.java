@@ -43,6 +43,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     matches = "(?i)(true)")
 public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegrationTestBase {
     @Test()
+    public void createAsyncPhoneNumberClientWithConnectionString() {
+        PhoneNumberAsyncClient phoneNumberAsyncClient = getClientBuilderWithConnectionString().buildAsyncClient();
+        assertNotNull(phoneNumberAsyncClient);
+
+        // Smoke test using phoneNumberAsyncClient to list all phone numbers
+        PagedFlux<AcquiredPhoneNumber> pagedFlux = phoneNumberAsyncClient.listAllPhoneNumbers(LOCALE);
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getPhoneNumber());
+            })
+            .verifyComplete();
+    }
+    
+    @Test()
     public void listAllPhoneNumbers() {
         PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClient().listAllPhoneNumbers(LOCALE);
 
