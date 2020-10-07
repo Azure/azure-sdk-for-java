@@ -10,7 +10,6 @@ import java.time.OffsetDateTime;
 /**
  * The CustomFormModelInfo model.
  */
-@Immutable
 public final class CustomFormModelInfo {
 
     /*

@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * The TrainingDocumentInfo model.
  */
-@Immutable
 public final class TrainingDocumentInfo {
 
     /*

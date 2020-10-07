@@ -202,7 +202,7 @@ final class CustomModelTransforms {
                     formType + clusterKey);
                 PrivateFieldAccessHelper.set(customFormSubmodel, "modelId", modelId);
                 subModelList.add(customFormSubmodel);
-        });
+            });
         return subModelList;
     }
 

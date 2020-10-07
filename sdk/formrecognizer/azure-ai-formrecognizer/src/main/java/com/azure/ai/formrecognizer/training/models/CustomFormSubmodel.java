@@ -11,7 +11,6 @@ import java.util.Map;
 /**
  * The CustomFormSubmodel model.
  */
-@Immutable
 public final class CustomFormSubmodel {
 
     /*

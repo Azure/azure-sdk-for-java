@@ -238,7 +238,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                         .values()
                         .forEach(customFormModelField ->
                             assertTrue(fields.contains(customFormModelField.getLabel())));
-            });
+                });
             validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
                 actualCustomModel.getTrainingDocuments());
             validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());

@@ -218,7 +218,7 @@ public final class Utility {
      * Poller's ACTIVATION operation that takes URL as input.
      */
     public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
-    urlActivationOperation(
+        urlActivationOperation(
         Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
         return pollingContext -> {
             try {

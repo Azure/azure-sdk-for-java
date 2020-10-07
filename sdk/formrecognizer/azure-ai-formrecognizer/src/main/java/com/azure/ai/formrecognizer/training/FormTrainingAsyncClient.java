@@ -477,7 +477,8 @@ public final class FormTrainingAsyncClient {
     /**
      * Create a composed model from the provided list of existing models in the account.
      *
-     * <p>This operations fails if list consists of an invalid or non-existing model Id.
+     * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate Ids.
+     * This operation is currently only supported for custom models trained using labels.
      * </p>
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -502,10 +503,11 @@ public final class FormTrainingAsyncClient {
     /**
      * Create a composed model from the provided list of existing models in the account.
      *
-     * <p>This operations fails if list consists of an invalid or non-existing model Id.
+     * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate Ids.
+     * This operation is currently only supported for custom models trained using labels.
      * </p>
      *
-     * <p>The service does not support cancellation of the long running operation and returns with an
+     *  <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
@@ -544,11 +546,13 @@ public final class FormTrainingAsyncClient {
                 creatComposeModelOptions.getPollInterval(),
                 urlActivationOperation(() -> service.composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
                     .map(response -> {
-                        final String composeModelOperationId = parseModelId(response.getDeserializedHeaders().getLocation());
+                        final String composeModelOperationId
+                            = parseModelId(response.getDeserializedHeaders().getLocation());
                         return new FormRecognizerOperationResult(composeModelOperationId);
                     }), logger),
                 createModelPollOperation(context),
-                (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                (activationResponse, pollingContext)
+                    -> Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchModelResultOperation(context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);

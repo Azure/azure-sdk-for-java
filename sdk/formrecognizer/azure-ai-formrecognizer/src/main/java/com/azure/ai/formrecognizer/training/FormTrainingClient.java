@@ -8,20 +8,19 @@ import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.models.CreateComposeModelOptions;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.FormRecognizerException;
-import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
@@ -351,14 +350,15 @@ public final class FormTrainingClient {
     /**
      * Create a composed model from the provided list of existing models in the account.
      *
-     * <p>This operations fails if list consists of an invalid or non-existing model Id.
+     * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate Ids.
+     * This operation is currently only supported for custom models trained using labels.
      * </p>
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list}
      *
      * @param modelIds The list of models Ids to form the composed model.
      *
@@ -376,14 +376,15 @@ public final class FormTrainingClient {
     /**
      * Create a composed model from the provided list of existing models in the account.
      *
-     * <p>This operations fails if list consists of an invalid or non-existing model Id.
+     * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate Ids.
+     * This operation is currently only supported for custom models trained using labels.
      * </p>
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposeModelOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposeModelOptions-Context}
      *
      * @param modelIds The list of models Ids to form the composed model.
      * @param createComposeModelOptions The configurable {@link CreateComposeModelOptions options} to pass when
