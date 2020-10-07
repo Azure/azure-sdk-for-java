@@ -72,6 +72,20 @@ public class Configs {
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
 
+    // SessionTokenMismatchRetryPolicy Constants
+    // TODO fabianm - do we really want to keep these config overrides like in .Net
+    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME =
+        "session-token-mismatch-policy-default-wait-time-milliseconds";
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS = 5000;
+
+    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+        "session-token-mismatch-policy-default-initial-backoff-milliseconds";
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS = 5;
+
+    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+        "session-token-mismatch-policy-default-maximum-backoff-milliseconds";
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 50;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -192,6 +206,24 @@ public class Configs {
 
     public static int getAddressRefreshResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS);
+    }
+
+    public static int getSessionTokenMismatchDefaultWaitTimeInMs() {
+        return getJVMConfigAsInt(
+            DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME,
+            DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS);
+    }
+
+    public static int getSessionTokenMismatchInitialBackoffTimeInMs() {
+        return getJVMConfigAsInt(
+            DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME,
+            DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS);
+    }
+
+    public static int getSessionTokenMismatchMaximumBackoffTimeInMs() {
+        return getJVMConfigAsInt(
+            DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME,
+            DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
