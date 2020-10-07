@@ -775,6 +775,7 @@ public final class PhoneNumberAsyncClient {
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the search result
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -786,8 +787,8 @@ public final class PhoneNumberAsyncClient {
             createSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<PhoneNumberSearch>, 
-        Mono<PhoneNumberSearch>> createSearchActivationOperation(CreateSearchOptions options) {
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        createSearchActivationOperation(CreateSearchOptions options) {
         return (pollingContext) -> {
             Mono<PhoneNumberSearch> response = createSearch(options).flatMap(createSearchResponse -> {
                 String searchId = createSearchResponse.getSearchId();
@@ -829,8 +830,8 @@ public final class PhoneNumberAsyncClient {
     }
 
     private BiFunction<PollingContext<PhoneNumberSearch>,
-        PollResponse<PhoneNumberSearch>,
-        Mono<PhoneNumberSearch>> cancelSearchOperation() {
+        PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        cancelSearchOperation() {
         return (pollingContext, firstResponse) -> {
             cancelSearch(pollingContext.getActivationResponse().getValue().getSearchId());
             return Mono.just(new PhoneNumberSearch());

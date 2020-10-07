@@ -530,13 +530,13 @@ public final class PhoneNumberClient {
      * This function returns a Long Running Operation poller.
      * 
      * @param options A {@link CreateSearchOptions} with the search options
-     * @param lroDuration The time our long running operation will keep on polling 
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
-        CreateSearchOptions options, Duration lroDuration) {
-        return phoneNumberAsyncClient.beginCreateSearch(options, lroDuration).getSyncPoller();
+        CreateSearchOptions options, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
     }
 }
