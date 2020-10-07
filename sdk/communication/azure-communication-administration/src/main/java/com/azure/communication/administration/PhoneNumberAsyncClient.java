@@ -799,27 +799,18 @@ public final class PhoneNumberAsyncClient {
         };
     }
 
-    private Function<PollingContext<PhoneNumberSearch>, 
-        Mono<PollResponse<PhoneNumberSearch>>> createSearchPollOperation() {
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>> 
+        createSearchPollOperation() {
         return pollingContext ->
-            getSearchById(pollingContext.getActivationResponse().getValue().getSearchId())
+            getSearchById(pollingContext.getLatestResponse().getValue().getSearchId())
                 .flatMap(getSearchResponse -> {
                     SearchStatus status = getSearchResponse.getStatus();
-                    if (status.equals(SearchStatus.SUCCESS)) {
-                        return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
-                    }
-                    if (status.equals(SearchStatus.EXPIRED)) {
-                        return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
-                    }
-                    if (status.equals(SearchStatus.CANCELLED)) {
-                        return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
-                    }
-                    if (status.equals(SearchStatus.RESERVED)) {
-                        return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
+                    if (status.equals(SearchStatus.SUCCESS) 
+                        || status.equals(SearchStatus.EXPIRED) 
+                        || status.equals(SearchStatus.CANCELLED) 
+                        || status.equals(SearchStatus.RESERVED)) {
+                            return Mono.just(new PollResponse<>(
+                            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
                     }
                     if (status.equals(SearchStatus.ERROR)) {
                         return Mono.just(new PollResponse<>(
@@ -833,8 +824,8 @@ public final class PhoneNumberAsyncClient {
         PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
         cancelSearchOperation() {
         return (pollingContext, firstResponse) -> {
-            cancelSearch(pollingContext.getActivationResponse().getValue().getSearchId());
-            return Mono.just(new PhoneNumberSearch());
+            cancelSearch(pollingContext.getLatestResponse().getValue().getSearchId());
+            return Mono.just(pollingContext.getLatestResponse().getValue());
         };
     }
 

@@ -481,10 +481,10 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient();
-        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> res = client.beginCreateSearch(createSearchOptions, duration);
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> sync = res.getSyncPoller();
-        sync.waitForCompletion();
-        PhoneNumberSearch testResult = sync.getFinalResult();
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+            client.beginCreateSearch(createSearchOptions, duration).getSyncPoller();
+        res.waitForCompletion();
+        PhoneNumberSearch testResult = res.getFinalResult();
         assertEquals(testResult.getPhoneNumbers().size(), 2);
         assertNotNull(testResult.getSearchId());
     }
