@@ -207,6 +207,11 @@
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.models.SerializationType",
         "justification": "This is a preview release"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method com.azure.core.http.HttpPipelinePosition com.azure.core.http.policy.HttpPipelinePolicy::getPipelinePosition()",
+        "justification": "Default interface method"
       }
     ]
   }

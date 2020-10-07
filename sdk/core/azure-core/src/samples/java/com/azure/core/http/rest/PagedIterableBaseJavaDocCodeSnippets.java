@@ -3,10 +3,11 @@
 
 package com.azure.core.http.rest;
 
+import reactor.core.publisher.Mono;
+
 import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import reactor.core.publisher.Mono;
 
 /**
  * Code snippets for {@link PagedIterableBase}
@@ -94,7 +95,7 @@ public class PagedIterableBaseJavaDocCodeSnippets {
      *
      * @return An instance of {@link PagedFlux}
      */
-    public CustomPagedFlux<String> createCustomInstance() {
+    CustomPagedFlux<String> createCustomInstance() {
 
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<String>>> firstPageRetriever = () -> null;

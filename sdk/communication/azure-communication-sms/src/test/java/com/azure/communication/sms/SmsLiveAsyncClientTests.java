@@ -5,6 +5,8 @@ package com.azure.communication.sms;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.communication.sms.models.SendSmsOptions;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,16 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
         body = "Hello";
         from = new PhoneNumber(PHONENUMBER);
         to.add(new PhoneNumber(PHONENUMBER));
+    }
+    
+    @Test
+    public void createAsyncClientUsingConnectionString() {
+        SmsAsyncClient smsClient = getSmsClientBuilderWithConnectionString().buildAsyncClient();
+        assertNotNull(smsClient);
+        // Smoke test sms client by sending message
+        StepVerifier.create(smsClient.sendMessage(from, to, body, null))
+            .assertNext(response -> verifyResponse(response))
+            .verifyComplete();
     }
 
     @Test

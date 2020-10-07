@@ -977,4 +977,20 @@ class FileAPITests extends APISpec {
         expect:
         filePath == primaryFileClient.getFilePath()
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        primaryFileClient.create(512)
+
+        def fileClient = fileBuilderHelper(interceptorManager, primaryFileClient.getShareName(), primaryFileClient.getFilePath())
+            .addPolicy(getPerCallVersionPolicy()).buildFileClient()
+
+        when:
+        def response = fileClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 }

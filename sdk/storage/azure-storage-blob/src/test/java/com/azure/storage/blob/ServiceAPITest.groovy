@@ -30,7 +30,6 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -955,5 +954,17 @@ class ServiceAPITest extends APISpec {
         "https://doesntmatter. blob.core.windows.net" | "containername"  || _
         "https://doesntmatter.blob.core.windows.net"  | "container name" || _
         /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def sc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = sc.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

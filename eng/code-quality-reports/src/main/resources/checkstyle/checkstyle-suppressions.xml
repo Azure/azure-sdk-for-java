@@ -252,6 +252,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerProvider.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.gson.JsonNodeUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.jackson.JsonNodeUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.util.BinaryData.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -427,6 +428,7 @@
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporter.azuremonitor.implementation.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
@@ -455,6 +457,7 @@
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]monitor[/\\].*"/>
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
@@ -550,7 +553,7 @@
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberAsyncClient.java"/>
-  
+
   <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
   <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
 
