@@ -512,20 +512,6 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
                 " to: myDigitalTwinId"))
             .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options
-
-        // BEGIN: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options
-        digitalTwinsAsyncClient.listIncomingRelationships(
-            "myDigitalTwinId",
-            new DigitalTwinsListIncomingRelationshipsOptions())
-            .doOnNext(incomingRel ->
-                System.out.println(
-                    "Retrieved relationship with Id: " +
-                    incomingRel.getRelationshipId() +
-                    " from: " +
-                    incomingRel.getSourceId() +
-                    " to: myDigitalTwinId"))
-            .subscribe();
-        // END: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options
     }
 
     //endregion RelationshipSnippets
