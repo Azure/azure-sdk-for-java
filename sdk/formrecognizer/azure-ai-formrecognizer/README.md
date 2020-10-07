@@ -314,7 +314,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 ```
 
 ### Recognize business cards
-Recognize data from a USA sales receipts using a prebuilt model. Business card fields recognized by the service
+Recognize data from business cards using a prebuilt model. Business card fields recognized by the service
 can be found [here][service_recognize_business_card].
 See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
 information from business card.
