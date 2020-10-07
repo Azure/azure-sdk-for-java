@@ -406,12 +406,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 // and there is no harm in this case
                 if (exception instanceof SSLException) {
                     logger.debug(
-                        "SslException when attempting to close the outbound SSL connection: {}",
-                        exception.toString());
+                        "SslException when attempting to close the outbound SSL connection: ",
+                        exception);
                 } else {
                     logger.warn(
-                        "Exception when attempting to close the outbound SSL connection: {}",
-                        exception.toString());
+                        "Exception when attempting to close the outbound SSL connection: ",
+                        exception);
 
                     throw exception;
                 }
