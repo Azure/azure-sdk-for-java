@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BootDiagnosticsInstanceView model. */
+/** The instance view of a virtual machine boot diagnostics. */
 @Immutable
 public final class BootDiagnosticsInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);

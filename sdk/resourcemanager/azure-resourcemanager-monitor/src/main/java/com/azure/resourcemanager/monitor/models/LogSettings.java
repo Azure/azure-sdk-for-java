@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LogSettings model. */
+/** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log. */
 @Fluent
 public final class LogSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSettings.class);

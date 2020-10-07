@@ -8,10 +8,12 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.File;
+import java.time.Duration;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,9 +43,9 @@ public class ZipDeployTests extends AppServiceTest {
                 .withNewResourceGroup(rgName)
                 .create();
         Assertions.assertNotNull(functionApp);
-        SdkContext.sleep(5000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         functionApp.zipDeploy(new File(FunctionAppsTests.class.getResource("/square-function-app.zip").getPath()));
-        SdkContext.sleep(5000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         String response = post("http://" + webappName4 + ".azurewebsites.net" + "/api/square", "25");
         Assertions.assertNotNull(response);
         Assertions.assertEquals("625", response);

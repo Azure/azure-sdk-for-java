@@ -34,9 +34,9 @@ import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateCompo
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateRelationshipResponse;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsUpdateResponse;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
+import com.azure.digitaltwins.core.implementation.models.IncomingRelationship;
 import com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection;
 import com.azure.digitaltwins.core.implementation.models.RelationshipCollection;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -222,13 +222,17 @@ public final class DigitalTwinsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RelationshipCollection>> listRelationshipsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<IncomingRelationshipCollection>> listIncomingRelationshipsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("$host") String host,
+                Context context);
     }
 
     /**
@@ -701,7 +705,11 @@ public final class DigitalTwinsImpl {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return service.listRelationshipsNext(nextLink, context)
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        return service.listRelationshipsNext(nextLink, this.client.getHost(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -729,7 +737,11 @@ public final class DigitalTwinsImpl {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return service.listIncomingRelationshipsNext(nextLink, context)
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        return service.listIncomingRelationshipsNext(nextLink, this.client.getHost(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

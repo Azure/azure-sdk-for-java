@@ -14,16 +14,16 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.ZoneType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
@@ -58,7 +58,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         zoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
@@ -166,7 +166,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
         Assertions.assertTrue(aaaaRecordSet1.ipv6Addresses().size() == 2);
 
         // Check CNAME records
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assertions.assertTrue(TestUtilities.getSize(cnameRecordSets) == 2);
 
         // Check Caa records

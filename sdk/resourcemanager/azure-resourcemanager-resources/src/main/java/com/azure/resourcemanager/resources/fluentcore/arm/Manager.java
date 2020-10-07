@@ -4,28 +4,69 @@
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 
 /**
  * Generic base class for Azure resource managers.
  *
- * @param <T> specific manager type
  * @param <InnerT> inner management client implementation type
  */
-public abstract class Manager<T, InnerT> extends ManagerBase implements HasInner<InnerT> {
+public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
+    private ResourceManager resourceManager;
+    private final String subscriptionId;
+    private final AzureEnvironment environment;
+    private final HttpPipeline httpPipeline;
 
-    protected final InnerT innerManagementClient;
+    private final InnerT innerManagementClient;
 
-    protected Manager(HttpPipeline httpPipeline, AzureProfile profile,
-                      InnerT innerManagementClient, SdkContext sdkContext) {
-        super(httpPipeline, profile, sdkContext);
+    protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
+        this.httpPipeline = httpPipeline;
+        if (httpPipeline != null) {
+            this.resourceManager = ResourceManager.authenticate(httpPipeline, profile)
+                .withDefaultSubscription();
+        }
+        this.subscriptionId = profile.getSubscriptionId();
+        this.environment = profile.getEnvironment();
         this.innerManagementClient = innerManagementClient;
     }
 
     @Override
-    public InnerT inner() {
+    public InnerT serviceClient() {
         return this.innerManagementClient;
+    }
+
+    /**
+     * @return the ID of the subscription the manager is working with
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
+    }
+
+    /**
+     * @return the Azure environment the manager is working with
+     */
+    public AzureEnvironment environment() {
+        return this.environment;
+    }
+
+    protected final void withResourceManager(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
+    }
+
+    /**
+     * @return the {@link ResourceManager} associated with this manager
+     */
+    public ResourceManager resourceManager() {
+        return this.resourceManager;
+    }
+
+    /**
+     * @return the {@link HttpPipeline} associated with this manager
+     */
+    public HttpPipeline httpPipeline() {
+        return this.httpPipeline;
     }
 }

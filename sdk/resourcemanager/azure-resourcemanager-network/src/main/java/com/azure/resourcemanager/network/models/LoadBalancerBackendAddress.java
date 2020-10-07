@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LoadBalancerBackendAddress model. */
+/** Load balancer backend addresses. */
 @JsonFlatten
 @Fluent
 public class LoadBalancerBackendAddress {

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The ParameterDefinitionsValueMetadata model. */
+/** General metadata for the parameter. */
 @Fluent
 public final class ParameterDefinitionsValueMetadata {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterDefinitionsValueMetadata.class);

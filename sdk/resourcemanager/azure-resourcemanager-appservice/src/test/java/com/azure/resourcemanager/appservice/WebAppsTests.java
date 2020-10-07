@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -105,7 +105,7 @@ public class WebAppsTests extends AppServiceTest {
                 WebAppRuntimeStack.NETCORE.runtime(),
                 webApp1
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listMetadata(webApp1.resourceGroupName(), webApp1.name())
                     .properties()
@@ -125,7 +125,7 @@ public class WebAppsTests extends AppServiceTest {
                 WebAppRuntimeStack.NET.runtime(),
                 webApp3
                     .manager()
-                    .inner()
+                    .serviceClient()
                     .getWebApps()
                     .listMetadata(webApp3.resourceGroupName(), webApp3.name())
                     .properties()

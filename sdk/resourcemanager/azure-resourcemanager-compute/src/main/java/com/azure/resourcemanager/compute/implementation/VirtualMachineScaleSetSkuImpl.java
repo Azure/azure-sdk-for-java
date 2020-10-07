@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuCapacity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** Implementation of VirtualMachineScaleSetSku. */
@@ -17,16 +17,16 @@ class VirtualMachineScaleSetSkuImpl extends WrapperImpl<VirtualMachineScaleSetSk
 
     @Override
     public String resourceType() {
-        return this.inner().resourceType();
+        return this.innerModel().resourceType();
     }
 
     @Override
     public VirtualMachineScaleSetSkuTypes skuType() {
-        return VirtualMachineScaleSetSkuTypes.fromSku(this.inner().sku());
+        return VirtualMachineScaleSetSkuTypes.fromSku(this.innerModel().sku());
     }
 
     @Override
     public VirtualMachineScaleSetSkuCapacity capacity() {
-        return this.inner().capacity();
+        return this.innerModel().capacity();
     }
 }

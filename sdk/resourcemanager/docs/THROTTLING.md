@@ -13,7 +13,7 @@ By default, `RetryPolicy` is added to the HTTP pipeline. It will automatically r
 HTTP policy `ResourceManagerThrottlingPolicy` can be added to HTTP pipeline, to provide real-time information on remaining requests, before throttling kick-in.
 
 ```java
-Azure azure = Azure.configure()
+AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(new ResourceManagerThrottlingPolicy((response, throttlingInfo) -> {
         // throttlingInfo.getRateLimit()
     }))

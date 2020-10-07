@@ -4,73 +4,31 @@
 
 package com.azure.resourcemanager.trafficmanager.fluent;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.HeatMapModelInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.HeatMapModelInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HeatMaps. */
-public final class HeatMapsClient {
-    private final ClientLogger logger = new ClientLogger(HeatMapsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final HeatMapsService service;
-
-    /** The service client containing this operation class. */
-    private final TrafficManagerManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in HeatMapsClient. */
+public interface HeatMapsClient {
     /**
-     * Initializes an instance of HeatMapsClient.
+     * Gets latest heatmap for Traffic Manager profile.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param topLeft Array of Get4ItemsItem.
+     * @param botRight Array of Get5ItemsItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return latest heatmap for Traffic Manager profile.
      */
-    HeatMapsClient(TrafficManagerManagementClient client) {
-        this.service = RestProxy.create(HeatMapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for TrafficManagerManagementClientHeatMaps to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "TrafficManagerManage")
-    private interface HeatMapsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}/heatMaps/{heatMapType}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HeatMapModelInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("heatMapType") String heatMapType,
-            @QueryParam("topLeft") String topLeft,
-            @QueryParam("botRight") String botRight,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<HeatMapModelInner>> getWithResponseAsync(
+        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
@@ -80,53 +38,39 @@ public final class HeatMapsClient {
      * @param topLeft Array of Get4ItemsItem.
      * @param botRight Array of Get5ItemsItem.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest heatmap for Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HeatMapModelInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
-        }
-        final String heatMapType = "default";
-        String topLeftConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(topLeft, CollectionFormat.CSV);
-        String botRightConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(botRight, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            profileName,
-                            heatMapType,
-                            topLeftConverted,
-                            botRightConverted,
-                            this.client.getApiVersion(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<HeatMapModelInner> getAsync(
+        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight);
+
+    /**
+     * Gets latest heatmap for Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param profileName The name of the Traffic Manager profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return latest heatmap for Traffic Manager profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName);
+
+    /**
+     * Gets latest heatmap for Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param profileName The name of the Traffic Manager profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return latest heatmap for Traffic Manager profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HeatMapModelInner get(String resourceGroupName, String profileName);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
@@ -137,182 +81,11 @@ public final class HeatMapsClient {
      * @param botRight Array of Get5ItemsItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest heatmap for Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HeatMapModelInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (profileName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
-        }
-        final String heatMapType = "default";
-        String topLeftConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(topLeft, CollectionFormat.CSV);
-        String botRightConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(botRight, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                profileName,
-                heatMapType,
-                topLeftConverted,
-                botRightConverted,
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HeatMapModelInner> getAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight) {
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight)
-            .flatMap(
-                (Response<HeatMapModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HeatMapModelInner> getAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context)
-            .flatMap(
-                (Response<HeatMapModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName) {
-        final List<Double> topLeft = null;
-        final List<Double> botRight = null;
-        final Context context = null;
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight)
-            .flatMap(
-                (Response<HeatMapModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HeatMapModelInner get(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight) {
-        return getAsync(resourceGroupName, profileName, topLeft, botRight).block();
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HeatMapModelInner get(String resourceGroupName, String profileName) {
-        final List<Double> topLeft = null;
-        final List<Double> botRight = null;
-        final Context context = null;
-        return getAsync(resourceGroupName, profileName, topLeft, botRight).block();
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HeatMapModelInner get(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
-        return getAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
-    }
+    Response<HeatMapModelInner> getWithResponse(
+        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context);
 }

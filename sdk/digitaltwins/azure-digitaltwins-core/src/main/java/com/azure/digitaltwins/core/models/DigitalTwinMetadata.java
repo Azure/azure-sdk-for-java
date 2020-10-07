@@ -24,7 +24,7 @@ public final class DigitalTwinMetadata {
     private String modelId;
 
     @JsonIgnore
-    private final Map<String, Object> writeableProperties = new HashMap<>();
+    private final Map<String, Object> writableProperties = new HashMap<>();
 
     /**
      * Creates an instance of digital twin metadata.
@@ -56,8 +56,8 @@ public final class DigitalTwinMetadata {
      * @return The model-defined writable properties' request state.
      */
     @JsonAnyGetter
-    public Map<String, Object> getWriteableProperties() {
-        return writeableProperties;
+    public Map<String, Object> getWritableProperties() {
+        return writableProperties;
     }
 
     /**
@@ -68,7 +68,7 @@ public final class DigitalTwinMetadata {
      */
     @JsonAnySetter
     public DigitalTwinMetadata addWritableProperties(String key, Object value) {
-        this.writeableProperties.put(key, value);
+        this.writableProperties.put(key, value);
         return this;
     }
 }

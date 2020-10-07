@@ -41,8 +41,8 @@ public class TwinTests extends TwinTestBase{
 
         try {
             // Create models to test the Twin lifecycle.
-            List<DigitalTwinsModelData> createdList = client.createModels(modelsList);
-            logger.info("Created {} models successfully", createdList.size());
+            Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
+            logger.info("Created models successfully");
 
             BasicDigitalTwin createdTwin = client.createDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 

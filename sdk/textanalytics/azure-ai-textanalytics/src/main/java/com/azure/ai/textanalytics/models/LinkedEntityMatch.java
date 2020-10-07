@@ -13,7 +13,6 @@ public final class LinkedEntityMatch {
     private final String text;
     private final double confidenceScore;
     private final int offset;
-    private final int length;
 
     /**
      * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
@@ -26,7 +25,6 @@ public final class LinkedEntityMatch {
         this.text = text;
         this.confidenceScore = confidenceScore;
         this.offset = 0;
-        this.length = 0;
     }
 
     /**
@@ -36,12 +34,10 @@ public final class LinkedEntityMatch {
      * @param confidenceScore If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      * @param offset The start position for the linked entity match text in a document.
-     * @param length The length of linked entity match text.
      */
-    public LinkedEntityMatch(String text, double confidenceScore, int offset, int length) {
+    public LinkedEntityMatch(String text, double confidenceScore, int offset) {
         this.text = text;
         this.offset = offset;
-        this.length = length;
         this.confidenceScore = confidenceScore;
     }
 
@@ -71,14 +67,5 @@ public final class LinkedEntityMatch {
      */
     public int getOffset() {
         return offset;
-    }
-
-    /**
-     * Get the length of linked entity match text.
-     *
-     * @return The length of linked entity match text.
-     */
-    public int getLength() {
-        return length;
     }
 }

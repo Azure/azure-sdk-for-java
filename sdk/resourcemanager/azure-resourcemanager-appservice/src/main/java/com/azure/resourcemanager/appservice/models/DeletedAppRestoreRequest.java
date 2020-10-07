@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeletedAppRestoreRequest model. */
+/** Details about restoring a deleted app. */
 @JsonFlatten
 @Fluent
 public class DeletedAppRestoreRequest extends ProxyOnlyResource {

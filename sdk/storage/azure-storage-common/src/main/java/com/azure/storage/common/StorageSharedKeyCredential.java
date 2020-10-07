@@ -151,6 +151,7 @@ public final class StorageSharedKeyCredential {
             .filter(entry -> entry.getKey().toLowerCase(Locale.ROOT).startsWith("x-ms-"))
             .filter(entry -> entry.getValue() != null)
             .map(Map.Entry::getKey)
+            .sorted(Collator.getInstance(Locale.ROOT))
             .collect(Collectors.toList());
 
         if (xmsHeaderNameArray.isEmpty()) {

@@ -7,8 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -104,7 +104,7 @@ class BlobBatchHelper {
                     // The third section will contain the body.
                     if (subResponseSections.length > 2) {
                         // The body is optional and may not exist.
-                        setBodyOrAddException(batchOperationResponse, subResponseSections[2], exceptions);
+                        setBodyOrAddException(batchOperationResponse, subResponseSections[2], exceptions, logger);
                     }
                 }
 
@@ -161,13 +161,14 @@ class BlobBatchHelper {
     }
 
     private static void setBodyOrAddException(BlobBatchOperationResponse<?> batchOperationResponse,
-        String responseBody, List<BlobStorageException> exceptions) {
+        String responseBody, List<BlobStorageException> exceptions, ClientLogger logger) {
         /*
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
          */
         BlobStorageException exception = new BlobStorageException(responseBody,
             batchOperationResponse.asHttpResponse(responseBody), responseBody);
+        logger.logExceptionAsError(exception);
         batchOperationResponse.setException(exception);
         exceptions.add(exception);
     }

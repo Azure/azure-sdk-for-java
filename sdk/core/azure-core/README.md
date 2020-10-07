@@ -15,7 +15,7 @@ APIs in one client library, you will know how to use them in other client librar
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
 ### Include the package
 
@@ -27,7 +27,7 @@ tool when you depend on client libraries using it.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.8.1</version>
+  <version>1.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -101,5 +101,6 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)

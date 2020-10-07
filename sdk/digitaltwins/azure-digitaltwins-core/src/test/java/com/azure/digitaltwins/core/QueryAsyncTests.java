@@ -35,9 +35,9 @@ public class QueryAsyncTests extends QueryTestBase{
 
             StepVerifier.create(asyncClient.createModels(new ArrayList<>(Arrays.asList(roomModelPayload))))
                 .assertNext(response ->
-                    assertThat(response.size())
+                    assertThat(response)
                         .as("Created models successfully")
-                        .isEqualTo(1))
+                        .isNotEmpty())
                 .verifyComplete();
 
             // Create a room twin with property "IsOccupied" : true

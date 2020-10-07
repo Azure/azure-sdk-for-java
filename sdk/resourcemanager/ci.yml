@@ -44,6 +44,9 @@ extends:
       - name: azure-resourcemanager-authorization
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerauthorization
+      - name: azure-resourcemanager-cdn
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercdn        
       - name: azure-resourcemanager-compute
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute

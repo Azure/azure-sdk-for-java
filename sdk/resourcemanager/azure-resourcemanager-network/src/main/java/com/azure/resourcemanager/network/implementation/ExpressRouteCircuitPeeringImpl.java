@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
@@ -13,17 +13,19 @@ import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringCo
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-class ExpressRouteCircuitPeeringImpl
-    <ParentModelT, ParentInnerT,
+class ExpressRouteCircuitPeeringImpl<
+        ParentModelT,
+        ParentInnerT,
         ParentT extends GroupableResource<NetworkManager, ParentInnerT> & Refreshable<ParentModelT>>
     extends CreatableUpdatableImpl<
-        ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner,
-        ExpressRouteCircuitPeeringImpl< ParentModelT, ParentInnerT, ParentT>>
+        ExpressRouteCircuitPeering,
+        ExpressRouteCircuitPeeringInner,
+        ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>>
     implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsClient client;
     private final ParentT parent;
@@ -38,48 +40,46 @@ class ExpressRouteCircuitPeeringImpl
         this.client = client;
         this.parent = parent;
         this.stats = new ExpressRouteCircuitStatsImpl(innerObject.stats());
-        inner().withPeeringType(type);
+        innerModel().withPeeringType(type);
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withAdvertisedPublicPrefixes(String publicPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withAdvertisedPublicPrefixes(
+        String publicPrefix) {
         ensureMicrosoftPeeringConfig().withAdvertisedPublicPrefixes(Arrays.asList(publicPrefix));
         return this;
     }
 
     private ExpressRouteCircuitPeeringConfig ensureMicrosoftPeeringConfig() {
-        if (inner().microsoftPeeringConfig() == null) {
-            inner().withMicrosoftPeeringConfig(new ExpressRouteCircuitPeeringConfig());
+        if (innerModel().microsoftPeeringConfig() == null) {
+            innerModel().withMicrosoftPeeringConfig(new ExpressRouteCircuitPeeringConfig());
         }
-        return inner().microsoftPeeringConfig();
+        return innerModel().microsoftPeeringConfig();
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withPrimaryPeerAddressPrefix(String addressPrefix) {
-        inner().withPrimaryPeerAddressPrefix(addressPrefix);
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withPrimaryPeerAddressPrefix(
+        String addressPrefix) {
+        innerModel().withPrimaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withSecondaryPeerAddressPrefix(String addressPrefix) {
-        inner().withSecondaryPeerAddressPrefix(addressPrefix);
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withSecondaryPeerAddressPrefix(
+        String addressPrefix) {
+        innerModel().withSecondaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withVlanId(int vlanId) {
-        inner().withVlanId(vlanId);
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withVlanId(int vlanId) {
+        innerModel().withVlanId(vlanId);
         return this;
     }
 
     @Override
-    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
-        withPeerAsn(long peerASN) {
-        inner().withPeerAsn(peerASN);
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT> withPeerAsn(long peerASN) {
+        innerModel().withPeerAsn(peerASN);
         return this;
     }
 
@@ -90,14 +90,14 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public Mono<ExpressRouteCircuitPeering> createResourceAsync() {
         return this
             .client
-            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
+            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), innerModel())
             .flatMap(
                 innerModel -> {
                     this.setInner(innerModel);
@@ -110,62 +110,62 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public ExpressRoutePeeringType peeringType() {
-        return inner().peeringType();
+        return innerModel().peeringType();
     }
 
     @Override
     public ExpressRoutePeeringState state() {
-        return inner().state();
+        return innerModel().state();
     }
 
     @Override
     public int azureAsn() {
-        return Utils.toPrimitiveInt(inner().azureAsn());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().azureAsn());
     }
 
     @Override
     public long peerAsn() {
-        return Utils.toPrimitiveLong(inner().peerAsn());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().peerAsn());
     }
 
     @Override
     public String primaryPeerAddressPrefix() {
-        return inner().primaryPeerAddressPrefix();
+        return innerModel().primaryPeerAddressPrefix();
     }
 
     @Override
     public String secondaryPeerAddressPrefix() {
-        return inner().secondaryPeerAddressPrefix();
+        return innerModel().secondaryPeerAddressPrefix();
     }
 
     @Override
     public String primaryAzurePort() {
-        return inner().primaryAzurePort();
+        return innerModel().primaryAzurePort();
     }
 
     @Override
     public String secondaryAzurePort() {
-        return inner().secondaryAzurePort();
+        return innerModel().secondaryAzurePort();
     }
 
     @Override
     public String sharedKey() {
-        return inner().sharedKey();
+        return innerModel().sharedKey();
     }
 
     @Override
     public int vlanId() {
-        return Utils.toPrimitiveInt(inner().vlanId());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().vlanId());
     }
 
     @Override
     public ExpressRouteCircuitPeeringConfig microsoftPeeringConfig() {
-        return inner().microsoftPeeringConfig();
+        return innerModel().microsoftPeeringConfig();
     }
 
     @Override
@@ -175,17 +175,17 @@ class ExpressRouteCircuitPeeringImpl
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public String lastModifiedBy() {
-        return inner().lastModifiedBy();
+        return innerModel().lastModifiedBy();
     }
 
     @Override
     public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
-        return inner().ipv6PeeringConfig();
+        return innerModel().ipv6PeeringConfig();
     }
 
     @Override

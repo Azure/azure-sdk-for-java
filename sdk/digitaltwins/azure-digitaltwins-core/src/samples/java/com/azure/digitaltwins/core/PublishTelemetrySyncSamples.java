@@ -70,7 +70,7 @@ public class PublishTelemetrySyncSamples {
 
         ConsoleLogger.printHeader("Create Models");
         // We now create all the models (including components)
-        List<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
+        Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
 
         for (DigitalTwinsModelData model : modelList) {
             ConsoleLogger.print("Created model: " + model.getId());

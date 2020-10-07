@@ -8,6 +8,7 @@ jobs:
         - name: azure-messaging-servicebus
           groupId: com.azure
           safeName: azuremessagingservicebus
+      TestCanary: true
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 2

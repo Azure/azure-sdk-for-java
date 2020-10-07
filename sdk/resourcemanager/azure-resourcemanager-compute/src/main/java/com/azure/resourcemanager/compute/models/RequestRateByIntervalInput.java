@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RequestRateByIntervalInput model. */
+/** Api request input for LogAnalytics getRequestRateByInterval Api. */
 @Fluent
 public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestRateByIntervalInput.class);

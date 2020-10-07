@@ -76,7 +76,7 @@ public class RelationshipsSyncSamples {
             .replace(SamplesConstants.RELATIONSHIP_NAME, "containedIn")
             .replace(SamplesConstants.RELATIONSHIP_TARGET_MODEL_ID, sampleBuildingModelId);
 
-        List<DigitalTwinsModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
+        Iterable<DigitalTwinsModelData> createdModels = client.createModels(new ArrayList<>(Arrays.asList(buildingModelPayload, floorModelPayload)));
 
         for (DigitalTwinsModelData model : createdModels) {
             ConsoleLogger.print("Created model " + model.getId());
@@ -140,7 +140,7 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.printHeader("List incoming relationships");
         // Get all incoming relationships in the graph where floorTwinId is the target of the relationship.
 
-        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId);
+        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
             ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());

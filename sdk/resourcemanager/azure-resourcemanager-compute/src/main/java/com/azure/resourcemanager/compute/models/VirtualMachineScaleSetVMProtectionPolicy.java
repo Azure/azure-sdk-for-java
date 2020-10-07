@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetVMProtectionPolicy model. */
+/** The protection policy of a virtual machine scale set VM. */
 @Fluent
 public final class VirtualMachineScaleSetVMProtectionPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProtectionPolicy.class);

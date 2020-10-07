@@ -6,7 +6,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.GeographicHierarchiesClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerGeographicHierarchyInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.TrafficManagerGeographicHierarchyInner;
 import com.azure.resourcemanager.trafficmanager.models.GeographicHierarchies;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 
@@ -26,7 +26,7 @@ class GeographicHierarchiesImpl extends WrapperImpl<GeographicHierarchiesClient>
 
     @Override
     public GeographicLocation getRoot() {
-        TrafficManagerGeographicHierarchyInner defaultHierarchy = this.inner().getDefault();
+        TrafficManagerGeographicHierarchyInner defaultHierarchy = this.innerModel().getDefault();
         if (defaultHierarchy == null) {
             return null;
         }

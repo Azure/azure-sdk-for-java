@@ -130,7 +130,8 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --track1-naming --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
+                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true ' +
+                        ' --track1-naming --generate-client-interfaces --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +

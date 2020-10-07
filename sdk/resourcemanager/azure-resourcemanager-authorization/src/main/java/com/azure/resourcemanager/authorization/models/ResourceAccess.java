@@ -13,7 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The ResourceAccess model. */
+/**
+ * Specifies an OAuth 2.0 permission scope or an app role that an application requires. The resourceAccess property of
+ * the RequiredResourceAccess type is a collection of ResourceAccess.
+ */
 @Fluent
 public final class ResourceAccess {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceAccess.class);

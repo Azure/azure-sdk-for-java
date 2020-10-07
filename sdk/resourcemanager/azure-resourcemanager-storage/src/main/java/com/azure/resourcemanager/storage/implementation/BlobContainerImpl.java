@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.azure.resourcemanager.storage.fluent.inner.BlobContainerInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -58,100 +58,100 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> createResourceAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
             .createAsync(this.resourceGroupName, this.accountName, this.containerName,
-                this.inner().withPublicAccess(cpublicAccess).withMetadata(cmetadata))
+                this.innerModel().withPublicAccess(cpublicAccess).withMetadata(cmetadata))
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<BlobContainer> updateResourceAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
             .updateAsync(this.resourceGroupName, this.accountName, this.containerName,
-                this.inner().withPublicAccess(upublicAccess).withMetadata(umetadata))
+                this.innerModel().withPublicAccess(upublicAccess).withMetadata(umetadata))
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<BlobContainerInner> getInnerAsync() {
-        return this.manager().inner().getBlobContainers().getAsync(resourceGroupName, accountName, containerName);
+        return this.manager().serviceClient().getBlobContainers().getAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public String etag() {
-        return this.inner().etag();
+        return this.innerModel().etag();
     }
 
     @Override
     public Boolean hasImmutabilityPolicy() {
-        return this.inner().hasImmutabilityPolicy();
+        return this.innerModel().hasImmutabilityPolicy();
     }
 
     @Override
     public Boolean hasLegalHold() {
-        return this.inner().hasLegalHold();
+        return this.innerModel().hasLegalHold();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public ImmutabilityPolicyProperties immutabilityPolicy() {
-        return this.inner().immutabilityPolicy();
+        return this.innerModel().immutabilityPolicy();
     }
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return this.inner().lastModifiedTime();
+        return this.innerModel().lastModifiedTime();
     }
 
     @Override
     public LeaseDuration leaseDuration() {
-        return this.inner().leaseDuration();
+        return this.innerModel().leaseDuration();
     }
 
     @Override
     public LeaseState leaseState() {
-        return this.inner().leaseState();
+        return this.innerModel().leaseState();
     }
 
     @Override
     public LeaseStatus leaseStatus() {
-        return this.inner().leaseStatus();
+        return this.innerModel().leaseStatus();
     }
 
     @Override
     public LegalHoldProperties legalHold() {
-        return this.inner().legalHold();
+        return this.innerModel().legalHold();
     }
 
     @Override
     public Map<String, String> metadata() {
-        return this.inner().metadata();
+        return this.innerModel().metadata();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public PublicAccess publicAccess() {
-        return this.inner().publicAccess();
+        return this.innerModel().publicAccess();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ThroughputSettingsUpdateParameters model. */
+/** Parameters to update Cosmos DB resource throughput. */
 @JsonFlatten
 @Fluent
 public class ThroughputSettingsUpdateParameters extends ArmResourceProperties {

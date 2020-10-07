@@ -5,7 +5,6 @@ package com.azure.core.management.polling;
 
 import com.azure.core.http.HttpHeaders;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -71,11 +70,11 @@ public final class PollResult<T> {
          * @param responseHeaders the http response headers associated with the error
          * @param responseBody the http response body associated with the error
          */
-        public Error(String message, int responseStatusCode, Map<String, String> responseHeaders, String responseBody) {
+        public Error(String message, int responseStatusCode, HttpHeaders responseHeaders, String responseBody) {
             this.message = Objects.requireNonNull(message, "'message' cannot be null.");
             this.responseStatusCode = responseStatusCode;
             this.responseBody = responseBody;
-            this.responseHeaders = new HttpHeaders(responseHeaders);
+            this.responseHeaders = responseHeaders;
         }
 
         /**
