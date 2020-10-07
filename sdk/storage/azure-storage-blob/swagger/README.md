@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-02-10/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob

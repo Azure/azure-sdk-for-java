@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 public class SpringAppDomainsImpl
     extends ExternalChildResourcesNonCachedImpl<
-    SpringAppDomainImpl, SpringAppDomain, CustomDomainResourceInner, SpringAppImpl, SpringApp>
+        SpringAppDomainImpl, SpringAppDomain, CustomDomainResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppDomains {
     SpringAppDomainsImpl(SpringAppImpl parent) {
         super(parent, parent.taskGroup(), "SpringAppDomain");
@@ -92,9 +92,8 @@ public class SpringAppDomainsImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public CustomDomainsClient inner() {
-        return manager().inner().getCustomDomains();
+        return manager().serviceClient().getCustomDomains();
     }
 
     @Override
@@ -104,13 +103,16 @@ public class SpringAppDomainsImpl
 
     @Override
     public Mono<CustomDomainValidateResult> validateAsync(String domain) {
-        return inner().validateAsync(
+        return manager().serviceClient().getApps().validateDomainAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }
 
-    Mono<SpringAppDomain> createOrUpdateAsync(String name, CustomDomainProperties properties) {
-        return inner().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name, properties
-        ).map(this::wrapModel);
+    SpringAppDomain prepareCreateOrUpdate(String name, CustomDomainProperties properties) {
+        return prepareInlineDefine(
+            new SpringAppDomainImpl(name, parent(), new CustomDomainResourceInner().withProperties(properties)));
+    }
+
+    void prepareDelete(String name) {
+        prepareInlineRemove(new SpringAppDomainImpl(name, parent(), new CustomDomainResourceInner()));
     }
 }

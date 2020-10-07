@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +17,7 @@ public interface FunctionalTaskItem
     /**
      * Type representing context of an {@link FunctionalTaskItem}.
      */
-    final class Context implements HasInner<TaskGroup.InvocationContext>, Indexable {
+    final class Context implements HasInnerModel<TaskGroup.InvocationContext>, Indexable {
         private final IndexableTaskItem wrapperTaskItem;
         private TaskGroup.InvocationContext innerContext;
 
@@ -67,7 +67,7 @@ public interface FunctionalTaskItem
         }
 
         @Override
-        public TaskGroup.InvocationContext inner() {
+        public TaskGroup.InvocationContext innerModel() {
             return this.innerContext;
         }
 

@@ -5,6 +5,7 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.RandomUtils;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,8 +196,36 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
 
         Integer key = i == null ? cacheKey() : i;
         return client.createDocument(getCollectionLink(), document, null, false)
-                .doOnNext(r -> cache.put(key, r.getResource()))
-                .map(ResourceResponse::getResource).flux();
+                     .retryWhen(Retry.max(5).filter((error) -> {
+                         if (!(error instanceof CosmosException)) {
+                             return false;
+                         }
+                         final CosmosException cosmosException = (CosmosException)error;
+                         if (cosmosException.getStatusCode() == 410 ||
+                             cosmosException.getStatusCode() == 408 ||
+                             cosmosException.getStatusCode() == 429 ||
+                             cosmosException.getStatusCode() == 503) {
+                             return true;
+                         }
+
+                         return false;
+                     }))
+                     .onErrorResume(
+                         (error) -> {
+                             if (!(error instanceof CosmosException)) {
+                                 return false;
+                             }
+                             final CosmosException cosmosException = (CosmosException)error;
+                             if (cosmosException.getStatusCode() == 409) {
+                                 return true;
+                             }
+
+                             return false;
+                         },
+                         (conflictException) -> client.readDocument(getDocumentLink(document), null)
+                     )
+                    .doOnNext(r -> cache.put(key, r.getResource()))
+                    .map(ResourceResponse::getResource).flux();
     }
 
     /**

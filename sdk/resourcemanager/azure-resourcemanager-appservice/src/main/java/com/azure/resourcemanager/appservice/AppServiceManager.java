@@ -5,6 +5,8 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
+import com.azure.resourcemanager.appservice.implementation.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificateOrdersImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceCertificatesImpl;
 import com.azure.resourcemanager.appservice.implementation.AppServiceDomainsImpl;
@@ -22,14 +24,13 @@ import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure storage resource management. */
-public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClient> {
+public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     // Managers
     private final AuthorizationManager authorizationManager;
     private final KeyVaultManager keyVaultManager;
@@ -71,20 +72,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of StorageManager that exposes storage resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the StorageManager
-     */
-    public static AppServiceManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new AppServiceManager(httpPipeline, profile, sdkContext);
+        return new AppServiceManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -106,23 +94,22 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         }
     }
 
-    private AppServiceManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private AppServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new WebSiteManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
-                .buildClient(),
-            sdkContext);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
-        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
     }
 
-    /** @return the Graph RBAC manager instance. */
+    /** @return the authorization manager instance. */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import org.testng.annotations.Test;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PathsHelperTest {
@@ -86,12 +87,48 @@ public class PathsHelperTest {
 
     @Test(groups = {"unit"})
     public void generatePathAtDBLevel() {
-        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.DatabaseAccount);
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.DatabaseAccount);
         String path = PathsHelper.generatePath(ResourceType.DatabaseAccount, rxDocumentServiceRequest, rxDocumentServiceRequest.isFeed);
         assertThat(path).isEqualTo(Paths.DATABASE_ACCOUNT_PATH_SEGMENT + "/");
 
-        rxDocumentServiceRequest = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database);
+        rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database);
         path = PathsHelper.generatePath(ResourceType.Database, rxDocumentServiceRequest, rxDocumentServiceRequest.isFeed);
         assertThat(path).isEqualTo(Paths.DATABASES_PATH_SEGMENT + "/");
+    }
+
+    @Test(groups = {"unit"})
+    public void testEscapeCharacters() {
+        String input = null;
+        String output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat(input).isEqualTo(output);
+
+        input = "/";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("").isEqualTo(output);
+
+        input = "dbs/db1";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat(input).isEqualTo(output);
+
+        input = "///dbs/db1///";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "///dbs/db1";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "dbs/db1///";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "/dbs/db1/";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat("dbs/db1").isEqualTo(output);
+
+        input = "/dbs/db\\u0009/";
+        output = PathsHelper.unescapeJavaAndTrim(input);
+        assertThat(input).isNotEqualTo(output);
+        assertThat("dbs/db\t").isEqualTo(output);
     }
 }

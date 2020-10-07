@@ -7,7 +7,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 
 import java.time.Duration;
 
@@ -141,4 +140,14 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * NOTE: If the underlying ObjectNode is mutated cache might be stale
      */
     private ConsistencyLevel consistencyLevel = null;
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConfigServerProperties model. */
+/** Config server git properties payload. */
 @Fluent
 public final class ConfigServerProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigServerProperties.class);
@@ -17,8 +17,8 @@ public final class ConfigServerProperties {
     /*
      * State of the config server.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private ConfigServerState state;
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigServerState provisioningState;
 
     /*
      * Error when apply config server settings.
@@ -33,12 +33,12 @@ public final class ConfigServerProperties {
     private ConfigServerSettings configServer;
 
     /**
-     * Get the state property: State of the config server.
+     * Get the provisioningState property: State of the config server.
      *
-     * @return the state value.
+     * @return the provisioningState value.
      */
-    public ConfigServerState state() {
-        return this.state;
+    public ConfigServerState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

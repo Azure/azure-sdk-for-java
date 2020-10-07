@@ -879,7 +879,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "eedb9349-9375-4522-b8e3-072cbcb90a56",
-      "Body" : "{\"primaryKey\":\"A6E7AC4B810F11A3FECC443C8FF24AF1\",\"secondaryKey\":\"3B4AC761ABD21E8910989A8B1BCB9323\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -935,7 +935,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "46591e2c-aef7-4249-b347-4a89f3adb9ff",
-      "Body" : "{\"primaryKey\":\"A6E7AC4B810F11A3FECC443C8FF24AF1\",\"secondaryKey\":\"3B4AC761ABD21E8910989A8B1BCB9323\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -1852,7 +1852,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "f4287cbf-8214-4ee4-92d3-547c76d5b09d",
-      "Body" : "{\"primaryKey\":\"A6E7AC4B810F11A3FECC443C8FF24AF1\",\"secondaryKey\":\"3B4AC761ABD21E8910989A8B1BCB9323\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -1993,7 +1993,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "4b570ee3-f6bb-4a30-b8e0-c0f0bbfc1136",
-      "Body" : "{\"primaryKey\":\"A6E7AC4B810F11A3FECC443C8FF24AF1\",\"secondaryKey\":\"3B4AC761ABD21E8910989A8B1BCB9323\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -2021,7 +2021,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "05e84194-dc87-4aa2-8e2b-b17dccb63f93",
-      "Body" : "{\"primaryKey\":\"A6E7AC4B810F11A3FECC443C8FF24AF1\",\"secondaryKey\":\"3B4AC761ABD21E8910989A8B1BCB9323\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -2101,7 +2101,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "ba6016a9-c96e-47c7-9822-e9f8861580f9",
-      "Body" : "{\"primaryKey\":\"8CA59418170B2C85BF284AB0D1E59605\",\"secondaryKey\":\"3B4AC761ABD21E8910989A8B1BCB9323\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -2129,7 +2129,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "64ae2303-489f-45e7-bfc3-423b97dfc5ed",
-      "Body" : "{\"primaryKey\":\"8CA59418170B2C85BF284AB0D1E59605\",\"secondaryKey\":\"6E6D3C6A24499F835827CA19DC8AB23E\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",
@@ -2185,7 +2185,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "1e8a1824-2fa5-4e40-9d0b-b9aebfd139aa",
-      "Body" : "{\"primaryKey\":\"8CA59418170B2C85BF284AB0D1E59605\",\"secondaryKey\":\"6E6D3C6A24499F835827CA19DC8AB23E\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -2213,7 +2213,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "804ebb98-19ed-4079-b64c-4c7b2031bd41",
-      "Body" : "{\"primaryKey\":\"8CA59418170B2C85BF284AB0D1E59605\",\"secondaryKey\":\"6E6D3C6A24499F835827CA19DC8AB23E\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -2241,7 +2241,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "3acb99d0-4cc5-4307-8756-f8fe15df40d9",
-      "Body" : "{\"primaryKey\":\"8CA59418170B2C85BF284AB0D1E59605\",\"secondaryKey\":\"6E6D3C6A24499F835827CA19DC8AB23E\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "GET",

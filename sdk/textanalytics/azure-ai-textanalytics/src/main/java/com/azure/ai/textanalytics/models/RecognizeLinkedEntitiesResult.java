@@ -31,6 +31,9 @@ public final class RecognizeLinkedEntitiesResult extends TextAnalyticsResult {
      * Get an {@link IterableStream} of {@link LinkedEntity}.
      *
      * @return An {@link IterableStream} of {@link LinkedEntity}.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public LinkedEntityCollection getEntities() {
         throwExceptionIfError();

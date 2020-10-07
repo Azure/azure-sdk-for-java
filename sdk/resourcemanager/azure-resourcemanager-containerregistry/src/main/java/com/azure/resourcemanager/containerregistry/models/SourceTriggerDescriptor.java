@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SourceTriggerDescriptor model. */
+/** The source trigger that caused a run. */
 @Fluent
 public final class SourceTriggerDescriptor {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceTriggerDescriptor.class);

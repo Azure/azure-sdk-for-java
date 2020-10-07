@@ -1,5 +1,9 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0 (2020-09-27)
 
-- TODO
+- Updated core dependency from resources
+
+## 2.0.0-beta.4 (2020-09-02)
+
+- Updated core dependency from resources

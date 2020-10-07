@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The FirewallPolicyThreatIntelWhitelist model. */
+/** ThreatIntel Whitelist for Firewall Policy. */
 @Fluent
 public final class FirewallPolicyThreatIntelWhitelist {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyThreatIntelWhitelist.class);

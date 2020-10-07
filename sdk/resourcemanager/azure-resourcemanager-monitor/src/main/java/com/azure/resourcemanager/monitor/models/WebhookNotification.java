@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The WebhookNotification model. */
+/** Webhook notification of an autoscale event. */
 @Fluent
 public final class WebhookNotification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookNotification.class);

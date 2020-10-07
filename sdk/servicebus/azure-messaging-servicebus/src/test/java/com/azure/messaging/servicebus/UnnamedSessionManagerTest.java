@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -20,6 +21,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -40,7 +42,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,6 +57,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class UnnamedSessionManagerTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
     private static final String NAMESPACE = "my-namespace-foo.net";
@@ -108,7 +111,8 @@ class UnnamedSessionManagerTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
-            new AmqpRetryOptions().setTryTimeout(TIMEOUT), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic());
+            new AmqpRetryOptions().setTryTimeout(TIMEOUT), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
+            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -140,7 +144,7 @@ class UnnamedSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, null, true, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
@@ -156,15 +160,14 @@ class UnnamedSessionManagerTest {
     @Test
     void singleUnnamedSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
-            Duration.ofSeconds(20), null, false, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
-        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(30));
+        final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
 
         final Message message = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -185,7 +188,7 @@ class UnnamedSessionManagerTest {
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(
-            Mono.fromCallable(() -> Instant.now().plus(Duration.ofSeconds(5))));
+            Mono.fromCallable(() -> OffsetDateTime.now().plus(Duration.ofSeconds(5))));
 
         // Act & Assert
         StepVerifier.create(sessionManager.receive())
@@ -209,13 +212,12 @@ class UnnamedSessionManagerTest {
     @Test
     void multipleSessions() {
         // Arrange
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
-            Duration.ofSeconds(8), null, true, 1);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 1);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
         final int numberOfMessages = 5;
-        final Callable<Instant> onRenewal = () -> Instant.now().plus(Duration.ofSeconds(5));
+        final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";

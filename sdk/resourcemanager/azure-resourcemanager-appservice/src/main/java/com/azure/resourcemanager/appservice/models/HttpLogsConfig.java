@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HttpLogsConfig model. */
+/** Http logs configuration. */
 @Fluent
 public final class HttpLogsConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpLogsConfig.class);

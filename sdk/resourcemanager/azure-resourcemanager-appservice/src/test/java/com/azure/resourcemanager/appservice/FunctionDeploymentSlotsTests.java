@@ -11,13 +11,14 @@ import com.azure.resourcemanager.appservice.models.ConnectionString;
 import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlotBasic;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.core.management.Region;
 import java.util.Map;
 
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -129,7 +130,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals(slot3.id(), deploymentSlot.id());
 
         // List
-        PagedIterable<FunctionDeploymentSlot> deploymentSlots = functionApp1.deploymentSlots().list();
+        PagedIterable<FunctionDeploymentSlotBasic> deploymentSlots = functionApp1.deploymentSlots().list();
         Assertions.assertEquals(3, TestUtilities.getSize(deploymentSlots));
 
         // Swap

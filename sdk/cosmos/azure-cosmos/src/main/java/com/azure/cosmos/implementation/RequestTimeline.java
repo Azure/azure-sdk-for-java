@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -24,7 +25,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * duration properties. Hence, one might use this class to represent any timeline. Today we use it to represent
  * request timelines for:
  * <p><ul>
- * <li>{@link com.azure.cosmos.implementation.http.HttpClient#send},
+ * <li>{@link com.azure.cosmos.implementation.http.HttpClient#send(HttpRequest, Duration)},
  * <li>{@link com.azure.cosmos.implementation.directconnectivity.HttpTransportClient#invokeStoreAsync}, and
  * <li>{@link com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient#invokeStoreAsync}.
  * </ul></p>

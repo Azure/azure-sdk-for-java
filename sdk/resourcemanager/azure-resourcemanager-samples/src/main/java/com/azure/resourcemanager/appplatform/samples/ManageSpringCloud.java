@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
@@ -20,8 +20,8 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -36,11 +36,15 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -62,22 +66,22 @@ public class ManageSpringCloud {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @param clientId the aad client id in azure instance
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(Azure azure, String clientId) {
-        final String rgName = azure.sdkContext().randomResourceName("rg", 24);
-        final String serviceName  = azure.sdkContext().randomResourceName("service", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String serviceName  = Utils.randomResourceName(azureResourceManager, "service", 24);
         final Region region = Region.US_EAST;
-        final String domainName = azure.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String certOrderName = azure.sdkContext().randomResourceName("cert", 15);
-        final String vaultName = azure.sdkContext().randomResourceName("vault", 15);
-        final String certName = azure.sdkContext().randomResourceName("cert", 15);
+        final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
+        final String certOrderName = Utils.randomResourceName(azureResourceManager, "cert", 15);
+        final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 15);
+        final String certName = Utils.randomResourceName(azureResourceManager, "cert", 15);
 
         try {
-            azure.resourceGroups().define(rgName)
+            azureResourceManager.resourceGroups().define(rgName)
                 .withRegion(region)
                 .create();
 
@@ -86,7 +90,7 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud service %s in resource group %s ...%n", serviceName, rgName);
 
-            SpringService service = azure.springServices().define(serviceName)
+            SpringService service = azureResourceManager.springServices().define(serviceName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .create();
@@ -95,12 +99,15 @@ public class ManageSpringCloud {
             Utils.print(service);
 
             // get source code of a sample project
-            File sourceCodeFolder = new File("piggymetrics");
-            if (!sourceCodeFolder.exists() || sourceCodeFolder.isFile()) {
-                if (sourceCodeFolder.isFile() && !sourceCodeFolder.delete()) {
-                    throw new IllegalStateException("could not delete piggymetrics file");
+            File gzFile = new File("piggymetrics.tar.gz");
+            if (!gzFile.exists()) {
+                HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
+                connection.connect();
+                try (InputStream inputStream = connection.getInputStream();
+                     OutputStream outputStream = new FileOutputStream(gzFile)) {
+                    IOUtils.copy(inputStream, outputStream);
                 }
-                extraTarGzSource(sourceCodeFolder, new URL(PIGGYMETRICS_TAR_GZ_URL));
+                connection.disconnect();
             }
 
             //============================================================
@@ -108,9 +115,12 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app gateway in resource group %s ...%n", rgName);
             SpringApp gateway = service.apps().define("gateway")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("gateway")
+                    .attach()
                 .withDefaultPublicEndpoint()
                 .withHttpsOnly()
-                .deploySource("default", sourceCodeFolder, "gateway")
                 .create();
 
             System.out.println("Created spring cloud service gateway");
@@ -121,7 +131,10 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app auth-service in resource group %s ...%n", rgName);
             SpringApp authService = service.apps().define("auth-service")
-                .deploySource("default", sourceCodeFolder, "auth-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("auth-service")
+                    .attach()
                 .create();
 
             System.out.println("Created spring cloud service auth-service");
@@ -132,7 +145,10 @@ public class ManageSpringCloud {
 
             System.out.printf("Creating spring cloud app account-service in resource group %s ...%n", rgName);
             SpringApp accountService = service.apps().define("account-service")
-                .deploySource("default", sourceCodeFolder, "account-service")
+                .defineActiveDeployment("default")
+                    .withSourceCodeTarGzFile(gzFile)
+                    .withTargetModule("account-service")
+                    .attach()
                 .create();
 
             System.out.println("Created spring cloud service account-service");
@@ -143,7 +159,7 @@ public class ManageSpringCloud {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
+            AppServiceDomain domain = azureResourceManager.appServiceDomains().define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                     .withFirstName("Jon")
@@ -163,7 +179,7 @@ public class ManageSpringCloud {
             System.out.println("Purchased domain " + domain.name());
             Utils.print(domain);
 
-            DnsZone dnsZone = azure.dnsZones().getById(domain.dnsZoneId());
+            DnsZone dnsZone = azureResourceManager.dnsZones().getById(domain.dnsZoneId());
             gateway.refresh();
 
             System.out.printf("Updating dns with CNAME ssl.%s to %s%n", domainName, gateway.fqdn());
@@ -172,7 +188,7 @@ public class ManageSpringCloud {
                 .apply();
 
             System.out.printf("Purchasing a certificate for *.%s and save to %s in key vault named %s ...%n", domainName, certOrderName, vaultName);
-            AppServiceCertificateOrder certificateOrder = azure.appServiceCertificateOrders().define(certOrderName)
+            AppServiceCertificateOrder certificateOrder = azureResourceManager.appServiceCertificateOrders().define(certOrderName)
                 .withExistingResourceGroup(rgName)
                 .withHostName(String.format("*.%s", domainName))
                 .withWildcardSku()
@@ -184,7 +200,7 @@ public class ManageSpringCloud {
             Utils.print(certificateOrder);
 
             System.out.printf("Updating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
-            Vault vault = azure.vaults().getByResourceGroup(rgName, vaultName);
+            Vault vault = azureResourceManager.vaults().getByResourceGroup(rgName, vaultName);
             vault.update()
                 .defineAccessPolicy()
                     .forServicePrincipal(clientId)
@@ -234,28 +250,24 @@ public class ManageSpringCloud {
                 .withCertificate(certName, vault.vaultUri(), certName)
                 .apply();
 
-            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...", domainName);
+            System.out.printf("Updating Spring Cloud App with domain ssl.%s ...%n", domainName);
             gateway.update()
                 .withCustomDomain(String.format("ssl.%s", domainName), thumbprint)
                 .apply();
 
-            System.out.printf("Successfully expose domain ssl.%s", domainName);
+            System.out.printf("Successfully expose domain ssl.%s%n", domainName);
 
             return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("Delete Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -269,26 +281,26 @@ public class ManageSpringCloud {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            runSample(azureResourceManager, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
-
-    private static void extraTarGzSource(File folder, URL url) throws IOException {
+    public static void extraTarGzSource(File folder, URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {

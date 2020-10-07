@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The RequestOptions model. */
+/** Parameter group. */
 @Fluent
 public final class RequestOptions {
     /*
@@ -38,11 +38,4 @@ public final class RequestOptions {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

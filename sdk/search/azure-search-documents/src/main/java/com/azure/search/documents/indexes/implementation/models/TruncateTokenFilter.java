@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The TruncateTokenFilter model. */
+/** Truncates the terms to a specific length. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.TruncateTokenFilter")
 @JsonFlatten
@@ -25,9 +25,13 @@ public class TruncateTokenFilter extends TokenFilter {
     @JsonProperty(value = "length")
     private Integer length;
 
-    /** Creates an instance of TruncateTokenFilter class. */
+    /**
+     * Creates an instance of TruncateTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public TruncateTokenFilter(@JsonProperty(value = "name") String name) {
+    public TruncateTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -49,15 +53,5 @@ public class TruncateTokenFilter extends TokenFilter {
     public TruncateTokenFilter setLength(Integer length) {
         this.length = length;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

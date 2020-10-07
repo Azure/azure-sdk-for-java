@@ -7,10 +7,11 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,10 +19,10 @@ public class GroupsTests extends GraphRbacManagementTest {
 
     @Test
     public void canCRUDGroup() throws Exception {
-        String userName = sdkContext.randomResourceName("user", 16);
-        String spName = sdkContext.randomResourceName("sp", 16);
-        String group1Name = sdkContext.randomResourceName("group", 16);
-        String group2Name = sdkContext.randomResourceName("group", 16);
+        String userName = generateRandomResourceName("user", 16);
+        String spName = generateRandomResourceName("sp", 16);
+        String group1Name = generateRandomResourceName("group", 16);
+        String group2Name = generateRandomResourceName("group", 16);
         ActiveDirectoryUser user = null;
         ServicePrincipal servicePrincipal = null;
         ActiveDirectoryGroup group1 = null;
@@ -37,7 +38,7 @@ public class GroupsTests extends GraphRbacManagementTest {
             servicePrincipal =
                 authorizationManager.servicePrincipals().define(spName).withNewApplication("https://" + spName).create();
             group1 = authorizationManager.groups().define(group1Name).withEmailAlias(group1Name).create();
-            SdkContext.sleep(15000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             group2 =
                 authorizationManager
                     .groups()

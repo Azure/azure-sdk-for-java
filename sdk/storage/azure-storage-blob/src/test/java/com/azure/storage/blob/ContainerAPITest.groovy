@@ -779,6 +779,17 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
+    @Requires( { playbackMode() } )
+    def "List blobs flat options last access time"() {
+        when:
+        def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        b.upload(defaultInputStream.get(), defaultData.remaining())
+        def blob = cc.listBlobs().iterator().next()
+
+        then:
+        blob.getProperties().getLastAccessedTime()
+    }
+
     def "List blobs flat options tags"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true))
@@ -1696,5 +1707,21 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
+            .credential(primaryCredential)
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient()
+
+        when:
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

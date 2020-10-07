@@ -1,0 +1,46 @@
+{
+    "parameters": {
+        "endpoint": "https://contoso.westus.communications.azure.com",
+        "api-version": "2020-09-21-preview2",
+        "syncState": "W3sic3RhcnQiOiIyMDIwLTA2LTIzVDIzOjMyOjQ3LjMwNSswMDowMCIsImVuZCI6IjIwMjAtMDYtMjVUMDY6NTY6MjMuNjk2KzAwOjAwIn0seyJzdGFydCI6IjE5NzAtMDEtMDFUMDA6MDA6MDArMDA6MDAiLCJlbmQiOiIxOTcwLTAxLTAxVDAwOjAwOjAwKzAwOjAwIn1d"
+    },
+    "responses": {
+        "200": {
+            "body": {
+                "threads": [{
+                        "id": "19:9483cd784bc545a386ffc80fdf240d26@thread.v2",
+                        "topic": "Lounge",
+                        "isDeleted": false,
+                        "lastMessageReceivedTime": "2020-06-06T05:55:41.6460000Z"
+                    },
+                    {
+                        "id": "19:b4906f456162482ca20d822bdf3efa89@thread.v2",
+                        "topic": "General",
+                        "isDeleted": false,
+                        "lastMessageReceivedTime": "2020-06-06T05:55:41.6460000Z"
+                    },
+                    {
+                        "id": "19:8e74c8bdb6894d168464f5137232c1ed@thread.v2",
+                        "topic": "All Hands",
+                        "isDeleted": false,
+                        "lastMessageReceivedTime": "2020-06-06T05:55:41.6460000Z"
+                    },
+                    {
+                        "id": "19:edaf61c12f08499f88d951660d441f01@thread.v2",
+                        "topic": "Farewell Planning",
+                        "isDeleted": false,
+                        "lastMessageReceivedTime": "2020-06-06T05:55:41.6460000Z"
+                    },
+                    {
+                        "id": "19:uni01_zbnh3nt2dfuffezc3sox7dog7wfhk6y5qe2rwlnfhlhdzirihdpq@thread.v2",
+                        "topic": "Chat with Peter",
+                        "isDeleted": false,
+                        "lastMessageReceivedTime": "2020-06-06T05:55:41.6460000Z"
+                    }
+                ],
+                "syncState": "https://contoso.westus.communications.azure.com/chat/threads?syncState=W3sic3RhcnQiOiIyMDIwLTA2LTI1VDA3OjM2OjQwLjAyNyswMDowMCIsImVuZCI6IjIwMjAtMDYtMjVUMDc6Mzc6MTIuMzI5KzAwOjAwIn0seyJzdGFydCI6IjIwMjAtMDYtMjNUMjM6MzI6NDcuMzA1KzAwOjAwIiwiZW5kIjoiMjAyMC0wNi0yNVQwNjo1NjoyMy42OTYrMDA6MDAifSx7InN0YXJ0IjoiMTk3MC0wMS0wMVQwMDowMDowMCswMDowMCIsImVuZCI6IjE5NzAtMDEtMDFUMDA6MDA6MDArMDA6MDAifV0%3D&api-version=2020-09-21-preview2",
+                "backwardLink": "https://contoso.westus.communications.azure.com/chat/threads?syncState=W3sic3RhcnQiOiIyMDIwLTA2LTI1VDA3OjM2OjQwLjAyNyswMDowMCIsImVuZCI6IjIwMjAtMDYtMjVUMDc6Mzc6MTIuMzI5KzAwOjAwIn0seyJzdGFydCI6IjIwMjAtMDYtMjNUMjM6MzI6NDcuMzA1KzAwOjAwIiwiZW5kIjoiMjAyMC0wNi0yNVQwNjo1NjoyMy42OTYrMDA6MDAifSx7InN0YXJ0IjoiMTk3MC0wMS0wMVQwMDowMDowMCswMDowMCIsImVuZCI6IjE5NzAtMDEtMDFUMDA6MDA6MDArMDA6MDAifV0%3D&api-version=2020-09-21-preview2"
+            }
+        }
+    }
+}

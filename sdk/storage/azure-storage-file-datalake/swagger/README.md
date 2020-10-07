@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2018-11-09/DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-02-10/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -87,6 +87,21 @@ directive:
     }
 ```
 
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=setAccessControlRecursive
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?action=setAccessControlRecursive"].patch
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
 ### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=flush
 ``` yaml
 directive:
@@ -111,7 +126,20 @@ directive:
     $.patch.consumes = ["application/octet-stream"];
 ```
 
-
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?comp=expiry
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?comp=expiry"].put
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
 
 ### Make ACL on Path Get Properties lower case
 ``` yaml

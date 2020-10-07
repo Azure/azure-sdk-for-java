@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployments;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class SpringAppDeploymentsImpl
     extends ExternalChildResourcesNonCachedImpl<
         SpringAppDeploymentImpl, SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
-    implements SpringAppDeployments {
+    implements SpringAppDeployments<SpringAppDeploymentImpl> {
 
     SpringAppDeploymentsImpl(SpringAppImpl parent) {
         super(parent, parent.taskGroup(), "SpringAppDeployment");
@@ -93,15 +93,14 @@ public class SpringAppDeploymentsImpl
     }
 
     private SpringAppDeploymentImpl wrapModel(String name) {
-        return new SpringAppDeploymentImpl(name, parent(), new DeploymentResourceInner(), this);
+        return new SpringAppDeploymentImpl(name, parent(), new DeploymentResourceInner());
     }
 
     private SpringAppDeploymentImpl wrapModel(DeploymentResourceInner inner) {
-        return inner == null ? null : new SpringAppDeploymentImpl(inner.name(), parent(), inner, this);
+        return inner == null ? null : new SpringAppDeploymentImpl(inner.name(), parent(), inner);
     }
 
-    @Override
     public DeploymentsClient inner() {
-        return manager().inner().getDeployments();
+        return manager().serviceClient().getDeployments();
     }
 }

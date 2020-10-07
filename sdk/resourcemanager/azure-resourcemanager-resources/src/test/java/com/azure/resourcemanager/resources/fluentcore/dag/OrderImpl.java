@@ -39,6 +39,6 @@ public class OrderImpl
 
     @Override
     protected Mono<OrderInner> getInnerAsync() {
-        return Mono.just(this.inner());
+        return Mono.just(this.innerModel());
     }
 }

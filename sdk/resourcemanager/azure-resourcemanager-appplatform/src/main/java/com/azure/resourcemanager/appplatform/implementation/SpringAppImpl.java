@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
@@ -21,10 +21,8 @@ import com.azure.resourcemanager.appplatform.models.TemporaryDisk;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.time.OffsetDateTime;
 
 public class SpringAppImpl
@@ -41,76 +39,91 @@ public class SpringAppImpl
 
     @Override
     public boolean isPublic() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return false;
         }
-        return inner().properties().publicProperty();
+        return innerModel().properties().publicProperty();
     }
 
     @Override
     public boolean isHttpsOnly() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return false;
         }
-        return inner().properties().httpsOnly();
+        return innerModel().properties().httpsOnly();
     }
 
     @Override
     public String url() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().url();
+        return innerModel().properties().url();
     }
 
     @Override
     public String fqdn() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().fqdn();
+        return innerModel().properties().fqdn();
     }
 
     @Override
     public TemporaryDisk temporaryDisk() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().temporaryDisk();
+        return innerModel().properties().temporaryDisk();
     }
 
     @Override
     public PersistentDisk persistentDisk() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().persistentDisk();
+        return innerModel().properties().persistentDisk();
     }
 
     @Override
     public ManagedIdentityProperties identity() {
-        return inner().identity();
+        return innerModel().identity();
     }
 
     @Override
     public OffsetDateTime createdTime() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().createdTime();
+        return innerModel().properties().createdTime();
     }
 
     @Override
-    public String activeDeployment() {
-        if (inner().properties() == null) {
+    public String activeDeploymentName() {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().activeDeploymentName();
+        return innerModel().properties().activeDeploymentName();
     }
 
     @Override
-    public SpringAppDeployments deployments() {
-        return deployments;
+    public SpringAppDeployment getActiveDeployment() {
+        return getActiveDeploymentAsync().block();
+    }
+
+    @Override
+    public Mono<SpringAppDeployment> getActiveDeploymentAsync() {
+        String activeDeploymentName = activeDeploymentName();
+        if (activeDeploymentName == null || activeDeploymentName.isEmpty()) {
+            return Mono.empty();
+        }
+        return deployments().getByNameAsync(activeDeploymentName);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments() {
+        return (SpringAppDeployments<T>) deployments;
     }
 
     @Override
@@ -125,7 +138,7 @@ public class SpringAppImpl
 
     @Override
     public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync() {
-        return manager().inner().getApps().getResourceUploadUrlAsync(
+        return manager().serviceClient().getApps().getResourceUploadUrlAsync(
             parent().resourceGroupName(), parent().name(), name());
     }
 
@@ -135,177 +148,114 @@ public class SpringAppImpl
     }
 
     private void ensureProperty() {
-        if (inner().properties() == null) {
-            inner().withProperties(new AppResourceProperties());
+        if (innerModel().properties() == null) {
+            innerModel().withProperties(new AppResourceProperties());
         }
     }
 
     @Override
     public SpringAppImpl withDefaultPublicEndpoint() {
         ensureProperty();
-        inner().properties().withPublicProperty(true);
+        innerModel().properties().withPublicProperty(true);
         return this;
     }
 
     @Override
     public SpringAppImpl withoutDefaultPublicEndpoint() {
         ensureProperty();
-        inner().properties().withPublicProperty(false);
+        innerModel().properties().withPublicProperty(false);
         return this;
     }
 
     @Override
     public SpringAppImpl withCustomDomain(String domain) {
-        this.addPostRunDependent(
-            context -> domains.createOrUpdateAsync(domain, new CustomDomainProperties())
-                .cast(Indexable.class)
-        );
+        domains.prepareCreateOrUpdate(domain, new CustomDomainProperties());
         return this;
     }
 
     @Override
     public SpringAppImpl withCustomDomain(String domain, String certThumbprint) {
-        this.addPostRunDependent(
-            context -> domains.createOrUpdateAsync(domain, new CustomDomainProperties().withThumbprint(certThumbprint))
-                .cast(Indexable.class)
-        );
+        domains.prepareCreateOrUpdate(domain, new CustomDomainProperties().withThumbprint(certThumbprint));
         return this;
     }
 
     @Override
     public Update withoutCustomDomain(String domain) {
-        this.addPostRunDependent(
-            context -> domains.deleteByNameAsync(domain).then(context.voidMono())
-        );
+        domains.prepareDelete(domain);
         return this;
     }
 
     @Override
     public SpringAppImpl withHttpsOnly() {
         ensureProperty();
-        inner().properties().withHttpsOnly(true);
+        innerModel().properties().withHttpsOnly(true);
         return this;
     }
 
     @Override
     public SpringAppImpl withoutHttpsOnly() {
         ensureProperty();
-        inner().properties().withHttpsOnly(false);
+        innerModel().properties().withHttpsOnly(false);
         return this;
     }
 
     @Override
     public SpringAppImpl withTemporaryDisk(int sizeInGB, String mountPath) {
         ensureProperty();
-        inner().properties().withTemporaryDisk(new TemporaryDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl withoutTemporaryDisk() {
-        ensureProperty();
-        inner().properties().withTemporaryDisk(null);
+        innerModel().properties().withTemporaryDisk(
+            new TemporaryDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
         return this;
     }
 
     @Override
     public SpringAppImpl withPersistentDisk(int sizeInGB, String mountPath) {
         ensureProperty();
-        inner().properties().withPersistentDisk(new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl withoutPersistentDisk() {
-        ensureProperty();
-        inner().properties().withPersistentDisk(null);
+        innerModel().properties().withPersistentDisk(
+            new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
         return this;
     }
 
     @Override
     public SpringAppImpl withActiveDeployment(String name) {
         ensureProperty();
-        inner().properties().withActiveDeploymentName(name);
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl withoutDeployment(String name) {
-        this.addPostRunDependent(
-            context -> deployments().deleteByNameAsync(name)
-                .then(context.voidMono())
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl deployJar(String name, File jarFile) {
-        ensureProperty();
-        inner().properties().withActiveDeploymentName(name);
-        springAppDeploymentToCreate = deployments().define(name)
-                .withJarFile(jarFile)
-                .withCustomSetting();
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl deploySource(String name, File sourceCodeFolder, String targetModule) {
-        ensureProperty();
-        inner().properties().withActiveDeploymentName(name);
-        springAppDeploymentToCreate = deployments().define(name)
-                .withSourceCodeFolder(sourceCodeFolder)
-                .withTargetModule(targetModule)
-                .withCustomSetting();
+        innerModel().properties().withActiveDeploymentName(name);
         return this;
     }
 
     @Override
     public Mono<SpringApp> createResourceAsync() {
         if (springAppDeploymentToCreate == null) {
-            String defaultDeploymentName = "default";
-            withActiveDeployment(defaultDeploymentName);
-            springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
-                .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName))
-                .withCustomSetting();
+            withDefaultActiveDeployment();
         }
-        return manager().inner().getApps().createOrUpdateAsync(
+        return manager().serviceClient().getApps().createOrUpdateAsync(
             parent().resourceGroupName(), parent().name(), name(), new AppResourceInner())
-            .flatMap(inner -> updateResourceAsync());
+            .thenMany(springAppDeploymentToCreate.createAsync())
+            .then(updateResourceAsync());
     }
 
     @Override
     public Mono<SpringApp> updateResourceAsync() {
-        Mono<?> createDeployment;
-        if (springAppDeploymentToCreate != null) {
-            createDeployment = springAppDeploymentToCreate.createAsync().last();
-        } else {
-            createDeployment = Mono.empty();
-        }
-        return createDeployment
-            .then(
-                manager().inner().getApps().updateAsync(
-                    parent().resourceGroupName(), parent().name(), name(), inner()
-                )
-                .map(inner -> {
-                    setInner(inner);
-                    springAppDeploymentToCreate = null;
-                    return this;
-                }));
+        return manager().serviceClient().getApps().updateAsync(
+            parent().resourceGroupName(), parent().name(), name(), innerModel())
+            .map(inner -> {
+                setInner(inner);
+                return this;
+            });
     }
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().inner().getApps().deleteAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getApps().deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<AppResourceInner> getInnerAsync() {
-        return manager().inner().getApps().getAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient().getApps().getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -320,17 +270,36 @@ public class SpringAppImpl
 
     @Override
     public SpringAppImpl withServiceBinding(String name, BindingResourceProperties bindingProperties) {
-        this.addPostRunDependent(
-            context -> serviceBindings.createOrUpdateAsync(name, bindingProperties).cast(Indexable.class)
-        );
+        serviceBindings.prepareCreateOrUpdate(name, bindingProperties);
         return this;
     }
 
     @Override
     public SpringAppImpl withoutServiceBinding(String name) {
-        this.addPostRunDependent(
-            context -> serviceBindings.deleteByNameAsync(name).then(context.voidMono())
-        );
+        serviceBindings.prepareDelete(name);
+        return this;
+    }
+
+    @Override
+    public SpringAppImpl withDefaultActiveDeployment() {
+        String defaultDeploymentName = "default";
+        withActiveDeployment(defaultDeploymentName);
+        springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
+            .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName));
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends
+        SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
+        SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
+        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name);
+    }
+
+    SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
+        withActiveDeployment(deployment.name());
+        springAppDeploymentToCreate = deployment;
         return this;
     }
 }

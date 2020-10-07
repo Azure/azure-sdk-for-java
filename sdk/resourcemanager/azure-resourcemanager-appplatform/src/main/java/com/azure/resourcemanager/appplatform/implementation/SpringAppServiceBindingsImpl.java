@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.BindingsClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppServiceBinding;
@@ -91,14 +91,16 @@ public class SpringAppServiceBindingsImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public BindingsClient inner() {
-        return manager().inner().getBindings();
+        return manager().serviceClient().getBindings();
     }
 
-    Mono<SpringAppServiceBinding> createOrUpdateAsync(String name, BindingResourceProperties properties) {
-        return inner().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name, properties
-        ).map(this::wrapModel);
+    SpringAppServiceBinding prepareCreateOrUpdate(String name, BindingResourceProperties properties) {
+        return prepareInlineDefine(
+            new SpringAppServiceBindingImpl(name, parent(), new BindingResourceInner().withProperties(properties)));
+    }
+
+    void prepareDelete(String name) {
+        prepareInlineRemove(new SpringAppServiceBindingImpl(name, parent(), new BindingResourceInner()));
     }
 }

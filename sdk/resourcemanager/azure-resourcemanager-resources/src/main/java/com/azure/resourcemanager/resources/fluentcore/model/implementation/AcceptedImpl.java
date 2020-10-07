@@ -11,6 +11,8 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -20,9 +22,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,6 +47,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     private byte[] responseBytes;
     private final SerializerAdapter serializerAdapter;
     private final HttpPipeline httpPipeline;
+    private final Duration defaultPollInterval;
     private final Type pollResultType;
     private final Type finalResultType;
     private final Function<InnerT, T> wrapOperation;
@@ -54,12 +58,14 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     public AcceptedImpl(Response<Flux<ByteBuffer>> activationResponse,
                         SerializerAdapter serializerAdapter,
                         HttpPipeline httpPipeline,
+                        Duration defaultPollInterval,
                         Type pollResultType,
                         Type finalResultType,
                         Function<InnerT, T> wrapOperation) {
         this.activationResponse = Objects.requireNonNull(activationResponse);
         this.serializerAdapter = Objects.requireNonNull(serializerAdapter);
         this.httpPipeline = Objects.requireNonNull(httpPipeline);
+        this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval);
         this.pollResultType = Objects.requireNonNull(pollResultType);
         this.finalResultType = Objects.requireNonNull(finalResultType);
         this.wrapOperation = Objects.requireNonNull(wrapOperation);
@@ -75,21 +81,11 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
             Duration retryAfter = getRetryAfter(activationResponse.getHeaders());
             return new ActivationResponse<>(activationResponse.getRequest(), activationResponse.getStatusCode(),
                 activationResponse.getHeaders(), value,
-                LongRunningOperationStatus.IN_PROGRESS, retryAfter);
+                getActivationResponseStatus(), retryAfter);
         } catch (IOException e) {
             throw logger.logExceptionAsError(
                 new IllegalStateException("Failed to deserialize activation response body", e));
         }
-    }
-
-    private static Duration getRetryAfter(HttpHeaders headers) {
-        if (headers != null) {
-            final String value = headers.getValue("Retry-After");
-            if (value != null) {
-                return Duration.ofSeconds(Long.parseLong(value));
-            }
-        }
-        return null;
     }
 
     @Override
@@ -143,7 +139,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 httpPipeline,
                 pollResultType,
                 finalResultType,
-                SdkContext.getLroRetryDuration(),
+                defaultPollInterval,
                 Mono.just(clonedResponse)
             );
         }
@@ -153,6 +149,60 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     @Override
     public T getFinalResult() {
         return this.getSyncPoller().getFinalResult();
+    }
+
+    private LongRunningOperationStatus getActivationResponseStatus() {
+        String responseBody = new String(getResponse(), StandardCharsets.UTF_8);
+        String provisioningState = null;
+        // try get "provisioningState" property.
+        if (!CoreUtils.isNullOrEmpty(responseBody)) {
+            try {
+                ResourceWithProvisioningState resource = serializerAdapter.deserialize(responseBody,
+                    ResourceWithProvisioningState.class, SerializerEncoding.JSON);
+                provisioningState = resource != null
+                    ? resource.getProvisioningState()
+                    : null;
+            } catch (IOException ignored) {
+
+            }
+        }
+
+        // get LRO status, default is IN_PROGRESS
+        LongRunningOperationStatus status = LongRunningOperationStatus.IN_PROGRESS;
+        if (!CoreUtils.isNullOrEmpty(provisioningState)) {
+            // LRO status based on provisioningState.
+            status = toLongRunningOperationStatus(provisioningState);
+        } else {
+            // LRO status based on status code.
+            int statusCode = activationResponse.getStatusCode();
+            if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+            }
+        }
+        return status;
+    }
+
+    private static LongRunningOperationStatus toLongRunningOperationStatus(String value) {
+        if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (ProvisioningState.FAILED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.FAILED;
+        } else if (ProvisioningState.CANCELED.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.USER_CANCELLED;
+        } else if (ProvisioningState.IN_PROGRESS.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.IN_PROGRESS;
+        }
+        return LongRunningOperationStatus.fromString(value, false);
+    }
+
+    private static Duration getRetryAfter(HttpHeaders headers) {
+        if (headers != null) {
+            final String value = headers.getValue("Retry-After");
+            if (value != null) {
+                return Duration.ofSeconds(Long.parseLong(value));
+            }
+        }
+        return null;
     }
 
     private byte[] getResponse() {
@@ -234,12 +284,37 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
     }
 
+    private static class ResourceWithProvisioningState {
+        @JsonProperty(value = "properties")
+        private Properties properties;
+
+        private String getProvisioningState() {
+            if (this.properties != null) {
+                return this.properties.provisioningState;
+            } else {
+                return null;
+            }
+        }
+
+        private static class Properties {
+            @JsonProperty(value = "provisioningState")
+            private String provisioningState;
+        }
+    }
+
+    private static class ProvisioningState {
+        static final String IN_PROGRESS = "InProgress";
+        static final String SUCCEEDED = "Succeeded";
+        static final String FAILED = "Failed";
+        static final String CANCELED = "Canceled";
+    }
+
     public static <T, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
+        HttpPipeline httpPipeline,
+        Duration pollInterval,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
-        SerializerAdapter serializerAdapter,
-        HttpPipeline httpPipeline,
         Type innerType,
         Runnable preActivation) {
 
@@ -253,8 +328,9 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                serializerAdapter,
+                SerializerFactory.createDefaultManagementSerializerAdapter(),
                 httpPipeline,
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
@@ -262,12 +338,12 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
     }
 
-    public static <T extends HasInner<InnerT>, InnerT> Accepted<T> newAccepted(
+    public static <T extends HasInnerModel<InnerT>, InnerT> Accepted<T> newAccepted(
         ClientLogger logger,
+        HttpPipeline httpPipeline,
+        Duration pollInterval,
         Supplier<Response<Flux<ByteBuffer>>> activationOperation,
         Function<InnerT, T> convertOperation,
-        SerializerAdapter serializerAdapter,
-        HttpPipeline httpPipeline,
         Type innerType,
         Runnable preActivation, Consumer<InnerT> postActivation) {
 
@@ -281,13 +357,14 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         } else {
             Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
                 activationResponse,
-                serializerAdapter,
+                SerializerFactory.createDefaultManagementSerializerAdapter(),
                 httpPipeline,
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollInterval),
                 innerType, innerType,
                 convertOperation);
 
             if (postActivation != null) {
-                postActivation.accept(accepted.getActivationResponse().getValue().inner());
+                postActivation.accept(accepted.getActivationResponse().getValue().innerModel());
             }
 
             return accepted;

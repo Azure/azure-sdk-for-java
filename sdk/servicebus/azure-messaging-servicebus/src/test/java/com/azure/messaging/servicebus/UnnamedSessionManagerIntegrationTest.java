@@ -19,7 +19,7 @@ import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -67,13 +67,12 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int entityIndex = TestUtils.USE_CASE_SINGLE_SESSION;
         final String messageId = "singleUnnamedSession";
-        final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
+        final String sessionId = "singleUnnamedSession-" + OffsetDateTime.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
-        final List<String> lockTokens = new ArrayList<>();
+        final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
-        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
-            builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+        setSenderAndReceiver(entityType, entityIndex, TIMEOUT, builder -> builder);
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -99,7 +98,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
-            Mono.when(lockTokens.stream().map(e -> receiver.complete(e, sessionId))
+            Mono.when(receivedMessages.stream().map(e -> receiver.complete(e))
                 .collect(Collectors.toList()))
                 .block(TIMEOUT);
         }
@@ -113,7 +112,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSION;
         final String messageId = "singleUnnamedSession";
-        final String now = Instant.now().toString();
+        final String now = OffsetDateTime.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)
             .mapToObj(number -> String.join("-", String.valueOf(number), "singleUnnamedSession", now))
             .collect(Collectors.toList());
@@ -130,7 +129,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final Set<String> set = new HashSet<>();
 
         setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(maxConcurrency).maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+            builder -> builder.maxConcurrentSessions(maxConcurrency));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(maxMessages)

@@ -21,6 +21,7 @@ import java.time.Duration;
 public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy {
 
     private final RxCollectionCache collectionCache;
+    private final DiagnosticsClientContext diagnosticsClientContext;
     private final DocumentClientRetryPolicy nextRetryPolicy;
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
@@ -28,12 +29,13 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     private volatile boolean retried;
     private RxDocumentServiceRequest request;
 
-    public PartitionKeyRangeGoneRetryPolicy(
+    public PartitionKeyRangeGoneRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
             RxCollectionCache collectionCache,
             IPartitionKeyRangeCache partitionKeyRangeCache,
             String collectionLink,
             DocumentClientRetryPolicy nextRetryPolicy,
             CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.collectionLink = collectionLink;
@@ -59,6 +61,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
             }
 
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                    this.diagnosticsClientContext,
                     OperationType.Read,
                     ResourceType.DocumentCollection,
                     this.collectionLink,

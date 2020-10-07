@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TriggerProperties model. */
+/** The properties of a trigger. */
 @Fluent
 public final class TriggerProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerProperties.class);

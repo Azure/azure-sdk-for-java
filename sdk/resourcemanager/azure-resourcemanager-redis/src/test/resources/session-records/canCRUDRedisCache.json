@@ -125,7 +125,7 @@
       "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807/providers/Microsoft.Cache/redis/javacsmrc51721?api-version=2018-03-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "61fad7f2-b1d3-4c49-a1b0-3c379bb6b032",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807/providers/Microsoft.Cache/Redis/javacsmrc51721\",\"location\":\"East Asia\",\"name\":\"javacsmrc51721\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":{\"primaryKey\":\"AdyeDAYVPtgKLJ4cQMAw+ALEPXdovvKckW2H1a5ejZE=\",\"secondaryKey\":\"4fVc+AWXu5Sgf0iaViLUb+IOZzQXzyAR2eGjXn0dlqo=\"},\"hostName\":\"javacsmrc51721.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807/providers/Microsoft.Cache/Redis/javacsmrc51721\",\"location\":\"East Asia\",\"name\":\"javacsmrc51721\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"2\",\"maxfragmentationmemory-reserved\":\"12\",\"maxmemory-delta\":\"2\"},\"accessKeys\":{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"},\"hostName\":\"javacsmrc51721.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}"
     }
   }, {
     "Method" : "PUT",
@@ -153,7 +153,7 @@
       "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807Second/providers/Microsoft.Cache/redis/javacsmrc51721Second?api-version=2018-03-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "dc1c4311-6392-4fc8-9ed3-dc11902be76e",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807Second/providers/Microsoft.Cache/Redis/javacsmrc51721Second\",\"location\":\"Central US\",\"name\":\"javacsmrc51721Second\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":1},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"7500\",\"maxmemory-reserved\":\"200\",\"maxfragmentationmemory-reserved\":\"300\",\"maxmemory-delta\":\"200\"},\"accessKeys\":{\"primaryKey\":\"ZFNTIZCby8pbpEoUlH1an2wuFTFv1f9j4+a53lMfAg8=\",\"secondaryKey\":\"K8mPCdzUjA3qbhjjmLHhXvn9cUhvzBwNB7KyGEf+Zvg=\"},\"hostName\":\"javacsmrc51721Second.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"shardCount\":10,\"linkedServers\":[]}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807Second/providers/Microsoft.Cache/Redis/javacsmrc51721Second\",\"location\":\"Central US\",\"name\":\"javacsmrc51721Second\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":1},\"enableNonSslPort\":false,\"redisConfiguration\":{\"maxclients\":\"7500\",\"maxmemory-reserved\":\"200\",\"maxfragmentationmemory-reserved\":\"300\",\"maxmemory-delta\":\"200\"},\"accessKeys\":{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"},\"hostName\":\"javacsmrc51721Second.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"shardCount\":10,\"linkedServers\":[]}}"
     }
   }, {
     "Method" : "PUT",
@@ -181,7 +181,7 @@
       "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807Second/providers/Microsoft.Cache/redis/javacsmrc51721Third?api-version=2018-03-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "35e5322b-43c6-4ece-9973-dfe066519caa",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807Second/providers/Microsoft.Cache/Redis/javacsmrc51721Third\",\"location\":\"Central US\",\"name\":\"javacsmrc51721Third\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":true,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"500\",\"maxfragmentationmemory-reserved\":\"650\",\"maxmemory-delta\":\"500\"},\"accessKeys\":{\"primaryKey\":\"qVQgSW448ddB4oanNNFJQrduy+5JLGBRcWqEZ5FEeNw=\",\"secondaryKey\":\"cJfVKjyQfZXMkfvhAEhPYhaKUFSE4yFK82qS5s0W6oc=\"},\"hostName\":\"javacsmrc51721Third.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83807Second/providers/Microsoft.Cache/Redis/javacsmrc51721Third\",\"location\":\"Central US\",\"name\":\"javacsmrc51721Third\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.0.14\",\"sku\":{\"name\":\"Premium\",\"family\":\"P\",\"capacity\":2},\"enableNonSslPort\":true,\"redisConfiguration\":{\"maxclients\":\"15000\",\"maxmemory-reserved\":\"500\",\"maxfragmentationmemory-reserved\":\"650\",\"maxmemory-delta\":\"500\"},\"accessKeys\":{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"},\"hostName\":\"javacsmrc51721Third.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}"
     }
   }, {
     "Method" : "GET",
@@ -3289,7 +3289,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "1e2dc122-d8d2-4dbb-98a8-551ac8bb6849",
-      "Body" : "{\"primaryKey\":\"AdyeDAYVPtgKLJ4cQMAw+ALEPXdovvKckW2H1a5ejZE=\",\"secondaryKey\":\"4fVc+AWXu5Sgf0iaViLUb+IOZzQXzyAR2eGjXn0dlqo=\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -3316,7 +3316,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "62600221-9f9c-451a-a42c-d6859834f6dd",
-      "Body" : "{\"primaryKey\":\"AdyeDAYVPtgKLJ4cQMAw+ALEPXdovvKckW2H1a5ejZE=\",\"secondaryKey\":\"4fVc+AWXu5Sgf0iaViLUb+IOZzQXzyAR2eGjXn0dlqo=\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -3343,7 +3343,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b5ec5f70-4b84-4249-b503-9e5626f8f2a0",
-      "Body" : "{\"primaryKey\":\"ga00lm2mNftTeV8BedCDwq77Mzr4x7wfH9yHumasP8U=\",\"secondaryKey\":\"4fVc+AWXu5Sgf0iaViLUb+IOZzQXzyAR2eGjXn0dlqo=\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "POST",
@@ -3370,7 +3370,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "3a4df646-5377-44e5-8865-92a64b309ddc",
-      "Body" : "{\"primaryKey\":\"ga00lm2mNftTeV8BedCDwq77Mzr4x7wfH9yHumasP8U=\",\"secondaryKey\":\"bRZoakksfS7oetXsnBhjsZkxwQF+wSctjArqvKL8+NA=\"}"
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}"
     }
   }, {
     "Method" : "PATCH",

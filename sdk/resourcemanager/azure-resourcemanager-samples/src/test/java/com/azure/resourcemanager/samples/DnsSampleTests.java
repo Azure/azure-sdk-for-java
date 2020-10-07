@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class DnsSampleTests extends SamplesTestBase {
 
     @Test
     @Disabled("The domain name 'the custom domain that you own (e.g. contoso.com)' is invalid.")
-    public void testManageDns() {
-        Assertions.assertTrue(ManageDns.runSample(azure));
+    public void testManageDns() throws IOException {
+        Assertions.assertTrue(ManageDns.runSample(azureResourceManager));
     }
 
 }

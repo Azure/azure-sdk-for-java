@@ -8,7 +8,7 @@ import com.azure.resourcemanager.sql.models.PrimaryAggregationType;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetricAvailability;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition;
 import com.azure.resourcemanager.sql.models.UnitDefinitionType;
-import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,29 +22,29 @@ public class SqlDatabaseMetricDefinitionImpl extends WrapperImpl<MetricDefinitio
 
     @Override
     public String name() {
-        return this.inner().name().value();
+        return this.innerModel().name().value();
     }
 
     @Override
     public PrimaryAggregationType primaryAggregationType() {
-        return this.inner().primaryAggregationType();
+        return this.innerModel().primaryAggregationType();
     }
 
     @Override
     public String resourceUri() {
-        return this.inner().resourceUri();
+        return this.innerModel().resourceUri();
     }
 
     @Override
     public UnitDefinitionType unit() {
-        return this.inner().unit();
+        return this.innerModel().unit();
     }
 
     @Override
     public List<SqlDatabaseMetricAvailability> metricAvailabilities() {
         List<SqlDatabaseMetricAvailability> sqlDatabaseMetricAvailabilities = new ArrayList<>();
-        if (this.inner().metricAvailabilities() != null) {
-            for (MetricAvailability metricAvailability : this.inner().metricAvailabilities()) {
+        if (this.innerModel().metricAvailabilities() != null) {
+            for (MetricAvailability metricAvailability : this.innerModel().metricAvailabilities()) {
                 sqlDatabaseMetricAvailabilities.add(new SqlDatabaseMetricAvailabilityImpl(metricAvailability));
             }
         }

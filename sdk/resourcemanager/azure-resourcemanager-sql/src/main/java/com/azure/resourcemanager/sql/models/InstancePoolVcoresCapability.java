@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InstancePoolVcoresCapability model. */
+/** The managed instance virtual cores capability. */
 @Fluent
 public final class InstancePoolVcoresCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolVcoresCapability.class);

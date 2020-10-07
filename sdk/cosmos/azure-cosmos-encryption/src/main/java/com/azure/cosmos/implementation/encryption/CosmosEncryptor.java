@@ -33,7 +33,7 @@ public class CosmosEncryptor implements Encryptor {
     }
 
     @Override
-    public Mono<byte[]> decryptAsync(
+    public Mono<byte[]> decrypt(
         byte[] cipherText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
@@ -49,7 +49,7 @@ public class CosmosEncryptor implements Encryptor {
     }
 
     @Override
-    public Mono<byte[]> encryptAsync(
+    public Mono<byte[]> encrypt(
         byte[] plainText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {

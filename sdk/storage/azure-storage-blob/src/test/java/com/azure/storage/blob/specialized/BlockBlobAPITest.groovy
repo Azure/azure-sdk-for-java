@@ -1225,6 +1225,29 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
+    @Unroll
+    @Requires({ liveMode() })
+    def "Async buffered upload computeMd5"() {
+        setup:
+        def byteBufferList = []
+        for (def i = 0; i < byteBufferCount; i++) {
+            byteBufferList.add(getRandomData(size))
+        }
+        Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize)
+            .setBlockSizeLong(blockSize)
+
+        expect:
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
+
+        where:
+        size           | maxSingleUploadSize | blockSize               | byteBufferCount
+        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
+        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
+        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
+    }
+
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)
         for (ByteBuffer buffer : buffers) {
@@ -1828,5 +1851,19 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+            .buildBlockBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

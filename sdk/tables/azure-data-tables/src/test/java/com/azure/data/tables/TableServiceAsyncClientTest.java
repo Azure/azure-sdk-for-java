@@ -4,26 +4,30 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.tables.models.QueryParams;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.models.ListTablesOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
 public class TableServiceAsyncClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
-    private TableServiceAsyncClient asyncClient;
+    private static final Duration TIMEOUT = Duration.ofSeconds(100);
+    private TableServiceAsyncClient serviceClient;
 
     @BeforeAll
     static void beforeAll() {
@@ -45,12 +49,15 @@ public class TableServiceAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
-            builder.httpClient(HttpClient.createDefault())
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(HttpClient.createDefault());
+            if (!interceptorManager.isLiveMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
-        asyncClient = builder.buildAsyncClient();
+        serviceClient = builder.buildAsyncClient();
     }
 
     @Test
@@ -59,39 +66,101 @@ public class TableServiceAsyncClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         //Act & Assert
-        StepVerifier.create(asyncClient.createTable(tableName))
-            .assertNext(response -> {
-                Assertions.assertEquals(tableName, response.getName());
-
-            })
+        StepVerifier.create(serviceClient.createTable(tableName))
             .expectComplete()
             .verify();
     }
 
     @Test
-    void createTableWithResponseAsync() {
+    void serviceCreateTableFailsIfExistsAsync() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
-        int expectedStatusCode = 201;
+        serviceClient.createTable(tableName).block(TIMEOUT);
 
         //Act & Assert
-        StepVerifier.create(asyncClient.createTableWithResponse(tableName))
+        StepVerifier.create(serviceClient.createTable(tableName))
+            .expectErrorMatches(e -> e instanceof TableServiceErrorException
+                && ((TableServiceErrorException) e).getResponse().getStatusCode() == 409)
+            .verify();
+    }
+
+    @Test
+    void serviceCreateTableWithResponseAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        int expectedStatusCode = 204;
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.createTableWithResponse(tableName))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-
             })
             .expectComplete()
             .verify();
     }
 
     @Test
-    void serviceDeleteAsync() {
+    void serviceCreateTableIfNotExistsAsync() {
         // Arrange
-        final String tableName = testResourceNamer.randomName("test", 20);
-        asyncClient.createTable(tableName).block(TIMEOUT);
+        String tableName = testResourceNamer.randomName("test", 20);
 
         //Act & Assert
-        StepVerifier.create(asyncClient.deleteTable(tableName))
+        StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceCreateTableIfNotExistsSucceedsIfExistsAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceCreateTableIfNotExistsWithResponseAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        int expectedStatusCode = 204;
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
+            .assertNext(response -> {
+                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceCreateTableIfNotExistsWithResponseSucceedsIfExistsAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        int expectedStatusCode = 409;
+        serviceClient.createTable(tableName).block(TIMEOUT);
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
+            .assertNext(response -> {
+                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceDeleteTableAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.deleteTable(tableName))
             .expectComplete()
             .verify();
     }
@@ -101,10 +170,10 @@ public class TableServiceAsyncClientTest extends TestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
-        asyncClient.createTable(tableName).block();
+        serviceClient.createTable(tableName).block();
 
         //Act & Assert
-        StepVerifier.create(asyncClient.deleteTableWithResponse(tableName))
+        StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -112,19 +181,61 @@ public class TableServiceAsyncClientTest extends TestBase {
             .verify();
     }
 
-    @Disabled("TODO: Not working at the moment.")
     @Test
-    void listTableWithResponseWithParams() {
+    @Tag("ListTables")
+    void serviceListTablesAsync() {
         // Arrange
-        QueryParams queryParams = new QueryParams().setFilter("TableName eq SampleTable");
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
 
         // Act & Assert
-        StepVerifier.create(asyncClient.listTables(queryParams))
-            .assertNext(table -> {
-                System.out.print(table);
-            })
+        StepVerifier.create(serviceClient.listTables())
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
             .expectComplete()
             .verify();
+    }
 
+    @Test
+    @Tag("ListTables")
+    void serviceListTablesWithFilterAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(serviceClient.listTables(options))
+            .assertNext(table -> {
+                assertEquals(tableName, table.getName());
+            })
+            .expectNextCount(0)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    @Tag("ListTables")
+    void serviceListTablesWithTopAsync() {
+        // Arrange
+        final String tableName = testResourceNamer.randomName("test", 20);
+        final String tableName2 = testResourceNamer.randomName("test", 20);
+        final String tableName3 = testResourceNamer.randomName("test", 20);
+        ListTablesOptions options = new ListTablesOptions().setTop(2);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName2).block(TIMEOUT);
+        serviceClient.createTable(tableName3).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(serviceClient.listTables(options))
+            .expectNextCount(2)
+            .thenConsumeWhile(x -> true)
+            .expectComplete()
+            .verify();
     }
 }
