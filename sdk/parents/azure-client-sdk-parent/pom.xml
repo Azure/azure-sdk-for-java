@@ -919,12 +919,6 @@
       <activation>
         <jdk>[1.8,9)</jdk>
       </activation>
-      <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <maven.compiler.testSource>8</maven.compiler.testSource>
-        <maven.compiler.testTarget>8</maven.compiler.testTarget>
-      </properties>
       <build>
         <resources>
           <resource>
@@ -943,6 +937,11 @@
               <excludes>
                 <exclude>module-info.java</exclude>
               </excludes>
+
+              <source>8</source>
+              <target>8</target>
+              <testSource>8</testSource>
+              <testTarget>8</testTarget>
             </configuration>
           </plugin>
           <plugin>
@@ -981,12 +980,6 @@
       <activation>
         <jdk>[11,)</jdk>
       </activation>
-      <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.testSource>11</maven.compiler.testSource>
-        <maven.compiler.testTarget>11</maven.compiler.testTarget>
-      </properties>
       <build>
         <resources>
           <resource>
@@ -1000,10 +993,13 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <compilerArgs>
+              <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
+
+              <release>11</release>
+              <testRelease>11</testRelease>
             </configuration>
             <executions>
               <!-- compile first with module-info for Java 9+ -->
