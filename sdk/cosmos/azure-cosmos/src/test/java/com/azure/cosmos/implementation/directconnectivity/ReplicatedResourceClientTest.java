@@ -57,8 +57,8 @@ public class ReplicatedResourceClientTest {
         Mono<StoreResponse> response = resourceClient.invokeAsync(request, null);
 
         validateFailure(response, validator, TIMEOUT);
-        //method will fail 7 time (first try ,last try , and 5 retries within 30 sec(1,2,4,8,15 wait))
-        Mockito.verify(addressResolver, Mockito.times(7)).resolveAsync(Matchers.any(), Matchers.anyBoolean());
+        //method will fail 6 time (first try , and 5 retries within 30 sec(1,2,4,8,15 wait))
+        Mockito.verify(addressResolver, Mockito.times(6)).resolveAsync(Matchers.any(), Matchers.anyBoolean());
     }
 
     public static void validateFailure(Mono<StoreResponse> single, FailureValidator validator, long timeout) {
