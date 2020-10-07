@@ -10,6 +10,8 @@ package com.microsoft.azure.management.resources.v2019_07_01.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -198,16 +200,16 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The TagsInner object to access its operations.
+     * The TagOperationsInner object to access its operations.
      */
-    private TagsInner tags;
+    private TagOperationsInner tagOperations;
 
     /**
-     * Gets the TagsInner object to access its operations.
-     * @return the TagsInner object.
+     * Gets the TagOperationsInner object to access its operations.
+     * @return the TagOperationsInner object.
      */
-    public TagsInner tags() {
-        return this.tags;
+    public TagOperationsInner tagOperations() {
+        return this.tagOperations;
     }
 
     /**
@@ -263,7 +265,7 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
         this.providers = new ProvidersInner(restClient().retrofit(), this);
         this.resources = new ResourcesInner(restClient().retrofit(), this);
         this.resourceGroups = new ResourceGroupsInner(restClient().retrofit(), this);
-        this.tags = new TagsInner(restClient().retrofit(), this);
+        this.tagOperations = new TagOperationsInner(restClient().retrofit(), this);
         this.deploymentOperations = new DeploymentOperationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
