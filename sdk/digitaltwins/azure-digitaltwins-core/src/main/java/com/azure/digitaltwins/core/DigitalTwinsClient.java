@@ -905,17 +905,12 @@ public final class DigitalTwinsClient {
 
     /**
      * List all the event routes that exist in your digital twins instance.
-<<<<<<< HEAD
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context}
      *
-     * @param options The optional parameters to use when listing event routes. See {@link EventRoutesListOptions} for more details
-     * on what optional parameters can be set.
-=======
      * @param options The optional parameters for this request. If null, the default option values will be used.
->>>>>>> asdf
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
      * This PagedIterable may take multiple service requests to iterate over all event routes.
@@ -936,11 +931,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-Object#Object}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-String-Object#Object}
      *
      * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-Object#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-String-Object#String}
      *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link EventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.

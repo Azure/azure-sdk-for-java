@@ -73,7 +73,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createDigitalTwinWithResponse(String, Object, Class, DigitalTwinsAddOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createDigitalTwinWithResponse(String, Object, Class, DigitalTwinsAddOptions)}
      */
     @Override
     public void createDigitalTwinWithResponse(){
@@ -137,7 +138,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getDigitalTwinWithResponse(String, Class, DigitalTwinsGetByIdOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getDigitalTwinWithResponse(String, Class, DigitalTwinsGetByIdOptions)}
      */
     @Override
     public void getDigitalTwinWithResponse() {
@@ -179,7 +181,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateDigitalTwinWithResponse(String, List, DigitalTwinsUpdateOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#updateDigitalTwinWithResponse(String, List, DigitalTwinsUpdateOptions)}
      */
     @Override
     public void updateDigitalTwinWithResponse() {
@@ -212,7 +215,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteDigitalTwinWithResponse(String, DigitalTwinsDeleteOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#deleteDigitalTwinWithResponse(String, DigitalTwinsDeleteOptions)}
      */
     @Override
     public void deleteDigitalTwinWithResponse() {
@@ -232,7 +236,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     //region RelationshipSnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createRelationship(String, String, Object, Class)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createRelationship(String, String, Object, Class)}
      */
     @Override
     public void createRelationship() {
@@ -271,7 +276,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createRelationshipWithResponse(String, String, Object, Class, DigitalTwinsAddRelationshipOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createRelationshipWithResponse(String, String, Object, Class, DigitalTwinsAddRelationshipOptions)}
      */
     @Override
     public void createRelationshipWithResponse() {
@@ -342,7 +348,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getRelationshipWithResponse(String, String, Class, DigitalTwinsGetRelationshipByIdOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getRelationshipWithResponse(String, String, Class, DigitalTwinsGetRelationshipByIdOptions)}
      */
     @Override
     public void getRelationshipWithResponse() {
@@ -393,7 +400,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateRelationshipWithResponse(String, String, List, DigitalTwinsUpdateRelationshipOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#updateRelationshipWithResponse(String, String, List, DigitalTwinsUpdateRelationshipOptions)}
      */
     @Override
     public void updateRelationshipWithResponse() {
@@ -425,7 +433,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteRelationshipWithResponse(String, String, DigitalTwinsDeleteRelationshipOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#deleteRelationshipWithResponse(String, String, DigitalTwinsDeleteRelationshipOptions)}
      */
     @Override
     public void deleteRelationshipWithResponse() {
@@ -477,7 +486,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#listIncomingRelationships(String, DigitalTwinsListIncomingRelationshipsOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#listIncomingRelationships(String, DigitalTwinsListIncomingRelationshipsOptions)}
      */
     @Override
     public void listIncomingRelationships() {
@@ -525,7 +535,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createModelsWithResponse(Iterable, DigitalTwinModelsAddOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createModelsWithResponse(Iterable, DigitalTwinModelsAddOptions)}
      */
     @Override
     public void createModelsWithResponse() {
@@ -554,7 +565,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getModelWithResponse(String, DigitalTwinModelsGetByIdOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getModelWithResponse(String, DigitalTwinModelsGetByIdOptions)}
      */
     @Override
     public void getModelWithResponse() {
@@ -568,7 +580,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#listModels()} and {@link DigitalTwinsAsyncClient#listModels(DigitalTwinModelsListOptions)} )}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#listModels()} and {@link DigitalTwinsAsyncClient#listModels(DigitalTwinModelsListOptions)} )}
      */
     @Override
     public void listModels() {
@@ -600,7 +613,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String, DigitalTwinModelsUpdateOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#decommissionModelWithResponse(String, DigitalTwinModelsUpdateOptions)}
      */
     @Override
     public void decommissionModelWithResponse() {
@@ -626,7 +640,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteModelWithResponse(String, DigitalTwinModelsDeleteOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#deleteModelWithResponse(String, DigitalTwinModelsDeleteOptions)}
      */
     @Override
     public void deleteModelWithResponse() {
@@ -658,7 +673,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getComponentWithResponse(String, String, Class, DigitalTwinsGetComponentOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getComponentWithResponse(String, String, Class, DigitalTwinsGetComponentOptions)}
      */
     @Override
     public void getComponentWithResponse() {
@@ -693,7 +709,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, List, DigitalTwinsUpdateComponentOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, List, DigitalTwinsUpdateComponentOptions)}
      */
     @Override
     public void updateComponentWithResponse() {
@@ -726,13 +743,13 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         digitalTwinsAsyncClient.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, new QueryTwinsOptions().setMaxItemsPerPage(5))
             .doOnNext(basicTwin -> System.out.println("Retrieved digitalTwin query result with Id: " + basicTwin.getId()))
             .subscribe();
-        // END: com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin
+        // END: com.azure.digitaltwins.core.asyncClient.query#String-Options#BasicDigitalTwin
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.query#String-Options#String
         digitalTwinsAsyncClient.query("SELECT * FROM digitaltwins", String.class, new QueryTwinsOptions().setMaxItemsPerPage(5))
             .doOnNext(twinString -> System.out.println("Retrieved digitalTwin query result with Id: " + twinString))
             .subscribe();
-        // END: com.azure.digitaltwins.core.asyncClient.query#String#String
+        // END: com.azure.digitaltwins.core.asyncClient.query#String-Options#String
     }
 
     //endregion QuerySnippets
@@ -753,7 +770,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute, EventRoutesAddOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#createEventRouteWithResponse(String, EventRoute, EventRoutesAddOptions)}
      */
     @Override
     public void createEventRouteWithResponse() {
@@ -779,7 +797,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String, EventRoutesGetByIdOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#getEventRouteWithResponse(String, EventRoutesGetByIdOptions)}
      */
     @Override
     public void getEventRouteWithResponse() {
@@ -808,7 +827,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String, EventRoutesDeleteOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#deleteEventRouteWithResponse(String, EventRoutesDeleteOptions)}
      */
     @Override
     public void deleteEventRouteWithResponse() {
@@ -822,7 +842,9 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#listEventRoutes()} and {@link DigitalTwinsAsyncClient#listEventRoutes(EventRoutesListOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#listEventRoutes()} and
+     * {@link DigitalTwinsAsyncClient#listEventRoutes(EventRoutesListOptions)}
      */
     @Override
     public void listEventRoutes() {
@@ -875,7 +897,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
             System.out.println(
                 "Received publish telemetry operation response with HTTP status code: " +
                 responseString.getStatusCode()));
-        // END: com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-Object-Options#String
+        // END: com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-String-Object-Options#String
 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.publishTelemetryWithResponse#String-String-Object-Options#Object
         Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
@@ -894,7 +916,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#publishComponentTelemetry(String, String, String, Object)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#publishComponentTelemetry(String, String, String, Object)}
      */
     @Override
     public void publishComponentTelemetry() {
@@ -921,7 +944,8 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     }
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#publishComponentTelemetryWithResponse(String, String, String, Object, DigitalTwinsSendComponentTelemetryOptions)}
+     * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#publishComponentTelemetryWithResponse(String, String, String, Object, DigitalTwinsSendComponentTelemetryOptions)}
      */
     @Override
     public void publishComponentTelemetryWithResponse() {

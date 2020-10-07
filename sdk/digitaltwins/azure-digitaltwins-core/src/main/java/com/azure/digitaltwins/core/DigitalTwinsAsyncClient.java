@@ -559,11 +559,11 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class-Options#BasicRelationship#IterateByItem}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class#String#IterateByItem}
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listRelationships#String-Class-Options#String#IterateByItem}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param clazz The model class to convert the relationship to. Since a digital twin might have relationships conforming to different models, it is advisable to convert them to a generic model like {@link BasicRelationship}.
