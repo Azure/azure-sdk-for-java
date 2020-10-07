@@ -146,6 +146,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]opentelemetry[/\\]exporters[/\\]azuremonitor[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -196,6 +197,9 @@
             files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.opentelemetry.exporters.azuremonitor.AzureMonitorExporter"/>
+
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -428,7 +432,7 @@
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
-  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporter.azuremonitor.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporters.azuremonitor.implementation.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
