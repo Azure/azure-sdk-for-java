@@ -310,6 +310,9 @@ public class HttpConstants {
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
+
+        // Client generated gateway network error on ReadTimeoutException
+        public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
     }
 
     public static class HeaderValues {

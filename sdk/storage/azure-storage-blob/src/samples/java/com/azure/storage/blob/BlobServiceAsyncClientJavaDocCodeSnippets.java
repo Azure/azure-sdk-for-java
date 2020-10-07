@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -12,10 +13,12 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -276,42 +279,41 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
     }
 
-     // Add back for container soft delete
-//    /**
-//     * Code snippet for {@link BlobServiceAsyncClient#undeleteBlobContainer(String, String)}.
-//     */
-//    public void undeleteBlobContainer() {
-//        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String
-//        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
-//        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
-//        client.listBlobContainers(listBlobContainersOptions).flatMap(
-//            deletedContainer -> {
-//                Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainer(
-//                    deletedContainer.getName(), deletedContainer.getVersion());
-//                return blobContainerClient;
-//            }
-//        ).then().block();
-//        // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String
-//    }
-//
-//    /**
-//     * Code snippet for
-//     * {@link BlobServiceAsyncClient#undeleteBlobContainerWithResponse(UndeleteBlobContainerOptions)}.
-//     */
-//    public void undeleteBlobContainerWithResponseWithRename() {
-//        Context context = new Context("Key", "Value");
-//        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
-//        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
-//        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
-//        client.listBlobContainers(listBlobContainersOptions).flatMap(
-//            deletedContainer -> {
-//                Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainerWithResponse(
-//                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion())
-//                        .setDestinationContainerName(deletedContainer.getName() + "V2"))
-//                    .map(Response::getValue);
-//                return blobContainerClient;
-//            }
-//        ).then().block();
-//        // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
-//    }
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#undeleteBlobContainer(String, String)}.
+     */
+    public void undeleteBlobContainer() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String
+        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+        client.listBlobContainers(listBlobContainersOptions).flatMap(
+            deletedContainer -> {
+                Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainer(
+                    deletedContainer.getName(), deletedContainer.getVersion());
+                return blobContainerClient;
+            }
+        ).then().block();
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String
+    }
+
+    /**
+     * Code snippet for
+     * {@link BlobServiceAsyncClient#undeleteBlobContainerWithResponse(UndeleteBlobContainerOptions)}.
+     */
+    public void undeleteBlobContainerWithResponseWithRename() {
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
+        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+        client.listBlobContainers(listBlobContainersOptions).flatMap(
+            deletedContainer -> {
+                Mono<BlobContainerAsyncClient> blobContainerClient = client.undeleteBlobContainerWithResponse(
+                    new UndeleteBlobContainerOptions(deletedContainer.getName(), deletedContainer.getVersion())
+                        .setDestinationContainerName(deletedContainer.getName() + "V2"))
+                    .map(Response::getValue);
+                return blobContainerClient;
+            }
+        ).then().block();
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
+    }
 }

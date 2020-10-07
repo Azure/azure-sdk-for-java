@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
     private final static int MaxBackupReadRegions = 3;
+    private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager endpointManager;
     private final Protocol protocol;
     private final IAuthorizationTokenProvider tokenProvider;
@@ -46,6 +48,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private HttpClient httpClient;
 
     public GlobalAddressResolver(
+            DiagnosticsClientContext diagnosticsClientContext,
             HttpClient httpClient,
             GlobalEndpointManager endpointManager,
             Protocol protocol,
@@ -55,7 +58,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             UserAgentContainer userAgentContainer,
             GatewayServiceConfigurationReader serviceConfigReader,
             ConnectionPolicy connectionPolicy) {
-
+        this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
         this.protocol = protocol;
@@ -116,7 +119,7 @@ public class GlobalAddressResolver implements IAddressResolver {
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
         EndpointCache endpointCache = this.addressCacheByEndpoint.computeIfAbsent(endpoint , key -> {
-            GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(endpoint, protocol, this.tokenProvider, this.userAgentContainer, this.httpClient);
+            GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(this.diagnosticsClientContext, endpoint, protocol, this.tokenProvider, this.userAgentContainer, this.httpClient);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

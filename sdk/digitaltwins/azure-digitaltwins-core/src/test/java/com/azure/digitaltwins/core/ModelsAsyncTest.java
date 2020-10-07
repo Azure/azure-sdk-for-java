@@ -80,7 +80,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
     @Override
     public void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-        final String nonExistentModelId = "urn:doesnotexist:fakemodel:1000";
+        final String nonExistentModelId = "dtmi:doesnotexist:fakemodel;1000";
         StepVerifier.create(asyncClient.getModel(nonExistentModelId))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
     }

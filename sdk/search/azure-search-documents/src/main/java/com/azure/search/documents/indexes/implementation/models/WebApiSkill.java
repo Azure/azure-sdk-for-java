@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-/** The WebApiSkill model. */
+/** A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Custom.WebApiSkill")
 @JsonFlatten
