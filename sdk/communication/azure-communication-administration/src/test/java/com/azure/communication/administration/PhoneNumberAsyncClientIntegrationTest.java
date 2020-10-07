@@ -23,7 +23,6 @@ import com.azure.communication.administration.models.UpdatePhoneNumberCapabiliti
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;

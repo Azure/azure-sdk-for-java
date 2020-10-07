@@ -805,12 +805,11 @@ public final class PhoneNumberAsyncClient {
             getSearchById(pollingContext.getLatestResponse().getValue().getSearchId())
                 .flatMap(getSearchResponse -> {
                     SearchStatus status = getSearchResponse.getStatus();
-                    if (status.equals(SearchStatus.SUCCESS) 
-                        || status.equals(SearchStatus.EXPIRED) 
+                    if (status.equals(SearchStatus.EXPIRED) 
                         || status.equals(SearchStatus.CANCELLED) 
                         || status.equals(SearchStatus.RESERVED)) {
-                            return Mono.just(new PollResponse<>(
-                            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
                     }
                     if (status.equals(SearchStatus.ERROR)) {
                         return Mono.just(new PollResponse<>(
