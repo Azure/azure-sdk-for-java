@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
@@ -26,7 +27,9 @@ public class RecognizePiiEntities {
         // The document that needs be analyzed.
         String document = "My SSN is 859-98-0987";
 
-        client.recognizePiiEntities(document).forEach(entity -> System.out.printf(
+        PiiEntityCollection piiEntityCollection = client.recognizePiiEntities(document);
+        System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+        piiEntityCollection.forEach(entity -> System.out.printf(
             "Recognized Personal Identifiable Information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
             entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
     }

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
-import com.azure.resourcemanager.sql.fluent.inner.ImportExportResponseInner;
+import com.azure.resourcemanager.sql.fluent.models.ImportExportResponseInner;
 import java.util.UUID;
 
 /** Implementation for SqlDatabaseImportExportResponse. */
@@ -20,57 +20,57 @@ public class SqlDatabaseImportExportResponseImpl extends WrapperImpl<ImportExpor
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String requestType() {
-        return this.inner().requestType();
+        return this.innerModel().requestType();
     }
 
     @Override
     public String requestId() {
-        return this.inner().requestId().toString();
+        return this.innerModel().requestId().toString();
     }
 
     @Override
     public String serverName() {
-        return this.inner().serverName();
+        return this.innerModel().serverName();
     }
 
     @Override
     public String databaseName() {
-        return this.inner().databaseName();
+        return this.innerModel().databaseName();
     }
 
     @Override
     public String status() {
-        return this.inner().status();
+        return this.innerModel().status();
     }
 
     @Override
     public String lastModifiedTime() {
-        return this.inner().lastModifiedTime();
+        return this.innerModel().lastModifiedTime();
     }
 
     @Override
     public String queuedTime() {
-        return this.inner().queuedTime();
+        return this.innerModel().queuedTime();
     }
 
     @Override
     public String blobUri() {
-        return this.inner().blobUri();
+        return this.innerModel().blobUri();
     }
 
     @Override
     public String errorMessage() {
-        return this.inner().errorMessage();
+        return this.innerModel().errorMessage();
     }
 
     @Override

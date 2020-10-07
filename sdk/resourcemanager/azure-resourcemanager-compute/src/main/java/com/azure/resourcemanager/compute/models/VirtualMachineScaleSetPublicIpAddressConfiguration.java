@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetPublicIpAddressConfiguration model. */
+/** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetPublicIpAddressConfiguration {

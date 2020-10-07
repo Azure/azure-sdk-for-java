@@ -28,12 +28,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +51,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
+    private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
     private static final String HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String HTTPS_PROXY_PORT = "https.proxyPort";
     private static final String HTTP_PROXY_HOST = "http.proxyHost";
@@ -94,7 +98,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     public static String password() {
         // do not record
         String password = new ResourceNamer("").randomName("Pa5$", 12);
-        new ClientLogger(ResourceManagerTestBase.class).info("Password: %s%n", password);
+        new ClientLogger(ResourceManagerTestBase.class).info("Password: {}", password);
         return password;
     }
 
@@ -126,7 +130,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         TokenCredential credential;
         HttpPipeline httpPipeline;
         Map<String, String> textReplacementRules = new HashMap<>();
-        String logLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        String logLevel = Configuration.getGlobalConfiguration().get(AZURE_TEST_LOG_LEVEL);
         HttpLogDetailLevel httpLogDetailLevel;
 
         try {
@@ -134,13 +138,12 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } catch (Exception e) {
             if (isPlaybackMode()) {
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
-                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{"AZURE_LOG_LEVEL"});
+                logger.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
             } else {
                 httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
-                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{"AZURE_LOG_LEVEL"});
+                logger.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
             }
         }
-
 
         if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
             try {
@@ -201,7 +204,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             policies.add(new CookiePolicy());
-            if (!interceptorManager.isLiveMode()) {
+            if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }
             httpPipeline = buildHttpPipeline(
@@ -271,6 +274,49 @@ public abstract class ResourceManagerTestBase extends TestBase {
         for (Map.Entry<String, String> entry : rules.entrySet()) {
             interceptorManager.addTextReplacementRule(entry.getKey(), entry.getValue());
         }
+    }
+
+    /**
+     * Sets sdk context when running the tests
+     *
+     * @param internalContext the internal runtime context
+     * @param objects the manager classes to change internal context
+     * @param <InternalContext> the type of internal context
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <InternalContext> void setInternalContext(InternalContext internalContext, Object... objects) {
+        try {
+            for (Object obj : objects) {
+                for (final Field field : obj.getClass().getSuperclass().getDeclaredFields()) {
+                    if (field.getName().equals("resourceManager")) {
+                        setAccessible(field);
+                        Field context = field.get(obj).getClass().getDeclaredField("internalContext");
+                        setAccessible(context);
+                        context.set(field.get(obj), internalContext);
+                    }
+                }
+                for (Field field : obj.getClass().getDeclaredFields()) {
+                    if (field.getName().equals("internalContext")) {
+                        setAccessible(field);
+                        field.set(obj, internalContext);
+                    } else if (field.getName().contains("Manager")) {
+                        setAccessible(field);
+                        setInternalContext(internalContext, field.get(obj));
+                    }
+                }
+            }
+        } catch (IllegalAccessException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (NoSuchFieldException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
+    }
+
+    private void setAccessible(final Field field) {
+        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            field.setAccessible(true);
+            return null;
+        });
     }
 
     protected abstract HttpPipeline buildHttpPipeline(

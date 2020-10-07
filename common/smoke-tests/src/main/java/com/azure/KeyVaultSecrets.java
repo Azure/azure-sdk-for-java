@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 package com.azure;
 
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.KnownAuthorityHosts;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.core.util.polling.SyncPoller;
@@ -24,10 +25,18 @@ public class KeyVaultSecrets {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecrets.class);
 
     private static HashMap<String, String> AUTHORITY_HOST_MAP = new HashMap<String, String>() {{
-        put("AzureCloud", KnownAuthorityHosts.AZURE_CLOUD);
-        put("AzureChinaCloud", KnownAuthorityHosts.AZURE_CHINA_CLOUD);
-        put("AzureGermanCloud", KnownAuthorityHosts.AZURE_GERMAN_CLOUD);
-        put("AzureUSGovernment", KnownAuthorityHosts.AZURE_US_GOVERNMENT);
+        put("AzureCloud", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        put("AzureChinaCloud", AzureAuthorityHosts.AZURE_CHINA);
+        put("AzureGermanCloud", AzureAuthorityHosts.AZURE_GERMANY);
+        put("AzureUSGovernment", AzureAuthorityHosts.AZURE_GOVERNMENT);
+    }};
+
+    private static HashMap<String, SecretServiceVersion> AUTHORITY_HOST_SERVICE_VERSION_MAP =
+        new HashMap<String, SecretServiceVersion>() {{
+        put("AzureCloud", SecretServiceVersion.V7_1);
+        put("AzureChinaCloud", SecretServiceVersion.V7_0);
+        put("AzureGermanCloud", SecretServiceVersion.V7_0);
+        put("AzureUSGovernment", SecretServiceVersion.V7_0);
     }};
 
     private static void setSecret() {
@@ -59,7 +68,10 @@ public class KeyVaultSecrets {
         // Configure authority host from AZURE_CLOUD
         String azureCloud = System.getenv("AZURE_CLOUD");
         String authorityHost = AUTHORITY_HOST_MAP.getOrDefault(
-            azureCloud, KnownAuthorityHosts.AZURE_CLOUD);
+            azureCloud, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+
+        SecretServiceVersion serviceVersion =
+            AUTHORITY_HOST_SERVICE_VERSION_MAP.getOrDefault(azureCloud, SecretServiceVersion.getLatest());
 
 
         /* DefaultAzureCredentialBuilder() is expecting the following environment variables:
@@ -72,8 +84,9 @@ public class KeyVaultSecrets {
             .credential(
                 new DefaultAzureCredentialBuilder()
                     .authorityHost(authorityHost)
-                    .build()
-            ).buildClient();
+                    .build())
+            .serviceVersion(serviceVersion)
+            .buildClient();
         try {
             setSecret();
             getSecret();

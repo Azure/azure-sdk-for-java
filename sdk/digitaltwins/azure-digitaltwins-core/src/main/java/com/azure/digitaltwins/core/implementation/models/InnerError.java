@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InnerError model. */
+/** A more specific error description than was provided by the containing error. */
 @Fluent
 public final class InnerError {
     /*
@@ -63,5 +63,16 @@ public final class InnerError {
     public InnerError setInnererror(InnerError innererror) {
         this.innererror = innererror;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getInnererror() != null) {
+            getInnererror().validate();
+        }
     }
 }

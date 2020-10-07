@@ -7,14 +7,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolDatabaseActivityInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL ElasticPool's Database Activity. */
 @Fluent
 public interface ElasticPoolDatabaseActivity
-    extends HasInner<ElasticPoolDatabaseActivityInner>, HasResourceGroup, HasName, HasId {
+    extends HasInnerModel<ElasticPoolDatabaseActivityInner>, HasResourceGroup, HasName, HasId {
     /** @return the database name */
     String databaseName();
 

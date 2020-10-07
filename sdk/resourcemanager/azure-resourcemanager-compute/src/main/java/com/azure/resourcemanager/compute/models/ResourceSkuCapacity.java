@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceSkuCapacity model. */
+/** Describes scaling information of a SKU. */
 @Immutable
 public final class ResourceSkuCapacity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapacity.class);

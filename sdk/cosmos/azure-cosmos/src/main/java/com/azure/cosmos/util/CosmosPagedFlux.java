@@ -16,14 +16,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Cosmos implementation of {@link ContinuablePagedFlux}.
  * <p>
- * This type is a Flux that provides the ability to operate on pages of type {@link FeedResponse}
- * and individual items in such pages. This type supports {@link String} type continuation tokens,
- * allowing for restarting from a previously-retrieved continuation token.
+ * This type is a Flux that provides the ability to operate on pages of type {@link FeedResponse} and individual items
+ * in such pages. This type supports {@link String} type continuation tokens, allowing for restarting from a
+ * previously-retrieved continuation token.
  * <p>
  * For more information on the base type, refer {@link ContinuablePagedFlux}
  *
@@ -36,8 +37,28 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
+    private final Consumer<FeedResponse<T>> feedResponseConsumer;
+
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this.optionsFluxFunction = optionsFluxFunction;
+        this.feedResponseConsumer = null;
+    }
+
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
+                    Consumer<FeedResponse<T>> feedResponseConsumer) {
+        this.optionsFluxFunction = optionsFluxFunction;
+        this.feedResponseConsumer = feedResponseConsumer;
+    }
+
+    /**
+     * Handle for invoking "side-effects" on each FeedResponse returned by CosmosPagedFlux
+     *
+     * @param feedResponseConsumer handler
+     * @return CosmosPagedFlux instance with attached handler
+     */
+    @Beta(value = Beta.SinceVersion.V4_6_0)
+    public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> feedResponseConsumer) {
+        return new CosmosPagedFlux<T>(this.optionsFluxFunction, feedResponseConsumer);
     }
 
     @Override
@@ -69,9 +90,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     /**
-     * Subscribe to consume all items of type {@code T} in the sequence respectively.
-     * This is recommended for most common scenarios. This will seamlessly fetch next
-     * page when required and provide with a {@link Flux} of items.
+     * Subscribe to consume all items of type {@code T} in the sequence respectively. This is recommended for most
+     * common scenarios. This will seamlessly fetch next page when required and provide with a {@link Flux} of items.
      *
      * @param coreSubscriber The subscriber for this {@link CosmosPagedFlux}
      */
@@ -104,6 +124,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
                     TracerProvider.ERROR_CODE);
+            }
+        }).doOnNext(feedResponse -> {
+            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+            if (feedResponseConsumer != null) {
+                feedResponseConsumer.accept(feedResponse);
             }
         });
     }

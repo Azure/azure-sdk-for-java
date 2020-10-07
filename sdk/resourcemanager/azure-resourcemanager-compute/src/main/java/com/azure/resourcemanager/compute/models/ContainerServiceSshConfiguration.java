@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerServiceSshConfiguration model. */
+/** SSH configuration for Linux-based VMs running on Azure. */
 @Fluent
 public final class ContainerServiceSshConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceSshConfiguration.class);

@@ -14,17 +14,18 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
 
     @Test(groups = "unit")
     public void readTimeout() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -33,9 +34,9 @@ public class RxGatewayStoreModelTest {
                 .when(globalEndpointManager).resolveServiceEndpoint(Mockito.any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-                .when(httpClient).send(Mockito.any(HttpRequest.class));
+                .when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
 
-        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
                 sessionContainer,
                 ConsistencyLevel.SESSION,
                 queryCompatibilityMode,
@@ -43,10 +44,11 @@ public class RxGatewayStoreModelTest {
                 globalEndpointManager,
                 httpClient);
 
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put("key", "value");
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
+
 
         Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()
