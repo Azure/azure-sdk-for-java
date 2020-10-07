@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.experimental.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,9 +24,9 @@ public class AmqpDataBodyTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<BinaryData> expectedDataList = new ArrayList<>();
-        expectedDataList.add(BinaryData.fromBytes("some data 1".getBytes()));
-        expectedDataList.add(BinaryData.fromBytes("some data 2".getBytes()));
+        final List<byte[]> expectedDataList = new ArrayList<>();
+        expectedDataList.add("some data 1".getBytes());
+        expectedDataList.add("some data 2".getBytes());
 
         // Act
         final AmqpDataBody actual = new AmqpDataBody(expectedDataList);
@@ -36,18 +35,18 @@ public class AmqpDataBodyTest {
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
-        final List<BinaryData> dataList = actual.getData().stream().collect(Collectors.toList());
+        final List<byte[]> dataList = actual.getData().stream().collect(Collectors.toList());
         assertEquals(expectedDataList.size(), dataList.size());
         assertArrayEquals(expectedDataList.toArray(), dataList.toArray());
     }
 
     /**
-     * Verifies {@link BinaryData} constructor for null values.
+     * Verifies {@link AmqpDataBody} constructor for null values.
      */
     @Test
     public void constructorNullValidValues() {
         // Arrange
-        final List<BinaryData> listBinaryData = null;
+        final List<byte[]> listBinaryData = null;
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataBody(listBinaryData));
