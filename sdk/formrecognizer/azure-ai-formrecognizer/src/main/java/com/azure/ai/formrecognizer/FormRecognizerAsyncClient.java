@@ -460,11 +460,14 @@ public final class FormRecognizerAsyncClient {
 
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
+            final String localeInfo = recognizeReceiptsOptions.getLocaleInfo();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
-                        "", new SourcePath().setSource(receiptUrl), context)
+                        localeInfo,
+                        new SourcePath().setSource(receiptUrl),
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -549,11 +552,17 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
+            final String localeInfo = recognizeReceiptsOptions.getLocaleInfo();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
-                        contentType, receipt, length, isFieldElementsIncluded, "", context)
+                        contentType,
+                        receipt,
+                        length,
+                        isFieldElementsIncluded,
+                        localeInfo,
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
                     receipt, recognizeReceiptsOptions.getContentType()),

@@ -16,6 +16,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_IN
 public final class RecognizeReceiptsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
+    private String localeInfo;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
@@ -80,6 +81,27 @@ public final class RecognizeReceiptsOptions {
      */
     public RecognizeReceiptsOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
+        return this;
+    }
+
+    /**
+     * Get the locale information for the receipt.
+     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     *
+     * @return the localeInfo value.
+     */
+    public String getLocaleInfo() {
+        return localeInfo;
+    }
+
+    /**
+     * Set the locale information for the receipt.
+     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     *
+     * @return the localeInfo value.
+     */
+    public RecognizeReceiptsOptions setLocaleInfo(final String localeInfo) {
+        this.localeInfo = localeInfo == null ? DEFAULT_LOCALE_INFO : localeInfo;
         return this;
     }
 }
