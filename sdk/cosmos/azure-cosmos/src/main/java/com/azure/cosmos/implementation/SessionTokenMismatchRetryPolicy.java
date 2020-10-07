@@ -58,7 +58,7 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
 
         if (this.waitTimeTimeoutHelper.isElapsed()) {
 
-            LOGGER.info(
+            LOGGER.warn(
                 "SessionTokenMismatchRetryPolicy not retrying because it has exceeded " +
                     "the time limit. Retry count = {}",
                 this.retryCount);
@@ -69,9 +69,10 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
         Duration effectiveBackoff = Duration.ZERO;
 
         // Don't penalize first retry with delay
-        if (this.retryCount.getAndIncrement() > 0)
-        {
-            // Get the backoff time by selecting the smallest value between the remaining time and the current back off time
+        if (this.retryCount.getAndIncrement() > 0) {
+
+            // Get the backoff time by selecting the smallest value between the remaining time and
+            // the current back off time
             effectiveBackoff = getEffectiveBackoff(
                 this.currentBackoff,
                 this.waitTimeTimeoutHelper.getRemainingTime());
