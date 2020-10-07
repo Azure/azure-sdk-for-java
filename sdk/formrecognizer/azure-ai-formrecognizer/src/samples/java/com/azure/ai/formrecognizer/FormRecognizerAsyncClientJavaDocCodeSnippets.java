@@ -565,7 +565,6 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String businessCardUrl = "{file_source_url}";
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl)
-            // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedBusinessCards -> {
                 for (int i = 0; i < recognizedBusinessCards.size(); i++) {
@@ -738,7 +737,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      */
     public void beginRecognizeBusinessCards() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeBusinessCards#Flux-long
-        File businessCard = new File("{file_source_url}");
+        File businessCard = new File("{local/file_path/fileName.jpg}");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(businessCard.toPath())));
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeBusinessCards(buffer, businessCard.length())

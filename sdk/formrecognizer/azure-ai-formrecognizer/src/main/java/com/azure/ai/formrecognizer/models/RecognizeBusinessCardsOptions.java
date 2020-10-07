@@ -84,7 +84,8 @@ public final class RecognizeBusinessCardsOptions {
     }
 
     /**
-     * Get the locale value.
+     * Get the locale value. For supported locales, see
+     * <a>https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-receipts#supported-locales</a>
      *
      * @return the locale value.
      */
@@ -93,7 +94,8 @@ public final class RecognizeBusinessCardsOptions {
     }
 
     /**
-     * Set the locale value.
+     * Set the locale value. For supported locales, see
+     * <a>https://docs.microsoft.com/azure/cognitive-services/form-recognizer/concept-receipts#supported-locales</a>
      *
      * @param locale the locale value.
      *

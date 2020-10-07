@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -206,7 +207,7 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    if ("ReceiptType".equals(key) || com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY == fieldValue.getType()) {
+                    if ("ReceiptType".equals(key) || ARRAY == fieldValue.getType()) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
@@ -281,21 +282,14 @@ final class Transforms {
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-
-        FieldData labelData = null;
-        // if 'name' is same as the raw field value text, it means this FormField is not a label.
-        // Otherwise, the FormField is for label, which might have label data, such as bounding box values.
-        if (name != null && name.equals(fieldValue.getText())) {
+        // ARRAY has ho value data, such as bounding box.
+        if (valueData == null && ARRAY != fieldValue.getType()) {
             valueData = new FieldData(name, toBoundingBox(fieldValue.getBoundingBox()),
                 fieldValue.getPage() == null ? -1 : fieldValue.getPage(),
                 setReferenceElements(fieldValue.getElements(), readResults));
-        } else {
-            // Label data doesn't have bounding box.
-            labelData = new FieldData(name, null,
-                fieldValue.getPage() == null ? -1 : fieldValue.getPage(),
-                setReferenceElements(fieldValue.getElements(), readResults));
         }
-        return new FormField(name, labelData, valueData, value, setDefaultConfidenceValue(fieldValue.getConfidence()));
+
+        return new FormField(name, null, valueData, value, setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
 
     /**
