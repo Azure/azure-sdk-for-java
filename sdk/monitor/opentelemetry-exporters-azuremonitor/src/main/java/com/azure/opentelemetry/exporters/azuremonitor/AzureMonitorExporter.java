@@ -48,7 +48,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  * This class is an implementation of OpenTelemetry {@link SpanExporter} that allows different tracing services to
  * export recorded data for sampled spans in their own format.
  */
-public class AzureMonitorExporter implements SpanExporter {
+public final class AzureMonitorExporter implements SpanExporter {
     private static final Pattern COMPONENT_PATTERN = Pattern
         .compile("io\\.opentelemetry\\.auto\\.([^0-9]*)(-[0-9.]*)?");
 
@@ -139,12 +139,12 @@ public class AzureMonitorExporter implements SpanExporter {
         }
         if (kind == Span.Kind.INTERNAL) {
             if (!span.getParentSpanId().isValid()) {
-                // TODO revisit this decision
+                // TODO (srnagar): revisit this decision
                 // maybe user-generated telemetry?
                 // otherwise this top-level span won't show up in Performance blade
                 exportRequest(stdComponent, span, telemetryItems);
             } else if (span.getName().equals("EventHubs.message")) {
-                // TODO eventhubs should use PRODUCER instead of INTERNAL
+                // TODO (srnagar): eventhubs should use PRODUCER instead of INTERNAL
                 exportRemoteDependency(stdComponent, span, false, telemetryItems);
             } else {
                 exportRemoteDependency(stdComponent, span, true, telemetryItems);
@@ -154,56 +154,10 @@ public class AzureMonitorExporter implements SpanExporter {
         } else if (kind == Span.Kind.SERVER || kind == Span.Kind.CONSUMER) {
             exportRequest(stdComponent, span, telemetryItems);
         } else {
-            throw new UnsupportedOperationException(kind.name());
+            throw logger.logExceptionAsError(new UnsupportedOperationException(kind.name()));
         }
     }
 
-    private static void setProperties(Map<String, String> properties, long timeEpochNanos, String level,
-                                      String loggerName, Map<String, AttributeValue> attributes) {
-        if (level != null) {
-            properties.put("SourceType", "Logger");
-            properties.put("LoggingLevel", level);
-        }
-        if (loggerName != null) {
-            properties.put("LoggerName", loggerName);
-        }
-
-        if (attributes != null) {
-            for (Map.Entry<String, AttributeValue> entry : attributes.entrySet()) {
-                AttributeValue av = entry.getValue();
-                String stringValue = null;
-                switch (av.getType()) {
-                    case STRING:
-                        stringValue = av.getStringValue();
-                        break;
-                    case BOOLEAN:
-                        stringValue = String.valueOf(av.getBooleanValue());
-                        break;
-                    case LONG:
-                        stringValue = String.valueOf(av.getLongValue());
-                        break;
-                    case DOUBLE:
-                        stringValue = String.valueOf(av.getDoubleValue());
-                        break;
-                    case STRING_ARRAY:
-                        stringValue = String.valueOf(av.getStringArrayValue());
-                        break;
-                    case BOOLEAN_ARRAY:
-                        stringValue = String.valueOf(av.getBooleanArrayValue());
-                        break;
-                    case LONG_ARRAY:
-                        stringValue = String.valueOf(av.getLongArrayValue());
-                        break;
-                    case DOUBLE_ARRAY:
-                        stringValue = String.valueOf(av.getDoubleArrayValue());
-                        break;
-                }
-                if (stringValue != null) {
-                    properties.put(entry.getKey(), stringValue);
-                }
-            }
-        }
-    }
 
     private static List<TelemetryExceptionDetails> minimalParse(String errorStack) {
         TelemetryExceptionDetails details = new TelemetryExceptionDetails();
@@ -220,7 +174,8 @@ public class AzureMonitorExporter implements SpanExporter {
         return Arrays.asList(details);
     }
 
-    private void exportRemoteDependency(String stdComponent, SpanData span, boolean inProc, List<TelemetryItem> telemetryItems) {
+    private void exportRemoteDependency(String stdComponent, SpanData span, boolean inProc,
+                                        List<TelemetryItem> telemetryItems) {
         TelemetryItem telemetryItem = new TelemetryItem();
         RemoteDependencyData remoteDependencyData = new RemoteDependencyData();
         MonitorBase monitorBase = new MonitorBase();
@@ -251,14 +206,14 @@ public class AzureMonitorExporter implements SpanExporter {
             } else if (attributes.containsKey(SemanticAttributes.DB_SYSTEM.key())) {
                 applyDatabaseQuerySpan(attributes, remoteDependencyData, stdComponent);
             } else if (span.getName().equals("EventHubs.send")) {
-                // TODO eventhubs should use CLIENT instead of PRODUCER
-                // TODO eventhubs should add links to messages?
+                // TODO (srnagar): eventhubs should use CLIENT instead of PRODUCER
+                // TODO (srnagar): eventhubs should add links to messages?
                 remoteDependencyData.setType("Microsoft.EventHub");
                 String peerAddress = removeAttributeString(attributes, "peer.address");
                 String destination = removeAttributeString(attributes, "message_bus.destination");
                 remoteDependencyData.setTarget(peerAddress + "/" + destination);
             } else if (span.getName().equals("EventHubs.message")) {
-                // TODO eventhubs should populate peer.address and message_bus.destination
+                // TODO (srnagar): eventhubs should populate peer.address and message_bus.destination
                 String peerAddress = removeAttributeString(attributes, "peer.address");
                 String destination = removeAttributeString(attributes, "message_bus.destination");
                 if (peerAddress != null) {
@@ -283,7 +238,8 @@ public class AzureMonitorExporter implements SpanExporter {
         }
 
         telemetryItem.setTime(getFormattedTime(span.getStartEpochNanos()));
-        remoteDependencyData.setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
+        remoteDependencyData
+            .setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
 
         remoteDependencyData.setSuccess(span.getStatus().isOk());
         String description = span.getStatus().getDescription();
@@ -322,14 +278,14 @@ public class AzureMonitorExporter implements SpanExporter {
                 dbUrl += " | " + dbInstance;
             }
             if ("jdbc".equals(component)) {
-                // TODO this is special case to match 2.x behavior
+                // TODO (srnagar): this is special case to match 2.x behavior
                 //      because U/X strips off the beginning in E2E tx view
                 rd.setTarget("jdbc:" + dbUrl);
             } else {
                 rd.setTarget(dbUrl);
             }
         }
-        // TODO put db.instance somewhere
+        // TODO (srnagar): put db.instance somewhere
     }
 
     private void applyHttpRequestSpan(Map<String, AttributeValue> attributes,
@@ -351,7 +307,7 @@ public class AzureMonitorExporter implements SpanExporter {
                 URI uriObject = new URI(url);
                 String target = createTarget(uriObject);
                 remoteDependencyData.setTarget(target);
-                // TODO is this right, overwriting name to include the full path?
+                // TODO (srnagar): is this right, overwriting name to include the full path?
                 String path = uriObject.getPath();
                 if (CoreUtils.isNullOrEmpty(path)) {
                     remoteDependencyData.setName(method + " /");
@@ -408,7 +364,7 @@ public class AzureMonitorExporter implements SpanExporter {
         telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_NAME.toString(), name);
 
         if (span.getName().equals("EventHubs.process")) {
-            // TODO eventhubs should use CONSUMER instead of SERVER
+            // TODO (srnagar): eventhubs should use CONSUMER instead of SERVER
             // (https://gist.github.com/lmolkova/e4215c0f44a49ef824983382762e6b92#opentelemetry-example-1)
             String peerAddress = removeAttributeString(attributes, "peer.address");
             String destination = removeAttributeString(attributes, "message_bus.destination");
@@ -429,7 +385,8 @@ public class AzureMonitorExporter implements SpanExporter {
         } else {
             SpanId parentSpanId = span.getParentSpanId();
             if (parentSpanId.isValid()) {
-                telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId.toLowerBase16());
+                telemetryItem.getTags()
+                    .put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), parentSpanId.toLowerBase16());
             }
         }
 
@@ -480,16 +437,19 @@ public class AzureMonitorExporter implements SpanExporter {
 
             String operationId = span.getTraceId().toLowerBase16();
             telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_ID.toString(), operationId);
-            telemetryItem.getTags().put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), span.getParentSpanId().toLowerBase16());
+            telemetryItem.getTags()
+                .put(ContextTagKeys.AI_OPERATION_PARENT_ID.toString(), span.getParentSpanId().toLowerBase16());
             telemetryItem.setTime(getFormattedTime(event.getEpochNanos()));
             addExtraAttributes(eventData.getProperties(), event.getAttributes());
 
             if (event.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE.key()) != null
                 || event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE.key()) != null) {
-                // TODO Remove this boolean after we can confirm that the exception duplicate is a bug from the opentelmetry-java-instrumentation
+                // TODO (srnagar): Remove this boolean after we can confirm that the exception duplicate
+                //  is a bug from the opentelmetry-java-instrumentation
                 if (!foundException) {
-                    // TODO map OpenTelemetry exception to Application Insights exception better
-                    AttributeValue stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE.key());
+                    // TODO (srnagar): map OpenTelemetry exception to Application Insights exception better
+                    AttributeValue stacktrace = event.getAttributes()
+                        .get(SemanticAttributes.EXCEPTION_STACKTRACE.key());
                     if (stacktrace != null) {
                         trackException(stacktrace.getStringValue(), span, operationId,
                             span.getSpanId().toLowerBase16(), samplingPercentage, telemetryItems);
@@ -545,12 +505,7 @@ public class AzureMonitorExporter implements SpanExporter {
 
     private Map<String, AttributeValue> getAttributesCopy(ReadableAttributes attributes) {
         final Map<String, AttributeValue> copy = new HashMap<>();
-        attributes.forEach(new ReadableKeyValuePairs.KeyValueConsumer<AttributeValue>() {
-            @Override
-            public void consume(String key, AttributeValue value) {
-                copy.put(key, value);
-            }
-        });
+        attributes.forEach(copy::put);
         return copy;
     }
 
@@ -583,7 +538,7 @@ public class AzureMonitorExporter implements SpanExporter {
         } else if (attributeValue.getType() == AttributeValue.Type.STRING) {
             return attributeValue.getStringValue();
         } else {
-            // TODO log debug warning
+            // TODO (srnagar): log debug warning
             return null;
         }
     }
@@ -595,7 +550,7 @@ public class AzureMonitorExporter implements SpanExporter {
         } else if (attributeValue.getType() == AttributeValue.Type.DOUBLE) {
             return attributeValue.getDoubleValue();
         } else {
-            // TODO log debug warning
+            // TODO (srnagar): log debug warning
             return null;
         }
     }

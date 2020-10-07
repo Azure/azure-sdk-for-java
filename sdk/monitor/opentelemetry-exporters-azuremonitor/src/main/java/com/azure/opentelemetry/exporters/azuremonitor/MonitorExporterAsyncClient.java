@@ -3,7 +3,7 @@
 
 package com.azure.opentelemetry.exporters.azuremonitor;
 
-import com.azure.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImpl;
+import com.azure.opentelemetry.exporters.azuremonitor.implementation.ApplicationInsightsClientImpl;
 import com.azure.opentelemetry.exporters.azuremonitor.implementation.models.TelemetryItem;
 import com.azure.opentelemetry.exporters.azuremonitor.implementation.models.ExportResult;
 import com.azure.core.annotation.ReturnType;
@@ -36,7 +36,7 @@ class MonitorExporterAsyncClient {
      * rejected.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExportResult> export(List<TelemetryItem> telemetryItems) {
+    Mono<ExportResult> export(List<TelemetryItem> telemetryItems) {
         return restServiceClient.trackAsync(telemetryItems);
     }
 
@@ -50,7 +50,7 @@ class MonitorExporterAsyncClient {
      * rejected.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExportResult>> exportWithResponse(List<TelemetryItem> telemetryItems) {
+    Mono<Response<ExportResult>> exportWithResponse(List<TelemetryItem> telemetryItems) {
         return restServiceClient.trackWithResponseAsync(telemetryItems);
     }
 

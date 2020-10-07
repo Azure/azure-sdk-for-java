@@ -3,7 +3,7 @@
 
 package com.azure.opentelemetry.exporters.azuremonitor;
 
-import com.azure.opentelemetry.exporters.azuremonitor.AzureMonitorExporterBuilder;
+
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 

@@ -3,7 +3,7 @@
 
 package com.azure.opentelemetry.exporters.azuremonitor;
 
-import com.azure.opentelemetry.exporter.azuremonitor.implementation.ApplicationInsightsClientImpl;
+import com.azure.opentelemetry.exporters.azuremonitor.implementation.ApplicationInsightsClientImpl;
 import com.azure.opentelemetry.exporters.azuremonitor.implementation.ApplicationInsightsClientImplBuilder;
 import com.azure.opentelemetry.exporters.azuremonitor.implementation.NdJsonSerializer;
 import com.azure.core.http.HttpClient;

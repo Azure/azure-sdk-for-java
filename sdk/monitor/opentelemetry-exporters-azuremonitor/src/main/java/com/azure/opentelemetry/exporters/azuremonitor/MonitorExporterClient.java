@@ -35,7 +35,7 @@ class MonitorExporterClient {
      * rejected.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExportResult export(List<TelemetryItem> telemetryItems) {
+    ExportResult export(List<TelemetryItem> telemetryItems) {
         return asyncClient.export(telemetryItems).block();
     }
 
@@ -50,7 +50,7 @@ class MonitorExporterClient {
      * rejected.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExportResult> exportWithResponse(List<TelemetryItem> telemetryItems, Context context) {
+    Response<ExportResult> exportWithResponse(List<TelemetryItem> telemetryItems, Context context) {
         return asyncClient.exportWithResponse(telemetryItems, context).block();
     }
 }
