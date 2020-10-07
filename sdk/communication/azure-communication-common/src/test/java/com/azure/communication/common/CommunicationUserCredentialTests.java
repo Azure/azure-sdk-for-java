@@ -13,9 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -291,7 +288,6 @@ public class CommunicationUserCredentialTests {
     class MockLongRunningRefresher implements TokenRefresher {
         private int numCalls = 0;
         private Runnable onCallReturn;
-        public LongRunningFuture longRunningFuture;
         
         public int numCalls() {
             return numCalls;
@@ -308,16 +304,14 @@ public class CommunicationUserCredentialTests {
         @Override
         public Future<String> getFetchTokenFuture() {
             numCalls++;
-            longRunningFuture = new LongRunningFuture(onCallReturn);
-            return longRunningFuture;
+            return new LongRunningFuture(onCallReturn);
         }
     }
 
     class LongRunningFuture implements Future<String> {
-        //private List<String> synchedList = Collections.synchronizedList(new ArrayList<String>());
         private Runnable onCallReturn;
 
-        public LongRunningFuture(Runnable onCallReturn) {
+        LongRunningFuture(Runnable onCallReturn) {
             this.onCallReturn = onCallReturn;
         }
 
@@ -342,12 +336,10 @@ public class CommunicationUserCredentialTests {
 
         @Override
         public String get() throws InterruptedException, ExecutionException {
-            
-                if (this.onCallReturn != null) {
-                    this.onCallReturn.run();
-                }
-                return tokenMocker.generateRawToken("Mock", "user", 12 * 60);
-           // }
+            if (this.onCallReturn != null) {
+                this.onCallReturn.run();
+            }
+            return tokenMocker.generateRawToken("Mock", "user", 12 * 60);
         }
 
         @Override
