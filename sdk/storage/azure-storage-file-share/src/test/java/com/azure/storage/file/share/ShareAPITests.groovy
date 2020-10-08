@@ -31,6 +31,7 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
@@ -518,7 +519,7 @@ class ShareAPITests extends APISpec {
     def "Set access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def time = getUTCNow()
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
 
         when:
         def getAccessTierBeforeResponse = primaryShareClient.getProperties()
@@ -529,7 +530,7 @@ class ShareAPITests extends APISpec {
         getAccessTierBeforeResponse.getAccessTier() == ShareAccessTier.HOT.toString()
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
         getAccessTierAfterResponse.getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
+        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
         getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }
