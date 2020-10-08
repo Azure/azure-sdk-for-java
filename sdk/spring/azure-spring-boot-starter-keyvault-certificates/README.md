@@ -183,3 +183,14 @@ Add then add the following Maven dependency to your POM file.
         <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
     </dependency>
 ```
+
+## Creating an Azure Key Vault
+
+To create an Azure KeyVault use the command line below:
+
+```shell
+  export KEYVAULT=mykeyvault
+  export RESOURCE_GROUP=myresourcegroup
+  az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
+```
+
