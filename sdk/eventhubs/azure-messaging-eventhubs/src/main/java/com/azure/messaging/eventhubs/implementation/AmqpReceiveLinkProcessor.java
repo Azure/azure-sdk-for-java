@@ -61,9 +61,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private volatile long requested;
     private static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
         AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
-    private volatile int nextCreditToFlow;
-    private static final AtomicIntegerFieldUpdater<AmqpReceiveLinkProcessor> CREDIT_TO_FLOW =
-        AtomicIntegerFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "nextCreditToFlow");
 
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
@@ -160,6 +157,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // For a new link, add the prefetch as credits.
             linkCreditsAdded.set(true);
             next.addCredits(prefetch);
+            next.setEmptyCreditListener(this::getCreditsToAdd);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().subscribe(
@@ -171,15 +169,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         }
                     },
                     error -> {
-                        if (error instanceof AmqpException) {
-                            AmqpException amqpException = (AmqpException) error;
-                            if (AmqpErrorCondition.LINK_DETACH_FORCED.equals(amqpException.getErrorCondition())) {
-                                logger.info("Current link {} force detached. Requesting a new link.",
-                                    currentLink.getLinkName());
-                                requestUpstream();
-                                return;
-                            }
-                        }
                         currentLink = null;
                         logger.warning("linkName[{}] entityPath[{}]. Error occurred in link.", linkName, entityPath);
                         onError(error);
@@ -321,6 +310,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         Operators.addCap(REQUESTED, this, request);
+
+        final AmqpReceiveLink link = currentLink;
+        if (link != null && !linkCreditsAdded.getAndSet(true)) {
+            int credits = getCreditsToAdd();
+            logger.verbose("Link credits not yet added. Adding: {}", credits);
+            link.addCredits(credits);
+        }
+
         drain();
     }
 
@@ -428,7 +425,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
                 try {
                     subscriber.onNext(message);
-                    sendFlow(1);
                 } catch (Exception e) {
                     logger.error("Exception occurred while handling downstream onNext operation.", e);
                     throw logger.logExceptionAsError(Exceptions.propagate(
@@ -443,25 +439,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
             }
         }
-    }
-
-    private void sendFlow(final int credits) {
-        AmqpReceiveLink link = currentLink;
-        if (link != null && !link.isDisposed() && !this.isTerminated()) {
-            // slow down sending the flow - to make the protocol less-chat'y
-            int currentCredits = CREDIT_TO_FLOW.addAndGet(this, credits);
-            logger.verbose("{} - Current credits pending {} ", link.getLinkName(), currentCredits);
-            if (this.shouldSendFlow(currentCredits)) {
-                link.addCredits(currentCredits);
-                CREDIT_TO_FLOW.set(this, 0);
-                logger.info("Added {} credits to link {}.", currentCredits, link.getLinkName());
-            }
-        }
-    }
-
-    private boolean shouldSendFlow(int currentCredits) {
-        return (currentCredits > 0 && currentCredits >= (this.prefetch / 2))
-            || (currentCredits >= 100);
     }
 
     private boolean checkAndSetTerminated() {

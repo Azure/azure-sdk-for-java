@@ -121,6 +121,23 @@ class PartitionPumpManager {
     }
 
     /**
+     * Checks the state of the connection for the given partition. If the connection is closed, then this method will
+     * remove the partition from the list of partition pumps.
+     *
+     * @param ownership The partition ownership information for which the connection state will be verified.
+     */
+    void verifyPartitionConnection(PartitionOwnership ownership) {
+        if (partitionPumps.containsKey(ownership.getPartitionId())) {
+            EventHubConsumerAsyncClient consumerClient = partitionPumps.get(ownership.getPartitionId());
+            if (consumerClient.isConnectionClosed()) {
+                logger.info("Connection closed for {}, partition {}. Removing the consumer.",
+                    ownership.getEventHubName(), ownership.getPartitionId());
+                partitionPumps.remove(ownership.getPartitionId());
+            }
+        }
+    }
+
+    /**
      * Starts a new partition pump for the newly claimed partition. If the partition already has an active partition
      * pump, this will not create a new consumer.
      *
@@ -185,8 +202,8 @@ class PartitionPumpManager {
                     .window(maxBatchSize);
             }
             partitionEventFlux
-                .concatMap(Flux::collectList, 1)
-                .publishOn(Schedulers.boundedElastic(), 1)
+                .concatMap(Flux::collectList)
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,
                         eventHubConsumer, partitionEventBatch);
