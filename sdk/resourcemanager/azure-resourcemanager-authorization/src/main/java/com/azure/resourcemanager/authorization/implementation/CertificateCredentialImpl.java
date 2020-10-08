@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.CertificateType;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 
@@ -63,17 +63,17 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public OffsetDateTime startDate() {
-        return inner().startDate();
+        return innerModel().startDate();
     }
 
     @Override
     public OffsetDateTime endDate() {
-        return inner().endDate();
+        return innerModel().endDate();
     }
 
     @Override
     public String value() {
-        return inner().value();
+        return innerModel().value();
     }
 
     @Override
@@ -84,7 +84,7 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     @Override
     public CertificateCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
-        inner().withStartDate(startDate);
+        innerModel().withStartDate(startDate);
         // Adjust end time
         withDuration(Duration.between(original, endDate()));
         return this;
@@ -92,31 +92,31 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public CertificateCredentialImpl<T> withDuration(Duration duration) {
-        inner().withEndDate(startDate().plus(duration));
+        innerModel().withEndDate(startDate().plus(duration));
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withAsymmetricX509Certificate() {
-        inner().withType(CertificateType.ASYMMETRIC_X509_CERT.toString());
+        innerModel().withType(CertificateType.ASYMMETRIC_X509_CERT.toString());
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withSymmetricEncryption() {
-        inner().withType(CertificateType.SYMMETRIC.toString());
+        innerModel().withType(CertificateType.SYMMETRIC.toString());
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withPublicKey(byte[] certificate) {
-        inner().withValue(Base64.getEncoder().encodeToString(certificate));
+        innerModel().withValue(Base64.getEncoder().encodeToString(certificate));
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withSecretKey(byte[] secret) {
-        inner().withValue(Base64.getEncoder().encodeToString(secret));
+        innerModel().withValue(Base64.getEncoder().encodeToString(secret));
         return this;
     }
 
@@ -190,7 +190,7 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public String id() {
-        return inner().keyId();
+        return innerModel().keyId();
     }
 
     @Override

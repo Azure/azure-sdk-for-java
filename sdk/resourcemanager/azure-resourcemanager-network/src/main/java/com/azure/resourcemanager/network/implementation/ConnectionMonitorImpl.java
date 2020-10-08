@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -48,12 +48,12 @@ public class ConnectionMonitorImpl
 
     @Override
     public String location() {
-        return inner().location();
+        return innerModel().location();
     }
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().tags();
+        Map<String, String> tags = this.innerModel().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -62,37 +62,37 @@ public class ConnectionMonitorImpl
 
     @Override
     public ConnectionMonitorSource source() {
-        return inner().source();
+        return innerModel().source();
     }
 
     @Override
     public ConnectionMonitorDestination destination() {
-        return inner().destination();
+        return innerModel().destination();
     }
 
     @Override
     public boolean autoStart() {
-        return Utils.toPrimitiveBoolean(inner().autoStart());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().autoStart());
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 
     @Override
     public OffsetDateTime startTime() {
-        return inner().startTime();
+        return innerModel().startTime();
     }
 
     @Override
     public String monitoringStatus() {
-        return inner().monitoringStatus();
+        return innerModel().monitoringStatus();
     }
 
     @Override
     public int monitoringIntervalInSeconds() {
-        return Utils.toPrimitiveInt(inner().monitoringIntervalInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().monitoringIntervalInSeconds());
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
@@ -151,7 +151,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override

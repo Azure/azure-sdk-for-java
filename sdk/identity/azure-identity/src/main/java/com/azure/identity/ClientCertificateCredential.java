@@ -14,6 +14,7 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.util.Objects;
 
 /**
@@ -35,16 +36,19 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param tenantId the tenant ID of the application
      * @param clientId the client ID of the application
      * @param certificatePath the PEM file or PFX file containing the certificate
+     * @param certificate the PEM or PFX certificate
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */
-    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword,
-                                IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(certificatePath, "'certificatePath' cannot be null.");
+    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, InputStream certificate,
+                                String certificatePassword, IdentityClientOptions identityClientOptions) {
+        Objects.requireNonNull(certificatePath == null ? certificate : certificatePath,
+                "'certificate' and 'certificatePath' cannot both be null.");
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .certificatePath(certificatePath)
+            .certificate(certificate)
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
             .build();

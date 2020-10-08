@@ -24,10 +24,12 @@ import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link CertificateClient}
@@ -124,7 +126,9 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)}
+     * Method to insert code snippets for
+     * {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)} and
+     * {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)}.
      */
     public void createCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
@@ -149,6 +153,9 @@ public final class CertificateClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy
     }
 
+    /**
+     * Method to insert code snippets for {@link CertificateClient#getCertificateOperation(String)}.
+     */
     public void getCertificateOperation() {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String
@@ -287,7 +294,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#beginDeleteCertificate(String)}
+     * Method to insert code snippets for {@link CertificateClient#beginDeleteCertificate(String)}.
      */
     public void deleteCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
@@ -366,7 +373,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#beginRecoverDeletedCertificate(String)} (String)}
+     * Method to insert code snippets for {@link CertificateClient#beginRecoverDeletedCertificate(String)}.
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();

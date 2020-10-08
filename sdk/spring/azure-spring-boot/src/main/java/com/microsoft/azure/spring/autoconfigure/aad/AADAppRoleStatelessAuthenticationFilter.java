@@ -10,8 +10,10 @@ import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.springframework.util.StringUtils.hasText;
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
 
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
@@ -37,7 +39,6 @@ import static org.springframework.util.StringUtils.hasText;
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
-    private static final String TOKEN_TYPE = "Bearer ";
     private static final JSONArray DEFAULT_ROLE_CLAIM = new JSONArray().appendElement("USER");
     private static final String ROLE_PREFIX = "ROLE_";
 
@@ -48,48 +49,43 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-        FilterChain filterChain) throws ServletException, IOException {
-
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        boolean cleanupRequired = false;
-
-        if (!alreadyAuthenticated() && hasText(authHeader) && authHeader.startsWith(TOKEN_TYPE)) {
-            cleanupRequired = verifyToken(authHeader.replace(TOKEN_TYPE, ""));
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    HttpServletResponse httpServletResponse,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String aadIssuedBearerToken = Optional.of(httpServletRequest)
+                                              .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
+                                              .map(String::trim)
+                                              .filter(s -> s.startsWith(BEARER_PREFIX))
+                                              .map(s -> s.replace(BEARER_PREFIX, ""))
+                                              .filter(principalManager::isTokenIssuedByAAD)
+                                              .orElse(null);
+        if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            return;
         }
-
         try {
-            filterChain.doFilter(request, response);
-        } finally {
-            if (cleanupRequired) {
+            final UserPrincipal principal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
+            final JSONArray roles = Optional.of(principal)
+                                            .map(UserPrincipal::getClaims)
+                                            .map(claims -> (JSONArray) claims.get("roles"))
+                                            .filter(r -> !r.isEmpty())
+                                            .orElse(DEFAULT_ROLE_CLAIM);
+            final Authentication authentication = new PreAuthenticatedAuthenticationToken(
+                principal,
+                null,
+                rolesToGrantedAuthorities(roles)
+            );
+            LOGGER.info("Request token verification success. {}", authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+            } finally {
                 //Clear context after execution
                 SecurityContextHolder.clearContext();
             }
-        }
-    }
-
-    private boolean verifyToken(String token) throws ServletException {
-        if (!principalManager.isTokenIssuedByAAD(token)) {
-            LOGGER.info("Token {} is not issued by AAD", token);
-            return false;
-        }
-
-        try {
-            final UserPrincipal principal = principalManager.buildUserPrincipal(token);
-            final JSONArray roles = Optional.ofNullable((JSONArray) principal.getClaims().get("roles"))
-                .filter(r -> !r.isEmpty())
-                .orElse(DEFAULT_ROLE_CLAIM);
-
-            final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                principal, null, rolesToGrantedAuthorities(roles));
-            authentication.setAuthenticated(true);
-            LOGGER.info("Request token verification success. {}", authentication);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return true;
         } catch (BadJWTException ex) {
-            final String errorMessage = "Invalid JWT. Either expired or not yet valid. " + ex.getMessage();
-            LOGGER.warn(errorMessage);
-            throw new ServletException(errorMessage, ex);
+            // Invalid JWT. Either expired or not yet valid.
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
         } catch (ParseException | BadJOSEException | JOSEException ex) {
             LOGGER.error("Failed to initialize UserPrincipal.", ex);
             throw new ServletException(ex);
@@ -97,14 +93,16 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
     }
 
     private boolean alreadyAuthenticated() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.isAuthenticated();
+        return Optional.of(SecurityContextHolder.getContext())
+                       .map(SecurityContext::getAuthentication)
+                       .map(Authentication::isAuthenticated)
+                       .orElse(false);
     }
 
     protected Set<SimpleGrantedAuthority> rolesToGrantedAuthorities(JSONArray roles) {
         return roles.stream()
-            .filter(Objects::nonNull)
-            .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
-            .collect(Collectors.toSet());
+                    .filter(Objects::nonNull)
+                    .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
+                    .collect(Collectors.toSet());
     }
 }

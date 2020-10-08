@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

@@ -3,6 +3,10 @@
 ## 1.7.0-beta.1 (Unreleased)
 
 
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
 ## 1.6.1 (2020-09-08)
 
 - Updated `azure-core` version to pickup bug fix.

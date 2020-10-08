@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterPropertiesAutoScalerProfile model. */
+/** Parameters to be applied to the cluster-autoscaler when enabled. */
 @Fluent
 public final class ManagedClusterPropertiesAutoScalerProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPropertiesAutoScalerProfile.class);

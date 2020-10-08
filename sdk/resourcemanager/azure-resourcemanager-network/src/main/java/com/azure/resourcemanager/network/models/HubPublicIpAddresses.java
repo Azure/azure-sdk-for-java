@@ -10,25 +10,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HubPublicIpAddresses model. */
+/** Public IP addresses associated with azure firewall. */
 @Fluent
 public final class HubPublicIpAddresses {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubPublicIpAddresses.class);
 
     /*
-     * The number of Public IP addresses associated with azure firewall.
+     * The list of Public IP addresses associated with azure firewall or IP
+     * addresses to be retained.
      */
     @JsonProperty(value = "addresses")
     private List<AzureFirewallPublicIpAddress> addresses;
 
     /*
-     * Private IP Address associated with azure firewall.
+     * The number of Public IP addresses associated with azure firewall.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
     /**
-     * Get the addresses property: The number of Public IP addresses associated with azure firewall.
+     * Get the addresses property: The list of Public IP addresses associated with azure firewall or IP addresses to be
+     * retained.
      *
      * @return the addresses value.
      */
@@ -37,7 +39,8 @@ public final class HubPublicIpAddresses {
     }
 
     /**
-     * Set the addresses property: The number of Public IP addresses associated with azure firewall.
+     * Set the addresses property: The list of Public IP addresses associated with azure firewall or IP addresses to be
+     * retained.
      *
      * @param addresses the addresses value to set.
      * @return the HubPublicIpAddresses object itself.
@@ -48,7 +51,7 @@ public final class HubPublicIpAddresses {
     }
 
     /**
-     * Get the count property: Private IP Address associated with azure firewall.
+     * Get the count property: The number of Public IP addresses associated with azure firewall.
      *
      * @return the count value.
      */
@@ -57,7 +60,7 @@ public final class HubPublicIpAddresses {
     }
 
     /**
-     * Set the count property: Private IP Address associated with azure firewall.
+     * Set the count property: The number of Public IP addresses associated with azure firewall.
      *
      * @param count the count value to set.
      * @return the HubPublicIpAddresses object itself.

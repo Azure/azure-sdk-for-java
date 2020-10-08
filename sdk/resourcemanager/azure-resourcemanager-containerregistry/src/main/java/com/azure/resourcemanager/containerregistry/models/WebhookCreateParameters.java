@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The WebhookCreateParameters model. */
+/** The parameters for creating a webhook. */
 @JsonFlatten
 @Fluent
 public class WebhookCreateParameters {

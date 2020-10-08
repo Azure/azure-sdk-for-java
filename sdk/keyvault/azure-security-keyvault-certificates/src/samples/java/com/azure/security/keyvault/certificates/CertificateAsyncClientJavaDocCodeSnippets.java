@@ -89,7 +89,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     /**
      * Method to insert code snippets for {@link CertificateAsyncClient#getCertificatePolicy(String)}
      */
-    public void getCertiificatePolicyCodeSnippets() {
+    public void getCertificatePolicyCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string
         certificateAsyncClient.getCertificatePolicy("certificateName")
@@ -162,7 +162,9 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)}
+     * Method to insert code snippets for
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)} and
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)}.
      */
     public void createCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
@@ -191,6 +193,10 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
     }
 
+    /**
+     * Method to insert code snippets for
+     * {@link CertificateAsyncClient#getCertificateOperation(String)}.
+     */
     public void getCertificateOperation() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String
@@ -369,18 +375,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#beginDeleteCertificate(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#beginDeleteCertificate(String)}.
      */
     public void deleteCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String
         certificateAsyncClient.beginDeleteCertificate("certificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#string
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String
     }
 
     /**
@@ -450,18 +456,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateAsyncClient#beginRecoverDeletedCertificate(String)}
+     * Method to insert code snippets for {@link CertificateAsyncClient#beginRecoverDeletedCertificate(String)}.
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String
         certificateAsyncClient.beginRecoverDeletedCertificate("deletedCertificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Recover Certificate Id: " + pollResponse.getValue().getId());
             });
-        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#string
+        // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String
     }
 
     /**

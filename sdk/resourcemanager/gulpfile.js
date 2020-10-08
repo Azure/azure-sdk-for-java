@@ -122,11 +122,16 @@ function codegen(project, cb) {
 
     const regenManager = args['regenerate-manager'] ? ' --regenerate-manager ' : '';
 
+    // use following option in api-specs.json, if modelerfour reports PreCheck error (current seems occur to containerinstance, sql).
+    //--pipeline.modelerfour.additional-checks=false
+    //--pipeline.modelerfour.lenient-model-deduplication=true
+
     const outDir = path.resolve(mappings[project].dir);
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --track1-naming --implementation-subpackage=fluent --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
+                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true ' +
+                        ' --track1-naming --generate-client-interfaces --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +

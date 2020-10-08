@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ObjectReplicationPolicyFilter model. */
+/**
+ * Filters limit replication to a subset of blobs within the storage account. A logical OR is performed on values in the
+ * filter. If multiple filters are defined, a logical AND is performed on all filters.
+ */
 @Fluent
 public final class ObjectReplicationPolicyFilter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyFilter.class);

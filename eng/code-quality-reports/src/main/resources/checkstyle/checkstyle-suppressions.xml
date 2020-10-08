@@ -146,6 +146,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]opentelemetry[/\\]exporters[/\\]azuremonitor[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -186,11 +187,18 @@
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.nio/*"/>
 
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.storage.blob.batch.BlobBatchOperationResponse.java"
+            lines="110"/>
+
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.opentelemetry.exporters.azuremonitor.AzureMonitorExporter"/>
+
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -238,6 +246,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.CoreUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
@@ -246,6 +255,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerProvider.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.gson.JsonNodeUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.jackson.JsonNodeUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.util.BinaryData.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -268,12 +278,18 @@
   <suppress checks="MethodName|MemberName|VisibilityModifier|TypeName"
             files="com.azure.identity.implementation.WindowsCredentialApi.java"/>
 
+  <!-- Need to write to stdout as the default SDK behavior here.-->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.identity.DeviceCodeCredentialBuilder.java"/>
+
+
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.search.documents.implementation.util.FieldBuilder.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.search.documents.SearchFilter.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue" />
 
@@ -390,7 +406,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexAsyncClient.java"/>
-<!--  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>-->
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -410,7 +425,8 @@
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
-  <suppress checks="." files="com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporters.azuremonitor.implementation.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
@@ -422,8 +438,22 @@
 
   <suppress checks="GoodLoggingCheck" files="com.azure.ai.formrecognizer.models.FieldValueType.java" />
 
+  <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl" />
+  <!-- Supress  Method name 'refreshDataFeedIngestion' should follow a common vocabulary -->
+  <suppress checks="ServiceClient" files="com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.java" />
+  <suppress checks="ServiceClient" files="com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.java" />
+
+  <!-- static logger suppression utility files  -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.PrivateFieldAccessHelper.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.Utility.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms.java" />
+
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]monitor[/\\].*"/>
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
@@ -492,6 +522,34 @@
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 
+
+  <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
+  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
+
+  <!-- Checkstyle suppressions for naming issues reported in the Chat Clients-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.chat.ChatAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.chat.ChatClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.chat.ChatThreadAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.chat.ChatThreadClient.java"/>
+
+  <!-- Checkstyle suppressions for auto generated Sms Client Implementation -->
+  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.sms.implementation.SmsImpl.java"/>
+  <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.sms.SmsClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.sms.SmsAsyncClient.java"/>
+
+  <!-- Checkstyle suppressions for auto generated Administration Client Implementation -->
+  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.administration.implementation.CommunicationIdentityImpl.java"/>
+    <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.CommunicationIdentityClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.CommunicationIdentityAsyncClient.java"/>
+
+  <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl.java"/>
+  <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberAsyncClient.java"/>
+
   <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
   <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
 
@@ -533,4 +591,11 @@
 
   <!-- Suppress Anomaly Detector checks as it's fully generated code for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-ai-anomalydetector[/\\]src[/\\]"/>
+
+  <!-- Suppress Event Grid checks for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
+
+  <!-- Suppress checks in azure-core-experimental -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
 </suppressions>

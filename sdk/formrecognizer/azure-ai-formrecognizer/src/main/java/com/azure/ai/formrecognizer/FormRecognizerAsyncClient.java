@@ -456,7 +456,7 @@ public final class FormRecognizerAsyncClient {
                 recognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
-                        new SourcePath().setSource(receiptUrl), context)
+                        "", new SourcePath().setSource(receiptUrl), context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
                 pollingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context)),
@@ -542,7 +542,7 @@ public final class FormRecognizerAsyncClient {
                 recognizeReceiptsOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
-                        contentType, receipt, length, isFieldElementsIncluded, context)
+                        contentType, receipt, length, isFieldElementsIncluded, "", context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
                     receipt, recognizeReceiptsOptions.getContentType()),

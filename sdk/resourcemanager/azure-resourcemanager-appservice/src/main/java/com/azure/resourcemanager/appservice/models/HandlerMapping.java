@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HandlerMapping model. */
+/**
+ * The IIS handler mappings used to define which handler processes HTTP requests with certain extension. For example, it
+ * is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
+ */
 @Fluent
 public final class HandlerMapping {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HandlerMapping.class);

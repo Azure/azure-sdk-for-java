@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisRebootParameters model. */
+/** Specifies which Redis node(s) to reboot. */
 @Fluent
 public final class RedisRebootParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisRebootParameters.class);

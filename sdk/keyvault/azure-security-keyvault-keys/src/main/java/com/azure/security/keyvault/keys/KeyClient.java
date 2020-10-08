@@ -437,7 +437,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the
      * response.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#String}
      *
      * @param name The name of the key to be deleted.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
@@ -533,7 +533,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#String}
      *
      * @param name The name of the deleted key to be recovered.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.

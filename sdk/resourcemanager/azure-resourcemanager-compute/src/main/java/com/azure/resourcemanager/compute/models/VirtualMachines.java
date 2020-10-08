@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -31,8 +29,7 @@ public interface VirtualMachines
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachine>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<VirtualMachinesClient> {
+        HasManager<ComputeManager> {
 
     /** @return available virtual machine sizes */
     VirtualMachineSizes sizes();

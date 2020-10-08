@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TdeCertificate model. */
+/** A TDE certificate that can be uploaded into a server. */
 @JsonFlatten
 @Fluent
 public class TdeCertificate extends ProxyResource {

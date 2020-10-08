@@ -147,12 +147,11 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)}.
      */
-    public void deleteSecretCodeSnippets() throws InterruptedException {
+    public void deleteSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
+        // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#String
         SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
         // Deleted Secret is accessible as soon as polling begins.
@@ -160,13 +159,13 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // Deletion date only works for a SoftDelete-enabled Key Vault.
         System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue()
-                .getDeletedOn().toString());
+            .getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecretPollResponse.getValue()
-                .getRecoveryId());
+            .getRecoveryId());
 
         // Secret is being deleted on server.
         deletedSecretPoller.waitForCompletion();
-        // END: com.azure.security.keyvault.secretclient.deleteSecret#string
+        // END: com.azure.security.keyvault.secretclient.deleteSecret#String
     }
 
     /**
@@ -216,12 +215,11 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#beginRecoverDeletedSecret(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Method to insert code snippets for {@link SecretClient#beginRecoverDeletedSecret(String)}.
      */
-    public void recoverDeletedSecretCodeSnippets() throws InterruptedException {
+    public void recoverDeletedSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
+        // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#String
         SyncPoller<KeyVaultSecret, Void> recoverSecretPoller =
             secretClient.beginRecoverDeletedSecret("deletedSecretName");
 
@@ -232,7 +230,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // Key is being recovered on server.
         recoverSecretPoller.waitForCompletion();
-        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
+        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#String
     }
 
     /**

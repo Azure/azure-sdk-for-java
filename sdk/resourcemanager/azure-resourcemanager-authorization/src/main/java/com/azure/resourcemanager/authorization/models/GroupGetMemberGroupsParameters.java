@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The GroupGetMemberGroupsParameters model. */
+/** Request parameters for GetMemberGroups API call. */
 @Fluent
 public final class GroupGetMemberGroupsParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupGetMemberGroupsParameters.class);

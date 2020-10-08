@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayConnectionDraining model. */
+/**
+ * Connection draining allows open connections to a backend server to be active for a specified time after the backend
+ * server got removed from the configuration.
+ */
 @Fluent
 public final class ApplicationGatewayConnectionDraining {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayConnectionDraining.class);

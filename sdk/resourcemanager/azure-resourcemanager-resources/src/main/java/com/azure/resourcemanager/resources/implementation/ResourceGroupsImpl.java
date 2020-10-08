@@ -9,12 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
@@ -36,29 +36,28 @@ public final class ResourceGroupsImpl
 
     @Override
     public PagedIterable<ResourceGroup> list() {
-        return wrapList(manager().inner().getResourceGroups().list());
+        return wrapList(manager().serviceClient().getResourceGroups().list());
     }
 
     @Override
     public PagedIterable<ResourceGroup> listByTag(String tagName, String tagValue) {
-        return wrapList(manager().inner().getResourceGroups()
-            .list(Utils.createOdataFilterForTags(tagName, tagValue), null));
+        return new PagedIterable<>(this.listByTagAsync(tagName, tagValue));
     }
 
     @Override
     public PagedFlux<ResourceGroup> listByTagAsync(String tagName, String tagValue) {
-        return wrapPageAsync(manager().inner().getResourceGroups()
-            .listAsync(Utils.createOdataFilterForTags(tagName, tagValue), null));
+        return wrapPageAsync(manager().serviceClient().getResourceGroups()
+            .listAsync(ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null));
     }
 
     @Override
     public ResourceGroupImpl getByName(String name) {
-        return wrapModel(manager().inner().getResourceGroups().get(name));
+        return wrapModel(manager().serviceClient().getResourceGroups().get(name));
     }
 
     @Override
     public Mono<ResourceGroup> getByNameAsync(String name) {
-        return manager().inner().getResourceGroups().getAsync(name).map(this::wrapModel);
+        return manager().serviceClient().getResourceGroups().getAsync(name).map(this::wrapModel);
     }
 
     @Override
@@ -69,7 +68,7 @@ public final class ResourceGroupsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return manager().inner().getResourceGroups().deleteAsync(name);
+        return manager().serviceClient().getResourceGroups().deleteAsync(name);
     }
 
     @Override
@@ -79,12 +78,12 @@ public final class ResourceGroupsImpl
 
     @Override
     public boolean contain(String name) {
-        return manager().inner().getResourceGroups().checkExistence(name);
+        return manager().serviceClient().getResourceGroups().checkExistence(name);
     }
 
     @Override
     protected ResourceGroupImpl wrapModel(String name) {
-        return new ResourceGroupImpl(new ResourceGroupInner(), name, manager().inner());
+        return new ResourceGroupImpl(new ResourceGroupInner(), name, manager().serviceClient());
     }
 
     @Override
@@ -92,14 +91,15 @@ public final class ResourceGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ResourceGroupImpl(inner, inner.name(), manager().inner());
+        return new ResourceGroupImpl(inner, inner.name(), manager().serviceClient());
     }
 
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
         return AcceptedImpl.newAccepted(logger,
-            manager().inner(),
-            () -> this.manager().inner().getResourceGroups().deleteWithResponseAsync(name).block(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager().serviceClient().getResourceGroups().deleteWithResponseAsync(name).block(),
             Function.identity(),
             Void.class,
             null);
@@ -118,7 +118,7 @@ public final class ResourceGroupsImpl
 
     @Override
     public PagedFlux<ResourceGroup> listAsync() {
-        return this.manager().inner().getResourceGroups().listAsync().mapPage(inner -> wrapModel(inner));
+        return this.manager().serviceClient().getResourceGroups().listAsync().mapPage(inner -> wrapModel(inner));
     }
 
     @Override

@@ -116,12 +116,11 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)}.
      */
-    public void deleteKeySnippets() throws InterruptedException {
+    public void deleteKeySnippets() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#string
+        // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#String
         SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
 
         PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
@@ -134,7 +133,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // Key is being deleted on server.
         deletedKeyPoller.waitForCompletion();
         // Key is deleted
-        // END: com.azure.keyvault.keys.keyclient.deleteKey#string
+        // END: com.azure.keyvault.keys.keyclient.deleteKey#String
     }
 
     /**
@@ -279,12 +278,11 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#beginRecoverDeletedKey(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Generates a code sample for using {@link KeyClient#beginRecoverDeletedKey(String)}.
      */
-    public void recoverDeletedKeySnippets() throws InterruptedException {
+    public void recoverDeletedKeySnippets() {
         KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
+        // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String
         SyncPoller<KeyVaultKey, Void> recoverKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName");
 
         PollResponse<KeyVaultKey> recoverKeyPollResponse = recoverKeyPoller.poll();
@@ -296,7 +294,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // Key is being recovered on server.
         recoverKeyPoller.waitForCompletion();
         // Key is recovered
-        // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
+        // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#String
     }
 
     /**

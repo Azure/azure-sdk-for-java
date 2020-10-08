@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WindowsConfiguration model. */
+/** Specifies Windows operating system settings on the virtual machine. */
 @Fluent
 public final class WindowsConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsConfiguration.class);

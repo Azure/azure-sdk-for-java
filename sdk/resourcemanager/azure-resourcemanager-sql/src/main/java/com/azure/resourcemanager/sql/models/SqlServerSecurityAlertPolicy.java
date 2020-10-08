@@ -7,18 +7,18 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.ServerSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerSecurityAlertPolicyInner;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure SQL Server Security Alert Policy. */
 @Fluent
 public interface SqlServerSecurityAlertPolicy
     extends HasId,
-        HasInner<ServerSecurityAlertPolicyInner>,
+        HasInnerModel<ServerSecurityAlertPolicyInner>,
         HasName,
         HasResourceGroup,
         Indexable,

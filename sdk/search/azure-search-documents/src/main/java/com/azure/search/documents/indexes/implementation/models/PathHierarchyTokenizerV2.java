@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The PathHierarchyTokenizerV2 model. */
+/** Tokenizer for path-like hierarchies. This tokenizer is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PathHierarchyTokenizerV2")
 @JsonFlatten
@@ -50,9 +50,13 @@ public class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     @JsonProperty(value = "skip")
     private Integer numberOfTokensToSkip;
 
-    /** Creates an instance of PathHierarchyTokenizerV2 class. */
+    /**
+     * Creates an instance of PathHierarchyTokenizerV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public PathHierarchyTokenizerV2(@JsonProperty(value = "name") String name) {
+    public PathHierarchyTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -156,15 +160,5 @@ public class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     public PathHierarchyTokenizerV2 setNumberOfTokensToSkip(Integer numberOfTokensToSkip) {
         this.numberOfTokensToSkip = numberOfTokensToSkip;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

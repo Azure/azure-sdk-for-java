@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TrustPolicy model. */
+/** An object that represents content trust policy for a container registry. */
 @Fluent
 public final class TrustPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrustPolicy.class);

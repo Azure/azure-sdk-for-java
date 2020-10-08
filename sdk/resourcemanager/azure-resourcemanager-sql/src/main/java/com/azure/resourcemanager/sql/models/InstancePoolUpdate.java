@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The InstancePoolUpdate model. */
+/** An update to an Instance pool. */
 @Fluent
 public final class InstancePoolUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolUpdate.class);

@@ -231,7 +231,7 @@ public final class SecretClient {
      * <p><strong>Code sample</strong></p>
      * <p>Deletes the secret from a soft-delete enabled key vault. Prints out the recovery id of the deleted secret
      * returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecret#string}
+     * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecret#String}
      *
      * @param name The name of the secret to be deleted.
      * @return A {@link SyncPoller} to poll on and retrieve the {@link DeletedSecret deleted secret}.
@@ -324,7 +324,7 @@ public final class SecretClient {
      * <p><strong>Code sample</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for <b>soft-delete</b>. Prints out the details of the
      * recovered secret returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#string}
+     * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#String}
      *
      * @param name The name of the deleted secret to be recovered.
      * @return A {@link SyncPoller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.

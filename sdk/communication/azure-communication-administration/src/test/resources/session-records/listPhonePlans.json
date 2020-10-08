@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/countries/US/phoneplangroups/phone-plan-group-id-1/phoneplans?locale=en-us&api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.1 (11.0.8; Mac OS X 10.15.6)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "493ms",
+      "MS-CV" : "PHyHjd8btU65uKaSCb7bbA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0R3xpXwAAAAA0psO7t4yrQJdHH/Ic2taXWVZSMzBFREdFMDMwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"phonePlans\":[{\"phonePlanId\":\"27b53eec-8ff4-4070-8900-fbeaabfd158a\",\"localizedName\":\"Outbound Only PSTN - Geographic\",\"locationType\":\"Selection\",\"areaCodes\":[],\"capabilities\":[\"Azure\",\"OutboundCalling\",\"ThirdPartyAppAssignment\",\"Geographic\"],\"maximumSearchSize\":100},{\"phonePlanId\":\"phone-plan-id-1\",\"localizedName\":\"Inbound Only PSTN - Geographic\",\"locationType\":\"Selection\",\"areaCodes\":[],\"capabilities\":[\"Azure\",\"InboundCalling\",\"ThirdPartyAppAssignment\",\"Geographic\"],\"maximumSearchSize\":100}],\"nextLink\":null}",
+      "Date" : "Tue, 22 Sep 2020 04:23:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

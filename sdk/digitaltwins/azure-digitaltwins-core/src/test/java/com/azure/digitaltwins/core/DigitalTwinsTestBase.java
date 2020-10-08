@@ -4,10 +4,18 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -31,6 +39,9 @@ public class DigitalTwinsTestBase extends TestBase
 
     protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder();
+
+        builder.serviceVersion(serviceVersion);
+
         if (interceptorManager.isPlaybackMode()){
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
@@ -40,15 +51,15 @@ public class DigitalTwinsTestBase extends TestBase
             return builder;
         }
 
-        // TODO: investigate whether or not we need to add a retry policy.
-
         // If it is record mode, we add record mode policies to the builder.
         // There is no isRecordMode method on interceptorManger.
         if (!interceptorManager.isLiveMode()){
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        builder.httpClient(httpClient);
         builder.endpoint(DIGITALTWINS_URL);
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         // Only get valid live token when running live tests.
         builder.credential(new ClientSecretCredentialBuilder()
@@ -94,17 +105,16 @@ public class DigitalTwinsTestBase extends TestBase
         // since our e2e tests need a random version number for our models. This function will convert the random
         // string of characters into a random string of integers.
         char[] randomCharactersString = testResourceNamer.randomName("", maxLength).toCharArray();
-        String randomIntegersString = "";
+        StringBuilder randomIntegersString = new StringBuilder();
 
         // Convert the random string of characters into a random string of integers. A given random string of characters will always
         // be converted into the same random string of integers which is important since a recorded test and its replay
         // need to use the same random model version number so that the service calls match the session records.
-        for (int i = 0; i < randomCharactersString.length; i++)
-        {
-            randomIntegersString += ((int) randomCharactersString[i]) % 10;
+        for (char c : randomCharactersString) {
+            randomIntegersString.append(((int) c) % 10);
         }
 
-        return randomIntegersString;
+        return randomIntegersString.toString();
     };
 
     // This should only be used when running tests in playback mode. Our client library requires that some token provider
@@ -115,5 +125,10 @@ public class DigitalTwinsTestBase extends TestBase
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
+    }
+
+    // Used for converting json strings into BasicDigitalTwins, BasicRelationships, etc.
+    static <T> T deserializeJsonString(String rawJsonString, Class<T> clazz) throws JsonProcessingException {
+        return new ObjectMapper().readValue(rawJsonString, clazz);
     }
 }

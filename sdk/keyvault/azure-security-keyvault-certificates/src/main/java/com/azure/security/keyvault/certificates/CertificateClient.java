@@ -90,7 +90,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return  client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
+        return client.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
     /**
@@ -128,7 +128,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return  client.getCertificateOperation(certificateName).getSyncPoller();
+        return client.getCertificateOperation(certificateName).getSyncPoller();
     }
 
     /**
@@ -261,7 +261,7 @@ public final class CertificateClient {
      * <p>Deletes the certificate in the Azure Key Vault. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#string}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String}
      *
      * @param certificateName The name of the certificate to be deleted.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -365,7 +365,7 @@ public final class CertificateClient {
      * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#string}
+     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String}
      *
      * @param certificateName The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineAgentInstanceView model. */
+/** The instance view of the VM Agent running on the virtual machine. */
 @Fluent
 public final class VirtualMachineAgentInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAgentInstanceView.class);

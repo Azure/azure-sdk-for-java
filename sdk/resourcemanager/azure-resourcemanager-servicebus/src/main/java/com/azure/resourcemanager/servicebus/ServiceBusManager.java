@@ -10,16 +10,15 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.servicebus.fluent.ServiceBusManagementClient;
-import com.azure.resourcemanager.servicebus.fluent.ServiceBusManagementClientBuilder;
+import com.azure.resourcemanager.servicebus.implementation.ServiceBusManagementClientBuilder;
 import com.azure.resourcemanager.servicebus.implementation.ServiceBusNamespacesImpl;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 
 /**
  * Entry point to Azure ServiceBus management.
  */
-public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClient> {
+public final class ServiceBusManager extends Manager<ServiceBusManagementClient> {
     // Collections
     private ServiceBusNamespaces namespaces;
     /**
@@ -51,20 +50,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
      * @return the ServiceBusManager
      */
     public static ServiceBusManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of ServiceBusManager that exposes servicebus management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the ServiceBusManager
-     */
-    public static ServiceBusManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new ServiceBusManager(httpPipeline, profile, sdkContext);
+        return new ServiceBusManager(httpPipeline, profile);
     }
 
     /**
@@ -93,7 +79,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
         }
     }
 
-    private ServiceBusManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private ServiceBusManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -101,9 +87,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext
-        );
+                .buildClient());
     }
 
     /**
@@ -111,7 +95,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
      */
     public ServiceBusNamespaces namespaces() {
         if (namespaces == null) {
-            namespaces = new ServiceBusNamespacesImpl(this.inner().getNamespaces(), this);
+            namespaces = new ServiceBusNamespacesImpl(this.serviceClient().getNamespaces(), this);
         }
         return namespaces;
     }

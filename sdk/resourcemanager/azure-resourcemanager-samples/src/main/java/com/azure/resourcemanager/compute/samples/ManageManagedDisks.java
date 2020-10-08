@@ -8,12 +8,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.samples.Utils;
 import com.jcraft.jsch.JSchException;
-import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
-import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
@@ -27,7 +27,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.SSHShell;
 
 import java.io.IOException;
@@ -41,12 +41,12 @@ public final class ManageManagedDisks {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_SOUTH_CENTRAL;
-        final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String sshkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -57,9 +57,9 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with an implicit Managed OS disk and explicit Managed data disk]");
 
-            final String linuxVM1Name = azure.sdkContext().randomResourceName("vm" + "-", 18);
-            final String linuxVM1Pip = azure.sdkContext().randomResourceName("pip" + "-", 18);
-            VirtualMachine linuxVM1 = azure.virtualMachines()
+            final String linuxVM1Name = Utils.randomResourceName(azureResourceManager, "vm" + "-", 18);
+            final String linuxVM1Pip = Utils.randomResourceName(azureResourceManager, "pip" + "-", 18);
+            VirtualMachine linuxVM1 = azureResourceManager.virtualMachines()
                     .define(linuxVM1Name)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
@@ -81,14 +81,14 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VMSS [with implicit managed OS disks and explicit managed data disks]");
 
-            final String vmScaleSetName = azure.sdkContext().randomResourceName("vmss" + "-", 18);
-            VirtualMachineScaleSet vmScaleSet = azure.virtualMachineScaleSets()
+            final String vmScaleSetName = Utils.randomResourceName(azureResourceManager, "vmss" + "-", 18);
+            VirtualMachineScaleSet vmScaleSet = azureResourceManager.virtualMachineScaleSets()
                     .define(vmScaleSetName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
                         .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D5_V2)
-                        .withExistingPrimaryNetworkSubnet(prepareNetwork(azure, region, rgName), "subnet1")
-                        .withExistingPrimaryInternetFacingLoadBalancer(prepareLoadBalancer(azure, region, rgName))
+                        .withExistingPrimaryNetworkSubnet(prepareNetwork(azureResourceManager, region, rgName), "subnet1")
+                        .withExistingPrimaryInternetFacingLoadBalancer(prepareLoadBalancer(azureResourceManager, region, rgName))
                         .withoutPrimaryInternalLoadBalancer()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername("tirekicker")
@@ -102,14 +102,14 @@ public final class ManageManagedDisks {
             System.out.println("Created VMSS [with implicit managed OS disks and explicit managed data disks]");
             System.out.println("Created VMSS [with implicit managed OS disks and explicit managed data disks]");
 
-            azure.virtualMachineScaleSets().deleteById(vmScaleSet.id());
+            azureResourceManager.virtualMachineScaleSets().deleteById(vmScaleSet.id());
 
             // Create an empty disk and attach to a VM (Manage Virtual Machine With Disk)
 
             System.out.println("Creating empty data disk [to attach to a VM]");
 
-            final String diskName = azure.sdkContext().randomResourceName("dsk" + "-", 18);
-            Disk dataDisk = azure.disks().define(diskName)
+            final String diskName = Utils.randomResourceName(azureResourceManager, "dsk" + "-", 18);
+            Disk dataDisk = azureResourceManager.disks().define(diskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -120,9 +120,9 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with new managed data disks and disk attached]");
 
-            final String linuxVM2Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
-            final String linuxVM2Pip = azure.sdkContext().randomResourceName("pip" + "-", 18);
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVM2Name)
+            final String linuxVM2Name = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
+            final String linuxVM2Pip = Utils.randomResourceName(azureResourceManager, "pip" + "-", 18);
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVM2Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -156,14 +156,14 @@ public final class ManageManagedDisks {
 
             System.out.println("Preparing specialized virtual machine with un-managed disk");
 
-            final VirtualMachine linuxVM = prepareSpecializedUnmanagedVirtualMachine(azure, region, rgName);
+            final VirtualMachine linuxVM = prepareSpecializedUnmanagedVirtualMachine(azureResourceManager, region, rgName);
 
             System.out.println("Prepared specialized virtual machine with un-managed disk");
 
             System.out.println("Creating custom image from specialized virtual machine");
 
-            final String customImageName = azure.sdkContext().randomResourceName("cimg" + "-", 10);
-            VirtualMachineCustomImage virtualMachineCustomImage = azure.virtualMachineCustomImages()
+            final String customImageName = Utils.randomResourceName(azureResourceManager, "cimg" + "-", 10);
+            VirtualMachineCustomImage virtualMachineCustomImage = azureResourceManager.virtualMachineCustomImages()
                     .define(customImageName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
@@ -174,8 +174,8 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [from custom image]");
 
-            final String linuxVM3Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
-            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVM3Name)
+            final String linuxVM3Name = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
+            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines().define(linuxVM3Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -191,14 +191,14 @@ public final class ManageManagedDisks {
 
             // Create a VM from a VHD (Create Virtual Machine Using Specialized VHD)
 
-            final String linuxVMName4 = azure.sdkContext().randomResourceName("vm" + "-", 10);
+            final String linuxVMName4 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
             final String specializedVhd = linuxVM.osUnmanagedDiskVhdUri();
 
-            azure.virtualMachines().deleteById(linuxVM.id());
+            azureResourceManager.virtualMachines().deleteById(linuxVM.id());
 
             System.out.println("Creating VM [by attaching un-managed disk]");
 
-            VirtualMachine linuxVM4 = azure.virtualMachines().define(linuxVMName4)
+            VirtualMachine linuxVM4 = azureResourceManager.virtualMachines().define(linuxVMName4)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -214,25 +214,25 @@ public final class ManageManagedDisks {
 
             System.out.println("Preparing specialized virtual machine with managed disks");
 
-            final VirtualMachine linuxVM5 = prepareSpecializedManagedVirtualMachine(azure, region, rgName);
-            Disk osDisk = azure.disks().getById(linuxVM5.osDiskId());
+            final VirtualMachine linuxVM5 = prepareSpecializedManagedVirtualMachine(azureResourceManager, region, rgName);
+            Disk osDisk = azureResourceManager.disks().getById(linuxVM5.osDiskId());
             List<Disk> dataDisks = new ArrayList<>();
             for (VirtualMachineDataDisk disk : linuxVM5.dataDisks().values()) {
-                Disk d = azure.disks().getById(disk.id());
+                Disk d = azureResourceManager.disks().getById(disk.id());
                 dataDisks.add(d);
             }
 
             System.out.println("Prepared specialized virtual machine with managed disks");
 
             System.out.println("Deleting VM: " + linuxVM5.id());
-            azure.virtualMachines().deleteById(linuxVM5.id());
+            azureResourceManager.virtualMachines().deleteById(linuxVM5.id());
             System.out.println("Deleted the VM: " + linuxVM5.id());
 
             System.out.println("Creating snapshot [from managed OS disk]");
 
             // Create a managed snapshot for an OS disk
-            final String managedOSSnapshotName = azure.sdkContext().randomResourceName("snp" + "-", 10);
-            Snapshot osSnapshot = azure.snapshots().define(managedOSSnapshotName)
+            final String managedOSSnapshotName = Utils.randomResourceName(azureResourceManager, "snp" + "-", 10);
+            Snapshot osSnapshot = azureResourceManager.snapshots().define(managedOSSnapshotName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLinuxFromDisk(osDisk)
@@ -243,8 +243,8 @@ public final class ManageManagedDisks {
             System.out.println("Creating managed OS disk [from snapshot]");
 
             // Create a managed disk from the managed snapshot for the OS disk
-            final String managedNewOSDiskName = azure.sdkContext().randomResourceName("dsk" + "-", 10);
-            Disk newOSDisk = azure.disks().define(managedNewOSDiskName)
+            final String managedNewOSDiskName = Utils.randomResourceName(azureResourceManager, "dsk" + "-", 10);
+            Disk newOSDisk = azureResourceManager.disks().define(managedNewOSDiskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLinuxFromSnapshot(osSnapshot)
@@ -256,12 +256,12 @@ public final class ManageManagedDisks {
             System.out.println("Creating managed data snapshot [from managed data disk]");
 
             // Create a managed snapshot for a data disk
-            final String managedDataDiskSnapshotName = azure.sdkContext().randomResourceName("dsk" + "-", 10);
-            Snapshot dataSnapshot = azure.snapshots().define(managedDataDiskSnapshotName)
+            final String managedDataDiskSnapshotName = Utils.randomResourceName(azureResourceManager, "dsk" + "-", 10);
+            Snapshot dataSnapshot = azureResourceManager.snapshots().define(managedDataDiskSnapshotName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withDataFromDisk(dataDisks.get(0))
-                    .withSku(DiskSkuTypes.STANDARD_LRS)
+                    .withSku(SnapshotSkuType.STANDARD_LRS)
                     .create();
 
             System.out.println("Created managed data snapshot [from managed data disk]");
@@ -269,8 +269,8 @@ public final class ManageManagedDisks {
             System.out.println("Creating managed data disk [from managed snapshot]");
 
             // Create a managed disk from the managed snapshot for the data disk
-            final String managedNewDataDiskName = azure.sdkContext().randomResourceName("dsk" + "-", 10);
-            Disk newDataDisk = azure.disks().define(managedNewDataDiskName)
+            final String managedNewDataDiskName = Utils.randomResourceName(azureResourceManager, "dsk" + "-", 10);
+            Disk newDataDisk = azureResourceManager.disks().define(managedNewDataDiskName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withData()
@@ -281,8 +281,8 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with specialized OS managed disk]");
 
-            final String linuxVM6Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
-            VirtualMachine linuxVM6 = azure.virtualMachines().define(linuxVM6Name)
+            final String linuxVM6Name = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
+            VirtualMachine linuxVM6 = azureResourceManager.virtualMachines().define(linuxVM6Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -299,9 +299,9 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with un-managed disk for migration]");
 
-            final String linuxVM7Name = azure.sdkContext().randomResourceName("vm" + "-", 10);
-            final String linuxVM7Pip = azure.sdkContext().randomResourceName("pip" + "-", 18);
-            VirtualMachine linuxVM7 = azure.virtualMachines().define(linuxVM7Name)
+            final String linuxVM7Name = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
+            final String linuxVM7Pip = Utils.randomResourceName(azureResourceManager, "pip" + "-", 18);
+            VirtualMachine linuxVM7 = azureResourceManager.virtualMachines().define(linuxVM7Name)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -334,7 +334,7 @@ public final class ManageManagedDisks {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -356,31 +356,32 @@ public final class ManageManagedDisks {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(Azure azure, Region region, String rgName) {
+    private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(AzureResourceManager azureResourceManager, Region region, String rgName) {
         final String userName = "tirekicker";
         final String password = Utils.password();
-        final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
-        final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
+        final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
+        final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip" + "-", 20);
 
-        VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
+        VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -412,13 +413,13 @@ public final class ManageManagedDisks {
         return linuxVM;
     }
 
-    private static VirtualMachine prepareSpecializedManagedVirtualMachine(Azure azure, Region region, String rgName) {
+    private static VirtualMachine prepareSpecializedManagedVirtualMachine(AzureResourceManager azureResourceManager, Region region, String rgName) {
         final String userName = "tirekicker";
         final String password = Utils.password();
-        final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
-        final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
+        final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "vm" + "-", 10);
+        final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip" + "-", 20);
 
-        VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
+        VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -465,10 +466,10 @@ public final class ManageManagedDisks {
         }
     }
 
-    private static Network prepareNetwork(Azure azure, Region region, String rgName) {
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
+    private static Network prepareNetwork(AzureResourceManager azureResourceManager, Region region, String rgName) {
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
 
-        Network network = azure.networks().define(vnetName)
+        Network network = azureResourceManager.networks().define(vnetName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("172.16.0.0/16")
@@ -479,8 +480,8 @@ public final class ManageManagedDisks {
         return network;
     }
 
-    private static LoadBalancer prepareLoadBalancer(Azure azure, Region region, String rgName) {
-        final String loadBalancerName1 = azure.sdkContext().randomResourceName("intlb" + "-", 18);
+    private static LoadBalancer prepareLoadBalancer(AzureResourceManager azureResourceManager, Region region, String rgName) {
+        final String loadBalancerName1 = Utils.randomResourceName(azureResourceManager, "intlb" + "-", 18);
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
         final String backendPoolName2 = loadBalancerName1 + "-BAP2";
@@ -492,12 +493,12 @@ public final class ManageManagedDisks {
         final String natPool60XXto23 = "natPool60XXto23";
         final String publicIpName = "pip-" + loadBalancerName1;
 
-        PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIpName)
+        PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(publicIpName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(publicIpName)
                 .create();
-        LoadBalancer loadBalancer = azure.loadBalancers().define(loadBalancerName1)
+        LoadBalancer loadBalancer = azureResourceManager.loadBalancers().define(loadBalancerName1)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 // Add two rules that uses above backend and probe

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSkuRestrictions model. */
+/** Describes scaling information of a SKU. */
 @Immutable
 public final class ResourceSkuRestrictions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictions.class);
