@@ -194,3 +194,12 @@ To create an Azure KeyVault use the command line below:
   az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
 ```
 
+## Create a self-signed certificate
+
+To create a self-signed certificate use the command line below:
+
+```shell
+  export CERTIFICATE_ALIAS=self-signed
+  az keyvault certificate create --vault-name ${KEY_VAULT} \
+    -n ${CERTIFICATE_ALIAS} -p "$(az keyvault certificate get-default-policy)"
+```
