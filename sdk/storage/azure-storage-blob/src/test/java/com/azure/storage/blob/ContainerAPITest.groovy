@@ -779,7 +779,6 @@ class ContainerAPITest extends APISpec {
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
 
-    @Requires( { playbackMode() } )
     def "List blobs flat options last access time"() {
         when:
         def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
