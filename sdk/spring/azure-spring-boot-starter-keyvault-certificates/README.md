@@ -203,3 +203,14 @@ To create a self-signed certificate use the command line below:
   az keyvault certificate create --vault-name ${KEY_VAULT} \
     -n ${CERTIFICATE_ALIAS} -p "$(az keyvault certificate get-default-policy)"
 ```
+
+## Assign a managed identity to an Azure Spring Cloud application
+
+To assign a managed identity use the command line below:
+
+```shell
+  export SPRING_CLOUD_APP=myspringcloudapp
+  az spring-cloud app identity assign --name ${SPRING_CLOUD_APP}
+  export SPRING_CLOUD_APP_IDENTITY=$(az spring-cloud app show \
+    --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv)
+```
