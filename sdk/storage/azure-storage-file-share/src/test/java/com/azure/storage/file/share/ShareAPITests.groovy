@@ -31,6 +31,7 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
@@ -518,7 +519,7 @@ class ShareAPITests extends APISpec {
     def "Set access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def time = getUTCNow()
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
 
         when:
         def getAccessTierBeforeResponse = primaryShareClient.getProperties()

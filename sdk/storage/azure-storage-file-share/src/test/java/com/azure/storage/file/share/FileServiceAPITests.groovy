@@ -24,6 +24,8 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAmount
 
 class FileServiceAPITests extends APISpec {
     String shareName
@@ -196,7 +198,7 @@ class FileServiceAPITests extends APISpec {
         def shareName = generateShareName()
         def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
 
-        def time = getUTCNow()
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
         share.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED)
 
         when:
