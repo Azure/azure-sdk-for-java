@@ -48,6 +48,6 @@ extends:
   parameters:
     ServiceDirectory: monitor
     Artifacts:
-      - name: opentelemetry-exporter-azuremonitor
+      - name: opentelemetry-exporters-azuremonitor
         groupId: com.azure
-        safeName: opentelemetryexporterazuremonitor
+        safeName: opentelemetryexportersazuremonitor

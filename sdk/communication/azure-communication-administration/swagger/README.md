@@ -32,7 +32,7 @@ autorest --use=@autorest/java@4.0.1 --tag=phonenumber
 These settings apply only when `--tag=identity` is specified on the command line.
 
 ``` yaml $(tag) == 'identity'
-input-file: swagger.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/838c5092f11e8ca26e262b1f1099d5c5cdfedc3f/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/preview/2020-07-20-preview2/CommunicationIdentity.json
 add-context-parameter: true
 ```
 
@@ -41,14 +41,13 @@ add-context-parameter: true
 These settings apply only when `--tag=phonenumber` is specified on the command line.
 
 ``` yaml $(tag) == 'phonenumber'
-input-file: ./PNM_Swagger.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
 override-client-name: PhoneNumberAdminClient
 ```
 
 ### Code generation settings
 
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/838c5092f11e8ca26e262b1f1099d5c5cdfedc3f/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/preview/2020-07-20-preview2/CommunicationIdentity.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL

@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-metricsadvisor</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -59,22 +59,22 @@
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-administration</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
     </dependency>
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-chat</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -164,7 +164,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -268,8 +268,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>opentelemetry-exporter-azuremonitor</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:opentelemetry-exporter-azuremonitor;current} -->
+      <artifactId>opentelemetry-exporters-azuremonitor</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:opentelemetry-exporters-azuremonitor;current} -->
     </dependency>
 
     <dependency>

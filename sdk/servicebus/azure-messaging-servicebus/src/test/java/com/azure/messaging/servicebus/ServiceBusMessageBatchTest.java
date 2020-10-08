@@ -35,7 +35,7 @@ public class ServiceBusMessageBatchTest {
 
     @Test
     public void nullMessage() {
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
         assertThrows(IllegalArgumentException.class, () -> batch.tryAdd(null));
     }
 
@@ -47,7 +47,7 @@ public class ServiceBusMessageBatchTest {
         // Arrange
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
         final ServiceBusMessage tooBig = new ServiceBusMessage(new byte[1024 * 1024 * 2]);
 
         // Act
@@ -65,7 +65,7 @@ public class ServiceBusMessageBatchTest {
     public void withinPayloadSize() {
         final int maxSize = MAX_MESSAGE_LENGTH_BYTES;
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(maxSize, errorContextProvider, tracerProvider,
-            serializer);
+            serializer, null, null);
         final ServiceBusMessage within = new ServiceBusMessage(new byte[1024]);
 
         Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
@@ -81,7 +81,7 @@ public class ServiceBusMessageBatchTest {
     public void setsPartitionId() {
         // Act
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, errorContextProvider,
-            tracerProvider, serializer);
+            tracerProvider, serializer, null, null);
 
         // Assert
         Assertions.assertTrue(batch.getMessages().isEmpty());
