@@ -2,11 +2,12 @@
 
 ## 1.0.0-beta.7 (2020-10-08)
 
-- Updated azure-core released dependency 
+- Added APIs to `JsonPatchDocument` which accept pre-serialized JSON.
+- Updated `azure-core` dependency to released version. 
 
 ## 1.0.0-beta.6 (2020-10-06)
 
-- Added : `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
+- Added `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
 
 ## 1.0.0-beta.5 (2020-10-01)
 
