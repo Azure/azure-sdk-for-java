@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
@@ -25,7 +24,6 @@ import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalAmount
 
 class FileServiceAPITests extends APISpec {
     String shareName
