@@ -11,6 +11,7 @@ import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
@@ -309,7 +310,7 @@ class PartitionPumpManager {
         spanContext = eventData.getEnqueuedTime() == null
             ? spanContext
             : spanContext.addData(MESSAGE_ENQUEUED_TIME, eventData.getEnqueuedTime().getEpochSecond());
-        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
+        return tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, spanContext, ProcessKind.PROCESS);
     }
 
     /*
