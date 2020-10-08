@@ -4,6 +4,12 @@ The Azure Identity library provides Azure Active Directory token authentication 
 
 
 
+
+
+
+
+
+
  This library currently supports:
   - [Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
   - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
