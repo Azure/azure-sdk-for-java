@@ -15,16 +15,16 @@ import javax.net.ssl.ManagerFactoryParameters;
 
 /**
  * The KeyVault variant of the KeyManagerFactory.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
-    
+
     /**
      * Stores the key managers.
      */
     private List<KeyManager> keyManagers = new ArrayList<>();
-
+    
     @Override
     protected void engineInit(KeyStore ks, char[] password) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
         KeyVaultKeyManager manager = new KeyVaultKeyManager(ks, password);

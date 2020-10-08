@@ -5,16 +5,18 @@ package com.azure.security.keyvault.jca;
 import java.net.Socket;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import static java.util.logging.Level.FINEST;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 import java.util.logging.Logger;
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedKeyManager;
 
 /**
@@ -43,6 +45,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
      * Constructor.
      *
      * @param keystore the keystore.
+     * @param password the password.
      */
     public KeyVaultKeyManager(KeyStore keystore, char[] password) {
         this.keystore = keystore;
@@ -50,34 +53,50 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
     }
 
     @Override
-    public String[] getClientAliases(String keyType, Principal[] issuers) {
-        LOGGER.log(FINEST, "Key type: {0}, issuers: {1}", new Object[]{keyType, issuers});
-        return null;
-    }
-
-    @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-        LOGGER.log(FINEST, "Key type: {0}, issuers: {1}, socket: {2}", 
-                new Object[]{keyType, issuers, socket});
-        return null;
-    }
-
-    @Override
-    public String[] getServerAliases(String keyType, Principal[] issuers) {
-        String[] serverAliases = new String[0];
+        String alias = null;
         try {
-            serverAliases = Collections.list(keystore.aliases()).toArray(new String[0]);
+            /*
+             * If we only have one alias and the keystore type is not 'AzureKeyVault'
+             * return that alias as a match.
+             */
+            if (!keystore.getProvider().getName().equals("AzureKeyVault")
+                    && keystore.size() == 1) {
+                alias = keystore.aliases().nextElement();
+            }
         } catch (KeyStoreException kse) {
-            kse.printStackTrace();
+            LOGGER.log(WARNING, "Unable to choose client alias", kse);
         }
-        return serverAliases;
+        return alias;
     }
 
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-        LOGGER.log(FINEST, "Key type: {0}, issuers: {1}, socket: {2}", 
-                new Object[]{keyType, issuers, socket});
-        return null;
+        String alias = null;
+        try {
+            /*
+             * If we only have one alias and the keystore type is not 'AzureKeyVault'
+             * return that alias as a match.
+             */
+            if (!keystore.getProvider().getName().equals("AzureKeyVault")
+                    && keystore.size() == 1) {
+                alias = keystore.aliases().nextElement();
+            }
+        } catch (KeyStoreException kse) {
+            LOGGER.log(WARNING, "Unable to choose server alias", kse);
+        }
+        return alias;
+    }
+
+    @Override
+    public String[] getClientAliases(String keyType, Principal[] issuers) {
+        String[] aliases = null;
+        try {
+            aliases = Collections.list(keystore.aliases()).toArray(new String[0]);
+        } catch (KeyStoreException kse) {
+            LOGGER.log(WARNING, "Unable to get client aliases", kse);
+        }
+        return aliases;
     }
 
     @Override
@@ -92,8 +111,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
                     }
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (KeyStoreException kse) {
+            LOGGER.log(WARNING, "Unable to get certificate chain for alias: " + alias, kse);
         }
         return chain.toArray(new X509Certificate[0]);
     }
@@ -103,14 +122,20 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         PrivateKey privateKey = null;
         try {
             privateKey = (PrivateKey) keystore.getKey(alias, password);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
+            LOGGER.log(WARNING, "Unable to get private key for alias: " + alias, ex);
         }
         return privateKey;
     }
 
     @Override
-    public String chooseEngineServerAlias(String keyType, Principal[] issuers, SSLEngine engine) {
-        return super.chooseEngineServerAlias(keyType, issuers, engine);
+    public String[] getServerAliases(String keyType, Principal[] issuers) {
+        String[] serverAliases = new String[0];
+        try {
+            serverAliases = Collections.list(keystore.aliases()).toArray(new String[0]);
+        } catch (KeyStoreException kse) {
+            LOGGER.log(WARNING, "Unable to get server aliases", kse);
+        }
+        return serverAliases;
     }
 }
