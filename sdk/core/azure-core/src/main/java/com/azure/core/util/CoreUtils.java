@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.policy.AzureTelemetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -46,6 +47,7 @@ public final class CoreUtils {
 
     /**
      * Creates a copy of the source byte array.
+     *
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
@@ -60,6 +62,7 @@ public final class CoreUtils {
 
     /**
      * Creates a copy of the source int array.
+     *
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
@@ -74,6 +77,7 @@ public final class CoreUtils {
 
     /**
      * Creates a copy of the source array.
+     *
      * @param source Array being copied.
      * @param <T> Generic representing the type of the source array.
      * @return A copy of the array or null if source was null.
@@ -88,6 +92,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the array is null or empty.
+     *
      * @param array Array being checked for nullness or emptiness.
      * @return True if the array is null or empty, false otherwise.
      */
@@ -97,6 +102,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the collection is null or empty.
+     *
      * @param collection Collection being checked for nullness or emptiness.
      * @return True if the collection is null or empty, false otherwise.
      */
@@ -106,6 +112,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the map is null or empty.
+     *
      * @param map Map being checked for nullness or emptiness.
      * @return True if the map is null or empty, false otherwise.
      */
@@ -115,6 +122,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the character sequence is null or empty.
+     *
      * @param charSequence Character sequence being checked for nullness or emptiness.
      * @return True if the character sequence is null or empty, false otherwise.
      */
@@ -124,6 +132,7 @@ public final class CoreUtils {
 
     /**
      * Turns an array into a string mapping each element to a string and delimits them using a coma.
+     *
      * @param array Array being formatted to a string.
      * @param mapper Function that maps each element to a string.
      * @param <T> Generic representing the type of the array.
@@ -139,6 +148,7 @@ public final class CoreUtils {
 
     /**
      * Returns the first instance of the given class from an array of Objects.
+     *
      * @param args Array of objects to search through to find the first instance of the given `clazz` type.
      * @param clazz The type trying to be found.
      * @param <T> Generic type
@@ -160,6 +170,7 @@ public final class CoreUtils {
 
     /**
      * Extracts and combines the generic items from all the pages linked together.
+     *
      * @param page The paged response from server holding generic items.
      * @param context Metadata that is passed into the function that fetches the items from the next page.
      * @param content The function which fetches items from the next page.
@@ -167,7 +178,7 @@ public final class CoreUtils {
      * @return The publisher holding all the generic items combined.
      */
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
-                                                   BiFunction<String, Context, Publisher<T>> content) {
+        BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getItems());
@@ -247,6 +258,61 @@ public final class CoreUtils {
             } else {
                 return new String(bytes, StandardCharsets.UTF_8);
             }
+        }
+    }
+
+    /**
+     * Creates a properly formatted telemetry string from the passed raw telemetry data.
+     *
+     * @param rawTelemetry Raw telemetry data in its key-value form.
+     * @return A formatted telemetry string.
+     */
+    public static String createTelemetryValue(Map<String, String> rawTelemetry) {
+        if (CoreUtils.isNullOrEmpty(rawTelemetry)) {
+            return null;
+        }
+
+        StringBuilder telemetryBuilder = new StringBuilder();
+        rawTelemetry.entrySet().forEach(entry -> {
+            if (telemetryBuilder.length() > 0) {
+                telemetryBuilder.append(";");
+            }
+
+            telemetryBuilder.append(entry.getKey())
+                .append(":")
+                .append(entry.getValue());
+        });
+
+        return telemetryBuilder.toString();
+    }
+
+    /**
+     * Adds a telemetry value into the current context.
+     * <p>
+     * If {@code telemetryValue} is null or empty the current context will be returned unmodified.
+     * <p>
+     * If {@code context} is null {@link Context#NONE} will be used as the current context.
+     *
+     * @param context Current context.
+     * @param telemetryValue Telemetry value.
+     * @return An updated context with the new telemetry value added.
+     */
+    public static Context addTelemetryValue(Context context, String telemetryValue) {
+        if (CoreUtils.isNullOrEmpty(telemetryValue)) {
+            return context;
+        }
+
+        if (context == null) {
+            return Context.NONE.addData(AzureTelemetryPolicy.CONTEXT_TELEMETRY_KEY, telemetryValue);
+        } else {
+            String previousTelemetryValue = (String) context.getData(AzureTelemetryPolicy.CONTEXT_TELEMETRY_KEY)
+                .orElse(null);
+
+            String newTelemetryValue = CoreUtils.isNullOrEmpty(previousTelemetryValue)
+                ? telemetryValue
+                : previousTelemetryValue + ";" + telemetryValue;
+
+            return context.addData(AzureTelemetryPolicy.CONTEXT_TELEMETRY_KEY, newTelemetryValue);
         }
     }
 }

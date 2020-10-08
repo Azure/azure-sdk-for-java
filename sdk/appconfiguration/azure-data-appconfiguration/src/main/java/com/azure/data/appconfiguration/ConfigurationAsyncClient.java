@@ -38,8 +38,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, set read-only
- * status ConfigurationSettings, and listing settings or revision of a setting based on a
- * {@link SettingSelector filter}.
+ * status ConfigurationSettings, and listing settings or revision of a setting based on a {@link SettingSelector
+ * filter}.
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
@@ -65,6 +65,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
+     *
      * @param serviceEndpoint The URL string for the App Configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
@@ -255,7 +256,7 @@ public final class ConfigurationAsyncClient {
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string}
-
+     *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
@@ -285,8 +286,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
-     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
-     * then the current state of the configuration setting will be returned.
+     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null} then the
+     * current state of the configuration setting will be returned.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -315,8 +316,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
      *
      * @param setting The setting to retrieve.
-     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
-     * then the current state of the configuration setting will be returned.
+     * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null} then the
+     * current state of the configuration setting will be returned.
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, or {@code null} if
@@ -411,9 +412,9 @@ public final class ConfigurationAsyncClient {
      * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * IF-MATCH header.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
-     * is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value or
-     * {@link ConfigurationSetting#getETag() ETag} is set but does not match the current ETag
-     * (which will also throw HttpResponseException described below).
+     * is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value or {@link
+     * ConfigurationSetting#getETag() ETag} is set but does not match the current ETag (which will also throw
+     * HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
      * @throws ResourceModifiedException If {@code setting} is read-only.
@@ -446,8 +447,8 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Sets the read-only status for the {@link ConfigurationSetting} that matches the {@code key}, the optional
-     * {@code label}.
+     * Sets the read-only status for the {@link ConfigurationSetting} that matches the {@code key}, the optional {@code
+     * label}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -463,8 +464,8 @@ public final class ConfigurationAsyncClient {
      * @param label The label of configuration setting to read-only. If {@code null} no label will be used.
      * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
      * configuration into a read-only state, {@code false} will clear the state.
-     * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the
-     * key is an invalid value (which will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that is read-only, or an empty Mono if a key collision occurs or the key
+     * is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -495,10 +496,10 @@ public final class ConfigurationAsyncClient {
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
      * configuration into a read-only state, {@code false} will clear the state.
-     * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly}
-     * is true or null, or false respectively. Or return {@code null} if the setting didn't exist.
-     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value.
-     * (which will also throw HttpResponseException described below).
+     * @return A REST response containing the read-only or not read-only ConfigurationSetting if {@code isReadOnly} is
+     * true or null, or false respectively. Or return {@code null} if the setting didn't exist. {@code null} is also
+     * returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will also throw
+     * HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
@@ -612,8 +613,8 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
+     * after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
      * for more information.
      *
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched

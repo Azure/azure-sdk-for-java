@@ -10,10 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 /**
  * {@link HttpPipelinePolicy} that manages adding Azure SDK telemetry to an HTTP request.
  */
@@ -24,18 +20,12 @@ public class AzureTelemetryPolicy implements HttpPipelinePolicy {
     public static final String CONTEXT_TELEMETRY_KEY = "azsdk-telemetry";
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Optional<Object> potentialTelemetryData = context.getData(CONTEXT_TELEMETRY_KEY);
+        String potentialTelemetry = (String) context.getData(CONTEXT_TELEMETRY_KEY)
+            .orElse(null);
 
-        if (potentialTelemetryData.isPresent()) {
-            Map<String, Object> telemetryData = (Map<String, Object>) potentialTelemetryData.get();
-
-            if (!CoreUtils.isNullOrEmpty(telemetryData)) {
-                context.getHttpRequest().setHeader("x-ms-azsdk-telemetry", telemetryData.entrySet().stream()
-                    .map(kvp -> kvp.getKey() + ":" + kvp.getValue().toString())
-                    .collect(Collectors.joining(",")));
-            }
+        if (!CoreUtils.isNullOrEmpty(potentialTelemetry)) {
+            context.getHttpRequest().setHeader("x-ms-azsdk-telemetry", potentialTelemetry);
         }
 
         return next.process();

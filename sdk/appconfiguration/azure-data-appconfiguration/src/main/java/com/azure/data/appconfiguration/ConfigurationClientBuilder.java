@@ -13,6 +13,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureTelemetryPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -171,6 +172,11 @@ public final class ConfigurationClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
+
+        // Only add the telemetry policy if telemetry isn't disabled.
+        if (!buildConfiguration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false)) {
+            policies.add(new AzureTelemetryPolicy());
+        }
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
