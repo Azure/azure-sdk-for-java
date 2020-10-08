@@ -21,6 +21,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -65,7 +66,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -125,9 +126,9 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(testScheduler));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+        final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS);
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -171,7 +172,7 @@ class EventHubConsumerAsyncClientTest {
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .verifyComplete();
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -200,7 +201,7 @@ class EventHubConsumerAsyncClientTest {
             })
             .verifyComplete();
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
 
@@ -250,7 +251,7 @@ class EventHubConsumerAsyncClientTest {
         // Assert
         Assertions.assertTrue(countDownLatch.await(30, TimeUnit.SECONDS));
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     private Mono<Instant> saveAction(EventData event) {
@@ -314,7 +315,7 @@ class EventHubConsumerAsyncClientTest {
         verify(link2, times(1)).addCredits(PREFETCH);
         verify(link3, times(1)).addCredits(PREFETCH);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -563,7 +564,7 @@ class EventHubConsumerAsyncClientTest {
             .thenCancel()
             .verify(TIMEOUT);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -641,7 +642,7 @@ class EventHubConsumerAsyncClientTest {
             .thenCancel()
             .verify(TIMEOUT);
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -682,7 +683,7 @@ class EventHubConsumerAsyncClientTest {
         // Verify
         verify(hubConnection, times(1)).dispose();
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {

@@ -33,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnec
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
+import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -361,9 +362,10 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, clientOptions);
+            proxyOptions, scheduler, options, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

@@ -103,8 +103,9 @@ public class UsernamePasswordCredential implements TokenCredential {
     private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(
                 new MsalAuthenticationAccount(
-                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId(), identityClient.getClientId())));
+                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId(), identityClient.getClientId()),
+                    msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 }

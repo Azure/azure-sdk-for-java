@@ -5,6 +5,10 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
@@ -29,6 +33,7 @@ import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
@@ -537,5 +542,19 @@ class APISpec extends Specification {
 
     static boolean playbackMode() {
         return setupTestMode() == TestMode.PLAYBACK
+    }
+
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
+            }
+        }
     }
 }

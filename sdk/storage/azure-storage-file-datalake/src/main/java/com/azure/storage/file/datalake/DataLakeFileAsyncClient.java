@@ -966,8 +966,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the file for deletion.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -983,8 +981,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     // TODO (kasobol-msft) add REST DOCS
     /**
      * Schedules the file for deletion.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

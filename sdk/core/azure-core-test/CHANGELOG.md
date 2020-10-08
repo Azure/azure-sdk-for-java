@@ -1,7 +1,18 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
+
+## 1.5.0 (2020-10-01)
+
+### New Features
+
+- Enhanced playback recording to use test class name plus test name to identify records.
+
+### Bug Fixes
+
+- Added additional response data redaction.
+- Updated handling of `HttpClient` retrieval from the classpath to no longer require dependent libraries to `add-opens` in Java 9+.
 
 ## 1.4.2 (2020-09-08)
 

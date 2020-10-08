@@ -829,14 +829,13 @@ public final class BlobServiceAsyncClient {
         }
     }
 
+    /* TODO (gapra-msft) : REST Docs */
     /**
      * Restores a previously deleted container.
      * If the container associated with provided <code>deletedContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -862,8 +861,6 @@ public final class BlobServiceAsyncClient {
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
      *
      * <p><strong>Code Samples</strong></p>
      *

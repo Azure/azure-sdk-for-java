@@ -15,7 +15,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The PatternAnalyzer model. */
+/**
+ * Flexibly separates text into terms via a regular expression pattern. This analyzer is implemented using Apache
+ * Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternAnalyzer")
 @JsonFlatten

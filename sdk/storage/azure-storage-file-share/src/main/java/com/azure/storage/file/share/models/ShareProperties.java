@@ -72,6 +72,24 @@ public final class ShareProperties {
     private Integer remainingRetentionDays;
 
     /*
+     * The accessTier property.
+     */
+    @JsonProperty(value = "AccessTier")
+    private String accessTier;
+
+    /*
+     * The accessTierChangeTime property.
+     */
+    @JsonProperty(value = "AccessTierChangeTime")
+    private DateTimeRfc1123 accessTierChangeTime;
+
+    /*
+     * The accessTierTransitionState property.
+     */
+    @JsonProperty(value = "AccessTierTransitionState")
+    private String accessTierTransitionState;
+
+    /*
      * Possible values include: 'locked', 'unlocked'
      */
     @JsonProperty(value = "LeaseStatus")
@@ -303,6 +321,78 @@ public final class ShareProperties {
      */
     public ShareProperties setRemainingRetentionDays(Integer remainingRetentionDays) {
         this.remainingRetentionDays = remainingRetentionDays;
+        return this;
+    }
+
+    /**
+     * Get the accessTier property: The accessTier property.
+     *
+     * @return the accessTier value.
+     */
+    public String getAccessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Set the accessTier property: The accessTier property.
+     *
+     * @param accessTier the accessTier value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setAccessTier(String accessTier) {
+        this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the accessTierChangeTime property: The accessTierChangeTime
+     * property.
+     *
+     * @return the accessTierChangeTime value.
+     */
+    public OffsetDateTime getAccessTierChangeTime() {
+        if (this.accessTierChangeTime == null) {
+            return null;
+        }
+        return this.accessTierChangeTime.getDateTime();
+    }
+
+    /**
+     * Set the accessTierChangeTime property: The accessTierChangeTime
+     * property.
+     *
+     * @param accessTierChangeTime the accessTierChangeTime value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+        if (accessTierChangeTime == null) {
+            this.accessTierChangeTime = null;
+        } else {
+            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the accessTierTransitionState property: The
+     * accessTierTransitionState property.
+     *
+     * @return the accessTierTransitionState value.
+     */
+    public String getAccessTierTransitionState() {
+        return this.accessTierTransitionState;
+    }
+
+    /**
+     * Set the accessTierTransitionState property: The
+     * accessTierTransitionState property.
+     *
+     * @param accessTierTransitionState the accessTierTransitionState value to
+     * set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setAccessTierTransitionState(String accessTierTransitionState) {
+        this.accessTierTransitionState = accessTierTransitionState;
         return this;
     }
 
