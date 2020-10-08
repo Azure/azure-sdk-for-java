@@ -1,7 +1,9 @@
 # Release History
 
-## 4.2.0-beta.2 (Unreleased)
-
+## 4.2.0-beta.2 (2020-10-08)
+- Added `KeyVaultCertificateIdentifier`. Use its `parse` method to parse the different elements of a given certificate identifier, for example: "https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{version}".
+- Added API overloads that allow for passing specific polling intervals for long-running operations.
+- Added support for `com.azure.core.util.ClientOptions` in client builders.
 
 ## 4.2.0-beta.1 (2020-09-11)
 - Updated versions for azure-core and azure-identity.
