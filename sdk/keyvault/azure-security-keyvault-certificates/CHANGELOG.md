@@ -1,7 +1,7 @@
 # Release History
 
-## 4.2.0-beta.1 (Unreleased)
-
+## 4.1.2 (2020-10-08)
+- Updated versions for azure-core and azure-identity.
 
 ## 4.1.1 (2020-09-10)
 - Updated versions for azure-core and azure-identity.
