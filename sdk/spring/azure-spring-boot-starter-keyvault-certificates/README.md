@@ -189,7 +189,7 @@ Add then add the following Maven dependency to your POM file.
 To create an Azure KeyVault use the command line below:
 
 ```shell
-  export KEYVAULT=mykeyvault
+  export KEY_VAULT=mykeyvault
   export RESOURCE_GROUP=myresourcegroup
   az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
 ```
@@ -204,13 +204,25 @@ To create a self-signed certificate use the command line below:
     -n ${CERTIFICATE_ALIAS} -p "$(az keyvault certificate get-default-policy)"
 ```
 
-## Assign a managed identity to an Azure Spring Cloud application
+## Assign a managed identity (to an Azure Spring Cloud application)
 
 To assign a managed identity use the command line below:
 
 ```shell
   export SPRING_CLOUD_APP=myspringcloudapp
   az spring-cloud app identity assign --name ${SPRING_CLOUD_APP}
-  export SPRING_CLOUD_APP_IDENTITY=$(az spring-cloud app show \
+  export MANAGED_IDENTITY=$(az spring-cloud app show \
     --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv)
+```
+
+## Grant a managed identity with access to Azure Key Vault
+
+To grant access use the command line below:
+
+```shell
+  az keyvault set-policy --name ${KEY_VAULT} \
+        --object-id ${MANAGED_IDENTITY} \
+        --key-permisssions get list \
+        --secret-permissions get list \
+        --certificate-permissions get list
 ```
