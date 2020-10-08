@@ -14,7 +14,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 import java.util.logging.Logger;
 import javax.net.ssl.X509ExtendedKeyManager;
