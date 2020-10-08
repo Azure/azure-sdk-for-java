@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.training.models;
 
 /**
- * The metadata poperties for a custom model.
+ * The metadata properties for a custom model.
  */
-public final class CustomModelProperties {
+public final class CustomFormModelProperties {
     private boolean isComposed;
 
     /**

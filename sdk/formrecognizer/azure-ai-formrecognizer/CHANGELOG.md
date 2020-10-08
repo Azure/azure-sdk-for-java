@@ -3,9 +3,11 @@
 ## 3.1.0-beta.1 (Unreleased)
 ### New Features
 - Added implementation support to create a composed model from the `FormTrainingClient` by calling method `beginCreatComposedModel`.
-- Added properties `modelDisplayName` and `customFormModelProperties` to types `CustomFormModel` and `CustomFormModelInfo`.
-- Added property `modelDisplayName` to `TrainingOptions` and new type `CreateComposedModelOptions`.
+- Added properties `modelName` and `customFormModelProperties` to types `CustomFormModel` and `CustomFormModelInfo`.
+- Added property `modelName` to `TrainingOptions` and new type `CreateComposedModelOptions`.
 - Added property `modelId` to `CustomFormSubmodel` and `TrainingDocumentInfo`.
+- Added properties `modelId` and `formTypeConfidence` to `RecognizedForm`. 
+`modelId` has a null value on `RecognizedForm` for prebuilt APIs.
 
 ### Breaking changes
 - Defaults to the latest supported API version, which currently is `2.1-preview.1`.

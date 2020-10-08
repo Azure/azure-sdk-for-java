@@ -15,7 +15,7 @@ public final class TrainingOptions {
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private TrainingFileFilter trainingFileFilter;
-    private String modelDisplayName;
+    private String modelName;
 
     /**
      * Get the filter to apply to the documents in the source path for training.
@@ -67,19 +67,19 @@ public final class TrainingOptions {
      *
      * @return the modelDisplayName.
      */
-    public String getModelDisplayName() {
-        return modelDisplayName;
+    public String getModelName() {
+        return modelName;
     }
 
     /**
      * Set the optional model name defined by the user. (max length: 1024).
      *
-     * @param modelDisplayName the user defined model display name to set.
+     * @param modelName the user defined model display name to set.
      *
      * @return the updated {@code TrainingOptions} value.
      */
-    public TrainingOptions setModelDisplayName(final String modelDisplayName) {
-        this.modelDisplayName = modelDisplayName;
+    public TrainingOptions setModelName(final String modelName) {
+        this.modelName = modelName;
         return this;
     }
 }

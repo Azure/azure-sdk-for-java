@@ -584,7 +584,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 = client.beginCreateComposedModel(
                 modelIdList,
                 new CreateComposedModelOptions()
-                    .setModelDisplayName("composedModelDisplayName")
+                    .setModelName("composedModelDisplayName")
                     .setPollInterval(durationTestMode),
                 Context.NONE)
                 .getFinalResult();
@@ -592,7 +592,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
-            assertEquals("composedModelDisplayName", composedModel.getModelDisplayName());
+            assertEquals("composedModelDisplayName", composedModel.getModelName());
             assertEquals(2, composedModel.getSubmodels().stream().count());
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
@@ -733,13 +733,13 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
                 = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode).setModelDisplayName("modelDisplayName"),
+                new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"),
                 Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             CustomFormModel customFormModel = client.getCustomModel(createdModel.getModelId());
-            assertEquals("modelDisplayName", customFormModel.getModelDisplayName());
+            assertEquals("modelDisplayName", customFormModel.getModelName());
 
             validateCustomModelData(createdModel, true, false);
         });

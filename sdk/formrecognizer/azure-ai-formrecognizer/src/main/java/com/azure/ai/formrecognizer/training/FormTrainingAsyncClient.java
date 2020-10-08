@@ -192,7 +192,7 @@ public final class FormTrainingAsyncClient {
                     ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded() : false,
                 trainingOptions.getTrainingFileFilter() != null
                     ? trainingOptions.getTrainingFileFilter().getPrefix() : null,
-                trainingOptions.getModelDisplayName(),
+                trainingOptions.getModelName(),
                 context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -492,7 +492,7 @@ public final class FormTrainingAsyncClient {
      * @param modelIds The list of models Ids to form the composed model.
      *
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModel}.
+     * or has been cancelled. The completed operation returns the created {@link CustomFormModel composed model}.
      * @throws FormRecognizerException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.
@@ -542,7 +542,7 @@ public final class FormTrainingAsyncClient {
             final ComposeRequest composeRequest = new ComposeRequest()
                 .setModelIds(modelIds.stream()
                     .map(UUID::fromString).collect(Collectors.toList()))
-                .setModelName(creatComposeModelOptions.getModelDisplayName());
+                .setModelName(creatComposeModelOptions.getModelName());
 
             return new PollerFlux<FormRecognizerOperationResult, CustomFormModel>(
                 creatComposeModelOptions.getPollInterval(),
@@ -739,15 +739,17 @@ public final class FormTrainingAsyncClient {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
-                TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubfolders)
+                TrainSourceFilter trainSourceFilter = new TrainSourceFilter()
+                    .setIncludeSubFolders(includeSubfolders)
                     .setPrefix(filePrefix);
                 TrainRequest serviceTrainRequest = new TrainRequest()
-                    .setSource(trainingFilesUrl).
-                    setSourceFilter(trainSourceFilter)
+                    .setSource(trainingFilesUrl)
+                    .setSourceFilter(trainSourceFilter)
                     .setUseLabelFile(useTrainingLabels)
                     .setModelName(modelDisplayName);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
-                    .map(response -> new FormRecognizerOperationResult(
+                    .map(response ->
+                        new FormRecognizerOperationResult(
                         parseModelId(response.getDeserializedHeaders().getLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {

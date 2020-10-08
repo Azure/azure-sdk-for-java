@@ -329,16 +329,17 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
         formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
             new CreateComposedModelOptions()
-                .setModelDisplayName("my composed model name")
+                .setModelName("my composed model name")
                 .setPollInterval(Duration.ofSeconds(5)))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(customFormModel -> {
                 System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                 System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-                System.out.printf("Model display name: %s%n", customFormModel.getModelDisplayName());
+                System.out.printf("Model display name: %s%n", customFormModel.getModelName());
                 System.out.printf("Is this a composed model: %s%n",
                     customFormModel.getCustomModelProperties().isComposed());
+
                 customFormModel.getSubmodels()
                     .forEach(customFormSubmodel -> customFormSubmodel.getFields()
                         .forEach((key, customFormModelField) ->

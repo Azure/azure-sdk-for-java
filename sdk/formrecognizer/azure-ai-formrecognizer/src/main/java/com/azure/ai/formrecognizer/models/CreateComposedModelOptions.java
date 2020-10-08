@@ -13,27 +13,27 @@ import java.time.Duration;
 @Fluent
 public final class CreateComposedModelOptions {
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
-    private String modelDisplayName;
+    private String modelName;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
-     * Get the optional model name defined by the user. (max length: 1024).
+     * Get the optional model name defined by the user.
      *
      * @return the modelDisplayName.
      */
-    public String getModelDisplayName() {
-        return modelDisplayName;
+    public String getModelName() {
+        return modelName;
     }
 
     /**
-     * Set the optional model name defined by the user. (max length: 1024).
+     * Set the optional model name defined by the user.
      *
-     * @param modelDisplayName the user defined model display name to set.
+     * @param modelName the user defined model display name to set.
      *
      * @return the updated {@code CreateComposedModelOptions} value.
      */
-    public CreateComposedModelOptions setModelDisplayName(final String modelDisplayName) {
-        this.modelDisplayName = modelDisplayName;
+    public CreateComposedModelOptions setModelName(final String modelName) {
+        this.modelName = modelName;
         return this;
     }
 

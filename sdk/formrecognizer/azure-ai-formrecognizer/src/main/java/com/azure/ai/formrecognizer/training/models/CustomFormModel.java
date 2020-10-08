@@ -50,9 +50,9 @@ public final class CustomFormModel {
      */
     private final List<TrainingDocumentInfo> trainingDocuments;
 
-    private String modelDisplayName;
+    private String modelName;
 
-    private CustomModelProperties customModelProperties;
+    private CustomFormModelProperties customFormModelProperties;
 
     /**
      * Constructs a CustomFormModel object.
@@ -149,8 +149,8 @@ public final class CustomFormModel {
      *
      * @return the custom model metadata properties.
      */
-    public CustomModelProperties getCustomModelProperties() {
-        return customModelProperties;
+    public CustomFormModelProperties getCustomModelProperties() {
+        return customFormModelProperties;
     }
 
     /**
@@ -158,7 +158,7 @@ public final class CustomFormModel {
      *
      * @return the modelDisplayName value.
      */
-    public String getModelDisplayName() {
-        return modelDisplayName;
+    public String getModelName() {
+        return modelName;
     }
 }

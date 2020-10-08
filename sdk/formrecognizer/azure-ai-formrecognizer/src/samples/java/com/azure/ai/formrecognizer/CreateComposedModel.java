@@ -55,14 +55,14 @@ public class CreateComposedModel {
         final CustomFormModel customFormModel
             = client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
             new CreateComposedModelOptions()
-                .setModelDisplayName("my composed model name")
+                .setModelName("my composed model name")
                 .setPollInterval(Duration.ofSeconds(5)),
             Context.NONE)
             .getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model display name: %s%n", customFormModel.getModelDisplayName());
+        System.out.printf("Model display name: %s%n", customFormModel.getModelName());
         System.out.printf("Is this a composed model: %s%n",
             customFormModel.getCustomModelProperties().isComposed());
         System.out.printf("Composed model creation started on: ", customFormModel.getTrainingStartedOn());
@@ -79,6 +79,8 @@ public class CreateComposedModel {
         System.out.println();
 
         customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
+            System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
+            System.out.printf("Document was provided to train model with Id : %s%n",trainingDocumentInfo.getModelId());
             System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
             System.out.printf("Document status: %s%n", trainingDocumentInfo.getStatus());
             System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());

@@ -193,6 +193,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                 actualCustomModel.getTrainingDocuments());
             validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
         }  else if (modelRawResponse.getComposedTrainResults() != null) {
+
             assertEquals(modelRawResponse.getComposedTrainResults().size(), subModelList.size());
             for (int i = 0; i < subModelList.size(); i++) {
                 final CustomFormSubmodel actualSubmodel = subModelList.get(i);
@@ -222,18 +223,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                 }
             }
         } else {
-            final String finalModelNameFormType = modelNameFormType;
             modelRawResponse
                 .getKeys()
                 .getClusters()
                 .forEach((clusterId, fields) -> {
-                    if (finalModelNameFormType != null) {
                         assertEquals(subModelList.get(Integer.parseInt(clusterId)).getFormType(),
-                            finalModelNameFormType);
-                    } else {
-                        assertEquals(subModelList.get(Integer.parseInt(clusterId)).getFormType(),
-                            "custom:" + clusterId);
-                    }
+                            "form-" + clusterId);
                     subModelList.get(Integer.parseInt(clusterId))
                         .getFields()
                         .values()

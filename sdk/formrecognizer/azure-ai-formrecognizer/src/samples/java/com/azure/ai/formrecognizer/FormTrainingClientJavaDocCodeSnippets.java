@@ -320,13 +320,13 @@ public class FormTrainingClientJavaDocCodeSnippets {
         final CustomFormModel customFormModel
             = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
             new CreateComposedModelOptions()
-                .setModelDisplayName("my composed model name")
+                .setModelName("my composed model name")
                 .setPollInterval(Duration.ofSeconds(5)),
             Context.NONE)
                 .getFinalResult();
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model display name: %s%n", customFormModel.getModelDisplayName());
+        System.out.printf("Model display name: %s%n", customFormModel.getModelName());
         System.out.printf("Is this a composed model: %s%n",
             customFormModel.getCustomModelProperties().isComposed());
         customFormModel.getSubmodels()

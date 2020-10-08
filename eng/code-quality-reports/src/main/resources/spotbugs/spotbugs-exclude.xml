@@ -1281,25 +1281,25 @@
 
   <Match>
     <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
-    <Field name="modelDisplayName" />
+    <Field name="modelName" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
   <Match>
     <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
-    <Field name="customModelProperties" />
+    <Field name="customFormModelProperties" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
   <Match>
     <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
-    <Field name="modelDisplayName" />
+    <Field name="modelName" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
   <Match>
     <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
-    <Field name="customModelProperties" />
+    <Field name="customFormModelProperties" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
@@ -1310,13 +1310,25 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomModelProperties" />
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties" />
     <Field name="isComposed" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
   <Match>
     <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
     <Field name="modelId" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>

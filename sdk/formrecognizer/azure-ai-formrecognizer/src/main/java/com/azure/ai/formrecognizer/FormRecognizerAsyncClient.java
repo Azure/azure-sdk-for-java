@@ -150,7 +150,9 @@ public final class FormRecognizerAsyncClient {
                 fetchingOperation(resultId -> service.getAnalyzeFormResultWithResponseAsync(
                     UUID.fromString(modelId), resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
-                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            modelId))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -241,7 +243,9 @@ public final class FormRecognizerAsyncClient {
                 fetchingOperation(resultId -> service.getAnalyzeFormResultWithResponseAsync(
                     UUID.fromString(modelId), resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
-                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            modelId))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -468,7 +472,9 @@ public final class FormRecognizerAsyncClient {
                     new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
-                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -555,7 +561,9 @@ public final class FormRecognizerAsyncClient {
                     new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
-                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded))
+                        toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                            isFieldElementsIncluded,
+                            null))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);

@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.PrivateFieldAccessHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -60,9 +61,10 @@ final class Transforms {
      * @param analyzeResult The service returned result for analyze custom forms.
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
+     * @param modelId
      * @return The List of {@code RecognizedForm}.
      */
-    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements) {
+    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements, String modelId) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -82,11 +84,16 @@ final class Transforms {
                 }
 
                 Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults);
-                extractedFormList.add(new RecognizedForm(
+                final RecognizedForm recognizedForm = new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
                     formPageRange,
-                    formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber())));
+                    formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber()));
+                PrivateFieldAccessHelper.set(recognizedForm, "formTypeConfidence",
+                    documentResultItem.getDocTypeConfidence());
+                PrivateFieldAccessHelper.set(recognizedForm, "modelId",
+                    documentResultItem.getModelId());
+                extractedFormList.add(recognizedForm);
             }
         } else {
             extractedFormList = new ArrayList<>();
@@ -100,11 +107,14 @@ final class Transforms {
                 Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
                     pageResultItem, pageNumber);
 
-                extractedFormList.add(new RecognizedForm(
+                final RecognizedForm recognizedForm = new RecognizedForm(
                     extractedFieldMap,
                     formType.toString(),
                     new FormPageRange(pageNumber, pageNumber),
-                    Collections.singletonList(formPages.get(index))));
+                    Collections.singletonList(formPages.get(index)));
+
+                PrivateFieldAccessHelper.set(recognizedForm, "modelId", modelId);
+                extractedFormList.add(recognizedForm);
             }));
         }
         return extractedFormList;

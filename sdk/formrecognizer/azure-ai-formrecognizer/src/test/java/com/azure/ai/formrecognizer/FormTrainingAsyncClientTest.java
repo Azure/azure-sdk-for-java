@@ -119,9 +119,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel trainedModel = syncPoller.getFinalResult();
 
-            StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId())).assertNext(customFormModelResponse -> {
-                assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                validateCustomModelData(syncPoller.getFinalResult(), false, false);
+            StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId()))
+                .assertNext(customFormModelResponse -> {
+                    assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                    validateCustomModelData(syncPoller.getFinalResult(), false, false);
             });
         });
     }
@@ -634,14 +635,14 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 = client.beginCreateComposedModel(
                     modelIdList,
                 new CreateComposedModelOptions()
-                    .setModelDisplayName("composedModelDisplayName")
+                    .setModelName("composedModelDisplayName")
                     .setPollInterval(durationTestMode))
                 .getSyncPoller().getFinalResult();
 
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
-            assertEquals("composedModelDisplayName", composedModel.getModelDisplayName());
+            assertEquals("composedModelDisplayName", composedModel.getModelName());
             assertEquals(2, composedModel.getSubmodels().stream().count());
             composedModel.getSubmodels().forEach(customFormSubmodel ->
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
@@ -808,13 +809,13 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
                 = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode).setModelDisplayName("modelDisplayName"))
+                new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.getCustomModel(createdModel.getModelId()))
-                .assertNext(response -> assertEquals("modelDisplayName", response.getModelDisplayName()))
+                .assertNext(response -> assertEquals("modelDisplayName", response.getModelName()))
                 .verifyComplete();
 
             validateCustomModelData(createdModel, true, false);

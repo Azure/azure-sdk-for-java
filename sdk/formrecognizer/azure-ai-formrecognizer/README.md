@@ -168,6 +168,7 @@ A `CustomFormModel` is returned indicating the fields the model will extract, as
 each field. See the [service's documents][fr_train_with_labels] for a more detailed explanation.
 - Managing models created in your account. See example [Manage models](#manage-your-models).
 - Copying a custom model from one Form Recognizer resource to another.
+- Creating a composed model from a collection of existing trained models with labels.
 
 Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
 
@@ -436,6 +437,7 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 * Train a model with labels: [TrainModelWithLabelsAsync][train_labeled_model_async]
 * Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
 * Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
+* Create a composed model from a collection of models trained with labels: [CreateComposedModelAsync][create_composed_model_async]
 
 ### Additional documentation
 
@@ -465,6 +467,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/f90e98012c042179bbedec11b77614b62088d2e1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CreateComposedModelAsync.java 
 [differentiate_custom_forms_with_labeled_and_unlabeled_models]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledData.java
 [form_recognizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [form_recognizer_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/FormRecognizerAsyncClient.java

@@ -363,7 +363,7 @@ public final class FormTrainingClient {
      * @param modelIds The list of models Ids to form the composed model.
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModel}.
+     * or has been cancelled. The completed operation returns the {@link CustomFormModel composed model}.
      * @throws FormRecognizerException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.
@@ -392,7 +392,7 @@ public final class FormTrainingClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModel}.
+     * or has been cancelled. The completed operation returns the {@link CustomFormModel composed model}.
      * @throws FormRecognizerException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.

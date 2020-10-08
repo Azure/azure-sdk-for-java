@@ -41,7 +41,7 @@ public class TrainModelWithLabelsAsync {
         PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller
             = client.beginTraining(trainingFilesUrl,
             true,
-            new TrainingOptions().setModelDisplayName("composed model name"));
+            new TrainingOptions().setModelName("composed model name"));
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()
@@ -59,7 +59,7 @@ public class TrainModelWithLabelsAsync {
             // Model Info
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-            System.out.printf("Model display name: %s%n", customFormModel.getModelDisplayName());
+            System.out.printf("Model display name: %s%n", customFormModel.getModelName());
             System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
             System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
