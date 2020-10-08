@@ -14,6 +14,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 import java.util.logging.Logger;
 import javax.net.ssl.X509ExtendedKeyManager;
@@ -47,12 +48,16 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
      * @param password the password.
      */
     public KeyVaultKeyManager(KeyStore keystore, char[] password) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.<init>: {0}, {1}", 
+                new Object[] {keystore, new String(password)});
         this.keystore = keystore;
         this.password = password;
     }
 
     @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.chooseClientAlias: {0}, {1}, {2}", 
+                new Object[] {keyType, issuers, socket});
         String alias = null;
         try {
             /*
@@ -66,11 +71,14 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to choose client alias", kse);
         }
+        LOGGER.log(INFO, "KeyVaultKeyManager.chooseClientAlias: {0}", alias);
         return alias;
     }
 
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.chooseServerAlias: {0}, {1}, {2}", 
+                new Object[] {keyType, issuers, socket});
         String alias = null;
         try {
             /*
@@ -84,22 +92,27 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to choose server alias", kse);
         }
+        LOGGER.log(INFO, "KeyVaultKeyManager.chooseServerAlias: {0}", alias);
         return alias;
     }
 
     @Override
     public String[] getClientAliases(String keyType, Principal[] issuers) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.getClientAliases: {0}, {1}", 
+                new Object[] {keyType, issuers});
         String[] aliases = null;
         try {
             aliases = Collections.list(keystore.aliases()).toArray(new String[0]);
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to get client aliases", kse);
         }
+        LOGGER.log(INFO, "KeyVaultKeyManager.getClientAliases: {0}", aliases);
         return aliases;
     }
 
     @Override
     public X509Certificate[] getCertificateChain(String alias) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.getCertificateChain: {0}", alias);
         List<X509Certificate> chain = new ArrayList<>();
         try {
             Certificate[] keystoreChain = keystore.getCertificateChain(alias);
@@ -113,28 +126,33 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to get certificate chain for alias: " + alias, kse);
         }
+        LOGGER.log(INFO, "KeyVaultKeyManager.getCertificateChain: {0}", chain);
         return chain.toArray(new X509Certificate[0]);
     }
 
     @Override
     public PrivateKey getPrivateKey(String alias) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.getPrivateKey: {0}", alias);
         PrivateKey privateKey = null;
         try {
             privateKey = (PrivateKey) keystore.getKey(alias, password);
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
             LOGGER.log(WARNING, "Unable to get private key for alias: " + alias, ex);
         }
+        LOGGER.log(INFO, "KeyVaultKeyManager.getPrivateKey: {0}", privateKey);
         return privateKey;
     }
 
     @Override
     public String[] getServerAliases(String keyType, Principal[] issuers) {
+        LOGGER.log(INFO, "KeyVaultKeyManager.getServerAliases: {0}, {1}", new Object[] {keyType, issuers});
         String[] serverAliases = new String[0];
         try {
             serverAliases = Collections.list(keystore.aliases()).toArray(new String[0]);
         } catch (KeyStoreException kse) {
             LOGGER.log(WARNING, "Unable to get server aliases", kse);
         }
+        LOGGER.log(INFO, "KeyVaultKeyManager.getServerAliases: {0}", serverAliases);
         return serverAliases;
     }
 }
