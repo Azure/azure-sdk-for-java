@@ -18,7 +18,7 @@ public final class Sku {
      * SKU family name
      */
     @JsonProperty(value = "family", required = true)
-    private String family;
+    private SkuFamily family;
 
     /*
      * SKU name to specify whether the key vault is a standard vault or a
@@ -27,17 +27,12 @@ public final class Sku {
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
-    /** Creates an instance of Sku class. */
-    public Sku() {
-        family = "A";
-    }
-
     /**
      * Get the family property: SKU family name.
      *
      * @return the family value.
      */
-    public String family() {
+    public SkuFamily family() {
         return this.family;
     }
 
@@ -47,7 +42,7 @@ public final class Sku {
      * @param family the family value to set.
      * @return the Sku object itself.
      */
-    public Sku withFamily(String family) {
+    public Sku withFamily(SkuFamily family) {
         this.family = family;
         return this;
     }
@@ -78,6 +73,10 @@ public final class Sku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (family() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property family in model Sku"));
+        }
         if (name() == null) {
             throw logger
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
