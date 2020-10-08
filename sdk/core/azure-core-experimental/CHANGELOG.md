@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (2020-10-06)
+## 1.0.0-beta.7 (2020-10-08)
 
 - Updated azure-core released dependency 
 
