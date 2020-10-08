@@ -534,7 +534,7 @@ public final class PhoneNumberClient {
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the search result
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
         CreateSearchOptions options, Duration pollInterval) {
         return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();

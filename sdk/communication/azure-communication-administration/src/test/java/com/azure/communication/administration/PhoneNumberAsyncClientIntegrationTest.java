@@ -23,7 +23,9 @@ import com.azure.communication.administration.models.UpdatePhoneNumberCapabiliti
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -480,10 +482,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberAsyncClient client = this.getClient();
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
-            client.beginCreateSearch(createSearchOptions, duration).getSyncPoller();
-        res.waitForCompletion();
-        PhoneNumberSearch testResult = res.getFinalResult();
+        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+            client.beginCreateSearch(createSearchOptions, duration);
+        AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
+            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .blockLast();
+        PhoneNumberSearch testResult = asyncRes.getValue();
         assertEquals(testResult.getPhoneNumbers().size(), 2);
         assertNotNull(testResult.getSearchId());
     }
