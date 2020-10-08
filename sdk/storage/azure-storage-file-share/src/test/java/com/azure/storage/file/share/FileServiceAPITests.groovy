@@ -208,7 +208,7 @@ class FileServiceAPITests extends APISpec {
         def item = shares.next()
         item.getName() == shareName
         item.getProperties().getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        item.getProperties().getAccessTierChangeTime().isAfter(time)
+        item.getProperties().getAccessTierChangeTime().isEqual(time) || item.getProperties().getAccessTierChangeTime().isAfter(time)
         item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
     }
