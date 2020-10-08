@@ -298,7 +298,7 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void deleteCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#string
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String
         SyncPoller<DeletedCertificate, Void> deleteCertificatePoller =
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
@@ -306,7 +306,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
             pollResponse.getValue().getRecoveryId());
         deleteCertificatePoller.waitForCompletion();
-        // END: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#string
+        // END: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String
     }
 
     /**
@@ -377,15 +377,15 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#string
+        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
         SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverCertPoller = certificateClient
             .beginRecoverDeletedCertificate("deletedCertificateName");
         // Recovered certificate is accessible as soon as polling beings
         PollResponse<KeyVaultCertificateWithPolicy> pollResponse = recoverCertPoller.poll();
         System.out.printf(" Recovered Deleted certificate with name %s and id %s", pollResponse.getValue()
-                .getProperties().getName(), pollResponse.getValue().getProperties().getId());
+            .getProperties().getName(), pollResponse.getValue().getProperties().getId());
         recoverCertPoller.waitForCompletion();
-        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#string
+        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
     }
 
     /**
