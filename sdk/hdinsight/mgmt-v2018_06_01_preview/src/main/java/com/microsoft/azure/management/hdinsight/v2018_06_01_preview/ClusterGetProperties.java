@@ -115,12 +115,6 @@ public class ClusterGetProperties {
     private String minSupportedTlsVersion;
 
     /**
-     * The network settings.
-     */
-    @JsonProperty(value = "networkSettings")
-    private NetworkSettings networkSettings;
-
-    /**
      * Get the version of the cluster.
      *
      * @return the clusterVersion value
@@ -437,26 +431,6 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
         this.minSupportedTlsVersion = minSupportedTlsVersion;
-        return this;
-    }
-
-    /**
-     * Get the network settings.
-     *
-     * @return the networkSettings value
-     */
-    public NetworkSettings networkSettings() {
-        return this.networkSettings;
-    }
-
-    /**
-     * Set the network settings.
-     *
-     * @param networkSettings the networkSettings value to set
-     * @return the ClusterGetProperties object itself.
-     */
-    public ClusterGetProperties withNetworkSettings(NetworkSettings networkSettings) {
-        this.networkSettings = networkSettings;
         return this;
     }
 
