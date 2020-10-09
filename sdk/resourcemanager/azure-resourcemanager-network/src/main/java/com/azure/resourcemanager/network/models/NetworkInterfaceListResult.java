@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkInterfaceListResult model. */
+/** Response for the ListNetworkInterface API service call. */
 @Fluent
 public final class NetworkInterfaceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceListResult.class);

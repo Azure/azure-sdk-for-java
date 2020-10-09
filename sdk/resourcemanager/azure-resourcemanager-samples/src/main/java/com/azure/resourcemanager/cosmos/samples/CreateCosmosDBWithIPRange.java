@@ -27,8 +27,8 @@ public final class CreateCosmosDBWithIPRange {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String docDBName = azureResourceManager.sdkContext().randomResourceName("docDb", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV", 24);
+        final String docDBName = Utils.randomResourceName(azureResourceManager, "docDb", 10);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV", 24);
 
         try {
             //============================================================

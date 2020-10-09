@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The result of checking for the Kubernetes cluster's upgrade profile. */

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
+import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.OffsetDateTime;
 import java.util.Map;

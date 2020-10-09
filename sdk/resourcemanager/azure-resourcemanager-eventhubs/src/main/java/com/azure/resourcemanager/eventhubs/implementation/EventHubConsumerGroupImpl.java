@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import reactor.core.publisher.Mono;

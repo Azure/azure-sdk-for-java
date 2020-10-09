@@ -50,8 +50,8 @@ public class ManageContainerRegistryWithWebhooks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgACR", 15);
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acrsample", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACR", 15);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
         final Region region = Region.US_WEST_CENTRAL;
         final String dockerImageName = "hello-world";
         final String dockerImageTag = "latest";

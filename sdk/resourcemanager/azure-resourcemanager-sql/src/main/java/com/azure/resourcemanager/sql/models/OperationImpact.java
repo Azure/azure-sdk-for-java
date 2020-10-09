@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OperationImpact model. */
+/** The impact of an operation, both in absolute and relative terms. */
 @Immutable
 public final class OperationImpact {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationImpact.class);

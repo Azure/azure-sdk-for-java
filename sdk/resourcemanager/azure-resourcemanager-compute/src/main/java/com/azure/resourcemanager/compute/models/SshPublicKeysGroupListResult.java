@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.fluent.inner.SshPublicKeyResourceInner;
+import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SshPublicKeysGroupListResult model. */
+/** The list SSH public keys operation response. */
 @Fluent
 public final class SshPublicKeysGroupListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKeysGroupListResult.class);

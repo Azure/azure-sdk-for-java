@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CustomDomainResourceCollection model. */
+/** Collection compose of a custom domain resources list and a possible link for next page. */
 @Fluent
 public final class CustomDomainResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainResourceCollection.class);

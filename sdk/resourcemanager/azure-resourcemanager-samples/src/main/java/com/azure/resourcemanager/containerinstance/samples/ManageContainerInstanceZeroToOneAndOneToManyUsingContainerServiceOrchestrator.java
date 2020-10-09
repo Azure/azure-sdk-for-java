@@ -16,7 +16,7 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeT
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.SSHShell;
 import com.azure.resourcemanager.samples.Utils;
@@ -52,6 +52,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,17 +89,17 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, InterruptedException, JSchException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgaci", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgaci", 15);
         final Region region = Region.US_EAST2;
 
-        final String acrName = azureResourceManager.sdkContext().randomResourceName("acr", 20);
+        final String acrName = Utils.randomResourceName(azureResourceManager, "acr", 20);
 
-        final String aciName = azureResourceManager.sdkContext().randomResourceName("acisample", 20);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
         final String containerImageName = "microsoft/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 
-        final String acsName = azureResourceManager.sdkContext().randomResourceName("acssample", 30);
+        final String acsName = Utils.randomResourceName(azureResourceManager, "acssample", 30);
         String servicePrincipalClientId = clientId; // replace with a real service principal client id
         String servicePrincipalSecret = secret; // and corresponding secret
         final String rootUserName = "acsuser";
@@ -211,10 +212,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
-            SdkContext.sleep(15000);
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs
@@ -281,7 +282,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             System.out.println("Created Azure Container Service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureKubernetesCluster.id());
             Utils.print(azureKubernetesCluster);
 
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
 
 
             //=============================================================
@@ -310,7 +311,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
 
             // Wait for 15 minutes for kube endpoint to be available
-            SdkContext.sleep(15 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(15));
 
 
             //=============================================================
@@ -334,7 +335,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 System.err.println(e.getMessage());
             }
 
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             for (Namespace namespace : kubernetesClient.namespaces().list().getItems()) {
                 System.out.println("\tFound Kubernetes namespace: " + namespace.toString());
             }
@@ -363,7 +364,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             System.out.println("Creating new secret: " + kubernetesClient.secrets().inNamespace(acsNamespace).create(secretBuilder.build()));
 
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             for (Secret kubeS : kubernetesClient.secrets().inNamespace(acsNamespace).list().getItems()) {
                 System.out.println("\tFound secret: " + kubeS);
@@ -400,7 +401,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 .build();
 
             System.out.println("Creating a replication controller: " + kubernetesClient.replicationControllers().inNamespace(acsNamespace).create(rc));
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             rc = kubernetesClient.replicationControllers().inNamespace(acsNamespace).withName("acrsample-rc").get();
             System.out.println("Found replication controller: " + rc.toString());
@@ -430,7 +431,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             System.out.println("Creating a service: " + kubernetesClient.services().inNamespace(acsNamespace).create(lbService));
 
-            SdkContext.sleep(5000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             System.out.println("\tFound service: " + kubernetesClient.services().inNamespace(acsNamespace).withName(acsLbIngressName).get());
 
@@ -457,7 +458,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
                 if (timeout > 0) {
                     timeout -= 30000; // 30 seconds
-                    SdkContext.sleep(30000);
+                    ResourceManagerUtils.sleep(Duration.ofSeconds(30));
                 }
             }
 
@@ -467,10 +468,10 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             if (serviceIP != null) {
                 // warm up
                 System.out.println("Warming up " + serviceIP);
-                Utils.curl("http://" + serviceIP);
-                SdkContext.sleep(15000);
+                Utils.sendGetRequest("http://" + serviceIP);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 System.out.println("CURLing " + serviceIP);
-                System.out.println(Utils.curl("http://" + serviceIP));
+                System.out.println(Utils.sendGetRequest("http://" + serviceIP));
             } else {
                 System.out.println("ERROR: service unavailable");
             }

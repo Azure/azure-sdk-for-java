@@ -27,8 +27,8 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
 
     @Override
     public ContainerGroup createResource(ContainerGroups containerGroups) throws Exception {
-        final String cgName = containerGroups.manager().sdkContext().randomResourceName("aci", 10);
-        final String rgName = containerGroups.manager().sdkContext().randomResourceName("rgaci", 10);
+        final String cgName = containerGroups.manager().resourceManager().internalContext().randomResourceName("aci", 10);
+        final String rgName = containerGroups.manager().resourceManager().internalContext().randomResourceName("rgaci", 10);
 
         List<String> dnsServers = new ArrayList<String>();
         dnsServers.add("dnsServer1");

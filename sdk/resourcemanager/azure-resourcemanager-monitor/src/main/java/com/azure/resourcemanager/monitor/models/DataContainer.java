@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataContainer model. */
+/** Information about a container with data for a given resource. */
 @Fluent
 public final class DataContainer {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataContainer.class);

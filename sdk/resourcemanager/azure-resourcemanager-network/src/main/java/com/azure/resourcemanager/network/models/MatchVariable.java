@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MatchVariable model. */
+/** Define match variables. */
 @Fluent
 public final class MatchVariable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchVariable.class);

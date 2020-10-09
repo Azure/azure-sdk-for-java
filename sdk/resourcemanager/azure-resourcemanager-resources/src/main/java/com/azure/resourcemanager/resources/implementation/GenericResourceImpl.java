@@ -7,13 +7,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
-import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
@@ -152,7 +151,8 @@ final class GenericResourceImpl
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(innerModel().id());
 
         return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
@@ -187,7 +187,7 @@ final class GenericResourceImpl
                             name,
                             api,
                             innerModel())
-                            .subscribeOn(SdkContext.getReactorScheduler())
+                            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                             .map(innerToFluentMap(this));
                 });
     }
@@ -197,7 +197,6 @@ final class GenericResourceImpl
         if (this.apiVersion != null) {
             apiVersion = Mono.just(this.apiVersion);
         } else {
-            final ResourceManagementClient serviceClient = this.manager().serviceClient();
             apiVersion = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                 .flatMap(provider -> {
                     String id;
@@ -205,7 +204,7 @@ final class GenericResourceImpl
                         id = innerModel().id();
                     } else {
                         id = ResourceUtils.constructResourceId(
-                            serviceClient.getSubscriptionId(),
+                            this.manager().subscriptionId(),
                             resourceGroupName(),
                             resourceProviderNamespace(),
                             resourceType(),

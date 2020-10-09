@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner;
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
@@ -68,7 +68,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
 
     @Override
     public PagedIterable<RoleDefinition> listByScope(String scope) {
-        return wrapList(inner().list(scope, null));
+        return wrapList(inner().list(scope));
     }
 
     @Override

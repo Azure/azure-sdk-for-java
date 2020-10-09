@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckNameAvailabilityInput model. */
+/** Input of CheckNameAvailability API. */
 @Fluent
 public final class CheckNameAvailabilityInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityInput.class);

@@ -35,11 +35,11 @@ public final class ManageVirtualMachineExtension {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 10);
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOVE", 15);
-        final String pipDnsLabelLinuxVM = azureResourceManager.sdkContext().randomResourceName("rgPip1", 25);
-        final String pipDnsLabelWindowsVM = azureResourceManager.sdkContext().randomResourceName("rgPip2", 25);
+        final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 10);
+        final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 10);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOVE", 15);
+        final String pipDnsLabelLinuxVM = Utils.randomResourceName(azureResourceManager, "rgPip1", 25);
+        final String pipDnsLabelWindowsVM = Utils.randomResourceName(azureResourceManager, "rgPip2", 25);
 
         // Linux configurations
         //

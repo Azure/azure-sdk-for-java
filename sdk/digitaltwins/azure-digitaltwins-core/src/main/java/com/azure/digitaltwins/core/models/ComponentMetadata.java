@@ -20,7 +20,7 @@ public final class ComponentMetadata {
      * Model-defined writable properties' request state.
      */
     @JsonIgnore
-    private final Map<String, Object> writeableProperties = new HashMap<>();
+    private final Map<String, Object> writableProperties = new HashMap<>();
 
     /**
      * The public constructor for the ComponentMetadata.
@@ -33,8 +33,8 @@ public final class ComponentMetadata {
      * @return The model-defined writable properties' request state.
      */
     @JsonAnyGetter
-    public Map<String, Object> getWriteableProperties() {
-        return writeableProperties;
+    public Map<String, Object> getWritableProperties() {
+        return writableProperties;
     }
 
     /**
@@ -45,7 +45,7 @@ public final class ComponentMetadata {
      */
     @JsonAnySetter
     public ComponentMetadata addWritableProperties(String key, Object value) {
-        this.writeableProperties.put(key, value);
+        this.writableProperties.put(key, value);
         return this;
     }
 }

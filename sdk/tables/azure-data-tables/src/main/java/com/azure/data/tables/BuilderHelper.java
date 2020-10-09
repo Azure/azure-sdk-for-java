@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class BuilderHelper {
+final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-data-tables.properties");
     private static final String SDK_NAME = "name";

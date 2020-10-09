@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for Elastic Pool Activity interface. */

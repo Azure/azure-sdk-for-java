@@ -7,7 +7,7 @@ This sample project demonstrates how to use Azure Blob storage with Spring Boot.
 
 * An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
 
-* A [Java Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/), version 1.8.
+* A [Java Development Kit (JDK)][jdk_link], version 1.8.
 
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
@@ -45,7 +45,8 @@ Storage Type | Reference Link
 
 ## Contributing
 
-
+<!-- LINKS -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 
 

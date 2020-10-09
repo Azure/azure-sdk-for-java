@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.azure.resourcemanager.storage.fluent.inner.BlobContainerInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;

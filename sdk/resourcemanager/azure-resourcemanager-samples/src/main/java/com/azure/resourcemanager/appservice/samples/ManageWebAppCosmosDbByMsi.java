@@ -20,9 +20,11 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+
+import java.time.Duration;
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -45,10 +47,10 @@ public final class ManageWebAppCosmosDbByMsi {
     public static boolean runSample(AzureResourceManager azureResourceManager, TokenCredential credential, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
-        final String appName        = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String vaultName      = azureResourceManager.sdkContext().randomResourceName("vault", 20);
-        final String cosmosName     = azureResourceManager.sdkContext().randomResourceName("cosmosdb", 20);
+        final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String vaultName      = Utils.randomResourceName(azureResourceManager, "vault", 20);
+        final String cosmosName     = Utils.randomResourceName(azureResourceManager, "cosmosdb", 20);
         final String appUrl         = appName + ".azurewebsites.net";
 
         try {
@@ -81,7 +83,7 @@ public final class ManageWebAppCosmosDbByMsi {
                         .attach()
                     .create();
 
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
             SecretClient client = new SecretClientBuilder()
                     .vaultUrl(vault.vaultUri())
@@ -138,10 +140,10 @@ public final class ManageWebAppCosmosDbByMsi {
 
             // warm up
             System.out.println("Warming up " + appUrl + "...");
-            Utils.curl("http://" + appUrl);
-            SdkContext.sleep(10000);
+            Utils.sendGetRequest("http://" + appUrl);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             System.out.println("CURLing " + appUrl);
-            System.out.println(Utils.curl("http://" + appUrl));
+            System.out.println(Utils.sendGetRequest("http://" + appUrl));
 
 
             return true;

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
@@ -26,6 +28,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -60,6 +63,11 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 public final class BridgeInternal {
 
     private BridgeInternal() {}
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        return new CosmosDiagnostics(diagnosticsClientContext);
+    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
@@ -134,9 +142,87 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestTimeline(E e, RequestTimeline requestTimeline) {
+        e.setRequestTimeline(requestTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RequestTimeline getRequestTimeline(E e) {
+        return e.getRequestTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setChannelTaskQueueSize(E e, int value) {
+        e.setRntbdChannelTaskQueueSize(value);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdPendingRequestQueueSize(E e) {
+        return e.getRntbdPendingRequestQueueSize();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdPendingRequestQueueSize(E e, int value) {
+        e.setRntbdPendingRequestQueueSize(value);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getChannelTaskQueueSize(E e) {
+        return e.getRntbdChannelTaskQueueSize();
+    }
+
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
+        e.setRntbdRequestLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdRequestLength(E e) {
+        return e.getRntbdRequestLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestBodyLength(E e, int requestLen) {
+        e.setRequestPayloadLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRequestBodyLength(E e) {
+        return e.getRequestPayloadLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdResponseLength(E e, int requestLen) {
+        e.setRntbdResponseLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdResponseLength(E e) {
+        return e.getRntbdResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setServiceEndpointStatistics(E e, RntbdEndpointStatistics rntbdEndpointStatistics) {
+        e.setRntbdServiceEndpointStatistics(rntbdEndpointStatistics);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdEndpointStatistics getServiceEndpointStatistics(E e) {
+        return e.getRntbdServiceEndpointStatistics();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -164,6 +250,16 @@ public final class BridgeInternal {
     public static <E extends CosmosException> E setPartitionKeyRangeId(E e, String partitionKeyRangeId) {
         e.partitionKeyRangeId = partitionKeyRangeId;
         return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> boolean hasSendingRequestStarted(E e) {
+        return e.hasSendingRequestStarted();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> void setSendingRequestStarted(E e, boolean hasSendingRequestStarted) {
+        e.setSendingRequestHasStarted(hasSendingRequestStarted);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -357,11 +453,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics() {
-        return new CosmosDiagnostics();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

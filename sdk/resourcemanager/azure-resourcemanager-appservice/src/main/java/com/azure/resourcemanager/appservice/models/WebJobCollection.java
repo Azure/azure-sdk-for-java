@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.WebJobInner;
+import com.azure.resourcemanager.appservice.fluent.models.WebJobInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WebJobCollection model. */
+/** Collection of Kudu web job information elements. */
 @Fluent
 public final class WebJobCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebJobCollection.class);

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.sql.models.PrimaryAggregationType;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetricAvailability;
 import com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition;
 import com.azure.resourcemanager.sql.models.UnitDefinitionType;
-import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

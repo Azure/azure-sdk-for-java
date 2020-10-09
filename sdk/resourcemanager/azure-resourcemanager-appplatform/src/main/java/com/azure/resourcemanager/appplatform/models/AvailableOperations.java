@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.fluent.inner.OperationDetailInner;
+import com.azure.resourcemanager.appplatform.fluent.models.OperationDetailInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailableOperations model. */
+/** Available operations of the service. */
 @Fluent
 public final class AvailableOperations {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperations.class);

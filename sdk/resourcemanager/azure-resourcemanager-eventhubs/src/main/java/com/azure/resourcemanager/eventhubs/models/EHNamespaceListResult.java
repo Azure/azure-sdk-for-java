@@ -6,12 +6,12 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EHNamespaceListResult model. */
+/** The response of the List Namespace operation. */
 @Fluent
 public final class EHNamespaceListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceListResult.class);

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtector;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorInner;
+import com.azure.resourcemanager.sql.fluent.models.EncryptionProtectorInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 

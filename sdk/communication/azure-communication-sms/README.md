@@ -2,8 +2,8 @@
 
 Azure Communication SMS is used to send simple text messages.
 
-<!-- [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][azconfig_docs] -->
+[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
+| [Product documentation][product_docs]
 
 ## Getting started
 
@@ -12,7 +12,7 @@ Azure Communication SMS is used to send simple text messages.
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. <!--[Create a Communication Services resource](../create-a-communication-resource.md). -->
+- A deployed Communication Services resource.
 
 ### Include the package
 
@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.1</version> 
+  <version>1.0.0-beta.2</version> 
 </dependency>
 ```
 
@@ -30,44 +30,41 @@ Azure Communication SMS is used to send simple text messages.
 To send messages with Azure Communication SMS Service a resource access key is used 
 for authentication. 
 
-SMS messaging uses HMAC authentication with resource access key. This is done via the 
-CommunicationClientCredentials The credentials must be provided to the SMSClientBuilder 
-via the credential() function. Endpoint and httpClient must also be set.
+SMS messaging uses HMAC authentication with resource access key. The access key must be provided
+via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
+functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/App.java#L25-L56 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L23-L39 -->
 ```java
-// Retrieve the Azure Communication SMS Service endpoint for use with the application. 
-// The endpoint string is stored in an environment variable on the machine running the 
-// application called COMMUNICATION_SERVICES_ENDPOINT.
-String endpoint = System.getenv("COMMUNICATION_SERVICES_ENDPOINT");
-
-// Retrieve the access key string for use with the application. The access key
-// string is stored in an environment variable on the machine running the application 
-// called COMMUNICATION_SERVICES_ACCESS_KEY.
-String accessKey = System.getenv("COMMUNICATION_SERVICES_ACCESS_KEY");
+// Your can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+String accessKey = "SECRET";
 
 // Instantiate the http client
-HttpClient httpClient = null; // Your HttpClient
-
-CommunicationClientCredential credential = null;
-try {
-    credential = new CommunicationClientCredential(accessKey);
-} catch (NoSuchAlgorithmException e) {
-    System.out.println(e.getMessage());
-} catch (InvalidKeyException e) {
-    System.out.println(e.getMessage());
-}
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
 // Create a new SmsClientBuilder to instantiate an SmsClient
 SmsClientBuilder smsClientBuilder = new SmsClientBuilder();
 
 // Set the endpoint, access key, and the HttpClient
 smsClientBuilder.endpoint(endpoint)
-    .credential(credential)
+    .accessKey(accessKey)
     .httpClient(httpClient);
 
 // Build a new SmsClient
 SmsClient smsClient = smsClientBuilder.buildClient();
+```
+
+Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L70 -->
+```java
+// Your can find your connection string from your resource in the Azure Portal
+String connectionString = "<connection_string>";
+
+SmsClient smsClient = new SmsClientBuilder()
+    .connectionString(connectionString)
+    .httpClient(httpClient)
+    .buildClient();
 ```
 
 ## Examples
@@ -78,7 +75,7 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/App.java#L58-L74 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L41-L57 -->
 ```java
 // Currently Sms services only supports one phone number
 List<PhoneNumber> to = new ArrayList<PhoneNumber>();
@@ -121,5 +118,9 @@ Check out other client libraries for Azure Communication Services
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-sms
+[api_documentation]: https://aka.ms/java-docs
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-sms/src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Feng%2Fazure-communications-sms%2FREADME.png)

@@ -11,11 +11,11 @@ module com.azure.resourcemanager.appservice {
     // export public APIs of appservice
     exports com.azure.resourcemanager.appservice;
     exports com.azure.resourcemanager.appservice.fluent;
-    exports com.azure.resourcemanager.appservice.fluent.inner;
+    exports com.azure.resourcemanager.appservice.fluent.models;
     exports com.azure.resourcemanager.appservice.models;
 
     // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.appservice.fluent.inner to
+    opens com.azure.resourcemanager.appservice.fluent.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.appservice.models to

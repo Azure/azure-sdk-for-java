@@ -5,14 +5,14 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
@@ -410,7 +410,8 @@ class ApplicationGatewayImpl
     }
 
     protected ApplicationGatewayBackendImpl ensureUniqueBackend() {
-        String name = this.manager().sdkContext().randomResourceName("backend", 20);
+        String name = this.manager().resourceManager().internalContext()
+            .randomResourceName("backend", 20);
         ApplicationGatewayBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -420,7 +421,7 @@ class ApplicationGatewayImpl
         ApplicationGatewayIpConfigurationImpl ipConfig =
             (ApplicationGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().sdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
@@ -432,7 +433,7 @@ class ApplicationGatewayImpl
         if (frontend != null) {
             return frontend;
         } else {
-            String name = this.manager().sdkContext().randomResourceName("frontend", 14);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 14);
             frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPrivateFrontend = frontend;
@@ -445,7 +446,7 @@ class ApplicationGatewayImpl
         if (frontend != null) {
             return frontend;
         } else {
-            String name = this.manager().sdkContext().randomResourceName("frontend", 14);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 14);
             frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPublicFrontend = frontend;
@@ -457,7 +458,7 @@ class ApplicationGatewayImpl
 
     private Creatable<Network> ensureDefaultNetworkDefinition() {
         if (this.creatableNetwork == null) {
-            final String vnetName = this.manager().sdkContext().randomResourceName("vnet", 10);
+            final String vnetName = this.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
             this.creatableNetwork =
                 this
                     .manager()
@@ -477,7 +478,7 @@ class ApplicationGatewayImpl
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()
@@ -1043,7 +1044,7 @@ class ApplicationGatewayImpl
             // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
-                name = this.manager().sdkContext().randomResourceName("port", 9);
+                name = this.manager().resourceManager().internalContext().randomResourceName("port", 9);
             }
 
             frontendPortByName = new ApplicationGatewayFrontendPort().withName(name).withPort(portNumber);

@@ -7,7 +7,7 @@ import com.azure.core.management.Resource;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTerminalSize;
@@ -29,9 +29,9 @@ import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.inner.IpConfigurationProfileInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkProfileInner;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationProfileInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkProfileInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -360,7 +360,7 @@ public class ContainerGroupImpl
                 manager()
                     .storageManager()
                     .storageAccounts()
-                    .define(manager().sdkContext().randomResourceName("fs", 24))
+                    .define(manager().resourceManager().internalContext().randomResourceName("fs", 24))
                     .withRegion(this.regionName());
             Creatable<StorageAccount> creatable;
             if (this.creatableGroup != null) {
@@ -468,7 +468,8 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
         String virtualNetworkId, String subnetName) {
-        creatableNetworkProfileName = manager().sdkContext().randomResourceName("aci-profile-", 20);
+        creatableNetworkProfileName = manager().resourceManager().internalContext()
+            .randomResourceName("aci-profile-", 20);
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         SubnetInner subnetInner = new SubnetInner();
         subnetInner.withId(subnetId);
@@ -493,7 +494,7 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withNewVirtualNetwork(String addressSpace) {
-        String virtualNetworkName = manager().sdkContext().randomResourceName("net", 20);
+        String virtualNetworkName = manager().resourceManager().internalContext().randomResourceName("net", 20);
         String subnetName = "subnet0";
 
         creatableVirtualNetwork =

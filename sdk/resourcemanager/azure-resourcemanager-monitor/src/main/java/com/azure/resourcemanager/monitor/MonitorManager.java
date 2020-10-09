@@ -6,7 +6,7 @@ package com.azure.resourcemanager.monitor;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.monitor.fluent.MonitorClient;
-import com.azure.resourcemanager.monitor.fluent.MonitorClientBuilder;
+import com.azure.resourcemanager.monitor.implementation.MonitorClientBuilder;
 import com.azure.resourcemanager.monitor.implementation.ActionGroupsImpl;
 import com.azure.resourcemanager.monitor.implementation.ActivityLogsImpl;
 import com.azure.resourcemanager.monitor.implementation.AlertRulesImpl;
@@ -24,7 +24,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Monitor. */
 public final class MonitorManager extends Manager<MonitorClient> {
@@ -49,12 +48,11 @@ public final class MonitorManager extends Manager<MonitorClient> {
      *
      * @param credential the credential to use
      * @param profile the profile to use
-     * @param sdkContext the sdk context
      * @return the MonitorManager
      */
     public static MonitorManager authenticate(
-        TokenCredential credential, AzureProfile profile, SdkContext sdkContext) {
-        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile, sdkContext);
+        TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
     /**
      * Creates an instance of MonitorManager that exposes Monitor API entry points.
@@ -64,19 +62,9 @@ public final class MonitorManager extends Manager<MonitorClient> {
      * @return the MonitorManager
      */
     public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return new MonitorManager(httpPipeline, profile, new SdkContext());
+        return new MonitorManager(httpPipeline, profile);
     }
-    /**
-     * Creates an instance of MonitorManager that exposes Monitor API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the MonitorManager
-     */
-    public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new MonitorManager(httpPipeline, profile, sdkContext);
-    }
+
     /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
@@ -144,7 +132,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
         }
     }
 
-    private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -152,7 +140,6 @@ public final class MonitorManager extends Manager<MonitorClient> {
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 }

@@ -1,6 +1,14 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <!--
+
+    NOTE: We were using these mirror settings when we were getting
+          blocked by Maven Central. However the proxy approach we were
+          using has started failing 20% of the time and it seems that
+          Maven Central is no longer blocking us, with a failure rate
+          of about 5%. So these mirror settings have been removed.
+
     <mirrors>
         <mirror>
             <id>repo-maven-apache-org-mirror</id>
@@ -12,5 +20,5 @@
             <url>https://oss-sonatype-org.azurefd.net/content/repositories/snapshots/</url>
             <mirrorOf>ossrh</mirrorOf>
         </mirror>
-    </mirrors>
+    </mirrors> -->
 </settings>
