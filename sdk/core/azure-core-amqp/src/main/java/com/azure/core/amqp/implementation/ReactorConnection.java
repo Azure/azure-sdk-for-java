@@ -98,7 +98,9 @@ public class ReactorConnection implements AmqpConnection {
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId,
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
-            connectionOptions.getProxyOptions(), product, clientVersion, connectionOptions.getClientOptions());
+            connectionOptions.getProxyOptions(), product, clientVersion, connectionOptions.getSslVerifyMode(),
+            connectionOptions.getClientOptions());
+
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
@@ -309,7 +311,7 @@ public class ReactorConnection implements AmqpConnection {
 
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
-            new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, sessionName))));
+            new ClientLogger(RequestResponseChannel.class)));
     }
 
     private boolean removeSession(String sessionName, ErrorCondition errorCondition) {

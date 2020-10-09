@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
-import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -17,7 +16,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -80,8 +78,7 @@ public class ServiceBusMessage {
     public ServiceBusMessage(byte[] body) {
         this.binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            new BinaryData(binaryData))));
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(binaryData)));
     }
 
     /**
@@ -376,7 +373,7 @@ public class ServiceBusMessage {
     public OffsetDateTime getScheduledEnqueueTime() {
         Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue());
         return value != null
-            ? ((Date) value).toInstant().atOffset(ZoneOffset.UTC)
+            ? ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC)
             : null;
     }
 

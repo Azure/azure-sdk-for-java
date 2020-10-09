@@ -15,7 +15,7 @@ best parts of Azure cloud.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.0.0-beta.1</version>
+  <version>12.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -53,7 +53,7 @@ Your Table API account URL, subsequently identified as `<your-table-account-url>
 `http(s)://<cosmosdb-account-name>.table.cosmosdb.azure.com`.
 
 ### Authenticate the client
-Every request made to the Table service must be authorized using a connection string, shared key credential, or shared access signature. The samples below demonstrate the usage of these methods.
+Every request made to the Tables service must be authorized using a connection string, shared key credential, or shared access signature. The samples below demonstrate the usage of these methods.
 
 Note: Azure Tables doesn't support Azure Active Directory (AAD) authentication.
 
@@ -120,7 +120,7 @@ az storage table generate-sas \
 - **Partition Key** - An entity's partition key identifies the partition within the table to which the entity belongs. Entities with the same partition key can be queried more quickly, and inserted/updated in atomic operations.
 - **Row Key** - An entity's row key is its unique identifier within a partition.
 
-Common uses of the Table service include:
+Common uses of the Tables service include:
 
 - Storing TBs of structured data capable of serving web scale applications
 - Storing datasets that don't require complex joins, foreign keys, or stored procedures and can be de-normalized for fast access

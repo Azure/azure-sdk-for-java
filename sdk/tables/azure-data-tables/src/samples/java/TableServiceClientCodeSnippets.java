@@ -13,7 +13,7 @@ import com.azure.data.tables.models.TableStorageException;
 import com.azure.data.tables.models.UpdateMode;
 
 /**
- * sync code snippets for the table service
+ * sync code snippets for the Tables service
  */
 public class TableServiceClientCodeSnippets {
     private final ClientLogger logger = new ClientLogger("TableServiceClientCodeSnippets");

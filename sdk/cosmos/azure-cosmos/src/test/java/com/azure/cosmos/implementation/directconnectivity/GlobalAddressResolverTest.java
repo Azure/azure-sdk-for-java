@@ -39,6 +39,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GlobalAddressResolverTest {
@@ -103,11 +104,11 @@ public class GlobalAddressResolverTest {
     @Test(groups = "unit")
     public void resolveAsync() throws Exception {
 
-        GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
+        GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(mockDiagnosticsClientContext(), httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
                 userAgentContainer,
                 serviceConfigReader, connectionPolicy);
         RxDocumentServiceRequest request;
-        request = RxDocumentServiceRequest.createFromName(
+        request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read,
                 "dbs/db/colls/coll/docs/doc1",
                 ResourceType.Document);
@@ -128,7 +129,7 @@ public class GlobalAddressResolverTest {
 
     @Test(groups = "unit")
     public void openAsync() throws Exception {
-        GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
+        GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(mockDiagnosticsClientContext(), httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
                 userAgentContainer,
                 serviceConfigReader, connectionPolicy);
         Map<URI, GlobalAddressResolver.EndpointCache> addressCacheByEndpoint = Mockito.spy(globalAddressResolver.addressCacheByEndpoint);

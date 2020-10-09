@@ -5,8 +5,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.PublishTelemetryRequestOptions;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -38,12 +36,12 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
             createModelsAndTwins(client, wifiModelId, roomWithWifiModelId, roomWithWifiTwinId);
 
             // Act
-            PublishTelemetryRequestOptions telemetryRequestOptions = new PublishTelemetryRequestOptions().setMessageId(testResourceNamer.randomUuid());
 
             Response<Void> publishTelemetryResponse = client.publishTelemetryWithResponse(
                 roomWithWifiTwinId,
+                testResourceNamer.randomUuid(),
                 "{\"Telemetry1\": 5}",
-                telemetryRequestOptions,
+                null,
                 Context.NONE);
 
             assertThat(publishTelemetryResponse.getStatusCode())
@@ -51,16 +49,15 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
                 .isEqualTo(HttpURLConnection.HTTP_NO_CONTENT);
 
 
-            PublishTelemetryRequestOptions componentTelemetryRequestOptions = new PublishTelemetryRequestOptions().setMessageId(testResourceNamer.randomUuid());
-
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
 
             Response<Void> publishComponentTelemetryResponse = client.publishComponentTelemetryWithResponse(
                 roomWithWifiTwinId,
                 TestAssetDefaults.WIFI_COMPONENT_NAME,
+                testResourceNamer.randomUuid(),
                 telemetryPayload,
-                componentTelemetryRequestOptions,
+                null,
                 Context.NONE);
 
             assertThat(publishComponentTelemetryResponse.getStatusCode())
