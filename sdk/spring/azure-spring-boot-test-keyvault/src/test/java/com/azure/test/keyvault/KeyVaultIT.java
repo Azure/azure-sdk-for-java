@@ -61,14 +61,14 @@ public class KeyVaultIT {
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
 
+            LOGGER.info("app begin to start.");
             final ConfigurableApplicationContext dummy = app.start("dummy");
+            LOGGER.info("app started.");
             final ConfigurableEnvironment environment = dummy.getEnvironment();
             final MutablePropertySources propertySources = environment.getPropertySources();
             for (final PropertySource<?> propertySource : propertySources) {
-                System.out.println("name =  " + propertySource.getName() + "\nsource = " + propertySource
-                    .getSource().getClass() + "\n");
+                LOGGER.info("name = {}, source = {}.", propertySource.getName(), propertySource.getSource().getClass());
             }
-
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));
         }
         LOGGER.info("keyVaultAsPropertySource end.");
