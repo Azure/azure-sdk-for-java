@@ -11,8 +11,8 @@ com.azure:azure-communication-chat;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-communication-common;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-communication-administration;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-communication-sms;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-core;1.8.1;1.9.0
-com.azure:azure-core-amqp;1.5.1;1.6.0-beta.1
+com.azure:azure-core;1.9.0;1.10.0-beta.1
+com.azure:azure-core-amqp;1.6.0;1.7.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-http-netty;1.6.1;1.6.2
@@ -135,8 +135,6 @@ com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-bet
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-unreleased_com.azure:azure-core;1.9.0
-unreleased_com.azure:azure-core-amqp;1.6.0-beta.1
 unreleased_com.azure:azure-core-test;1.5.0
 unreleased_com.azure:azure-identity;1.2.0-beta.2
 unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
