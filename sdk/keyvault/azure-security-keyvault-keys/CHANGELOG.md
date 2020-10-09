@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0-beta.2 (2020-10-08)
+## 4.3.0-beta.2 (2020-10-09)
 
 ### New Features
 - Added `KeyVaultKeyIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-keys/src/main/java/com/azure/security/keyvault/keys/models/KeyVaultKeyIdentifier.java#L78) method to parse the different elements of a given key identifier.

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0-beta.2 (2020-10-08)
+## 4.2.0-beta.2 (2020-10-09)
 
 ### New Features
 - Added `KeyVaultCertificateIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-certificates/src/main/java/com/azure/security/keyvault/certificates/models/KeyVaultCertificateIdentifier.java#L79) method to parse the different elements of a given certificate identifier.
