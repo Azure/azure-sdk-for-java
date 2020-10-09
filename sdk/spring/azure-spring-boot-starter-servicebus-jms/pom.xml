@@ -38,9 +38,9 @@
       <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>0.0.5</version>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
@@ -89,7 +89,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-common:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
                 <include>io.netty:netty-handler:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->

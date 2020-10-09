@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.jms;
 
-import org.apache.qpid.jms.JmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -23,7 +23,7 @@ public class ServiceBusJMSAutoConfigurationTest {
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusJmsConnectionFactory.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
 

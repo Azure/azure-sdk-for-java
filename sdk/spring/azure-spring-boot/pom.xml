@@ -149,9 +149,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>0.53.0</version><!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>0.0.5</version><!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Azure libraries-->
@@ -288,7 +288,7 @@
                 <include>org.springframework.security:spring-security-oauth2-client:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
-                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>com.microsoft.azure:azure-servicebus-jms:[0.0.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
