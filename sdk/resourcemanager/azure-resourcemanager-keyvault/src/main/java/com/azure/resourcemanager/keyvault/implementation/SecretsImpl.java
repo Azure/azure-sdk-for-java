@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Mono;
@@ -122,6 +123,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
 
     @Override
     public Mono<Secret> getByNameAndVersionAsync(final String name, final String version) {
+        Objects.requireNonNull(name);
         return (version == null ? inner.getSecret(name) : inner.getSecret(name, version)).map(this::wrapModel);
     }
 
@@ -132,6 +134,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
 
     @Override
     public Mono<Secret> enableByNameAndVersionAsync(String name, String version) {
+        Objects.requireNonNull(name);
         return enableByNameAndVersionAsync(name, version, true);
     }
 
@@ -142,6 +145,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
 
     @Override
     public Mono<Void> disableByNameAndVersionAsync(String name, String version) {
+        Objects.requireNonNull(name);
         return enableByNameAndVersionAsync(name, version, false).then();
     }
 
