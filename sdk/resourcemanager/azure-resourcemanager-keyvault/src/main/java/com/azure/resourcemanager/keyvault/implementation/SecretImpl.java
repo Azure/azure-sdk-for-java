@@ -103,7 +103,7 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
 
     @Override
     protected Mono<SecretProperties> getInnerAsync() {
-        return vault.secretClient().getSecret(name(), null).map(secret -> {
+        return vault.secretClient().getSecret(name(), innerModel().getVersion()).map(secret -> {
             this.secretValue = secret.getValue();
             return secret.getProperties();
         });
