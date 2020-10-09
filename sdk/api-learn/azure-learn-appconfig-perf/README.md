@@ -62,4 +62,7 @@ Current         Total
 
 === Results ===
 Completed 537 operations in a weighted-average of 9.99s (53.74 ops/s, 0.019 s/op)
+
+=== Cleanup ===
+
 ``` 
