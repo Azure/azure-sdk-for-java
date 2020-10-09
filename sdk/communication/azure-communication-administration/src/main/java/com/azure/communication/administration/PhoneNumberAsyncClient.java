@@ -768,62 +768,59 @@ public final class PhoneNumberAsyncClient {
         }
     }
 
-    
-
     /**
-     * Long Running Operation for the purchaseSearch.
+     * LongRunningOperationforthepurchaseSearch.
      *
-     * @param searchId ID of the search
-     * @param pollInterval Timelapse of the poll request.
-     * @return A {@link PollerFlux} object with the search result
+     * @paramsearchIdIDofthesearch
+     * @parampollIntervalTimelapseofthepollrequest.
+     * @returnA{@linkPollerFlux}objectwiththesearchresult
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
-        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        Objects.requireNonNull(searchId, "'searchId'cannotbenull.");
+        Objects.requireNonNull(pollInterval, "'pollInterval'cannotbenull.");
 
         return new PollerFlux<Void, Void>(pollInterval,
             purchaseSearchActivationOperation(searchId),
             purchaseSearchCreatePollOperation(searchId),
-            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellationisnotsupported")),
             purchaseSearchFetchResultOperation(searchId));
     }
 
     private Function<PollingContext<Void>, Mono<Void>> purchaseSearchActivationOperation(String searchId) {
 
         return (pollingContext) -> {
-          Mono<Void> response = purchaseSearchWithResponse(searchId).flatMap(Response->{
-              Mono<PhoneNumberSearch> phoneNumberSearch = getSearchById(searchId);
-              return null;
-          });
+            Mono<Void> response = purchaseSearchWithResponse(searchId).flatMap(Response -> {
+                Mono<PhoneNumberSearch> phoneNumberSearch = getSearchById(searchId);
+                return null;
+            });
 
-     return response;
+            return response;
         };
     }
 
     private Function<PollingContext<Void>, Mono<PollResponse<Void>>> purchaseSearchCreatePollOperation(String searchId) {
         return (pollingContext) -> getSearchById(searchId)
-                    .flatMap(getSearchResponse ->{
-                        LongRunningOperationStatus status = null;
-                        SearchStatus statusResponse = getSearchResponse.getStatus();
-                        if (statusResponse.equals(SearchStatus.RESERVED)) {
-                            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                        } else if (statusResponse.equals(SearchStatus.EXPIRED)) {
-                            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                        } else if (statusResponse.equals(SearchStatus.SUCCESS)) {
-                            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                        } else if (statusResponse.equals(SearchStatus.ERROR)) {
-                            status = LongRunningOperationStatus.FAILED;
-                        } else {
-                            status = LongRunningOperationStatus.IN_PROGRESS;
-                        }
+            .flatMap(getSearchResponse -> {
+                LongRunningOperationStatus status = null;
+                SearchStatus statusResponse = getSearchResponse.getStatus();
+                if (statusResponse.equals(SearchStatus.RESERVED)) {
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                } else if (statusResponse.equals(SearchStatus.EXPIRED)) {
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                } else if (statusResponse.equals(SearchStatus.SUCCESS)) {
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                } else if (statusResponse.equals(SearchStatus.ERROR)) {
+                    status = LongRunningOperationStatus.FAILED;
+                } else {
+                    status = LongRunningOperationStatus.IN_PROGRESS;
+                }
 
-                        return Mono.just(new PollResponse<>(status, null));
-                    });
+                return Mono.just(new PollResponse<>(status, null));
+            });
 
     }
-
 
 
     private Function<PollingContext<Void>,
@@ -831,7 +828,7 @@ public final class PhoneNumberAsyncClient {
 
         return pollingContext -> {
 
-               return Mono.just(pollingContext.getLatestResponse().getValue());
+            return Mono.just(pollingContext.getLatestResponse().getValue());
 
 
         };
