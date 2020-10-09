@@ -22,6 +22,7 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.specialized.BlobLeaseClient
@@ -235,6 +236,28 @@ class APISpec extends Specification {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder
+    }
+
+    BlobClientBuilder getBlobClientBuilder(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+
+        BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

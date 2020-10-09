@@ -5,20 +5,19 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure Function App deployment slot. */
 @Fluent
 public interface FunctionDeploymentSlot
     extends IndependentChildResource<AppServiceManager, SiteInner>,
+        FunctionDeploymentSlotBasic,
         WebAppBase,
-        Refreshable<FunctionDeploymentSlot>,
         Updatable<FunctionDeploymentSlot.Update>,
         HasParent<FunctionApp> {
 

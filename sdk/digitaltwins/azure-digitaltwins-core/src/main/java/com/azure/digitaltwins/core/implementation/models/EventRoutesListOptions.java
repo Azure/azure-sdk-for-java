@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EventRoutesListOptions model. */
+/** Parameter group. */
 @Fluent
 public final class EventRoutesListOptions {
     /*
@@ -38,4 +38,11 @@ public final class EventRoutesListOptions {
         this.maxItemCount = maxItemCount;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

@@ -3,16 +3,16 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure RegistryDockerTaskRunRequest registry task run request. */
 @Fluent()
-public interface RegistryTaskRun extends HasInner<RunInner>, Refreshable<RegistryTaskRun> {
+public interface RegistryTaskRun extends HasInnerModel<RunInner>, Refreshable<RegistryTaskRun> {
     /** @return the name of the resource group for this task run request */
     String resourceGroupName();
 

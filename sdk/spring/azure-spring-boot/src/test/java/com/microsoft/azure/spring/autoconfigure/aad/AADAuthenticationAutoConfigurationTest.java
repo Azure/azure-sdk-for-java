@@ -20,7 +20,7 @@ public class AADAuthenticationAutoConfigurationTest {
             "azure.activedirectory.client-secret=fake-client-secret",
             "azure.activedirectory.user-group.allowed-groups=fake-group",
             "azure.service.endpoints.global.aadKeyDiscoveryUri=http://fake.aad.discovery.uri",
-            Constants.ALLOW_TELEMETRY_PROPERTY + "=false");
+            TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
 
     @Test
     public void createAADAuthenticationFilter() {

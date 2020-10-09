@@ -6,7 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.models.Tenants;
-import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
+import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
 
 /**

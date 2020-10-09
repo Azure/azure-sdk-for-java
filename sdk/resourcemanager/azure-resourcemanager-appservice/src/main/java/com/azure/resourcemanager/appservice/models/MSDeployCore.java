@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The MSDeployCore model. */
+/** MSDeploy ARM PUT core information. */
 @Fluent
 public class MSDeployCore {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployCore.class);

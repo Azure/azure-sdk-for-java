@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QuarantinePolicy model. */
+/** An object that represents quarantine policy for a container registry. */
 @Fluent
 public final class QuarantinePolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QuarantinePolicy.class);

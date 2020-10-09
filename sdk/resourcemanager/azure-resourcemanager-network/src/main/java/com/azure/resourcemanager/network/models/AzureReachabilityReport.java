@@ -3,17 +3,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.AzureReachabilityReportInner;
+import com.azure.resourcemanager.network.fluent.models.AzureReachabilityReportInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An immutable client-side representation of Azure reachability report details. */
 @Fluent
 public interface AzureReachabilityReport
-    extends Executable<AzureReachabilityReport>, HasInner<AzureReachabilityReportInner>, HasParent<NetworkWatcher> {
+    extends Executable<AzureReachabilityReport>,
+        HasInnerModel<AzureReachabilityReportInner>,
+        HasParent<NetworkWatcher> {
     /** @return the aggregation level of Azure reachability report. Can be Country, State or City. */
     String aggregationLevel();
 

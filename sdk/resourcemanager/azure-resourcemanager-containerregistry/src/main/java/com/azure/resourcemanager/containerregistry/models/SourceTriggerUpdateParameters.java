@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SourceTriggerUpdateParameters model. */
+/** The properties for updating a source based trigger. */
 @Fluent
 public final class SourceTriggerUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceTriggerUpdateParameters.class);

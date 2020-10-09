@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.polling.PollerFlux
@@ -614,7 +613,7 @@ class FileAsyncAPITests extends APISpec {
             downloadFile.toPath().toString(), null, new ShareRequestConditions().setLeaseId(getRandomUUID())))
 
         then:
-        verifier.verifyError(HttpResponseException)
+        verifier.verifyError(ShareStorageException)
 
         cleanup:
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
@@ -929,7 +928,7 @@ class FileAsyncAPITests extends APISpec {
             primaryFileAsyncClient.getPropertiesWithResponse(new ShareRequestConditions().setLeaseId(getRandomUUID())))
 
         then:
-        getPropertiesVerifier.verifyError(HttpResponseException)
+        getPropertiesVerifier.verifyError(ShareStorageException)
     }
 
     def "Get properties error"() {
@@ -938,7 +937,7 @@ class FileAsyncAPITests extends APISpec {
 
         then:
         getPropertiesErrorVerifier.verifyErrorSatisfies {
-            assert it instanceof HttpResponseException
+            assert it instanceof ShareStorageException
         }
     }
 

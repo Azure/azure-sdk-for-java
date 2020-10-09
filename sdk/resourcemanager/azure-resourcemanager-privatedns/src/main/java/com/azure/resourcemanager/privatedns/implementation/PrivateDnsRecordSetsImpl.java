@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
@@ -36,7 +36,7 @@ class PrivateDnsRecordSetsImpl
 
     void withCnameRecordSet(String name, String alias) {
         CnameRecordSetImpl recordSet = CnameRecordSetImpl.newRecordSet(name, getParent());
-        recordSet.inner().cnameRecord().withCname(alias);
+        recordSet.innerModel().cnameRecord().withCname(alias);
         setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 

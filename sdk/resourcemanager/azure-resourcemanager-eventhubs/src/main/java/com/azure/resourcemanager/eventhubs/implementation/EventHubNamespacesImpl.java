@@ -5,7 +5,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRules;
@@ -25,7 +25,7 @@ public final class EventHubNamespacesImpl
     implements EventHubNamespaces {
 
     public EventHubNamespacesImpl(EventHubsManager manager) {
-        super(manager.inner().getNamespaces(), manager);
+        super(manager.serviceClient().getNamespaces(), manager);
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DateAfterCreation model. */
+/** Object to define the number of days after creation. */
 @Fluent
 public final class DateAfterCreation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DateAfterCreation.class);

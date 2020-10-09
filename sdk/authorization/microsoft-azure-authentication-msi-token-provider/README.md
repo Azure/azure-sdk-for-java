@@ -3,7 +3,7 @@
 The "msi-auth-token-provider" jar is a library that enables :
 * Azure VMs and container instances and
 * Web Apps (funcitons included)
-Retrieve authentication tokens for syatem/user assigned [managed identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview).
+Retrieve authentication tokens for syatem/user assigned [managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview).
 
 This is a light weight library that does not have many dependencies. 
 

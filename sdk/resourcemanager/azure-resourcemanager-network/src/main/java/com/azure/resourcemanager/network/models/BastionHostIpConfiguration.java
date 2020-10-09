@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BastionHostIpConfiguration model. */
+/** IP configuration of an Bastion Host. */
 @JsonFlatten
 @Fluent
 public class BastionHostIpConfiguration extends SubResource {

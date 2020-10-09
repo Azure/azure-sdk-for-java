@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The BackupSchedule model. */
+/**
+ * Description of a backup schedule. Describes how often should be the backup performed and what should be the retention
+ * policy.
+ */
 @Fluent
 public final class BackupSchedule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupSchedule.class);
