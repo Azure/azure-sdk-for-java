@@ -1,19 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.eventhubs.sendrecv;
+package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.ProxyConfiguration;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import junit.framework.AssertionFailedError;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -30,6 +33,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Enabling options to not use SSL authentication when testing with local proxy.
+ */
 public class SendTest extends ApiTestBase {
     private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
     private static final String PARTITION_ID = "0";
@@ -37,16 +43,30 @@ public class SendTest extends ApiTestBase {
     private static EventHubClient ehClient;
 
     private PartitionSender sender = null;
-    private List<PartitionReceiver> receivers = new LinkedList<>();
+    private final List<PartitionReceiver> receivers = new LinkedList<>();
 
     @BeforeClass
     public static void initialize() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        initializeEventHub(connectionString);
+        initializeEventHub(connectionString, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
-    public static void initializeEventHub(final ConnectionStringBuilder connectionString) throws Exception {
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+    public static void initializeEventHub(final ConnectionStringBuilder connectionString,
+        SslDomain.VerifyMode verifyMode) throws Exception {
+
+        final ITokenProvider provider = connectionString.getSharedAccessSignature() != null
+            ? new SharedAccessSignatureTokenProvider(connectionString.getSharedAccessSignature())
+            : new SharedAccessSignatureTokenProvider(connectionString.getSasKeyName(), connectionString.getSasKey());
+
+        // Setting anonymous peer for proxy because we don't have a signed certificate for this proxy.
+        final CompletableFuture<MessagingFactory> factory = new MessagingFactory.MessagingFactoryBuilder(
+            connectionString.getEndpoint().getHost(), provider, TestContext.EXECUTOR_SERVICE)
+            .setProxyConfiguration(ProxyConfiguration.SYSTEM_DEFAULTS)
+            .setVerifyMode(verifyMode)
+            .build();
+
+        ehClient = EventHubClientImpl.create(connectionString.getEventHubName(),
+            TestContext.EXECUTOR_SERVICE, factory).get();
     }
 
     @AfterClass
