@@ -8,6 +8,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -103,24 +104,26 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItemWithEventualConsistency() throws Exception {
-        this.client = getClientBuilder()
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .gatewayMode()
-            .buildClient();
 
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        String idAndPkValue = UUID.randomUUID().toString();
+        ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
+        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
-            new CosmosItemRequestOptions(),
-            InternalObjectNode.class);
+        CosmosItemResponse<ObjectNode> readResponse1 = container.readItem(
+            idAndPkValue,
+            new PartitionKey(idAndPkValue),
+            new CosmosItemRequestOptions()
+                // generate an invalid session token large enough to cause an error in Gateway
+                // due to header being too long
+                .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
+                .setConsistencyLevel(ConsistencyLevel.EVENTUAL),
+            ObjectNode.class);
+
         System.out.println("REQUEST DIAGNOSTICS: " + readResponse1.getDiagnostics().toString());
-        validateItemResponse(properties, readResponse1);
-
+        validateIdOfItemResponse(idAndPkValue, readResponse1);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -199,22 +202,23 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItemsWithEventualConsistency() throws Exception{
 
-        this.client = getClientBuilder()
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .gatewayMode()
-            .buildClient();
-
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        String idAndPkValue = UUID.randomUUID().toString();
+        ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
+        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
+        CosmosQueryRequestOptions cosmosQueryRequestOptions =
+            new CosmosQueryRequestOptions()
+                // generate an invalid session token large enough to cause an error in Gateway
+                // due to header being too long
+                .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
+                .setConsistencyLevel(ConsistencyLevel.EVENTUAL);
 
-        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
-            container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
+        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+            container.queryItems(query, cosmosQueryRequestOptions, ObjectNode.class);
         feedResponseIterator1.handle((r) -> System.out.println("Query RequestDiagnostics: " + r.getCosmosDiagnostics().toString()));
         System.out.println("hello world");
 
@@ -223,12 +227,11 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponseIterator1.stream().count() == 1);
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
-            container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
+        CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
+            container.queryItems(querySpec, cosmosQueryRequestOptions, ObjectNode.class);
         feedResponseIterator3.handle((r) -> System.out.println("Query RequestDiagnostics: " + r.getCosmosDiagnostics().toString()));
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
         assertThat(feedResponseIterator3.stream().count() == 1);
-
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -368,4 +371,11 @@ public class CosmosItemTest extends TestSuiteBase {
             .isEqualTo(containerProperties.getId());
     }
 
+    private void validateIdOfItemResponse(String expectedId, CosmosItemResponse<ObjectNode> createResponse) {
+        // Basic validation
+        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
+        assertThat(BridgeInternal.getProperties(createResponse).getId())
+            .as("check Resource Id")
+            .isEqualTo(expectedId);
+    }
 }
