@@ -96,7 +96,7 @@ of the `azure.keyvault.uri` and let the remaining parameters be `null`.
 
 ## Spring Boot
 
-For Spring Boot applications see our Spring Boot starter.
+For Spring Boot applications see our [Spring Boot starter](../spring/azure-spring-boot-starter-keyvault-certificates/README.md).
 
 ## Reference
 
