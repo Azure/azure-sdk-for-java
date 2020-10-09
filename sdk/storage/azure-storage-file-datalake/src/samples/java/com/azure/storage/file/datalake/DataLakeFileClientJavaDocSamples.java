@@ -19,6 +19,7 @@ import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -383,6 +384,31 @@ public class DataLakeFileClientJavaDocSamples {
             client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileClient#scheduleDeletion(FileScheduleDeletionOptions)}
+     */
+    public void scheduleDeletion() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+        client.scheduleDeletion(options);
+        System.out.println("File deletion has been scheduled");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions
+    }
+
+
+    /**
+     * Code snippet for {@link DataLakeFileClient#scheduleDeletionWithResponse(FileScheduleDeletionOptions, Duration, Context)}
+     */
+    public void scheduleDeletionWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context
+        FileScheduleDeletionOptions options = new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(1));
+        Context context = new Context("key", "value");
+
+        client.scheduleDeletionWithResponse(options, timeout, context);
+        System.out.println("File deletion has been scheduled");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context
     }
 
 }

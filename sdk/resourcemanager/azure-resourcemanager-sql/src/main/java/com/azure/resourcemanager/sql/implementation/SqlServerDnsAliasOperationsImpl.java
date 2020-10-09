@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
-import com.azure.resourcemanager.sql.fluent.inner.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerDnsAliasInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

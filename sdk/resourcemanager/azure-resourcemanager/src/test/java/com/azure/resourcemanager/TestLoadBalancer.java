@@ -33,7 +33,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +49,8 @@ public class TestLoadBalancer {
     String lbName = "";
     String[] pipNames = null;
 
-    private void initializeResourceNames(SdkContext sdkContext) {
-        testId = sdkContext.randomResourceName("", 8);
+    private void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        testId = internalContext.randomResourceName("", 8);
         groupName = "rg" + testId;
         lbName = "lb" + testId;
         pipNames = new String[] {"pipa" + testId, "pipb" + testId};
@@ -66,7 +66,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternetWithNatPool(ComputeManager computeManager) {
-            initializeResourceNames(computeManager.sdkContext());
+            initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }
 
@@ -214,7 +214,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternetWithNatRule(ComputeManager computeManager) {
-            initializeResourceNames(computeManager.sdkContext());
+            initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }
 
@@ -410,7 +410,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternetNatOnly(ComputeManager computeManager) {
-            initializeResourceNames(computeManager.sdkContext());
+            initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }
 
@@ -562,7 +562,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternetMinimal(ComputeManager computeManager) {
-            initializeResourceNames(computeManager.sdkContext());
+            initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }
 
@@ -574,7 +574,7 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
-            String pipDnsLabel = resources.manager().sdkContext().randomResourceName("pip", 20);
+            String pipDnsLabel = resources.manager().resourceManager().internalContext().randomResourceName("pip", 20);
 
             // Create a load balancer
             LoadBalancer lb =
@@ -736,7 +736,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternalMinimal(ComputeManager computeManager) {
-            initializeResourceNames(computeManager.sdkContext());
+            initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }
 
@@ -916,7 +916,7 @@ public class TestLoadBalancer {
          */
         public InternalWithZone(ComputeManager computeManager) {
             region = Region.US_EAST2;
-            initializeResourceNames(computeManager.sdkContext());
+            initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }
 
@@ -1052,7 +1052,7 @@ public class TestLoadBalancer {
         String userName = "testuser" + testId;
         List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            String vmName = computeManager.sdkContext().randomResourceName("vm", 15);
+            String vmName = computeManager.resourceManager().internalContext().randomResourceName("vm", 15);
 
             Creatable<VirtualMachine> vm =
                 computeManager

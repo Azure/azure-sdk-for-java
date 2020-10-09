@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ImportRdbParameters model. */
+/** Parameters for Redis import operation. */
 @Fluent
 public final class ImportRdbParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportRdbParameters.class);

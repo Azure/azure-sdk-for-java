@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 
 /**
  * Azure Network sample for managing express route circuits.
@@ -35,11 +36,11 @@ public final class ManageExpressRoute {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 20);
-        final String ercName = azureResourceManager.sdkContext().randomResourceName("erc", 20);
-        final String gatewayName = azureResourceManager.sdkContext().randomResourceName("gtw", 20);
-        final String connectionName = azureResourceManager.sdkContext().randomResourceName("con", 20);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 20);
+        final String ercName = Utils.randomResourceName(azureResourceManager, "erc", 20);
+        final String gatewayName = Utils.randomResourceName(azureResourceManager, "gtw", 20);
+        final String connectionName = Utils.randomResourceName(azureResourceManager, "con", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
 
         try {
             //============================================================

@@ -12,8 +12,9 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.ByteArrayInputStream;
+import java.time.Duration;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +43,6 @@ public class LinuxWebAppsTests extends AppServiceTest {
     }
 
     @Test
-    //    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
     public void canCRUDLinuxWebApp() throws Exception {
         // Create with new app service plan
         WebApp webApp1 =
@@ -109,7 +109,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         webApp =
             webApp1
                 .update()
-                .withBuiltInImage(RuntimeStack.NODEJS_6_6)
+                .withBuiltInImage(RuntimeStack.NODEJS_6_LTS)
                 .defineSourceControl()
                 .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
                 .withBranch("master")
@@ -118,7 +118,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Response<String> response = curl("http://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
@@ -132,7 +132,6 @@ public class LinuxWebAppsTests extends AppServiceTest {
     }
 
     @Test
-    //    @Ignore("Pending ICM 39157077 & https://github.com/Azure-App-Service/kudu/issues/30")
     public void canCRUDLinuxJava11WebApp() throws Exception {
         // Create with new app service plan
         WebApp webApp1 =
@@ -174,7 +173,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp =
             webApp1
                 .update()
-                .withBuiltInImage(RuntimeStack.NODEJS_6_6)
+                .withBuiltInImage(RuntimeStack.NODEJS_6_LTS)
                 .defineSourceControl()
                 .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
                 .withBranch("master")
@@ -183,7 +182,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
-            SdkContext.sleep(120000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Response<String> response = curl("https://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();

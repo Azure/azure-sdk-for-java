@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpPrefixInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -126,21 +126,21 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancingRuleImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 

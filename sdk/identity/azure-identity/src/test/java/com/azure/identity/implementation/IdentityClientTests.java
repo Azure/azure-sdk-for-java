@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -60,6 +61,7 @@ public class IdentityClientTests {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private final ClientLogger logger = new ClientLogger(IdentityClientTests.class);
 
     @Test
     public void testValidSecret() throws Exception {
@@ -124,9 +126,12 @@ public class IdentityClientTests {
     @Test
     public void testPemCertificate() throws Exception {
         // setup
-        String pemPath = getClass().getClassLoader().getResource("certificate.pem").getPath();
-        if (pemPath.contains(":")) {
-            pemPath = pemPath.substring(1);
+        String pemPath;
+        URL pemUrl = getClass().getClassLoader().getResource("certificate.pem");
+        if (pemUrl.getPath().contains(":")) {
+            pemPath = pemUrl.getPath().substring(1);
+        } else {
+            pemPath = pemUrl.getPath();
         }
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");

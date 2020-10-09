@@ -14,9 +14,11 @@ import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class VaultTests extends KeyVaultManagementTest {
     @Test
@@ -110,7 +112,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
             // DELETE
             keyVaultManager.vaults().deleteById(vault.id());
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
@@ -205,7 +207,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
             // DELETE
             keyVaultManager.vaults().deleteByIdAsync(vault.id()).block();
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
@@ -251,12 +253,12 @@ public class VaultTests extends KeyVaultManagementTest {
 
             keyVaultManager.vaults().deleteByResourceGroup(rgName, otherVaultName);
 
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             // Can still see deleted vault.
             Assertions.assertNotNull(keyVaultManager.vaults().getDeleted(otherVaultName, Region.US_WEST.toString()));
 
             keyVaultManager.vaults().purgeDeleted(otherVaultName, Region.US_WEST.toString());
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             // Vault is purged
             assertVaultDeleted(otherVaultName, Region.US_WEST.toString());
         } finally {

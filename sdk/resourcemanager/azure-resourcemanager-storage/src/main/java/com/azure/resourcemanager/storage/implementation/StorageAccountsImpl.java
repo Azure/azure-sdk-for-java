@@ -6,13 +6,13 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
-import com.azure.resourcemanager.storage.fluent.inner.ListServiceSasResponseInner;
+import com.azure.resourcemanager.storage.fluent.models.ListServiceSasResponseInner;
 import com.azure.resourcemanager.storage.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
-import com.azure.resourcemanager.storage.fluent.inner.StorageAccountInner;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of StorageAccounts and its parent interfaces. */

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuCapacity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** Implementation of VirtualMachineScaleSetSku. */

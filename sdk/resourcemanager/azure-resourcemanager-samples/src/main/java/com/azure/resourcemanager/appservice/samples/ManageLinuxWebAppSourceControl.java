@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
@@ -24,6 +24,7 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
+import java.time.Duration;
 
 
 /**
@@ -44,15 +45,15 @@ public final class ManageLinuxWebAppSourceControl {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name       = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String app4Name       = Utils.randomResourceName(azureResourceManager, "webapp4-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -84,10 +85,10 @@ public final class ManageLinuxWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/helloworld...");
-            Utils.curl("http://" + app1Url + "/helloworld/");
-            SdkContext.sleep(5000);
+            Utils.sendGetRequest("http://" + app1Url + "/helloworld/");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app1Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app1Url + "/helloworld/"));
 
             //============================================================
             // Create a second web app with local git source control
@@ -128,10 +129,10 @@ public final class ManageLinuxWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/helloworld...");
-            Utils.curl("http://" + app2Url + "/helloworld/");
-            SdkContext.sleep(5000);
+            Utils.sendGetRequest("http://" + app2Url + "/helloworld/");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app2Url + "/helloworld/"));
+            System.out.println(Utils.sendGetRequest("http://" + app2Url + "/helloworld/"));
 
             //============================================================
             // Create a 3rd web app with a public GitHub repo in Azure-Samples
@@ -152,10 +153,10 @@ public final class ManageLinuxWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app3Url + "...");
-            Utils.curl("http://" + app3Url);
-            SdkContext.sleep(5000);
+            Utils.sendGetRequest("http://" + app3Url);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "...");
-            System.out.println(Utils.curl("http://" + app3Url));
+            System.out.println(Utils.sendGetRequest("http://" + app3Url));
 
             //============================================================
             // Create a 4th web app with a personal GitHub repo and turn on continuous integration
@@ -179,10 +180,10 @@ public final class ManageLinuxWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app4Url + "...");
-            Utils.curl("http://" + app4Url);
-            SdkContext.sleep(5000);
+            Utils.sendGetRequest("http://" + app4Url);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app4Url + "...");
-            System.out.println(Utils.curl("http://" + app4Url));
+            System.out.println(Utils.sendGetRequest("http://" + app4Url));
 
             return true;
         } finally {

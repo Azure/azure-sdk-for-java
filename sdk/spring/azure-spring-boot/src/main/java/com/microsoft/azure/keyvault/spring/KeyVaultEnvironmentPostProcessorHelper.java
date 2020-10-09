@@ -15,8 +15,10 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
 import com.microsoft.azure.telemetry.TelemetrySender;
 import java.util.Collections;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -64,6 +67,11 @@ class KeyVaultEnvironmentPostProcessorHelper {
      */
     public void addKeyVaultPropertySource(String normalizedName) {
         final String vaultUri = getPropertyValue(normalizedName, Property.URI);
+        final String version = getPropertyValue(normalizedName, Property.SECRET_SERVICE_VERSION);
+        SecretServiceVersion secretServiceVersion = Arrays.stream(SecretServiceVersion.values())
+                                                          .filter(val -> val.getVersion().equals(version))
+                                                          .findFirst()
+                                                          .orElse(null);
         Assert.notNull(vaultUri, "vaultUri must not be null!");
         final Long refreshInterval = Optional.ofNullable(getPropertyValue(normalizedName, Property.REFRESH_INTERVAL))
                 .map(Long::valueOf)
@@ -79,6 +87,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final SecretClient secretClient = new SecretClientBuilder()
                 .vaultUrl(vaultUri)
                 .credential(tokenCredential)
+                .serviceVersion(secretServiceVersion)
                 .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_KEY_VAULT))
                 .buildClient();
         try {
@@ -133,6 +142,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String tenantId = getPropertyValue(normalizedName, Property.TENANT_ID);
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
+        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST) == null ? new IdentityClientOptions().getAuthorityHost() : getPropertyValue(normalizedName, Property.AUTHORITY_HOST);
         if (clientId != null
                 && tenantId != null
                 && clientKey != null
@@ -142,6 +152,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
                     .clientId(clientId)
                     .clientSecret(clientKey)
                     .tenantId(tenantId)
+                    .authorityHost(authorityHost)
                     .build();
         }
         // Use certificate to authenticate
@@ -155,11 +166,13 @@ class KeyVaultEnvironmentPostProcessorHelper {
                         .tenantId(tenantId)
                         .clientId(clientId)
                         .pemCertificate(certificatePath)
+                        .authorityHost(authorityHost)
                         .build();
             } else {
                 return new ClientCertificateCredentialBuilder()
                         .tenantId(tenantId)
                         .clientId(clientId)
+                        .authorityHost(authorityHost)
                         .pfxCertificate(certificatePath, certificatePassword)
                         .build();
             }

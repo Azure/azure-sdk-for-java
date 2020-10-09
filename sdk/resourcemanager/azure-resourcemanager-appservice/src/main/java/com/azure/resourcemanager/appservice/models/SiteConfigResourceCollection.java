@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SiteConfigResourceCollection model. */
+/** Collection of site configurations. */
 @Fluent
 public final class SiteConfigResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteConfigResourceCollection.class);

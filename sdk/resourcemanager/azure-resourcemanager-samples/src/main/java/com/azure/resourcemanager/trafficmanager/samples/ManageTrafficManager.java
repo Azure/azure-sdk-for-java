@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Azure traffic manager sample for managing profiles.
@@ -50,13 +49,13 @@ public final class ManageTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String rgName                     = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String domainName                 = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
+        final String rgName                     = Utils.randomResourceName(azureResourceManager, "rgNEMV_", 24);
+        final String domainName                 = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
         final String certPassword               = "StrongPass!12";
-        final String appServicePlanNamePrefix   = azureResourceManager.sdkContext().randomResourceName("jplan1_", 15);
-        final String webAppNamePrefix           = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String tmName                     = azureResourceManager.sdkContext().randomResourceName("jsdktm-", 20);
+        final String appServicePlanNamePrefix   = Utils.randomResourceName(azureResourceManager, "jplan1_", 15);
+        final String webAppNamePrefix           = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String tmName                     = Utils.randomResourceName(azureResourceManager, "jsdktm-", 20);
         final List<Region> regions              = new ArrayList<>();
         // The regions in which web app needs to be created
         //
@@ -97,8 +96,8 @@ public final class ManageTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
-            String cerPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
+            String pfxPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
+            String cerPath = ManageTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.cosmos.CosmosManager;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
@@ -28,7 +28,7 @@ import com.azure.resourcemanager.cosmos.models.SqlDatabase;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -619,7 +619,7 @@ class CosmosDBAccountImpl
                                     .flatMap(
                                         index -> {
                                             data.set(0, data.get(0) + 30);
-                                            return Mono.delay(SdkContext.getDelayDuration(
+                                            return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(
                                                 manager().serviceClient().getDefaultPollInterval()));
                                         }));
                 });

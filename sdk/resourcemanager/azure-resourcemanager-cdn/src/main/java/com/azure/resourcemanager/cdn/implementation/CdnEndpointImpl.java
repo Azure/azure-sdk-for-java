@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
@@ -82,7 +82,8 @@ class CdnEndpointImpl
                             self.parent().resourceGroupName(),
                             self.parent().name(),
                             self.name(),
-                            self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                            self.parent().manager().resourceManager().internalContext()
+                                .randomResourceName("CustomDomain", 50),
                             customDomainInner.hostname()), 32, 32)
                     .then(self.parent().manager().serviceClient()
                         .getCustomDomains().listByEndpointAsync(
@@ -137,7 +138,8 @@ class CdnEndpointImpl
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
-                self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                self.parent().manager().resourceManager().internalContext()
+                    .randomResourceName("CustomDomain", 50),
                 itemToCreate.hostname()
             ), 32, 32);
 

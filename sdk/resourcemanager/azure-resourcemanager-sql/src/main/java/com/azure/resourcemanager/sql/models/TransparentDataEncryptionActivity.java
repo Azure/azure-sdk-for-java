@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
-import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionActivityInner;
 
 /** An immutable client-side representation of an Azure SQL database's TransparentDataEncryptionActivity. */
 @Fluent

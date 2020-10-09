@@ -5,13 +5,13 @@ package com.azure.resourcemanager;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.DnsZones;
-import com.azure.resourcemanager.dns.models.MXRecordSet;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
-import com.azure.resourcemanager.dns.models.NSRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SoaRecord;
@@ -37,7 +37,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
     @Override
     public DnsZone createResource(DnsZones dnsZones) throws Exception {
         final Region region = Region.US_EAST;
-        final String testId = dnsZones.manager().sdkContext().randomResourceName("", 8);
+        final String testId = dnsZones.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String groupName = "rg" + testId;
         final String topLevelDomain = "www.contoso" + testId + ".com";
 
@@ -116,9 +116,9 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assertions.assertTrue(aaaaRecordSets.iterator().next().ipv6Addresses().size() == 2);
 
         // Check MX records
-        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedIterable<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         Assertions.assertTrue(mxRecordSets.stream().count() == 1);
-        MXRecordSet mxRecordSet = mxRecordSets.iterator().next();
+        MxRecordSet mxRecordSet = mxRecordSets.iterator().next();
         Assertions.assertNotNull(mxRecordSet);
         Assertions.assertTrue(mxRecordSet.name().startsWith("email"));
         Assertions.assertTrue(mxRecordSet.metadata().size() == 2);
@@ -131,7 +131,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         }
 
         // Check NS records
-        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedIterable<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         Assertions.assertTrue(nsRecordSets.stream().count() == 2); // One created above with name 'partners' + the default '@'
 
         // Check TXT records
@@ -147,7 +147,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assertions.assertTrue(ptrRecordSets.stream().count() == 2);
 
         // Check CNAME records
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assertions.assertTrue(cnameRecordSets.stream().count() == 2);
 
         // Check Generic record set listing
@@ -196,17 +196,17 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                     typeToCount.put(AAAA, typeToCount.get(AAAA) + 1);
                     break;
                 case CNAME:
-                    CNameRecordSet cnameRS = (CNameRecordSet) recordSet;
+                    CnameRecordSet cnameRS = (CnameRecordSet) recordSet;
                     Assertions.assertNotNull(cnameRS);
                     typeToCount.put(RecordType.CNAME, typeToCount.get(RecordType.CNAME) + 1);
                     break;
                 case MX:
-                    MXRecordSet mxRS = (MXRecordSet) recordSet;
+                    MxRecordSet mxRS = (MxRecordSet) recordSet;
                     Assertions.assertNotNull(mxRS);
                     typeToCount.put(MX, typeToCount.get(MX) + 1);
                     break;
                 case NS:
-                    NSRecordSet nsRS = (NSRecordSet) recordSet;
+                    NsRecordSet nsRS = (NsRecordSet) recordSet;
                     Assertions.assertNotNull(nsRS);
                     typeToCount.put(NS, typeToCount.get(NS) + 1);
                     break;
@@ -259,18 +259,18 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assertions.assertEquals(txtRecordSets.stream().count(), 1);
 
         // Check CNAME records
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assertions.assertEquals(cnameRecordSets.stream().count(), 2);
-        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
             Assertions.assertTrue(cnameRecordSet.canonicalName().startsWith("doc.contoso.com"));
             Assertions.assertTrue(cnameRecordSet.name().startsWith("documents")
                 || cnameRecordSet.name().startsWith("help"));
         }
 
         // Check NS records
-        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedIterable<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         Assertions.assertTrue(nsRecordSets.stream().count() == 2); // One created above with name 'partners' + the default '@'
-        for (NSRecordSet nsRecordSet : nsRecordSets) {
+        for (NsRecordSet nsRecordSet : nsRecordSets) {
             Assertions.assertTrue(nsRecordSet.name().startsWith("partners") || nsRecordSet.name().startsWith("@"));
             if (nsRecordSet.name().startsWith("partners")) {
                 Assertions.assertEquals(nsRecordSet.nameServers().size(), 4);
@@ -307,7 +307,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         Assertions.assertTrue(soaRecordSet.timeToLive() == 7200);
 
         // Check MX records
-        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedIterable<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         Assertions.assertTrue(mxRecordSets.stream().count() == 2);
 
         dnsZone.update()
@@ -322,7 +322,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
 
         Assertions.assertTrue(dnsZone.tags().size() == 3);
         // Check "mail" MX record
-        MXRecordSet mxRecordSet = dnsZone.mxRecordSets().getByName("email");
+        MxRecordSet mxRecordSet = dnsZone.mxRecordSets().getByName("email");
         Assertions.assertTrue(mxRecordSet.records().size() == 1);
         Assertions.assertTrue(mxRecordSet.metadata().size() == 3);
         Assertions.assertTrue(mxRecordSet.records().get(0).exchange().startsWith("mail.contoso-mail-exchange1.com"));
@@ -377,18 +377,18 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
             }
         }
 
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                     .append("\n\t\tName: ").append(cnameRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                     .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedIterable<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MXRecordSet mxRecordSet : mxRecordSets) {
+        for (MxRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                     .append("\n\t\tName: ").append(mxRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
@@ -401,9 +401,9 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
             }
         }
 
-        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedIterable<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         info.append("\n\tNS Record sets:");
-        for (NSRecordSet nsRecordSet : nsRecordSets) {
+        for (NsRecordSet nsRecordSet : nsRecordSets) {
             info.append("\n\t\tId: ").append(nsRecordSet.id())
                     .append("\n\t\tName: ").append(nsRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())

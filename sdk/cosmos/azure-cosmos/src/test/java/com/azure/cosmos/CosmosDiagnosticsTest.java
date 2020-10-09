@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -53,6 +55,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.InstanceOfAssertFactories.INSTANT;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -412,9 +415,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void supplementalResponseStatisticsList() throws Exception {
-        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics();
+        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
         for (int i = 0; i < 15; i++) {
-            RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(OperationType.Head, ResourceType.Document);
+            RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
             clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
         }
         List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
@@ -429,7 +432,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         assertThat(storeResponseStatistics.size()).isEqualTo(0);
         for (int i = 0; i < 7; i++) {
-            RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(OperationType.Head, ResourceType.Document);
+            RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
             clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
         }
         storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
@@ -491,8 +494,168 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void rntbdRequestResponseLengthStatistics() throws Exception {
+        TestItem testItem = new TestItem();
+        testItem.id = UUID.randomUUID().toString();
+        testItem.mypk = UUID.randomUUID().toString();
 
+        int testItemLength = OBJECT_MAPPER.writeValueAsBytes(testItem).length;
+        CosmosContainer container = directClient.getDatabase(this.cosmosAsyncContainer.getDatabase().getId()).getContainer(this.cosmosAsyncContainer.getId());
 
+        // create
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(testItem);
+        validate(createItemResponse.getDiagnostics(), testItemLength,  ModelBridgeInternal.getPayloadLength(createItemResponse));
+
+        // reading a deleted item.
+        try {
+            container.createItem(testItem);
+            fail("expected to fail due to 409");
+        } catch (CosmosException e) {
+            // no request payload and no response payload
+            validate(e.getDiagnostics(), testItemLength, 0);
+        }
+
+        // read
+        CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
+        // no request payload and no response payload
+        validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+
+        // delete
+        CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
+        // no request payload and no response payload
+        validate(deleteItemResponse.getDiagnostics(), 0, 0);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void rntbdStatistics() throws Exception {
+        Instant beforeClientInitialization = Instant.now();
+
+        CosmosClient client1 = null;
+        try {
+
+            client1 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .directMode()
+                .buildClient();
+
+            TestItem testItem = new TestItem();
+            testItem.id = UUID.randomUUID().toString();
+            testItem.mypk = UUID.randomUUID().toString();
+
+            int testItemLength = OBJECT_MAPPER.writeValueAsBytes(testItem).length;
+            CosmosContainer container = client1.getDatabase(this.cosmosAsyncContainer.getDatabase().getId()).getContainer(this.cosmosAsyncContainer.getId());
+
+            Thread.sleep(1000);
+
+            // create
+            // initializes the rntbd service endpoint
+            Instant beforeInitializingRntbdServiceEndpoint = Instant.now();
+            CosmosItemResponse<TestItem> operation1Response = container.upsertItem(testItem);
+            Instant afterInitializingRntbdServiceEndpoint = Instant.now();
+
+            Thread.sleep(1000);
+            Instant beforeOperation2 = Instant.now();
+            CosmosItemResponse<TestItem> operation2Response = container.upsertItem(testItem);
+            Instant afterOperation2 = Instant.now();
+
+            Thread.sleep(1000);
+            Instant beforeOperation3 = Instant.now();
+            CosmosItemResponse<TestItem> operation3Response = container.upsertItem(testItem);
+            Instant afterOperation3 = Instant.now();
+
+            validateRntbdStatistics(operation3Response.getDiagnostics(),
+                beforeClientInitialization,
+                beforeInitializingRntbdServiceEndpoint,
+                afterInitializingRntbdServiceEndpoint,
+                beforeOperation2,
+                afterOperation2,
+                beforeOperation3,
+                afterOperation3);
+
+            // read
+            CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
+            // no request payload and no response payload
+            validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+
+            // delete
+            CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
+            // no request payload and no response payload
+            validate(deleteItemResponse.getDiagnostics(), 0, 0);
+        } finally {
+            LifeCycleUtils.closeQuietly(client1);
+        }
+    }
+
+    private void validateRntbdStatistics(CosmosDiagnostics cosmosDiagnostics,
+                                         Instant clientInitializationTime,
+                                         Instant beforeInitializingRntbdServiceEndpoint,
+                                         Instant afterInitializingRntbdServiceEndpoint,
+                                         Instant beforeOperation2,
+                                         Instant afterOperation2,
+                                         Instant beforeOperation3,
+                                         Instant afterOperation3) throws Exception {
+        ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+        JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+        assertThat(storeResult).isNotNull();
+
+        boolean hasPayload = storeResult.get("exception").isNull();
+        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThan(0);
+        assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+
+        JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
+        assertThat(serviceEndpointStatistics).isNotNull();
+
+        assertThat(serviceEndpointStatistics.get("availableChannels").asInt(-1)).isGreaterThan(0);
+        // no concurrent work
+        assertThat(serviceEndpointStatistics.get("acquiredChannels").asInt(-1)).isEqualTo(0);
+        // current request
+        assertThat(serviceEndpointStatistics.get("inflightRequests").asInt(-1)).isEqualTo(1);
+
+        assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
+
+        // first request initialized the rntbd service endpoint
+        Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
+            .isAfterOrEqualTo(beforeInitializationThreshold);
+
+        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(1);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
+            .isBeforeOrEqualTo(afterInitializationThreshold);
+
+        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterOperation2Threshold = afterOperation2.plusMillis(1);
+        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(1);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
+            .isAfterOrEqualTo(beforeOperation2Threshold)
+            .isBeforeOrEqualTo(afterOperation2Threshold);
+        assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText()))
+            .isAfterOrEqualTo(beforeOperation2Threshold)
+            .isBeforeOrEqualTo(afterOperation2Threshold);
+    }
+
+    private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {
+        ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+        JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+
+        boolean hasPayload = storeResult.get("exception").isNull();
+        assertThat(storeResult).isNotNull();
+        assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
+        assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
+        assertThat(storeResult.get("requestPayloadLengthInBytes").asInt(-1)).isEqualTo(expectedRequestPayloadSize);
+        if (hasPayload) {
+            assertThat(storeResult.get("responsePayloadLengthInBytes").asInt(-1)).isEqualTo(expectedResponsePayloadSize);
+        }
+        assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
+    }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void addressResolutionStatistics() {

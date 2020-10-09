@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.ComputeUsage;
 import com.azure.resourcemanager.compute.models.ComputeUsageUnit;
 import com.azure.resourcemanager.compute.models.UsageName;
-import com.azure.resourcemanager.compute.fluent.inner.UsageInner;
+import com.azure.resourcemanager.compute.fluent.models.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The implementation of ComputeUsage. */

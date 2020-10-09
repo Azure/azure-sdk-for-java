@@ -45,17 +45,17 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 10);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 10);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 10);
-        final String customImageName = azureResourceManager.sdkContext().randomResourceName("img", 10);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 10);
+        final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "VM1", 10);
+        final String linuxVMName2 = Utils.randomResourceName(azureResourceManager, "VM2", 10);
+        final String linuxVMName3 = Utils.randomResourceName(azureResourceManager, "VM3", 10);
+        final String customImageName = Utils.randomResourceName(azureResourceManager, "img", 10);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.AzureFirewallFqdnTagInner;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallFqdnTagInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureFirewallFqdnTagListResult model. */
+/** Response for ListAzureFirewallFqdnTags API service call. */
 @Fluent
 public final class AzureFirewallFqdnTagListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagListResult.class);

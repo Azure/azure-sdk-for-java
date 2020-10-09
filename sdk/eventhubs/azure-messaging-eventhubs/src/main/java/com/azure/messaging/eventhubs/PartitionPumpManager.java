@@ -11,10 +11,12 @@ import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
@@ -120,6 +122,23 @@ class PartitionPumpManager {
     }
 
     /**
+     * Checks the state of the connection for the given partition. If the connection is closed, then this method will
+     * remove the partition from the list of partition pumps.
+     *
+     * @param ownership The partition ownership information for which the connection state will be verified.
+     */
+    void verifyPartitionConnection(PartitionOwnership ownership) {
+        if (partitionPumps.containsKey(ownership.getPartitionId())) {
+            EventHubConsumerAsyncClient consumerClient = partitionPumps.get(ownership.getPartitionId());
+            if (consumerClient.isConnectionClosed()) {
+                logger.info("Connection closed for {}, partition {}. Removing the consumer.",
+                    ownership.getEventHubName(), ownership.getPartitionId());
+                partitionPumps.remove(ownership.getPartitionId());
+            }
+        }
+    }
+
+    /**
      * Starts a new partition pump for the newly claimed partition. If the partition already has an active partition
      * pump, this will not create a new consumer.
      *
@@ -166,17 +185,25 @@ class PartitionPumpManager {
             partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
             //@formatter:off
             Flux<Flux<PartitionEvent>> partitionEventFlux;
+            Flux<PartitionEvent> receiver = eventHubConsumer
+                .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                .doOnNext(partitionEvent -> {
+                    if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                        logger.verbose("On next {}, {}, {}",
+                            partitionContext.getEventHubName(), partitionContext.getPartitionId(),
+                            partitionEvent.getData().getSequenceNumber());
+                    }
+                });
+
             if (maxWaitTime != null) {
-                partitionEventFlux = eventHubConsumer
-                    .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                partitionEventFlux = receiver
                     .windowTimeout(maxBatchSize, maxWaitTime);
             } else {
-                partitionEventFlux = eventHubConsumer
-                    .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                partitionEventFlux = receiver
                     .window(maxBatchSize);
             }
             partitionEventFlux
-                .flatMap(Flux::collectList)
+                .concatMap(Flux::collectList)
                 .publishOn(Schedulers.boundedElastic())
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,
@@ -214,8 +241,16 @@ class PartitionPumpManager {
             }
         }
         try {
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Processing event {}, {}", partitionContext.getEventHubName(),
+                    partitionContext.getPartitionId());
+            }
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
                 eventContext.getLastEnqueuedEventProperties()));
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Completed processing event {}, {}", partitionContext.getEventHubName(),
+                    partitionContext.getPartitionId());
+            }
             endProcessTracingSpan(processSpanContext, Signal.complete());
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
@@ -237,9 +272,16 @@ class PartitionPumpManager {
                     })
                     .collect(Collectors.toList());
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
-                    checkpointStore,
-                    lastEnqueuedEventProperties[0]);
+                    checkpointStore, lastEnqueuedEventProperties[0]);
+                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                    logger.verbose("Processing event batch {}, {}", partitionContext.getEventHubName(),
+                        partitionContext.getPartitionId());
+                }
                 partitionProcessor.processEventBatch(eventBatchContext);
+                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                    logger.verbose("Completed processing event batch{}, {}", partitionContext.getEventHubName(),
+                        partitionContext.getPartitionId());
+                }
             } else {
                 EventData eventData = (partitionEventBatch.size() == 1
                     ? partitionEventBatch.get(0).getData() : null);
@@ -309,7 +351,7 @@ class PartitionPumpManager {
         spanContext = eventData.getEnqueuedTime() == null
             ? spanContext
             : spanContext.addData(MESSAGE_ENQUEUED_TIME, eventData.getEnqueuedTime().getEpochSecond());
-        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
+        return tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, spanContext, ProcessKind.PROCESS);
     }
 
     /*

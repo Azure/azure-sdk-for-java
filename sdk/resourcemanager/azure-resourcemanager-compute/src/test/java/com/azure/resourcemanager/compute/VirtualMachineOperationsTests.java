@@ -37,13 +37,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -222,7 +223,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             ? defaultDelayInMillis
             : acceptedVirtualMachine.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -243,7 +244,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             : (int) acceptedDelete.getActivationResponse().getRetryAfter().toMillis();
 
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedDelete.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -855,7 +856,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // call simulate eviction
         virtualMachine.simulateEviction();
-        SdkContext.sleep(30 * 60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
 
         virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
         Assertions.assertNotNull(virtualMachine);

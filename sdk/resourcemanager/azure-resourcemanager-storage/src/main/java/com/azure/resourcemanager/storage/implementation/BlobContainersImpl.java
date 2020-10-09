@@ -11,9 +11,9 @@ import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicy;
 import com.azure.resourcemanager.storage.models.LegalHold;
-import com.azure.resourcemanager.storage.fluent.inner.BlobContainerInner;
-import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
-import com.azure.resourcemanager.storage.fluent.inner.ListContainerItemInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ListContainerItemInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

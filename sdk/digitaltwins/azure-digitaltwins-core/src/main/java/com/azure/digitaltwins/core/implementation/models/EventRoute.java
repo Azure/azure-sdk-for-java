@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EventRoute model. */
+/**
+ * A route which directs notification and telemetry events to an endpoint. Endpoints are a destination outside of Azure
+ * Digital Twins such as an EventHub.
+ */
 @Fluent
 public final class EventRoute {
     /*
@@ -27,13 +30,21 @@ public final class EventRoute {
      * An expression which describes the events which are routed to the
      * endpoint.
      */
-    @JsonProperty(value = "filter")
+    @JsonProperty(value = "filter", required = true)
     private String filter;
 
-    /** Creates an instance of EventRoute class. */
+    /**
+     * Creates an instance of EventRoute class.
+     *
+     * @param endpointName the endpointName value to set.
+     * @param filter the filter value to set.
+     */
     @JsonCreator
-    public EventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
+    public EventRoute(
+            @JsonProperty(value = "endpointName", required = true) String endpointName,
+            @JsonProperty(value = "filter", required = true) String filter) {
         this.endpointName = endpointName;
+        this.filter = filter;
     }
 
     /**
@@ -64,17 +75,6 @@ public final class EventRoute {
     }
 
     /**
-     * Set the filter property: An expression which describes the events which are routed to the endpoint.
-     *
-     * @param filter the filter value to set.
-     * @return the EventRoute object itself.
-     */
-    public EventRoute setFilter(String filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,6 +82,9 @@ public final class EventRoute {
     public void validate() {
         if (getEndpointName() == null) {
             throw new IllegalArgumentException("Missing required property endpointName in model EventRoute");
+        }
+        if (getFilter() == null) {
+            throw new IllegalArgumentException("Missing required property filter in model EventRoute");
         }
     }
 }

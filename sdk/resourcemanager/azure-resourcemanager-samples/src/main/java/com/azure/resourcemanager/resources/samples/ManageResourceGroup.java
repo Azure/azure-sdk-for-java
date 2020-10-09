@@ -11,6 +11,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 
 /**
  * Azure Resource sample for managing resource groups -
@@ -29,10 +30,10 @@ public final class ManageResourceGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSMA", 24);
-        final String rgName2 = azureResourceManager.sdkContext().randomResourceName("rgRSMA", 24);
-        final String resourceTagName = azureResourceManager.sdkContext().randomResourceName("rgRSTN", 24);
-        final String resourceTagValue = azureResourceManager.sdkContext().randomResourceName("rgRSTV", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSMA", 24);
+        final String rgName2 = Utils.randomResourceName(azureResourceManager, "rgRSMA", 24);
+        final String resourceTagName = Utils.randomResourceName(azureResourceManager, "rgRSTN", 24);
+        final String resourceTagValue = Utils.randomResourceName(azureResourceManager, "rgRSTV", 24);
         try {
 
 
