@@ -1513,6 +1513,13 @@
     <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
   </Match>
 
+  <!-- Exception is needed to catch a SslException masked as a RuntimeException by Netty -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="close"/>
+    <Bug pattern="BC_IMPOSSIBLE_INSTANCEOF"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
