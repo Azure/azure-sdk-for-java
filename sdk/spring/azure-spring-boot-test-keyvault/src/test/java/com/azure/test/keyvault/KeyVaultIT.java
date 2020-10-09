@@ -53,6 +53,7 @@ public class KeyVaultIT {
 
     @Test
     public void keyVaultAsPropertySource() {
+        LOGGER.info("keyVaultAsPropertySource begin.");
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
@@ -69,12 +70,13 @@ public class KeyVaultIT {
             }
 
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));
-            LOGGER.info("--------------------->test over");
         }
+        LOGGER.info("keyVaultAsPropertySource end.");
     }
 
     @Test
     public void keyVaultAsPropertySourceWithSpecificKeys() {
+        LOGGER.info("keyVaultAsPropertySourceWithSpecificKeys begin.");
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
@@ -85,12 +87,13 @@ public class KeyVaultIT {
             LOGGER.info("====" + KEY_VAULT_SECRET_NAME );
             app.start();
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));
-            LOGGER.info("--------------------->test over");
         }
+        LOGGER.info("keyVaultAsPropertySourceWithSpecificKeys end.");
     }
 
     @Test
     public void keyVaultWithAppServiceMSI() {
+        LOGGER.info("keyVaultWithAppServiceMSI begin.");
         final WebApp webApp = AZURE
             .webApps()
             .getByResourceGroup(SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
@@ -123,15 +126,14 @@ public class KeyVaultIT {
         final ResponseEntity<String> response = curlWithRetry(resourceUrl, 3, 120_000, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(KEY_VAULT_SECRET_VALUE, response.getBody());
-        LOGGER.info("--------------------->test app service with MSI over");
+        LOGGER.info("keyVaultWithAppServiceMSI end.");
     }
 
     @Test
     public void keyVaultWithVirtualMachineMSI() {
+        LOGGER.info("keyVaultWithVirtualMachineMSI begin.");
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);
-
         final String host = vm.getPrimaryPublicIPAddress().ipAddress();
-
         final List<String> commands = new ArrayList<>();
         commands.add(String.format("cd /home/%s", VM_USER_USERNAME));
         commands.add("mkdir azure-sdk-for-java");
@@ -151,7 +153,9 @@ public class KeyVaultIT {
             AZURE_KEYVAULT_URI,
             "app.jar"));
 
+        LOGGER.info("Run commands begin.");
         vm.runCommand(new RunCommandInput().withCommandId("RunShellScript").withScript(commands));
+        LOGGER.info("Run commands end.");
 
         final ResponseEntity<String> response = curlWithRetry(
             String.format("http://%s:8080/get", host),
@@ -162,7 +166,7 @@ public class KeyVaultIT {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(KEY_VAULT_SECRET_VALUE, response.getBody());
         LOGGER.info("key vault value is: {}", response.getBody());
-        LOGGER.info("--------------------->test virtual machine with MSI over");
+        LOGGER.info("keyVaultWithVirtualMachineMSI end.");
     }
 
     private static <T> ResponseEntity<T> curlWithRetry(String resourceUrl,
