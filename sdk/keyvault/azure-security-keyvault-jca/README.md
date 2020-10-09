@@ -97,3 +97,7 @@ of the `azure.keyvault.uri` and let the remaining parameters be `null`.
 ## Spring Boot
 
 For Spring Boot applications see our Spring Boot starter.
+
+## Reference
+
+1. [Java Cryptography Architecture (JCA) Reference Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html)
