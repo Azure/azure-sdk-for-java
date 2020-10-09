@@ -18,6 +18,7 @@ For Spring Integration on Event Hubs, please refer to the [source code][source_c
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

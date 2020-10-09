@@ -15,6 +15,7 @@ The Spring Cloud Stream Kafka binder for Azure Event Hubs helps developers to fi
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

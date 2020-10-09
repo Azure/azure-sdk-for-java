@@ -17,6 +17,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
