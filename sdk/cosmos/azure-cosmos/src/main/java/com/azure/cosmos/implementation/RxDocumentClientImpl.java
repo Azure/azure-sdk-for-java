@@ -3491,7 +3491,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
             logger.info("Shutting down CpuMonitor ...");
-            CpuMonitor.unregister(this);
+            CpuMemoryMonitor.unregister(this);
             logger.info("Shutting down completed.");
         } else {
             logger.warn("Already shutdown!");
