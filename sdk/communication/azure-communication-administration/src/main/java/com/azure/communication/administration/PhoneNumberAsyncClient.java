@@ -32,7 +32,6 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -43,7 +42,6 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +49,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Asynchronous client for Communication service phone number operations
@@ -769,11 +764,11 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * LongRunningOperationforthepurchaseSearch.
+     * Long Running Operation for the purchase Search.
      *
-     * @paramsearchIdIDofthesearch
-     * @parampollIntervalTimelapseofthepollrequest.
-     * @returnA{@linkPollerFlux}objectwiththesearchresult
+     * @param searchId ID of the search
+     * @param pollInterval Time lapse of the poll request.
+     * @return A {@link PollerFlux} object with the search result
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -800,7 +795,8 @@ public final class PhoneNumberAsyncClient {
         };
     }
 
-    private Function<PollingContext<Void>, Mono<PollResponse<Void>>> purchaseSearchCreatePollOperation(String searchId) {
+    private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
+        purchaseSearchCreatePollOperation(String searchId) {
         return (pollingContext) -> getSearchById(searchId)
             .flatMap(getSearchResponse -> {
                 LongRunningOperationStatus status = null;
