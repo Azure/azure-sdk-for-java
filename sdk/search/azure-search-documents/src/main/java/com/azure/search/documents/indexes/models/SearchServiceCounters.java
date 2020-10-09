@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchServiceCounters model. */
+/** Represents service-level resource counters and quotas. */
 @Fluent
 public final class SearchServiceCounters {
     /*

@@ -7,6 +7,9 @@ package com.azure.storage.file.share.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.models.LeaseDurationType;
+import com.azure.storage.file.share.models.LeaseStateType;
+import com.azure.storage.file.share.models.LeaseStatusType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -89,6 +92,45 @@ public final class ShareGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-share-next-allowed-quota-downgrade-time")
     private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
+
+    /*
+     * When a share is leased, specifies whether the lease is of infinite or
+     * fixed duration. Possible values include: 'infinite', 'fixed'
+     */
+    @JsonProperty(value = "x-ms-lease-duration")
+    private LeaseDurationType leaseDuration;
+
+    /*
+     * Lease state of the share. Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'
+     */
+    @JsonProperty(value = "x-ms-lease-state")
+    private LeaseStateType leaseState;
+
+    /*
+     * The current lease status of the share. Possible values include:
+     * 'locked', 'unlocked'
+     */
+    @JsonProperty(value = "x-ms-lease-status")
+    private LeaseStatusType leaseStatus;
+
+    /*
+     * Returns the access tier set on the share.
+     */
+    @JsonProperty(value = "x-ms-access-tier")
+    private String accessTier;
+
+    /*
+     * Returns the last modified time (in UTC) of the access tier of the share.
+     */
+    @JsonProperty(value = "x-ms-access-tier-change-time")
+    private DateTimeRfc1123 accessTierChangeTime;
+
+    /*
+     * Returns the transition state betweeen access tiers, when present.
+     */
+    @JsonProperty(value = "x-ms-access-tier-transition-state")
+    private String accessTierTransitionState;
 
     /*
      * The errorCode property.
@@ -357,6 +399,146 @@ public final class ShareGetPropertiesHeaders {
         } else {
             this.nextAllowedQuotaDowngradeTime = new DateTimeRfc1123(nextAllowedQuotaDowngradeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the leaseDuration property: When a share is leased, specifies
+     * whether the lease is of infinite or fixed duration. Possible values
+     * include: 'infinite', 'fixed'.
+     *
+     * @return the leaseDuration value.
+     */
+    public LeaseDurationType getLeaseDuration() {
+        return this.leaseDuration;
+    }
+
+    /**
+     * Set the leaseDuration property: When a share is leased, specifies
+     * whether the lease is of infinite or fixed duration. Possible values
+     * include: 'infinite', 'fixed'.
+     *
+     * @param leaseDuration the leaseDuration value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
+        this.leaseDuration = leaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the leaseState property: Lease state of the share. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @return the leaseState value.
+     */
+    public LeaseStateType getLeaseState() {
+        return this.leaseState;
+    }
+
+    /**
+     * Set the leaseState property: Lease state of the share. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     *
+     * @param leaseState the leaseState value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setLeaseState(LeaseStateType leaseState) {
+        this.leaseState = leaseState;
+        return this;
+    }
+
+    /**
+     * Get the leaseStatus property: The current lease status of the share.
+     * Possible values include: 'locked', 'unlocked'.
+     *
+     * @return the leaseStatus value.
+     */
+    public LeaseStatusType getLeaseStatus() {
+        return this.leaseStatus;
+    }
+
+    /**
+     * Set the leaseStatus property: The current lease status of the share.
+     * Possible values include: 'locked', 'unlocked'.
+     *
+     * @param leaseStatus the leaseStatus value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
+        this.leaseStatus = leaseStatus;
+        return this;
+    }
+
+    /**
+     * Get the accessTier property: Returns the access tier set on the share.
+     *
+     * @return the accessTier value.
+     */
+    public String getAccessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Set the accessTier property: Returns the access tier set on the share.
+     *
+     * @param accessTier the accessTier value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setAccessTier(String accessTier) {
+        this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the accessTierChangeTime property: Returns the last modified time
+     * (in UTC) of the access tier of the share.
+     *
+     * @return the accessTierChangeTime value.
+     */
+    public OffsetDateTime getAccessTierChangeTime() {
+        if (this.accessTierChangeTime == null) {
+            return null;
+        }
+        return this.accessTierChangeTime.getDateTime();
+    }
+
+    /**
+     * Set the accessTierChangeTime property: Returns the last modified time
+     * (in UTC) of the access tier of the share.
+     *
+     * @param accessTierChangeTime the accessTierChangeTime value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+        if (accessTierChangeTime == null) {
+            this.accessTierChangeTime = null;
+        } else {
+            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the accessTierTransitionState property: Returns the transition state
+     * betweeen access tiers, when present.
+     *
+     * @return the accessTierTransitionState value.
+     */
+    public String getAccessTierTransitionState() {
+        return this.accessTierTransitionState;
+    }
+
+    /**
+     * Set the accessTierTransitionState property: Returns the transition state
+     * betweeen access tiers, when present.
+     *
+     * @param accessTierTransitionState the accessTierTransitionState value to
+     * set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setAccessTierTransitionState(String accessTierTransitionState) {
+        this.accessTierTransitionState = accessTierTransitionState;
         return this;
     }
 

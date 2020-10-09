@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DistanceScoringParameters model. */
+/** Provides parameter values to a distance scoring function. */
 @Fluent
 public final class DistanceScoringParameters {
     /*

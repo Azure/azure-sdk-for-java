@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListDataSourcesResult model. */
+/** Response from a List Datasources request. If successful, it includes the full definitions of all datasources. */
 @Immutable
 public final class ListDataSourcesResult {
     /*

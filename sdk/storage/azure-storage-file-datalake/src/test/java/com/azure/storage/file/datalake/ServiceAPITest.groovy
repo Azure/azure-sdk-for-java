@@ -185,4 +185,16 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def serviceClient = getServiceClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
+
+        when: "blob endpoint"
+        def response = serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
 }

@@ -205,14 +205,16 @@ public class AsyncCtlWorkload {
                 BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
                     readFailureMeter,
                     concurrencyControlSemaphore,
-                    count);
+                    count,
+                    configuration.getDiagnosticsThresholdDuration());
                 readSubscriber.context = readLatency.time();
                 performWorkload(readSubscriber, OperationType.Read, i);
             } else if (index < writeRange) {
                 BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(writeSuccessMeter,
                     writeFailureMeter,
                     concurrencyControlSemaphore,
-                    count);
+                    count,
+                    configuration.getDiagnosticsThresholdDuration());
                 writeSubscriber.context = writeLatency.time();
                 performWorkload(writeSubscriber, OperationType.Create, i);
 
@@ -220,7 +222,8 @@ public class AsyncCtlWorkload {
                 BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(querySuccessMeter,
                     queryFailureMeter,
                     concurrencyControlSemaphore,
-                    count);
+                    count,
+                    configuration.getDiagnosticsThresholdDuration());
                 querySubscriber.context = queryLatency.time();
                 performWorkload(querySubscriber, OperationType.Query, i);
             }
@@ -276,10 +279,10 @@ public class AsyncCtlWorkload {
                 }).flux();
                 createDocumentObservables.add(obs);
             }
-            logger.info("Finished pre-populating {} documents for container {}",
-                numberOfPreCreatedDocuments, container.getId());
             docsToRead.put(container.getId(),
                 Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block());
+            logger.info("Finished pre-populating {} documents for container {}",
+                numberOfPreCreatedDocuments, container.getId());
         }
     }
 

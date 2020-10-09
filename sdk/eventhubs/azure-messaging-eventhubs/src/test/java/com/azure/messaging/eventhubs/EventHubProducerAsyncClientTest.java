@@ -28,6 +28,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -139,7 +140,7 @@ class EventHubProducerAsyncClientTest {
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS);
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

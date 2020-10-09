@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ScoringProfile model. */
+/** Defines parameters for a search index that influence scoring in search queries. */
 @Fluent
 public final class ScoringProfile {
     /*

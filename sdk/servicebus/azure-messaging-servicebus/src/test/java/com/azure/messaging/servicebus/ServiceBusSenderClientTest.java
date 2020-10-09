@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -21,6 +22,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -87,7 +89,7 @@ public class ServiceBusSenderClientTest {
     void createBatchDefault() {
         // Arrange
         ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null,
-            null);
+            null, null, null);
         when(asyncSender.createBatch()).thenReturn(Mono.just(batch));
 
         //Act
@@ -127,7 +129,7 @@ public class ServiceBusSenderClientTest {
 
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null,
-            null);
+            null, null, null);
         when(asyncSender.createBatch(options)).thenReturn(Mono.just(batch));
 
         // Act
@@ -299,6 +301,89 @@ public class ServiceBusSenderClientTest {
         // Assert
         Assertions.assertEquals(expected, actual);
         verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+    }
+
+    /**
+     * Verifies that scheduling the messages will result in calling asyncSender.scheduleMessage() with transaction.
+     */
+    @Test
+    void scheduleMessages() {
+        // Arrange
+        final long totalMessages = 2;
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
+        final List<ServiceBusMessage> testDataMessages = new ArrayList<>();
+        testDataMessages.add(testData);
+        testDataMessages.add(testData);
+
+        final long expected = 1;
+
+        when(asyncSender.scheduleMessages(testDataMessages, scheduledEnqueueTime)).thenReturn(Flux.just(expected, expected));
+
+        // Act
+        Iterable<Long> actualStream = sender.scheduleMessages(testDataMessages, scheduledEnqueueTime);
+
+        // Assert
+        AtomicInteger actualTotalMessages = new AtomicInteger();
+        actualStream.forEach(actual -> {
+            Assertions.assertEquals(expected, actual);
+            actualTotalMessages.incrementAndGet();
+        });
+        Assertions.assertEquals(totalMessages, actualTotalMessages.get());
+
+        verify(asyncSender).scheduleMessages(testDataMessages, scheduledEnqueueTime);
+    }
+
+    /**
+     * Verifies that scheduling the messages will result in calling asyncSender.scheduleMessage() with transaction.
+     */
+    @Test
+    void scheduleMessagesWithTransaction() {
+        // Arrange
+        final long totalMessages = 2;
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
+        final List<ServiceBusMessage> testDataMessages = new ArrayList<>();
+        testDataMessages.add(testData);
+        testDataMessages.add(testData);
+
+        final long expected = 1;
+
+        when(asyncSender.scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext)).thenReturn(Flux.just(expected, expected));
+
+        // Act
+        Iterable<Long> actualStream = sender.scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext);
+
+        // Assert
+        AtomicInteger actualTotalMessages = new AtomicInteger();
+        actualStream.forEach(actual -> {
+            Assertions.assertEquals(expected, actual);
+            actualTotalMessages.incrementAndGet();
+        });
+        Assertions.assertEquals(totalMessages, actualTotalMessages.get());
+
+        verify(asyncSender).scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext);
+    }
+
+    /**
+     * Verifies that cancel scheduled messages will result in calling asyncSender.cancelScheduledMessages().
+     */
+    @Test
+    void cancelScheduleMessages() {
+        // Arrange
+        final List<Long> sequenceNumbers = new ArrayList<>();
+        sequenceNumbers.add(1L);
+        sequenceNumbers.add(2L);
+
+        when(asyncSender.cancelScheduledMessages(sequenceNumbers)).thenReturn(Mono.empty());
+
+        // Act
+        sender.cancelScheduledMessages(sequenceNumbers);
+
+        // Assert
+        verify(asyncSender).cancelScheduledMessages(sequenceNumbers);
     }
 
     /**

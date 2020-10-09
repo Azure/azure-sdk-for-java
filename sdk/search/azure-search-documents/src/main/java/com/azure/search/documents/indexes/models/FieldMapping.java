@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FieldMapping model. */
+/** Defines a mapping between a field in a data source and a target field in an index. */
 @Fluent
 public final class FieldMapping {
     /*

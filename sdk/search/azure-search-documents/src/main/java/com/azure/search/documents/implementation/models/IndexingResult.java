@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IndexingResult model. */
+/** Status of an indexing operation for a single document. */
 @Immutable
 public final class IndexingResult {
     /*

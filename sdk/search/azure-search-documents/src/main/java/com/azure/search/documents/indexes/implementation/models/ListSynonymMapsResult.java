@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListSynonymMapsResult model. */
+/** Response from a List SynonymMaps request. If successful, it includes the full definitions of all synonym maps. */
 @Immutable
 public final class ListSynonymMapsResult {
     /*
