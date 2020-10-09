@@ -107,7 +107,6 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         }
         Objects.requireNonNull(tokenProvider, "Token provider cannot be null.");
 
-        final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
         final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
         if (options != null) {
             builder.setOperationTimeout(options.getOperationTimeout())
@@ -117,15 +116,32 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                 .setWatchdogTriggerTime(options.getMaximumSilentTime());
         }
 
-        return builder.build()
-                .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
-                    @Override
-                    public EventHubClient apply(MessagingFactory factory) {
-                        eventHubClient.underlyingFactory = factory;
-                        eventHubClient.timer = new Timer(factory);
-                        return eventHubClient;
-                    }
-                }, executor);
+        return  create(eventHubName, executor, builder.build());
+    }
+
+    /**
+     * Package private method for creating an EventHub client with the given messaging factory.
+     *
+     * @param eventHubName Name of the Event Hub to connect to.
+     * @param executor Thread pool to run on.
+     * @param messagingFactory A future that completes with the messaging factory.
+     * @return A new EventHubClient.
+     */
+    static CompletableFuture<EventHubClient> create(
+        final String eventHubName,
+        final ScheduledExecutorService executor,
+        final CompletableFuture<MessagingFactory> messagingFactory) {
+
+        if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
+            throw new IllegalArgumentException("Event hub name cannot be null or empty");
+        }
+
+        return messagingFactory.thenApplyAsync(factory -> {
+            final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
+            eventHubClient.underlyingFactory = factory;
+            eventHubClient.timer = new Timer(factory);
+            return eventHubClient;
+        }, executor);
     }
 
     public String getEventHubName() {

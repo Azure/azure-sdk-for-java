@@ -247,7 +247,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
          * @param verifyMode The verify mode to use.
          * @return The updated {@link MessagingFactoryBuilder} object.
          */
-        MessagingFactoryBuilder setVerifyMode(SslDomain.VerifyMode verifyMode) {
+         MessagingFactoryBuilder setVerifyMode(SslDomain.VerifyMode verifyMode) {
             this.verifyMode = verifyMode;
             return this;
         }
