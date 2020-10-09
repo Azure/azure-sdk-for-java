@@ -62,7 +62,7 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](https://gith
 ####  Configure application.properties:
 ```properties
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.client-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
 azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
@@ -95,8 +95,8 @@ Please refer to [azure-active-directory-spring-boot-sample](https://github.com/A
 
 #### Configure application.properties:
 ```properties
-azure.activedirectory.client-id=Application-ID-in-AAD-App-registrations
-azure.activedirectory.client-secret=Key-in-AAD-API-ACCESS
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
 ```
 

@@ -26,7 +26,7 @@ In order to try the authorization action with this sample with minimum effort, [
 ### Configure application.properties
 ```properties
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.client-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
 azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 # It's suggested the logged in user should at least belong to one of the below groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
