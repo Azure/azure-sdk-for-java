@@ -3,7 +3,8 @@
 
 package com.microsoft.azure.spring.autoconfigure.jms;
 
-import org.apache.qpid.jms.JmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +20,7 @@ import org.springframework.jms.core.JmsTemplate;
 import javax.jms.ConnectionFactory;
 
 @Configuration
-@ConditionalOnClass(JmsConnectionFactory.class)
+@ConditionalOnClass(ServiceBusJmsConnectionFactory.class)
 @ConditionalOnResource(resources = "classpath:servicebusjms.enable.config")
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
@@ -31,21 +32,12 @@ public class ServiceBusJMSAutoConfiguration {
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
         final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final String clientId = serviceBusJMSProperties.getTopicClientId();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
-
-        final ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
-        final String host = serviceBusKey.getHost();
-        final String sasKeyName = serviceBusKey.getSharedAccessKeyName();
-        final String sasKey = serviceBusKey.getSharedAccessKey();
-
-        final String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
-        final JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
-        jmsConnectionFactory.setRemoteURI(remoteUri);
-        jmsConnectionFactory.setClientID(clientId);
-        jmsConnectionFactory.setUsername(sasKeyName);
-        jmsConnectionFactory.setPassword(sasKey);
-        return new CachingConnectionFactory(jmsConnectionFactory);
+        final long idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+        final ServiceBusJmsConnectionFactorySettings settings =
+            new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
+        final ServiceBusJmsConnectionFactory serviceBusJmsConnectionFactory =
+            new ServiceBusJmsConnectionFactory(connectionString, settings);
+        return new CachingConnectionFactory(serviceBusJmsConnectionFactory);
     }
 
     @Bean
