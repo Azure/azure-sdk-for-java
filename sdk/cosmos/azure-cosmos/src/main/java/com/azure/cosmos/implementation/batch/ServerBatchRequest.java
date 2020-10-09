@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -23,7 +22,7 @@ public abstract class ServerBatchRequest {
     private final int maxBodyLength;
     private final int maxOperationCount;
 
-    private ByteBuffer requestBody;
+    private String requestBody;
     private List<CosmosItemOperation> operations;
     private boolean isAtomicBatch = false;
     private boolean shouldContinueOnError = false;
@@ -50,7 +49,7 @@ public abstract class ServerBatchRequest {
      *
      * @return Any pending operations that were not included in the request.
      */
-    List<CosmosItemOperation> createBodyOfBatchRequest(final List<CosmosItemOperation> operations) {
+    final List<CosmosItemOperation> createBodyOfBatchRequest(final List<CosmosItemOperation> operations) {
 
         checkNotNull(operations, "expected non-null operations");
 
@@ -83,13 +82,15 @@ public abstract class ServerBatchRequest {
             }
         }
 
-        this.requestBody = ByteBuffer.wrap(Utils.getUTF8Bytes(arrayNode.toString()));
-        this.operations = operations.subList(0, totalOperationCount);
+        // TODO(rakkuma): This should change to byte array later as optimisation.
+        // Issue: https://github.com/Azure/azure-sdk-for-java/issues/16112
+        this.requestBody = arrayNode.toString();
 
+        this.operations = operations.subList(0, totalOperationCount);
         return operations.subList(totalOperationCount, operations.size());
     }
 
-    public final ByteBuffer getRequestBodyAsByteBuffer() {
+    public final String getRequestBody() {
         checkState(this.requestBody != null, "expected non-null body");
 
         return this.requestBody;
