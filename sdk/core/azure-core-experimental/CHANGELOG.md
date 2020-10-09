@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.8 (Unreleased)
+
+
 ## 1.0.0-beta.7 (2020-10-08)
 
 - Added APIs to `JsonPatchDocument` which accept pre-serialized JSON.
