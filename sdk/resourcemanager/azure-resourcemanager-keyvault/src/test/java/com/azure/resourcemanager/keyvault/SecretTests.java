@@ -45,20 +45,20 @@ public class SecretTests extends KeyVaultManagementTest {
 
         Assertions.assertNotNull(secret);
         Assertions.assertNotNull(secret.id());
-        Assertions.assertEquals("Some secret value", secret.value());
+        Assertions.assertEquals("Some secret value", secret.getValue());
 
         secret = secret.update().withValue("Some updated value").apply();
 
-        Assertions.assertEquals("Some updated value", secret.value());
+        Assertions.assertEquals("Some updated value", secret.getValue());
 
         Iterable<Secret> versions = secret.listVersions();
 
         int count = 2;
         for (Secret version : versions) {
-            if ("Some secret value".equals(version.value())) {
+            if ("Some secret value".equals(version.getValue())) {
                 count--;
             }
-            if ("Some updated value".equals(version.value())) {
+            if ("Some updated value".equals(version.getValue())) {
                 count--;
             }
         }

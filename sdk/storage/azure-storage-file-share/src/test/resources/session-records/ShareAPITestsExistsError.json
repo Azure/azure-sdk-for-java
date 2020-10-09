@@ -1,25 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsexistserrorshareapitestsexistserror38149921de?restype=share&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsexistserrorshareapitestsexistserroraff9713787?restype=share&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "86938f60-98c2-4de9-a974-198db586ae9c"
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a8189f00-f08d-45ee-bdf4-6ddab275e6d8"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
       "x-ms-error-code" : "AuthenticationFailed",
       "retry-after" : "0",
       "Content-Length" : "407",
       "StatusCode" : "403",
-      "x-ms-request-id" : "8c89f81b-601a-0022-6e75-761fdd000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:8c89f81b-601a-0022-6e75-761fdd000000\nTime:2020-08-19T22:09:23.2965243Z</Message><AuthenticationErrorDetail>sr is mandatory. Cannot be empty</AuthenticationErrorDetail></Error>",
-      "Date" : "Wed, 19 Aug 2020 22:09:23 GMT",
+      "x-ms-request-id" : "9965748d-c01a-0021-240f-99b5f9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:9965748d-c01a-0021-240f-99b5f9000000\nTime:2020-10-02T22:59:48.3837052Z</Message><AuthenticationErrorDetail>sr is mandatory. Cannot be empty</AuthenticationErrorDetail></Error>",
+      "Date" : "Fri, 02 Oct 2020 22:59:47 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsexistserrorshareapitestsexistserror38149921de" ]
+  "variables" : [ "shareapitestsexistserrorshareapitestsexistserroraff9713787" ]
 }

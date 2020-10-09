@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PhoneNumberEntity {
     /*
-     * The id of the entity. It is the search id of a searc. It is the release
+     * The id of the entity. It is the search id of a search. It is the release
      * id of a release.
      */
     @JsonProperty(value = "id")
@@ -55,7 +55,7 @@ public final class PhoneNumberEntity {
     private OffsetDateTime focDate;
 
     /**
-     * Get the id property: The id of the entity. It is the search id of a searc. It is the release id of a release.
+     * Get the id property: The id of the entity. It is the search id of a search. It is the release id of a release.
      *
      * @return the id value.
      */
@@ -64,7 +64,7 @@ public final class PhoneNumberEntity {
     }
 
     /**
-     * Set the id property: The id of the entity. It is the search id of a searc. It is the release id of a release.
+     * Set the id property: The id of the entity. It is the search id of a search. It is the release id of a release.
      *
      * @param id the id value to set.
      * @return the PhoneNumberEntity object itself.

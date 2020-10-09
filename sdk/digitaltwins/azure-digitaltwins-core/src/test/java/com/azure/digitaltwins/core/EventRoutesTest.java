@@ -98,7 +98,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         }
 
         // list event routes by page, make sure that all non-final pages have the expected page size
-        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemCount(expectedPageSize);
+        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemsPerPage(expectedPageSize);
         PagedIterable<EventRoute> eventRoutes = client.listEventRoutes(eventRoutesListOptions, Context.NONE);
         Iterable<PagedResponse<EventRoute>> eventRoutePages = eventRoutes.iterableByPage();
         int pageCount = 0;

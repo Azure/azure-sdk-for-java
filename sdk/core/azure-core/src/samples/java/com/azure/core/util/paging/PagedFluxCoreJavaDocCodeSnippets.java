@@ -6,6 +6,9 @@ package com.azure.core.util.paging;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 /**
@@ -40,44 +43,69 @@ public class PagedFluxCoreJavaDocCodeSnippets {
         }
 
         class FileContinuationToken {
+            private final int nextLinkId;
+
+            FileContinuationToken(int nextLinkId) {
+                this.nextLinkId = nextLinkId;
+            }
+
             public int getNextLinkId() {
-                return 0;
+                return nextLinkId;
             }
         }
 
         class File {
+            private final String guid;
+
+            File(String guid) {
+                this.guid = guid;
+            }
+
+            public String getGuid() {
+                return guid;
+            }
         }
 
         class FilePage implements ContinuablePage<FileContinuationToken, File> {
+            private final IterableStream<File> elements;
+            private final FileContinuationToken fileContinuationToken;
+
+            FilePage(List<File> elements, FileContinuationToken fileContinuationToken) {
+                this.elements = IterableStream.of(elements);
+                this.fileContinuationToken = fileContinuationToken;
+            }
+
             @Override
             public IterableStream<File> getElements() {
-                return null;
+                return elements;
             }
 
             @Override
             public FileContinuationToken getContinuationToken() {
-                return null;
+                return fileContinuationToken;
             }
         }
 
         class FileShareServiceClient {
             Flux<FilePage> getFilePages(FileContinuationToken token) {
-                return null;
+                List<File> files = Collections.singletonList(new File(UUID.randomUUID().toString()));
+                if (token.getNextLinkId() < 10) {
+                    return Flux.just(new FilePage(files, null));
+                } else {
+                    return Flux.just(new FilePage(files,
+                        new FileContinuationToken((int) Math.floor(Math.random() * 20))));
+                }
             }
         }
-        FileShareServiceClient client = null; // Initialize client
 
-        Supplier<PageRetriever<FileContinuationToken, FilePage>> pageRetrieverProvider
-            = new Supplier<PageRetriever<FileContinuationToken, FilePage>>() {
-                @Override
-                public PageRetriever<FileContinuationToken, FilePage> get() {
-                    return (continuationToken, pageSize) -> client.getFilePages(continuationToken);
-                }
-            };
+        FileShareServiceClient client = new FileShareServiceClient();
+
+        Supplier<PageRetriever<FileContinuationToken, FilePage>> pageRetrieverProvider = () ->
+            (continuationToken, pageSize) -> client.getFilePages(continuationToken);
 
         class FilePagedFlux extends ContinuablePagedFluxCore<FileContinuationToken, File, FilePage> {
             FilePagedFlux(Supplier<PageRetriever<FileContinuationToken, FilePage>>
-                                     pageRetrieverProvider) {
+                pageRetrieverProvider) {
                 super(pageRetrieverProvider);
             }
         }

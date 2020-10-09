@@ -3,7 +3,12 @@
 ## 3.1.0-beta.1 (Unreleased)
 
 
+## 3.0.2 (2020-10-06)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
+
 ## 3.0.1 (2020-09-10)
+### Dependency updates
 - Updated dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.
 
 ## 3.0.0 (2020-08-20)
