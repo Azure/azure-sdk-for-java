@@ -10,7 +10,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GetIndexStatisticsResult model. */
+/**
+ * Statistics for a given index. Statistics are collected periodically and are not guaranteed to always be up-to-date.
+ */
 @Immutable
 public final class GetIndexStatisticsResult {
     /*

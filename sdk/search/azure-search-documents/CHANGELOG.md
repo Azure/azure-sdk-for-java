@@ -1,7 +1,32 @@
 # Release History
 
-## 11.2.0-beta.2 (Unreleased)
+## 11.2.0-beta.3 (Unreleased)
 
+
+## 11.2.0-beta.2 (2020-10-06)
+
+### New Features
+
+- Added `SearchFilter` to help aid creation of OData filter expressions.
+- Added required parameter `documentKeyRetriever` to `SearchIndexingBufferedSender` to better correlate response documents to sent documents.
+- Added `ClientOptions` to all builders to support setting `applicationId` in `User-Agent` string and headers that need to be applied to each request.
+- Added support for `HttpPipelinePosition` in client builders to determine when an `HttpPipelinePolicy` will be invoked.
+
+### Breaking Changes
+
+- Renamed `SearchBatchClient` and `SearchBatchAsyncClient` to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+- Removed `SearchBatchClientBuilder` for options bag `SearchIndexingBufferedSenderOptions`.
+- Renamed `getSearchBatchClient` to `getSearchIndexingBufferedSender` in `SearchClient`.
+- Made `SearchIdexingBufferedSender` generic typed.
+- Removed `IndexingHooks` in favor of individual callbacks.
+- Removed the ability to configure `batchSize` on buffered sender and changed the default to 500 instead of 1000.
+- Changed `onActionRemoved` to `onActionSent`.
+
+## 11.1.1 (2020-10-02)
+
+### Dependency Updates
+
+- Updated `azure-core` version.
 
 ## 11.2.0-beta.1 (2020-09-10)
 

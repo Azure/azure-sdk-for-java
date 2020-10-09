@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatedirectoryfilepermission7381967a9a7?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatedirectoryfilepermission57725433cdc?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9146d2de-de0a-4b48-95b5-d6cfec1c93f3"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a697c058-d5ce-4986-aa55-345b1b371d42"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911FD477C9F",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:46 GMT",
+      "ETag" : "0x8D8448C953AD974",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:46 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99eef-201a-0011-0dfa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:46 GMT",
-      "x-ms-client-request-id" : "9146d2de-de0a-4b48-95b5-d6cfec1c93f3"
+      "x-ms-request-id" : "8c89f90b-601a-0022-1675-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:46 GMT",
+      "x-ms-client-request-id" : "a697c058-d5ce-4986-aa55-345b1b371d42"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatedirectoryfilepermission7381967a9a7/testCreateDirectory?restype=directory",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatedirectoryfilepermission57725433cdc/testCreateDirectory?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "41625eac-d478-413a-8196-33fe074d0842"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "993357b8-8e8a-4c72-953f-586751a55f28"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "x-ms-file-permission-key" : "10431655103412740186*8280205063999649007",
+      "x-ms-version" : "2020-02-10",
+      "x-ms-file-permission-key" : "9019159817152516874*11459378189709739967",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T23:30:46.7916510Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:46 GMT",
+      "x-ms-file-creation-time" : "2020-08-19T22:09:46.3356658Z",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:46 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 23:30:46 GMT",
-      "ETag" : "0x8D77911FD5662DE",
+      "Date" : "Wed, 19 Aug 2020 22:09:46 GMT",
+      "ETag" : "0x8D8448C9544E8F2",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-12-04T23:30:46.7916510Z",
+      "x-ms-file-change-time" : "2020-08-19T22:09:46.3356658Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "9ba99ef1-201a-0011-0efa-aa088f000000",
-      "x-ms-client-request-id" : "41625eac-d478-413a-8196-33fe074d0842",
-      "x-ms-file-last-write-time" : "2019-12-04T23:30:46.7916510Z"
+      "x-ms-request-id" : "8c89f90d-601a-0022-1775-761fdd000000",
+      "x-ms-client-request-id" : "993357b8-8e8a-4c72-953f-586751a55f28",
+      "x-ms-file-last-write-time" : "2020-08-19T22:09:46.3356658Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatedirectoryfilepermission7381967a9a7" ]
+  "variables" : [ "shareapitestscreatedirectoryfilepermission57725433cdc" ]
 }

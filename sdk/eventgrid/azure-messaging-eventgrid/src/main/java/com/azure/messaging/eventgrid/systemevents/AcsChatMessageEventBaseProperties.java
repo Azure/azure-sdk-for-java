@@ -45,7 +45,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
      * The version of the message
      */
     @JsonProperty(value = "version")
-    private Integer version;
+    private Long version;
 
     /**
      * Get the messageId property: The chat message id.
@@ -152,7 +152,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
      *
      * @return the version value.
      */
-    public Integer getVersion() {
+    public Long getVersion() {
         return this.version;
     }
 
@@ -162,7 +162,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
      * @param version the version value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public AcsChatMessageEventBaseProperties setVersion(Integer version) {
+    public AcsChatMessageEventBaseProperties setVersion(Long version) {
         this.version = version;
         return this;
     }

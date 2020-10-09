@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -61,6 +61,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private final Instant timeQueued;
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
+    private volatile boolean sendingRequestHasStarted;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -213,12 +214,25 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     // region Methods
 
     public boolean expire() {
-        final RequestTimeoutException error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+        final GoneException error = new GoneException(this.toString(), null, this.args.physicalAddress());
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+
         return this.completeExceptionally(error);
     }
 
     public abstract Timeout newTimeout(final TimerTask task);
+
+    /**
+     * Provides information whether the request could have been sent to the service
+     * @return false if it is possible to guarantee that the request never arrived at the service - true otherwise
+     */
+    public boolean hasSendingRequestStarted() {
+        return this.sendingRequestHasStarted;
+    }
+
+    void setSendingRequestHasStarted() {
+        this.sendingRequestHasStarted = true;
+    }
 
     public RequestTimeline takeTimelineSnapshot() {
 

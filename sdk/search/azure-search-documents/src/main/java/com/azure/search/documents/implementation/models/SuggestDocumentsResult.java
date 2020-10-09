@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SuggestDocumentsResult model. */
+/** Response containing suggestion query results from an index. */
 @Immutable
 public final class SuggestDocumentsResult {
     /*

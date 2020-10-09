@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InnerError model. */
+/** A more specific error description than was provided by the containing error. */
 @Fluent
 public final class InnerError {
     /*

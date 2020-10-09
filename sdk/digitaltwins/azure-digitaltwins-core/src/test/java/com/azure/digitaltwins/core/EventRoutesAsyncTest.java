@@ -1,16 +1,23 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.EventRoute;
+import com.azure.digitaltwins.core.models.EventRoutesListOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for the async client's event route APIs
@@ -80,5 +87,41 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
 
         StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_REQUEST));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void listEventRoutesPaginationWorks(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+        DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
+        final int eventRouteCountToCreate = 5;
+        final int expectedPageSize = 2;
+
+        // create enough event routes so that the list API can have multiple pages
+        for (int i = 0; i < eventRouteCountToCreate; i++) {
+            String eventRouteId = testResourceNamer.randomUuid();
+            EventRoute eventRouteToCreate = new EventRoute(EVENT_ROUTE_ENDPOINT_NAME);
+            eventRouteToCreate.setFilter(FILTER);
+            StepVerifier.create(asyncClient.createEventRoute(eventRouteId, eventRouteToCreate))
+                .verifyComplete();
+        }
+
+        // list event routes by page, make sure that all non-final pages have the expected page size
+        AtomicInteger pageCount = new AtomicInteger(0);
+        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemsPerPage(expectedPageSize);
+        StepVerifier.create(asyncClient.listEventRoutes(eventRoutesListOptions).byPage())
+            .thenConsumeWhile(
+                (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,
+                (pagedResponseOfEventRoute) -> {
+                    pageCount.incrementAndGet();
+
+                    // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
+                    if (pagedResponseOfEventRoute.getContinuationToken() != null) {
+                        assertEquals(expectedPageSize, pagedResponseOfEventRoute.getValue().size());
+                    }
+                })
+            .verifyComplete();
+
+        assertTrue(pageCount.get() >= 3, "At least three pages should have been returned.");
     }
 }
