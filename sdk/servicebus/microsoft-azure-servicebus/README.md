@@ -57,7 +57,7 @@ The samples are located in this repo. [Java Samples](https://github.com/Azure/az
 
 ### Can I manage Service Bus entities with this library?
 
-Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](./src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
+Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
 
 ### How do I run the unit tests?
 

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.util;
 
-import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.models.FeedResponse;
@@ -29,7 +28,7 @@ public final class UtilBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
-        return new CosmosPagedIterable<>(pagedFlux);
+    public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 }

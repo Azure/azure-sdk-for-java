@@ -38,6 +38,11 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
     DataLakeStorageAccountDetails defaultDataLakeStorage();
 
     /**
+     * @return the extraProperties value.
+     */
+    Map<String, Object> extraProperties();
+
+    /**
      * @return the identity value.
      */
     ManagedIdentity identity();
@@ -136,6 +141,18 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
         }
 
         /**
+         * The stage of the workspace definition allowing to specify ManagedResourceGroupName.
+         */
+        interface WithManagedResourceGroupName {
+            /**
+             * Specifies managedResourceGroupName.
+             * @param managedResourceGroupName Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'
+             * @return the next definition stage
+             */
+            WithCreate withManagedResourceGroupName(String managedResourceGroupName);
+        }
+
+        /**
          * The stage of the workspace definition allowing to specify ManagedVirtualNetwork.
          */
         interface WithManagedVirtualNetwork {
@@ -200,7 +217,7 @@ public interface Workspace extends HasInner<WorkspaceInner>, Resource, Groupable
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
+        interface WithCreate extends Creatable<Workspace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithConnectivityEndpoints, DefinitionStages.WithDefaultDataLakeStorage, DefinitionStages.WithIdentity, DefinitionStages.WithManagedResourceGroupName, DefinitionStages.WithManagedVirtualNetwork, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithSqlAdministratorLogin, DefinitionStages.WithSqlAdministratorLoginPassword, DefinitionStages.WithVirtualNetworkProfile {
         }
     }
     /**

@@ -3,7 +3,7 @@
 This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
 to the next version of Azure resource management libraries (`com.azure.resourcemanager.**`)
 
-For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](http://aka.ms/azure-sdk-java-mgmt)
+For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](https://aka.ms/azsdk/java/mgmt)
 
 ## Table of contents
 
@@ -14,6 +14,7 @@ For users new to the Java SDK for resource management libraries, please see the 
   * [Customized Policy](#customized-policy)
   * [Custom HTTP Client](#custom-http-client)
   * [Error Handling](#error-handling)
+  * [Pagination](#pagination)
   * [rxJava -> Reactor](#rxjava-to-reactor)
 * [Additional Samples](#additional-samples)
 
@@ -29,7 +30,7 @@ The latest dependencies for resource management libraries are [available here](h
 
 The latest Azure Java SDK for management libraries is a result of our efforts to create a resource management client library that is user-friendly and idiomatic to the Java ecosystem.
 
-Apart from redesigns resulting from the [new Azure SDK Design Guidelines for Java](DESIGN.md), the latest version improves on several areas from old version.
+Apart from redesigns resulting from the [new Azure SDK Design Guidelines for Java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md), the latest version improves on several areas from old version.
 
 While conforming to the new guideline, we have tried our best to minimize the breaking changes. Most of the interfaces / classes / methods have stayed the same to offer user an easier migration experience.
 
@@ -70,7 +71,7 @@ Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscripti
 ```
 **In new version, this feature has been removed.** If this creates concern on your side, please file an issue to let us know.
 
-For detailed information on the benefits of using the new authentication classes, please refer to [this page](AUTH.md)
+For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
 
 ## Customized Policy
 
@@ -94,7 +95,7 @@ Azure azure = Azure.configure()
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
 ```java
-Azure azure = Azure.configure()
+AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(new CustomizedPolicy())
     .authenticate(credential, profile)
     .withDefaultSubscription();
@@ -123,11 +124,11 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)))
     .build();
 
-Azure azure = Azure.configure()
+AzureResourceManager azure = AzureResourceManager.configure()
     .withHttpClient(client)
     .authenticate(credential, profile)
     .withDefaultSubscription();
-```    
+```
     
 ## Error Handling
 
@@ -161,6 +162,16 @@ try {
 }
 ```
 
+There is one more difference on error handling for getting a resource instance via e.g. `getById` and `getByResourceGroup`.
+In old version, `null` will be returned if the resource does not exist on Azure.
+In new version, `ManagementException` will be thrown.
+
+## Pagination
+
+In old version, `PagedList<T>` is returned. It is not thread-safe, and with caching on requested pages and items.
+
+In new version, `PagedIterable<T>` is returned. It is thread-safe, but without caching. That is, in a second iteration, it will again request pages and items, even they are already requested in the first iteration.
+
 ## rxJava to Reactor
 
 In old version (`com.microsoft.azure.management.**`), `rxJava` is used for non-blocking applications
@@ -170,48 +181,46 @@ In new version (`com.azure.resourcemanager.**`), we have adopted `Reactor` as th
 **In old version (`com.microsoft.azure.management.**`)**
 
 ```java
-azure.publicIPAddresses()
-    .define(publicIpName)
-    .withRegion(region)
-    .withExistingResourceGroup(rgName)
-    .withLeafDomainLabel(publicIpName)
-    .createAsync().flatMap(new Func1 < Indexable, Observable < Indexable >> () {
-        @Override
-        public Observable < Indexable > call(Indexable indexable) {
-            if (indexable instanceof PublicIPAddress) {
-                PublicIPAddress publicIp = (PublicIPAddress) indexable;
-                //=============================================================
-                // Create an Internet facing load balancer with
-                // One frontend IP address
-                // Two backend address pools which contain network interfaces for the virtual
-                //  machines to receive HTTP and HTTPS network traffic from the load balancer
-                // Two load balancing rules for HTTP and HTTPS to map public ports on the load
-                //  balancer to ports in the backend address pool
-                // Two probes which contain HTTP and HTTPS health probes used to check availability
-                //  of virtual machines in the backend address pool
-                // Three inbound NAT rules which contain rules that map a public port on the load
-                //  balancer to a port for a specific virtual machine in the backend address pool
-                //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
-                
-                return Observable.merge(
-                    Observable.just(indexable), azure.loadBalancers().define(loadBalancerName1).withRegion(region).withExistingResourceGroup(rgName)
-                    // Add two rules that uses above backend and probe     
-                    .defineLoadBalancingRule(httpLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(80).toBackend(backendPoolName1).withProbe(httpProbe).attach().defineLoadBalancingRule(httpsLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(443).toBackend(backendPoolName2).withProbe(httpsProbe).attach()
-                    // Add nat pools to enable direct VM connectivity for
-                    // SSH to port 22 and TELNET to port 23
-
-                    .defineInboundNatPool(natPool50XXto22).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(5000, 5099).toBackendPort(22).attach().defineInboundNatPool(natPool60XXto23).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(6000, 6099).toBackendPort(23).attach()
-
-                    // Explicitly define the frontend
-                    .definePublicFrontend(frontendName).withExistingPublicIPAddress(publicIp).attach
-
-                    // Add two probes one per rule
-                    .defineHttpProbe(httpProbe).withRequestPath("/").withPort(80).attach().defineHttpProbe(httpsProbe).withRequestPath("/").withPort(443).attach()
-                    .createAsync());
+Observable.merge(
+    azure.networks().define(vnetName)
+        .withRegion(region)
+        .withNewResourceGroup(rgName)
+        .withAddressSpace("172.16.0.0/16")
+        .defineSubnet("Front-end").withAddressPrefix("172.16.1.0/24").attach()
+        .createAsync(),
+    azure.publicIPAddresses().define(publicIpName)
+        .withRegion(region)
+        .withExistingResourceGroup(rgName)
+        .withLeafDomainLabel(publicIpName)
+        .createAsync()
+        .flatMap(new Func1<Indexable, Observable<Indexable>>() {
+            @Override
+            public Observable<Indexable> call(Indexable indexable) {
+                if (indexable instanceof PublicIPAddress) {
+                    PublicIPAddress publicIp = (PublicIPAddress) indexable;
+                    return Observable.merge(
+                        Observable.just(indexable),
+                        azure.loadBalancers().define(loadBalancerName1)
+                            .withRegion(region)
+                            .withExistingResourceGroup(rgName)
+                            // Add two rules that uses above backend and probe
+                            .defineLoadBalancingRule(httpLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(80).toBackend(backendPoolName1).withProbe(httpProbe).attach()
+                            .defineLoadBalancingRule(httpsLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(443).toBackend(backendPoolName2).withProbe(httpsProbe).attach()
+                            // Add nat pools to enable direct VM connectivity for SSH to port 22 and TELNET to port 23
+                            .defineInboundNatPool(natPool50XXto22).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(5000, 5099).toBackendPort(22).attach()
+                            .defineInboundNatPool(natPool60XXto23).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(6000, 6099).toBackendPort(23).attach()
+                            // Explicitly define the frontend
+                            .definePublicFrontend(frontendName).withExistingPublicIPAddress(publicIp).attach()
+                            // Add two probes one per rule
+                            .defineHttpProbe(httpProbe).withRequestPath("/").withPort(80).attach()
+                            .defineHttpProbe(httpsProbe).withRequestPath("/").withPort(443).attach()
+                            .createAsync());
+                }
+                return Observable.just(indexable);
             }
-            return Observable.just(indexable);
-        }
-    })).toBlocking().subscribe(new Action1 < Indexable > () {
+        }))
+.toBlocking()
+.subscribe(new Action1<Indexable>() {
     @Override
     public void call(Indexable indexable) {
         createdResources.add(indexable);
@@ -219,74 +228,58 @@ azure.publicIPAddresses()
 });
 ``` 
 
-[**Link to full sample**](https://github.com/Azure/azure-libraries-for-java/blob/master/azure-samples/src/main/java/com/microsoft/azure/management/compute/samples/ManageVirtualMachineScaleSetAsync.java#L100)
+[**Link to full sample**](https://github.com/Azure/azure-libraries-for-java/blob/master/azure-samples/src/main/java/com/microsoft/azure/management/compute/samples/ManageVirtualMachineScaleSetAsync.java#L91)
       
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
 ```java
-final List < Indexable > createdResources = new ArrayList < > ();
+final List<Object> createdResources = new ArrayList<>();
 azure.resourceGroups().define(rgName).withRegion(region).create();
 Flux.merge(
-    azure.networks()
-    .define(vnetName)
-    .withRegion(region)
-    .withExistingResourceGroup(rgName)
-    .withAddressSpace("172.16.0.0/16")
-    .defineSubnet("Front-end")
-    .withAddressPrefix("172.16.1.0/24")
-    .attach()
-    .createAsync(),
-    azure.publicIpAddresses()
-    .define(publicIpName)
-    .withRegion(region)
-    .withExistingResourceGroup(rgName)
-    .withLeafDomainLabel(publicIpName)
-    .createAsync().flatMap(indexable - > {
-        if (indexable instanceof PublicIpAddress) {
-            PublicIpAddress publicIp = (PublicIpAddress) indexable;
-            //=============================================================
-            // Create an Internet facing load balancer with
-            // One frontend IP address
-            // Two backend address pools which contain network interfaces for the virtual
-            //  machines to receive HTTP and HTTPS network traffic from the load balancer
-            // Two load balancing rules for HTTP and HTTPS to map public ports on the load
-            //  balancer to ports in the backend address pool
-            // Two probes which contain HTTP and HTTPS health probes used to check availability
-            //  of virtual machines in the backend address pool
-            // Three inbound NAT rules which contain rules that map a public port on the load
-            //  balancer to a port for a specific virtual machine in the backend address pool
-            //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
-            
+    azure.networks().define(vnetName)
+        .withRegion(region)
+        .withExistingResourceGroup(rgName)
+        .withAddressSpace("172.16.0.0/16")
+        .defineSubnet("Front-end").withAddressPrefix("172.16.1.0/24").attach()
+        .createAsync(),
+    azure.publicIpAddresses().define(publicIpName)
+        .withRegion(region)
+        .withExistingResourceGroup(rgName)
+        .withLeafDomainLabel(publicIpName)
+        .createAsync()
+        .flatMapMany(publicIp -> {
             return Flux.merge(
-                Flux.just(indexable), azure.loadBalancers().define(loadBalancerName1).withRegion(region).withExistingResourceGroup(rgName)
-                // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule(httpLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(80).toBackend(backendPoolName1).withProbe(httpProbe).attach().defineLoadBalancingRule(httpsLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(443).toBackend(backendPoolName2).withProbe(httpsProbe).attach()
-                // Add nat pools to enable direct VM connectivity for
-                //  SSH to port 22 and TELNET to port 23
-                .defineInboundNatPool(natPool50XXto22).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(5000, 5099).toBackendPort(22).attach().defineInboundNatPool(natPool60XXto23).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(6000, 6099).toBackendPort(23).attach()
-
-                // Explicitly define the frontend
-                .definePublicFrontend(frontendName).withExistingPublicIpAddress(publicIp).attach()
-
-                // Add two probes one per rule
-                .defineHttpProbe(httpProbe).withRequestPath("/").withPort(80).attach().defineHttpProbe(httpsProbe).withRequestPath("/").withPort(443).attach().createAsync());
-        }
-        return Flux.just(indexable);
-    })).flatMap(indexable - > {
-    createdResources.add(indexable);
-    return Flux.just(indexable);
-}).last().block();
+                Flux.just(publicIp),
+                azure.loadBalancers().define(loadBalancerName1)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    // Add two rules that uses above backend and probe
+                    .defineLoadBalancingRule(httpLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(80).toBackend(backendPoolName1).withProbe(httpProbe).attach()
+                    .defineLoadBalancingRule(httpsLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(443).toBackend(backendPoolName2).withProbe(httpsProbe).attach()
+                    // Add nat pools to enable direct VM connectivity for SSH to port 22 and TELNET to port 23
+                    .defineInboundNatPool(natPool50XXto22).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(5000, 5099).toBackendPort(22).attach()
+                    .defineInboundNatPool(natPool60XXto23).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(6000, 6099).toBackendPort(23).attach()
+                    // Explicitly define the frontend
+                    .definePublicFrontend(frontendName).withExistingPublicIpAddress(publicIp).attach()
+                    // Add two probes one per rule
+                    .defineHttpProbe(httpProbe).withRequestPath("/").withPort(80).attach()
+                    .defineHttpProbe(httpsProbe).withRequestPath("/").withPort(443).attach()
+                    .createAsync());
+            })
+)
+.doOnNext(createdResources::add)
+.blockLast();
 ```
 
-[**Link to full sample**](https://github.com/Azure/azure-sdk-for-java/blob/7beda69/sdk/management/samples/src/main/java/com/azure/resourcemanager/compute/samples/ManageVirtualMachineScaleSetAsync.java#L98)
+[**Link to full sample**](https://github.com/Azure/azure-sdk-for-java/blob/15b8e62/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/compute/samples/ManageVirtualMachineScaleSetAsync.java#L88)
 
 ## Additional Samples 
 
 More samples can be found at :
-- [README for new version of SDK](http://aka.ms/azure-sdk-java-mgmt)
-- [Code Samples for Resource Management Libraries](SAMPLE.md)
-- [Authentication Documentation](AUTH.md)
+- [README for new version of SDK](https://aka.ms/azsdk/java/mgmt)
+- [Code Samples for Resource Management Libraries](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md)
+- [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
 
 ## Need help?
 

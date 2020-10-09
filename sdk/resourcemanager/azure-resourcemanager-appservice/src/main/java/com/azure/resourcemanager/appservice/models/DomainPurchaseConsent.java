@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DomainPurchaseConsent model. */
+/** Domain purchase consent object, representing acceptance of applicable legal agreements. */
 @Fluent
 public final class DomainPurchaseConsent {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainPurchaseConsent.class);

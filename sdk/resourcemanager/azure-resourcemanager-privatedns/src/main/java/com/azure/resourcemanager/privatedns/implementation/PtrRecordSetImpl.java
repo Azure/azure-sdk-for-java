@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.PtrRecord;
 import com.azure.resourcemanager.privatedns.models.PtrRecordSet;
 import com.azure.resourcemanager.privatedns.models.RecordType;
@@ -24,8 +24,8 @@ class PtrRecordSetImpl extends PrivateDnsRecordSetImpl implements PtrRecordSet {
     @Override
     public List<String> targetDomainNames() {
         List<String> targetDomainNames = new ArrayList<>();
-        if (inner().ptrRecords() != null) {
-            for (PtrRecord ptrRecord : this.inner().ptrRecords()) {
+        if (innerModel().ptrRecords() != null) {
+            for (PtrRecord ptrRecord : this.innerModel().ptrRecords()) {
                 targetDomainNames.add(ptrRecord.ptrdname());
             }
         }
@@ -34,12 +34,12 @@ class PtrRecordSetImpl extends PrivateDnsRecordSetImpl implements PtrRecordSet {
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (inner().ptrRecords() != null && !inner().ptrRecords().isEmpty()) {
+        if (innerModel().ptrRecords() != null && !innerModel().ptrRecords().isEmpty()) {
             if (resource.ptrRecords() == null) {
                 resource.withPtrRecords(new ArrayList<>());
             }
-            resource.ptrRecords().addAll(inner().ptrRecords());
-            inner().ptrRecords().clear();
+            resource.ptrRecords().addAll(innerModel().ptrRecords());
+            innerModel().ptrRecords().clear();
         }
         if (!recordSetRemoveInfo.ptrRecords().isEmpty()) {
             if (resource.ptrRecords() != null) {

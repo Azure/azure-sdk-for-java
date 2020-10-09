@@ -8,19 +8,22 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import java.util.Map;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Key Vault secret. */
 @Fluent
-public interface Secret extends Indexable, HasInner<KeyVaultSecret>, HasId, HasName, Updatable<Secret.Update> {
+public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasId, HasName, Updatable<Secret.Update> {
     /** @return the secret value when the secret is enabled */
-    String value();
+    String getValue();
+
+    /** @return the secret value when the secret is enabled */
+    Mono<String> getValueAsync();
 
     /** @return the secret management attributes */
     SecretProperties attributes();
@@ -39,6 +42,11 @@ public interface Secret extends Indexable, HasInner<KeyVaultSecret>, HasId, HasN
      *     managed will be true
      */
     boolean managed();
+
+    /**
+     * @return whether secret is enabled.
+     */
+    boolean enabled();
 
     /** @return a list of individual secret versions with the same secret name */
     Iterable<Secret> listVersions();

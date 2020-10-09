@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailableProvidersListParameters model. */
+/** Constraints that determine the list of available Internet service providers. */
 @Fluent
 public final class AvailableProvidersListParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListParameters.class);

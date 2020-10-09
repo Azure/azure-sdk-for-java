@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetstatisticsleaseerror277812efc0feae?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c1ae2801-7c62-439e-bf38-cd95f018261a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8448C94CF32F2",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:45 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "8c89f902-601a-0022-1175-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:45 GMT",
+      "x-ms-client-request-id" : "c1ae2801-7c62-439e-bf38-cd95f018261a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetstatisticsleaseerror277812efc0feae?restype=share&comp=stats",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0a846aee-76a5-4e34-996f-dd955dfed484"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "Content-Length" : "252",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "8c89f904-601a-0022-1275-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:8c89f904-601a-0022-1275-761fdd000000\nTime:2020-08-19T22:09:45.6362858Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:45 GMT",
+      "x-ms-client-request-id" : "0a846aee-76a5-4e34-996f-dd955dfed484",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetstatisticsleaseerror277812efc0feae" ]
+}

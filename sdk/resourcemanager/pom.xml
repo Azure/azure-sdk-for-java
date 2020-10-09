@@ -13,6 +13,7 @@
     <module>azure-resourcemanager-appplatform</module>
     <module>azure-resourcemanager-appservice</module>
     <module>azure-resourcemanager-authorization</module>
+    <module>azure-resourcemanager-cdn</module>
     <module>azure-resourcemanager-compute</module>
     <module>azure-resourcemanager-containerinstance</module>
     <module>azure-resourcemanager-containerregistry</module>
@@ -29,6 +30,7 @@
     <module>azure-resourcemanager-redis</module>
     <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-sql</module>
+    <module>azure-resourcemanager-servicebus</module>
     <module>azure-resourcemanager-storage</module>
     <module>azure-resourcemanager-trafficmanager</module>
     <module>azure-resourcemanager-test</module>

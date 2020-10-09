@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
@@ -92,9 +92,8 @@ public class SpringAppDomainsImpl
             .mapPage(this::wrapModel);
     }
 
-    @Override
     public CustomDomainsClient inner() {
-        return manager().inner().getCustomDomains();
+        return manager().serviceClient().getCustomDomains();
     }
 
     @Override
@@ -104,7 +103,7 @@ public class SpringAppDomainsImpl
 
     @Override
     public Mono<CustomDomainValidateResult> validateAsync(String domain) {
-        return manager().inner().getApps().validateDomainAsync(
+        return manager().serviceClient().getApps().validateDomainAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }
 

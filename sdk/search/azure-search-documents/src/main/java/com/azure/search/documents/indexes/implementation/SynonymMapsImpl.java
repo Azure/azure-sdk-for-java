@@ -56,7 +56,7 @@ public final class SynonymMapsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientS")
-    private interface SynonymMapsService {
+    public interface SynonymMapsService {
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -143,22 +143,6 @@ public final class SynonymMapsImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (synonymMapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter synonymMapName is required and cannot be null."));
-        }
-        if (synonymMap == null) {
-            return Mono.error(new IllegalArgumentException("Parameter synonymMap is required and cannot be null."));
-        } else {
-            synonymMap.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -197,17 +181,6 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (synonymMapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter synonymMapName is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -239,17 +212,6 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> getWithResponseAsync(
             String synonymMapName, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (synonymMapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter synonymMapName is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -280,14 +242,6 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(
             String select, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -312,19 +266,6 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createWithResponseAsync(
             SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (synonymMap == null) {
-            return Mono.error(new IllegalArgumentException("Parameter synonymMap is required and cannot be null."));
-        } else {
-            synonymMap.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

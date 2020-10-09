@@ -7,8 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.redis.RedisManager;
-import com.azure.resourcemanager.redis.fluent.RedisClient;
-import com.azure.resourcemanager.redis.fluent.inner.OperationInner;
+import com.azure.resourcemanager.redis.fluent.models.OperationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -19,7 +18,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point for Redis Cache management API. */
 @Fluent
@@ -33,8 +31,7 @@ public interface RedisCaches
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<RedisCache>,
         SupportsBatchDeletion,
-        HasManager<RedisManager>,
-        HasInner<RedisClient> {
+        HasManager<RedisManager> {
 
     /**
      * Lists all of the available Redis REST API operations.

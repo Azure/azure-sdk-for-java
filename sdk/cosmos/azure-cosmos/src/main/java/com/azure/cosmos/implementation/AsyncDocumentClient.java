@@ -3,13 +3,14 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -72,6 +73,7 @@ public interface AsyncDocumentClient {
         URI serviceEndpoint;
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
         AzureKeyCredential credential;
+        TokenCredential tokenCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
@@ -172,6 +174,17 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        /**
+         * This method will accept functional interface TokenCredential which helps in generation authorization
+         * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
+         * @param tokenCredential the token credential
+         * @return current Builder.
+         */
+        public Builder withTokenCredential(TokenCredential tokenCredential) {
+            this.tokenCredential = tokenCredential;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -180,10 +193,10 @@ public interface AsyncDocumentClient {
 
         public AsyncDocumentClient build() {
 
-            ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
+            ifThrowIllegalArgException(this.serviceEndpoint == null || StringUtils.isEmpty(this.serviceEndpoint.toString()), "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.credential == null,
+                        && this.credential == null && this.tokenCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
                         "resource token, permissionFeed and azure key credential");
             ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
@@ -197,6 +210,7 @@ public interface AsyncDocumentClient {
                 configs,
                 cosmosAuthorizationTokenResolver,
                 credential,
+                tokenCredential,
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
@@ -1369,14 +1383,14 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads many documents at once
-     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
      * @param options the query request options
      * @param klass class type
      * @return a Mono with feed response of documents
      */
     <T> Mono<FeedResponse<T>> readMany(
-        List<Pair<String, PartitionKey>> itemKeyList,
+        List<CosmosItemIdentity> itemIdentityList,
         String collectionLink,
         CosmosQueryRequestOptions options,
         Class<T> klass);

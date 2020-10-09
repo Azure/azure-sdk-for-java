@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AuthInfo model. */
+/** The authorization properties for accessing the source code repository. */
 @Fluent
 public final class AuthInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthInfo.class);

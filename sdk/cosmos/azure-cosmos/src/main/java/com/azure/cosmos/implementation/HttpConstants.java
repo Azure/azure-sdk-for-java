@@ -307,6 +307,12 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
+
+        // Client generated gateway network error substatus
+        public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
+
+        // Client generated gateway network error on ReadTimeoutException
+        public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
     }
 
     public static class HeaderValues {

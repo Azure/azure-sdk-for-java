@@ -22,6 +22,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -310,7 +311,7 @@ public final class SSHShell {
      * @return SSH public and private key
      * @throws Exception exception thrown
      */
-    public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment) throws Exception {
+    public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment) throws UnsupportedEncodingException, JSchException {
         JSch jsch = new JSch();
         KeyPair keyPair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
         ByteArrayOutputStream privateKeyBuff = new ByteArrayOutputStream(2048);

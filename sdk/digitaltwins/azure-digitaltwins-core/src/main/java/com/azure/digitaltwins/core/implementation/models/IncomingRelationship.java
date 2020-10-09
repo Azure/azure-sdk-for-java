@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IncomingRelationship model. */
+/** An incoming relationship. */
 @Fluent
 public final class IncomingRelationship {
     /*
@@ -117,4 +117,11 @@ public final class IncomingRelationship {
         this.relationshipLink = relationshipLink;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

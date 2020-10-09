@@ -42,7 +42,7 @@ public final class LimitTokenFilterConverter {
 
         Boolean consumeAllTokens = obj.areAllTokensConsumed();
         limitTokenFilter.setConsumeAllTokens(consumeAllTokens);
-        limitTokenFilter.validate();
+
         return limitTokenFilter;
     }
 

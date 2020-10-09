@@ -23,6 +23,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.util.context.Context;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -133,18 +134,28 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)}
+     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)} and
+     * {@link KeyAsyncClient#beginDeleteKey(String, Duration)}.
      */
     public void deleteKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String
         keyAsyncClient.beginDeleteKey("keyName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
-        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
+        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration
+        keyAsyncClient.beginDeleteKey("keyName", Duration.ofSeconds(1))
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
+        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration
     }
 
     /**
@@ -360,18 +371,28 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)}
+     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)} and
+     * {@link KeyAsyncClient#beginRecoverDeletedKey(String, Duration)}.
      */
     public void recoverDeletedKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String
         keyAsyncClient.beginRecoverDeletedKey("deletedKeyName")
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recover Key Name: " + pollResponse.getValue().getName());
                 System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
             });
-        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
+        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration
+        keyAsyncClient.beginRecoverDeletedKey("deletedKeyName", Duration.ofSeconds(1))
+            .subscribe(pollResponse -> {
+                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
+                System.out.println("Recover Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
+            });
+        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration
     }
 
     /**

@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckTrafficManagerRelativeDnsNameAvailabilityParameters model. */
+/** Parameters supplied to check Traffic Manager name operation. */
+@Fluent
 public final class CheckTrafficManagerRelativeDnsNameAvailabilityParameters {
     @JsonIgnore
     private final ClientLogger logger =

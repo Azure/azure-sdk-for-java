@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QueryExperience model. */
+/** Class representing a Traffic Manager HeatMap query experience properties. */
+@Fluent
 public final class QueryExperience {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryExperience.class);
 
