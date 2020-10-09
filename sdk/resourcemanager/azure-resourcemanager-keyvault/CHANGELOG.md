@@ -2,7 +2,7 @@
 
 ## 2.0.0 (2020-09-27)
 
-- Support `enableByNameAndVersion` and `disableByNameAndVersion` method in `Secrets`.
+- Supported `enableByNameAndVersion` and `disableByNameAndVersion` method in `Secrets`.
 - Added `enabled` method in `Secret`.
 - Renamed `getAttributes`, `getTags`, `isManaged` method to `attributes`, `tags`, `managed` in `Key`.
 - Updated `list` method in `Keys` and `Secrets`. It will no longer retrieve key and secret value. Key can be retrieved via `getJsonWebKey`. Secret value can be retrieved via `getValue`.
