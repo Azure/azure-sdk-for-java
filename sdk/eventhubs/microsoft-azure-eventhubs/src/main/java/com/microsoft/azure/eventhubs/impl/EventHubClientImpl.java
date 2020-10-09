@@ -240,25 +240,30 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
+    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId,
+        final EventPosition eventPosition)
             throws EventHubException {
         return this.createReceiver(consumerGroupName, partitionId, eventPosition, null);
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
+    public CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId,
+        final EventPosition eventPosition, final ReceiverOptions receiverOptions)
             throws EventHubException {
         return PartitionReceiverImpl.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, eventPosition, PartitionReceiverImpl.NULL_EPOCH, false, receiverOptions, this.executor);
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
+    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName,
+        final String partitionId, final EventPosition eventPosition, final long epoch)
             throws EventHubException {
         return this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch, null);
     }
 
     @Override
-    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
+    public CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName,
+        final String partitionId, final EventPosition eventPosition, final long epoch,
+        final ReceiverOptions receiverOptions)
             throws EventHubException {
         return PartitionReceiverImpl.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, eventPosition, epoch, true, receiverOptions, this.executor);
     }
