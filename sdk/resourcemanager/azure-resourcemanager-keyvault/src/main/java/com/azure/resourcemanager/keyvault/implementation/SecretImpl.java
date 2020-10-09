@@ -146,6 +146,9 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
                 .map(
                     p -> {
                         this.setInner(p);
+                        if (!p.isEnabled()) {
+                            secretValue = null;
+                        }
                         return this;
                     });
         } else {
