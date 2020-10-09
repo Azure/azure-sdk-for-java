@@ -539,4 +539,19 @@ public final class PhoneNumberClient {
         CreateSearchOptions options, Duration pollInterval) {
         return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
     }
+
+    /**
+     * Creates a release for the given phone numbers.
+     * This function returns a Long Running Operation poller.
+     * 
+     * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the release entity
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(
+        List<PhoneNumber> phoneNumbers, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginReleasePhoneNumbers(phoneNumbers, pollInterval).getSyncPoller();
+    }
 }

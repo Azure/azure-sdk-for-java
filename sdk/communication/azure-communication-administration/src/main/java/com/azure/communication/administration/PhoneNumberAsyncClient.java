@@ -836,7 +836,7 @@ public final class PhoneNumberAsyncClient {
         };
     }
     /**
-    * Creates a release for the given phone numbers.
+     * Creates a release for the given phone numbers.
      * This function returns a Long Running Operation poller that allows you to 
      * wait indefinitely until the operation is complete.
      * 
