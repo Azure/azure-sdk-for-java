@@ -60,7 +60,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1272,7 +1271,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = ByteBuffer.wrap(serverBatchRequest.getRequestBody().getBytes(StandardCharsets.UTF_8));
+        ByteBuffer content = serverBatchRequest.getRequestBodyAsByteBuffer();
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1316,7 +1315,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if(serverBatchRequest instanceof SinglePartitionKeyServerBatchRequest) {
 
-            PartitionKey partitionKey = ((SinglePartitionKeyServerBatchRequest) serverBatchRequest).getPartitionKey();
+            PartitionKey partitionKey = ((SinglePartitionKeyServerBatchRequest) serverBatchRequest).getPartitionKeyValue();
             PartitionKeyInternal partitionKeyInternal;
 
             if (partitionKey.equals(PartitionKey.NONE)) {

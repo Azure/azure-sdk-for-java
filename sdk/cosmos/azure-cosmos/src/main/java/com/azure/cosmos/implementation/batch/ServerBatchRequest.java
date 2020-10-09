@@ -3,13 +3,12 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.TransactionalBatchItemRequestOptions;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -23,7 +22,7 @@ public abstract class ServerBatchRequest {
     private final int maxBodyLength;
     private final int maxOperationCount;
 
-    private String requestBody;
+    private ByteBuffer requestBody;
     private List<ItemBatchOperation<?>> operations;
     private boolean isAtomicBatch = false;
     private boolean shouldContinueOnError = false;
@@ -62,6 +61,9 @@ public abstract class ServerBatchRequest {
         for(ItemBatchOperation<?> operation : operations) {
 
             final JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
+
+            // TODO(rakkuma): If the string contains unicode the byte encoding len will be more. Fix it.
+            // Issue: https://github.com/Azure/azure-sdk-for-java/issues/16112
             final int operationSerializedLength = operationJsonSerializable.toString().length();
 
             if (totalOperationCount != 0 &&
@@ -76,13 +78,13 @@ public abstract class ServerBatchRequest {
             arrayNode.add(operationJsonSerializable.getPropertyBag());
         }
 
-        this.requestBody = arrayNode.toString();
+        this.requestBody = ByteBuffer.wrap(Utils.getUTF8Bytes(arrayNode.toString()));
         this.operations = operations.subList(0, totalOperationCount);
 
         return operations.subList(totalOperationCount, operations.size());
     }
 
-    public final String getRequestBody() {
+    public final ByteBuffer getRequestBodyAsByteBuffer() {
         checkState(this.requestBody != null, "expected non-null body");
 
         return this.requestBody;

@@ -54,8 +54,8 @@ public class TransactionalBatchTest extends BatchTestBase {
         replaceDoc.setCost(replaceDoc.getCost() + 1);
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.createItem(firstDoc);
-        batch.replaceItem(replaceDoc.getId(), replaceDoc);
+        batch.createItemOperation(firstDoc);
+        batch.replaceItemOperation(replaceDoc.getId(), replaceDoc);
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -87,10 +87,10 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.createItem(firstDoc);
-        batch.createItem(eventDoc1);
-        batch.replaceItem(replaceDoc.getId(), replaceDoc);
-        batch.readItem(readEventDoc.getId());
+        batch.createItemOperation(firstDoc);
+        batch.createItemOperation(eventDoc1);
+        batch.replaceItemOperation(replaceDoc.getId(), replaceDoc);
+        batch.readItemOperation(readEventDoc.getId());
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -139,8 +139,8 @@ public class TransactionalBatchTest extends BatchTestBase {
             firstReplaceOptions.setIfMatchETag(response.getETag());
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.createItem(testDocToCreate);
-            batch.replaceItem(testDocToReplace.getId(), testDocToReplace, firstReplaceOptions);
+            batch.createItemOperation(testDocToCreate);
+            batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace, firstReplaceOptions);
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -162,7 +162,7 @@ public class TransactionalBatchTest extends BatchTestBase {
             replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.replaceItem(testDocToReplace.getId(), testDocToReplace, replaceOptions);
+            batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace, replaceOptions);
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -197,7 +197,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         {
             // Only errored read
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.readItem(UUID.randomUUID().toString());
+            batch.readItemOperation(UUID.randomUUID().toString());
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -217,8 +217,8 @@ public class TransactionalBatchTest extends BatchTestBase {
         {
             // One valid read one error read
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.readItem(this.TestDocPk1ExistingA.getId());
-            batch.readItem(UUID.randomUUID().toString());
+            batch.readItemOperation(this.TestDocPk1ExistingA.getId());
+            batch.readItemOperation(UUID.randomUUID().toString());
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -239,8 +239,8 @@ public class TransactionalBatchTest extends BatchTestBase {
         {
             // One error one valid read
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.readItem(UUID.randomUUID().toString());
-            batch.readItem(this.TestDocPk1ExistingA.getId());
+            batch.readItemOperation(UUID.randomUUID().toString());
+            batch.readItemOperation(this.TestDocPk1ExistingA.getId());
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -263,8 +263,8 @@ public class TransactionalBatchTest extends BatchTestBase {
             TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.createItem(testDocToCreate);
-            batch.readItem(UUID.randomUUID().toString());
+            batch.createItemOperation(testDocToCreate);
+            batch.readItemOperation(UUID.randomUUID().toString());
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -286,8 +286,8 @@ public class TransactionalBatchTest extends BatchTestBase {
             // One error one valid write
             TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.readItem(UUID.randomUUID().toString());
-            batch.createItem(testDocToCreate);
+            batch.readItemOperation(UUID.randomUUID().toString());
+            batch.createItemOperation(testDocToCreate);
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -314,7 +314,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
 
         for (int i = 0; i < operationCount; i++) {
-            batch.readItem("someId");
+            batch.readItemOperation("someId");
         }
 
         try {
@@ -336,7 +336,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         for (int i = 0; i < operationCount; i++) {
             TestDoc doc = this.populateTestDoc(this.partitionKey1, appxDocSize);
-            batch.createItem(doc);
+            batch.createItemOperation(doc);
         }
 
         try {
@@ -356,7 +356,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
         for (int i = 0; i < operationCount; i++) {
-            batch.readItem(doc.getId());
+            batch.readItemOperation(doc.getId());
         }
 
         TransactionalBatchResponse batchResponse = batchContainer.executeTransactionalBatch(batch);
@@ -375,9 +375,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.createJsonTestDocs(container);
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.readItem(this.TestDocPk1ExistingA.getId());
-        batch.readItem(this.TestDocPk1ExistingB.getId());
-        batch.readItem(this.TestDocPk1ExistingC.getId());
+        batch.readItemOperation(this.TestDocPk1ExistingA.getId());
+        batch.readItemOperation(this.TestDocPk1ExistingB.getId());
+        batch.readItemOperation(this.TestDocPk1ExistingC.getId());
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
@@ -412,12 +412,12 @@ public class TransactionalBatchTest extends BatchTestBase {
         testDocToReplace.setCost(testDocToReplace.getCost() + 1);
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.createItem(testDocToCreate);
-        batch.readItem(this.TestDocPk1ExistingC.getId());
-        batch.replaceItem(testDocToReplace.getId(), testDocToReplace);
-        batch.upsertItem(testDocToUpsert);
-        batch.upsertItem(anotherTestDocToUpsert);
-        batch.deleteItem(this.TestDocPk1ExistingD.getId());
+        batch.createItemOperation(testDocToCreate);
+        batch.readItemOperation(this.TestDocPk1ExistingC.getId());
+        batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace);
+        batch.upsertItemOperation(testDocToUpsert);
+        batch.upsertItemOperation(anotherTestDocToUpsert);
+        batch.deleteItemOperation(this.TestDocPk1ExistingD.getId());
 
         // We run CRUD operations where all are expected to return HTTP 2xx.
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
@@ -450,7 +450,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         // partition key mismatch between doc and and value passed in to the operation
         this.runWithError(
             batchContainer,
-            batch -> batch.createItem(this.populateTestDoc(UUID.randomUUID().toString())),
+            batch -> batch.createItemOperation(this.populateTestDoc(UUID.randomUUID().toString())),
             HttpResponseStatus.BAD_REQUEST);
     }
 
@@ -458,7 +458,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     public void batchWithReadOfNonExistentEntityTest() {
         this.runWithError(
             batchContainer,
-            batch -> batch.readItem(UUID.randomUUID().toString()),
+            batch -> batch.readItemOperation(UUID.randomUUID().toString()),
             HttpResponseStatus.NOT_FOUND);
     }
 
@@ -474,7 +474,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.runWithError(
             batchContainer,
-            batch -> batch.replaceItem(staleTestDocToReplace.getId(), staleTestDocToReplace, staleReplaceOptions),
+            batch -> batch.replaceItemOperation(staleTestDocToReplace.getId(), staleTestDocToReplace, staleReplaceOptions),
             HttpResponseStatus.PRECONDITION_FAILED);
 
         // make sure the stale doc hasn't changed
@@ -485,7 +485,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     public void batchWithDeleteOfNonExistentEntity() {
         this.runWithError(
             batchContainer,
-            batch -> batch.deleteItem(UUID.randomUUID().toString()),
+            batch -> batch.deleteItemOperation(UUID.randomUUID().toString()),
             HttpResponseStatus.NOT_FOUND);
     }
 
@@ -499,7 +499,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         this.runWithError(
             batchContainer,
-            batch -> batch.createItem(conflictingTestDocToCreate),
+            batch -> batch.createItemOperation(conflictingTestDocToCreate),
             HttpResponseStatus.CONFLICT);
 
         // make sure the conflicted doc hasn't changed
@@ -516,11 +516,11 @@ public class TransactionalBatchTest extends BatchTestBase {
         TestDoc anotherTestDocToCreate = this.populateTestDoc(this.partitionKey1);
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.createItem(testDocToCreate);
+        batch.createItemOperation(testDocToCreate);
 
         appendOperation.apply(batch);
 
-        batch.createItem(anotherTestDocToCreate);
+        batch.createItemOperation(anotherTestDocToCreate);
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 

@@ -46,8 +46,8 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
         replaceDoc.setCost(replaceDoc.getCost() + 1);
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.createItem(firstDoc);
-        batch.replaceItem(replaceDoc.getId(), replaceDoc);
+        batch.createItemOperation(firstDoc);
+        batch.replaceItemOperation(replaceDoc.getId(), replaceDoc);
 
         Mono<TransactionalBatchResponse> batchResponseMono = batchAsyncContainer.executeTransactionalBatch(batch);
 
@@ -85,10 +85,10 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.createItem(testDocToCreate);
-            batch.replaceItem(testDocToReplace.getId(), testDocToReplace);
-            batch.upsertItem(testDocToUpsert);
-            batch.deleteItem(this.TestDocPk1ExistingC.getId());
+            batch.createItemOperation(testDocToCreate);
+            batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace);
+            batch.upsertItemOperation(testDocToUpsert);
+            batch.deleteItemOperation(this.TestDocPk1ExistingC.getId());
 
             TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
                 batch, new TransactionalBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
@@ -114,11 +114,11 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-            batch.createItem(testDocToCreate);
-            batch.replaceItem(testDocToReplace.getId(), testDocToReplace);
-            batch.upsertItem(testDocToUpsert);
-            batch.deleteItem(this.TestDocPk1ExistingD.getId());
-            batch.readItem(this.TestDocPk1ExistingA.getId());
+            batch.createItemOperation(testDocToCreate);
+            batch.replaceItemOperation(testDocToReplace.getId(), testDocToReplace);
+            batch.upsertItemOperation(testDocToUpsert);
+            batch.deleteItemOperation(this.TestDocPk1ExistingD.getId());
+            batch.readItemOperation(this.TestDocPk1ExistingA.getId());
 
             try {
                 container.executeTransactionalBatch(

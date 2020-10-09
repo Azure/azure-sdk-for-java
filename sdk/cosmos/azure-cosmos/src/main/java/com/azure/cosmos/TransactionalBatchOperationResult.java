@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Duration;

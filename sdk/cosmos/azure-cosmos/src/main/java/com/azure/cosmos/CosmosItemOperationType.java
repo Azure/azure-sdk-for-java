@@ -4,14 +4,16 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstant;
+import com.azure.cosmos.util.Beta;
 
+@Beta(Beta.SinceVersion.V4_7_0)
 public enum CosmosItemOperationType {
 
-    Create(BatchRequestResponseConstant.OPERATION_CREATE),
-    Delete(BatchRequestResponseConstant.OPERATION_DELETE),
-    Read(BatchRequestResponseConstant.OPERATION_READ),
-    Replace(BatchRequestResponseConstant.OPERATION_REPLACE),
-    Upsert(BatchRequestResponseConstant.OPERATION_UPSERT);
+    CREATE(BatchRequestResponseConstant.OPERATION_CREATE),
+    DELETE(BatchRequestResponseConstant.OPERATION_DELETE),
+    READ(BatchRequestResponseConstant.OPERATION_READ),
+    REPLACE(BatchRequestResponseConstant.OPERATION_REPLACE),
+    UPSERT(BatchRequestResponseConstant.OPERATION_UPSERT);
 
     CosmosItemOperationType(String operationValue) {
         this.operationValue = operationValue;

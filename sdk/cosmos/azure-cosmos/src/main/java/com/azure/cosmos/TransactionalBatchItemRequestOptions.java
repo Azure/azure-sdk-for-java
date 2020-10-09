@@ -7,8 +7,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
- * Encapsulates options that can be specified for an operation within a for a batch or bulk request.
- * Currently used in {@link TransactionalBatch} to pass option.
+ * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
 @Beta(Beta.SinceVersion.V4_7_0)
 public final class TransactionalBatchItemRequestOptions {

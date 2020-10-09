@@ -4,7 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.util.Beta;
 
+@Beta(Beta.SinceVersion.V4_7_0)
 public interface CosmosItemOperation {
     String getId();
 

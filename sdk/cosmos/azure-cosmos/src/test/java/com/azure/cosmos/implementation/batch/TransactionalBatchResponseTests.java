@@ -35,7 +35,7 @@ public class TransactionalBatchResponseTests {
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
-            CosmosItemOperationType.Read,
+            CosmosItemOperationType.READ,
             "0",
             PartitionKey.NONE,
             null,
@@ -104,7 +104,7 @@ public class TransactionalBatchResponseTests {
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
-            CosmosItemOperationType.Read,
+            CosmosItemOperationType.READ,
             "0",
             PartitionKey.NONE,
             null,

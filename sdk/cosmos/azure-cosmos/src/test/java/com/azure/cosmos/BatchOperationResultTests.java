@@ -18,7 +18,7 @@ public class BatchOperationResultTests {
     private static final int TIMEOUT = 40000;
     private ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
     private ItemBatchOperation<?> operation = new ItemBatchOperation<>(
-        CosmosItemOperationType.Read,
+        CosmosItemOperationType.READ,
         null,
         null,
         null,
