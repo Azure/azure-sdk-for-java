@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.models.ItemBatchOperation;
 import com.azure.cosmos.models.PartitionKey;
 import java.util.List;
 

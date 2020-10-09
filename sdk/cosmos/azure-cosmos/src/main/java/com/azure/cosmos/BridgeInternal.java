@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.models.ItemBatchOperation;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -611,16 +611,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<ItemBatchOperation<?>> getOperationsFromTransactionalBatch(TransactionalBatch transactionalBatch) {
-        return transactionalBatch.getOperations();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static PartitionKey getPartitionKeyFromTransactionalBatch(TransactionalBatch transactionalBatch) {
-        return transactionalBatch.getPartitionKey();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(TransactionalBatchRequestOptions transactionalBatchRequestOptions) {
         return transactionalBatchRequestOptions.toRequestOptions();
     }
@@ -632,7 +622,8 @@ public final class BridgeInternal {
         ObjectNode resourceObject,
         int statusCode,
         Duration retryAfter,
-        int subStatusCode) {
+        int subStatusCode,
+        ItemBatchOperation<?> itemBatchOperation) {
 
         return new TransactionalBatchOperationResult(
             eTag,
@@ -640,7 +631,8 @@ public final class BridgeInternal {
             resourceObject,
             statusCode,
             retryAfter,
-            subStatusCode);
+            subStatusCode,
+            itemBatchOperation);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -662,8 +654,8 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addTransactionBatchResultInResponse(
         TransactionalBatchResponse transactionalBatchResponse,
-        List<TransactionalBatchOperationResult> transactionalBatchOperationResult) {
+        List<TransactionalBatchOperationResult> transactionalBatchOperationResults) {
 
-        transactionalBatchResponse.addAll(transactionalBatchOperationResult);
+        transactionalBatchResponse.addAll(transactionalBatchOperationResults);
     }
 }

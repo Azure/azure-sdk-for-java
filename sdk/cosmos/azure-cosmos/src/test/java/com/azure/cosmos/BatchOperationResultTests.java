@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.ItemBatchOperation;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Test;
@@ -16,6 +18,14 @@ public class BatchOperationResultTests {
 
     private static final int TIMEOUT = 40000;
     private ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
+    private ItemBatchOperation<?> operation = ModelBridgeInternal.createItemBatchOperation(
+        CosmosItemOperationType.Read,
+        1,
+        null,
+        null,
+        null,
+        null
+        );
 
     private TransactionalBatchOperationResult createTestResult() {
         TransactionalBatchOperationResult result = BridgeInternal.createTransactionBatchResult(
@@ -24,7 +34,8 @@ public class BatchOperationResultTests {
             objectNode,
             HttpResponseStatus.OK.code(),
             Duration.ofMillis(1234),
-            HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE
+            HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE,
+            operation
         );
 
         return result;
@@ -40,6 +51,7 @@ public class BatchOperationResultTests {
         assertThat(result.getRequestCharge()).isEqualTo(1.4);
         assertThat(result.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(1234));
         assertThat(result.getResourceObject()).isSameAs(objectNode);
+        assertThat(result.getItemBatchOperation()).isSameAs(operation);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -51,7 +63,8 @@ public class BatchOperationResultTests {
                 null,
                 x,
                 null,
-                0
+                0,
+                operation
             );
 
             boolean success = x >= 200 && x <= 299;

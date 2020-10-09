@@ -8,7 +8,7 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -157,23 +157,13 @@ public class TransactionalBatchResponse {
     }
 
     /**
-     * Get all the results of the operations in batch.
+     * Get all the results of the operations in a batch in an unmodifiable instance so no one can
+     * change it in the down path.
      *
-     * @return Results of operation in batch.
+     * @return Results of operations in a batch.
      */
     public List<TransactionalBatchOperationResult> getResults() {
-        return this.results;
-    }
-
-    /**
-     * Gets the result of the operation at the provided index in the batch.
-     *
-     * @param index 0-based index of the operation in the batch whose result needs to be returned.
-     *
-     * @return Result of operation at the provided index in the batch.
-     */
-    public TransactionalBatchOperationResult get(int index) {
-        return this.results.get(index);
+        return Collections.unmodifiableList(this.results);
     }
 
     /**
@@ -189,7 +179,7 @@ public class TransactionalBatchResponse {
         return this.cosmosDiagnostics.getDuration();
     }
 
-    boolean addAll(Collection<? extends TransactionalBatchOperationResult> collection) {
-        return this.results.addAll(collection);
+    void addAll(List<? extends TransactionalBatchOperationResult> collection) {
+        this.results.addAll(collection);
     }
 }

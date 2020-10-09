@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.ItemBatchOperation;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
@@ -14,6 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
@@ -51,15 +53,21 @@ public class TransactionalBatchTest extends BatchTestBase {
         TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
         replaceDoc.setCost(replaceDoc.getCost() + 1);
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .createItem(firstDoc)
-                .replaceItem(replaceDoc.getId(), replaceDoc));
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        batch.createItem(firstDoc);
+        batch.replaceItem(replaceDoc.getId(), replaceDoc);
+
+        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
         this.verifyBatchProcessed(batchResponse, 2);
 
-        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        for (int index = 0; index < batchOperations.size(); index++) {
+            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+        }
 
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByRead(container, replaceDoc);
@@ -78,29 +86,35 @@ public class TransactionalBatchTest extends BatchTestBase {
         CosmosItemResponse<EventDoc> createResponse = container.createItem(readEventDoc, this.getPartitionKey(this.partitionKey1), null);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .createItem(firstDoc)
-                .createItem(eventDoc1)
-                .replaceItem(replaceDoc.getId(), replaceDoc)
-                .readItem(readEventDoc.getId()));
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        batch.createItem(firstDoc);
+        batch.createItem(eventDoc1);
+        batch.replaceItem(replaceDoc.getId(), replaceDoc);
+        batch.readItem(readEventDoc.getId());
+
+        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
         this.verifyBatchProcessed(batchResponse, 4);
 
-        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(0).getItem(TestDoc.class)).isEqualTo(firstDoc);
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(0).getItem(TestDoc.class)).isEqualTo(firstDoc);
 
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getItem(EventDoc.class)).isEqualTo(eventDoc1);
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getItem(EventDoc.class)).isEqualTo(eventDoc1);
 
-        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(2).getItem(TestDoc.class)).isEqualTo(replaceDoc);
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getItem(TestDoc.class)).isEqualTo(replaceDoc);
 
-        assertThat(batchResponse.get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(3).getItem(EventDoc.class)).isEqualTo(readEventDoc);
+        assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(3).getItem(EventDoc.class)).isEqualTo(readEventDoc);
 
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByRead(container, replaceDoc);
+
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        for (int index = 0; index < batchOperations.size(); index++) {
+            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -121,38 +135,40 @@ public class TransactionalBatchTest extends BatchTestBase {
 
             assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-            TransactionalBatchItemRequestOptions firstReplaceOptions = new TransactionalBatchItemRequestOptions();
+            ItemBatchRequestOptions firstReplaceOptions = new ItemBatchRequestOptions();
             firstReplaceOptions.setIfMatchETag(response.getETag());
 
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                    .createItem(testDocToCreate)
-                    .replaceItem(testDocToReplace.getId(), testDocToReplace, firstReplaceOptions));
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.createItem(testDocToCreate);
+            batch.replaceItem(testDocToReplace.getId(), testDocToReplace, firstReplaceOptions);
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             this.verifyBatchProcessed(batchResponse, 2);
 
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
             // Ensure that the replace overwrote the doc from the first operation
-            this.verifyByRead(container, testDocToCreate, batchResponse.get(0).getETag());
-            this.verifyByRead(container, testDocToReplace, batchResponse.get(1).getETag());
+            this.verifyByRead(container, testDocToCreate, batchResponse.getResults().get(0).getETag());
+            this.verifyByRead(container, testDocToReplace, batchResponse.getResults().get(1).getETag());
         }
 
         {
             TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingB);
             testDocToReplace.setCost(testDocToReplace.getCost() + 1);
 
-            TransactionalBatchItemRequestOptions replaceOptions = new TransactionalBatchItemRequestOptions();
+            ItemBatchRequestOptions replaceOptions = new ItemBatchRequestOptions();
             replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
 
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                    .replaceItem(testDocToReplace.getId(), testDocToReplace, replaceOptions));
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.replaceItem(testDocToReplace.getId(), testDocToReplace, replaceOptions);
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             this.verifyBatchProcessed(batchResponse, 1, HttpResponseStatus.PRECONDITION_FAILED);
 
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
 
             // ensure the item was not updated
             this.verifyByRead(container, this.TestDocPk1ExistingB);
@@ -180,12 +196,13 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         {
             // Only errored read
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .readItem(UUID.randomUUID().toString()));
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.readItem(UUID.randomUUID().toString());
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
 
             String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
             assertThat(ownerIdBatch).isNull();
@@ -199,14 +216,15 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         {
             // One valid read one error read
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                    .readItem(this.TestDocPk1ExistingA.getId())
-                    .readItem(UUID.randomUUID().toString()));
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.readItem(this.TestDocPk1ExistingA.getId());
+            batch.readItem(UUID.randomUUID().toString());
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
-            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
 
             String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
             assertThat(ownerIdBatch).isNull();
@@ -220,14 +238,15 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         {
             // One error one valid read
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                    .readItem(UUID.randomUUID().toString())
-                    .readItem(this.TestDocPk1ExistingA.getId()));
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.readItem(UUID.randomUUID().toString());
+            batch.readItem(this.TestDocPk1ExistingA.getId());
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
             String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
             assertThat(ownerIdBatch).isNull();
@@ -242,14 +261,16 @@ public class TransactionalBatchTest extends BatchTestBase {
         {
             // One valid write and one error
             TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                    .createItem(testDocToCreate)
-                    .readItem(UUID.randomUUID().toString()));
+
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.createItem(testDocToCreate);
+            batch.readItem(UUID.randomUUID().toString());
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
-            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
 
             String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
             assertThat(ownerIdBatch).isNull();
@@ -264,14 +285,15 @@ public class TransactionalBatchTest extends BatchTestBase {
         {
             // One error one valid write
             TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
-            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-                TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                    .readItem(UUID.randomUUID().toString())
-                    .createItem(testDocToCreate));
+            TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+            batch.readItem(UUID.randomUUID().toString());
+            batch.createItem(testDocToCreate);
+
+            TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
             assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
-            assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
             String ownerIdBatch = batchResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID);
             assertThat(ownerIdBatch).isNull();
@@ -339,7 +361,12 @@ public class TransactionalBatchTest extends BatchTestBase {
 
         TransactionalBatchResponse batchResponse = batchContainer.executeTransactionalBatch(batch);
         assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code());
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        for (int index = 0; index < batchOperations.size(); index++) {
+            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -347,21 +374,27 @@ public class TransactionalBatchTest extends BatchTestBase {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocs(container);
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .readItem(this.TestDocPk1ExistingA.getId())
-                .readItem(this.TestDocPk1ExistingB.getId())
-                .readItem(this.TestDocPk1ExistingC.getId()));
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        batch.readItem(this.TestDocPk1ExistingA.getId());
+        batch.readItem(this.TestDocPk1ExistingB.getId());
+        batch.readItem(this.TestDocPk1ExistingC.getId());
+
+        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
         this.verifyBatchProcessed(batchResponse, 3);
 
-        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-        assertThat(batchResponse.get(0).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingA);
-        assertThat(batchResponse.get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
-        assertThat(batchResponse.get(2).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
+        assertThat(batchResponse.getResults().get(0).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingA);
+        assertThat(batchResponse.getResults().get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
+        assertThat(batchResponse.getResults().get(2).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
+
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        for (int index = 0; index < batchOperations.size(); index++) {
+            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -378,26 +411,32 @@ public class TransactionalBatchTest extends BatchTestBase {
         BatchTestBase.TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingB);
         testDocToReplace.setCost(testDocToReplace.getCost() + 1);
 
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        batch.createItem(testDocToCreate);
+        batch.readItem(this.TestDocPk1ExistingC.getId());
+        batch.replaceItem(testDocToReplace.getId(), testDocToReplace);
+        batch.upsertItem(testDocToUpsert);
+        batch.upsertItem(anotherTestDocToUpsert);
+        batch.deleteItem(this.TestDocPk1ExistingD.getId());
+
         // We run CRUD operations where all are expected to return HTTP 2xx.
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-            TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-                .createItem(testDocToCreate)
-                .readItem(this.TestDocPk1ExistingC.getId())
-                .replaceItem(testDocToReplace.getId(), testDocToReplace)
-                .upsertItem(testDocToUpsert)
-                .upsertItem(anotherTestDocToUpsert)
-                .deleteItem(this.TestDocPk1ExistingD.getId()));
+        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
         this.verifyBatchProcessed(batchResponse, 6);
 
-        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(3).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(batchResponse.get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-        assertThat(batchResponse.get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        for (int index = 0; index < batchOperations.size(); index++) {
+            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+        }
+
+        assertThat(batchResponse.getResults().get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
 
         this.verifyByRead(container, testDocToCreate);
         this.verifyByRead(container, testDocToReplace);
@@ -430,7 +469,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         TestDoc staleTestDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
         staleTestDocToReplace.setCost(staleTestDocToReplace.getCost() + 1);
 
-        TransactionalBatchItemRequestOptions staleReplaceOptions = new TransactionalBatchItemRequestOptions();
+        ItemBatchRequestOptions staleReplaceOptions = new ItemBatchRequestOptions();
         staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
 
         this.runWithError(
@@ -470,25 +509,31 @@ public class TransactionalBatchTest extends BatchTestBase {
 
     private void runWithError(
         CosmosContainer container,
-        Function<TransactionalBatch, TransactionalBatch> appendOperation,
+        Function<TransactionalBatch, ItemBatchOperation<?>> appendOperation,
         HttpResponseStatus expectedFailedOperationStatusCode) {
 
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
         TestDoc anotherTestDocToCreate = this.populateTestDoc(this.partitionKey1);
 
-        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1))
-            .createItem(testDocToCreate);
+        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        batch.createItem(testDocToCreate);
 
         appendOperation.apply(batch);
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(
-            batch.createItem(anotherTestDocToCreate));
+        batch.createItem(anotherTestDocToCreate);
+
+        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch);
 
         this.verifyBatchProcessed(batchResponse, 3, expectedFailedOperationStatusCode);
 
-        assertThat(batchResponse.get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
-        assertThat(batchResponse.get(1).getStatusCode()).isEqualTo(expectedFailedOperationStatusCode.code());
-        assertThat(batchResponse.get(2).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(expectedFailedOperationStatusCode.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
+
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        for (int index = 0; index < batchOperations.size(); index++) {
+            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+        }
 
         this.verifyNotFound(container, testDocToCreate);
         this.verifyNotFound(container, anotherTestDocToCreate);

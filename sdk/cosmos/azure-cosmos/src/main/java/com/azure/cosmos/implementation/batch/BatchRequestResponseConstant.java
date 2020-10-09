@@ -33,10 +33,10 @@ public class BatchRequestResponseConstant {
     static final String FIELD_IS_CLIENTENCRYPTED = "isClientEncrypted";
 
     // Batch supported operation type for json
-    static final String OPERATION_CREATE = "Create";
-    static final String OPERATION_PATCH = "Patch";
-    static final String OPERATION_READ = "Read";
-    static final String OPERATION_UPSERT = "Upsert";
-    static final String OPERATION_DELETE = "Delete";
-    static final String OPERATION_REPLACE = "Replace";
+    public static final String OPERATION_CREATE = "Create";
+    public static final String OPERATION_PATCH = "Patch";
+    public static final String OPERATION_READ = "Read";
+    public static final String OPERATION_UPSERT = "Upsert";
+    public static final String OPERATION_DELETE = "Delete";
+    public static final String OPERATION_REPLACE = "Replace";
 }

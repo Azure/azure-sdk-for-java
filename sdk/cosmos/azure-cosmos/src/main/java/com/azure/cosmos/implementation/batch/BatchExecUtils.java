@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,35 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.Map;
 
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_CREATE;
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_DELETE;
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_READ;
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_REPLACE;
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.OPERATION_UPSERT;
-
 /**
  * Util methods for batch requests/response.
  */
 public final class BatchExecUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(BatchExecUtils.class);
-
-    static String getStringOperationType(OperationType operationType) {
-        switch (operationType) {
-            case Create:
-                return OPERATION_CREATE;
-            case Delete:
-                return OPERATION_DELETE;
-            case Read:
-                return OPERATION_READ;
-            case Replace:
-                return OPERATION_REPLACE;
-            case Upsert:
-                return OPERATION_UPSERT;
-        }
-
-        return null;
-    }
 
     public static Duration getRetryAfterDuration(Map<String, String> responseHeaders) {
         long retryIntervalInMilliseconds = 0;
@@ -87,7 +63,7 @@ public final class BatchExecUtils {
         }
 
         try {
-            return Double.valueOf(value);
+            return Double.parseDouble(value);
         } catch (NumberFormatException e) {
             logger.warn("INVALID x-ms-request-charge value {}.", value);
             return 0;

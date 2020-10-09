@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.ItemBatchOperation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -103,7 +104,7 @@ public final class BatchResponseParser {
         final ServerBatchRequest request,
         final boolean shouldPromoteOperationStatus) {
 
-        final ArrayList<TransactionalBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
+        final List<TransactionalBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
         final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
 
         if (responseContent[0] != (byte)HYBRID_V1) {
@@ -111,10 +112,14 @@ public final class BatchResponseParser {
             final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
             try {
+                final List<ItemBatchOperation<?>> itemBatchOperations = request.getOperations();
                 final ObjectNode[] objectNodes = mapper.readValue(responseContent, ObjectNode[].class);
-                for (ObjectNode objectInArray : objectNodes) {
-                    final TransactionalBatchOperationResult batchOperationResult = BatchResponseParser.createBatchOperationResultFromJson(objectInArray);
-                    results.add(batchOperationResult);
+
+                for (int index = 0; index < objectNodes.length; index++) {
+                    ObjectNode objectInArray = objectNodes[index];
+
+                    results.add(
+                        BatchResponseParser.createBatchOperationResultFromJson(objectInArray, itemBatchOperations.get(index)));
                 }
             } catch (IOException ex) {
                 logger.error("Exception in parsing response", ex);
@@ -163,7 +168,10 @@ public final class BatchResponseParser {
      *
      * @return the result
      */
-    private static TransactionalBatchOperationResult createBatchOperationResultFromJson(ObjectNode objectNode) {
+    private static TransactionalBatchOperationResult createBatchOperationResultFromJson(
+        ObjectNode objectNode,
+        ItemBatchOperation<?> itemBatchOperation) {
+
         final JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
 
         final int statusCode = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_STATUS_CODE);
@@ -187,7 +195,8 @@ public final class BatchResponseParser {
             resourceBody,
             statusCode,
             retryAfterMilliseconds != null ? Duration.ofMillis(retryAfterMilliseconds) : Duration.ZERO,
-            subStatusCode);
+            subStatusCode,
+            itemBatchOperation);
     }
 
     /**
@@ -201,7 +210,7 @@ public final class BatchResponseParser {
                                                  final List<ItemBatchOperation<?>> operations,
                                                  final Duration retryAfterDuration) {
         final List<TransactionalBatchOperationResult> results = new ArrayList<>(operations.size());
-        for (int i = 0; i < operations.size(); i++) {
+        for (ItemBatchOperation<?> itemBatchOperation : operations) {
             results.add(
                 BridgeInternal.createTransactionBatchResult(
                     null,
@@ -209,7 +218,8 @@ public final class BatchResponseParser {
                     null,
                     response.getStatusCode(),
                     retryAfterDuration,
-                    response.getSubStatusCode()
+                    response.getSubStatusCode(),
+                    itemBatchOperation
                 ));
         }
 
