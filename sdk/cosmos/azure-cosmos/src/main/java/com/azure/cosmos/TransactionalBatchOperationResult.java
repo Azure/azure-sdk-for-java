@@ -4,7 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.models.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Duration;
@@ -23,7 +23,7 @@ public final class TransactionalBatchOperationResult {
     private final int statusCode;
     private final Duration retryAfter;
     private final int subStatusCode;
-    private final ItemBatchOperation<?> itemBatchOperation;
+    private final CosmosItemOperation cosmosItemOperation;
 
     /**
      * Initializes a new instance of the {@link TransactionalBatchOperationResult} class.
@@ -34,9 +34,9 @@ public final class TransactionalBatchOperationResult {
                                       int statusCode,
                                       Duration retryAfter,
                                       int subStatusCode,
-                                      ItemBatchOperation<?> itemBatchOperation) {
+                                      CosmosItemOperation cosmosItemOperation) {
         checkNotNull(statusCode, "expected non-null statusCode");
-        checkNotNull(itemBatchOperation, "expected non-null itemBatchOperation");
+        checkNotNull(cosmosItemOperation, "expected non-null cosmosItemOperation");
 
         this.eTag = eTag;
         this.requestCharge = requestCharge;
@@ -44,7 +44,7 @@ public final class TransactionalBatchOperationResult {
         this.statusCode = statusCode;
         this.retryAfter = retryAfter;
         this.subStatusCode = subStatusCode;
-        this.itemBatchOperation = itemBatchOperation;
+        this.cosmosItemOperation = cosmosItemOperation;
     }
 
     /**
@@ -130,11 +130,11 @@ public final class TransactionalBatchOperationResult {
     }
 
     /**
-     * Gets the original ItemBatchOperation for this result.
+     * Gets the original operation for this result.
      *
      * @return the ItemBatchOperation.
      */
-    public ItemBatchOperation<?> getItemBatchOperation() {
-        return itemBatchOperation;
+    public CosmosItemOperation getOperation() {
+        return cosmosItemOperation;
     }
 }

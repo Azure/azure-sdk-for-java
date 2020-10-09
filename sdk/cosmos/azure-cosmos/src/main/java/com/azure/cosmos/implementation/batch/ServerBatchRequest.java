@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.ItemBatchRequestOptions;
+import com.azure.cosmos.TransactionalBatchItemRequestOptions;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.ItemBatchOperation;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
@@ -62,7 +61,7 @@ public abstract class ServerBatchRequest {
 
         for(ItemBatchOperation<?> operation : operations) {
 
-            final JsonSerializable operationJsonSerializable = this.writeOperation(operation);
+            final JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
             final int operationSerializedLength = operationJsonSerializable.toString().length();
 
             if (totalOperationCount != 0 &&
@@ -81,43 +80,6 @@ public abstract class ServerBatchRequest {
         this.operations = operations.subList(0, totalOperationCount);
 
         return operations.subList(totalOperationCount, operations.size());
-    }
-
-    /**
-     * Writes a single operation to JsonSerializable.
-     * TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
-     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
-     *
-     * @param operation a single operation which needs to be serialized.
-     *
-     * @return instance of JsonSerializable containing values for a operation.
-     */
-    final JsonSerializable writeOperation(final ItemBatchOperation<?> operation) {
-        final JsonSerializable jsonSerializable = new JsonSerializable();
-
-        jsonSerializable.set(BatchRequestResponseConstant.FIELD_OPERATION_TYPE, operation.getOperationType().getOperationValue());
-
-        if (StringUtils.isNotEmpty(operation.getId())) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_ID, operation.getId());
-        }
-
-        if (operation.getItem() != null) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, operation.getItem());
-        }
-
-        if (operation.getItemBatchRequestOptions() != null) {
-            ItemBatchRequestOptions requestOptions = operation.getItemBatchRequestOptions();
-
-            if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_MATCH, requestOptions.getIfMatchETag());
-            }
-
-            if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
-            }
-        }
-
-        return jsonSerializable;
     }
 
     public final String getRequestBody() {

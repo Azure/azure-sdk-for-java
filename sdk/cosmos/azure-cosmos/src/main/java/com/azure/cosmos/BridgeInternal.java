@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.models.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -611,6 +611,16 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<ItemBatchOperation<?>> getOperationsFromTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return transactionalBatch.getOperationsInternal();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getOperationValueForCosmosItemOperationType(CosmosItemOperationType cosmosItemOperationType) {
+        return cosmosItemOperationType.getOperationValue();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(TransactionalBatchRequestOptions transactionalBatchRequestOptions) {
         return transactionalBatchRequestOptions.toRequestOptions();
     }
@@ -623,7 +633,7 @@ public final class BridgeInternal {
         int statusCode,
         Duration retryAfter,
         int subStatusCode,
-        ItemBatchOperation<?> itemBatchOperation) {
+        CosmosItemOperation itemBatchOperation) {
 
         return new TransactionalBatchOperationResult(
             eTag,

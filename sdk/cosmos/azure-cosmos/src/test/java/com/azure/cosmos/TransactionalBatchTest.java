@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
@@ -64,9 +64,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
         assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
         for (int index = 0; index < batchOperations.size(); index++) {
-            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+            assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
 
         // Ensure that the replace overwrote the doc from the first operation
@@ -111,9 +111,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByRead(container, replaceDoc);
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
         for (int index = 0; index < batchOperations.size(); index++) {
-            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+            assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
     }
 
@@ -135,7 +135,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
             assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-            ItemBatchRequestOptions firstReplaceOptions = new ItemBatchRequestOptions();
+            TransactionalBatchItemRequestOptions firstReplaceOptions = new TransactionalBatchItemRequestOptions();
             firstReplaceOptions.setIfMatchETag(response.getETag());
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
@@ -158,7 +158,7 @@ public class TransactionalBatchTest extends BatchTestBase {
             TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingB);
             testDocToReplace.setCost(testDocToReplace.getCost() + 1);
 
-            ItemBatchRequestOptions replaceOptions = new ItemBatchRequestOptions();
+            TransactionalBatchItemRequestOptions replaceOptions = new TransactionalBatchItemRequestOptions();
             replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
 
             TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
@@ -363,9 +363,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code());
         assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
         for (int index = 0; index < batchOperations.size(); index++) {
-            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+            assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
     }
 
@@ -391,9 +391,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
         assertThat(batchResponse.getResults().get(2).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
         for (int index = 0; index < batchOperations.size(); index++) {
-            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+            assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
     }
 
@@ -431,9 +431,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(batchResponse.getResults().get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
         for (int index = 0; index < batchOperations.size(); index++) {
-            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+            assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
 
         assertThat(batchResponse.getResults().get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
@@ -469,7 +469,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         TestDoc staleTestDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
         staleTestDocToReplace.setCost(staleTestDocToReplace.getCost() + 1);
 
-        ItemBatchRequestOptions staleReplaceOptions = new ItemBatchRequestOptions();
+        TransactionalBatchItemRequestOptions staleReplaceOptions = new TransactionalBatchItemRequestOptions();
         staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
 
         this.runWithError(
@@ -509,7 +509,7 @@ public class TransactionalBatchTest extends BatchTestBase {
 
     private void runWithError(
         CosmosContainer container,
-        Function<TransactionalBatch, ItemBatchOperation<?>> appendOperation,
+        Function<TransactionalBatch, CosmosItemOperation> appendOperation,
         HttpResponseStatus expectedFailedOperationStatusCode) {
 
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
@@ -530,9 +530,9 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(expectedFailedOperationStatusCode.code());
         assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
         for (int index = 0; index < batchOperations.size(); index++) {
-            assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+            assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
 
         this.verifyNotFound(container, testDocToCreate);

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
@@ -10,7 +11,7 @@ import com.azure.cosmos.util.Beta;
  * Currently used in {@link TransactionalBatch} to pass option.
  */
 @Beta(Beta.SinceVersion.V4_7_0)
-public final class ItemBatchRequestOptions {
+public final class TransactionalBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
 
@@ -29,7 +30,7 @@ public final class ItemBatchRequestOptions {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public ItemBatchRequestOptions setIfMatchETag(final String ifMatchETag) {
+    public TransactionalBatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
     }
@@ -49,8 +50,15 @@ public final class ItemBatchRequestOptions {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    public ItemBatchRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
+    public TransactionalBatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
+    }
+
+    RequestOptions toRequestOptions() {
+        final RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setIfMatchETag(getIfMatchETag());
+        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
+        return requestOptions;
     }
 }

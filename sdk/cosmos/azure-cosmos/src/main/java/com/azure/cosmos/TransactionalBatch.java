@@ -4,8 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.models.ItemBatchOperation;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.Beta;
 
@@ -117,9 +116,9 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public <T> ItemBatchOperation<T> createItem(T item) {
+    public <T> CosmosItemOperation createItem(T item) {
         checkNotNull(item, "expected non-null item");
-        return this.createItem(item, new ItemBatchRequestOptions());
+        return this.createItem(item, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -132,19 +131,18 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public <T> ItemBatchOperation<T> createItem(T item, ItemBatchRequestOptions requestOptions) {
+    public <T> CosmosItemOperation createItem(T item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
         if (requestOptions == null) {
-            requestOptions = new ItemBatchRequestOptions();
+            requestOptions = new TransactionalBatchItemRequestOptions();
         }
 
-        ItemBatchOperation<T> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
             CosmosItemOperationType.Create,
-            this.operations.size(),
             null,
-            this.getPartitionKey(),
-            requestOptions,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
             item
         );
 
@@ -160,9 +158,9 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public ItemBatchOperation<?> deleteItem(String id) {
+    public CosmosItemOperation deleteItem(String id) {
         checkNotNull(id, "expected non-null id");
-        return this.deleteItem(id, new ItemBatchRequestOptions());
+        return this.deleteItem(id, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -173,19 +171,18 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public ItemBatchOperation<?> deleteItem(String id, ItemBatchRequestOptions requestOptions) {
+    public CosmosItemOperation deleteItem(String id, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         if (requestOptions == null) {
-            requestOptions = new ItemBatchRequestOptions();
+            requestOptions = new TransactionalBatchItemRequestOptions();
         }
 
-        ItemBatchOperation<?> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.Delete,
-            this.operations.size(),
             id,
-            this.getPartitionKey(),
-            requestOptions,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
             null
         );
 
@@ -201,9 +198,9 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public ItemBatchOperation<?> readItem(String id) {
+    public CosmosItemOperation readItem(String id) {
         checkNotNull(id, "expected non-null id");
-        return this.readItem(id, new ItemBatchRequestOptions());
+        return this.readItem(id, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -214,19 +211,18 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public ItemBatchOperation<?> readItem(String id, ItemBatchRequestOptions requestOptions) {
+    public CosmosItemOperation readItem(String id, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         if (requestOptions == null) {
-            requestOptions = new ItemBatchRequestOptions();
+            requestOptions = new TransactionalBatchItemRequestOptions();
         }
 
-        ItemBatchOperation<?> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.Read,
-            this.operations.size(),
             id,
-            this.getPartitionKey(),
-            requestOptions,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
             null
         );
 
@@ -244,10 +240,10 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public <T> ItemBatchOperation<T> replaceItem(String id, T item) {
+    public <T> CosmosItemOperation replaceItem(String id, T item) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(item, "expected non-null item");
-        return this.replaceItem(id, item, new ItemBatchRequestOptions());
+        return this.replaceItem(id, item, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -261,21 +257,20 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public <T> ItemBatchOperation<T> replaceItem(
-        String id, T item, ItemBatchRequestOptions requestOptions) {
+    public <T> CosmosItemOperation replaceItem(
+        String id, T item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         checkNotNull(item, "expected non-null item");
         if (requestOptions == null) {
-            requestOptions = new ItemBatchRequestOptions();
+            requestOptions = new TransactionalBatchItemRequestOptions();
         }
 
-        ItemBatchOperation<T> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
             CosmosItemOperationType.Replace,
-            this.operations.size(),
             id,
-            this.getPartitionKey(),
-            requestOptions,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
             item
         );
 
@@ -292,9 +287,9 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public <T> ItemBatchOperation<T> upsertItem(T item) {
+    public <T> CosmosItemOperation upsertItem(T item) {
         checkNotNull(item, "expected non-null item");
-        return this.upsertItem(item, new ItemBatchRequestOptions());
+        return this.upsertItem(item, new TransactionalBatchItemRequestOptions());
     }
 
     /**
@@ -307,19 +302,18 @@ public final class TransactionalBatch {
      *
      * @return The transactional batch instance with the operation added.
      */
-    public <T> ItemBatchOperation<T> upsertItem(T item, ItemBatchRequestOptions requestOptions) {
+    public <T> CosmosItemOperation upsertItem(T item, TransactionalBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
         if (requestOptions == null) {
-            requestOptions = new ItemBatchRequestOptions();
+            requestOptions = new TransactionalBatchItemRequestOptions();
         }
 
-        ItemBatchOperation<T> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
             CosmosItemOperationType.Upsert,
-            this.operations.size(),
             null,
-            this.getPartitionKey(),
-            requestOptions,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
             item
         );
 
@@ -329,11 +323,20 @@ public final class TransactionalBatch {
     }
 
     /**
-     * Return the list of operation in an unmodifiable instace so no one can change it in the down path.
+     * Return the list of operation in an unmodifiable instance  so no one can change it in the down path.
      *
      * @return The list of operations which are to be executed.
      */
-    public List<ItemBatchOperation<?>> getOperations() {
+    List<ItemBatchOperation<?>> getOperationsInternal() {
+        return UnmodifiableList.unmodifiableList(operations);
+    }
+
+    /**
+     * Return the list of operation in an unmodifiable instance  so no one can change it in the down path.
+     *
+     * @return The list of operations which are to be executed.
+     */
+    public List<CosmosItemOperation> getOperations() {
         return UnmodifiableList.unmodifiableList(operations);
     }
 
@@ -342,7 +345,7 @@ public final class TransactionalBatch {
      *
      * @return The partition key for this batch.
      */
-    public PartitionKey getPartitionKey() {
+    public PartitionKey getPartitionKeyValue() {
         return partitionKey;
     }
 }

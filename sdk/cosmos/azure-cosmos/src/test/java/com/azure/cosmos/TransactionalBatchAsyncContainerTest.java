@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
@@ -100,9 +100,9 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
             assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-            List<ItemBatchOperation<?>> batchOperations = batch.getOperations();
+            List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
             for (int index = 0; index < batchOperations.size(); index++) {
-                assertThat(batchResponse.getResults().get(index).getItemBatchOperation()).isEqualTo(batchOperations.get(index));
+                assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
             }
         }
 

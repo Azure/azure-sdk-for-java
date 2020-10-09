@@ -10,8 +10,6 @@ import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.models.ItemBatchOperation;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Test;
@@ -36,9 +34,8 @@ public class TransactionalBatchResponseTests {
         List<TransactionalBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
-        ItemBatchOperation<?> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.Read,
-            0,
             "0",
             PartitionKey.NONE,
             null,
@@ -98,7 +95,7 @@ public class TransactionalBatchResponseTests {
         assertThat(batchResponse.getResults().get(0).getRetryAfterDuration()).isEqualTo(Duration.ofMillis(100));
         assertThat(batchResponse.getResults().get(0).getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH);
         assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
-        assertThat(batchResponse.getResults().get(0).getItemBatchOperation()).isEqualTo(operation);
+        assertThat(batchResponse.getResults().get(0).getOperation()).isEqualTo(operation);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -106,9 +103,8 @@ public class TransactionalBatchResponseTests {
         List<TransactionalBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
-        ItemBatchOperation<?> operation = ModelBridgeInternal.createItemBatchOperation(
+        ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.Read,
-            0,
             "0",
             PartitionKey.NONE,
             null,
@@ -159,6 +155,6 @@ public class TransactionalBatchResponseTests {
         assertThat(batchResponse.getResults().get(0).getRetryAfterDuration()).isEqualTo(Duration.ZERO);
         assertThat(batchResponse.getResults().get(0).getSubStatusCode()).isEqualTo(0);
         assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
-        assertThat(batchResponse.getResults().get(0).getItemBatchOperation()).isEqualTo(operation);
+        assertThat(batchResponse.getResults().get(0).getOperation()).isEqualTo(operation);
     }
 }

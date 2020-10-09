@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ItemBatchRequestOptions;
-import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosResourceType;
@@ -725,23 +723,5 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> ItemBatchOperation<T> createItemBatchOperation(
-        final CosmosItemOperationType operationType,
-        final int operationIndex,
-        String id,
-        PartitionKey partitionKey,
-        ItemBatchRequestOptions itemBatchRequestOptions,
-        T resource) {
-
-        return new ItemBatchOperation<>(
-            operationType,
-            operationIndex,
-            partitionKey,
-            id,
-            resource,
-            itemBatchRequestOptions);
     }
 }

@@ -17,7 +17,7 @@ public enum CosmosItemOperationType {
         this.operationValue = operationValue;
     }
 
-    public String getOperationValue() {
+    String getOperationValue() {
         return operationValue;
     }
 
