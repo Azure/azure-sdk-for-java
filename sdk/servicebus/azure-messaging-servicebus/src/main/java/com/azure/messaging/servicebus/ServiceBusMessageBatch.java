@@ -20,14 +20,19 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  * A class for aggregating {@link ServiceBusMessage messages} into a single, size-limited, batch. It is treated as a
  * single AMQP message when sent to the Azure Service Bus service.
  */
 public final class ServiceBusMessageBatch {
+    private static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
@@ -37,9 +42,11 @@ public final class ServiceBusMessageBatch {
     private final byte[] eventBytes;
     private int sizeInBytes;
     private final TracerProvider tracerProvider;
+    private final String entityPath;
+    private final String hostname;
 
     ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-        MessageSerializer serializer) {
+        MessageSerializer serializer, String entityPath, String hostname) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
@@ -47,6 +54,8 @@ public final class ServiceBusMessageBatch {
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
         this.tracerProvider = tracerProvider;
+        this.entityPath = entityPath;
+        this.hostname = hostname;
     }
 
     /**
@@ -141,7 +150,12 @@ public final class ServiceBusMessageBatch {
             return serviceBusMessage;
         } else {
             // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context eventSpanContext = tracerProvider.startSpan(serviceBusMessage.getContext(), ProcessKind.MESSAGE);
+            Context messageContext = serviceBusMessage.getContext()
+                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+                .addData(ENTITY_PATH_KEY, entityPath)
+                .addData(HOST_NAME_KEY, hostname);
+            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, messageContext,
+                ProcessKind.MESSAGE);
             Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
             if (eventDiagnosticIdOptional.isPresent()) {
                 serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()

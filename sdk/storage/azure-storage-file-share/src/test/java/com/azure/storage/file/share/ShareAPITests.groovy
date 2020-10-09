@@ -31,6 +31,7 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
@@ -518,7 +519,7 @@ class ShareAPITests extends APISpec {
     def "Set access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def time = getUTCNow()
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
 
         when:
         def getAccessTierBeforeResponse = primaryShareClient.getProperties()
@@ -529,7 +530,7 @@ class ShareAPITests extends APISpec {
         getAccessTierBeforeResponse.getAccessTier() == ShareAccessTier.HOT.toString()
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
         getAccessTierAfterResponse.getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
+        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
         getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }
@@ -940,5 +941,21 @@ class ShareAPITests extends APISpec {
     def "Get Share Name"() {
         expect:
         shareName == primaryShareClient.getShareName()
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        primaryShareClient.create()
+
+        def shareClient = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = shareClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

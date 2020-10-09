@@ -54,7 +54,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Get a Twin
-            StepVerifier.create(asyncClient.getDigitalTwinWithResponse(roomTwinId, String.class))
+            StepVerifier.create(asyncClient.getDigitalTwinWithResponse(roomTwinId, String.class, null))
                 .assertNext(getResponse -> {
                     assertEquals(getResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
                     logger.info("Got Twin successfully");
@@ -63,7 +63,7 @@ public class TwinAsyncTests extends TwinTestBase
                 .verifyComplete();
 
             // Update Twin
-            StepVerifier.create(asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(), new UpdateDigitalTwinRequestOptions()))
+            StepVerifier.create(asyncClient.updateDigitalTwinWithResponse(roomTwinId, TestAssetsHelper.getRoomTwinUpdatePayload(), null))
                 .assertNext(updateResponse -> {
                     assertEquals(updateResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
                     logger.info("Updated the twin successfully");

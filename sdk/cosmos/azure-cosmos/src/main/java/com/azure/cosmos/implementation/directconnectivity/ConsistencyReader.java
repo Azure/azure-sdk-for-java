@@ -3,21 +3,22 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -144,13 +145,10 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
  * For SESSION and EVENTUAL Consistency, it directly uses the store reader.
  */
 public class ConsistencyReader {
-    private final static int MAX_NUMBER_OF_SECONDARY_READ_RETRIES = 3;
     private final static Logger logger = LoggerFactory.getLogger(ConsistencyReader.class);
 
-    private final AddressSelector addressSelector;
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GatewayServiceConfigurationReader serviceConfigReader;
-    private final IAuthorizationTokenProvider authorizationTokenProvider;
     private final StoreReader storeReader;
     private final QuorumReader quorumReader;
     private final Configs configs;
@@ -165,9 +163,7 @@ public class ConsistencyReader {
         IAuthorizationTokenProvider authorizationTokenProvider) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
-        this.addressSelector = addressSelector;
         this.serviceConfigReader = serviceConfigReader;
-        this.authorizationTokenProvider = authorizationTokenProvider;
         this.storeReader = createStoreReader(transportClient, addressSelector, sessionContainer);
         this.quorumReader = createQuorumReader(transportClient, addressSelector, this.storeReader, serviceConfigReader, authorizationTokenProvider);
     }
@@ -235,7 +231,9 @@ public class ConsistencyReader {
 
             case Any:
                 if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
-                    return this.readSessionAsync(entity, desiredReadMode);
+                    return BackoffRetryUtility.executeRetry(
+                        () -> this.readSessionAsync(entity, desiredReadMode),
+                        new SessionTokenMismatchRetryPolicy());
                 } else {
                     return this.readAnyAsync(entity, desiredReadMode);
                 }
@@ -350,11 +348,7 @@ public class ConsistencyReader {
 
         switch (targetConsistencyLevel.v) {
             case EVENTUAL:
-                return ReadMode.Any;
-
             case CONSISTENT_PREFIX:
-                return ReadMode.Any;
-
             case SESSION:
                 return ReadMode.Any;
 

@@ -108,7 +108,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
 
         // list event routes by page, make sure that all non-final pages have the expected page size
         AtomicInteger pageCount = new AtomicInteger(0);
-        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemCount(expectedPageSize);
+        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemsPerPage(expectedPageSize);
         StepVerifier.create(asyncClient.listEventRoutes(eventRoutesListOptions).byPage())
             .thenConsumeWhile(
                 (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,

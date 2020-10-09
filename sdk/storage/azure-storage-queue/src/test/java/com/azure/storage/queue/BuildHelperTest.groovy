@@ -39,7 +39,7 @@ class BuildHelperTest extends Specification {
     def "Fresh date applied on retry"() {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
-            new FreshDateTestClient(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -90,7 +90,7 @@ class BuildHelperTest extends Specification {
     def "Custom application id in UA string"() {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
-            new ApplicationIdUAStringTestClient(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+            new ApplicationIdUAStringTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
