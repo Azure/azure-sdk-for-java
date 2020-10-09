@@ -11,7 +11,7 @@ import com.microsoft.azure.spring.integration.eventhub.api.EventHubClientFactory
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.microsoft.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import com.microsoft.azure.spring.integration.eventhub.impl.EventHubTemplate;
-import com.microsoft.azure.spring.integration.test.support.reactor.SendOperationTest;
+import com.azure.spring.integration.test.support.reactor.SendOperationTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

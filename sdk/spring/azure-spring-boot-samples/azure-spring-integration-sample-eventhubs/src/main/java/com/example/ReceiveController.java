@@ -3,10 +3,10 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.core.AzureHeaders;
-import com.microsoft.azure.spring.integration.core.api.CheckpointConfig;
-import com.microsoft.azure.spring.integration.core.api.CheckpointMode;
-import com.microsoft.azure.spring.integration.core.api.reactor.Checkpointer;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.api.CheckpointConfig;
+import com.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.microsoft.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -4,8 +4,8 @@
 package com.microsoft.azure.spring.integration.eventhub.support;
 
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
-import com.microsoft.azure.spring.integration.core.api.PartitionSupplier;
+import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubRxOperation;
 import com.microsoft.azure.spring.integration.eventhub.impl.EventHubProcessor;

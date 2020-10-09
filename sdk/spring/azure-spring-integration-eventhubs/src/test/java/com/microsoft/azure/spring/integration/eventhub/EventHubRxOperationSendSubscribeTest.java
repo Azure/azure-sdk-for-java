@@ -5,13 +5,13 @@ package com.microsoft.azure.spring.integration.eventhub;
 
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.microsoft.azure.spring.integration.core.api.CheckpointConfig;
-import com.microsoft.azure.spring.integration.core.api.CheckpointMode;
-import com.microsoft.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.integration.core.api.CheckpointConfig;
+import com.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.integration.core.api.StartPosition;
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubRxOperation;
 import com.microsoft.azure.spring.integration.eventhub.support.RxEventHubTestOperation;
-import com.microsoft.azure.spring.integration.test.support.pojo.User;
-import com.microsoft.azure.spring.integration.test.support.rx.RxSendSubscribeByGroupOperationTest;
+import com.azure.spring.integration.test.support.pojo.User;
+import com.azure.spring.integration.test.support.rx.RxSendSubscribeByGroupOperationTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

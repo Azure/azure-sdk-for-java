@@ -4,9 +4,9 @@
 package com.microsoft.azure.spring.integration.eventhub.converter;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.microsoft.azure.spring.integration.core.AzureHeaders;
-import com.microsoft.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.microsoft.azure.spring.integration.test.support.AzureMessageConverterTest;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.converter.AzureMessageConverter;
+import com.azure.spring.integration.test.support.AzureMessageConverterTest;
 import org.junit.Test;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;

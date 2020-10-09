@@ -3,10 +3,10 @@
 
 package com.microsoft.azure.spring.integration.eventhub.outbound;
 
-import com.microsoft.azure.spring.integration.core.api.PartitionSupplier;
-import com.microsoft.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
+import com.azure.spring.integration.core.api.PartitionSupplier;
+import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.microsoft.azure.spring.integration.test.support.reactor.MessageHandlerTest;
+import com.azure.spring.integration.test.support.reactor.MessageHandlerTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;

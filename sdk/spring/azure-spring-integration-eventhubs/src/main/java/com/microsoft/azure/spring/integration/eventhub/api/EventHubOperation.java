@@ -3,10 +3,10 @@
 
 package com.microsoft.azure.spring.integration.eventhub.api;
 
-import com.microsoft.azure.spring.integration.core.api.StartPosition;
-import com.microsoft.azure.spring.integration.core.api.SubscribeByGroupOperation;
-import com.microsoft.azure.spring.integration.core.api.reactor.BatchSendOperation;
-import com.microsoft.azure.spring.integration.core.api.reactor.SendOperation;
+import com.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
+import com.azure.spring.integration.core.api.reactor.BatchSendOperation;
+import com.azure.spring.integration.core.api.reactor.SendOperation;
 
 /**
  * Azure event hub operation to support send data asynchronously and subscribe

@@ -3,9 +3,9 @@
 
 package com.microsoft.azure.spring.integration.eventhub.api;
 
-import com.microsoft.azure.spring.integration.core.api.RxSendOperation;
-import com.microsoft.azure.spring.integration.core.api.RxSubscribeByGroupOperation;
-import com.microsoft.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.integration.core.api.RxSendOperation;
+import com.azure.spring.integration.core.api.RxSubscribeByGroupOperation;
+import com.azure.spring.integration.core.api.StartPosition;
 
 /**
  * Azure event hub operation to support send and subscribe in a reactive way

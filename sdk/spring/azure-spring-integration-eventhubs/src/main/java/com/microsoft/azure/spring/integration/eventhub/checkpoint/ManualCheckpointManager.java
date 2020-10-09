@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.spring.integration.eventhub.checkpoint;
 
-import com.microsoft.azure.spring.integration.core.api.CheckpointConfig;
-import com.microsoft.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.integration.core.api.CheckpointConfig;
+import com.azure.spring.integration.core.api.CheckpointMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;

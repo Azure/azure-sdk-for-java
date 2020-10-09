@@ -8,7 +8,7 @@ import com.microsoft.azure.spring.integration.eventhub.api.EventHubClientFactory
 import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.microsoft.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.microsoft.azure.spring.integration.eventhub.impl.EventHubTemplate;
-import com.microsoft.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
+import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
