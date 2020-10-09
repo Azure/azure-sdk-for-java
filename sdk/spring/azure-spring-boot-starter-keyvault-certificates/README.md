@@ -133,7 +133,8 @@ Add then add the following Maven dependency to your POM file.
     </dependency>
 ```
 
-And then if you are using RestTemplate use code similar to the example below.
+And then if you are using RestTemplate use the code below as a starting
+point:
 
 ```java
     @Bean
@@ -143,7 +144,8 @@ And then if you are using RestTemplate use code similar to the example below.
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
 
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+        HostnameVerifier allowAll = (String hostName, SSLSession session) -> true;
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, allowAll);
 
         CloseableHttpClient httpClient = HttpClients.custom()
             .setSSLSocketFactory(csf)
@@ -158,30 +160,18 @@ And then if you are using RestTemplate use code similar to the example below.
     }
 ```
 
-## Using Azure KeyVault with Spring Cloud Gateway
+## Configuring Spring Cloud Gateway
 
-To use Azure KeyVault with Spring Cloud Gateway for outbound SSL you will need
+To configure Spring Cloud Gateway for outbound SSL you will need
 to add the following configuration:
 
 ```yaml
-azure:
-  keyvault:
-    uri: <the URI of the Azure KeyVault to use>
 spring:
   cloud:
     gateway:
       httpclient:
         ssl:
-          trust-store-type: AzureKeyVault
-```
-
-Add then add the following Maven dependency to your POM file.
-
-```xml
-    <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-keyvault-certificates-spring-boot-starter</artifactId>
-    </dependency>
+          useInsecureTrustManager: true
 ```
 
 ## Creating an Azure Key Vault
