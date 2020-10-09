@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -23,7 +24,7 @@ public abstract class ServerBatchRequest {
     private final int maxOperationCount;
 
     private ByteBuffer requestBody;
-    private List<ItemBatchOperation<?>> operations;
+    private List<CosmosItemOperation> operations;
     private boolean isAtomicBatch = false;
     private boolean shouldContinueOnError = false;
 
@@ -49,7 +50,7 @@ public abstract class ServerBatchRequest {
      *
      * @return Any pending operations that were not included in the request.
      */
-    final List<ItemBatchOperation<?>> createBodyOfBatchRequest(final List<ItemBatchOperation<?>> operations) {
+    List<CosmosItemOperation> createBodyOfBatchRequest(final List<CosmosItemOperation> operations) {
 
         checkNotNull(operations, "expected non-null operations");
 
@@ -58,24 +59,28 @@ public abstract class ServerBatchRequest {
 
         final ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
-        for(ItemBatchOperation<?> operation : operations) {
+        for(CosmosItemOperation operation : operations) {
+            if (operation instanceof ItemBatchOperation<?>) {
+                final ItemBatchOperation<?> itemBatchOperation = (ItemBatchOperation<?>) operation;
+                final JsonSerializable operationJsonSerializable = itemBatchOperation.serializeOperation();
 
-            final JsonSerializable operationJsonSerializable = ItemBatchOperation.writeOperation(operation);
+                // TODO(rakkuma): If the string contains unicode the byte encoding len will be more. Fix it.
+                // Issue: https://github.com/Azure/azure-sdk-for-java/issues/16112
+                final int operationSerializedLength = operationJsonSerializable.toString().length();
 
-            // TODO(rakkuma): If the string contains unicode the byte encoding len will be more. Fix it.
-            // Issue: https://github.com/Azure/azure-sdk-for-java/issues/16112
-            final int operationSerializedLength = operationJsonSerializable.toString().length();
+                if (totalOperationCount != 0 &&
+                    (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
+                    // Apply the limit only if at least there is one operation in selected operations.
+                    break;
+                }
 
-            if (totalOperationCount != 0 &&
-                (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
-                // Apply the limit only if at least there is one operation in selected operations.
-                break;
+                totalSerializedLength += operationSerializedLength;
+                totalOperationCount++;
+
+                arrayNode.add(operationJsonSerializable.getPropertyBag());
+            } else {
+                throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }
-
-            totalSerializedLength += operationSerializedLength;
-            totalOperationCount++;
-
-            arrayNode.add(operationJsonSerializable.getPropertyBag());
         }
 
         this.requestBody = ByteBuffer.wrap(Utils.getUTF8Bytes(arrayNode.toString()));
@@ -91,13 +96,13 @@ public abstract class ServerBatchRequest {
     }
 
     /**
-     * Gets the list of {@link ItemBatchOperation operations} in this {@link ServerBatchRequest batch request}.
+     * Gets the list of {@link CosmosItemOperation operations} in this {@link ServerBatchRequest batch request}.
      *
      * The list returned by this method is unmodifiable.
      *
-     * @return the list of {@link ItemBatchOperation operations} in this {@link ServerBatchRequest batch request}.
+     * @return the list of {@link CosmosItemOperation operations} in this {@link ServerBatchRequest batch request}.
      */
-    public final List<ItemBatchOperation<?>> getOperations() {
+    public final List<CosmosItemOperation> getOperations() {
         return UnmodifiableList.unmodifiableList(this.operations);
     }
 

@@ -131,7 +131,7 @@ public final class TransactionalBatchOperationResult {
     /**
      * Gets the original operation for this result.
      *
-     * @return the ItemBatchOperation.
+     * @return the CosmosItemOperation.
      */
     public CosmosItemOperation getOperation() {
         return cosmosItemOperation;

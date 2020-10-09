@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public final class SinglePartitionKeyServerBatchRequest extends ServerBatchReque
      */
     static SinglePartitionKeyServerBatchRequest createBatchRequest(
         final PartitionKey partitionKey,
-        final List<ItemBatchOperation<?>> operations) {
+        final List<CosmosItemOperation> operations) {
 
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(operations, "expected non-null operations");

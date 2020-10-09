@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.TransactionalBatch;
 import com.azure.cosmos.TransactionalBatchRequestOptions;
 import com.azure.cosmos.TransactionalBatchResponse;
@@ -38,7 +39,7 @@ public final class BatchExecutor {
      */
     public final Mono<TransactionalBatchResponse> executeAsync() {
 
-        List<ItemBatchOperation<?>> operations = BridgeInternal.getOperationsFromTransactionalBatch(this.transactionalBatch);
+        List<CosmosItemOperation> operations = this.transactionalBatch.getOperations();
         checkArgument(operations.size() > 0, "Number of operations should be more than 0.");
 
         final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createBatchRequest(

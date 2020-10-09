@@ -49,27 +49,25 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
      * TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
      * Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
      *
-     * @param operation a single operation which needs to be serialized.
-     *
      * @return instance of JsonSerializable containing values for a operation.
      */
-    static JsonSerializable writeOperation(final ItemBatchOperation<?> operation) {
+    JsonSerializable serializeOperation() {
         final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(
             BatchRequestResponseConstant.FIELD_OPERATION_TYPE,
-            BridgeInternal.getOperationValueForCosmosItemOperationType(operation.getOperationType()));
+            BridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
 
-        if (StringUtils.isNotEmpty(operation.getId())) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_ID, operation.getId());
+        if (StringUtils.isNotEmpty(this.getId())) {
+            jsonSerializable.set(BatchRequestResponseConstant.FIELD_ID, this.getId());
         }
 
-        if (operation.getItemInternal() != null) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, operation.getItemInternal());
+        if (this.getItemInternal() != null) {
+            jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, this.getItemInternal());
         }
 
-        if (operation.getRequestOptions() != null) {
-            RequestOptions requestOptions = operation.getRequestOptions();
+        if (this.getRequestOptions() != null) {
+            RequestOptions requestOptions = this.getRequestOptions();
 
             if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
                 jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_MATCH, requestOptions.getIfMatchETag());

@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
@@ -64,7 +63,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
         assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
+        List<CosmosItemOperation> batchOperations = batch.getOperations();
         for (int index = 0; index < batchOperations.size(); index++) {
             assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
@@ -111,7 +110,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         // Ensure that the replace overwrote the doc from the first operation
         this.verifyByRead(container, replaceDoc);
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
+        List<CosmosItemOperation> batchOperations = batch.getOperations();
         for (int index = 0; index < batchOperations.size(); index++) {
             assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
@@ -363,7 +362,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE.code());
         assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
+        List<CosmosItemOperation> batchOperations = batch.getOperations();
         for (int index = 0; index < batchOperations.size(); index++) {
             assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
@@ -391,7 +390,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(1).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
         assertThat(batchResponse.getResults().get(2).getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingC);
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
+        List<CosmosItemOperation> batchOperations = batch.getOperations();
         for (int index = 0; index < batchOperations.size(); index++) {
             assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
@@ -431,7 +430,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(batchResponse.getResults().get(5).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
+        List<CosmosItemOperation> batchOperations = batch.getOperations();
         for (int index = 0; index < batchOperations.size(); index++) {
             assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }
@@ -530,7 +529,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(expectedFailedOperationStatusCode.code());
         assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
 
-        List<ItemBatchOperation<?>> batchOperations = batch.getOperationsInternal();
+        List<CosmosItemOperation> batchOperations = batch.getOperations();
         for (int index = 0; index < batchOperations.size(); index++) {
             assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
         }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -111,14 +112,14 @@ public final class BatchResponseParser {
             final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
             try {
-                final List<ItemBatchOperation<?>> itemBatchOperations = request.getOperations();
+                final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();
                 final ObjectNode[] objectNodes = mapper.readValue(responseContent, ObjectNode[].class);
 
                 for (int index = 0; index < objectNodes.length; index++) {
                     ObjectNode objectInArray = objectNodes[index];
 
                     results.add(
-                        BatchResponseParser.createBatchOperationResultFromJson(objectInArray, itemBatchOperations.get(index)));
+                        BatchResponseParser.createBatchOperationResultFromJson(objectInArray, cosmosItemOperations.get(index)));
                 }
             } catch (IOException ex) {
                 logger.error("Exception in parsing response", ex);
@@ -169,7 +170,7 @@ public final class BatchResponseParser {
      */
     private static TransactionalBatchOperationResult createBatchOperationResultFromJson(
         ObjectNode objectNode,
-        ItemBatchOperation<?> itemBatchOperation) {
+        CosmosItemOperation cosmosItemOperation) {
 
         final JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
 
@@ -195,7 +196,7 @@ public final class BatchResponseParser {
             statusCode,
             retryAfterMilliseconds != null ? Duration.ofMillis(retryAfterMilliseconds) : Duration.ZERO,
             subStatusCode,
-            itemBatchOperation);
+            cosmosItemOperation);
     }
 
     /**
@@ -206,10 +207,10 @@ public final class BatchResponseParser {
      * @param retryAfterDuration retryAfterDuration.
      * */
     private static void createAndPopulateResults(final TransactionalBatchResponse response,
-                                                 final List<ItemBatchOperation<?>> operations,
+                                                 final List<CosmosItemOperation> operations,
                                                  final Duration retryAfterDuration) {
         final List<TransactionalBatchOperationResult> results = new ArrayList<>(operations.size());
-        for (ItemBatchOperation<?> itemBatchOperation : operations) {
+        for (CosmosItemOperation cosmosItemOperation : operations) {
             results.add(
                 BridgeInternal.createTransactionBatchResult(
                     null,
@@ -218,7 +219,7 @@ public final class BatchResponseParser {
                     response.getStatusCode(),
                     retryAfterDuration,
                     response.getSubStatusCode(),
-                    itemBatchOperation
+                    cosmosItemOperation
                 ));
         }
 
