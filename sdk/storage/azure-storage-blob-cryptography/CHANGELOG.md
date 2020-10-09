@@ -1,6 +1,9 @@
 # Release History
 
-## 12.9.0-beta.1 (Unreleased)
+## 12.9.0-beta.2 (Unreleased)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+## 12.9.0-beta.1 (2020-10-01)
 - Added support to set BlobParallelUploadOptions.computeMd5 so the service can perform an md5 verification.
 - Added support to specify 'requiresEncryption' on the EncryptedBlobClientBuilder to specify whether or not to enforce that the blob is encrypted on download.
 - Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.

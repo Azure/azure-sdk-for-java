@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The FieldMappingFunction model. */
+/** Represents a function that transforms a value from a data source before indexing. */
 @Fluent
 public final class FieldMappingFunction {
     /*

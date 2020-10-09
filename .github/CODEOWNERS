@@ -18,13 +18,13 @@
 ####
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
-/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
 # PRLabel: %Communication
-/sdk/communication/                                 @RezaJooyandeh @JianpingChen
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
@@ -48,6 +48,9 @@
 
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang
+
+# PRLabel: %Cognitive - Metrics Advisor
+/sdk/metricsadvisor/                                @samvaity @anuchandy
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu

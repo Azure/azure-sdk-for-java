@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The FacetResult model. */
+/**
+ * A single bucket of a facet query result. Reports the number of documents with a field value falling within a
+ * particular range or having a particular value or interval.
+ */
 @Fluent
 public final class FacetResult {
     /*

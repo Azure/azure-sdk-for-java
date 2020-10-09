@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.AadTokenAuthorizationHelper;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -25,6 +27,7 @@ public class BarrierRequestHelper {
     private final static Logger logger = LoggerFactory.getLogger(BarrierRequestHelper.class);
 
     public static Mono<RxDocumentServiceRequest> createAsync(
+            DiagnosticsClientContext clientContext,
             RxDocumentServiceRequest request,
             IAuthorizationTokenProvider authorizationTokenProvider,
             Long targetLsn,
@@ -46,7 +49,7 @@ public class BarrierRequestHelper {
         RxDocumentServiceRequest barrierLsnRequest = null;
         if (!isCollectionHeadRequest) {
             // DB Feed
-            barrierLsnRequest = RxDocumentServiceRequest.create(
+            barrierLsnRequest = RxDocumentServiceRequest.create(clientContext,
                 OperationType.HeadFeed,
                 null,
                 ResourceType.Database,
@@ -57,13 +60,13 @@ public class BarrierRequestHelper {
             // get the collection full name
             // dbs/{id}/colls/{collid}/
             String collectionLink = PathsHelper.getCollectionPath(request.getResourceAddress());
-            barrierLsnRequest = RxDocumentServiceRequest.createFromName(
+            barrierLsnRequest = RxDocumentServiceRequest.createFromName(clientContext,
                     OperationType.Head,
                     collectionLink,
                     ResourceType.DocumentCollection);
         } else {
             // RID based Server request
-            barrierLsnRequest = RxDocumentServiceRequest.create(
+            barrierLsnRequest = RxDocumentServiceRequest.create(clientContext,
                     OperationType.Head,
                     ResourceId.parse(request.getResourceId()).getDocumentCollectionId().toString(),
                     ResourceType.DocumentCollection, null);
@@ -79,6 +82,7 @@ public class BarrierRequestHelper {
             barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.TARGET_GLOBAL_COMMITTED_LSN, targetGlobalCommittedLsn.toString());
         }
 
+        boolean hasAadToken = false;
         switch (originalRequestTokenType) {
             case PrimaryMasterKey:
             case PrimaryReadonlyMasterKey:
@@ -98,6 +102,10 @@ public class BarrierRequestHelper {
                 authorizationToken = request.getHeaders().get(HttpConstants.HttpHeaders.AUTHORIZATION);
                 break;
 
+            case AadToken:
+                hasAadToken = true;
+                break;
+
             default:
                 String unknownAuthToken = "Unknown authorization token kind for read request";
                 assert false : unknownAuthToken;
@@ -105,7 +113,10 @@ public class BarrierRequestHelper {
                 throw Exceptions.propagate(new InternalServerErrorException(RMResources.InternalServerError));
         }
 
-        barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
+        if (!hasAadToken) {
+            barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
+        }
+
         barrierLsnRequest.requestContext = request.requestContext.clone();
 
         if (request.getPartitionKeyRangeIdentity() != null) {
@@ -119,7 +130,11 @@ public class BarrierRequestHelper {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));
         }
 
-        return Mono.just(barrierLsnRequest);
+        if (hasAadToken) {
+            return authorizationTokenProvider.populateAuthorizationHeader(barrierLsnRequest);
+        } else {
+            return Mono.just(barrierLsnRequest);
+        }
     }
 
     static boolean isCollectionHeadBarrierRequest(ResourceType resourceType, OperationType operationType) {

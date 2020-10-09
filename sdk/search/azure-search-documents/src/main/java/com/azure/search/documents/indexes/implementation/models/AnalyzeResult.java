@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AnalyzeResult model. */
+/** The result of testing an analyzer on text. */
 @Fluent
 public final class AnalyzeResult {
     /*

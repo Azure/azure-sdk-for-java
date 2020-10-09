@@ -23,11 +23,13 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -1194,7 +1196,7 @@ public class ShareFileClient {
      * @return {@link ShareFileRange ranges} in the files.
      */
     public PagedIterable<ShareFileRange> listRanges() {
-        return listRanges(null, null, null);
+        return listRanges((ShareFileRange) null, null, null);
     }
 
     /**
@@ -1242,8 +1244,59 @@ public class ShareFileClient {
      */
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return new PagedIterable<>(shareFileAsyncClient.listRangesWithOptionalTimeout(range, requestConditions, timeout,
-            context));
+        return new PagedIterable<>(shareFileAsyncClient.listRangesWithOptionalTimeout(range, requestConditions,
+            timeout, context));
+    }
+
+    /**
+     * List of valid ranges for a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all ranges within the file range from 1KB to 2KB.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRangesDiff#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public ShareFileRangeList listRangesDiff(String previousSnapshot) {
+        return this.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List of valid ranges for a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all ranges within the file range from 1KB to 2KB.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
+        Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Mono<Response<ShareFileRangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
+            options.getRequestConditions(), options.getPreviousSnapshot(), context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

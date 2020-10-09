@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Suggester model. */
+/** Defines how the Suggest API should apply to a group of fields in the index. */
 @Fluent
 public final class Suggester {
     /*
