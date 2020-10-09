@@ -3,8 +3,18 @@
 ## 4.2.0-beta.2 (2020-10-08)
 
 ### New Features
-- Added `KeyVaultCertificateIdentifier`. Use its `parse` method to parse the different elements of a given certificate identifier, for example: "https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{version}".
-- Added API overloads that allow for passing specific polling intervals for long-running operations.
+- Added `KeyVaultCertificateIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-certificates/src/main/java/com/azure/security/keyvault/certificates/models/KeyVaultCertificateIdentifier.java#L79) method to parse the different elements of a given certificate identifier.
+- Added API overloads that allow for passing specific polling intervals for long-running operations:
+    - `CertificateAsyncClient`
+        - `beginCreateCertificate(String, CertificatePolicy, Boolean, Map<String, String>, Duration)`
+        - `getCertificateOperation(String, Duration)`
+        - `beginDeleteCertificate(String, Duration)`
+        - `beginRecoverDeletedCertificate(String, Duration)`
+    - `CertificateClient`
+        - `beginCreateCertificate(String, CertificatePolicy, Boolean, Map<String, String>, Duration)`
+        - `getCertificateOperation(String, Duration)`
+        - `beginDeleteCertificate(String, Duration)`
+        - `beginRecoverDeletedCertificate(String, Duration)`
 - Added support for `com.azure.core.util.ClientOptions` in client builders.
 
 ### Dependency Updates

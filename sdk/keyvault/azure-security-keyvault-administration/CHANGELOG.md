@@ -4,7 +4,15 @@
 
 ### New Features
 - Added the new public APIs `getBackupOperation` and `getRestoreOperation` for querying the status of long-running operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`.
-- Added API overloads that allow for passing specific polling intervals for long-running operations.
+- Added API overloads that allow for passing specific polling intervals for long-running operations:
+    - `KeyVaultBackupAsyncClient`
+        - `beginBackup(String, String, Duration)`
+        - `beginRestore(String, String, String, Duration)`
+        - `beginSelectiveRestore(String, String, String, String, Duration)`
+    - `KeyVaultBackupClient`
+        - `beginBackup(String, String, Duration)`
+        - `beginRestore(String, String, String, Duration)`
+        - `beginSelectiveRestore(String, String, String, String, Duration)`
 - Added support for `com.azure.core.util.ClientOptions` in client builders.
 
 ### Dependency Updates
