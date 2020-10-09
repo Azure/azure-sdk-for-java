@@ -61,9 +61,9 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](https://gith
 
 ####  Configure application.properties:
 ```properties
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
