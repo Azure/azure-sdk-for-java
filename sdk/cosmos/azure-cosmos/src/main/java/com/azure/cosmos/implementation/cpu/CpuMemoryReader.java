@@ -9,36 +9,48 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 
-public class CpuReader {
-    private final static Logger logger = LoggerFactory.getLogger(CpuReader.class);
+public class CpuMemoryReader {
+    private final static Logger logger = LoggerFactory.getLogger(CpuMemoryReader.class);
     private final com.sun.management.OperatingSystemMXBean operatingSystemMXBean;
 
-    public CpuReader() {
+    public CpuMemoryReader() {
         java.lang.management.OperatingSystemMXBean mxBean = null;
         try {
             mxBean =
                 ManagementFactory.getOperatingSystemMXBean();
         } catch (Throwable t) {
-            logger.error("failed to initialized CpuReader", t);
+            logger.error("failed to initialized CpuMemoryReader", t);
         }
 
         this.operatingSystemMXBean = tryGetAs(mxBean,
             com.sun.management.OperatingSystemMXBean.class);
     }
 
-    public double getSystemWideCpuUsage() {
+    public float getSystemWideCpuUsage() {
         try {
             if (operatingSystemMXBean != null) {
-                double val = operatingSystemMXBean.getSystemCpuLoad();
+                float val = (float) operatingSystemMXBean.getSystemCpuLoad();
                 if (val > 0) {
                     return val;
                 }
             }
 
-            return Double.NaN;
+            return Float.NaN;
         } catch (Throwable t) {
             logger.error("Failed to get System CPU", t);
-            return Double.NaN;
+            return Float.NaN;
+        }
+    }
+
+    public long getSystemWideMemoryUsage() {
+        try {
+            long totalMemory = Runtime.getRuntime().totalMemory() / (1024*1024);
+            long freeMemory = Runtime.getRuntime().freeMemory() / (1024*1024);
+            long maxMemory = Runtime.getRuntime().maxMemory() / (1024*1024);
+            return maxMemory -(totalMemory - freeMemory);
+        } catch (Throwable t) {
+            logger.error("Failed to get System memory", t);
+            return 0;
         }
     }
 
@@ -46,7 +58,7 @@ public class CpuReader {
         try {
             return Utils.as(mxBean, classType);
         } catch (Throwable t) {
-            logger.error("failed to initialized CpuReader as type {}", classType.getName(), t);
+            logger.error("failed to initialized CpuMemoryReader as type {}", classType.getName(), t);
             return null;
         }
     }

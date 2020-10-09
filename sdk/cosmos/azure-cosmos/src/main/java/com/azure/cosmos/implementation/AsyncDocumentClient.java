@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -307,6 +308,13 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    /**
+     * Gets the client telemetry
+     *
+     * @return the client telemetry
+     */
+    ClientTelemetry getClientTelemetry();
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
@@ -1380,6 +1388,13 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the database account or an error.
      */
     Mono<DatabaseAccount> getDatabaseAccount();
+
+    /**
+     * Gets latest cached database account information from GlobalEndpointManager.
+     *
+     * @return the database account.
+     */
+    DatabaseAccount getLatestDatabaseAccount();
 
     /**
      * Reads many documents at once

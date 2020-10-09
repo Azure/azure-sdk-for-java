@@ -14,8 +14,8 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.cpu.CpuListener;
-import com.azure.cosmos.implementation.cpu.CpuMonitor;
+import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -162,10 +162,10 @@ public class ReflectionUtils {
     }
 
     public static Future<?> getFuture() {
-        return getStaticField(CpuMonitor.class, "future");
+        return getStaticField(CpuMemoryMonitor.class, "future");
     }
 
-    public static List<WeakReference<CpuListener>> getListeners() {
-        return getStaticField(CpuMonitor.class, "cpuListeners");
+    public static List<WeakReference<CpuMemoryListener>> getListeners() {
+        return getStaticField(CpuMemoryMonitor.class, "cpuListeners");
     }
 }

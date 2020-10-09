@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
-import com.azure.cosmos.implementation.cpu.CpuMonitor;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -120,6 +120,14 @@ class ClientSideRequestStatistics {
         CosmosException exception) {
         Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.GATEWAY;
+        URI locationEndPoint = null;
+        if (rxDocumentServiceRequest.requestContext != null) {
+            this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
+            if (rxDocumentServiceRequest.requestContext.locationEndpointToRoute != null) {
+                locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+            }
+        }
+
         synchronized (this) {
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
                 this.requestEndTimeUTC = responseTime;
@@ -132,6 +140,9 @@ class ClientSideRequestStatistics {
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
             }
 
+            if (locationEndPoint != null) {
+                this.regionsContacted.add(locationEndPoint);
+            }
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
@@ -312,7 +323,7 @@ class ClientSideRequestStatistics {
                 systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
 
                 // TODO: other system related info also can be captured using a similar approach
-                systemInformation.systemCpuLoad = CpuMonitor.getCpuLoad().toString();
+                systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
