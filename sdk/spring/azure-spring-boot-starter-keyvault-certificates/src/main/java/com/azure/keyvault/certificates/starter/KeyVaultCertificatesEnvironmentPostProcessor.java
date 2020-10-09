@@ -10,6 +10,9 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.env.PropertySource;
 
 @Order(LOWEST_PRECEDENCE)
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
@@ -18,29 +21,49 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
     public void postProcessEnvironment(ConfigurableEnvironment environment,
             SpringApplication application) {
 
-        Properties properties = System.getProperties();
-        
+        Properties systemProperties = System.getProperties();
+
         String uri = environment.getProperty("azure.keyvault.uri");
         if (uri != null) {
-            properties.put("azure.keyvault.uri", uri);
-        }
+            systemProperties.put("azure.keyvault.uri", uri);
 
-        String tenantId = environment.getProperty("azure.keyvault.tenantId");
-        if (tenantId != null) {
-            properties.put("azure.keyvault.tenantId", tenantId);
-        }
+            String tenantId = environment.getProperty("azure.keyvault.tenantId");
+            if (tenantId != null) {
+                systemProperties.put("azure.keyvault.tenantId", tenantId);
+            }
 
-        String clientId = environment.getProperty("azure.keyvault.clientId");
-        if (clientId != null) {
-            properties.put("azure.keyvault.clientId", clientId);
-        }
+            String clientId = environment.getProperty("azure.keyvault.clientId");
+            if (clientId != null) {
+                systemProperties.put("azure.keyvault.clientId", clientId);
+            }
 
-        String clientSecret = environment.getProperty("azure.keyvault.clientSecret");
-        if (clientSecret != null) {
-            properties.put("azure.keyvault.clientSecret", clientSecret);
-        }
+            String clientSecret = environment.getProperty("azure.keyvault.clientSecret");
+            if (clientSecret != null) {
+                systemProperties.put("azure.keyvault.clientSecret", clientSecret);
+            }
 
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.insertProviderAt(provider, 1);
+            String keyStoreType = environment.getProperty("server.ssl.key-store-type");
+
+            if (keyStoreType != null && (keyStoreType.equals("DKS") || keyStoreType.equals("AzureKeyVault"))) {
+                MutablePropertySources sources = environment.getPropertySources();
+                Properties properties = new Properties();
+                properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
+                PropertySource propertySource = new PropertiesPropertySource("KeyStorePropertySource", properties);
+                sources.addFirst(propertySource);
+            }
+            
+            String trustStoreType = environment.getProperty("server.ssl.trust-store-type");
+
+            if (trustStoreType != null && (trustStoreType.equals("DKS") || trustStoreType.equals("AzureKeyVault"))) {
+                MutablePropertySources sources = environment.getPropertySources();
+                Properties properties = new Properties();
+                properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
+                PropertySource propertySource = new PropertiesPropertySource("TrustStorePropertySource", properties);
+                sources.addFirst(propertySource);
+            }
+
+            KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+            Security.insertProviderAt(provider, 1);
+        }
     }
 }
