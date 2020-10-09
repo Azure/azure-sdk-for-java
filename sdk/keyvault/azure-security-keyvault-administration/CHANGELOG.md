@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.2 (2020-10-08)
+## 4.0.0-beta.2 (2020-10-09)
 
 ### New Features
 - Added the new public APIs `getBackupOperation` and `getRestoreOperation` for querying the status of long-running operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`.

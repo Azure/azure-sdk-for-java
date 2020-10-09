@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0-beta.2 (2020-10-08)
+## 4.3.0-beta.2 (2020-10-09)
 
 ### New Features
 - Added `KeyVaultSecretIdentifier`. Use its `parse` method to parse the different elements of a given secret identifier, for example: "https://{key-vault-name}.vault.azure.net/secrets/{secret-name}/{version}".
