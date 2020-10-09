@@ -25,6 +25,7 @@ import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.NumberConfiguration;
 import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
@@ -830,6 +831,67 @@ public final class PhoneNumberAsyncClient {
 
     private Function<PollingContext<PhoneNumberSearch>,
         Mono<PhoneNumberSearch>> createSearchFetchResultOperation() {
+        return pollingContext -> {
+            return Mono.just(pollingContext.getLatestResponse().getValue());
+        };
+    }
+    /**
+    * Creates a release for the given phone numbers.
+     * This function returns a Long Running Operation poller that allows you to 
+     * wait indefinitely until the operation is complete.
+     * 
+     * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link PollerFlux} object with the release entity
+     */
+    public PollerFlux<PhoneNumberRelease, PhoneNumberRelease> 
+        beginReleasePhoneNumbers(List<PhoneNumber> phoneNumbers, Duration pollInterval) {
+        Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        return new PollerFlux<PhoneNumberRelease, PhoneNumberRelease>(pollInterval,
+            releaseNumbersActivationOperation(phoneNumbers),
+            releaseNumbersPollOperation(),
+            (activationResponse, pollingContext) ->
+            monoError(logger, new RuntimeException("Cancellation is not supported")),
+            releaseNumbersFetchResultOperation());
+    }
+
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PhoneNumberRelease>> 
+        releaseNumbersActivationOperation(List<PhoneNumber> phoneNumbers) {
+        return (pollingContext) -> {
+            Mono<PhoneNumberRelease> response = releasePhoneNumbers(phoneNumbers)
+                .flatMap(releaseNumberResponse -> {
+                    String releaseId = releaseNumberResponse.getReleaseId();
+                    Mono<PhoneNumberRelease> phoneNumberRelease = getReleaseById(releaseId);
+                    return phoneNumberRelease;
+                });
+            return response;
+        };
+    }
+
+    private Function<PollingContext<PhoneNumberRelease>, 
+        Mono<PollResponse<PhoneNumberRelease>>> 
+        releaseNumbersPollOperation() {
+        return pollingContext ->
+            getReleaseById(pollingContext.getLatestResponse().getValue().getReleaseId())
+                .flatMap(getReleaseResponse -> {
+                    ReleaseStatus status = getReleaseResponse.getStatus();
+                    if (status.equals(ReleaseStatus.COMPLETE) 
+                        || status.equals(ReleaseStatus.EXPIRED)) {
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getReleaseResponse));
+                    }
+                    if (status.equals(ReleaseStatus.FAILED)) {
+                        return Mono.just(new PollResponse<>(
+                        LongRunningOperationStatus.FAILED, getReleaseResponse));
+                    }
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, getReleaseResponse));
+                });
+    }
+
+    private Function<PollingContext<PhoneNumberRelease>,
+        Mono<PhoneNumberRelease>> releaseNumbersFetchResultOperation() {
         return pollingContext -> {
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
