@@ -9,7 +9,7 @@ import com.azure.learn.appconfig.models.ConfigurationSetting;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The KeyValueListResult model. */
+/** The result of a list request. */
 @Fluent
 public final class KeyValueListResult {
     /*

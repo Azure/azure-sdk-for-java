@@ -6,7 +6,6 @@
 ``` yaml
 input-file: appconfiguration.json
 java: true
-use: @autorest/java@4.0.2
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.learn.appconfig

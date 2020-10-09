@@ -128,7 +128,12 @@ public final class AzureAppConfigurationImpl {
         return this.serializerAdapter;
     }
 
-    /** Initializes an instance of AzureAppConfiguration client. */
+    /**
+     * Initializes an instance of AzureAppConfiguration client.
+     *
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param endpoint The endpoint of the App Configuration instance to send requests to.
+     */
     AzureAppConfigurationImpl(String syncToken, String endpoint) {
         this(
                 new HttpPipelineBuilder()
@@ -143,6 +148,8 @@ public final class AzureAppConfigurationImpl {
      * Initializes an instance of AzureAppConfiguration client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param endpoint The endpoint of the App Configuration instance to send requests to.
      */
     AzureAppConfigurationImpl(HttpPipeline httpPipeline, String syncToken, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), syncToken, endpoint);
@@ -153,6 +160,8 @@ public final class AzureAppConfigurationImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param endpoint The endpoint of the App Configuration instance to send requests to.
      */
     AzureAppConfigurationImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String syncToken, String endpoint) {
@@ -364,25 +373,41 @@ public final class AzureAppConfigurationImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<GetKeysNextResponse> getKeysNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Sync-Token") String syncToken,
+                @HeaderParam("Accept-Datetime") String acceptDatetime,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<GetKeyValuesNextResponse> getKeyValuesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Sync-Token") String syncToken,
+                @HeaderParam("Accept-Datetime") String acceptDatetime,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<GetLabelsNextResponse> getLabelsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Sync-Token") String syncToken,
+                @HeaderParam("Accept-Datetime") String acceptDatetime,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<GetRevisionsNextResponse> getRevisionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Sync-Token") String syncToken,
+                @HeaderParam("Accept-Datetime") String acceptDatetime,
+                Context context);
     }
 
     /**
@@ -859,6 +884,7 @@ public final class AzureAppConfigurationImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -866,8 +892,9 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(String nextLink, Context context) {
-        return service.getKeysNext(nextLink, context)
+    public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(
+            String nextLink, String acceptDatetime, Context context) {
+        return service.getKeysNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -883,6 +910,7 @@ public final class AzureAppConfigurationImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -890,8 +918,9 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> getKeyValuesNextSinglePageAsync(String nextLink, Context context) {
-        return service.getKeyValuesNext(nextLink, context)
+    public Mono<PagedResponse<ConfigurationSetting>> getKeyValuesNextSinglePageAsync(
+            String nextLink, String acceptDatetime, Context context) {
+        return service.getKeyValuesNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -907,6 +936,7 @@ public final class AzureAppConfigurationImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -914,8 +944,9 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsNextSinglePageAsync(String nextLink, Context context) {
-        return service.getLabelsNext(nextLink, context)
+    public Mono<PagedResponse<Label>> getLabelsNextSinglePageAsync(
+            String nextLink, String acceptDatetime, Context context) {
+        return service.getLabelsNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -931,6 +962,7 @@ public final class AzureAppConfigurationImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -938,8 +970,9 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> getRevisionsNextSinglePageAsync(String nextLink, Context context) {
-        return service.getRevisionsNext(nextLink, context)
+    public Mono<PagedResponse<ConfigurationSetting>> getRevisionsNextSinglePageAsync(
+            String nextLink, String acceptDatetime, Context context) {
+        return service.getRevisionsNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -7,7 +7,7 @@ package com.azure.learn.appconfig.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Error model. */
+/** Azure App Configuration error object. */
 @Fluent
 public final class Error {
     /*
