@@ -17,12 +17,15 @@ Support": this will configure the project to make sure you can integrate easily 
 For instance, let's assume that you want to use Event Hubs starter, you can add the usual `spring-cloud-starter-azure-eventhubs`
 dependency to your project and the Spring Cloud auto-configuration will kick-in: 
 
+[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current})
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>spring-cloud-starter-azure-eventhubs</artifactId>
+  <version>1.2.8</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 Note that there is no need to add a `version` as those are managed already by the project.
 
@@ -59,7 +62,7 @@ Spring allow all the supported logging systems to set logger levels set in the S
 
 The following example shows potential logging settings in `application.properties`:
 
-```properties
+```
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR

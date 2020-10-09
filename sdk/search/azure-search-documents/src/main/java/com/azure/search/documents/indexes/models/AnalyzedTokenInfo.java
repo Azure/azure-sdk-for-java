@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AnalyzedTokenInfo model. */
+/** Information about a token returned by an analyzer. */
 @Immutable
 public final class AnalyzedTokenInfo {
     /*

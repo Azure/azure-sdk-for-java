@@ -364,7 +364,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -378,7 +377,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(15, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -392,7 +390,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(22, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -406,7 +403,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(30, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -420,7 +416,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(14, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -434,7 +429,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(15, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -448,7 +442,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -462,7 +455,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -476,7 +468,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeEntities(document).forEach(
                 categorizedEntity -> {
                     assertEquals(126, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 }),
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
@@ -607,7 +598,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(8, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -620,7 +610,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(10, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -633,7 +622,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(17, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -646,7 +634,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(25, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -659,7 +646,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(9, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -672,7 +658,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(10, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -685,7 +670,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(8, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -698,7 +682,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(8, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -711,7 +694,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final PiiEntityCollection result = client.recognizePiiEntities(document);
             result.forEach(piiEntity -> {
                 assertEquals(121, piiEntity.getOffset());
-                assertEquals(11, piiEntity.getLength());
             });
         }, PII_ENTITY_OFFSET_INPUT);
     }
@@ -869,7 +851,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -884,7 +865,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(15, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -899,7 +879,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(22, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -913,7 +892,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeLinkedEntities(document).forEach(linkedEntity ->
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(30, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -928,7 +906,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(14, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -943,7 +920,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(15, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -958,7 +934,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -973,7 +948,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity -> linkedEntity.getMatches().forEach(
                     linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1));
     }
@@ -987,7 +961,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 linkedEntity ->
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(126, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     })),
             LINKED_ENTITY_INPUTS.get(1)
         );
@@ -1192,8 +1165,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 TextSentiment.NEUTRAL,
                 new SentimentConfidenceScores(0.0, 0.0, 0.0),
                 new IterableStream<>(Arrays.asList(
-                    new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 0, 1),
-                    new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 1, 4)
+                    new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 0),
+                    new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 1)
                 )), null);
             validateAnalyzedSentiment(false, expectedDocumentSentiment, client.analyzeSentiment(input));
         });
@@ -1434,7 +1407,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(34, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1448,7 +1420,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(36, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1462,7 +1433,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(43, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1476,7 +1446,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(51, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1490,7 +1459,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(35, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1504,7 +1472,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(36, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1518,7 +1485,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(34, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1532,7 +1498,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(34, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );
@@ -1546,7 +1511,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.analyzeSentiment(document).getSentences().forEach(
                 sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(147, sentenceSentiment.getLength());
                 }),
             SENTIMENT_OFFSET_INPUT
         );

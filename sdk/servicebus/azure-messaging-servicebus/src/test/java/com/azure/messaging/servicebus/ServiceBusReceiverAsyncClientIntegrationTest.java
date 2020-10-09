@@ -7,11 +7,13 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
@@ -167,7 +169,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
             .verifyComplete();
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
@@ -212,19 +214,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, transaction.get());
+                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
                 messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, transaction.get());
+                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
                 break;
             case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
+                    .setDeadLetterReason(deadLetterReason);
+                operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
                 messagesPending.decrementAndGet();
                 break;
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, transaction.get());
+                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -275,7 +278,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
             .verifyComplete();
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
@@ -1018,7 +1021,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(new BinaryData(CONTENTS_BYTES))));
+        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
         expectedAmqpProperties.getProperties().setSubject(subject);
         expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
         expectedAmqpProperties.getProperties().setReplyTo("replyto");

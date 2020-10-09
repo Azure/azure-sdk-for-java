@@ -108,7 +108,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // LIST incoming relationships
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
-            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId);
+            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new DigitalTwinsListIncomingRelationshipsOptions(), Context.NONE);
             listIncomingRelationships.forEach(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()));
             assertThat(incomingRelationshipsSourceIds)
                 .as("Floor has incoming relationships from room and hvac")
@@ -126,7 +126,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // LIST relationship by name
             List<String> containedInRelationshipsTargetIds = new ArrayList<>();
-            PagedIterable<BasicRelationship> listContainedInRelationship = client.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class, Context.NONE);
+            PagedIterable<BasicRelationship> listContainedInRelationship = client.listRelationships(roomTwinId, CONTAINED_IN_RELATIONSHIP, BasicRelationship.class, null, Context.NONE);
             listContainedInRelationship.forEach(basicRelationship -> {
                 containedInRelationshipsTargetIds.add(basicRelationship.getTargetId());
                 logger.info("Retrieved relationship {} for twin {}", basicRelationship.getId(), roomTwinId);

@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchServiceLimits model. */
+/** Represents various service level limits. */
 @Fluent
 public final class SearchServiceLimits {
     /*

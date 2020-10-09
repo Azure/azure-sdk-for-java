@@ -1,6 +1,15 @@
 # Release History
-## 5.1.0-beta.2 (Unreleased)
+## 5.1.0-beta.3 (Unreleased)
 
+
+## 5.1.0-beta.2 (2020-10-06)
+### Breaking changes
+- Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`, 
+`OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself
+ using the string's length property.
+
+### Dependency updates
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
 
 ## 5.1.0-beta.1 (2020-09-17)
 - Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment`
