@@ -10,15 +10,16 @@ import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Keys;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Vaults and its parent interfaces. */
-class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyVaultKey> implements Keys {
+class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implements Keys {
     private final KeyAsyncClient inner;
     private final Vault vault;
 
@@ -34,8 +35,7 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyVaultKey> implemen
 
     @Override
     protected KeyImpl wrapModel(String name) {
-        // No valid KeyVaultKey object until service created one.
-        return new KeyImpl(name, null, vault);
+        return new KeyImpl(name, new KeyProperties(), vault);
     }
 
     @Override
@@ -50,11 +50,18 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyVaultKey> implemen
     }
 
     @Override
-    protected KeyImpl wrapModel(KeyVaultKey inner) {
-        if (inner == null) {
+    protected KeyImpl wrapModel(KeyProperties keyProperties) {
+        if (keyProperties == null) {
             return null;
         }
-        return new KeyImpl(inner.getName(), inner, vault);
+        return new KeyImpl(keyProperties.getName(), keyProperties, vault);
+    }
+
+    protected KeyImpl wrapModel(KeyVaultKey keyVaultKey) {
+        if (keyVaultKey == null) {
+            return null;
+        }
+        return new KeyImpl(keyVaultKey.getName(), keyVaultKey, vault);
     }
 
     @Override
@@ -83,8 +90,7 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyVaultKey> implemen
 
     @Override
     public PagedFlux<Key> listAsync() {
-        return PagedConverter
-            .flatMapPage(inner.listPropertiesOfKeys(), p -> inner.getKey(p.getName()).map(this::wrapModel));
+        return inner.listPropertiesOfKeys().mapPage(this::wrapModel);
     }
 
     @Override

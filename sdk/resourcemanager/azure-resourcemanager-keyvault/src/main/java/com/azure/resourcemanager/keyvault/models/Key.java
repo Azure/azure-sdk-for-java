@@ -20,7 +20,6 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Flux;
@@ -28,21 +27,24 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Key Vault key. */
 @Fluent
-public interface Key extends Indexable, HasInnerModel<KeyVaultKey>, HasId, HasName, Updatable<Key.Update> {
+public interface Key extends Indexable, HasInnerModel<KeyProperties>, HasId, HasName, Updatable<Key.Update> {
     /** @return the Json web key. */
     JsonWebKey getJsonWebKey();
 
+    /** @return the Json web key. */
+    Mono<JsonWebKey> getJsonWebKeyAsync();
+
     /** @return the key management attributes. */
-    KeyProperties getAttributes();
+    KeyProperties attributes();
 
     /** @return application specific metadata in the form of key-value pairs. */
-    Map<String, String> getTags();
+    Map<String, String> tags();
 
     /**
      * @return true if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed
      *     will be true.
      */
-    boolean isManaged();
+    boolean managed();
 
     /** @return a list of individual key versions with the same key name */
     Iterable<Key> listVersions();
