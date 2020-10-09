@@ -114,6 +114,11 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
         if(request.getOperationType() != OperationType.QueryPlan) {
             request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
+        } else {
+            // Session token is irrelevant for query plan
+            // Gateway can hit header limitation issues quickly so removing it here
+            // to protect accounts with large number of partitions (big session tokens)
+            request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
         }
 
         switch (this.queryCompatibilityMode) {
@@ -414,7 +419,9 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
-        if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
+        if (request.getResourceType() == ResourceType.DocumentCollection &&
+            request.getOperationType() == OperationType.Delete) {
+
             String resourceId;
             if (request.getIsNameBased()) {
                 resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
@@ -434,7 +441,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         boolean sessionTokenApplicable =
-            Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()) ||
+            Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()) ||
                 (this.defaultConsistencyLevel == ConsistencyLevel.SESSION &&
                     // skip applying the session token when Eventual Consistency is explicitly requested
                     // on request-level for data plane operations.
@@ -443,7 +450,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     // on the gateway - so not worth sending when not needed
                     (!request.isReadOnlyRequest() ||
                         request.getResourceType() != ResourceType.Document ||
-                        !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
+                        !Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
