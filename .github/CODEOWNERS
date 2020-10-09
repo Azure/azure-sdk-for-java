@@ -19,6 +19,7 @@
 ####
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
+# PRLabel: %azure-spring
 /sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @zhenlan
 
 # PRLabel: %Batch
