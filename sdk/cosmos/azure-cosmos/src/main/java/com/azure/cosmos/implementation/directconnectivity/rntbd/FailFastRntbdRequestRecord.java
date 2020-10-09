@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -49,16 +50,21 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
             concurrentRequestsSnapshot);
         final HttpHeaders headers = new HttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, failFastRecord.activityId().toString());
-        final RequestTimeoutException requestTimeoutException = new RequestTimeoutException(
+
+        // When admission control blocks a request due to excessive pendingAcquisition queue length
+        // the error should be handled upstream as a transient connectivity error for which we know
+        // the request was never flushed to the wire - which means retries are functionally safe for both
+        // reads and writes
+        final GoneException admissionControlBlocksRequestException = new GoneException(
             reason,
             headers,
             remoteAddress);
-        BridgeInternal.setRequestHeaders(requestTimeoutException, args.serviceRequest().getHeaders());
+        BridgeInternal.setRequestHeaders(admissionControlBlocksRequestException, args.serviceRequest().getHeaders());
 
         failFastRecord.whenComplete((response, error) -> {
             metrics.markComplete(failFastRecord);
         });
-        failFastRecord.completeExceptionally(requestTimeoutException);
+        failFastRecord.completeExceptionally(admissionControlBlocksRequestException);
 
         return failFastRecord;
     }

@@ -11,7 +11,7 @@ import com.azure.search.documents.models.AutocompleteMode;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutocompleteRequest model. */
+/** Parameters for fuzzy matching, and other autocomplete query behaviors. */
 @Fluent
 public final class AutocompleteRequest {
     /*

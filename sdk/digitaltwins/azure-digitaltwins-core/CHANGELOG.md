@@ -1,7 +1,11 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2020-10-01)
+
+- Fixed issue with pagination APIs that support max-item-count where the item count was not respected from the second page forward.
 
 ## 1.0.0-beta.2 (2020-09-24)
 

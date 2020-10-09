@@ -11,7 +11,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchIndexerDataSource model. */
+/** Represents a datasource definition, which can be used to configure an indexer. */
 @Fluent
 public final class SearchIndexerDataSource {
     /*

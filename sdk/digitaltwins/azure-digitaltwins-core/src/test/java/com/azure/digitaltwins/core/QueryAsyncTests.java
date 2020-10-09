@@ -43,7 +43,7 @@ public class QueryAsyncTests extends QueryTestBase{
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
 
-            StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class))
+            StepVerifier.create(asyncClient.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
                 .assertNext(response ->
                     assertThat(response.getStatusCode())
                         .as("Created digitaltwin successfully")
@@ -52,7 +52,7 @@ public class QueryAsyncTests extends QueryTestBase{
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
-            StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class))
+            StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, null))
                 .thenConsumeWhile(dt ->  {
                     assertThat(dt.getCustomProperties().get("IsOccupied"))
                         .as("IsOccupied should be true")
