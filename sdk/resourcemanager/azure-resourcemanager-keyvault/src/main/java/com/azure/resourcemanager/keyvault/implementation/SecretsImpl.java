@@ -166,7 +166,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
 
             return vault.secretClient().updateSecretProperties(secretProperties).map(this::wrapModel);
         } catch (IOException ioe) {
-            throw logger.logThrowableAsError(new RuntimeException(ioe));
+            throw logger.logExceptionAsError(new RuntimeException(ioe));
         }
     }
 
