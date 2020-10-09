@@ -108,6 +108,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         AreaCodes areaCodes =
             this.getClient().getAllAreaCodes("selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions);
 
+
         assertTrue(areaCodes.getPrimaryAreaCodes().size() > 0);
     }
 
