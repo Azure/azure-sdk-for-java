@@ -66,10 +66,10 @@ mvn spring-boot:run
 
 ## Troubleshooting
 
-### If registered application is not multi-tenanted, how to run this sample?
-Configure endpoints with specific tenant-id by replacing `common` in your application.properties file:
+### If registered application is multi-tenanted, how to run this sample?
+Set `azure.activedirectory.tenant-id=common` in your application.properties file:
 ```properties
-azure.activedirectory.tenant-id=your-tenant-id
+azure.activedirectory.tenant-id=common
 ```
 ---
 ### Meet with `AADSTS240002: Input id_token cannot be used as 'urn:ietf:params:oauth:grant-type:jwt-bearer' grant` error.
