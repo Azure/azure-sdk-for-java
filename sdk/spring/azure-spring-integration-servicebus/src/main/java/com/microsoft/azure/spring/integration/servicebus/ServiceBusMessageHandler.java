@@ -41,9 +41,11 @@ public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
     @Override
     public CompletableFuture<Void> onMessageAsync(IMessage serviceBusMessage) {
         Map<String, Object> headers = new HashMap<>();
+        headers.put(AzureHeaders.LOCK_TOKEN, serviceBusMessage.getLockToken());
 
         Checkpointer checkpointer = new AzureCheckpointer(() -> this.success(serviceBusMessage.getLockToken()),
             () -> this.failure(serviceBusMessage.getLockToken()));
+
         if (checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }
@@ -54,6 +56,7 @@ public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
         if (checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD) {
             return checkpointer.success().whenComplete((v, t) -> checkpointHandler(message, t));
         }
+
         return CompletableFuture.completedFuture(null);
     }
 

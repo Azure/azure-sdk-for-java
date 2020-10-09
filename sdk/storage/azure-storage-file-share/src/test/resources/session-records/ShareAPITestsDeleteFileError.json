@@ -1,47 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsdeletefileerror900672ce3f5d36a1f4?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletefileerror06365273ecb9239b04?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "80ffc357-0b42-4a1f-abee-343024dcb059"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5a794d54-3d6d-4580-81e8-f8cbcee4d423"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77912011684EB",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:53 GMT",
+      "ETag" : "0x8D8448C99335822",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:52 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99f60-201a-0011-5efa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:52 GMT",
-      "x-ms-client-request-id" : "80ffc357-0b42-4a1f-abee-343024dcb059"
+      "x-ms-request-id" : "8c89f981-601a-0022-6875-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:52 GMT",
+      "x-ms-client-request-id" : "5a794d54-3d6d-4580-81e8-f8cbcee4d423"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsdeletefileerror900672ce3f5d36a1f4/testdirectory",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdeletefileerror06365273ecb9239b04/testdirectory",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7f9eaf42-2ee9-4615-a9f7-974dc93901ac"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ab84acb3-3b8b-488f-9193-db92bda424c0"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ResourceNotFound",
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9ba99f62-201a-0011-5ffa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:9ba99f62-201a-0011-5ffa-aa088f000000\nTime:2019-12-04T23:30:53.1729664Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:52 GMT",
-      "x-ms-client-request-id" : "7f9eaf42-2ee9-4615-a9f7-974dc93901ac",
+      "x-ms-request-id" : "8c89f984-601a-0022-6975-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:8c89f984-601a-0022-6975-761fdd000000\nTime:2020-08-19T22:09:53.2206370Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:53 GMT",
+      "x-ms-client-request-id" : "ab84acb3-3b8b-488f-9193-db92bda424c0",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsdeletefileerror900672ce3f5d36a1f4" ]
+  "variables" : [ "shareapitestsdeletefileerror06365273ecb9239b04" ]
 }

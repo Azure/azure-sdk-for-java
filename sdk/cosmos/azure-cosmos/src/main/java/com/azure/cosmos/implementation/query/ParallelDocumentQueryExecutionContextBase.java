@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -43,11 +44,12 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
     protected int pageSize;
     protected int top = -1;
 
-    protected ParallelDocumentQueryExecutionContextBase(IDocumentQueryClient client,
+    protected ParallelDocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
+                                                        IDocumentQueryClient client,
                                                         List<PartitionKeyRange> partitionKeyRanges, ResourceType resourceTypeEnum, Class<T> resourceType,
                                                         SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink, String rewrittenQuery,
                                                         boolean isContinuationExpected, boolean getLazyFeedResponse, UUID correlatedActivityId) {
-        super(client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, getLazyFeedResponse,
+        super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, getLazyFeedResponse,
                 correlatedActivityId);
 
         logger = LoggerFactory.getLogger(this.getClass());

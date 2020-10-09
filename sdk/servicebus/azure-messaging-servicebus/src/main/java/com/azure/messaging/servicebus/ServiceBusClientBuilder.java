@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -32,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnec
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
+import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -74,6 +76,7 @@ public final class ServiceBusClientBuilder {
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
     private String connectionStringEntityName;
@@ -96,6 +99,19 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
+     * certain properties, as well as support the addition of custom header information. Refer to the
+     * {@link ClientOptions} documentation for more information.
+     *
+     * @param clientOptions to be set on the client.
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Sets the connection string for a Service Bus namespace or a specific Service Bus resource.
      *
      * @param connectionString Connection string for a Service Bus namespace or a specific Service Bus resource.
@@ -106,8 +122,7 @@ public final class ServiceBusClientBuilder {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
-            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
+            tokenCredential = getTokenCredential(properties);
         } catch (Exception e) {
             throw logger.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
@@ -121,6 +136,17 @@ public final class ServiceBusClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
     }
 
     /**
@@ -336,9 +362,10 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler);
+            proxyOptions, scheduler, options, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

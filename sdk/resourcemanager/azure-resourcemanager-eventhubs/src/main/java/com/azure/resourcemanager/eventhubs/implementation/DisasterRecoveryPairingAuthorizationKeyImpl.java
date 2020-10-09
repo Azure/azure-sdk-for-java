@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.eventhubs.implementation;
 
-import com.azure.resourcemanager.eventhubs.fluent.inner.AccessKeysInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
@@ -20,31 +20,31 @@ class DisasterRecoveryPairingAuthorizationKeyImpl
 
     @Override
     public String primaryKey() {
-        return this.inner().primaryKey();
+        return this.innerModel().primaryKey();
     }
 
     @Override
     public String secondaryKey() {
-        return this.inner().secondaryKey();
+        return this.innerModel().secondaryKey();
     }
 
     @Override
     public String primaryConnectionString() {
-        return this.inner().primaryConnectionString();
+        return this.innerModel().primaryConnectionString();
     }
 
     @Override
     public String secondaryConnectionString() {
-        return this.inner().secondaryConnectionString();
+        return this.innerModel().secondaryConnectionString();
     }
 
     @Override
     public String aliasPrimaryConnectionString() {
-        return this.inner().aliasPrimaryConnectionString();
+        return this.innerModel().aliasPrimaryConnectionString();
     }
 
     @Override
     public String aliasSecondaryConnectionString() {
-        return this.inner().aliasSecondaryConnectionString();
+        return this.innerModel().aliasSecondaryConnectionString();
     }
 }

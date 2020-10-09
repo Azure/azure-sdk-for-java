@@ -3,15 +3,15 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 
 /** A web app authentication configuration in a web app. */
 @Fluent
-public interface WebAppAuthentication extends HasInner<SiteAuthSettingsInner>, Indexable, HasParent<WebAppBase> {
+public interface WebAppAuthentication extends HasInnerModel<SiteAuthSettingsInner>, Indexable, HasParent<WebAppBase> {
 
     /**
      * The entirety of a web app authentication definition.

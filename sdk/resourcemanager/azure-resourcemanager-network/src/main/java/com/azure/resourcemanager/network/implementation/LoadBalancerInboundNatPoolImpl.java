@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** Implementation for LoadBalancerInboundNatRule. */
 class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, LoadBalancerImpl, LoadBalancer>
@@ -31,17 +31,17 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public TransportProtocol protocol() {
-        return this.inner().protocol();
+        return this.innerModel().protocol();
     }
 
     @Override
     public int backendPort() {
-        return Utils.toPrimitiveInt(this.inner().backendPort());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().backendPort());
     }
 
     @Override
@@ -49,30 +49,30 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
         return this
             .parent()
             .frontends()
-            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIpConfiguration().id()));
+            .get(ResourceUtils.nameFromResourceId(this.innerModel().frontendIpConfiguration().id()));
     }
 
     @Override
     public int frontendPortRangeStart() {
-        return Utils.toPrimitiveInt(this.inner().frontendPortRangeStart());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().frontendPortRangeStart());
     }
 
     @Override
     public int frontendPortRangeEnd() {
-        return Utils.toPrimitiveInt(this.inner().frontendPortRangeEnd());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().frontendPortRangeEnd());
     }
 
     // Fluent setters
 
     @Override
     public LoadBalancerInboundNatPoolImpl toBackendPort(int port) {
-        this.inner().withBackendPort(port);
+        this.innerModel().withBackendPort(port);
         return this;
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl withProtocol(TransportProtocol protocol) {
-        this.inner().withProtocol(protocol);
+        this.innerModel().withProtocol(protocol);
         return this;
     }
 
@@ -80,14 +80,14 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
     public LoadBalancerInboundNatPoolImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
-            this.inner().withFrontendIpConfiguration(frontendRef);
+            this.innerModel().withFrontendIpConfiguration(frontendRef);
         }
         return this;
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromFrontendPortRange(int from, int to) {
-        this.inner().withFrontendPortRangeStart(from).withFrontendPortRangeEnd(to);
+        this.innerModel().withFrontendPortRangeStart(from).withFrontendPortRangeEnd(to);
         return this;
     }
 
@@ -112,21 +112,21 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(String leafDnsLabel) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(leafDnsLabel, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
-        String frontendName = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String frontendName = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         return fromFrontend(frontendName);
     }
 
     @Override
     public LoadBalancerInboundNatPoolImpl fromNewPublicIPAddress() {
-        String dnsLabel = this.parent().manager().sdkContext().randomResourceName("fe", 20);
+        String dnsLabel = this.parent().manager().resourceManager().internalContext().randomResourceName("fe", 20);
         return this.fromNewPublicIPAddress(dnsLabel);
     }
 

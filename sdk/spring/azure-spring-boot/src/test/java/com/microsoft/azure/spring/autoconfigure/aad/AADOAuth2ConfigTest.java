@@ -64,7 +64,7 @@ public class AADOAuth2ConfigTest {
 
     @Test
     public void noOAuth2UserServiceBeanCreatedIfTenantIdNotConfigured() {
-        testPropResource.getSource().remove(Constants.TENANT_ID_PROPERTY);
+        testPropResource.getSource().remove(TestConstants.TENANT_ID_PROPERTY);
         testContext = initTestContext();
 
         exception.expect(NoSuchBeanDefinitionException.class);
@@ -78,7 +78,7 @@ public class AADOAuth2ConfigTest {
                 "azure.service.endpoints.global.aadGraphApiUri=https://test/",
                 "azure.service.endpoints.global.aadKeyDiscoveryUri=https://test/",
                 "azure.service.endpoints.global.aadMembershipRestUri=https://test/",
-                Constants.ALLOW_TELEMETRY_PROPERTY + "=false");
+                TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
 
 
         final Environment environment = testContext.getEnvironment();
@@ -116,7 +116,7 @@ public class AADOAuth2ConfigTest {
 
         context.getEnvironment().getPropertySources().addLast(testPropResource);
         context.getEnvironment().getPropertySources().addLast(new MockPropertySource()
-            .withProperty(Constants.ALLOW_TELEMETRY_PROPERTY, "false"));
+            .withProperty(TestConstants.ALLOW_TELEMETRY_PROPERTY, "false"));
         if (environment.length > 0) {
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context, environment);
         }

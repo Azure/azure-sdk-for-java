@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DnsConfig model. */
+/** Class containing DNS settings in a Traffic Manager profile. */
+@Fluent
 public final class DnsConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsConfig.class);
 

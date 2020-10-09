@@ -53,6 +53,11 @@ public final class TablesConstants {
     public static final String ODATA_TYPE_KEY = "odata.type";
 
     /**
+     * Name suffix expressing the value's type
+     */
+    public static final String ODATA_TYPE_KEY_SUFFIX = "@odata.type";
+
+    /**
      * Name in the map for the table or entity's ID.
      */
     public static final String ODATA_ID_KEY = "odata.id";

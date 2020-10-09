@@ -87,7 +87,6 @@ public final class ConfigurationClientBuilder {
     }
 
     public ConfigurationClientBuilder serviceVersion(ServiceVersion version) {
-        internalBuilder.serviceVersion(version);
         return this;
     }
 

@@ -2,7 +2,7 @@
 
 Azure Resource Manager Authorization client library for Java
 
-For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azure-sdk-java-mgmt).
+For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## Getting started
 
@@ -17,7 +17,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-authorization</artifactId>
-    <version>2.0.0-beta.4</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -4,12 +4,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListKeysResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountListKeysResultInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure Cosmos DB DatabaseAccountListKeysResult. */
 @Fluent
-public interface DatabaseAccountListKeysResult extends HasInner<DatabaseAccountListKeysResultInner> {
+public interface DatabaseAccountListKeysResult extends HasInnerModel<DatabaseAccountListKeysResultInner> {
     /** @return Base 64 encoded value of the primary read-write key. */
     String primaryMasterKey();
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OperationDisplayDefinition model. */
+/** The display information for a container registry operation. */
 @Fluent
 public final class OperationDisplayDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplayDefinition.class);

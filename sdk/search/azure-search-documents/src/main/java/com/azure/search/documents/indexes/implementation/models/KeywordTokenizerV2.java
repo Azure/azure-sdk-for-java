@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The KeywordTokenizerV2 model. */
+/** Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.KeywordTokenizerV2")
 @JsonFlatten
@@ -27,9 +27,13 @@ public class KeywordTokenizerV2 extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of KeywordTokenizerV2 class. */
+    /**
+     * Creates an instance of KeywordTokenizerV2 class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public KeywordTokenizerV2(@JsonProperty(value = "name") String name) {
+    public KeywordTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -53,15 +57,5 @@ public class KeywordTokenizerV2 extends LexicalTokenizer {
     public KeywordTokenizerV2 setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

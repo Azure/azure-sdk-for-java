@@ -23,15 +23,17 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
 
+import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepositoryConfig.class, SecondaryTestRepositoryConfig.class})
 public class MultiCosmosTemplateIT {
     private static final Person PRIMARY_TEST_PERSON = new Person(TestConstants.ID_1,
         TestConstants.FIRST_NAME,
-        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
     private static final Person SECONDARY_TEST_PERSON = new Person(TestConstants.ID_2,
         TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
     private static CosmosEntityInformation<Person, String> personInfo;
     private static boolean initialized;
     @Autowired

@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SimpleField;
 
 public class Foo {
-    @SimpleFieldProperty(isKey = true)
+    @SimpleField(isKey = true)
     private String intValue;
     private String stringValue;
 

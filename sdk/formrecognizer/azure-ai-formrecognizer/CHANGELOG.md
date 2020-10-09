@@ -3,6 +3,14 @@
 ## 3.1.0-beta.1 (Unreleased)
 
 
+## 3.0.2 (2020-10-06)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
+
+## 3.0.1 (2020-09-10)
+### Dependency updates
+- Updated dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.
+
 ## 3.0.0 (2020-08-20)
 First stable release of the azure-ai-formrecognizer client library supporting Azure Form Recognizer service API version v2.0.
 
@@ -23,7 +31,7 @@ This beta version targets Azure Form Recognizer service API version v2.0.
 - Renamed property `formWords` on `FormLine` model to `words`
 - Renamed property `code` on `FormRecognizerError` model to `errorCode`
 - Renamed accessors for property `includeSubFolders` to `isSubfoldersIncluded` and `setSubfoldersIncluded`
-- Renamed property `trainingStatus` and `documentErrors` on `TrainingDocumentInfo` model to `status` and `errors` 
+- Renamed property `trainingStatus` and `documentErrors` on `TrainingDocumentInfo` model to `status` and `errors`
 respectively
 - Renamed property `formPageRange` on `RecognizedForm` model to `pageRange`
 - Renamed model `ErrorInformation` to `FormRecognizerErrorInformation`

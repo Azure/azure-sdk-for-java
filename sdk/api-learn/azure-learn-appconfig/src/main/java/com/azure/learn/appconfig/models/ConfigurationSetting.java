@@ -13,33 +13,33 @@ import java.util.Map;
 @Fluent
 public final class ConfigurationSetting {
     /*
-     * The key property.
+     * The unique name of the key-value.
      */
     @JsonProperty(value = "key")
     private String key;
 
     /*
-     * The label property.
+     * The label of the key-value.
      */
     @JsonProperty(value = "label")
     private String label;
 
     /*
-     * The content_type property.
+     * The content type of the key-value.
      */
     @JsonProperty(value = "content_type")
     private String contentType;
 
     /*
-     * The value property.
+     * The value of the key-value.
      */
     @JsonProperty(value = "value")
     private String value;
 
     /*
-     * The last_modified property.
+     * The time the key-value was last modified.
      */
-    @JsonProperty(value = "last_modified", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "last_modified")
     private OffsetDateTime lastModified;
 
     /*
@@ -49,19 +49,19 @@ public final class ConfigurationSetting {
     private Map<String, String> tags;
 
     /*
-     * The locked property.
+     * Indicates whether or not this key-value is readonly.
      */
-    @JsonProperty(value = "locked", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "locked")
     private Boolean locked;
 
     /*
-     * The etag property.
+     * The entity-tag of the key-value.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
-     * Get the key property: The key property.
+     * Get the key property: The unique name of the key-value.
      *
      * @return the key value.
      */
@@ -70,7 +70,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Set the key property: The key property.
+     * Set the key property: The unique name of the key-value.
      *
      * @param key the key value to set.
      * @return the ConfigurationSetting object itself.
@@ -81,7 +81,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Get the label property: The label property.
+     * Get the label property: The label of the key-value.
      *
      * @return the label value.
      */
@@ -90,7 +90,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Set the label property: The label property.
+     * Set the label property: The label of the key-value.
      *
      * @param label the label value to set.
      * @return the ConfigurationSetting object itself.
@@ -101,7 +101,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Get the contentType property: The content_type property.
+     * Get the contentType property: The content type of the key-value.
      *
      * @return the contentType value.
      */
@@ -110,7 +110,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Set the contentType property: The content_type property.
+     * Set the contentType property: The content type of the key-value.
      *
      * @param contentType the contentType value to set.
      * @return the ConfigurationSetting object itself.
@@ -121,7 +121,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The value of the key-value.
      *
      * @return the value value.
      */
@@ -130,7 +130,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The value of the key-value.
      *
      * @param value the value value to set.
      * @return the ConfigurationSetting object itself.
@@ -141,12 +141,23 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Get the lastModified property: The last_modified property.
+     * Get the lastModified property: The time the key-value was last modified.
      *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
         return this.lastModified;
+    }
+
+    /**
+     * Set the lastModified property: The time the key-value was last modified.
+     *
+     * @param lastModified the lastModified value to set.
+     * @return the ConfigurationSetting object itself.
+     */
+    public ConfigurationSetting setLastModified(OffsetDateTime lastModified) {
+        this.lastModified = lastModified;
+        return this;
     }
 
     /**
@@ -170,7 +181,7 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Get the locked property: The locked property.
+     * Get the locked property: Indicates whether or not this key-value is readonly.
      *
      * @return the locked value.
      */
@@ -179,11 +190,33 @@ public final class ConfigurationSetting {
     }
 
     /**
-     * Get the etag property: The etag property.
+     * Set the locked property: Indicates whether or not this key-value is readonly.
+     *
+     * @param locked the locked value to set.
+     * @return the ConfigurationSetting object itself.
+     */
+    public ConfigurationSetting setLocked(Boolean locked) {
+        this.locked = locked;
+        return this;
+    }
+
+    /**
+     * Get the etag property: The entity-tag of the key-value.
      *
      * @return the etag value.
      */
     public String getEtag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: The entity-tag of the key-value.
+     *
+     * @param etag the etag value to set.
+     * @return the ConfigurationSetting object itself.
+     */
+    public ConfigurationSetting setEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 }

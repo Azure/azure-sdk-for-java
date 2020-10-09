@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConfigServerGitProperty model. */
+/** Property of git. */
 @Fluent
 public final class ConfigServerGitProperty {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigServerGitProperty.class);

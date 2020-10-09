@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MonitorConfigExpectedStatusCodeRangesItem model. */
+/** Min and max value of a status code range. */
+@Fluent
 public final class MonitorConfigExpectedStatusCodeRangesItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorConfigExpectedStatusCodeRangesItem.class);
 

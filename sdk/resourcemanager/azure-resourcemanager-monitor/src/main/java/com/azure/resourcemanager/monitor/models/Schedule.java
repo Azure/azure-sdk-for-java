@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Schedule model. */
+/** Defines how often to run the search and the time interval. */
 @Fluent
 public final class Schedule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Schedule.class);

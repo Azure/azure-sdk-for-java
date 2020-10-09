@@ -56,6 +56,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private final AsyncKeyEncryptionKey keyWrapper;
 
     /**
+     * Whether or not encryption is enforced by this client. Throws an exception if data is downloaded and it is not
+     * encrypted.
+     */
+    private final boolean requiresEncryption;
+
+    /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
      * <p>
      * If the generated policy is intended to be used for encryption, users are expected to provide a key at the
@@ -67,10 +73,13 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption
      * key
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
+     * @param requiresEncryption Whether or not encryption is enforced by this client.
      */
-    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver) {
+    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
+        boolean requiresEncryption) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
+        this.requiresEncryption = requiresEncryption;
     }
 
     @Override
@@ -303,6 +312,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     private EncryptionData getAndValidateEncryptionData(String encryptedDataString) {
         if (encryptedDataString == null) {
+            if (requiresEncryption) {
+                throw logger.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
+                    + "downloaded data is not encrypted."));
+            }
             return null;
         }
         ObjectMapper objectMapper = new ObjectMapper();
@@ -311,6 +324,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
             // Blob being downloaded is not null.
             if (encryptionData == null) {
+                if (requiresEncryption) {
+                    throw logger.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
+                        + "downloaded data is not encrypted."));
+                }
                 return null;
             }
 

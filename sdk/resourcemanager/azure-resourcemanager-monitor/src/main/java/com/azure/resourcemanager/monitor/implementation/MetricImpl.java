@@ -7,7 +7,7 @@ import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.Metric;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.models.Unit;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 
@@ -17,17 +17,17 @@ class MetricImpl extends WrapperImpl<MetricInner> implements Metric {
 
     MetricImpl(MetricInner innerObject) {
         super(innerObject);
-        this.metricName = (inner().name() == null) ? null : new LocalizableStringImpl(inner().name());
+        this.metricName = (innerModel().name() == null) ? null : new LocalizableStringImpl(innerModel().name());
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
@@ -37,11 +37,11 @@ class MetricImpl extends WrapperImpl<MetricInner> implements Metric {
 
     @Override
     public Unit unit() {
-        return this.inner().unit();
+        return this.innerModel().unit();
     }
 
     @Override
     public List<TimeSeriesElement> timeseries() {
-        return this.inner().timeseries();
+        return this.innerModel().timeseries();
     }
 }

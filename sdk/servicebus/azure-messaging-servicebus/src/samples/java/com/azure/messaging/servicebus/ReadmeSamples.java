@@ -147,7 +147,7 @@ public class ReadmeSamples {
             ServiceBusReceivedMessage message = context.getMessage();
 
             // Process message and then complete it.
-            receiver.complete(message.getLockToken());
+            receiver.complete(message);
         });
     }
 
@@ -199,7 +199,7 @@ public class ReadmeSamples {
     public void createSynchronousServiceBusDeadLetterQueueReceiver() {
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .receiver()
+            .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
             .subQueue(SubQueue.DEAD_LETTER_QUEUE)

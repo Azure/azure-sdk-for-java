@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,9 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.ServersClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -35,8 +33,7 @@ public interface SqlServers
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<SqlServer>,
         SupportsBatchDeletion,
-        HasManager<SqlServerManager>,
-        HasInner<ServersClient> {
+        HasManager<SqlServerManager> {
 
     /** @return the SQL Server Firewall Rules API entry point */
     SqlFirewallRuleOperations firewallRules();
