@@ -62,7 +62,7 @@ public class KeyVaultIT {
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
 
             LOGGER.info("app begin to start.");
-            final ConfigurableApplicationContext dummy = app.start("dummy");
+            final ConfigurableApplicationContext dummy = app.start();
             LOGGER.info("app started.");
             final ConfigurableEnvironment environment = dummy.getEnvironment();
             final MutablePropertySources propertySources = environment.getPropertySources();
