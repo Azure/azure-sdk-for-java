@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Properties for the task that collects user tables for the given list of
  * databases.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType", defaultImpl = GetUserTablesSqlTaskProperties.class)
 @JsonTypeName("GetUserTables.Sql")
 public class GetUserTablesSqlTaskProperties extends ProjectTaskProperties {
     /**

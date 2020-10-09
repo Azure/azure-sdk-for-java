@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datamigration.v2018_07_15_preview;
 
 import java.util.Map;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -46,6 +47,12 @@ public class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
      */
     @JsonProperty(value = "targetSetting")
     private Map<String, String> targetSetting;
+
+    /**
+     * Tables selected for migration.
+     */
+    @JsonProperty(value = "selectedTables")
+    private List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables;
 
     /**
      * Get name of the database.
@@ -144,6 +151,26 @@ public class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
      */
     public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withTargetSetting(Map<String, String> targetSetting) {
         this.targetSetting = targetSetting;
+        return this;
+    }
+
+    /**
+     * Get tables selected for migration.
+     *
+     * @return the selectedTables value
+     */
+    public List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables() {
+        return this.selectedTables;
+    }
+
+    /**
+     * Set tables selected for migration.
+     *
+     * @param selectedTables the selectedTables value to set
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withSelectedTables(List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput> selectedTables) {
+        this.selectedTables = selectedTables;
         return this;
     }
 

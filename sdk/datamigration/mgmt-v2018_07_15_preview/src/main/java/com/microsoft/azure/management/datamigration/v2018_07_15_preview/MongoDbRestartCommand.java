@@ -16,7 +16,7 @@ import com.microsoft.azure.management.datamigration.v2018_07_15_preview.implemen
 /**
  * Properties for the command that restarts a migration in whole or in part.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType", defaultImpl = MongoDbRestartCommand.class)
 @JsonTypeName("restart")
 public class MongoDbRestartCommand extends CommandPropertiesInner {
     /**

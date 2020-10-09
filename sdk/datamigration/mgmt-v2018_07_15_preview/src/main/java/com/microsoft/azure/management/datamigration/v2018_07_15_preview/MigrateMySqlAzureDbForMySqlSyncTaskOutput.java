@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Output for the task that migrates MySQL databases to Azure Database for
  * MySQL for online migrations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateMySqlAzureDbForMySqlSyncTaskOutput.class)
 @JsonTypeName("MigrateMySqlAzureDbForMySqlSyncTaskOutput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DatabaseLevelErrorOutput", value = MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.class),

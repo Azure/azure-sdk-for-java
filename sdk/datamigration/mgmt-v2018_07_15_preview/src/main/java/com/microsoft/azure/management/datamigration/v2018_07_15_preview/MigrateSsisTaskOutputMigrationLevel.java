@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The MigrateSsisTaskOutputMigrationLevel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = MigrateSsisTaskOutputMigrationLevel.class)
 @JsonTypeName("MigrationLevelOutput")
 public class MigrateSsisTaskOutputMigrationLevel extends MigrateSsisTaskOutput {
     /**
