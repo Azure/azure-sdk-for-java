@@ -213,6 +213,11 @@ public final class AzureAppConfigurationImplBuilder {
         return this;
     }
 
+
+    public AzureAppConfigurationImplBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
+    }
+
     /**
      * Builds an instance of AzureAppConfigurationImpl with the provided parameters.
      *
