@@ -59,7 +59,7 @@ config = {
         'sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
-                VersionUpdateItem('org.springframework.cloud:spring-cloud-stream', '2.2.1.RELEASE'),
+                # VersionUpdateItem('org.springframework.cloud:spring-cloud-stream', '2.2.1.RELEASE'), # EventHubIT.integrationTest will throw ClassNotFoundException.
             )
         },
         'sdk/spring/azure-spring-cloud-test-storage/pom.xml': {
