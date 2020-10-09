@@ -8,14 +8,14 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests public IPs. */
 public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
     @Override
     public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
-        final String newPipName = pips.manager().sdkContext().randomResourceName("pip", 10);
+        final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
 
         PublicIpAddress pip =
             pips

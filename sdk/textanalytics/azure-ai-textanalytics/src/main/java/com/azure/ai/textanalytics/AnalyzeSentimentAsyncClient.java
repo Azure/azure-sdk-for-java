@@ -16,6 +16,7 @@ import com.azure.ai.textanalytics.implementation.models.SentenceOpinion;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -162,8 +163,7 @@ class AnalyzeSentimentAsyncClient {
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     toMinedOpinionList(sentenceSentiment, documentSentimentList),
-                    sentenceSentiment.getOffset(),
-                    sentenceSentiment.getLength()
+                    sentenceSentiment.getOffset()
                 );
             }).collect(Collectors.toList());
 
@@ -205,11 +205,17 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        String modelVersion = null;
+        Boolean includeStatistics = null;
+        Boolean includeOpinionMining = null;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+            includeOpinionMining = options.isIncludeOpinionMining();
+        }
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            options == null ? null : options.isIncludeOpinionMining(),
+            modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
@@ -244,7 +250,7 @@ class AnalyzeSentimentAsyncClient {
             minedOpinions.add(new MinedOpinion(
                 new AspectSentiment(sentenceAspect.getText(),
                     TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
-                    sentenceAspect.getOffset(), sentenceAspect.getLength(),
+                    sentenceAspect.getOffset(),
                     toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())),
                 new IterableStream<>(opinionSentiments)));
         });
@@ -267,7 +273,7 @@ class AnalyzeSentimentAsyncClient {
     private OpinionSentiment toOpinionSentiment(SentenceOpinion sentenceOpinion) {
         return new OpinionSentiment(sentenceOpinion.getText(),
             TextSentiment.fromString(sentenceOpinion.getSentiment().toString()),
-            sentenceOpinion.getOffset(), sentenceOpinion.getLength(), sentenceOpinion.isNegated(),
+            sentenceOpinion.getOffset(), sentenceOpinion.isNegated(),
             toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
     }
 

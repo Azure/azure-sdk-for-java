@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionMonitorIcmpConfiguration model. */
+/** Describes the ICMP configuration. */
 @Fluent
 public final class ConnectionMonitorIcmpConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorIcmpConfiguration.class);

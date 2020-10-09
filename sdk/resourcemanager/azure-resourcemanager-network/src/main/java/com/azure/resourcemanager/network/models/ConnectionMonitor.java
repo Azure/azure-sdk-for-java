@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 /** Client-side representation of Connection Monitor object, associated with Network Watcher. */
 @Fluent
-public interface ConnectionMonitor extends HasInner<ConnectionMonitorResultInner>, HasName, HasId, Indexable {
+public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResultInner>, HasName, HasId, Indexable {
     /** @return connection monitor location */
     String location();
 

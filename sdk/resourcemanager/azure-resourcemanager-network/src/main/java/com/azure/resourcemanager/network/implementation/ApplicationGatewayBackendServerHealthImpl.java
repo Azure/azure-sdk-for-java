@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpCon
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendServerHealth;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthServerInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 
 /** Implementation of application gateway backend server health information. */
@@ -24,7 +24,7 @@ public class ApplicationGatewayBackendServerHealthImpl implements ApplicationGat
     }
 
     @Override
-    public ApplicationGatewayBackendHealthServerInner inner() {
+    public ApplicationGatewayBackendHealthServerInner innerModel() {
         return this.inner;
     }
 
@@ -35,15 +35,15 @@ public class ApplicationGatewayBackendServerHealthImpl implements ApplicationGat
 
     @Override
     public String ipAddress() {
-        return this.inner().address();
+        return this.innerModel().address();
     }
 
     @Override
     public NicIpConfiguration getNetworkInterfaceIPConfiguration() {
-        if (this.inner().ipConfiguration() == null) {
+        if (this.innerModel().ipConfiguration() == null) {
             return null;
         }
-        String nicIPConfigId = this.inner().ipConfiguration().id();
+        String nicIPConfigId = this.innerModel().ipConfiguration().id();
         if (nicIPConfigId == null) {
             return null;
         }

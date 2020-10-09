@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.authorization.samples.ManageServicePrincipalCredentials;
 import com.azure.resourcemanager.authorization.samples.ManageUsersGroupsAndRoles;
 import com.azure.core.management.profile.AzureProfile;
@@ -19,11 +19,12 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class GraphRbacTests extends ResourceManagerTestBase {
-    private Azure.Authenticated authenticated;
+    private AzureResourceManager.Authenticated authenticated;
     private AzureProfile profile;
 
     @Test
@@ -43,7 +44,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 
     @Test
     @DoNotRecord
-    public void testManageServicePrincipalCredentials() {
+    public void testManageServicePrincipalCredentials() throws IOException {
         if (skipInPlayback()) {
             return;
         }
@@ -71,7 +72,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        authenticated = Azure.authenticate(httpPipeline, profile);
+        authenticated = AzureResourceManager.authenticate(httpPipeline, profile);
         this.profile = profile;
     }
 

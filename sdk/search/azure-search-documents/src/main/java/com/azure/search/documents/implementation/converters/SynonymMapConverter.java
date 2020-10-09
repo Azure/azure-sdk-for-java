@@ -42,8 +42,10 @@ public final class SynonymMapConverter {
         }
         Objects.requireNonNull(obj.getName(), "SynonymMap name cannot be null.");
         com.azure.search.documents.indexes.implementation.models.SynonymMap synonymMap =
-            new com.azure.search.documents.indexes.implementation.models.SynonymMap(obj.getName(), "solr",
-                obj.getSynonyms());
+            new com.azure.search.documents.indexes.implementation.models.SynonymMap()
+                .setName(obj.getName())
+                .setFormat("solr")
+                .setSynonyms(obj.getSynonyms());
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);

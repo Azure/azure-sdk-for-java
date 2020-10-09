@@ -33,7 +33,7 @@ public interface DataEncryptionKeyContainer {
      * <li>Conflict - This means an {@link DataEncryptionKeyProperties} with an id matching the id you supplied already existed.</li>
      * </ui>
      */
-    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> createDataEncryptionKeyAsync(
+    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> createDataEncryptionKey(
         String id,
         String encryptionAlgorithm,
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata,
@@ -90,7 +90,7 @@ public interface DataEncryptionKeyContainer {
      * @param requestOptions
      * @return
      */
-    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> rewrapDataEncryptionKeyAsync(
+    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> rewrapDataEncryptionKey(
         String id,
         EncryptionKeyWrapMetadata newWrapMetadata,
         CosmosItemRequestOptions requestOptions);
@@ -118,7 +118,7 @@ public interface DataEncryptionKeyContainer {
      *   </li>
      * </ul>
      */
-    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKeyAsync(
+    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKey(
         String id,
         CosmosItemRequestOptions requestOptions);
 }

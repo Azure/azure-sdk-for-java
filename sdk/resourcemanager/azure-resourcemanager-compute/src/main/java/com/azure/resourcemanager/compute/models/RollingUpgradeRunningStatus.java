@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RollingUpgradeRunningStatus model. */
+/** Information about the current running state of the overall upgrade. */
 @Immutable
 public final class RollingUpgradeRunningStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradeRunningStatus.class);

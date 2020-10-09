@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -60,6 +61,7 @@ public class IdentityClientTests {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private final ClientLogger logger = new ClientLogger(IdentityClientTests.class);
 
     @Test
     public void testValidSecret() throws Exception {
@@ -124,9 +126,12 @@ public class IdentityClientTests {
     @Test
     public void testPemCertificate() throws Exception {
         // setup
-        String pemPath = getClass().getClassLoader().getResource("certificate.pem").getPath();
-        if (pemPath.contains(":")) {
-            pemPath = pemPath.substring(1);
+        String pemPath;
+        URL pemUrl = getClass().getClassLoader().getResource("certificate.pem");
+        if (pemUrl.getPath().contains(":")) {
+            pemPath = pemUrl.getPath().substring(1);
+        } else {
+            pemPath = pemUrl.getPath();
         }
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -200,7 +205,30 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testValidIdentityEndpointMSICodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        String secret = "secret";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+
+        // mock
+        mockForMSICodeFlow(tokenJson);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -308,7 +336,7 @@ public class IdentityClientTests {
         // test
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
-        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
+        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                 && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();

@@ -11,6 +11,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -22,8 +23,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerState;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
@@ -41,6 +44,7 @@ import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
@@ -71,11 +75,11 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysRe
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MXRecordSet;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
-import com.azure.resourcemanager.dns.models.NSRecordSet;
+import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
@@ -113,7 +117,7 @@ import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
@@ -157,17 +161,23 @@ import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.TopologyAssociation;
 import com.azure.resourcemanager.network.models.TopologyResource;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
-import com.azure.resourcemanager.privatedns.models.MxRecordSet;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
+import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.Queue;
+import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
+import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
+import com.azure.resourcemanager.servicebus.models.Topic;
+import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.PartnerInfo;
@@ -194,6 +204,7 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -206,6 +217,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -215,6 +227,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -222,11 +235,81 @@ import java.util.stream.Collectors;
  */
 
 public final class Utils {
+
+    private Utils() {
+    }
+
     /** @return a generated password */
     public static String password() {
-        String password = new SdkContext().randomResourceName("Pa5$", 12);
+        String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager azure, String prefix, int maxLen) {
+        return azure.resourceGroups().manager().internalContext().randomResourceName(prefix, maxLen);
+    }
+
+    /**
+     * Generates the specified number of random resource names with the same prefix.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @param prefix the prefix to be used if possible
+     * @param maxLen the maximum length for the random generated name
+     * @param count the number of names to generate
+     * @return the randomized resource names.
+     */
+    public static String[] randomResourceNames(AzureResourceManager azure, String prefix, int maxLen, int count) {
+        String[] names = new String[count];
+        for (int i = 0; i < count; i++) {
+            names[i] = randomResourceName(azure, prefix, maxLen);
+        }
+        return names;
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param azure the AzureResourceManager instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager azure) {
+        return azure.resourceGroups().manager().internalContext().randomUuid();
+    }
+
+    /**
+     * Creates a randomized resource name.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @param prefix the prefix to the name.
+     * @param maxLen the max length of the name.
+     * @return the randomized resource name.
+     */
+    public static String randomResourceName(AzureResourceManager.Authenticated authenticated, String prefix, int maxLen) {
+        return authenticated.roleAssignments().manager().internalContext().randomResourceName(prefix, maxLen);
+    }
+
+    /**
+     * Creates a random UUID.
+     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
+     *
+     * @param authenticated the AzureResourceManager.Authenticated instance.
+     * @return the random UUID.
+     */
+    public static String randomUuid(AzureResourceManager.Authenticated authenticated) {
+        return authenticated.roleAssignments().manager().internalContext().randomUuid();
     }
 
     /**
@@ -624,7 +707,7 @@ public final class Utils {
                 info.append("\n\t\t\t").append(ipAddressRange);
             }
         }
-        info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.inner().enableHttpsTrafficOnly());
+        info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.innerModel().enableHttpsTrafficOnly());
 
         info.append("\n\tEncryption status: ");
         for (Map.Entry<StorageService, StorageAccountEncryptionStatus> eStatus : storageAccount.encryptionStatuses().entrySet()) {
@@ -1072,6 +1155,29 @@ public final class Utils {
     }
 
     /**
+     * Print a web site.
+     *
+     * @param resource a web site
+     */
+    public static void print(WebSiteBase resource) {
+        StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
+            .append("\n\tName: ").append(resource.name())
+            .append("\n\tState: ").append(resource.state())
+            .append("\n\tResource group: ").append(resource.resourceGroupName())
+            .append("\n\tRegion: ").append(resource.region())
+            .append("\n\tDefault hostname: ").append(resource.defaultHostname())
+            .append("\n\tApp service plan: ").append(resource.appServicePlanId());
+        builder = builder.append("\n\tSSL bindings: ");
+        for (HostnameSslState binding : resource.hostnameSslStates().values()) {
+            builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
+            if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
+                builder = builder.append(" - " + binding.thumbprint());
+            }
+        }
+        System.out.println(builder.toString());
+    }
+
+    /**
      * Print a traffic manager profile.
      *
      * @param profile a traffic manager profile
@@ -1197,18 +1303,18 @@ public final class Utils {
             }
         }
 
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                     .append("\n\t\tName: ").append(cnameRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                     .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        PagedIterable<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MXRecordSet mxRecordSet : mxRecordSets) {
+        for (MxRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                     .append("\n\t\tName: ").append(mxRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
@@ -1221,9 +1327,9 @@ public final class Utils {
             }
         }
 
-        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        PagedIterable<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
         info.append("\n\tNS Record sets:");
-        for (NSRecordSet nsRecordSet : nsRecordSets) {
+        for (NsRecordSet nsRecordSet : nsRecordSets) {
             info.append("\n\t\tId: ").append(nsRecordSet.id())
                     .append("\n\t\tName: ").append(nsRecordSet.name())
                     .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
@@ -1330,18 +1436,18 @@ public final class Utils {
             }
         }
 
-        PagedIterable<CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
+        PagedIterable<com.azure.resourcemanager.privatedns.models.CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
-        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+        for (com.azure.resourcemanager.privatedns.models.CnameRecordSet cnameRecordSet : cnameRecordSets) {
             info.append("\n\t\tId: ").append(cnameRecordSet.id())
                 .append("\n\t\tName: ").append(cnameRecordSet.name())
                 .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
                 .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
         }
 
-        PagedIterable<MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
+        PagedIterable<com.azure.resourcemanager.privatedns.models.MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
-        for (MxRecordSet mxRecordSet : mxRecordSets) {
+        for (com.azure.resourcemanager.privatedns.models.MxRecordSet mxRecordSet : mxRecordSets) {
             info.append("\n\t\tId: ").append(mxRecordSet.id())
                 .append("\n\t\tName: ").append(mxRecordSet.name())
                 .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
@@ -1491,7 +1597,7 @@ public final class Utils {
      * @return a service principal client ID
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1514,7 +1620,7 @@ public final class Utils {
      * @return a service principal secret
      * @throws Exception exception
      */
-    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws Exception {
+    public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
 
@@ -1537,7 +1643,7 @@ public final class Utils {
 //     * @return a random name
 //     */
 //    public static String createRandomName(String namePrefix) {
-//        return SdkContext.randomResourceName(namePrefix, 30);
+//        return ResourceManagerUtils.InternalRuntimeContext.randomResourceName(namePrefix, 30);
 //    }
 
     /**
@@ -1552,7 +1658,7 @@ public final class Utils {
      * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws Exception {
+                                         String alias, String password, String cnName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -1613,7 +1719,7 @@ public final class Utils {
      * @throws Exception exceptions thrown from the execution
      */
     public static String cmdInvocation(String[] command,
-                                       boolean ignoreErrorStream) throws Exception {
+                                       boolean ignoreErrorStream) throws IOException {
         String result = "";
         String error = "";
 
@@ -1631,11 +1737,11 @@ public final class Utils {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {
-                    throw new Exception(error, null);
+                    throw new IOException(error, null);
                 }
             }
         } catch (Exception e) {
-            throw new Exception("Exception occurred while invoking command", e);
+            throw new RuntimeException("Exception occurred while invoking command", e);
         }
         return result;
     }
@@ -2145,17 +2251,33 @@ public final class Utils {
     }
 
     /**
-     * Uploads a file to an Azure app service.
+     * Uploads a file to an Azure app service for Web App.
      *
      * @param profile the publishing profile for the app service.
      * @param fileName the name of the file on server
      * @param file the local file
      */
     public static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot/webapps";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    /**
+     * Uploads a file to an Azure app service for Function App.
+     *
+     * @param profile the publishing profile for the app service.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     */
+    public static void uploadFileForFunctionViaFtp(PublishingProfile profile, String fileName, InputStream file) {
+        String path = "./site/wwwroot";
+        uploadFileViaFtp(profile, fileName, file, path);
+    }
+
+    private static void uploadFileViaFtp(PublishingProfile profile, String fileName, InputStream file, String path) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
-        String path = "./site/wwwroot/webapps";
         if (fileName.contains("/")) {
             int lastslash = fileName.lastIndexOf('/');
             path = path + "/" + fileName.substring(0, lastslash);
@@ -2179,219 +2301,215 @@ public final class Utils {
         }
     }
 
-    private Utils() {
+    /**
+     * Print service bus namespace info.
+     *
+     * @param serviceBusNamespace a service bus namespace
+     */
+    public static void print(ServiceBusNamespace serviceBusNamespace) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus Namespace: ").append(serviceBusNamespace.id())
+                .append("\n\tName: ").append(serviceBusNamespace.name())
+                .append("\n\tRegion: ").append(serviceBusNamespace.regionName())
+                .append("\n\tResourceGroupName: ").append(serviceBusNamespace.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(serviceBusNamespace.createdAt())
+                .append("\n\tUpdatedAt: ").append(serviceBusNamespace.updatedAt())
+                .append("\n\tDnsLabel: ").append(serviceBusNamespace.dnsLabel())
+                .append("\n\tFQDN: ").append(serviceBusNamespace.fqdn())
+                .append("\n\tSku: ")
+                .append("\n\t\tCapacity: ").append(serviceBusNamespace.sku().capacity())
+                .append("\n\t\tSkuName: ").append(serviceBusNamespace.sku().name())
+                .append("\n\t\tTier: ").append(serviceBusNamespace.sku().tier());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus queue info.
+     *
+     * @param queue a service bus queue
+     */
+    public static void print(Queue queue) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus Queue: ").append(queue.id())
+                .append("\n\tName: ").append(queue.name())
+                .append("\n\tResourceGroupName: ").append(queue.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(queue.createdAt())
+                .append("\n\tUpdatedAt: ").append(queue.updatedAt())
+                .append("\n\tAccessedAt: ").append(queue.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(queue.activeMessageCount())
+                .append("\n\tCurrentSizeInBytes: ").append(queue.currentSizeInBytes())
+                .append("\n\tDeadLetterMessageCount: ").append(queue.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(queue.defaultMessageTtlDuration())
+                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(queue.duplicateMessageDetectionHistoryDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(queue.isBatchedOperationsEnabled())
+                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(queue.isDeadLetteringEnabledForExpiredMessages())
+                .append("\n\tIsDuplicateDetectionEnabled: ").append(queue.isDuplicateDetectionEnabled())
+                .append("\n\tIsExpressEnabled: ").append(queue.isExpressEnabled())
+                .append("\n\tIsPartitioningEnabled: ").append(queue.isPartitioningEnabled())
+                .append("\n\tIsSessionEnabled: ").append(queue.isSessionEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(queue.deleteOnIdleDurationInMinutes())
+                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(queue.maxDeliveryCountBeforeDeadLetteringMessage())
+                .append("\n\tMaxSizeInMB: ").append(queue.maxSizeInMB())
+                .append("\n\tMessageCount: ").append(queue.messageCount())
+                .append("\n\tScheduledMessageCount: ").append(queue.scheduledMessageCount())
+                .append("\n\tStatus: ").append(queue.status())
+                .append("\n\tTransferMessageCount: ").append(queue.transferMessageCount())
+                .append("\n\tLockDurationInSeconds: ").append(queue.lockDurationInSeconds())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(queue.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
 
     }
 
-//    /**
-//     * Print service bus namespace info.
-//     *
-//     * @param serviceBusNamespace a service bus namespace
-//     */
-//    public static void print(ServiceBusNamespace serviceBusNamespace) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus Namespace: ").append(serviceBusNamespace.id())
-//                .append("\n\tName: ").append(serviceBusNamespace.name())
-//                .append("\n\tRegion: ").append(serviceBusNamespace.regionName())
-//                .append("\n\tResourceGroupName: ").append(serviceBusNamespace.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(serviceBusNamespace.createdAt())
-//                .append("\n\tUpdatedAt: ").append(serviceBusNamespace.updatedAt())
-//                .append("\n\tDnsLabel: ").append(serviceBusNamespace.dnsLabel())
-//                .append("\n\tFQDN: ").append(serviceBusNamespace.fqdn())
-//                .append("\n\tSku: ")
-//                .append("\n\t\tCapacity: ").append(serviceBusNamespace.sku().capacity())
-//                .append("\n\t\tSkuName: ").append(serviceBusNamespace.sku().name())
-//                .append("\n\t\tTier: ").append(serviceBusNamespace.sku().tier());
-//
-//        System.out.println(builder.toString());
-//    }
+    /**
+     * Print service bus queue authorization keys info.
+     *
+     * @param queueAuthorizationRule a service bus queue authorization keys
+     */
+    public static void print(QueueAuthorizationRule queueAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus queue authorization rule: ").append(queueAuthorizationRule.id())
+                .append("\n\tName: ").append(queueAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(queueAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(queueAuthorizationRule.namespaceName())
+                .append("\n\tQueue Name: ").append(queueAuthorizationRule.queueName());
 
-//    /**
-//     * Print service bus queue info.
-//     *
-//     * @param queue a service bus queue
-//     */
-//    public static void print(Queue queue) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus Queue: ").append(queue.id())
-//                .append("\n\tName: ").append(queue.name())
-//                .append("\n\tResourceGroupName: ").append(queue.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(queue.createdAt())
-//                .append("\n\tUpdatedAt: ").append(queue.updatedAt())
-//                .append("\n\tAccessedAt: ").append(queue.accessedAt())
-//                .append("\n\tActiveMessageCount: ").append(queue.activeMessageCount())
-//                .append("\n\tCurrentSizeInBytes: ").append(queue.currentSizeInBytes())
-//                .append("\n\tDeadLetterMessageCount: ").append(queue.deadLetterMessageCount())
-//                .append("\n\tDefaultMessageTtlDuration: ").append(queue.defaultMessageTtlDuration())
-//                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(queue.duplicateMessageDetectionHistoryDuration())
-//                .append("\n\tIsBatchedOperationsEnabled: ").append(queue.isBatchedOperationsEnabled())
-//                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(queue.isDeadLetteringEnabledForExpiredMessages())
-//                .append("\n\tIsDuplicateDetectionEnabled: ").append(queue.isDuplicateDetectionEnabled())
-//                .append("\n\tIsExpressEnabled: ").append(queue.isExpressEnabled())
-//                .append("\n\tIsPartitioningEnabled: ").append(queue.isPartitioningEnabled())
-//                .append("\n\tIsSessionEnabled: ").append(queue.isSessionEnabled())
-//                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(queue.deleteOnIdleDurationInMinutes())
-//                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(queue.maxDeliveryCountBeforeDeadLetteringMessage())
-//                .append("\n\tMaxSizeInMB: ").append(queue.maxSizeInMB())
-//                .append("\n\tMessageCount: ").append(queue.messageCount())
-//                .append("\n\tScheduledMessageCount: ").append(queue.scheduledMessageCount())
-//                .append("\n\tStatus: ").append(queue.status())
-//                .append("\n\tTransferMessageCount: ").append(queue.transferMessageCount())
-//                .append("\n\tLockDurationInSeconds: ").append(queue.lockDurationInSeconds())
-//                .append("\n\tTransferDeadLetterMessageCount: ").append(queue.transferDeadLetterMessageCount());
-//
-//        System.out.println(builder.toString());
-//
-//    }
-//
-//    /**
-//     * Print service bus queue authorization keys info.
-//     *
-//     * @param queueAuthorizationRule a service bus queue authorization keys
-//     */
-//    public static void print(QueueAuthorizationRule queueAuthorizationRule) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus queue authorization rule: ").append(queueAuthorizationRule.id())
-//                .append("\n\tName: ").append(queueAuthorizationRule.name())
-//                .append("\n\tResourceGroupName: ").append(queueAuthorizationRule.resourceGroupName())
-//                .append("\n\tNamespace Name: ").append(queueAuthorizationRule.namespaceName())
-//                .append("\n\tQueue Name: ").append(queueAuthorizationRule.queueName());
-//
-//        List<AccessRights> rights = queueAuthorizationRule.rights();
-//        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
-//            builder.append("\n\t\tAccessRight: ")
-//                    .append("\n\t\t\tName :").append(right.name());
-//        }
-//
-//        System.out.println(builder.toString());
-//    }
-//
-//    /**
-//     * Print service bus namespace authorization keys info.
-//     *
-//     * @param keys a service bus namespace authorization keys
-//     */
-//    public static void print(AuthorizationKeys keys) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Authorization keys: ")
-//                .append("\n\tPrimaryKey: ").append(keys.primaryKey())
-//                .append("\n\tPrimaryConnectionString: ").append(keys.primaryConnectionString())
-//                .append("\n\tSecondaryKey: ").append(keys.secondaryKey())
-//                .append("\n\tSecondaryConnectionString: ").append(keys.secondaryConnectionString());
-//
-//        System.out.println(builder.toString());
-//    }
+        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = queueAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
 
-//    /**
-//     * Print service bus namespace authorization rule info.
-//     *
-//     * @param namespaceAuthorizationRule a service bus namespace authorization rule
-//     */
-//    public static void print(NamespaceAuthorizationRule namespaceAuthorizationRule) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus queue authorization rule: ").append(namespaceAuthorizationRule.id())
-//                .append("\n\tName: ").append(namespaceAuthorizationRule.name())
-//                .append("\n\tResourceGroupName: ").append(namespaceAuthorizationRule.resourceGroupName())
-//                .append("\n\tNamespace Name: ").append(namespaceAuthorizationRule.namespaceName());
-//
-//        List<AccessRights> rights = namespaceAuthorizationRule.rights();
-//        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
-//            builder.append("\n\t\tAccessRight: ")
-//                    .append("\n\t\t\tName :").append(right.name());
-//        }
-//
-//        System.out.println(builder.toString());
-//    }
+        System.out.println(builder.toString());
+    }
 
-//    /**
-//     * Print service bus topic info.
-//     *
-//     * @param topic a service bus topic
-//     */
-//    public static void print(Topic topic) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus topic: ").append(topic.id())
-//                .append("\n\tName: ").append(topic.name())
-//                .append("\n\tResourceGroupName: ").append(topic.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(topic.createdAt())
-//                .append("\n\tUpdatedAt: ").append(topic.updatedAt())
-//                .append("\n\tAccessedAt: ").append(topic.accessedAt())
-//                .append("\n\tActiveMessageCount: ").append(topic.activeMessageCount())
-//                .append("\n\tCurrentSizeInBytes: ").append(topic.currentSizeInBytes())
-//                .append("\n\tDeadLetterMessageCount: ").append(topic.deadLetterMessageCount())
-//                .append("\n\tDefaultMessageTtlDuration: ").append(topic.defaultMessageTtlDuration())
-//                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(topic.duplicateMessageDetectionHistoryDuration())
-//                .append("\n\tIsBatchedOperationsEnabled: ").append(topic.isBatchedOperationsEnabled())
-//                .append("\n\tIsDuplicateDetectionEnabled: ").append(topic.isDuplicateDetectionEnabled())
-//                .append("\n\tIsExpressEnabled: ").append(topic.isExpressEnabled())
-//                .append("\n\tIsPartitioningEnabled: ").append(topic.isPartitioningEnabled())
-//                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(topic.deleteOnIdleDurationInMinutes())
-//                .append("\n\tMaxSizeInMB: ").append(topic.maxSizeInMB())
-//                .append("\n\tScheduledMessageCount: ").append(topic.scheduledMessageCount())
-//                .append("\n\tStatus: ").append(topic.status())
-//                .append("\n\tTransferMessageCount: ").append(topic.transferMessageCount())
-//                .append("\n\tSubscriptionCount: ").append(topic.subscriptionCount())
-//                .append("\n\tTransferDeadLetterMessageCount: ").append(topic.transferDeadLetterMessageCount());
-//
-//        System.out.println(builder.toString());
-//    }
+    /**
+     * Print service bus namespace authorization keys info.
+     *
+     * @param keys a service bus namespace authorization keys
+     */
+    public static void print(AuthorizationKeys keys) {
+        StringBuilder builder = new StringBuilder()
+                .append("Authorization keys: ")
+                .append("\n\tPrimaryKey: ").append(keys.primaryKey())
+                .append("\n\tPrimaryConnectionString: ").append(keys.primaryConnectionString())
+                .append("\n\tSecondaryKey: ").append(keys.secondaryKey())
+                .append("\n\tSecondaryConnectionString: ").append(keys.secondaryConnectionString());
 
-//    /**
-//     * Print service bus subscription info.
-//     *
-//     * @param serviceBusSubscription a service bus subscription
-//     */
-//    public static void print(ServiceBusSubscription serviceBusSubscription) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus subscription: ").append(serviceBusSubscription.id())
-//                .append("\n\tName: ").append(serviceBusSubscription.name())
-//                .append("\n\tResourceGroupName: ").append(serviceBusSubscription.resourceGroupName())
-//                .append("\n\tCreatedAt: ").append(serviceBusSubscription.createdAt())
-//                .append("\n\tUpdatedAt: ").append(serviceBusSubscription.updatedAt())
-//                .append("\n\tAccessedAt: ").append(serviceBusSubscription.accessedAt())
-//                .append("\n\tActiveMessageCount: ").append(serviceBusSubscription.activeMessageCount())
-//                .append("\n\tDeadLetterMessageCount: ").append(serviceBusSubscription.deadLetterMessageCount())
-//                .append("\n\tDefaultMessageTtlDuration: ").append(serviceBusSubscription.defaultMessageTtlDuration())
-//                .append("\n\tIsBatchedOperationsEnabled: ").append(serviceBusSubscription.isBatchedOperationsEnabled())
-//                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(serviceBusSubscription.deleteOnIdleDurationInMinutes())
-//                .append("\n\tScheduledMessageCount: ").append(serviceBusSubscription.scheduledMessageCount())
-//                .append("\n\tStatus: ").append(serviceBusSubscription.status())
-//                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
-//                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForExpiredMessages())
-//                .append("\n\tIsSessionEnabled: ").append(serviceBusSubscription.isSessionEnabled())
-//                .append("\n\tLockDurationInSeconds: ").append(serviceBusSubscription.lockDurationInSeconds())
-//                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(serviceBusSubscription.maxDeliveryCountBeforeDeadLetteringMessage())
-//                .append("\n\tIsDeadLetteringEnabledForFilterEvaluationFailedMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForFilterEvaluationFailedMessages())
-//                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
-//                .append("\n\tTransferDeadLetterMessageCount: ").append(serviceBusSubscription.transferDeadLetterMessageCount());
-//
-//        System.out.println(builder.toString());
-//    }
+        System.out.println(builder.toString());
+    }
 
-//    /**
-//     * Print topic Authorization Rule info.
-//     *
-//     * @param topicAuthorizationRule a topic Authorization Rule
-//     */
-//    public static void print(TopicAuthorizationRule topicAuthorizationRule) {
-//        StringBuilder builder = new StringBuilder()
-//                .append("Service bus topic authorization rule: ").append(topicAuthorizationRule.id())
-//                .append("\n\tName: ").append(topicAuthorizationRule.name())
-//                .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
-//                .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
-//                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
-//
-//        List<AccessRights> rights = topicAuthorizationRule.rights();
-//        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
-//        for (AccessRights right : rights) {
-//            builder.append("\n\t\tAccessRight: ")
-//                    .append("\n\t\t\tName :").append(right.name());
-//        }
-//
-//        System.out.println(builder.toString());
-//    }
+    /**
+     * Print service bus namespace authorization rule info.
+     *
+     * @param namespaceAuthorizationRule a service bus namespace authorization rule
+     */
+    public static void print(NamespaceAuthorizationRule namespaceAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus queue authorization rule: ").append(namespaceAuthorizationRule.id())
+                .append("\n\tName: ").append(namespaceAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(namespaceAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(namespaceAuthorizationRule.namespaceName());
+
+        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = namespaceAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus topic info.
+     *
+     * @param topic a service bus topic
+     */
+    public static void print(Topic topic) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus topic: ").append(topic.id())
+                .append("\n\tName: ").append(topic.name())
+                .append("\n\tResourceGroupName: ").append(topic.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(topic.createdAt())
+                .append("\n\tUpdatedAt: ").append(topic.updatedAt())
+                .append("\n\tAccessedAt: ").append(topic.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(topic.activeMessageCount())
+                .append("\n\tCurrentSizeInBytes: ").append(topic.currentSizeInBytes())
+                .append("\n\tDeadLetterMessageCount: ").append(topic.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(topic.defaultMessageTtlDuration())
+                .append("\n\tDuplicateMessageDetectionHistoryDuration: ").append(topic.duplicateMessageDetectionHistoryDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(topic.isBatchedOperationsEnabled())
+                .append("\n\tIsDuplicateDetectionEnabled: ").append(topic.isDuplicateDetectionEnabled())
+                .append("\n\tIsExpressEnabled: ").append(topic.isExpressEnabled())
+                .append("\n\tIsPartitioningEnabled: ").append(topic.isPartitioningEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(topic.deleteOnIdleDurationInMinutes())
+                .append("\n\tMaxSizeInMB: ").append(topic.maxSizeInMB())
+                .append("\n\tScheduledMessageCount: ").append(topic.scheduledMessageCount())
+                .append("\n\tStatus: ").append(topic.status())
+                .append("\n\tTransferMessageCount: ").append(topic.transferMessageCount())
+                .append("\n\tSubscriptionCount: ").append(topic.subscriptionCount())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(topic.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print service bus subscription info.
+     *
+     * @param serviceBusSubscription a service bus subscription
+     */
+    public static void print(ServiceBusSubscription serviceBusSubscription) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus subscription: ").append(serviceBusSubscription.id())
+                .append("\n\tName: ").append(serviceBusSubscription.name())
+                .append("\n\tResourceGroupName: ").append(serviceBusSubscription.resourceGroupName())
+                .append("\n\tCreatedAt: ").append(serviceBusSubscription.createdAt())
+                .append("\n\tUpdatedAt: ").append(serviceBusSubscription.updatedAt())
+                .append("\n\tAccessedAt: ").append(serviceBusSubscription.accessedAt())
+                .append("\n\tActiveMessageCount: ").append(serviceBusSubscription.activeMessageCount())
+                .append("\n\tDeadLetterMessageCount: ").append(serviceBusSubscription.deadLetterMessageCount())
+                .append("\n\tDefaultMessageTtlDuration: ").append(serviceBusSubscription.defaultMessageTtlDuration())
+                .append("\n\tIsBatchedOperationsEnabled: ").append(serviceBusSubscription.isBatchedOperationsEnabled())
+                .append("\n\tDeleteOnIdleDurationInMinutes: ").append(serviceBusSubscription.deleteOnIdleDurationInMinutes())
+                .append("\n\tScheduledMessageCount: ").append(serviceBusSubscription.scheduledMessageCount())
+                .append("\n\tStatus: ").append(serviceBusSubscription.status())
+                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
+                .append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForExpiredMessages())
+                .append("\n\tIsSessionEnabled: ").append(serviceBusSubscription.isSessionEnabled())
+                .append("\n\tLockDurationInSeconds: ").append(serviceBusSubscription.lockDurationInSeconds())
+                .append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").append(serviceBusSubscription.maxDeliveryCountBeforeDeadLetteringMessage())
+                .append("\n\tIsDeadLetteringEnabledForFilterEvaluationFailedMessages: ").append(serviceBusSubscription.isDeadLetteringEnabledForFilterEvaluationFailedMessages())
+                .append("\n\tTransferMessageCount: ").append(serviceBusSubscription.transferMessageCount())
+                .append("\n\tTransferDeadLetterMessageCount: ").append(serviceBusSubscription.transferDeadLetterMessageCount());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print topic Authorization Rule info.
+     *
+     * @param topicAuthorizationRule a topic Authorization Rule
+     */
+    public static void print(TopicAuthorizationRule topicAuthorizationRule) {
+        StringBuilder builder = new StringBuilder()
+                .append("Service bus topic authorization rule: ").append(topicAuthorizationRule.id())
+                .append("\n\tName: ").append(topicAuthorizationRule.name())
+                .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
+                .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
+                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
+
+        List<com.azure.resourcemanager.servicebus.models.AccessRights> rights = topicAuthorizationRule.rights();
+        builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
+        for (com.azure.resourcemanager.servicebus.models.AccessRights right : rights) {
+            builder.append("\n\t\tAccessRight: ")
+                    .append("\n\t\t\tName :").append(right.name());
+        }
+
+        System.out.println(builder.toString());
+    }
 
     /**
      * Print CosmosDB info.
@@ -3220,41 +3338,82 @@ public final class Utils {
         System.out.println(info.toString());
     }
 
-    public static Response<String> curl(String urlString) {
+    /**
+     * Sends a GET request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
+     * The method does not handle 301 redirect.
+     *
+     * @param urlString the target URL.
+     * @return Content of the HTTP response.
+     */
+    public static String sendGetRequest(String urlString) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
-            return stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
+            Mono<Response<Flux<ByteBuffer>>> response =
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            } else if (t instanceof HttpResponseException
+                                && ((HttpResponseException) t).getResponse().getStatusCode() == 503) {
+                                retry = true;
+                            }
+
+                            if (retry) {
+                                logger.info("retry GET request to {}", urlString);
+                            }
+                            return retry;
+                        }));
+            Response<String> ret = stringResponse(response).block();
+            return ret == null ? null : ret.getValue();
         } catch (MalformedURLException e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
 
-    public static String get(String urlString) {
+    /**
+     * Sends a POST request to target URL.
+     * <p>
+     * Retry logic tuned for AppService.
+     *
+     * @param urlString the target URL.
+     * @param body the request body.
+     * @return Content of the HTTP response.
+     * */
+    public static String sendPostRequest(String urlString, String body) {
+        ClientLogger logger = new ClientLogger(Utils.class);
+
         try {
-            SimpleResponse<String> response = stringResponse(httpClient.getString(getHost(urlString), getPathAndQuery(urlString))).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
+            Mono<Response<String>> response =
+                stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
+                    .retryWhen(Retry
+                        .fixedDelay(5, Duration.ofSeconds(30))
+                        .filter(t -> {
+                            boolean retry = false;
+                            if (t instanceof TimeoutException) {
+                                retry = true;
+                            }
+
+                            if (retry) {
+                                logger.info("retry POST request to {}", urlString);
+                            }
+                            return retry;
+                        }));
+            Response<String> ret = response.block();
+            return ret == null ? null : ret.getValue();
         } catch (Exception e) {
+            logger.logThrowableAsError(e);
             return null;
         }
     }
 
-    public static String post(String urlString, String body) {
-        try {
-            SimpleResponse<String> response = stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block();
-            if (response != null) {
-                return response.getValue();
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
                 .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
@@ -3277,10 +3436,12 @@ public final class Utils {
         return path;
     }
 
-    private static WebAppTestClient httpClient = RestProxy.create(
+    private static final WebAppTestClient HTTP_CLIENT = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+                    .policies(
+                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")
@@ -3288,19 +3449,18 @@ public final class Utils {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
+        Mono<Response<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+        Mono<Response<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
     }
 
-    public static synchronized <T> int getSize(Iterable<T> iterable) {
+    public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
         Iterator<T> iterator = iterable.iterator();
         while (iterator.hasNext()) {
             iterator.next();
-            ++res;
         }
         return res;
     }

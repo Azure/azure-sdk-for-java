@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IncomingRelationshipCollection model. */
+/** A collection of incoming relationships which relate digital twins together. */
 @Fluent
 public final class IncomingRelationshipCollection {
     /*
@@ -61,5 +61,16 @@ public final class IncomingRelationshipCollection {
     public IncomingRelationshipCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getValue() != null) {
+            getValue().forEach(e -> e.validate());
+        }
     }
 }

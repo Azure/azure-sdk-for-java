@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 
@@ -45,10 +45,11 @@ public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensio
                     virtualMachinePublisher
                         .extensionTypes()
                         .listAsync()
-                        .onErrorResume(ManagementException.class,
+                        .onErrorResume(
+                            ManagementException.class,
                             e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
-                        .flatMap(virtualMachineExtensionImageType ->
-                            virtualMachineExtensionImageType.versions().listAsync())
+                        .flatMap(
+                            virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
                         .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
     }
 

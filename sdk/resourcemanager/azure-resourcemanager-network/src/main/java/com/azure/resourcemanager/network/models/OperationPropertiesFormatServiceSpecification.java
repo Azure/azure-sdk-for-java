@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OperationPropertiesFormatServiceSpecification model. */
+/** Specification of the service. */
 @Fluent
 public final class OperationPropertiesFormatServiceSpecification {
     @JsonIgnore

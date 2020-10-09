@@ -74,6 +74,21 @@ public final class SearchClient {
     }
 
     /**
+     * Creates a {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     *
+     * @param options Configuration options used during construction of the {@link SearchIndexingBufferedSender}.
+     * @param <T> The type of the documents that will be added to the buffered sender.
+     * @return A {@link SearchIndexingBufferedSender} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
+     * @throws NullPointerException If {@code options} or {@code options.getDocumentKeyRetriever()} is null.
+     */
+    public <T> SearchIndexingBufferedSender<T> getSearchIndexingBufferedSender(
+        SearchIndexingBufferedSenderOptions<T> options) {
+        return new SearchIndexingBufferedSender<>(asyncClient.getSearchIndexingBufferedAsyncSender(options));
+    }
+
+    /**
      * Uploads a collection of documents to the target index.
      *
      * <p><strong>Code Sample</strong></p>
@@ -129,10 +144,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -160,10 +175,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -195,10 +210,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -227,10 +242,10 @@ public final class SearchClient {
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
      * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
-     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -444,7 +459,7 @@ public final class SearchClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *
@@ -468,7 +483,7 @@ public final class SearchClient {
     /**
      * Searches for documents in the Azure Cognitive Search index.
      * <p>
-     * If {@code searchText} is set to {@code null} or {@code "*"} all documents will be matched, see
+     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
      *

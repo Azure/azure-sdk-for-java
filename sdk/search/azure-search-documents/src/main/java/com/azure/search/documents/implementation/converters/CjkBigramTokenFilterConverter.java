@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.CjkBigramTokenFilter;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter} and
  * {@link CjkBigramTokenFilter}.
@@ -27,9 +24,7 @@ public final class CjkBigramTokenFilterConverter {
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
 
         if (obj.getIgnoreScripts() != null) {
-            cjkBigramTokenFilter.setIgnoreScripts(obj.getIgnoreScripts().stream()
-                .map(CjkBigramTokenFilterScriptsConverter::map)
-                .collect(Collectors.toList()));
+            cjkBigramTokenFilter.setIgnoreScripts(obj.getIgnoreScripts());
         }
         return cjkBigramTokenFilter;
     }
@@ -49,11 +44,9 @@ public final class CjkBigramTokenFilterConverter {
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
 
         if (obj.getIgnoreScripts() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilterScripts> ignoreScripts =
-                obj.getIgnoreScripts().stream().map(CjkBigramTokenFilterScriptsConverter::map).collect(Collectors.toList());
-            cjkBigramTokenFilter.setIgnoreScripts(ignoreScripts);
+            cjkBigramTokenFilter.setIgnoreScripts(obj.getIgnoreScripts());
         }
-        cjkBigramTokenFilter.validate();
+
         return cjkBigramTokenFilter;
     }
 

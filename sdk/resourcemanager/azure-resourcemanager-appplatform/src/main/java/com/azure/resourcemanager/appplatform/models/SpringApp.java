@@ -4,12 +4,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
-import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
@@ -17,10 +16,9 @@ import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure Spring App. */
 @Fluent
-@Beta
 public interface SpringApp
     extends ExternalChildResource<SpringApp, SpringService>,
-        HasInner<AppResourceInner>,
+        HasInnerModel<AppResourceInner>,
         Updatable<SpringApp.Update> {
     /** @return whether the app exposes public endpoint */
     boolean isPublic();

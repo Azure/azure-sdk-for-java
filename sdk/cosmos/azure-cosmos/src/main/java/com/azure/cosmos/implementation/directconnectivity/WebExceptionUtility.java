@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Utils;
 import io.netty.channel.ChannelException;
+import io.netty.handler.timeout.ReadTimeoutException;
 
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -69,6 +70,29 @@ public class WebExceptionUtility {
         }
 
         if (ex instanceof ChannelException) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isReadTimeoutException(Exception ex) {
+        Exception iterator = ex;
+
+        while (iterator != null) {
+            if (WebExceptionUtility.isReadTimeoutExceptionInternal(iterator)) {
+                return true;
+            }
+
+            Throwable t = iterator.getCause();
+            iterator = Utils.as(t, Exception.class);
+        }
+
+        return false;
+    }
+
+    private static boolean isReadTimeoutExceptionInternal(Exception ex) {
+        if (ex instanceof ReadTimeoutException) {
             return true;
         }
 

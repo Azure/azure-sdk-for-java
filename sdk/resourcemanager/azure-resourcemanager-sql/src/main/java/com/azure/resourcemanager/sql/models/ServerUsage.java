@@ -4,13 +4,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL server usage metric. */
 @Fluent
-public interface ServerUsage extends HasInner<ServerUsageInner> {
+public interface ServerUsage extends HasInnerModel<ServerUsageInner> {
 
     /** @return Name of the server usage metric */
     String name();
