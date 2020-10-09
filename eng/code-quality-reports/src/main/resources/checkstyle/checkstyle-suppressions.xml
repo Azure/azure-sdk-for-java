@@ -528,39 +528,23 @@
             files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
 
   <!--Checkstyle suppressions GoodLoggingCheck -->
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessorHelper"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|JavaDocFormatting)" files="com.azure.keyvault.spring.KeyVaultOperation"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.telemetry.TelemetrySender"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)" files="com.azure.spring.cloudfoundry.environment.VcapProcessor"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.spring.cloudfoundry.environment.VcapResult"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck|EnforceFinalFieldsCheck)" files="com.azure.spring.autoconfigure.cosmos.CosmosHealthIndicator"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.spring.autoconfigure.cosmos.CosmosProperties"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.aad.AzureADGraphClient"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.aad.UserPrincipalManager"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.aad.AADAuthenticationProperties"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)" files="com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFilter"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]com.azure[/\\].*"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessorHelper"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(JavaDocFormatting)" files="com.azure.keyvault.spring.KeyVaultOperation"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck)" files="com.azure.spring.cloudfoundry.environment.VcapProcessor"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|EnforceFinalFieldsCheck)" files="com.azure.spring.autoconfigure.cosmos.CosmosHealthIndicator"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.aad.AzureADGraphClient"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.aad.UserPrincipalManager"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ThrowFromClientLoggerCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.aad.AADAuthenticationProperties"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)" files="com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ThrowFromClientLoggerCheck)" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFilter"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck)" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration"></suppress>
 
   <!--Checkstyle suppressions ExternalDependencyExposed -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfigureRegistrar"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.cosmos.CosmosHealthConfiguration"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfigureRegistrar"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.jms.ServiceBusJMSAutoConfiguration"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.metrics.AzureMonitorMetricsExportAutoConfiguration"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CAutoConfiguration"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CAuthorizationRequestResolver"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CLogoutSuccessHandler"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]autoconfigure[/\\].*"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.gremlin.GremlinRepositoriesAutoConfigureRegistrar"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFailureHandler"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)" files="com.azure.spring.autoconfigure.aad.AADOAuth2UserService"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.aad.AADOAuth2AuthorizationRequestResolver"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.spring.autoconfigure.aad.JacksonObjectMapperFactory"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|JavaDocFormatting)" files="com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessor"></suppress>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.keyvault.spring.KeyVaultHealthIndicator"></suppress>
 
   <!--Checkstyle suppressions ThrowFromClientLoggerCheck-->
   <suppress checks="com.azure.tools.checkstyle.checks.(ThrowFromClientLoggerCheck|JavadocThrowsChecks|EnforceFinalFieldsCheck)" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"></suppress>
@@ -572,65 +556,11 @@
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"></suppress>
 
   <!--Checkstyle suppressions MissingJavadocMethod-->
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.JacksonObjectMapperFactory"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.UserPrincipal"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.UserGroups"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AzureADGraphClient"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFailureHandler"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.UserPrincipalManager"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADAuthenticationProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.ServiceEndpoints"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.UserGroup"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADAuthenticationFilter"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADOAuth2AuthorizationRequestResolver"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.aad.AADOAuth2UserService"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.support.GetHashMac"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.keyvault.spring.KeyVaultPropertySource"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.keyvault.spring.KeyVaultProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessor"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.keyvault.spring.KeyVaultHealthIndicator"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetryEventData"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetryData"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetrySender"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.telemetry.TelemetryProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.utils.PropertyLoader"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.cloudfoundry.environment.VcapProcessor"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.cloudfoundry.environment.VcapServiceConfig"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.cloudfoundry.environment.VcapResult"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.cloudfoundry.environment.VcapPojo"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.cosmos.CosmosHealthIndicator"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.cosmos.CosmosProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.cosmos.CosmosHealthConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.jms.ServiceBusJMSAutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.jms.ServiceBusKey"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.metrics.AzureMonitorMetricsExportAutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.metrics.AzureMonitorProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2CProperties"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2CAutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2CAuthorizationRequestResolver"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2CLogoutSuccessHandler"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.b2c.AADB2CConfigurationException"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration"></suppress>
-  <suppress checks="MissingJavadocMethod" files="com.azure.spring.autoconfigure.gremlin.GremlinProperties"></suppress>
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]com.azure[/\\].*"/>
 
   <!--Checkstyle suppressions LineLength-->
   <suppress checks="LineLength" files="com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessorHelper"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.aad.AADOAuth2UserService"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.b2c.AADB2CAutoConfiguration"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.b2c.AADB2CAuthorizationRequestResolver"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfigureRegistrar"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfigureRegistrar"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.gremlin.GremlinRepositoriesAutoConfigureRegistrar"></suppress>
-  <suppress checks="LineLength" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"></suppress>
+  <suppress checks="LineLength" files=".*[/\\]com.azure.spring.autoconfigure[/\\].*"></suppress>
 
   <!--checkstyle  suppressions JavaDocFormatting-->
   <suppress checks="JavaDocFormatting" files="com.azure.utils.PropertyLoader"></suppress>
@@ -641,7 +571,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.UserGroups"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"></suppress>
-
 
 
   <!-- Checkstyle suppressions for azure-test-watch package -->
