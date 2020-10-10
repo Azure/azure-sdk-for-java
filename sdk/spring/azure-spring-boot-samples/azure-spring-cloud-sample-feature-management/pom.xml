@@ -10,8 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-spring-cloud-sample-feature-management</artifactId>
-  <groupId>com.azure</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-sample-feature-management;current} -->
+  <groupId>com.azure.spring</groupId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-feature-management;current} -->
   <name>Azure Spring Cloud Feature Management Sample</name>
 
   <dependencyManagement>

@@ -10,9 +10,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-integration-test</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-integration-test;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-test;current} -->
 
   <name>Azure Spring Integration Test</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -24,9 +24,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-core</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-integration-core;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
