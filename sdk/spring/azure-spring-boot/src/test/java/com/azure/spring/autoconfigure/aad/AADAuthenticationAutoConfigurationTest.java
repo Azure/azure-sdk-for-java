@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -55,7 +54,7 @@ public class AADAuthenticationAutoConfigurationTest {
                 assertThat(serviceEndpointsProperties.getEndpoints()).isNotEmpty();
 
                 final Map<String, ServiceEndpoints> endpoints = serviceEndpointsProperties.getEndpoints();
-                Assertions.assertThat(endpoints).hasSize(4);
+                assertThat(endpoints).hasSize(4);
                 assertThat(endpoints.get("cn")).isNotNull()
                     .extracting(ServiceEndpoints::getAadGraphApiUri, ServiceEndpoints::getAadKeyDiscoveryUri,
                         ServiceEndpoints::getAadMembershipRestUri, ServiceEndpoints::getAadSigninUri)

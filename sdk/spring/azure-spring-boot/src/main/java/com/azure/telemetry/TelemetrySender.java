@@ -74,7 +74,6 @@ public class TelemetrySender {
         }
     }
 
-
     public void send(String name, @NonNull Map<String, String> properties) {
         Assert.hasText(name, "Event name should contain text.");
 

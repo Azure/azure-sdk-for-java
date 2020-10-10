@@ -15,11 +15,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AzureMonitorProperties extends StepRegistryProperties {
     private String instrumentationKey;
 
-
     public String getInstrumentationKey() {
         return this.instrumentationKey;
     }
-
 
     public void setInstrumentationKey(String instrumentationKey) {
         this.instrumentationKey = instrumentationKey;

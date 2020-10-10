@@ -32,7 +32,6 @@ public final class GetHashMac {
         super();
     }
 
-
     public static boolean isValidHashMacFormat(String hashMac) {
         if (hashMac == null || hashMac.isEmpty()) {
             return false;
@@ -42,7 +41,6 @@ public final class GetHashMac {
         final Matcher matcher = hashedMacPattern.matcher(hashMac);
         return matcher.matches();
     }
-
 
     public static String getHashMac() {
         final String rawMac = getRawMac();

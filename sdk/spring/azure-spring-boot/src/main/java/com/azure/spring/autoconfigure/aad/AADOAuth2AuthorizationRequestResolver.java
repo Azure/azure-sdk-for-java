@@ -20,7 +20,6 @@ import java.util.Optional;
 public class AADOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
-
     public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
             clientRegistrationRepository,

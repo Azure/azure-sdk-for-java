@@ -11,21 +11,17 @@ public class VcapPojo {
 
     private VcapServiceConfig serviceConfig;
 
-
     public String getServiceBrokerName() {
         return serviceBrokerName;
     }
-
 
     public void setServiceBrokerName(String serviceBrokerName) {
         this.serviceBrokerName = serviceBrokerName;
     }
 
-
     public VcapServiceConfig getServiceConfig() {
         return serviceConfig;
     }
-
 
     public void setServiceConfig(VcapServiceConfig serviceConfig) {
         this.serviceConfig = serviceConfig;

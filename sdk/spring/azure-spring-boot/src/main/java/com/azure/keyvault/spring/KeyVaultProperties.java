@@ -165,7 +165,6 @@ public class KeyVaultProperties {
         }
     }
 
-
     public static String getPropertyName(Property property) {
         return String.join(DELIMITER, PREFIX, property.getName());
     }

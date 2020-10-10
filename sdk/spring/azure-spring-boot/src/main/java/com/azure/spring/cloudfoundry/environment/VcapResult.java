@@ -36,7 +36,6 @@ public class VcapResult implements Serializable {
 
     private final boolean logFlag;
 
-
     public VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
         this.logFlag = logFlag;
 
