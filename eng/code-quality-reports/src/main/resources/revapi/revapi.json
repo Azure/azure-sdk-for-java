@@ -389,7 +389,7 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(interface|class|enum) org\\.springframework\\.*",
+        "new": "(interface|class|enum) org\\.springframework\\..*",
         "justification": "This is a preview release for springframework"
       },
       {
