@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
-      <version>0.0.5</version>
+      <version>0.0.5</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
