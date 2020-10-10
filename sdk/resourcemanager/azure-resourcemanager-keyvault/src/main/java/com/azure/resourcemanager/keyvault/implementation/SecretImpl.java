@@ -15,19 +15,27 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Vault and its parent interfaces. */
-class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretImpl>
+class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, SecretImpl>
     implements Secret, Secret.Definition, Secret.Update {
 
     private final Vault vault;
 
-    private String valueToSet;
+    private String secretValueToSet;
 
-    SecretImpl(String name, KeyVaultSecret innerObject, Vault vault) {
+    private String secretValue;
+
+    SecretImpl(String name, SecretProperties innerObject, Vault vault) {
         super(name, innerObject);
         this.vault = vault;
     }
 
-    private SecretImpl wrapModel(KeyVaultSecret secret) {
+    SecretImpl(String name, KeyVaultSecret keyVaultSecret, Vault vault) {
+        super(name, keyVaultSecret.getProperties());
+        this.secretValue = keyVaultSecret.getValue();
+        this.vault = vault;
+    }
+
+    private SecretImpl wrapModel(SecretProperties secret) {
         return new SecretImpl(secret.getName(), secret, vault);
     }
 
@@ -37,33 +45,47 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
     }
 
     @Override
-    public String value() {
-        return innerModel().getValue();
+    public String getValue() {
+        return getValueAsync().block();
+    }
+
+    @Override
+    public Mono<String> getValueAsync() {
+        if (secretValue != null) {
+            return Mono.just(secretValue);
+        } else {
+            return getInnerAsync().map(ignored -> secretValue);
+        }
     }
 
     @Override
     public SecretProperties attributes() {
-        return innerModel().getProperties();
+        return innerModel();
     }
 
     @Override
     public Map<String, String> tags() {
-        return innerModel().getProperties().getTags();
+        return innerModel().getTags();
     }
 
     @Override
     public String contentType() {
-        return innerModel().getProperties().getContentType();
+        return innerModel().getContentType();
     }
 
     @Override
     public String kid() {
-        return innerModel().getProperties().getKeyId();
+        return innerModel().getKeyId();
     }
 
     @Override
     public boolean managed() {
-        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().getProperties().isManaged());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isManaged());
+    }
+
+    @Override
+    public boolean enabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isEnabled());
     }
 
     @Override
@@ -76,24 +98,20 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
         return vault
             .secretClient()
             .listPropertiesOfSecretVersions(name())
-            .flatMap(p -> {
-                if (p.isEnabled()) {
-                    return vault.secretClient().getSecret(p.getName(), p.getVersion());
-                } else {
-                    return Mono.just(new KeyVaultSecret(p.getName(), null).setProperties(p));
-                }
-            })
             .map(this::wrapModel);
     }
 
     @Override
-    protected Mono<KeyVaultSecret> getInnerAsync() {
-        return vault.secretClient().getSecret(name(), null);
+    protected Mono<SecretProperties> getInnerAsync() {
+        return vault.secretClient().getSecret(name(), innerModel().getVersion()).map(secret -> {
+            this.secretValue = secret.getValue();
+            return secret.getProperties();
+        });
     }
 
     @Override
     public SecretImpl withTags(Map<String, String> tags) {
-        this.innerModel().getProperties().setTags(tags);
+        this.innerModel().setTags(tags);
         return this;
     }
 
@@ -104,29 +122,33 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
 
     @Override
     public Mono<Secret> createResourceAsync() {
-        KeyVaultSecret newSecret = new KeyVaultSecret(this.name(), valueToSet);
+        KeyVaultSecret newSecret = new KeyVaultSecret(this.name(), secretValueToSet);
         newSecret.setProperties(this.attributes());
         return vault
             .secretClient()
             .setSecret(newSecret)
             .map(
-                inner -> {
-                    this.setInner(inner);
-                    valueToSet = null;
+                keyVaultSecret -> {
+                    this.setInner(keyVaultSecret.getProperties());
+                    this.secretValue = keyVaultSecret.getValue();
+                    secretValueToSet = null;
                     return this;
                 });
     }
 
     @Override
     public Mono<Secret> updateResourceAsync() {
-        if (valueToSet == null) {
+        if (secretValueToSet == null) {
             // if no update on value, just update properties
             return vault
                 .secretClient()
-                .updateSecretProperties(this.attributes())
+                .updateSecretProperties(this.innerModel())
                 .map(
                     p -> {
-                        this.innerModel().setProperties(p);
+                        this.setInner(p);
+                        if (!p.isEnabled()) {
+                            secretValue = null;
+                        }
                         return this;
                     });
         } else {
@@ -136,20 +158,20 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
 
     @Override
     public SecretImpl withAttributes(SecretProperties attributes) {
-        this.innerModel().setProperties(attributes);
+        this.setInner(attributes);
         return this;
     }
 
     @Override
     public SecretImpl withValue(String value) {
         Objects.requireNonNull(value);
-        valueToSet = value;
+        secretValueToSet = value;
         return this;
     }
 
     @Override
     public SecretImpl withContentType(String contentType) {
-        this.innerModel().getProperties().setContentType(contentType);
+        this.innerModel().setContentType(contentType);
         return this;
     }
 }

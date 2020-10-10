@@ -98,8 +98,8 @@
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>spring-starter-azure-storage</artifactId>
+        <groupId>com.azure</groupId>
+      <artifactId>azure-spring-starter-storage</artifactId>
         <version>${azure.spring.boot.storage.integration.version}</version>
       </dependency>
     </dependencies>
