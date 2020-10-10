@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 
 /**
@@ -25,8 +26,9 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
-            this.resourceManager = ResourceManager.authenticate(httpPipeline, profile)
-                .withDefaultSubscription();
+            ResourceManager.Configurable resourceConfigurable = ResourceManager.configure();
+            withInternalHttpPipeline(resourceConfigurable, httpPipeline);
+            this.resourceManager = resourceConfigurable.authenticate(null, profile).withDefaultSubscription();
         }
         this.subscriptionId = profile.getSubscriptionId();
         this.environment = profile.getEnvironment();
@@ -54,6 +56,10 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
 
     protected final void withResourceManager(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
+    }
+
+    protected void withInternalHttpPipeline(AzureConfigurable<?> azureConfigurable, HttpPipeline httpPipeline) {
+        ((AzureConfigurableImpl) azureConfigurable).withInternalHttpPipeline(httpPipeline);
     }
 
     /**

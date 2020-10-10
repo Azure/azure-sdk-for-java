@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -45,8 +46,9 @@ class ResourceManagementTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceClient = ResourceManager
-            .authenticate(httpPipeline, profile)
+        resourceClient = setInternalHttpPipeline(
+            httpPipeline, ResourceManager.configure(), AzureConfigurableImpl.class)
+            .authenticate(null, profile)
             .withDefaultSubscription();
     }
 

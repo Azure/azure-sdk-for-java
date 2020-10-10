@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.profile.AzureProfile;
@@ -19,8 +20,9 @@ public class TenantsTests extends ResourceManagementTest {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager = ResourceManager
-                .authenticate(httpPipeline, profile);
+        resourceManager = setInternalHttpPipeline(
+            httpPipeline, ResourceManager.configure(), AzureConfigurableImpl.class)
+            .authenticate(null, profile);
     }
 
     @Override

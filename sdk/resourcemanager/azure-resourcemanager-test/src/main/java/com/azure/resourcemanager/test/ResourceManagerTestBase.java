@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -317,6 +319,28 @@ public abstract class ResourceManagerTestBase extends TestBase {
             field.setAccessible(true);
             return null;
         });
+    }
+
+    /**
+     * Sets http pipeline for internal use.
+     *
+     * @param httpPipeline the http pipeline
+     * @param azureConfigurable the azure configurable instance
+     * @param impl the class type of azure configurable implementation
+     * @param <AzureConfigurable> the type of azure configurable
+     * @param <AzureConfigurableImpl> the type of azure configurable implementation
+     * @return the azure configurable instance after setting internal http pipeline
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <AzureConfigurable, AzureConfigurableImpl> AzureConfigurable setInternalHttpPipeline(HttpPipeline httpPipeline, AzureConfigurable azureConfigurable, Class<AzureConfigurableImpl> impl) {
+        try {
+            Object internalObj = impl.cast(azureConfigurable);
+            Method method = internalObj.getClass().getSuperclass().getDeclaredMethod("withInternalHttpPipeline", httpPipeline.getClass());
+            method.invoke(internalObj, httpPipeline);
+            return azureConfigurable;
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     protected abstract HttpPipeline buildHttpPipeline(
