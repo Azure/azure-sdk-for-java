@@ -23,7 +23,7 @@ class DeploymentSlotImpl
         WebAppImpl,
         DeploymentSlot.DefinitionStages.WithCreate,
         DeploymentSlotBase.Update<DeploymentSlot>>
-    implements DeploymentSlot, DeploymentSlot.Definition, DeploymentSlotBase.Update<DeploymentSlot> {
+    implements DeploymentSlot, DeploymentSlot.Definition {
 
     DeploymentSlotImpl(
         String name,

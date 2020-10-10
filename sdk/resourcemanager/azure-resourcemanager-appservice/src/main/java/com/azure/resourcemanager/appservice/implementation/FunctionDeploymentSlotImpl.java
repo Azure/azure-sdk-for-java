@@ -23,7 +23,7 @@ class FunctionDeploymentSlotImpl
         FunctionAppImpl,
         FunctionDeploymentSlot.DefinitionStages.WithCreate,
         DeploymentSlotBase<FunctionDeploymentSlot>>
-    implements FunctionDeploymentSlot, FunctionDeploymentSlot.Definition, DeploymentSlotBase<FunctionDeploymentSlot> {
+    implements FunctionDeploymentSlot, FunctionDeploymentSlot.Definition {
 
     FunctionDeploymentSlotImpl(
         String name,
