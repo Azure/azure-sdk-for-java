@@ -54,7 +54,7 @@ public class KeyVaultOperation {
     /**
      * Stores the timer object to schedule refresh task.
      */
-    private static Timer timer = new Timer();
+    private static final Timer TIMER = new Timer();
 
     /**
      * Constructor.
@@ -84,7 +84,7 @@ public class KeyVaultOperation {
                     refreshProperties();
                 }
             };
-            this.timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+            TIMER.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
         }
     }
 
