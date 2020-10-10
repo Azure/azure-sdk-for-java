@@ -15,15 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * Import command settings.
+ * A copy activity translator.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ImportSettings.class)
-@JsonTypeName("ImportSettings")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = CopyTranslator.class)
+@JsonTypeName("CopyTranslator")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeImportCommand", value = AzureDatabricksDeltaLakeImportCommand.class),
-    @JsonSubTypes.Type(name = "SnowflakeImportCopyCommand", value = SnowflakeImportCopyCommand.class)
+    @JsonSubTypes.Type(name = "TabularTranslator", value = TabularTranslator.class)
 })
-public class ImportSettings {
+public class CopyTranslator {
     /**
      * Unmatched properties from the message are deserialized this collection.
      */
@@ -43,9 +42,9 @@ public class ImportSettings {
      * Set unmatched properties from the message are deserialized this collection.
      *
      * @param additionalProperties the additionalProperties value to set
-     * @return the ImportSettings object itself.
+     * @return the CopyTranslator object itself.
      */
-    public ImportSettings withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public CopyTranslator withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
