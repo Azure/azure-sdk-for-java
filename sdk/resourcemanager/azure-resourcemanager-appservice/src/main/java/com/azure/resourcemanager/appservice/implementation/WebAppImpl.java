@@ -85,6 +85,9 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
         }
+        if (siteConfig != null && siteConfig.windowsFxVersion() != null) {
+            siteConfig.withWindowsFxVersion(null);
+        }
         // PHP
         if (siteConfig != null && siteConfig.phpVersion() != null) {
             siteConfig.withPhpVersion(null);
@@ -92,6 +95,14 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         // Node
         if (siteConfig != null && siteConfig.nodeVersion() != null) {
             siteConfig.withNodeVersion(null);
+        }
+        // Python
+        if (siteConfig != null && siteConfig.pythonVersion() != null) {
+            siteConfig.withPythonVersion(null);
+        }
+        // Java
+        if (siteConfig != null && siteConfig.javaVersion() != null) {
+            siteConfig.withJavaVersion(null);
         }
         // .NET
         if (siteConfig != null && siteConfig.netFrameworkVersion() != null) {

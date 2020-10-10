@@ -488,13 +488,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
 
             /**
-             * Turn off PHP support.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate<FluentT> withoutPhp();
-
-            /**
              * Specifies the Java version.
              *
              * @param version the Java version
@@ -1073,6 +1066,13 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of web app update
              */
             Update<FluentT> withPhpVersion(PhpVersion version);
+
+            /**
+             * Turn off PHP support.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.

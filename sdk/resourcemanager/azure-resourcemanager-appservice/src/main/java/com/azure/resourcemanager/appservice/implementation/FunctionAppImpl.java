@@ -394,6 +394,9 @@ class FunctionAppImpl
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
         }
+        if (siteConfig != null && siteConfig.windowsFxVersion() != null) {
+            siteConfig.withWindowsFxVersion(null);
+        }
         // Docker Hub
         withoutAppSetting(SETTING_DOCKER_IMAGE);
         withoutAppSetting(SETTING_REGISTRY_SERVER);
