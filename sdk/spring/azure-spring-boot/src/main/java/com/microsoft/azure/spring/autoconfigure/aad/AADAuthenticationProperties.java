@@ -52,8 +52,8 @@ public class AADAuthenticationProperties {
     private String clientSecret;
 
     /**
-     * API Access Key of the registered application.
-     * Optional.
+     * Optional. scope doc:
+     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
      */
     private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
 
