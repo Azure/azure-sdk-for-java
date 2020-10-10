@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = { "/api/events" })
+@RequestMapping(path = { "/events" })
 public class EventsController {
 
     @Autowired
@@ -43,6 +43,7 @@ public class EventsController {
     public void join(@PathVariable String eventId, HttpServletRequest request) {
         Event event = this.events.get(eventId);
         Principal principal = request.getUserPrincipal();
+        System.out.println(principal);
         // add the event into outlook (office scope).
     }
 }
