@@ -34,7 +34,7 @@ import java.util.Set;
  * - Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
  * - Load some content (referenced by Web Apps) to the CDN endpoints.
  */
-public class ManageCdnProfileWithWebApp {
+public class ManageCdn {
 
     private static final String SUFFIX = ".azurewebsites.net";
 

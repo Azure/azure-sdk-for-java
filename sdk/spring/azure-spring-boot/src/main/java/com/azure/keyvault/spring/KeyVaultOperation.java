@@ -55,6 +55,11 @@ public class KeyVaultOperation {
     private final List<String> secretKeys;
 
     /**
+     * Stores the timer object to schedule refresh task.
+     */
+    private static final Timer TIMER = new Timer();
+
+    /**
      * Constructor.
      * @param secretClient    the Key Vault secret client.
      * @param refreshInMillis the refresh in milliseconds (0 or less disables refresh).
@@ -75,14 +80,13 @@ public class KeyVaultOperation {
         refreshProperties();
 
         if (refreshInMillis > 0) {
-            final Timer timer = new Timer();
             final TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
                     refreshProperties();
                 }
             };
-            timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+            TIMER.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
         }
     }
 
