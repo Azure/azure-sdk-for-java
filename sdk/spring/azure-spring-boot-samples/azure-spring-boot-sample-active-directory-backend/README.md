@@ -36,13 +36,6 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 If `azure.activedirectory.tenant-id` is configured, `AADOAuth2LoginSecurityConfig` will take effect and this app will use AAD to authentication and authorization.
 If `azure.activedirectory.tenant-id` is **NOT** configured, `NoLoginSecurityConfig` will take effect and this app will **NOT** use AAD to  authentication and authorization.
 
-The `azure-active-directory-spring-boot-starter` uses Azure AD Connect v2.0 endpoints by default. To use v1.0, please specify the following endpoints in properties.
-```
-spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
-spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/common/oauth2/token
-spring.security.oauth2.client.provider.azure.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
-spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
-```
 
 ### Run with Maven
 ```shell

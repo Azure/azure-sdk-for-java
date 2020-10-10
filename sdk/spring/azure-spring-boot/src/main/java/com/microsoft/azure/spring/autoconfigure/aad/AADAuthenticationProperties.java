@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -33,21 +34,28 @@ public class AADAuthenticationProperties {
      */
     private UserGroupProperties userGroup = new UserGroupProperties();
 
-
     /**
      * Azure service environment/region name, e.g., cn, global
      */
     private String environment = DEFAULT_SERVICE_ENVIRONMENT;
+
     /**
      * Registered application ID in Azure AD.
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
+
     /**
      * API Access Key of the registered application.
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
+
+    /**
+     * API Access Key of the registered application.
+     * Optional.
+     */
+    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -237,6 +245,14 @@ public class AADAuthenticationProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public void setScope(List<String> scope) {
+        this.scope = scope;
+    }
+
+    public List<String> getScope() {
+        return scope;
     }
 
     @Deprecated

@@ -77,7 +77,7 @@ public class AADOAuth2AutoConfiguration {
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-                                 .scope("openid", "https://graph.microsoft.com/user.read", "profile")
+                                 .scope(aadAuthenticationProperties.getScope())
                                  .authorizationUri(
                                      String.format(
                                          "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize",
