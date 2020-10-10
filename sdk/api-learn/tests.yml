@@ -1,0 +1,12 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: api-learn
+      Artifacts:
+        - name: azure-learn-computation
+          groupId: com.azure
+          safeName: azurelearncomputation
+      EnvVars:
+        AZURE_TEST_MODE: RECORD
