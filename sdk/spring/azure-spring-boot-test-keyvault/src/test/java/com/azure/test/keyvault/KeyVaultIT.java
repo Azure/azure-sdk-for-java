@@ -54,7 +54,7 @@ public class KeyVaultIT {
     @Test
     public void keyVaultAsPropertySource() {
         LOGGER.info("keyVaultAsPropertySource begin.");
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
+        try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
@@ -77,7 +77,7 @@ public class KeyVaultIT {
     @Test
     public void keyVaultAsPropertySourceWithSpecificKeys() {
         LOGGER.info("keyVaultAsPropertySourceWithSpecificKeys begin.");
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
+        try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
@@ -191,10 +191,5 @@ public class KeyVaultIT {
             httpStatus = response.getStatusCode();
         }
         return response;
-    }
-
-    @SpringBootApplication
-    public static class DumbApp {
-
     }
 }
