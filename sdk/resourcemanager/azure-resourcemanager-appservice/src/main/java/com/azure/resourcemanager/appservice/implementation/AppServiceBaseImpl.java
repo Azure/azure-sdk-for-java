@@ -53,11 +53,6 @@ abstract class AppServiceBaseImpl<
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
-    protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
-    protected static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
-    protected static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
-
     AppServiceBaseImpl(
         String name,
         SiteInner innerObject,
@@ -491,13 +486,5 @@ abstract class AppServiceBaseImpl<
 
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         return appServicePlan.operatingSystem();
-    }
-
-    protected void setAppFrameworkVersion(String fxVersion) {
-        if (operatingSystem() == OperatingSystem.LINUX) {
-            siteConfig.withLinuxFxVersion(fxVersion);
-        } else {
-            siteConfig.withWindowsFxVersion(fxVersion);
-        }
     }
 }
