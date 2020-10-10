@@ -457,6 +457,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
+    public String windowsFxVersion() {
+        if (siteConfig == null) {
+            return null;
+        }
+        return siteConfig.windowsFxVersion();
+    }
+
+    @Override
     public String autoSwapSlotName() {
         if (siteConfig == null) {
             return null;

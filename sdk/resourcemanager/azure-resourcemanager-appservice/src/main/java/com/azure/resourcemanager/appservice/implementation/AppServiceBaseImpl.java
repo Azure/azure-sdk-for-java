@@ -450,7 +450,7 @@ abstract class AppServiceBaseImpl<
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
         }
-        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         return (FluentImplT) this;
     }
@@ -467,7 +467,7 @@ abstract class AppServiceBaseImpl<
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
         }
-        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
         return (FluentImplT) this;
@@ -491,5 +491,13 @@ abstract class AppServiceBaseImpl<
 
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         return appServicePlan.operatingSystem();
+    }
+
+    protected void setAppFrameworkVersion(String fxVersion) {
+        if (operatingSystem() == OperatingSystem.LINUX) {
+            siteConfig.withLinuxFxVersion(fxVersion);
+        } else {
+            siteConfig.withWindowsFxVersion(fxVersion);
+        }
     }
 }

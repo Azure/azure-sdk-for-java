@@ -126,6 +126,9 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     /** @return the Linux app framework and version if this is a Linux web app. */
     String linuxFxVersion();
 
+    /** @return the Windows app framework and version if this is a Windows web app. */
+    String windowsFxVersion();
+
     /** @return the diagnostic logs configuration */
     WebAppDiagnosticLogs diagnosticLogsConfig();
 
