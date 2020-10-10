@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.microsoft.azure.management.datafactory.v2018_06_01.MappingDataFlow;
 
 /**
  * Azure Data Factory nested object which contains a flow with data movements
