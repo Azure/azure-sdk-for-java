@@ -50,11 +50,10 @@ public class KeyVaultOperation {
      * Stores the secret keys.
      */
     private final List<String> secretKeys;
-
     /**
      * Stores the timer object to schedule refresh task.
      */
-    private static final Timer TIMER = new Timer();
+    private static Timer timer;
 
     /**
      * Constructor.
@@ -78,13 +77,24 @@ public class KeyVaultOperation {
         refreshProperties();
 
         if (refreshInMillis > 0) {
-            final TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    refreshProperties();
+            synchronized (KeyVaultOperation.class) {
+                if (timer != null) {
+                    try {
+                        timer.cancel();
+                        timer.purge();
+                    } catch (RuntimeException runtimeException) {
+                        LOG.error("Error of terminating Timer", runtimeException);
+                    }
                 }
-            };
-            TIMER.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+                timer = new Timer();
+                final TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        refreshProperties();
+                    }
+                };
+                timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+            }
         }
     }
 
