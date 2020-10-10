@@ -7,8 +7,8 @@ import com.azure.analytics.synapse.artifacts.models.PipelineResource;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import io.netty.handler.logging.LogLevel;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -21,20 +21,24 @@ public class HelloWorld {
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid workspace endpoint is passed.
      */
-    public static void main(String[] args) throws  IllegalArgumentException {
+    public static void main(String[] args) throws IllegalArgumentException, InterruptedException {
         // Instantiate a pipeline client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         PipelineClient client = new ArtifactsClientBuilder()
-            .endpoint("https://testsynapseworkspace.dev.azuresynapse.net")
-            //.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            //.endpoint("https://{YOUR_WORKSPACE_NAME}.dev.azuresynapse.net")
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildPipelineClient();
 
         // Create a pipeline
         String pipelineName = "MyPipeline" + new Random().nextInt(1000);
-        PipelineResource createdPipeline = client.createOrUpdatePipeline(pipelineName, new PipelineResource());
+        PipelineResource createdPipeline = client.createOrUpdatePipeline(pipelineName, new PipelineResource()
+            .setActivities(new ArrayList<>()));
         System.out.printf("Created pipeline with id: %s\n", createdPipeline.getId());
+
+        // Wait a few seconds for the operation completion
+        Thread.sleep(30000);
 
         // Retrieve a pipeline
         PipelineResource retrievedPipeline = client.getPipeline(pipelineName);
@@ -42,5 +46,8 @@ public class HelloWorld {
 
         // Remove a pipeline
         client.deletePipeline(pipelineName);
+
+        // Wait a few seconds for the operation completion
+        Thread.sleep(30000);
     }
 }
