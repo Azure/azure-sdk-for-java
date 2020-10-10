@@ -347,91 +347,6 @@
         "justification": "This is a preview release"
       },
       {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.boot.actuate.health.Health",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.boot.actuate.health.Health.Builder",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.boot.actuate.health.HealthIndicator",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.data.repository.config.RepositoryConfigurationExtension",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.jms.config.JmsListenerContainerFactory",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.jms.core.JmsTemplate",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.config.annotation.web.builders.HttpSecurity",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.core.Authentication",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.core.AuthenticationException",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.core.GrantedAuthority",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.core.authority.SimpleGrantedAuthority",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.oauth2.client.userinfo.OAuth2UserService",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.oauth2.core.OAuth2AuthenticationException",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.missing.newClass",
-        "new": "missing-class org.springframework.security.oauth2.core.oidc.user.OidcUser",
-        "justification": "This is a preview release"
-      },
-      {
         "code": "java.class.nonPublicPartOfAPI",
         "new": "class com.azure.telemetry.TelemetryEventData.EventData.CustomData",
         "justification": "This is a preview release"
@@ -476,6 +391,12 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) org\\.springframework\\.*",
         "justification": "This is a preview release for springframework"
+      },
+      {
+        "regex": true,
+        "code": "java\\.missing\\.newClass",
+        "new": "missing\\-class org\\.springframework\\..*",
+        "justification": "update package name to com.azure.xxx"
       }
     ]
   }
