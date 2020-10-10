@@ -545,6 +545,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|JavadocThrowsChecks)" files="com.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)" files="com.azure.spring.autoconfigure.aad.AADOAuth2UserService"></suppress>
   <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|JavaDocFormatting)" files="com.azure.keyvault.spring.KeyVaultEnvironmentPostProcessor"></suppress>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.keyvault.spring.KeyVaultHealthIndicator"></suppress>
 
   <!--Checkstyle suppressions ThrowFromClientLoggerCheck-->
   <suppress checks="com.azure.tools.checkstyle.checks.(ThrowFromClientLoggerCheck|JavadocThrowsChecks|EnforceFinalFieldsCheck)" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"></suppress>
