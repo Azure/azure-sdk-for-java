@@ -266,7 +266,7 @@ public interface Application extends HasInner<ApplicationInner>, Resource, Group
     /**
      * The template for a Application update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Application>, Resource.UpdateWithTags<Update>, UpdateStages.WithApplicationDefinitionId, UpdateStages.WithIdentity, UpdateStages.WithJitAccessPolicy, UpdateStages.WithManagedBy, UpdateStages.WithManagedResourceGroupId, UpdateStages.WithParameters, UpdateStages.WithPlan, UpdateStages.WithSku {
+    interface Update extends Appliable<Application>, Resource.UpdateWithTags<Update>, UpdateStages.WithApplicationDefinitionId, UpdateStages.WithIdentity, UpdateStages.WithJitAccessPolicy, UpdateStages.WithKind, UpdateStages.WithManagedBy, UpdateStages.WithManagedResourceGroupId, UpdateStages.WithParameters, UpdateStages.WithPlan, UpdateStages.WithSku {
     }
 
     /**
@@ -307,6 +307,18 @@ public interface Application extends HasInner<ApplicationInner>, Resource, Group
              * @return the next update stage
              */
             Update withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy);
+        }
+
+        /**
+         * The stage of the application update allowing to specify Kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies kind.
+             * @param kind The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog
+             * @return the next update stage
+             */
+            Update withKind(String kind);
         }
 
         /**
@@ -354,7 +366,7 @@ public interface Application extends HasInner<ApplicationInner>, Resource, Group
              * @param plan The plan information
              * @return the next update stage
              */
-            Update withPlan(Plan plan);
+            Update withPlan(PlanPatchable plan);
         }
 
         /**
