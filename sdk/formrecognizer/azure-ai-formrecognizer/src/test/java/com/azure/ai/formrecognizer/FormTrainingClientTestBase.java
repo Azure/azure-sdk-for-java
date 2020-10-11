@@ -163,10 +163,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void validateCustomModelData(CustomFormModel actualCustomModel, boolean isLabeled, boolean isComposed) {
         Model modelRawResponse = getRawModelResponse(isComposed);
-        String modelNameFormType = null;
-        if (modelRawResponse.getModelInfo().getModelName() != null) {
-            modelNameFormType = "custom:" + modelRawResponse.getModelInfo().getModelName();
-        }
         assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
             actualCustomModel.getModelStatus().toString());
         assertNotNull(actualCustomModel.getTrainingStartedOn());
@@ -180,12 +176,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                     subModelList.get(0).getFields().get(expectedField.getFieldName());
                 assertEquals(expectedField.getFieldName(), actualFormField.getName());
                 assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
-            }
-            if (modelNameFormType != null) {
-                assertEquals(subModelList.get(0).getFormType(), modelNameFormType);
-            } else {
-                assertEquals(subModelList.get(0).getFormType(),
-                    "custom:" + modelRawResponse.getModelInfo().getModelId());
             }
             assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
                 subModelList.get(0).getAccuracy());
@@ -216,19 +206,14 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                     assertEquals(expectedField.getFieldName(), actualFormField.getName());
                     assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
                 }
-                if (modelNameFormType != null) {
-                    assertEquals(modelNameFormType, actualSubmodel.getFormType());
-                } else {
-                    assertEquals("custom:" + expectedSubmodel.getModelId(), actualSubmodel.getFormType());
-                }
             }
         } else {
             modelRawResponse
                 .getKeys()
                 .getClusters()
                 .forEach((clusterId, fields) -> {
-                        assertEquals(subModelList.get(Integer.parseInt(clusterId)).getFormType(),
-                            "form-" + clusterId);
+                    assertEquals(subModelList.get(Integer.parseInt(clusterId)).getFormType(),
+                        "form-" + clusterId);
                     subModelList.get(Integer.parseInt(clusterId))
                         .getFields()
                         .values()
@@ -421,6 +406,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         } else {
             try {
                 testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
+        }
+    }
+
+    void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
+        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
+
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
+        } else {
+            try {
+                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("Local file not found.", e);
             }

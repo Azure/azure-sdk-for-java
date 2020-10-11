@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
@@ -14,6 +15,7 @@ import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -23,6 +25,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
@@ -40,7 +43,9 @@ import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_JPG_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
 import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
@@ -1022,5 +1027,296 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 assertEquals(UNABLE_TO_READ_FILE_ERROR_CODE,
                     errorResponseException.getErrorInformation().get(0).getErrorCode());
             }));
+    }
+
+    /**
+     * Verifies recognized form type when labeled model used for recognition and model name is provided by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void checkRecognizeFormTypeLabeledWithModelName(
+        HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
+                    Context.NONE);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
+                    createdModel.getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller1.waitForCompletion();
+                final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
+                assertEquals("custom:model1", recognizedForm.getFormType());
+                assertNotNull(recognizedForm.getFormTypeConfidence());
+
+                // check formtype set on submodel
+                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
+                assertEquals("custom:model1", submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+            });
+        }, FORM_JPG);
+    }
+
+    /**
+     * Verifies recognized form type when labeled model used for recognition and model name is not provided by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void checkRecognizedFormTypeLabeledModel(
+        HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
+                    createdModel.getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller1.waitForCompletion();
+                final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
+                assertEquals("custom:" + createdModel.getModelId(), recognizedForm.getFormType());
+                assertNotNull(recognizedForm.getFormTypeConfidence());
+
+                // check formtype set on submodel
+                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
+                assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+
+                formTrainingClient.deleteModel(createdModel.getModelId());
+            });
+        }, FORM_JPG);
+    }
+
+    /**
+     * Verifies recognized form type when unlabeled model used for recognition and model name is not provided by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void checkRecognizedFormTypeUnlabeledModel(
+        HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
+                    createdModel.getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller1.waitForCompletion();
+                final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
+                assertEquals("form-0", recognizedForm.getFormType());
+
+                // check formtype set on submodel
+                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
+                assertEquals("form-0", submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+
+                formTrainingClient.deleteModel(createdModel.getModelId());
+            });
+        }, FORM_JPG);
+    }
+
+    /**
+     * Verifies recognized form type when unlabeled model used for recognition and model name is provided by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void checkRecognizedFormTypeUnlabeledModelWithModelName(
+        HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
+                    Context.NONE);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
+                    = formRecognizerClient.beginRecognizeCustomForms(
+                    createdModel.getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller1.waitForCompletion();
+                final RecognizedForm recognizedForm = syncPoller1.getFinalResult().stream().findFirst().get();
+                assertEquals("form-0", recognizedForm.getFormType());
+
+                // check formtype set on submodel
+                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
+                assertEquals("form-0", submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+
+                formTrainingClient.deleteModel(createdModel.getModelId());
+            });
+        }, FORM_JPG);
+    }
+
+    /**
+     * Verifies recognized form type when using composed model for recognition when display name is not provided by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void checkRecognizeFormTypeComposedModel(
+        HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller1.waitForCompletion();
+                CustomFormModel createdModel1 = syncPoller1.getFinalResult();
+
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                    = formTrainingClient.beginCreateComposedModel(
+                        Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
+                    new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller2.waitForCompletion();
+                CustomFormModel composedModel = syncPoller2.getFinalResult();
+
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
+                    = formRecognizerClient.beginRecognizeCustomForms(
+                    composedModel.getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller3.waitForCompletion();
+
+                final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
+                // TODO: (savaity) service currently returning docType = "custom:", confirm
+                // assertTrue(recognizedForm.getFormType().equals("custom:" + createdModel.getModelId())
+                //     || recognizedForm.getFormType().equals("custom:" + createdModel1.getModelId()));
+                assertNotNull(recognizedForm.getFormTypeConfidence());
+
+                // check formtype set on submodel
+                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
+                assertTrue(submodel.getFormType().equals("custom:" + createdModel.getModelId())
+                    || submodel.getFormType().equals("custom:" + createdModel1.getModelId()));
+
+                formTrainingClient.deleteModel(createdModel.getModelId());
+                formTrainingClient.deleteModel(createdModel1.getModelId());
+                formTrainingClient.deleteModel(composedModel.getModelId());
+            });
+        }, FORM_JPG);
+    }
+
+    /**
+     * Verifies recognized form type when using composed model for recognition when model name is provided by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void checkRecognizeFormTypeComposedModelWithModelName(
+        HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model1"),
+                    Context.NONE);
+                syncPoller.waitForCompletion();
+                CustomFormModel createdModel = syncPoller.getFinalResult();
+
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                    = formTrainingClient.beginTraining(trainingFilesUrl,
+                    useTrainingLabels,
+                    new TrainingOptions().setPollInterval(durationTestMode).setModelName("model2"),
+                    Context.NONE);
+                syncPoller1.waitForCompletion();
+                CustomFormModel createdModel1 = syncPoller1.getFinalResult();
+
+                SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                    = formTrainingClient.beginCreateComposedModel(
+                    Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
+                    new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller2.waitForCompletion();
+                CustomFormModel composedModel = syncPoller2.getFinalResult();
+
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
+                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
+                    = formRecognizerClient.beginRecognizeCustomForms(
+                    composedModel.getModelId(),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions()
+                        .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode),
+                    Context.NONE);
+                syncPoller3.waitForCompletion();
+
+                final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
+                assertTrue(recognizedForm.getFormType().equals("custom:" + createdModel.getModelName())
+                    || recognizedForm.getFormType().equals("custom:" + createdModel1.getModelName()));
+                assertNotNull(recognizedForm.getFormTypeConfidence());
+
+                // check formtype set on submodel
+                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
+                assertTrue(submodel.getFormType().equals("custom:" + createdModel.getModelName())
+                    || submodel.getFormType().equals("custom:" + createdModel1.getModelName()));
+
+                formTrainingClient.deleteModel(createdModel.getModelId());
+                formTrainingClient.deleteModel(createdModel1.getModelId());
+                formTrainingClient.deleteModel(composedModel.getModelId());
+            });
+        }, FORM_JPG);
     }
 }

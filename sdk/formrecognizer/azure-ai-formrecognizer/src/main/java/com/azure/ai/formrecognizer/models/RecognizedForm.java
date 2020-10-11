@@ -34,7 +34,7 @@ public final class RecognizedForm {
      */
     private final List<FormPage> pages;
 
-    private Double formTypeConfidence;
+    private Float formTypeConfidence;
     private String modelId;
 
     /**
@@ -96,7 +96,7 @@ public final class RecognizedForm {
      *
      * @return the formTypeConfidence value.
      */
-    public Double getFormTypeConfidence() {
+    public Float getFormTypeConfidence() {
         return formTypeConfidence;
     }
 

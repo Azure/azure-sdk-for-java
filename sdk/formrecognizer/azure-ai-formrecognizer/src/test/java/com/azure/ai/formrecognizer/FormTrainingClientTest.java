@@ -589,6 +589,10 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 Context.NONE)
                 .getFinalResult();
 
+            client.deleteModel(model1.getModelId());
+            client.deleteModel(model2.getModelId());
+            client.deleteModel(composedModel.getModelId());
+
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
             assertTrue(composedModel.getCustomModelProperties().isComposed());
@@ -598,9 +602,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 assertTrue(modelIdList.contains(customFormSubmodel.getModelId())));
             validateCustomModelData(composedModel, false, true);
 
-            client.deleteModel(model1.getModelId());
-            client.deleteModel(model2.getModelId());
-            client.deleteModel(composedModel.getModelId());
+
         });
     }
 

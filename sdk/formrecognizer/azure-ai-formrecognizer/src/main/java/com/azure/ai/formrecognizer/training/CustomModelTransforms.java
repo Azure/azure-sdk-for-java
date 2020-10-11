@@ -112,7 +112,7 @@ final class CustomModelTransforms {
             }
         }
         if (modelInfo.getModelName() != null) {
-            PrivateFieldAccessHelper.set(customFormModel, "modelDisplayName", modelInfo.getModelName());
+            PrivateFieldAccessHelper.set(customFormModel, "modelName", modelInfo.getModelName());
         }
         return customFormModel;
     }
@@ -222,7 +222,7 @@ final class CustomModelTransforms {
                         customFormModelProperties);
                 }
                 if (modelInfo.getModelName() != null) {
-                    PrivateFieldAccessHelper.set(customFormModelInfo, "modelDisplayName",
+                    PrivateFieldAccessHelper.set(customFormModelInfo, "modelName",
                         modelInfo.getModelName());
                 }
                 return customFormModelInfo;

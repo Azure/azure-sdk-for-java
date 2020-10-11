@@ -123,7 +123,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 .assertNext(customFormModelResponse -> {
                     assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateCustomModelData(syncPoller.getFinalResult(), false, false);
-            });
+                });
         });
     }
 

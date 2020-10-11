@@ -61,10 +61,11 @@ final class Transforms {
      * @param analyzeResult The service returned result for analyze custom forms.
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
-     * @param modelId
+     * @param modelId the unlabeled model Id used for recognition.
      * @return The List of {@code RecognizedForm}.
      */
-    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements, String modelId) {
+    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements,
+        String modelId) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -91,8 +92,10 @@ final class Transforms {
                     formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber()));
                 PrivateFieldAccessHelper.set(recognizedForm, "formTypeConfidence",
                     documentResultItem.getDocTypeConfidence());
-                PrivateFieldAccessHelper.set(recognizedForm, "modelId",
-                    documentResultItem.getModelId());
+                if (documentResultItem.getModelId() != null) {
+                    PrivateFieldAccessHelper.set(recognizedForm, "modelId",
+                        documentResultItem.getModelId().toString());
+                }
                 extractedFormList.add(recognizedForm);
             }
         } else {

@@ -1323,7 +1323,7 @@
 
   <Match>
     <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
-    <Field name="modelId" />
+    <Field name="formTypeConfidence" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
