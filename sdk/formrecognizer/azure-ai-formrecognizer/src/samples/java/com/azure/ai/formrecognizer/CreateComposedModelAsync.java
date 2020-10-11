@@ -80,7 +80,7 @@ public class CreateComposedModelAsync {
 
                 customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
                     System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
-                    System.out.printf("Document was provided to train model with Id : %s%n",trainingDocumentInfo.getModelId());
+                    System.out.printf("Document was provided to train model with Id : %s%n", trainingDocumentInfo.getModelId());
                     System.out.printf("Document status: %s%n", trainingDocumentInfo.getStatus());
                     System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
                     if (!trainingDocumentInfo.getErrors().isEmpty()) {
