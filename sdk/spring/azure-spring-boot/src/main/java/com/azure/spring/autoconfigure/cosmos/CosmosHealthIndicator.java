@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health.Builder;
@@ -21,13 +20,14 @@ import org.springframework.util.Assert;
 public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosHealthIndicator.class);
+
     @Value("${azure.cosmos.database}")
     private String dbName;
+
     @Value("${azure.cosmos.uri}")
     private String uri;
 
-    @Autowired
-    private CosmosAsyncClient cosmosAsyncClient;
+    private final CosmosAsyncClient cosmosAsyncClient;
 
     public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient) {
         super("Cosmos health check failed");

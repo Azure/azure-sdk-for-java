@@ -21,6 +21,10 @@ import java.net.MalformedURLException;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
+import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
+import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
+
 /**
  * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
  */
@@ -59,25 +63,25 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 .accessToken();
             mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
         } catch (MalformedURLException e) {
-            throw toOAuth2AuthenticationException(AADOAuth2ErrorCode.INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
+            throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
         } catch (ServiceUnavailableException e) {
-            throw toOAuth2AuthenticationException(AADOAuth2ErrorCode.SERVER_SERVER, "Failed to acquire token for Graph API.", e);
+            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to acquire token for Graph API.", e);
         } catch (IOException e) {
-            throw toOAuth2AuthenticationException(AADOAuth2ErrorCode.SERVER_SERVER, "Failed to map group to authorities.", e);
+            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to map group to authorities.", e);
         } catch (MsalServiceException e) {
             if (e.claims() != null && !e.claims().isEmpty()) {
-                throw toOAuth2AuthenticationException(AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY, "Handle conditional access policy", e);
+                throw toOAuth2AuthenticationException(CONDITIONAL_ACCESS_POLICY, "Handle conditional access policy", e);
             } else {
                 throw e;
             }
         }
         String nameAttributeKey = Optional.of(userRequest)
-                                          .map(OAuth2UserRequest::getClientRegistration)
-                                          .map(ClientRegistration::getProviderDetails)
-                                          .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
-                                          .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
-                                          .filter(s -> !s.isEmpty())
-                                          .orElse(AADAccessTokenClaim.NAME);
+            .map(OAuth2UserRequest::getClientRegistration)
+            .map(ClientRegistration::getProviderDetails)
+            .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
+            .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
+            .filter(s -> !s.isEmpty())
+            .orElse(AADAccessTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }

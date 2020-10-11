@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.telemetry.TelemetrySender;
+import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,17 +27,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.telemetry.TelemetryData.TENANT_NAME;
-import static com.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
  * <p>
- * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id, client-secret, reply-url and sign-up-or-sign-in} property provided.
+ * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id,
+ * client-secret, reply-url and sign-up-or-sign-in} property provided.
  * <p>
- * A client registration repository service {@link InMemoryClientRegistrationRepository} will be auto-configured by specifying
- * {@literal azure.activedirectory.b2c.oidc-enabled} property as true or ignore it.
+ * A client registration repository service {@link InMemoryClientRegistrationRepository} will be auto-configured by
+ * specifying {@literal azure.activedirectory.b2c.oidc-enabled} property as true or ignore it.
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -102,7 +103,10 @@ public class AADB2CAutoConfiguration {
      */
     @Configuration
     @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-    @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX, value = "oidc-enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX,
+                           value = "oidc-enabled",
+                           havingValue = "true",
+                           matchIfMissing = true)
     public static class AADB2COidcAutoConfiguration {
 
         private final AADB2CProperties properties;

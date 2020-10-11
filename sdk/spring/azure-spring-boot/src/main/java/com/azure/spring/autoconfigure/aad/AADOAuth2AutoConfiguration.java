@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.telemetry.TelemetrySender;
+import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -27,8 +27,8 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication OAuth 2.0.

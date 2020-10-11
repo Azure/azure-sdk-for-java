@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.gremlin;
 
-import com.azure.telemetry.TelemetrySender;
+import com.azure.spring.telemetry.TelemetrySender;
 import com.microsoft.spring.data.gremlin.common.GremlinConfig;
 import com.microsoft.spring.data.gremlin.common.GremlinFactory;
 import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
@@ -25,8 +25,8 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 
 /**
@@ -55,7 +55,6 @@ public class GremlinAutoConfiguration {
             final TelemetrySender sender = new TelemetrySender();
 
             events.put(SERVICE_NAME, getClassPackageSimpleName(GremlinAutoConfiguration.class));
-
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }
@@ -83,14 +82,17 @@ public class GremlinAutoConfiguration {
         return new GremlinTemplate(factory, converter);
     }
 
+    /**
+     * Configure {@link GremlinMappingContext} bean.
+     * @return The {@link GremlinMappingContext} bean.
+     * @throws IllegalStateException If {@link ClassNotFoundException} has occurred.
+     */
     @Bean
     @ConditionalOnMissingBean
     public GremlinMappingContext gremlinMappingContext() {
         try {
             final GremlinMappingContext context = new GremlinMappingContext();
-
             context.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
-
             return context;
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException(e);

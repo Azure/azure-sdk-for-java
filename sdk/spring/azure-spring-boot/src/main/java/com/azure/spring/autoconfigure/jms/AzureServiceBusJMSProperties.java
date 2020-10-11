@@ -49,9 +49,13 @@ public class AzureServiceBusJMSProperties {
         this.idleTimeout = idleTimeout;
     }
 
+    /**
+     * Validate spring.jms.servicebus related properties.
+     *
+     * @throws IllegalArgumentException If connectionString is empty.
+     */
     @PostConstruct
     public void validate() {
-
         if (!StringUtils.hasText(connectionString)) {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }

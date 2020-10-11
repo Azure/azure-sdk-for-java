@@ -9,7 +9,7 @@ package com.azure.spring.support;
 public class UserAgent {
     /**
      * Generate UserAgent string for given service.
-     * @param serviceName    Name of the service from which called this method.
+     * @param serviceName Name of the service from which called this method.
      * @param allowTelemetry Whether allows telemtry
      * @return generated UserAgent string
      */

@@ -11,7 +11,8 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
 import java.lang.annotation.Annotation;
 
 /**
- * Declare {@link EnableCosmosRepositories} annotation and {@link EnableCosmosRepositoriesConfiguration} configuration for default non-async auto-configuration.
+ * Declare {@link EnableCosmosRepositories} annotation and {@link EnableCosmosRepositoriesConfiguration} configuration
+ * for default non-async auto-configuration.
  */
 public class CosmosRepositoriesAutoConfigureRegistrar extends AbstractRepositoryConfigurationSourceSupport {
     @Override

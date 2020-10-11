@@ -202,6 +202,8 @@ public class AADAuthenticationProperties {
 
     /**
      * Validates at least one of the user group properties are populated.
+     *
+     * @throws IllegalArgumentException If no allowed-groups is configured when stateful filter is enabled.
      */
     @PostConstruct
     public void validateUserGroupProperties() {
@@ -210,7 +212,7 @@ public class AADAuthenticationProperties {
                 LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
             }
         } else if (this.getUserGroup().getAllowedGroups().isEmpty()) {
-            throw new IllegalStateException("One of the User Group Properties must be populated. "
+            throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
     }

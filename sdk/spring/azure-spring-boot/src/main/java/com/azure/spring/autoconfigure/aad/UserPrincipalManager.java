@@ -63,10 +63,11 @@ public class UserPrincipalManager {
      * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
      * {@link AADAuthenticationProperties#getEnvironment()}.
      *
-     * @param serviceEndpointsProps - used to retrieve the JWKS URL
-     * @param aadAuthProps          - used to retrieve the environment.
-     * @param resourceRetriever     - configures the {@link RemoteJWKSet} call.
-     * @param explicitAudienceCheck - explicit audience check
+     * @param serviceEndpointsProps Used to retrieve the JWKS URL
+     * @param aadAuthProps Used to retrieve the environment.
+     * @param resourceRetriever Configures the {@link RemoteJWKSet} call.
+     * @param explicitAudienceCheck Whether explicitly check the audience.
+     * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
     public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
                                 AADAuthenticationProperties aadAuthProps,
@@ -85,7 +86,7 @@ public class UserPrincipalManager {
             keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
-            throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
+            throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
         }
     }
 
@@ -101,12 +102,13 @@ public class UserPrincipalManager {
      * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
      * {@link AADAuthenticationProperties#getEnvironment()}.
      *
-     * @param serviceEndpointsProps - used to retrieve the JWKS URL
-     * @param aadAuthProps          - used to retrieve the environment.
-     * @param resourceRetriever     - configures the {@link RemoteJWKSet} call.
-     * @param jwkSetCache           - used to cache the JWK set for a finite time, default set to 5 minutes
-     *                              which matches constructor above if no jwkSetCache is passed in
-     * @param explicitAudienceCheck - explicit audience check
+     * @param serviceEndpointsProps Used to retrieve the JWKS URL
+     * @param aadAuthProps Used to retrieve the environment.
+     * @param resourceRetriever Configures the {@link RemoteJWKSet} call.
+     * @param jwkSetCache Used to cache the JWK set for a finite time, default set to 5 minutes
+     *                    which matches constructor above if no jwkSetCache is passed in
+     * @param explicitAudienceCheck Whether explicitly check the audience.
+     * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
     public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
                                 AADAuthenticationProperties aadAuthProps,
@@ -126,10 +128,18 @@ public class UserPrincipalManager {
             keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
-            throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
+            throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
         }
     }
 
+    /**
+     * Parse the id token to {@link UserPrincipal}.
+     * @param idToken The id token.
+     * @return The parsed {@link UserPrincipal}.
+     * @throws ParseException If the token couldn't be parsed to a valid JWS object.
+     * @throws JOSEException If an internal processing exception is encountered.
+     * @throws BadJOSEException If the JWT is rejected.
+     */
     public UserPrincipal buildUserPrincipal(String idToken) throws ParseException, JOSEException, BadJOSEException {
         final JWSObject jwsObject = JWSObject.parse(idToken);
         final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());

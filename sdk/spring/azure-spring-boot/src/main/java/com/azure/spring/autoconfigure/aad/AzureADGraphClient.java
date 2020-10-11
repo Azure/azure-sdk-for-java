@@ -115,6 +115,14 @@ public class AzureADGraphClient {
         }
     }
 
+    /**
+     * Retrieve groups from the Graph service.
+     *
+     * @param graphApiToken The access token used to call Graph service API.
+     * @return The groups user belongs to. And if allowed-groups property is configured, only groups fall in the allowed
+     *         ones will be returned.
+     * @throws IOException If I/O exception has occurred.
+     */
     public List<UserGroup> getGroups(String graphApiToken) throws IOException {
         final List<UserGroup> userGroupList = new ArrayList<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
@@ -144,6 +152,13 @@ public class AzureADGraphClient {
         return userGroup.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
+    /**
+     * Convert Graph groups to {@link GrantedAuthority}.
+     *
+     * @param graphApiToken The access token used to call the Graph API.
+     * @return A set of mapped {@link GrantedAuthority} from Graph groups.
+     * @throws IOException If I/O exception has occurred.
+     */
     public Set<GrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
         // Fetch the authority information from the protected resource using accessToken
         final List<UserGroup> groups = getGroups(graphApiToken);
@@ -185,6 +200,14 @@ public class AzureADGraphClient {
         return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName());
     }
 
+    /**
+     * Acquire access token for calling Graph API.
+     * @param idToken The token used to perform an OBO request.
+     * @param tenantId The tenant id.
+     * @return The access token for Graph service.
+     * @throws ServiceUnavailableException If fail to acquire the token.
+     * @throws MsalServiceException If {@link MsalServiceException} has occurred.
+     */
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
         throws ServiceUnavailableException {
         final IClientCredential clientCredential = ClientCredentialFactory.createFromSecret(clientSecret);

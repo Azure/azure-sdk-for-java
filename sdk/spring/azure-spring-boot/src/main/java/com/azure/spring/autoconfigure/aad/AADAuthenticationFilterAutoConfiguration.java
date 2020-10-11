@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.telemetry.TelemetrySender;
+import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
@@ -27,8 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.

@@ -21,7 +21,8 @@ import java.util.Map;
 /**
  * This class handles the OAuth2 request procession for AAD B2C authorization.
  * <p>
- * Userflow name is added in the request link and forgotten password redirection to password-reset page is added on the base of default OAuth2 authorization resolve.
+ * Userflow name is added in the request link and forgotten password redirection to password-reset page is added on the
+ * base of default OAuth2 authorization resolve.
  */
 public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 

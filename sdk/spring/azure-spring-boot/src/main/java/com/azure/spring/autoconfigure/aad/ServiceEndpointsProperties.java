@@ -16,7 +16,9 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties("azure.service")
 public class ServiceEndpointsProperties {
+
     private Map<String, ServiceEndpoints> endpoints = new HashMap<>();
+
     public Map<String, ServiceEndpoints> getEndpoints() {
         return endpoints;
     }
@@ -24,8 +26,9 @@ public class ServiceEndpointsProperties {
     /**
      * Get ServiceEndpoints data for the given environment.
      *
-     * @param environment the environment of the cloud service
+     * @param environment The environment of the cloud service
      * @return The ServiceEndpoints data for the given azure service <code>environment</code>
+     * @throws IllegalArgumentException If endpoints for environment are not found.
      */
     public ServiceEndpoints getServiceEndpoints(String environment) {
         Assert.notEmpty(endpoints, "No service endpoints found");

@@ -4,7 +4,7 @@ package com.azure.spring.autoconfigure.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.utils.PropertyLoader;
+import com.azure.spring.utils.PropertyLoader;
 
 import java.time.Duration;
 import java.util.Arrays;
