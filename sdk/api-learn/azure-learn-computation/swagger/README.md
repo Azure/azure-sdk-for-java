@@ -1,4 +1,4 @@
-# Azure App Configuration Tutorial for Java
+# Azure Computation Tutorial for Java
 
 > see https://aka.ms/autorest
 
