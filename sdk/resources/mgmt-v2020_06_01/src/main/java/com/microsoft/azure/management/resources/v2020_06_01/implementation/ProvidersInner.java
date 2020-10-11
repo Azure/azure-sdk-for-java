@@ -62,6 +62,10 @@ public class ProvidersInner {
         @POST("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
         Observable<Response<ResponseBody>> unregister(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2020_06_01.Providers registerAtManagementGroupScope" })
+        @POST("providers/Microsoft.Management/managementGroups/{groupId}/providers/{resourceProviderNamespace}/register")
+        Observable<Response<ResponseBody>> registerAtManagementGroupScope(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("groupId") String groupId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2020_06_01.Providers register" })
         @POST("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register")
         Observable<Response<ResponseBody>> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -167,6 +171,88 @@ public class ProvidersInner {
     private ServiceResponse<ProviderInner> unregisterDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ProviderInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProviderInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void registerAtManagementGroupScope(String resourceProviderNamespace, String groupId) {
+        registerAtManagementGroupScopeWithServiceResponseAsync(resourceProviderNamespace, groupId).toBlocking().single().body();
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(registerAtManagementGroupScopeWithServiceResponseAsync(resourceProviderNamespace, groupId), serviceCallback);
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId) {
+        return registerAtManagementGroupScopeWithServiceResponseAsync(resourceProviderNamespace, groupId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> registerAtManagementGroupScopeWithServiceResponseAsync(String resourceProviderNamespace, String groupId) {
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (groupId == null) {
+            throw new IllegalArgumentException("Parameter groupId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.registerAtManagementGroupScope(resourceProviderNamespace, groupId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = registerAtManagementGroupScopeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> registerAtManagementGroupScopeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
