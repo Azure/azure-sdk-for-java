@@ -5,6 +5,7 @@
 ### Code generation settings
 ``` yaml
 input-file: computation.json
+use: '@autorest/java@4.0.3'
 java: true
 output-folder: ..\
 generate-client-as-impl: true
