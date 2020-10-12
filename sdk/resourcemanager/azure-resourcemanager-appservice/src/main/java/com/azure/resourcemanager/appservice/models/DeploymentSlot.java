@@ -8,7 +8,6 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
-import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.io.File;
@@ -20,8 +19,8 @@ import reactor.core.publisher.Mono;
 public interface DeploymentSlot
     extends IndependentChildResource<AppServiceManager, SiteInner>,
         WebDeploymentSlotBasic,
-        WebAppBase,
-        Updatable<DeploymentSlot.Update>,
+        DeploymentSlotBase<DeploymentSlot>,
+        Updatable<DeploymentSlotBase.Update<DeploymentSlot>>,
         HasParent<WebApp> {
 
     /**
@@ -146,9 +145,5 @@ public interface DeploymentSlot
          */
         interface WithCreate extends Creatable<DeploymentSlot>, WebAppBase.DefinitionStages.WithCreate<DeploymentSlot> {
         }
-    }
-
-    /** The template for a web app update operation, containing all the settings that can be modified. */
-    interface Update extends Appliable<DeploymentSlot>, WebAppBase.Update<DeploymentSlot> {
     }
 }
