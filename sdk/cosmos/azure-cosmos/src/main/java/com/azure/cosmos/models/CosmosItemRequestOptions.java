@@ -110,10 +110,10 @@ public class CosmosItemRequestOptions {
      * is for example Session you can specify on a request-by-request level for individual requests
      * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
      * request but will not guarantee session consistency (read-your-own-write) anymore
-     * NOTE: If the consistency-level set on a request level here is higher than the default consistency
-     * level set when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
-     * session token capturing also needs to be enabled by calling
-     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true).
+     * NOTE: If the consistency-level set on a request level here is SESSION and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
      *
      * @param consistencyLevel the consistency level.
      * @return the CosmosItemRequestOptions.
