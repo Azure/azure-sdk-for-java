@@ -62,7 +62,7 @@ public final class ConfigurationAsyncClient {
                 return internalClient.getKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
                     null, null, ifNoneMatchETag, null, context)
                     .onErrorResume(HttpResponseException.class, throwable -> {
-                        HttpResponseException e = (HttpResponseException) throwable;
+                        HttpResponseException e = throwable;
                         HttpResponse httpResponse = e.getResponse();
                         if (httpResponse.getStatusCode() == 304) {
                             GetKeyValueResponse nullConfigSettingResponse = new GetKeyValueResponse(httpResponse.getRequest(),
