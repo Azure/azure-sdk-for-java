@@ -9,7 +9,7 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
-import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;

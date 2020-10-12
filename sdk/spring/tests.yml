@@ -16,9 +16,9 @@ jobs:
           - name: azure-spring-boot-test-core
             groupId: com.azure
             safeName: azurespringboottestcore
-          - name: azure-spring-boot-test-cosmosdb
+          - name: azure-spring-boot-test-cosmos
             groupId: com.azure
-            safeName: azurespringboottestcosmosdb
+            safeName: azurespringboottestcosmos
           - name: azure-spring-boot-test-aad
             groupId: com.azure
             safeName: azurespringboottestaad

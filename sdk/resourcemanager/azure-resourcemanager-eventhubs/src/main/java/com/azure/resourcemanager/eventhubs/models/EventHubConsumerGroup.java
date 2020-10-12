@@ -4,7 +4,7 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

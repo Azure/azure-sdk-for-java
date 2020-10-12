@@ -7,18 +7,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
-import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppSetting;
@@ -64,7 +64,6 @@ import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -102,6 +101,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
+
+    protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
+    protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
+    protected static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
+    protected static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
+
+    protected static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
+    protected static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
 
     private static final Map<AzureEnvironment, String> DNS_MAP =
         new HashMap<AzureEnvironment, String>() {
@@ -455,6 +462,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             return null;
         }
         return siteConfig.linuxFxVersion();
+    }
+
+    @Override
+    public String windowsFxVersion() {
+        if (siteConfig == null) {
+            return null;
+        }
+        return siteConfig.windowsFxVersion();
     }
 
     @Override
@@ -1052,7 +1067,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         return sourceControl
             .registerGithubAccessToken()
             .then(createOrUpdateSourceControl(sourceControl.innerModel()))
-            .delayElement(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+            .delayElement(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30)))
             .map(ignored -> WebAppBaseImpl.this);
     }
 
@@ -1701,6 +1716,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         public void close() throws IOException {
             callback.run();
             super.close();
+        }
+    }
+
+    protected void setAppFrameworkVersion(String fxVersion) {
+        if (operatingSystem() == OperatingSystem.LINUX) {
+            siteConfig.withLinuxFxVersion(fxVersion);
+        } else {
+            siteConfig.withWindowsFxVersion(fxVersion);
         }
     }
 }

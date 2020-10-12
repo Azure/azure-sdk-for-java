@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.models.ResourceNameStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckResourceNameResult model. */
+/**
+ * Resource Name valid if not a reserved word, does not contain a reserved word and does not start with a reserved word.
+ */
 @Fluent
 public final class CheckResourceNameResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckResourceNameResultInner.class);

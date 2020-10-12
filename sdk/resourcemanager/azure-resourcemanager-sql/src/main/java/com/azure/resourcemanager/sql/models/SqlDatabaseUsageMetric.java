@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
 import java.time.OffsetDateTime;
 
 /** The result of SQL server usages per SQL Database. */

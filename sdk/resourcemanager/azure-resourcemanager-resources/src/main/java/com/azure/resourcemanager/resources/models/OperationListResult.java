@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OperationListResult model. */
+/**
+ * Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get
+ * the next set of results.
+ */
 @Fluent
 public final class OperationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);

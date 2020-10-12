@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TagDetails model. */
+/** Tag details. */
 @Fluent
 public final class TagDetailsInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDetailsInner.class);

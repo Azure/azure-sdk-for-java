@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.UsersClient;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;

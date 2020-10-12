@@ -5,7 +5,7 @@ This repository is for Spring Boot Starters of Azure services. It helps Spring B
 
 ## Getting started
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 
@@ -36,7 +36,8 @@ Starter Name | Version for Spring Boot 2.3.x | Version for Spring Boot 2.2.x | V
 [spring-starter-azure-storage][spring-starter-storage-readme] | [![Maven Central][spring-starter-storage-mvn-2.3.x-img]][spring-starter-storage-mvn-2.3.x] | N/A | N/A | N/A
 [azure-keyvault-secrets-spring-boot-starter][keyvault-starter-readme] | [![Maven Central][keyvault-starter-mvn-2.3.x-img]][keyvault-starter-mvn-2.3.x] | [![Maven Central][keyvault-starter-mvn-2.2.x-img]][keyvault-starter-mvn-2.2.x] | [![][keyvault-starter-mvn-2.1.x-img]][keyvault-starter-mvn-2.1.x] | [![][keyvault-starter-mvn-2.0.x-img]][keyvault-starter-mvn-2.0.x]
 [azure-active-directory-b2c-spring-boot-starter][aad-b2c-starter-readme] | [![Maven Central][aad-b2c-starter-mvn-2.3.x-img]][aad-b2c-starter-mvn-2.3.x] | [![Maven Central][aad-b2c-starter-mvn-2.2.x-img]][aad-b2c-starter-mvn-2.2.x] | [![Maven Central][aad-b2c-starter-mvn-2.1.x-img]][aad-b2c-starter-mvn-2.1.x] | N/A
-[azure-cosmosdb-spring-boot-starter][cosmosdb-starter-readme] | [![Maven Central][cosmosdb-starter-mvn-2.3.x-img]][cosmosdb-starter-mvn-2.3.x] | [![Maven Central][cosmosdb-starter-mvn-2.2.x-img]][cosmosdb-starter-mvn-2.2.x] | [![][cosmosdb-starter-mvn-2.1.x-img]][cosmosdb-starter-mvn-2.1.x] | [![][cosmosdb-starter-mvn-2.0.x-img]][cosmosdb-starter-mvn-2.0.x]
+azure-cosmosdb-spring-boot-starter | [![Maven Central][cosmosdb-starter-mvn-2.3.x-img]][cosmosdb-starter-mvn-2.3.x] | [![Maven Central][cosmosdb-starter-mvn-2.2.x-img]][cosmosdb-starter-mvn-2.2.x] | [![][cosmosdb-starter-mvn-2.1.x-img]][cosmosdb-starter-mvn-2.1.x] | [![][cosmosdb-starter-mvn-2.0.x-img]][cosmosdb-starter-mvn-2.0.x]
+[azure-spring-boot-starter-cosmos][cosmos-starter-readme] | N/A | N/A | N/A | N/A
 [azure-mediaservices-spring-boot-starter][mediaservices-starter-readme] | N/A | [![Maven Central][mediaservices-starter-mvn-2.2.x-img]][mediaservices-starter-mvn-2.2.x] | [![][mediaservices-starter-mvn-2.1.x-img]][mediaservices-starter-mvn-2.1.x] | [![][mediaservices-starter-mvn-2.0.x-img]][mediaservices-starter-mvn-2.0.x]
 [azure-servicebus-spring-boot-starter][servicebus-starter-readme] | N/A | [![Maven Central][servicebus-starter-mvn-2.2.x-img]][servicebus-starter-mvn-2.2.x] | [![][servicebus-starter-mvn-2.1.x-img]][servicebus-starter-mvn-2.1.x] | [![][servicebus-starter-mvn-2.0.x-img]][servicebus-starter-mvn-2.0.x]
 [spring-data-gremlin-boot-starter][gremlin-starter-readme] | [![Maven Central][gremlin-starter-mvn-2.3.x-img]][gremlin-starter-mvn-2.3.x] | [![Maven Central][gremlin-starter-mvn-2.2.x-img]][gremlin-starter-mvn-2.2.x] | [![][gremlin-starter-mvn-2.1.x-img]][gremlin-starter-mvn-2.1.x] | [![][gremlin-starter-mvn-2.0.x-img]][gremlin-starter-mvn-2.0.x]
@@ -50,7 +51,7 @@ The following section provides sample projects illustrating how to use the Azure
 - [Azure Active Directory for Backend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
 - [Azure Active Directory for Backend with Microsoft Graph API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
 - [Azure Active Directory B2C](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc)
-- [Cosmos DB SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
+- [Cosmos DB SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos)
 - [Gremlin SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin)
 - [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets)
 - [JMS Service Bus Queue](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
@@ -81,7 +82,7 @@ The following section provides sample projects illustrating how to use the Azure
 - [Azure Active Directory for Backend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
 - [Azure Active Directory for Backend with Microsoft Graph API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
 - [Azure Active Directory B2C](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc)
-- [Cosmos DB SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
+- [Cosmos DB SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-cosmos)
 - [Gremlin SQL API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin)
 - [Key Vault Secrets](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets)
 - [JMS Service Bus Queue](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
@@ -100,6 +101,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 [aad-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory/README.md
 [aad-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter.svg
@@ -141,7 +143,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [aad-b2c-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.1.svg
 [aad-b2c-starter-mvn-2.1.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.1.*
  
-[cosmosdb-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-cosmosdb/README.md
+[cosmos-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-cosmos/README.md
 [cosmosdb-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter.svg
 [cosmosdb-starter-mvn-2.3.x]: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-cosmosdb-spring-boot-starter%22
 [cosmosdb-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.2.svg

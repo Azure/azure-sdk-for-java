@@ -32,11 +32,11 @@ public class QueryTests extends QueryTestBase{
 
         try {
             String roomModelPayload = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
-            client.createModelsWithResponse(new ArrayList<>(Arrays.asList(roomModelPayload)), Context.NONE);
+            client.createModelsWithResponse(new ArrayList<>(Arrays.asList(roomModelPayload)), null, Context.NONE);
 
             // Create a room twin with property "IsOccupied" : true
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
-            client.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, Context.NONE);
+            client.createDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 

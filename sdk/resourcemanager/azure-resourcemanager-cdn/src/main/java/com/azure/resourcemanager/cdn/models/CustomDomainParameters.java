@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomDomainParameters model. */
+/** The customDomain JSON object required for custom domain creation or update. */
 @JsonFlatten
 @Fluent
 public class CustomDomainParameters {

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NameAvailability model. */
+/** Name availability result payload. */
 @Fluent
 public final class NameAvailability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailability.class);

@@ -33,6 +33,7 @@ import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -715,5 +716,38 @@ public class DataLakeFileClient extends DataLakePathClient {
                 Transforms.toBlobQueryOptions(queryOptions), timeout, context);
             return Transforms.toFileQueryResponse(response);
         }, logger);
+    }
+
+    // TODO (kasobol-msft) add REST DOCS
+    /**
+     * Schedules the file for deletion.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletion#FileScheduleDeletionOptions}
+     *
+     * @param options Schedule deletion parameters.
+     */
+    public void scheduleDeletion(FileScheduleDeletionOptions options) {
+        this.scheduleDeletionWithResponse(options, null, Context.NONE);
+    }
+
+    // TODO (kasobol-msft) add REST DOCS
+    /**
+     * Schedules the file for deletion.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context}
+     *
+     * @param options Schedule deletion parameters.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
+        Duration timeout, Context context) {
+        Mono<Response<Void>> response = this.dataLakeFileAsyncClient.scheduleDeletionWithResponse(options, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

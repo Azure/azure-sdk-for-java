@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
+import com.azure.resourcemanager.network.fluent.models.AvailableProvidersListInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;

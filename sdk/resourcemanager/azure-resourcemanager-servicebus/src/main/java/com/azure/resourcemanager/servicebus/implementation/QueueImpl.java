@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;

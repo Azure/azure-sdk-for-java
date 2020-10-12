@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroupProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceGroup model. */
+/** Resource group information. */
 @Fluent
 public final class ResourceGroupInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupInner.class);

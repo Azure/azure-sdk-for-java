@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * Some service has different rate limit but not visible in response header, like network/storage.
  */
 public class ResourceManagerThrottlingInfo {
-    // refer https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+    // refer https://docs.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling
     private static final List<String> COMMON_RATE_LIMIT_HEADERS = Arrays.asList(
         "x-ms-ratelimit-remaining-subscription-reads",
         "x-ms-ratelimit-remaining-subscription-writes",
@@ -31,7 +31,7 @@ public class ResourceManagerThrottlingInfo {
         "x-ms-ratelimit-remaining-tenant-resource-entities-read"
     );
 
-    // refer https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
+    // refer https://docs.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
     private static final String RESOURCE_RATE_LIMIT_HEADER = "x-ms-ratelimit-remaining-resource";
     private static final Pattern RESOURCE_RATE_LIMIT_HEADER_PATTERN = Pattern.compile("\\w+\\.\\w+/([^;]+);(\\d+)");
 
@@ -86,7 +86,7 @@ public class ResourceManagerThrottlingInfo {
     }
 
     /**
-     * refer https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+     * refer https://docs.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling
      * @return all headers associated with rate limit
      */
     public Map<String, String> getRateLimits() {
@@ -94,7 +94,7 @@ public class ResourceManagerThrottlingInfo {
     }
 
     /**
-     * refer https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
+     * refer https://docs.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
      * @return a specific rate limit header value from compute
      */
     public String getResourceRateLimit() {

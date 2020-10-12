@@ -46,6 +46,7 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
@@ -54,10 +55,12 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -1619,23 +1622,86 @@ public class ShareFileAsyncClient {
         }
     }
 
+    /**
+     * List of valid ranges for a file between the file and the specified snapshot.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiff#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     */
+    public Mono<ShareFileRangeList> listRangesDiff(String previousSnapshot) {
+        try {
+            return listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot))
+                .map(Response::getValue);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * List of valid ranges for a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all ranges within the file range from 1KB to 2KB.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRangesDiffWithResponse#ShareFileListRangesDiffOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     */
+    public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
+                options.getPreviousSnapshot(), Context.NONE);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        ShareRequestConditions finalRequestConditions = requestConditions == null
-            ? new ShareRequestConditions() : requestConditions;
-        String rangeString = range == null ? null : range.toString();
+        ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
+
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
-            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString,
-                    finalRequestConditions.getLeaseId(), context), timeout)
+            marker -> StorageImplUtils.applyOptionalTimeout(
+                this.listRangesWithResponse(range, requestConditions, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().stream().map(ShareFileRange::new).collect(Collectors.toList()),
+                    response.getValue().getRanges().stream()
+                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                        .map(ShareFileRange::new).collect(Collectors.toList()),
                     null,
-                    response.getDeserializedHeaders()));
+                    response.getHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Context context) {
+
+        ShareRequestConditions finalRequestConditions = requestConditions == null
+            ? new ShareRequestConditions() : requestConditions;
+        String rangeString = range == null ? null : range.toString();
+        context = context == null ? Context.NONE : context;
+
+        return this.azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot,
+            previousSnapshot, null, rangeString, finalRequestConditions.getLeaseId(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**

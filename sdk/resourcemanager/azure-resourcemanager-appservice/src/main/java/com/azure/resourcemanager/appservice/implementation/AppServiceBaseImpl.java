@@ -16,17 +16,17 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
-import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.IdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.nio.charset.StandardCharsets;
@@ -52,11 +52,6 @@ abstract class AppServiceBaseImpl<
     extends WebAppBaseImpl<FluentT, FluentImplT> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
-
-    protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
-    protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
-    protected static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
-    protected static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
 
     AppServiceBaseImpl(
         String name,
@@ -365,7 +360,7 @@ abstract class AppServiceBaseImpl<
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan() {
-        String planName = this.manager().sdkContext().randomResourceName(name() + "plan", 32);
+        String planName = this.manager().resourceManager().internalContext().randomResourceName(name() + "plan", 32);
         return newDefaultAppServicePlan(planName);
     }
 
@@ -450,7 +445,7 @@ abstract class AppServiceBaseImpl<
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
         }
-        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         return (FluentImplT) this;
     }
@@ -467,7 +462,7 @@ abstract class AppServiceBaseImpl<
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
         }
-        siteConfig.withLinuxFxVersion(String.format("DOCKER|%s", imageAndTag));
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
         withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
         return (FluentImplT) this;

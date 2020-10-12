@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The NotebookWorkspaceCreateUpdateParameters model. */
+/** Parameters to create a notebook workspace resource. */
 @Immutable
 public final class NotebookWorkspaceCreateUpdateParameters extends ArmProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceCreateUpdateParameters.class);

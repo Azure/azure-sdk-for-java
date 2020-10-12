@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ManagedServiceIdentity model. */
+/** Managed service identity. */
 @Fluent
 public class ManagedServiceIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedServiceIdentity.class);

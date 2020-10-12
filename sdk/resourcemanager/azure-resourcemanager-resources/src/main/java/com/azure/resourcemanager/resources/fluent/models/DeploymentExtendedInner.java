@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentExtended model. */
+/** Deployment information. */
 @Fluent
 public final class DeploymentExtendedInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExtendedInner.class);

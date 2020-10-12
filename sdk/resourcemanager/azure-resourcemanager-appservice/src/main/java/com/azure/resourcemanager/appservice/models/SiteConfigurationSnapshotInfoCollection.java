@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigurationSnapshotInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigurationSnapshotInfoInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SiteConfigurationSnapshotInfoCollection model. */
+/** Collection of metadata for the app configuration snapshots that can be restored. */
 @Fluent
 public final class SiteConfigurationSnapshotInfoCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteConfigurationSnapshotInfoCollection.class);

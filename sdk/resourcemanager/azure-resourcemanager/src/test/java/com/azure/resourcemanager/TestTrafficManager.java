@@ -40,15 +40,15 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     @Override
     public TrafficManagerProfile createResource(TrafficManagerProfiles profiles) throws Exception {
         final Region region = Region.US_EAST;
-        final String groupName = profiles.manager().sdkContext().randomResourceName("rg", 10);
+        final String groupName = profiles.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
-        final String pipName = profiles.manager().sdkContext().randomResourceName("pip", 10);
-        final String pipDnsLabel = profiles.manager().sdkContext().randomResourceName("contoso", 15);
+        final String pipName = profiles.manager().resourceManager().internalContext().randomResourceName("pip", 10);
+        final String pipDnsLabel = profiles.manager().resourceManager().internalContext().randomResourceName("contoso", 15);
 
-        final String tmProfileName = profiles.manager().sdkContext().randomResourceName("tm", 10);
+        final String tmProfileName = profiles.manager().resourceManager().internalContext().randomResourceName("tm", 10);
         final String nestedTmProfileName = "nested" + tmProfileName;
 
-        final String tmProfileDnsLabel = profiles.manager().sdkContext().randomResourceName("tmdns", 10);
+        final String tmProfileDnsLabel = profiles.manager().resourceManager().internalContext().randomResourceName("tmdns", 10);
         final String nestedTmProfileDnsLabel = "nested" + tmProfileDnsLabel;
 
         ResourceGroup.DefinitionStages.WithCreate rgCreatable =

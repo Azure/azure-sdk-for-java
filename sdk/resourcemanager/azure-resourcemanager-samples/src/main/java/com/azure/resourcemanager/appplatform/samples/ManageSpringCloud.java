@@ -72,13 +72,13 @@ public class ManageSpringCloud {
      * @throws IllegalStateException unexcepted state
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String serviceName  = azureResourceManager.sdkContext().randomResourceName("service", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String serviceName  = Utils.randomResourceName(azureResourceManager, "service", 24);
         final Region region = Region.US_EAST;
-        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String certOrderName = azureResourceManager.sdkContext().randomResourceName("cert", 15);
-        final String vaultName = azureResourceManager.sdkContext().randomResourceName("vault", 15);
-        final String certName = azureResourceManager.sdkContext().randomResourceName("cert", 15);
+        final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
+        final String certOrderName = Utils.randomResourceName(azureResourceManager, "cert", 15);
+        final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 15);
+        final String certName = Utils.randomResourceName(azureResourceManager, "cert", 15);
 
         try {
             azureResourceManager.resourceGroups().define(rgName)
@@ -218,7 +218,7 @@ public class ManageSpringCloud {
 
             Secret secret = vault.secrets().getByName(certOrderName);
 
-            byte[] certificate = Base64.getDecoder().decode(secret.value());
+            byte[] certificate = Base64.getDecoder().decode(secret.getValue());
 
             String thumbprint = secret.tags().get("Thumbprint");
             if (thumbprint == null || thumbprint.isEmpty()) {
@@ -228,7 +228,7 @@ public class ManageSpringCloud {
                 thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
             }
 
-            System.out.printf("Get certificate: %s%n", secret.value());
+            System.out.printf("Get certificate: %s%n", secret.getValue());
             System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
             // upload certificate

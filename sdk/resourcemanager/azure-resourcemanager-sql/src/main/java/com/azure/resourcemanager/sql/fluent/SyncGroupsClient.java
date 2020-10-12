@@ -4,389 +4,49 @@
 
 package com.azure.resourcemanager.sql.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sql.fluent.inner.SyncDatabaseIdListResultInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncDatabaseIdPropertiesInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncFullSchemaPropertiesInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncFullSchemaPropertiesListResultInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupListResultInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupLogListResultInner;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupLogPropertiesInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncDatabaseIdPropertiesInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncFullSchemaPropertiesInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncGroupLogPropertiesInner;
 import com.azure.resourcemanager.sql.models.SyncGroupsType;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SyncGroups. */
-public final class SyncGroupsClient {
-    private final ClientLogger logger = new ClientLogger(SyncGroupsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final SyncGroupsService service;
-
-    /** The service client containing this operation class. */
-    private final SqlManagementClient client;
-
-    /**
-     * Initializes an instance of SyncGroupsClient.
-     *
-     * @param client the instance of the service client containing this operation class.
-     */
-    public SyncGroupsClient(SqlManagementClient client) {
-        this.service =
-            RestProxy.create(SyncGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for SqlManagementClientSyncGroups to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientS")
-    private interface SyncGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/syncDatabaseIds")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncDatabaseIdListResultInner>> listSyncDatabaseIds(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> refreshHubSchema(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncFullSchemaPropertiesListResultInner>> listHubSchemas(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncGroupLogListResultInner>> listLogs(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @QueryParam("startTime") String startTime,
-            @QueryParam("endTime") String endTime,
-            @QueryParam("type") SyncGroupsType type,
-            @QueryParam("continuationToken") String continuationToken,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancelSync(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> triggerSync(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SyncGroupInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("syncGroupName") String syncGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SyncGroupInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncGroupListResultInner>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncDatabaseIdListResultInner>> listSyncDatabaseIdsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncFullSchemaPropertiesListResultInner>> listHubSchemasNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncGroupLogListResultInner>> listLogsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncGroupListResultInner>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
-
+/** An instance of this class provides access to all the operations defined in SyncGroupsClient. */
+public interface SyncGroupsClient {
     /**
      * Gets a collection of sync database ids.
      *
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsSinglePageAsync(String locationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSyncDatabaseIds(
-                            this.client.getEndpoint(),
-                            locationName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<SyncDatabaseIdPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets a collection of sync database ids.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsSinglePageAsync(
-        String locationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listSyncDatabaseIds(
-                this.client.getEndpoint(), locationName, this.client.getSubscriptionId(), apiVersion, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a collection of sync database ids.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of sync database ids.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncDatabaseIdPropertiesInner> listSyncDatabaseIdsAsync(String locationName) {
-        return new PagedFlux<>(
-            () -> listSyncDatabaseIdsSinglePageAsync(locationName),
-            nextLink -> listSyncDatabaseIdsNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<SyncDatabaseIdPropertiesInner> listSyncDatabaseIdsAsync(String locationName);
+
+    /**
+     * Gets a collection of sync database ids.
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of sync database ids.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncDatabaseIdPropertiesInner> listSyncDatabaseIds(String locationName);
 
     /**
      * Gets a collection of sync database ids.
@@ -394,45 +54,12 @@ public final class SyncGroupsClient {
      * @param locationName The name of the region where the resource is located.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of sync database ids.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncDatabaseIdPropertiesInner> listSyncDatabaseIdsAsync(String locationName, Context context) {
-        return new PagedFlux<>(
-            () -> listSyncDatabaseIdsSinglePageAsync(locationName, context),
-            nextLink -> listSyncDatabaseIdsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a collection of sync database ids.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncDatabaseIdPropertiesInner> listSyncDatabaseIds(String locationName) {
-        return new PagedIterable<>(listSyncDatabaseIdsAsync(locationName));
-    }
-
-    /**
-     * Gets a collection of sync database ids.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncDatabaseIdPropertiesInner> listSyncDatabaseIds(String locationName, Context context) {
-        return new PagedIterable<>(listSyncDatabaseIdsAsync(locationName, context));
-    }
+    PagedIterable<SyncDatabaseIdPropertiesInner> listSyncDatabaseIds(String locationName, Context context);
 
     /**
      * Refreshes a hub database schema.
@@ -443,54 +70,47 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> refreshHubSchemaWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .refreshHubSchema(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> refreshHubSchemaWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Refreshes a hub database schema.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Refreshes a hub database schema.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Refreshes a hub database schema.
@@ -502,51 +122,13 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> refreshHubSchemaWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .refreshHubSchema(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Refreshes a hub database schema.
@@ -557,19 +139,28 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            refreshHubSchemaWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> refreshHubSchemaAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Refreshes a hub database schema.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void refreshHubSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Refreshes a hub database schema.
@@ -581,140 +172,12 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            refreshHubSchemaWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Refreshes a hub database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
-    }
-
-    /**
-     * Refreshes a hub database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Refreshes a hub database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> refreshHubSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Refreshes a hub database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> refreshHubSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Refreshes a hub database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void refreshHubSchema(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        refreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
-    }
-
-    /**
-     * Refreshes a hub database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void refreshHubSchema(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        refreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
-    }
+    void refreshHubSchema(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Gets a collection of hub database schemas.
@@ -725,63 +188,30 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of hub database schemas.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listHubSchemas(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<SyncFullSchemaPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SyncFullSchemaPropertiesInner> listHubSchemasAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Gets a collection of hub database schemas.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of hub database schemas.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncFullSchemaPropertiesInner> listHubSchemas(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Gets a collection of hub database schemas.
@@ -793,143 +223,13 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listHubSchemas(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a collection of hub database schemas.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of hub database schemas.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncFullSchemaPropertiesInner> listHubSchemasAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return new PagedFlux<>(
-            () -> listHubSchemasSinglePageAsync(resourceGroupName, serverName, databaseName, syncGroupName),
-            nextLink -> listHubSchemasNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a collection of hub database schemas.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncFullSchemaPropertiesInner> listHubSchemasAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listHubSchemasSinglePageAsync(resourceGroupName, serverName, databaseName, syncGroupName, context),
-            nextLink -> listHubSchemasNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a collection of hub database schemas.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncFullSchemaPropertiesInner> listHubSchemas(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return new PagedIterable<>(listHubSchemasAsync(resourceGroupName, serverName, databaseName, syncGroupName));
-    }
-
-    /**
-     * Gets a collection of hub database schemas.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncFullSchemaPropertiesInner> listHubSchemas(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return new PagedIterable<>(
-            listHubSchemasAsync(resourceGroupName, serverName, databaseName, syncGroupName, context));
-    }
+    PagedIterable<SyncFullSchemaPropertiesInner> listHubSchemas(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Gets a collection of sync group logs.
@@ -944,12 +244,12 @@ public final class SyncGroupsClient {
      * @param type The types of logs to retrieve.
      * @param continuationToken The continuation token for this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of sync group logs.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsSinglePageAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
@@ -957,70 +257,33 @@ public final class SyncGroupsClient {
         String startTime,
         String endTime,
         SyncGroupsType type,
-        String continuationToken) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (startTime == null) {
-            return Mono.error(new IllegalArgumentException("Parameter startTime is required and cannot be null."));
-        }
-        if (endTime == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endTime is required and cannot be null."));
-        }
-        if (type == null) {
-            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listLogs(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            startTime,
-                            endTime,
-                            type,
-                            continuationToken,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<SyncGroupLogPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        String continuationToken);
+
+    /**
+     * Gets a collection of sync group logs.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param startTime Get logs generated after this time.
+     * @param endTime Get logs generated before this time.
+     * @param type The types of logs to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of sync group logs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        String startTime,
+        String endTime,
+        SyncGroupsType type);
 
     /**
      * Gets a collection of sync group logs.
@@ -1036,12 +299,12 @@ public final class SyncGroupsClient {
      * @param continuationToken The continuation token for this operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of sync group logs.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsSinglePageAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncGroupLogPropertiesInner> listLogs(
         String resourceGroupName,
         String serverName,
         String databaseName,
@@ -1050,152 +313,7 @@ public final class SyncGroupsClient {
         String endTime,
         SyncGroupsType type,
         String continuationToken,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (startTime == null) {
-            return Mono.error(new IllegalArgumentException("Parameter startTime is required and cannot be null."));
-        }
-        if (endTime == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endTime is required and cannot be null."));
-        }
-        if (type == null) {
-            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listLogs(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                startTime,
-                endTime,
-                type,
-                continuationToken,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a collection of sync group logs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param startTime Get logs generated after this time.
-     * @param endTime Get logs generated before this time.
-     * @param type The types of logs to retrieve.
-     * @param continuationToken The continuation token for this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String startTime,
-        String endTime,
-        SyncGroupsType type,
-        String continuationToken) {
-        return new PagedFlux<>(
-            () ->
-                listLogsSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    databaseName,
-                    syncGroupName,
-                    startTime,
-                    endTime,
-                    type,
-                    continuationToken),
-            nextLink -> listLogsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a collection of sync group logs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param startTime Get logs generated after this time.
-     * @param endTime Get logs generated before this time.
-     * @param type The types of logs to retrieve.
-     * @param continuationToken The continuation token for this operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String startTime,
-        String endTime,
-        SyncGroupsType type,
-        String continuationToken,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listLogsSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    databaseName,
-                    syncGroupName,
-                    startTime,
-                    endTime,
-                    type,
-                    continuationToken,
-                    context),
-            nextLink -> listLogsNextSinglePageAsync(nextLink, context));
-    }
+        Context context);
 
     /**
      * Gets a collection of sync group logs.
@@ -1209,154 +327,19 @@ public final class SyncGroupsClient {
      * @param endTime Get logs generated before this time.
      * @param type The types of logs to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of sync group logs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
+    PagedIterable<SyncGroupLogPropertiesInner> listLogs(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
         String startTime,
         String endTime,
-        SyncGroupsType type) {
-        final String continuationToken = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () ->
-                listLogsSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    databaseName,
-                    syncGroupName,
-                    startTime,
-                    endTime,
-                    type,
-                    continuationToken),
-            nextLink -> listLogsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a collection of sync group logs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param startTime Get logs generated after this time.
-     * @param endTime Get logs generated before this time.
-     * @param type The types of logs to retrieve.
-     * @param continuationToken The continuation token for this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncGroupLogPropertiesInner> listLogs(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String startTime,
-        String endTime,
-        SyncGroupsType type,
-        String continuationToken) {
-        return new PagedIterable<>(
-            listLogsAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                startTime,
-                endTime,
-                type,
-                continuationToken));
-    }
-
-    /**
-     * Gets a collection of sync group logs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param startTime Get logs generated after this time.
-     * @param endTime Get logs generated before this time.
-     * @param type The types of logs to retrieve.
-     * @param continuationToken The continuation token for this operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncGroupLogPropertiesInner> listLogs(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String startTime,
-        String endTime,
-        SyncGroupsType type,
-        String continuationToken,
-        Context context) {
-        return new PagedIterable<>(
-            listLogsAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                startTime,
-                endTime,
-                type,
-                continuationToken,
-                context));
-    }
-
-    /**
-     * Gets a collection of sync group logs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param startTime Get logs generated after this time.
-     * @param endTime Get logs generated before this time.
-     * @param type The types of logs to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncGroupLogPropertiesInner> listLogs(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String startTime,
-        String endTime,
-        SyncGroupsType type) {
-        final String continuationToken = null;
-        final Context context = null;
-        return new PagedIterable<>(
-            listLogsAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                startTime,
-                endTime,
-                type,
-                continuationToken));
-    }
+        SyncGroupsType type);
 
     /**
      * Cancels a sync group synchronization.
@@ -1367,54 +350,44 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelSyncWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancelSync(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> cancelSyncWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Cancels a sync group synchronization.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> cancelSyncAsync(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Cancels a sync group synchronization.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelSync(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Cancels a sync group synchronization.
@@ -1426,128 +399,13 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelSyncWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .cancelSync(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Cancels a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelSyncAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return cancelSyncWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancels a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelSyncAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return cancelSyncWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancels a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelSync(String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        cancelSyncAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
-    }
-
-    /**
-     * Cancels a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelSync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        cancelSyncAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
-    }
+    Response<Void> cancelSyncWithResponse(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Triggers a sync group synchronization.
@@ -1558,54 +416,44 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> triggerSyncWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .triggerSync(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> triggerSyncWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Triggers a sync group synchronization.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> triggerSyncAsync(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Triggers a sync group synchronization.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void triggerSync(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Triggers a sync group synchronization.
@@ -1617,128 +465,13 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> triggerSyncWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .triggerSync(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Triggers a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> triggerSyncAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return triggerSyncWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Triggers a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> triggerSyncAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return triggerSyncWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Triggers a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void triggerSync(String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        triggerSyncAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
-    }
-
-    /**
-     * Triggers a sync group synchronization.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void triggerSync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        triggerSyncAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
-    }
+    Response<Void> triggerSyncWithResponse(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Gets a sync group.
@@ -1749,54 +482,46 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SyncGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<SyncGroupInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Gets a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SyncGroupInner> getAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Gets a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncGroupInner get(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Gets a sync group.
@@ -1808,144 +533,13 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SyncGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Gets a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .flatMap(
-                (Response<SyncGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
-            .flatMap(
-                (Response<SyncGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner get(String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return getAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
-    }
-
-    /**
-     * Gets a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner get(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return getAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
-    }
+    Response<SyncGroupInner> getWithResponse(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Creates or updates a sync group.
@@ -1957,64 +551,61 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param parameters An Azure SQL Database sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
-        SyncGroupInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        SyncGroupInner parameters);
+
+    /**
+     * Creates or updates a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param parameters An Azure SQL Database sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL Database sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        SyncGroupInner parameters);
+
+    /**
+     * Creates or updates a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param parameters An Azure SQL Database sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL Database sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        SyncGroupInner parameters);
 
     /**
      * Creates or updates a sync group.
@@ -2027,62 +618,18 @@ public final class SyncGroupsClient {
      * @param parameters An Azure SQL Database sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
         SyncGroupInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
+        Context context);
 
     /**
      * Creates or updates a sync group.
@@ -2094,24 +641,39 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param parameters An Azure SQL Database sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdateAsync(
+    Mono<SyncGroupInner> createOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
-        SyncGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters);
-        return this
-            .client
-            .<SyncGroupInner, SyncGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncGroupInner.class, SyncGroupInner.class, Context.NONE);
-    }
+        SyncGroupInner parameters);
+
+    /**
+     * Creates or updates a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param parameters An Azure SQL Database sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL Database sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncGroupInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        SyncGroupInner parameters);
 
     /**
      * Creates or updates a sync group.
@@ -2124,184 +686,18 @@ public final class SyncGroupsClient {
      * @param parameters An Azure SQL Database sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdateAsync(
+    SyncGroupInner createOrUpdate(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
         SyncGroupInner parameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, syncGroupName, parameters, context);
-        return this
-            .client
-            .<SyncGroupInner, SyncGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncGroupInner.class, SyncGroupInner.class, context);
-    }
-
-    /**
-     * Creates or updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Deletes a sync group.
@@ -2312,54 +708,47 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Deletes a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Deletes a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Deletes a sync group.
@@ -2371,51 +760,13 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Deletes a sync group.
@@ -2426,19 +777,27 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+
+    /**
+     * Deletes a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Deletes a sync group.
@@ -2450,138 +809,12 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        deleteAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
-    }
-
-    /**
-     * Deletes a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        deleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
-    }
+    void delete(
+        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
 
     /**
      * Updates a sync group.
@@ -2593,64 +826,61 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param parameters An Azure SQL Database sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
-        SyncGroupInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            syncGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        SyncGroupInner parameters);
+
+    /**
+     * Updates a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param parameters An Azure SQL Database sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL Database sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        SyncGroupInner parameters);
+
+    /**
+     * Updates a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param parameters An Azure SQL Database sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL Database sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdate(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        SyncGroupInner parameters);
 
     /**
      * Updates a sync group.
@@ -2663,62 +893,18 @@ public final class SyncGroupsClient {
      * @param parameters An Azure SQL Database sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdate(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
         SyncGroupInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (syncGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter syncGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
+        Context context);
 
     /**
      * Updates a sync group.
@@ -2730,24 +916,39 @@ public final class SyncGroupsClient {
      * @param syncGroupName The name of the sync group.
      * @param parameters An Azure SQL Database sync group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdateAsync(
+    Mono<SyncGroupInner> updateAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
-        SyncGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters);
-        return this
-            .client
-            .<SyncGroupInner, SyncGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncGroupInner.class, SyncGroupInner.class, Context.NONE);
-    }
+        SyncGroupInner parameters);
+
+    /**
+     * Updates a sync group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param parameters An Azure SQL Database sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL Database sync group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncGroupInner update(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        SyncGroupInner parameters);
 
     /**
      * Updates a sync group.
@@ -2760,181 +961,18 @@ public final class SyncGroupsClient {
      * @param parameters An Azure SQL Database sync group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL Database sync group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdateAsync(
+    SyncGroupInner update(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String syncGroupName,
         SyncGroupInner parameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context);
-        return this
-            .client
-            .<SyncGroupInner, SyncGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncGroupInner.class, SyncGroupInner.class, context);
-    }
-
-    /**
-     * Updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters) {
-        return updateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters).block();
-    }
-
-    /**
-     * Updates a sync group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        SyncGroupInner parameters,
-        Context context) {
-        return updateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context).block();
-    }
+        Context context);
 
     /**
      * Lists sync groups under a hub database.
@@ -2944,139 +982,27 @@ public final class SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<SyncGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Lists sync groups under a hub database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists sync groups under a hub database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sync groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncGroupInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<SyncGroupInner> listByDatabaseAsync(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Lists sync groups under a hub database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sync groups.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncGroupInner> listByDatabase(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Lists sync groups under a hub database.
@@ -3087,283 +1013,11 @@ public final class SyncGroupsClient {
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sync groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncGroupInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists sync groups under a hub database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncGroupInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
-    }
-
-    /**
-     * Lists sync groups under a hub database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncGroupInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync database ID properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listSyncDatabaseIdsNext(nextLink, context))
-            .<PagedResponse<SyncDatabaseIdPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync database ID properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listSyncDatabaseIdsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync schema properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listHubSchemasNext(nextLink, context))
-            .<PagedResponse<SyncFullSchemaPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync schema properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listHubSchemasNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync group log properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listLogsNext(nextLink, context))
-            .<PagedResponse<SyncGroupLogPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync group log properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listLogsNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByDatabaseNext(nextLink, context))
-            .<PagedResponse<SyncGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SyncGroupInner>> listByDatabaseNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByDatabaseNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    PagedIterable<SyncGroupInner> listByDatabase(
+        String resourceGroupName, String serverName, String databaseName, Context context);
 }

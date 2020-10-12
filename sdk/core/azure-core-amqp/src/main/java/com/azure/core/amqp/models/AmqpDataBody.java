@@ -11,16 +11,16 @@ import java.util.Objects;
  * This is amqp message body which represents {@link AmqpBodyType#DATA} type.
  */
 public final class AmqpDataBody implements AmqpMessageBody {
-    private final IterableStream<BinaryData> data;
+    private final IterableStream<byte[]> data;
 
     /**
-     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of {@link BinaryData}.
+     * Creates instance of {@link AmqpDataBody} with given {@link Iterable} of byte array.
      *
      * @param data to be set on amqp body.
      *
      * @throws NullPointerException if {@code data} is null.
      */
-    public AmqpDataBody(Iterable<BinaryData> data) {
+    public AmqpDataBody(Iterable<byte[]> data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         this.data = new IterableStream<>(data);
     }
@@ -31,11 +31,11 @@ public final class AmqpDataBody implements AmqpMessageBody {
     }
 
     /**
-     * Gets {@link BinaryData} set on this {@link AmqpDataBody}.
+     * Gets byte array set on this {@link AmqpDataBody}.
      *
      * @return data set on {@link AmqpDataBody}.
      */
-    public IterableStream<BinaryData> getData() {
+    public IterableStream<byte[]> getData() {
         return data;
     }
 }

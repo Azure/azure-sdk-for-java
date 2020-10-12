@@ -37,13 +37,13 @@ public final class ManageWebAppSqlConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String appName        = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
         final String appUrl         = appName + suffix;
-        final String sqlServerName  = azureResourceManager.sdkContext().randomResourceName("jsdkserver", 20);
-        final String sqlDbName      = azureResourceManager.sdkContext().randomResourceName("jsdkdb", 20);
+        final String sqlServerName  = Utils.randomResourceName(azureResourceManager, "jsdkserver", 20);
+        final String sqlDbName      = Utils.randomResourceName(azureResourceManager, "jsdkdb", 20);
         final String admin          = "jsdkadmin";
         final String password       = Utils.password();
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 

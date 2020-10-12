@@ -62,7 +62,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getPollDuration()).thenReturn(Duration.ofMillis(10));
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
         client = new CertificateClient(asyncClient);
@@ -109,7 +109,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void createCertoificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+    public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.beginCreateCertificate(null, null),
             NullPointerException.class);

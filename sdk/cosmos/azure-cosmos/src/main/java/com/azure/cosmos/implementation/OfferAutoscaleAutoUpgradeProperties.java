@@ -37,4 +37,14 @@ public class OfferAutoscaleAutoUpgradeProperties extends JsonSerializable {
             return this.getInt(Constants.Properties.AUTOPILOT_THROUGHPUT_POLICY_INCREMENT_PERCENT);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

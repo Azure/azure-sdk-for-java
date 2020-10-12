@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualHubEffectiveRoute model. */
+/** The effective route configured on the virtual hub or specified resource. */
 @Fluent
 public final class VirtualHubEffectiveRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubEffectiveRoute.class);

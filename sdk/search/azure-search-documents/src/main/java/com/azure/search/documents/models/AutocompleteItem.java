@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutocompleteItem model. */
+/** The result of Autocomplete requests. */
 @Immutable
 public final class AutocompleteItem {
     /*

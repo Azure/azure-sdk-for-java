@@ -8,22 +8,23 @@ import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.ConnectionString;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
 import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
+import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
 import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
-import com.azure.resourcemanager.appservice.fluent.inner.ConnectionStringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.IdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SlotConfigNamesResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -39,7 +40,8 @@ abstract class DeploymentSlotBaseImpl<
         ParentImplT extends AppServiceBaseImpl<?, ?, ?, ?>,
         FluentWithCreateT,
         FluentUpdateT>
-    extends WebAppBaseImpl<FluentT, FluentImplT> {
+    extends WebAppBaseImpl<FluentT, FluentImplT>
+    implements DeploymentSlotBase<FluentT>, DeploymentSlotBase.Update<FluentT> {
     private final ParentImplT parent;
     private final String name;
     WebAppBase configurationSource;
@@ -466,5 +468,78 @@ abstract class DeploymentSlotBaseImpl<
             .createOrUpdateDomainOwnershipIdentifierSlotAsync(
                 resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
             .then(Mono.empty());
+    }
+
+    @Override
+    public FluentImplT withRuntime(String runtime) {
+        return withAppSetting(SETTING_FUNCTIONS_WORKER_RUNTIME, runtime);
+    }
+
+    @Override
+    public FluentImplT withRuntimeVersion(String version) {
+        return withAppSetting(SETTING_FUNCTIONS_EXTENSION_VERSION, version.startsWith("~") ? version : "~" + version);
+    }
+
+    @Override
+    public FluentImplT withLatestRuntimeVersion() {
+        return withRuntimeVersion("latest");
+    }
+
+    @Override
+    public FluentImplT withPublicDockerHubImage(String imageAndTag) {
+        cleanUpContainerSettings();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
+        return withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
+    }
+
+    @Override
+    public FluentImplT withPrivateDockerHubImage(String imageAndTag) {
+        return withPublicDockerHubImage(imageAndTag);
+    }
+
+    @Override
+    public FluentImplT withPrivateRegistryImage(String imageAndTag, String serverUrl) {
+        imageAndTag = Utils.smartCompletionPrivateRegistryImage(imageAndTag, serverUrl);
+
+        cleanUpContainerSettings();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        setAppFrameworkVersion(String.format("DOCKER|%s", imageAndTag));
+        withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
+        return withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
+    }
+
+    @Override
+    public FluentImplT withCredentials(String username, String password) {
+        withAppSetting(SETTING_REGISTRY_USERNAME, username);
+        return withAppSetting(SETTING_REGISTRY_PASSWORD, password);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withStartUpCommand(String startUpCommand) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAppCommandLine(startUpCommand);
+        return (FluentImplT) this;
+    }
+
+    protected void cleanUpContainerSettings() {
+        if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
+            siteConfig.withLinuxFxVersion(null);
+        }
+        if (siteConfig != null && siteConfig.windowsFxVersion() != null) {
+            siteConfig.withWindowsFxVersion(null);
+        }
+        // Docker Hub
+        withoutAppSetting(SETTING_DOCKER_IMAGE);
+        withoutAppSetting(SETTING_REGISTRY_SERVER);
+        withoutAppSetting(SETTING_REGISTRY_USERNAME);
+        withoutAppSetting(SETTING_REGISTRY_PASSWORD);
     }
 }

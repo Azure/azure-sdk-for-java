@@ -29,7 +29,6 @@ import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.implementation.models.RequestOptions;
-import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchOptions;
@@ -40,11 +39,11 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {

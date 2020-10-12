@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The CassandraTableCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB Cassandra table. */
 @JsonFlatten
 @Fluent
 public class CassandraTableCreateUpdateParameters extends ArmResourceProperties {

@@ -34,7 +34,6 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Disabled("Get error `Cannot create more than 1 network watchers for this subscription in this region.` with test subscription")
     public void testVerifyNetworkPeeringWithNetworkWatcher() {
         Assertions.assertTrue(VerifyNetworkPeeringWithNetworkWatcher.runSample(azureResourceManager));
     }

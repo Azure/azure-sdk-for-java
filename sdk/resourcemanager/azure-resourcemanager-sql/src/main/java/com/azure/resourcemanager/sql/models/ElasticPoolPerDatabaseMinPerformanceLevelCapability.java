@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ElasticPoolPerDatabaseMinPerformanceLevelCapability model. */
+/** The minimum per-database performance level capability. */
 @Fluent
 public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
     @JsonIgnore

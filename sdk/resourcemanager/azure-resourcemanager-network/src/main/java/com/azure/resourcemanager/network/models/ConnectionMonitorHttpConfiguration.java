@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConnectionMonitorHttpConfiguration model. */
+/** Describes the HTTP configuration. */
 @Fluent
 public final class ConnectionMonitorHttpConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorHttpConfiguration.class);

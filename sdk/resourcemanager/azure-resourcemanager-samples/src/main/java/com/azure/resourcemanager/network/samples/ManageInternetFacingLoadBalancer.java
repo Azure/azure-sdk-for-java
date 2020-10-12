@@ -75,12 +75,12 @@ public final class ManageInternetFacingLoadBalancer {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEML", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEML", 15);
 
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
 
-        final String loadBalancerName1 = azureResourceManager.sdkContext().randomResourceName("intlb1" + "-", 18);
-        final String loadBalancerName2 = azureResourceManager.sdkContext().randomResourceName("intlb2" + "-", 18);
+        final String loadBalancerName1 = Utils.randomResourceName(azureResourceManager, "intlb1" + "-", 18);
+        final String loadBalancerName2 = Utils.randomResourceName(azureResourceManager, "intlb2" + "-", 18);
         final String publicIpName1 = "pip1-" + loadBalancerName1;
         final String publicIpName2 = "pip2-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
@@ -96,10 +96,10 @@ public final class ManageInternetFacingLoadBalancer {
         final String natRule5002to22forVM2 = "nat5002to22forVM2";
         final String natRule5003to23forVM2 = "nat5003to23forVM2";
 
-        final String networkInterfaceName1 = azureResourceManager.sdkContext().randomResourceName("nic1", 24);
-        final String networkInterfaceName2 = azureResourceManager.sdkContext().randomResourceName("nic2", 24);
+        final String networkInterfaceName1 = Utils.randomResourceName(azureResourceManager, "nic1", 24);
+        final String networkInterfaceName2 = Utils.randomResourceName(azureResourceManager, "nic2", 24);
 
-        final String availSetName = azureResourceManager.sdkContext().randomResourceName("av", 24);
+        final String availSetName = Utils.randomResourceName(azureResourceManager, "av", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         try {
@@ -294,7 +294,7 @@ public final class ManageInternetFacingLoadBalancer {
             List<Creatable<VirtualMachine>> virtualMachineCreateables1 = new ArrayList<Creatable<VirtualMachine>>();
 
             for (Creatable<NetworkInterface> nicDefinition : networkInterfaceCreatables) {
-                virtualMachineCreateables1.add(azureResourceManager.virtualMachines().define(azureResourceManager.sdkContext().randomResourceName("lVM1", 24))
+                virtualMachineCreateables1.add(azureResourceManager.virtualMachines().define(Utils.randomResourceName(azureResourceManager, "lVM1", 24))
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .withNewPrimaryNetworkInterface(nicDefinition)

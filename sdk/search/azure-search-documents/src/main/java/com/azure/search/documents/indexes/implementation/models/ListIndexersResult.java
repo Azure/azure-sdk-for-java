@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListIndexersResult model. */
+/** Response from a List Indexers request. If successful, it includes the full definitions of all indexers. */
 @Immutable
 public final class ListIndexersResult {
     /*

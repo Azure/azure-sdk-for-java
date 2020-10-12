@@ -34,8 +34,8 @@ public class ManageEventHubEvents {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgEvHb", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("ns", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgEvHb", 24);
+        final String namespaceName = Utils.randomResourceName(azureResourceManager, "ns", 24);
         final String eventHubName = "FirstEventHub";
         String diagnosticSettingId = null;
 

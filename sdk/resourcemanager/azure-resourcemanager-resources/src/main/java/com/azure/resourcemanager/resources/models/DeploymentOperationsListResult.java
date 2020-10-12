@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DeploymentOperationsListResult model. */
+/** List of deployment operations. */
 @Fluent
 public final class DeploymentOperationsListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationsListResult.class);

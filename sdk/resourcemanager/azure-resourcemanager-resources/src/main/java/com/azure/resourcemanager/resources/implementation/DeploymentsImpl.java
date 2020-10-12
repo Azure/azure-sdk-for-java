@@ -117,7 +117,7 @@ public final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listAsync() {
-        return PagedConverter.flatMapPage(this.manager().resourceGroups().listAsync(),
+        return PagedConverter.mergePagedFlux(this.manager().resourceGroups().listAsync(),
             resourceGroup -> listByResourceGroupAsync(resourceGroup.name()));
     }
 
