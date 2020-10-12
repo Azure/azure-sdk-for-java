@@ -138,7 +138,7 @@ public class UserPrincipalAzureADGraphTest {
 
             final JWSObject jwsObject = JWSObject.parse(TestConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();
-            final UserPrincipal principal = new UserPrincipal(jwsObject, jwtClaimsSet);
+            final UserPrincipal principal = new UserPrincipal("", jwsObject, jwtClaimsSet);
 
             objectOutputStream.writeObject(principal);
 

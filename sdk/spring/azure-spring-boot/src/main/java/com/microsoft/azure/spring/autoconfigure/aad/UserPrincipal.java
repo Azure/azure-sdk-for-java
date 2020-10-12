@@ -17,8 +17,11 @@ public class UserPrincipal implements Serializable {
     private final JWSObject jwsObject;
     private final JWTClaimsSet jwtClaimsSet;
     private List<UserGroup> userGroups = new ArrayList<>();
+    private String aadIssuedBearerToken; // id_token or access_token
+    private String accessTokenForGraphApi;
 
-    public UserPrincipal(JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
+    public UserPrincipal(String aadIssuedBearerToken, JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
+        this.aadIssuedBearerToken = aadIssuedBearerToken;
         this.jwsObject = jwsObject;
         this.jwtClaimsSet = jwtClaimsSet;
     }
@@ -71,6 +74,22 @@ public class UserPrincipal implements Serializable {
 
     public boolean isMemberOf(UserGroup group) {
         return !(userGroups == null || userGroups.isEmpty()) && userGroups.contains(group);
+    }
+
+    public String getAadIssuedBearerToken() {
+        return aadIssuedBearerToken;
+    }
+
+    public void setAadIssuedBearerToken(String aadIssuedBearerToken) {
+        this.aadIssuedBearerToken = aadIssuedBearerToken;
+    }
+
+    public String getAccessTokenForGraphApi() {
+        return accessTokenForGraphApi;
+    }
+
+    public void setAccessTokenForGraphApi(String accessTokenForGraphApi) {
+        this.accessTokenForGraphApi = accessTokenForGraphApi;
     }
 }
 

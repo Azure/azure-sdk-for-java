@@ -141,7 +141,7 @@ public class UserPrincipalMicrosoftGraphTest {
 
             final JWSObject jwsObject = JWSObject.parse(MicrosoftGraphConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();
-            final UserPrincipal principal = new UserPrincipal(jwsObject, jwtClaimsSet);
+            final UserPrincipal principal = new UserPrincipal("", jwsObject, jwtClaimsSet);
 
             objectOutputStream.writeObject(principal);
 
