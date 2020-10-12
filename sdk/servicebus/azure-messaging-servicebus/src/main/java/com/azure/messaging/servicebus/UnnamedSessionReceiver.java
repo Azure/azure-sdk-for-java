@@ -128,12 +128,10 @@ class UnnamedSessionReceiver implements AutoCloseable {
             }
         }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
-            System.out.println("!!!!" + this.getClass().getName() + " (UnnamedSessionReceiver) constructor lockedUntil : " +lockedUntil);
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
                 return;
             }
-            System.out.println("!!!!" + this.getClass().getName() + " (UnnamedSessionReceiver) constructor new LockRenewalOperation() for maxSessionLockRenewDuration =" + maxSessionLockRenewDuration);
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
                 maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
@@ -187,7 +185,6 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
 
-        System.out.println("!!!!" + this.getClass().getName() + " (updateDisposition) sessionLocked until = " + receiveLink.getSessionLockedUntil().block().atZoneSameInstant(ZoneId.of("America/Los_Angeles")));
         return receiveLink.updateDisposition(lockToken, deliveryState);
     }
 

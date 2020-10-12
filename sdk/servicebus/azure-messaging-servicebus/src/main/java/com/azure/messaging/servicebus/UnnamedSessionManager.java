@@ -155,13 +155,11 @@ class UnnamedSessionManager implements AutoCloseable {
      */
     Flux<ServiceBusReceivedMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
-            System.out.println("!!!!" + this.getClass().getName() + " (receive) getting session .. Rolling: " + receiverOptions.isRollingSessionReceiver());
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
             if (!receiverOptions.isRollingSessionReceiver()) {
                 receiveFlux = getSession(schedulers.get(0), false);
             } else {
-                System.out.println("!!!!" + this.getClass().getName() + " (receive) merge with processor, MaxConcurrentSessions: " + receiverOptions.getMaxConcurrentSessions());
                 receiveFlux = Flux.merge(processor, receiverOptions.getMaxConcurrentSessions());
             }
         }
@@ -187,7 +185,6 @@ class UnnamedSessionManager implements AutoCloseable {
                     if (receiver != null) {
                         receiver.setSessionLockedUntil(offsetDateTime);
                     }
-                    System.out.println("!!!!" + this.getClass().getName() + " (renewSessionLock) offsetDateTime: " + offsetDateTime.toString());
                     sink.next(offsetDateTime);
                 });
             }));
@@ -217,7 +214,6 @@ class UnnamedSessionManager implements AutoCloseable {
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
-                System.out.println("!!!!" + this.getClass().getName() + " (updateDisposition) updating deliveryState = " + deliveryState);
                 return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
             }));
     }
@@ -250,7 +246,6 @@ class UnnamedSessionManager implements AutoCloseable {
         String userProvidedSessionId = this.userProvidedSessionId;
         return connectionProcessor
             .flatMap(connection -> {
-                System.out.println("!!!!" + this.getClass().getName() + " (createSessionReceiveLink) creating Link for userProvidedSessionId : " + userProvidedSessionId);
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                 null, entityType, userProvidedSessionId);
             });
@@ -301,7 +296,6 @@ class UnnamedSessionManager implements AutoCloseable {
                 if (existing != null) {
                     return existing;
                 }
-                System.out.println("!!!!" + this.getClass().getName() + " (getSession) .. link for session? " + linkName + " will create new instance of UnnamedSessionReceiver");
                 return new UnnamedSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration);
@@ -309,7 +303,6 @@ class UnnamedSessionManager implements AutoCloseable {
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
-                System.out.println("!!!!" + this.getClass().getName() + " (getSession) doFinally .. Rolling? " + receiverOptions.isRollingSessionReceiver());
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
                 }
@@ -331,7 +324,6 @@ class UnnamedSessionManager implements AutoCloseable {
             logger.info("Session manager is disposed. Not emitting more unnamed sessions.");
             return;
         }
-        System.out.println("!!!!" + this.getClass().getName() + " (onSessionRequest) .. request? " + request);
         logger.verbose("Requested {} unnamed sessions.", request);
         for (int i = 0; i < request; i++) {
             final Scheduler scheduler = availableSchedulers.poll();

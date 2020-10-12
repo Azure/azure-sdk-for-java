@@ -45,7 +45,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         super();
 
-        UnnamedSessionManagerTestthis.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
+        this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
         this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
             "'messageLockContainer' cannot be null.");
 
