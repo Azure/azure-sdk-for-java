@@ -78,16 +78,16 @@ public class AADOAuth2AutoConfiguration {
 
         List<String> scope = aadAuthenticationProperties.getScope();
         if (aadAuthenticationProperties.getUserGroup().getAllowedGroups() != null
-            && !scope.contains("https://graph.microsoft.com/user.read")){
-            LOGGER.warn("Lack the scope of accessing Microsoft Graph API, " +
-                "https://graph.microsoft.com/user.read has been added by default");
+            && !scope.contains("https://graph.microsoft.com/user.read")) {
+            LOGGER.warn("Lack the scope of accessing Microsoft Graph API, "
+                + "https://graph.microsoft.com/user.read has been added by default");
             scope.add("https://graph.microsoft.com/user.read");
         }
-        if (!scope.contains("openid")){
+        if (!scope.contains("openid")) {
             LOGGER.warn("Lack the scope of openid, add scope of openid and profile by default");
             scope.add("openid");
             scope.add("profile");
-        } else if(!scope.contains("profile")){
+        } else if (!scope.contains("profile")) {
             LOGGER.warn("Lack the scope of profile, add by default");
             scope.add("profile");
         }
