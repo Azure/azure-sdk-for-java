@@ -3,17 +3,22 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -29,14 +34,20 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final Flux<ServiceBusReceivedMessage> processor;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
-        MessageSerializer messageSerializer, int prefetch) {
+        MessageSerializer messageSerializer, int prefetch, boolean autoLockRenewal,
+        Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions,
+        LockContainer messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
+
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
         this.processor = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .publish(prefetch)
-            .autoConnect(1);
+            .autoConnect(1)
+            .subscribeWith(new ServiceBusMessageProcessor(autoLockRenewal, maxAutoLockRenewDuration, retryOptions,
+                messageLockContainer, linkProcessor.getErrorContext(), onRenewLock));
+
     }
 
     /**

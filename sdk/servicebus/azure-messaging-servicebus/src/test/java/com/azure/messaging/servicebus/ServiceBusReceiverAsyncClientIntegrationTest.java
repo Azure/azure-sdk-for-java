@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +61,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final List<Long> messagesDeferredPending = new ArrayList<>();
     private final boolean isSessionEnabled = false;
+    private final Duration maxLockRenewDuration = Duration.ofSeconds(30);
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
@@ -668,7 +670,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that the lock can be automatically renewed.
      */
-    @Disabled("Auto-lock renewal is not enabled.")
+    //@Disabled("Auto-lock renewal is not enabled.")
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -678,6 +680,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
+        if (isSessionEnabled) {
+            message.setSessionId(sessionId);
+        }
         // Send the message to verify.
         sendMessage(message).block(TIMEOUT);
 
@@ -691,32 +696,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
                 final OffsetDateTime initial = received.getLockedUntil();
-                final OffsetDateTime timeToStop = initial.plusSeconds(5);
-                OffsetDateTime latest = OffsetDateTime.MIN;
+                final OffsetDateTime timeToStop = initial.plusSeconds(20);
 
                 // Simulate some sort of long processing.
                 final AtomicInteger iteration = new AtomicInteger();
-                while (OffsetDateTime.now().isBefore(timeToStop)) {
+                while (iteration.get() < 4) {
                     logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), OffsetDateTime.now(), timeToStop);
-
                     try {
-                        TimeUnit.SECONDS.sleep(4);
+                        TimeUnit.SECONDS.sleep(5);
                     } catch (InterruptedException error) {
                         logger.error("Error occurred while sleeping: " + error);
                     }
-
-                    assertNotNull(received.getLockedUntil());
-                    latest = received.getLockedUntil();
                 }
 
-                try {
-                    assertTrue(initial.isBefore(latest), String.format(
-                        "Latest should be after or equal to initial. initial: %s. latest: %s", initial, latest));
-                } finally {
-                    logger.info("Completing message.");
-                    receiver.complete(received).block(Duration.ofSeconds(15));
-                    messagesPending.decrementAndGet();
-                }
+                logger.info(new Date() + " . Completing message after delay .....");
+                receiver.complete(received).block(Duration.ofSeconds(15));
+                messagesPending.decrementAndGet();
+
             })
             .thenCancel()
             .verify(Duration.ofMinutes(2));

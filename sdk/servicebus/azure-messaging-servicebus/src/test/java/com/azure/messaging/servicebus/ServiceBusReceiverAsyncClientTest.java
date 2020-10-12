@@ -137,7 +137,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @BeforeEach
-    void setup(TestInfo testInfo) {
+   /*void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
@@ -175,7 +175,7 @@ class ServiceBusReceiverAsyncClientTest {
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
-    }
+    }*/
 
     @AfterEach
     void teardown(TestInfo testInfo) {
@@ -326,7 +326,7 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we error if we complete in RECEIVE_AND_DELETE mode.
      */
-    @Test
+   /* @Test
     void completeInReceiveAndDeleteMode() {
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
@@ -344,7 +344,7 @@ class ServiceBusReceiverAsyncClientTest {
         } finally {
             client.close();
         }
-    }
+    }*/
 
     /**
      * Verifies that this peek batch of messages.

@@ -92,7 +92,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ReceiveMode.PEEK_LOCK);
+        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ReceiveMode.PEEK_LOCK, null);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
@@ -106,11 +106,11 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void constructor() {
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null,
-            ReceiveMode.PEEK_LOCK));
+            ReceiveMode.PEEK_LOCK, null));
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy,
-            ReceiveMode.PEEK_LOCK));
+            ReceiveMode.PEEK_LOCK, null));
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy,
-            null));
+            null, null));
     }
 
     /**

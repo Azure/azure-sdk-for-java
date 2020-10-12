@@ -21,6 +21,7 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -53,10 +54,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
      *     idle.
      * @param scheduler The scheduler to publish messages on.
      * @param renewSessionLock Function to renew the session lock.
+     * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
+     *     Duration#ZERO} to disable session lock renewal.
      */
     UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration) {
 
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -125,13 +128,14 @@ class UnnamedSessionReceiver implements AutoCloseable {
             }
         }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
+            System.out.println("!!!!" + this.getClass().getName() + " (UnnamedSessionReceiver) constructor lockedUntil : " +lockedUntil);
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
                 return;
             }
-
+            System.out.println("!!!!" + this.getClass().getName() + " (UnnamedSessionReceiver) constructor new LockRenewalOperation() for maxSessionLockRenewDuration =" + maxSessionLockRenewDuration);
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                Duration.ZERO, true, renewSessionLock, lockedUntil));
+                maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
     }
 
@@ -182,6 +186,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+
+        System.out.println("!!!!" + this.getClass().getName() + " (updateDisposition) sessionLocked until = " + receiveLink.getSessionLockedUntil().block().atZoneSameInstant(ZoneId.of("America/Los_Angeles")));
         return receiveLink.updateDisposition(lockToken, deliveryState);
     }
 

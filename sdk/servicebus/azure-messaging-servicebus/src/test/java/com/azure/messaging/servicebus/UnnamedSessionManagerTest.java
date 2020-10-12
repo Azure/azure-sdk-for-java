@@ -59,6 +59,7 @@ import static org.mockito.Mockito.when;
 class UnnamedSessionManagerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
 
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
@@ -146,7 +147,7 @@ class UnnamedSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
+            TIMEOUT, tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
 
         // Act & Assert
         StepVerifier.create(sessionManager.receive())
@@ -162,7 +163,7 @@ class UnnamedSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
+            TIMEOUT, tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
@@ -214,7 +215,7 @@ class UnnamedSessionManagerTest {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 1);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
+            TIMEOUT, tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
 
         final int numberOfMessages = 5;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));

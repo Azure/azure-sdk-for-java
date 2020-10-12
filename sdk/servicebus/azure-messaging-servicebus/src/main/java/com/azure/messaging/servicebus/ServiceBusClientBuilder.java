@@ -41,6 +41,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -70,6 +71,7 @@ public final class ServiceBusClientBuilder {
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
+    private static Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
 
     private final Object connectionLock = new Object();
     private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
@@ -636,8 +638,24 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private String subscriptionName;
         private String topicName;
+        // .Net have default of  5 minutes
+        private Duration maxAutoRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusSessionReceiverClientBuilder() {
+        }
+
+        /**
+         * Sets the amount of time to continue auto-renewing the session lock. Setting {@link Duration#ZERO} or
+         * {@code null} disables auto-renewal.
+         *
+         * @param maxAutoRenewDuration the amount of time to continue auto-renewing the session lock.
+         * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusSessionReceiverClientBuilder setMaxAutoRenewDuration(Duration maxAutoRenewDuration) {
+            this.maxAutoRenewDuration = maxAutoRenewDuration;
+            return this;
         }
 
         /**
@@ -763,19 +781,22 @@ public final class ServiceBusClientBuilder {
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
 
-            if (CoreUtils.isNullOrEmpty(sessionId)) {
-                final UnnamedSessionManager sessionManager = new UnnamedSessionManager(entityPath, entityType,
-                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
-                    messageSerializer, receiverOptions);
+            final UnnamedSessionManager sessionManager;
 
-                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
+            if (CoreUtils.isNullOrEmpty(sessionId)) {
+                sessionManager = new UnnamedSessionManager(entityPath, entityType,
+                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
+                    messageSerializer, receiverOptions, maxAutoRenewDuration);
             } else {
-                return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                    entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                    tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+                sessionManager = new UnnamedSessionManager(entityPath, entityType,
+                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
+                    messageSerializer, receiverOptions, maxAutoRenewDuration, sessionId);
             }
+
+            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose,
+                maxAutoRenewDuration, sessionManager);
         }
 
         /**
@@ -830,8 +851,23 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
+        private Duration maxAutoRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusReceiverClientBuilder() {
+        }
+
+        /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal.
+         *
+         * @param maxAutoRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO} or
+         * {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder setMaxAutoRenewDuration(Duration maxAutoRenewDuration) {
+            this.maxAutoRenewDuration = maxAutoRenewDuration;
+            return this;
         }
 
         /**
@@ -940,7 +976,7 @@ public final class ServiceBusClientBuilder {
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, maxAutoRenewDuration);
         }
 
         /**

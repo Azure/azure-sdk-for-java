@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -61,6 +62,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
     private final AmqpRetryPolicy retryPolicy;
     private final ReceiveMode receiveMode;
+    private final AmqpErrorContext errorContext;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -83,13 +85,17 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      *
      * @param prefetch The number if messages to initially fetch.
      * @param retryPolicy Retry policy to apply when fetching a new AMQP channel.
+     * @param receiveMode Retry policy to apply when fetching a new AMQP channel.
+     * @param errorContext for the receive link.
      *
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode,
+        AmqpErrorContext errorContext) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
+        this.errorContext = errorContext;
 
         if (prefetch < 0) {
             throw logger.logExceptionAsError(
@@ -127,6 +133,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                 checkAndAddCredits(link);
             }));
+    }
+
+    /**
+     * Gets the error context associated with this link.
+     *
+     * @return the error context associated with this link.
+     */
+    public AmqpErrorContext getErrorContext() {
+        return errorContext;
     }
 
     /**

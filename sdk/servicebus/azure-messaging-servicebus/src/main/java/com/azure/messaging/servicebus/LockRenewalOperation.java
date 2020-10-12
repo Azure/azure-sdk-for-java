@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
+
 import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -14,6 +15,7 @@ import reactor.core.publisher.MonoProcessor;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -63,7 +65,7 @@ class LockRenewalOperation implements AutoCloseable {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
-
+        System.out.println("!!!!" + this.getClass().getName() + " (renewLockOperation) constructor ");
         Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
 
@@ -80,13 +82,18 @@ class LockRenewalOperation implements AutoCloseable {
             .cache(Duration.ofMinutes(2));
 
         this.completionMono = renewLockOperation.then();
-        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
+        this.subscription = renewLockOperation.subscribe(until -> {
+                System.out.println("!!!!" + this.getClass().getName() + " (renewLockOperation) renewed once ");
+             this.lockedUntil.set(until);
+            },
             error -> {
+                System.out.println("!!!!" + this.getClass().getName() + " (renewLockOperation) constructor error");
                 logger.error("token[{}]. Error occurred while renewing lock token.", error);
                 status.set(LockRenewalStatus.FAILED);
                 throwable.set(error);
                 cancellationProcessor.onComplete();
             }, () -> {
+                System.out.println("!!!!" + this.getClass().getName() + " (renewLockOperation) constructor complete. ");
                 if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
                     logger.verbose("token[{}]. Renewing session lock task completed.", lockToken);
                 }
@@ -176,6 +183,7 @@ class LockRenewalOperation implements AutoCloseable {
      */
     private Flux<OffsetDateTime> getRenewLockOperation(OffsetDateTime initialLockedUntil,
         Duration maxLockRenewalDuration) {
+        System.out.println("!!!!" + this.getClass().getName() + " (getRenewLockOperation) maxLockRenewalDuration " +  maxLockRenewalDuration);
         if (maxLockRenewalDuration.isZero()) {
             status.set(LockRenewalStatus.COMPLETE);
             return Flux.empty();
@@ -183,7 +191,7 @@ class LockRenewalOperation implements AutoCloseable {
 
         final OffsetDateTime now = OffsetDateTime.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
-
+        System.out.println("!!!!" + this.getClass().getName() + " (getRenewLockOperation) initialInterval " +  initialInterval);
         if (initialInterval.isNegative()) {
             logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             initialInterval = Duration.ZERO;
@@ -203,10 +211,12 @@ class LockRenewalOperation implements AutoCloseable {
         sink.next(initialInterval);
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
+
         return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
+                System.out.println("!!!!" + this.getClass().getName() + " (getRenewLockOperation) Starting lock renewal " +  delay);
                 logger.info("token[{}]. now[{}]. Starting lock renewal.", lockToken, OffsetDateTime.now());
                 return renewalOperation.apply(lockToken);
             })
@@ -215,6 +225,7 @@ class LockRenewalOperation implements AutoCloseable {
                 logger.info("token[{}]. nextExpiration[{}]. next: [{}]. isSession[{}]", lockToken, offsetDateTime, next,
                     isSession);
 
+                System.out.println("!!!!" + this.getClass().getName() + " (getRenewLockOperation) next renew time offsetDateTime : " +  offsetDateTime.atZoneSameInstant(ZoneId.of("America/Los_Angeles")));
                 sink.next(MessageUtils.adjustServerTimeout(next));
                 return offsetDateTime;
             });
