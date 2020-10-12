@@ -250,6 +250,12 @@
       <version>1.1.1</version> <!-- {x-version-update;pl.pragmatists:JUnitParams;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <version>4.0.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -262,6 +268,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.github.spotbugs:spotbugs-annotations:[4.0.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>net.minidev:json-smart:[2.3]</include> <!-- {x-include-update;net.minidev:json-smart;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.7.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
