@@ -22,7 +22,7 @@ public class AADUserGroupsPropertyValidatorTest {
     @Test
     public void isValidNoGroupsDefined() {
         assertThatCode(() -> aadAuthenticationProperties.validateUserGroupProperties())
-                .isInstanceOf(IllegalStateException.class).hasMessage(
+                .isInstanceOf(IllegalArgumentException.class).hasMessage(
                 "One of the User Group Properties must be populated. "
                         + "Please populate azure.activedirectory.user-group.allowed-groups");
     }
