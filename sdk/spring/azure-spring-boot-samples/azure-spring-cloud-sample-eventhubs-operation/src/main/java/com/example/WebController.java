@@ -7,7 +7,7 @@ import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;

@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubClientFactory;
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.microsoft.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;

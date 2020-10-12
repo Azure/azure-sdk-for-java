@@ -610,4 +610,49 @@
   <!-- Suppress checks in azure-core-experimental -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
+
+  <!-- Suppress checks all azure-spring-cloud MissingJavadocMethod and MissingJavadocType -->
+  <suppress checks="MissingJavadocMethod" files=".*com[/\\]azure[/\\].*\.java"/>
+  <suppress checks="MissingJavadocType" files=".*com[/\\]azure[/\\].*\.java"/>
+
+  <!-- Suppress checks all azure-spring-cloud -->
+  <suppress checks="JavadocPackage" files=".*com[/\\]azure[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files=".*[/\\]com[/\\]azure[/\\].*"/>
+
+  <!-- Suppress external dependency Checkstyle on azure spring cloud packages -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|EnforceFinalFieldsCheck)"
+            files=".*[/\\]com[/\\]azure[/\\]spring[/\\]cloud[/\\].*"/>
+  <suppress checks="LineLength" files=".*[/\\]com.azure.spring[/\\].*"/>
+
+  <!-- Suppress external dependency Checkstyle on azure spring integration packages -->
+  <suppress checks="LineLength" files=".*[/\\]com.azure.spring.integration[/\\].*"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck|JavadocThrowsChecks|JavaDocFormatting)"
+            files=".*[/\\]com.azure.spring.integration[/\\].*"/>
+
+  <!-- Suppress checks in azure-spring-cloud-autoconfigure -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|ThrowFromClientLoggerCheck)"
+            files=".*[/\\]com.azure.spring.cloud.autoconfigure[/\\].*"/>
+
+  <!-- Suppress checks in azure-spring-cloud-context -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files=".*[/\\]com.azure.spring.cloud.context[/\\].*"/>
+
+  <!-- Suppress checks in azure-spring-cloud-storage -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavaDocFormatting|ThrowFromClientLoggerCheck|BlacklistedWordsCheck)"
+            files=".*[/\\]com.azure.spring.cloud.storage[/\\].*"/>
+
+  <!-- Suppress checks in azure-spring-cloud-messaging -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|JavaDocFormatting|EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)"
+            files=".*[/\\]com.azure.spring.messaging[/\\].*"/>
+
+  <!-- Suppress checks in  azure-spring-cloud-servicebus-stream-xxx -->
+  <suppress checks="LineLength" files=".*[/\\]com.azure.servicebus.stream[/\\].*"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|JavaDocFormatting|ExternalDependencyExposedCheck|EnforceFinalFieldsCheck)"
+            files=".*[/\\]com[/\\]azure[/\\]servicebus[/\\]stream[/\\].*"/>
+
+  <!-- Suppress checks in azure-spring-cloud-eventhubs-stream-xxxx -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|EnforceFinalFieldsCheck|ExternalDependencyExposedCheck)"
+            files=".*[/\\]com[/\\]azure[/\\]eventhub[/\\]stream[/\\].*"/>
+
 </suppressions>
