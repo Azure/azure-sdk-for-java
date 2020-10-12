@@ -1,0 +1,22 @@
+trigger: none
+
+pr:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - /**/*.md
+
+jobs:
+  - job: Generate
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+        CheckLinkGuidance: $true
