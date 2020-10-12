@@ -15,7 +15,6 @@ jobs:
           TargetFolder: .
           RootFolder: .
           BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'
 
       - pwsh: |
           Invoke-WebRequest -Uri "https://github.com/dotnet/docfx/releases/download/v2.43.2/docfx.zip" `
