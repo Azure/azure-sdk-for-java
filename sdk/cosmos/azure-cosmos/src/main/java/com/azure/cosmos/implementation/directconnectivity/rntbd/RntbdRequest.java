@@ -85,10 +85,12 @@ public final class RntbdRequest {
         this.frame.encode(out);
         this.headers.encode(out);
 
-        checkState(out.writerIndex() - start == expectedLength,
+        final int observedLength = out.writerIndex() - start;
+
+        checkState(observedLength == expectedLength,
             "encoding error: {\"expectedLength\": %s, \"observedLength\": %s}",
             expectedLength,
-            out.writerIndex() - expectedLength);
+            observedLength);
 
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);
