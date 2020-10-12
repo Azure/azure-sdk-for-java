@@ -61,9 +61,9 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](https://gith
 
 ####  Configure application.properties:
 ```properties
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
@@ -95,8 +95,8 @@ Please refer to [azure-active-directory-spring-boot-sample](https://github.com/A
 
 #### Configure application.properties:
 ```properties
-azure.activedirectory.client-id=Application-ID-in-AAD-App-registrations
-azure.activedirectory.client-secret=Key-in-AAD-API-ACCESS
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
 ```
 
@@ -198,14 +198,6 @@ azure.activedirectory.environment=cn-v2-graph
 
 Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 
-### Using Azure Active Directory endpoints
-This starter uses v2 version endpoints to do authorization and authentication by default. To use v1.0, please specify the following endpoints in properties.
-```
-spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
-spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/common/oauth2/token
-spring.security.oauth2.client.provider.azure.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
-spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
-```
 
 ### AAD Conditional Access Policy
 Now azure-active-directory-spring-boot-starter has supported AAD conditional access policy, if you are using this policy, you need add **AADOAuth2AuthorizationRequestResolver** and **AADAuthenticationFailureHandler** to your WebSecurityConfigurerAdapter.

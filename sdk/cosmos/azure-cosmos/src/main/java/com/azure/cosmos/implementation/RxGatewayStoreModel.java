@@ -356,6 +356,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
             case Create:
+            case Batch:
                 return this.create(request);
             case Upsert:
                 return this.upsert(request);

@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
@@ -21,8 +22,8 @@ class FunctionDeploymentSlotImpl
         FunctionDeploymentSlotImpl,
         FunctionAppImpl,
         FunctionDeploymentSlot.DefinitionStages.WithCreate,
-        FunctionDeploymentSlot.Update>
-    implements FunctionDeploymentSlot, FunctionDeploymentSlot.Definition, FunctionDeploymentSlot.Update {
+        DeploymentSlotBase<FunctionDeploymentSlot>>
+    implements FunctionDeploymentSlot, FunctionDeploymentSlot.Definition {
 
     FunctionDeploymentSlotImpl(
         String name,
