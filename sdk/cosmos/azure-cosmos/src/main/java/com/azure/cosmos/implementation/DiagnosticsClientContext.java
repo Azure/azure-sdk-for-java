@@ -192,7 +192,7 @@ public interface DiagnosticsClientContext {
                 rntbdOptions.idleChannelTimeout(),
                 rntbdOptions.idleEndpointTimeout(),
                 rntbdOptions.maxChannelsPerEndpoint(),
-                rntbdOptions.maxRequestsPerChannel());
+                rntbdOptions.maxRequestsPerChannel()) ;
         }
 
         private String preferredRegionsInternal() {

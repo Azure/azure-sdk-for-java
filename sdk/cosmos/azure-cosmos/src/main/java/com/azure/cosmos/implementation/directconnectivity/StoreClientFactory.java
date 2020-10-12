@@ -23,7 +23,6 @@ public class StoreClientFactory implements AutoCloseable {
     private volatile boolean isClosed;
 
     public StoreClientFactory(
-        IAddressResolver addressResolver,
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         Configs configs,
         ConnectionPolicy connectionPolicy,
