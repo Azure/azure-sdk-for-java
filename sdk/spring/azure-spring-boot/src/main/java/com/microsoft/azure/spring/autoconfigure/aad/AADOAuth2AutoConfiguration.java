@@ -91,7 +91,7 @@ public class AADOAuth2AutoConfiguration {
                                      )
                                  )
                                  .userInfoUri("https://graph.microsoft.com/oidc/userinfo")
-                                 .userNameAttributeName(AADAccessTokenClaim.NAME)
+                                 .userNameAttributeName(AADTokenClaim.NAME)
                                  .jwkSetUri(
                                      String.format(
                                          "https://login.microsoftonline.com/%s/discovery/v2.0/keys",

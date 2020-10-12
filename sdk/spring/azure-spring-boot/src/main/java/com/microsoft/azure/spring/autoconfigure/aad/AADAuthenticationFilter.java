@@ -111,7 +111,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                 || userPrincipal.getAccessTokenForGraphApi() == null
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
-                String tenantId = userPrincipal.getClaim().toString();
+                String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
                 String accessTokenForGraphApi = azureADGraphClient
                     .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
                     .accessToken();

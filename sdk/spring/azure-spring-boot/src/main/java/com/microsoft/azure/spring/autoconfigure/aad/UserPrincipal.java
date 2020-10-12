@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;
@@ -26,54 +27,12 @@ public class UserPrincipal implements Serializable {
         this.jwtClaimsSet = jwtClaimsSet;
     }
 
-    // claimset
-    public String getIssuer() {
-        return jwtClaimsSet == null ? null : jwtClaimsSet.getIssuer();
-    }
-
-    public String getSubject() {
-        return jwtClaimsSet == null ? null : jwtClaimsSet.getSubject();
-    }
-
-    public Map<String, Object> getClaims() {
-        return jwtClaimsSet == null ? null : jwtClaimsSet.getClaims();
-    }
-
-    public Object getClaim() {
-        return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim("tid");
-    }
-
-    public Object getClaim(String name) {
-        return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim(name);
-    }
-
-    public String getUpn() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("upn");
-    }
-
-    public String getUniqueName() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("unique_name");
-    }
-
-    public String getName() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("name");
-    }
-
-    // header
-    public String getKid() {
-        return jwsObject == null ? null : jwsObject.getHeader().getKeyID();
-    }
-
-    public void setUserGroups(List<UserGroup> groups) {
-        this.userGroups = groups;
-    }
-
     public List<UserGroup> getUserGroups() {
         return this.userGroups;
     }
 
-    public boolean isMemberOf(UserGroup group) {
-        return !(userGroups == null || userGroups.isEmpty()) && userGroups.contains(group);
+    public void setUserGroups(List<UserGroup> groups) {
+        this.userGroups = groups;
     }
 
     public String getAadIssuedBearerToken() {
@@ -90,6 +49,32 @@ public class UserPrincipal implements Serializable {
 
     public void setAccessTokenForGraphApi(String accessTokenForGraphApi) {
         this.accessTokenForGraphApi = accessTokenForGraphApi;
+    }
+
+    public boolean isMemberOf(UserGroup group) {
+        return Optional.ofNullable(userGroups)
+                       .filter(groups -> groups.contains(group))
+                       .isPresent();
+    }
+
+    public String getKid() {
+        return jwsObject == null ? null : jwsObject.getHeader().getKeyID();
+    }
+
+    public String getIssuer() {
+        return jwtClaimsSet == null ? null : jwtClaimsSet.getIssuer();
+    }
+
+    public String getSubject() {
+        return jwtClaimsSet == null ? null : jwtClaimsSet.getSubject();
+    }
+
+    public Map<String, Object> getClaims() {
+        return jwtClaimsSet == null ? null : jwtClaimsSet.getClaims();
+    }
+
+    public Object getClaim(String name) {
+        return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim(name);
     }
 }
 
