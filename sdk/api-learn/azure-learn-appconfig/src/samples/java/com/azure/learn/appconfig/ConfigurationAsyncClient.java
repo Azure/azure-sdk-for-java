@@ -5,6 +5,7 @@ package com.azure.learn.appconfig;
 
 import com.azure.learn.appconfig.models.ConfigurationSetting;
 import reactor.core.publisher.Mono;
+import com.azure.core.http.rest.Response;
 
 public class ConfigurationAsyncClient {
     ConfigurationAsyncClient() {
@@ -16,6 +17,10 @@ public class ConfigurationAsyncClient {
     }
 
     public Mono<ConfigurationSetting> getConfigurationSetting(String key, String label) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
+    }
+
+    public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting, boolean ifChanged) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 }

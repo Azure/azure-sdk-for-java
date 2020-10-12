@@ -4,6 +4,8 @@
 package com.azure.learn.appconfig;
 
 import com.azure.learn.appconfig.models.ConfigurationSetting;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 public final class ConfigurationClient {
 
@@ -16,6 +18,10 @@ public final class ConfigurationClient {
     }
 
     public ConfigurationSetting getConfigurationSetting(String key, String label) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting, boolean ifChanged, Context context) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 }
