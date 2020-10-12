@@ -32,12 +32,12 @@ public class ConditionalAccessSample {
     }
 
     private static void updateCache(ConfigurationClient configurationClient, Map<String, ConfigurationSetting> configCache) {
-        ConfigurationSetting newFontColor = configurationClient.getConfigurationSetting(configCache.get(FONT_COLOR), true);
+        ConfigurationSetting newFontColor = configurationClient.getConfigurationSettingWithResponse(configCache.get(FONT_COLOR), true, Context.NONE).getValue();
         if (newFontColor != null) {
             configCache.putIfAbsent(FONT_COLOR, newFontColor);
         }
 
-        ConfigurationSetting newGreetingText = configurationClient.getConfigurationSetting(configCache.get(GREETING_TEXT), true);
+        ConfigurationSetting newGreetingText = configurationClient.getConfigurationSettingWithResponse(configCache.get(GREETING_TEXT), true, Context.NONE).getValue();
         if (newGreetingText != null) {
             configCache.putIfAbsent(GREETING_TEXT, newGreetingText);
         }
