@@ -48,7 +48,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
-            final ClientRegistration registration = userRequest.getClientRegistration();
             final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
