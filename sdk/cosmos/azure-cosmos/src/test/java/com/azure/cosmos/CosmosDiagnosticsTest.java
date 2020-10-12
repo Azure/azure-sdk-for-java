@@ -42,20 +42,16 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.assertj.core.api.InstanceOfAssertFactories.INSTANT;
-import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -786,6 +782,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private void validateTransportRequestTimelineDirect(String diagnostics) {
         assertThat(diagnostics).contains("\"eventName\":\"created\"");
         assertThat(diagnostics).contains("\"eventName\":\"queued\"");
+        assertThat(diagnostics).contains("\"eventName\":\"acquireChannelStarted\"");
         assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");

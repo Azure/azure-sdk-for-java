@@ -56,6 +56,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private volatile int responseLength;
     private volatile Stage stage;
 
+    private volatile Instant timeAcquireChannelStarted;
     private volatile Instant timeCompleted;
     private volatile Instant timePipelined;
     private final Instant timeQueued;
@@ -117,9 +118,16 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         STAGE.updateAndGet(this, current -> {
 
             switch (value) {
-                case PIPELINED:
+                case ACQUIRECHANNELSTARTED:
                     if (current != Stage.QUEUED) {
-                        logger.debug("Expected transition from QUEUED to PIPELINED, not {} to PIPELINED", current);
+                        logger.debug("Expected transition from QUEUED to ACQUIRECHANNELSTARTED, not {} to ACQUIRECHANNELSTARTED", current);
+                        break;
+                    }
+                    this.timeAcquireChannelStarted = time;
+                    break;
+                case PIPELINED:
+                    if (current != Stage.ACQUIRECHANNELSTARTED) {
+                        logger.debug("Expected transition from ACQUIRECHANNELSTARTED to PIPELINED, not {} to PIPELINED", current);
                         break;
                     }
                     this.timePipelined = time;
@@ -155,6 +163,10 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         });
 
         return this;
+    }
+
+    public Instant timeAcquireChannelStarted() {
+        return this.timeAcquireChannelStarted;
     }
 
     public Instant timeCompleted() {
@@ -240,6 +252,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
         Instant timeCreated = this.timeCreated();
         Instant timeQueued = this.timeQueued();
+        Instant timeAcquireChannelStarted = this.timeAcquireChannelStarted();
         Instant timePipelined = this.timePipelined();
         Instant timeSent = this.timeSent();
         Instant timeReceived = this.timeReceived();
@@ -250,7 +263,9 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             new RequestTimeline.Event("created",
                 timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
             new RequestTimeline.Event("queued",
-                timeQueued, timePipelined == null ? timeCompletedOrNow : timePipelined),
+                timeQueued, timeAcquireChannelStarted == null ? timeCompletedOrNow : timeAcquireChannelStarted),
+            new RequestTimeline.Event("acquireChannelStarted",
+                timeAcquireChannelStarted, timePipelined == null ? timeCompletedOrNow : timePipelined),
             new RequestTimeline.Event("pipelined",
                 timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
             new RequestTimeline.Event("transitTime",
@@ -275,7 +290,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     // region Types
 
     public enum Stage {
-        QUEUED, PIPELINED, SENT, RECEIVED, COMPLETED
+        QUEUED, ACQUIRECHANNELSTARTED, PIPELINED, SENT, RECEIVED, COMPLETED
     }
 
     static final class JsonSerializer extends StdSerializer<RntbdRequestRecord> {
