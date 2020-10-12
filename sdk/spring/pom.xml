@@ -9,7 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend</module>
