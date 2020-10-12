@@ -36,7 +36,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private List<TokenCredential> tokens;
-    private HttpPipeline internalHttpPipeline;
+    private HttpPipeline httpPipeline;
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
@@ -126,14 +126,14 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
-    public void withInternalHttpPipeline(HttpPipeline httpPipeline) {
+    public void withHttpPipeline(HttpPipeline httpPipeline) {
         Objects.requireNonNull(httpPipeline);
-        this.internalHttpPipeline = httpPipeline;
+        this.httpPipeline = httpPipeline;
     }
 
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
-        if (this.internalHttpPipeline != null) {
-            return internalHttpPipeline;
+        if (this.httpPipeline != null) {
+            return httpPipeline;
         }
         Objects.requireNonNull(credential);
         if (!tokens.isEmpty()) {

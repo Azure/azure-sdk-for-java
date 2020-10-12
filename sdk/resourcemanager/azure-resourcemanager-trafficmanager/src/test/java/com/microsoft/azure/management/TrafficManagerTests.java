@@ -55,8 +55,8 @@ public class TrafficManagerTests extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        trafficManager = TrafficManager.authenticate(httpPipeline, profile);
+        trafficManager = buildManager(TrafficManager.class, httpPipeline, profile);
+        resourceManager = trafficManager.resourceManager();
     }
 
     @Override

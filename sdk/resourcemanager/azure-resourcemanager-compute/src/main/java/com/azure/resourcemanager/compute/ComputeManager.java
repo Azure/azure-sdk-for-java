@@ -107,7 +107,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      * @param profile the profile to use
      * @return the ComputeManager
      */
-    public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ComputeManager(httpPipeline, profile);
     }
 
@@ -139,9 +139,12 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        networkManager = withHttpPipeline(httpPipeline, NetworkManager.configure())
+            .authenticate(null, profile);
+        authorizationManager = withHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
     }
 
     /** @return the availability set resource management API entry point */

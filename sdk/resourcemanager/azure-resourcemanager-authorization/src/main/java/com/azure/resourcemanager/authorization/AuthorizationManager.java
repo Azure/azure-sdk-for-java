@@ -63,7 +63,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
      * @param profile the profile used in Active Directory
      * @return the AuthorizationManager instance
      */
-    public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AuthorizationManager(httpPipeline, profile);
     }
 
@@ -98,7 +98,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
             return AuthorizationManager
-                .authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
+                .authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 

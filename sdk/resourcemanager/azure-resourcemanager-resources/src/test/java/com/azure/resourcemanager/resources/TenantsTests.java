@@ -3,36 +3,16 @@
 
 package com.azure.resourcemanager.resources;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
-import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TenantsTests extends ResourceManagementTest {
-    protected ResourceManager.Authenticated resourceManager;
-
-    @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager = setInternalHttpPipeline(
-            httpPipeline, ResourceManager.configure(), AzureConfigurableImpl.class)
-            .authenticate(null, profile);
-    }
-
-    @Override
-    protected void cleanUpResources() {
-
-    }
-
     @Test
     public void canListTenants() throws Exception {
-        PagedIterable<TenantIdDescriptionInner> tenants = resourceManager.tenants().list();
+        PagedIterable<TenantIdDescriptionInner> tenants = resourceClient.tenants().list();
         Assertions.assertTrue(TestUtilities.getSize(tenants) > 0);
     }
 }

@@ -49,7 +49,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
      * @param profile the profile to use
      * @return the ServiceBusManager
      */
-    public static ServiceBusManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ServiceBusManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ServiceBusManager(httpPipeline, profile);
     }
 

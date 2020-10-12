@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
@@ -322,24 +322,31 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     /**
-     * Sets http pipeline for internal use.
+     * Builds the manager with provided http pipeline and profile in general manner.
      *
+     * @param manager the class of the manager
      * @param httpPipeline the http pipeline
-     * @param azureConfigurable the azure configurable instance
-     * @param impl the class type of azure configurable implementation
-     * @param <T> the type of azure configurable
-     * @param <S> the type of azure configurable implementation
-     * @return the azure configurable instance after setting internal http pipeline
+     * @param profile the azure profile
+     * @param <T> the type of the manager
+     * @return the manager instance
      * @throws RuntimeException when field cannot be found or set.
      */
-    protected <T, S> T setInternalHttpPipeline(HttpPipeline httpPipeline, T azureConfigurable, Class<S> impl) {
+    protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
-            Object internalObj = impl.cast(azureConfigurable);
-            Method method = internalObj.getClass().getSuperclass().getDeclaredMethod(
-                "withInternalHttpPipeline", httpPipeline.getClass());
-            method.invoke(internalObj, httpPipeline);
-            return azureConfigurable;
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                constructor.setAccessible(true);
+                return null;
+            });
+            return constructor.newInstance(httpPipeline, profile);
+
+        } catch (NoSuchMethodException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (IllegalAccessException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (InstantiationException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (InvocationTargetException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         }
     }
