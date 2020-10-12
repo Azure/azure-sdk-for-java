@@ -1,16 +1,19 @@
 package com.azure.sample.aad.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class Event {
 
     private String content;
 
-    private ZonedDateTime dateTime;
+    private LocalDateTime dateTime;
 
     private String location;
 
-    public Event(String content, ZonedDateTime dateTime, String location) {
+    public Event(String content, LocalDateTime dateTime, String location) {
         this.content = content;
         this.dateTime = dateTime;
         this.location = location;
@@ -24,11 +27,11 @@ public class Event {
         this.content = content;
     }
 
-    public ZonedDateTime getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(ZonedDateTime dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
