@@ -1,8 +1,7 @@
 package com.azure.sample.aad.controller;
 
 import com.azure.sample.aad.model.Event;
-import com.azure.sample.aad.model.Events;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,20 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = { "/events" })
+@RequestMapping(path = { "/events" }, produces = { MediaType.APPLICATION_JSON_VALUE })
 public class EventsController {
 
-    @Autowired
-    private Events events;
+    private final HashMap<String, Event> events = new HashMap<>();
+
+    public EventsController() {
+        this.addEvents();
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping
-    public ResponseEntity<Events> getEvents() {
+    public ResponseEntity<?> getEvents() {
         return ResponseEntity.ok(this.events);
     }
 
@@ -34,7 +37,7 @@ public class EventsController {
     @PostMapping
     public void addEvents() {
         String location = "Asia/Shanghai";
-        ZonedDateTime time = ZonedDateTime.now(ZoneId.of(location)).plusDays(1);
+        LocalDateTime time = LocalDateTime.now(ZoneId.of(location)).plusDays(1);
         this.events.put(UUID.randomUUID().toString(), new Event("meeting", time, location));
     }
 
@@ -43,7 +46,12 @@ public class EventsController {
     public void join(@PathVariable String eventId, HttpServletRequest request) {
         Event event = this.events.get(eventId);
         Principal principal = request.getUserPrincipal();
-        System.out.println(principal);
         // add the event into outlook (office scope).
+    }
+
+    @GetMapping(path = { "/test" })
+    public void test(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        System.out.println(principal);
     }
 }
