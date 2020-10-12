@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
@@ -77,19 +78,22 @@ public class AADOAuth2AutoConfiguration {
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
 
         List<String> scope = aadAuthenticationProperties.getScope();
-        if (aadAuthenticationProperties.getUserGroup().getAllowedGroups() != null
-            && !scope.contains("https://graph.microsoft.com/user.read")) {
-            LOGGER.warn("Lack the scope of accessing Microsoft Graph API, "
-                + "https://graph.microsoft.com/user.read has been added by default");
+        boolean allowedGroupsConfigured = Optional.of(aadAuthenticationProperties)
+            .map(AADAuthenticationProperties::getUserGroup)
+            .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
+            .map(allowedGroups -> !allowedGroups.isEmpty())
+            .orElse(false);
+        if (allowedGroupsConfigured && !scope.contains("https://graph.microsoft.com/user.read")) {
             scope.add("https://graph.microsoft.com/user.read");
+            LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
         }
         if (!scope.contains("openid")) {
-            LOGGER.warn("Lack the scope of openid, add scope of openid and profile by default");
             scope.add("openid");
+            LOGGER.warn("scope 'openid' has been added.");
+        }
+        if (!scope.contains("profile")) {
             scope.add("profile");
-        } else if (!scope.contains("profile")) {
-            LOGGER.warn("Lack the scope of profile, add by default");
-            scope.add("profile");
+            LOGGER.warn("scope 'profile' has been added.");
         }
 
         return ClientRegistration.withRegistrationId("azure")
