@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -45,8 +46,10 @@ public abstract class StorageManagementTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        resourceManager = setInternalHttpPipeline(httpPipeline, ResourceManager.configure(), AzureConfigurableImpl.class)
+            .authenticate(null, profile)
+            .withDefaultSubscription();
+        storageManager = setInternalHttpPipeline(httpPipeline, StorageManager.configure(), AzureConfigurableImpl.class)
+            .authenticate(null, profile);
     }
 }
