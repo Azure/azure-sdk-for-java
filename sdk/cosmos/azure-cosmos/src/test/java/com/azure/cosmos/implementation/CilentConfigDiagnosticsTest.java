@@ -71,7 +71,7 @@ public class CilentConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
         assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [])");
-        assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("(cto:PT5S, rto:PT5S, icto:PT0S, ieto:PT1H, mcpe:130, mrpc:30, cer:true)");
+        assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("(cto:PT5S, rto:PT5S, icto:PT0S, ieto:PT1H, mcpe:130, mrpc:30, cer:false)");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:null, rto:null, icto:null, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false)");
 
