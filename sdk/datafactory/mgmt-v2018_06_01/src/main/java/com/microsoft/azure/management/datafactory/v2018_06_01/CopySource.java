@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("CopySource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SharePointOnlineListSource", value = SharePointOnlineListSource.class),
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSource", value = AzureDatabricksDeltaLakeSource.class),
     @JsonSubTypes.Type(name = "SnowflakeSource", value = SnowflakeSource.class),
     @JsonSubTypes.Type(name = "HttpSource", value = HttpSource.class),
     @JsonSubTypes.Type(name = "AzureBlobFSSource", value = AzureBlobFSSource.class),
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Office365Source", value = Office365Source.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSource", value = CosmosDbMongoDbApiSource.class),
     @JsonSubTypes.Type(name = "MongoDbV2Source", value = MongoDbV2Source.class),
+    @JsonSubTypes.Type(name = "MongoDbAtlasSource", value = MongoDbAtlasSource.class),
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
