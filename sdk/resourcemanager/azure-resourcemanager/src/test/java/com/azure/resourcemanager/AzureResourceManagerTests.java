@@ -25,7 +25,6 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
-import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
@@ -84,7 +83,6 @@ import org.junit.jupiter.api.Test;
 
 public class AzureResourceManagerTests extends ResourceManagerTestBase {
     private AzureResourceManager azureResourceManager;
-    private MsiManager msiManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -109,10 +107,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Authenticated azureAuthed = AzureResourceManager.authenticate(httpPipeline, profile);
-        azureResourceManager = azureAuthed.withDefaultSubscription();
-        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
-        setInternalContext(internalContext, azureResourceManager, msiManager);
+        azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
+        setInternalContext(internalContext, azureResourceManager);
     }
 
     @Override
@@ -1152,7 +1148,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         String identityName2 = generateRandomResourceName("msi-id", 15);
 
         final Identity createdIdentity =
-            msiManager
+            azureResourceManager
                 .identities()
                 .define(identityName1)
                 .withRegion(Region.US_WEST)
@@ -1161,7 +1157,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                 .create();
 
         Creatable<Identity> creatableIdentity =
-            msiManager
+            azureResourceManager
                 .identities()
                 .define(identityName2)
                 .withRegion(Region.US_WEST)
