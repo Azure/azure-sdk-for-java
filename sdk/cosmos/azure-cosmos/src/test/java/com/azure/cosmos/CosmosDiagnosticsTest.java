@@ -782,7 +782,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private void validateTransportRequestTimelineDirect(String diagnostics) {
         assertThat(diagnostics).contains("\"eventName\":\"created\"");
         assertThat(diagnostics).contains("\"eventName\":\"queued\"");
-        assertThat(diagnostics).contains("\"eventName\":\"acquireChannelStarted\"");
+        assertThat(diagnostics).contains("\"eventName\":\"channelAcquisitionStarted\"");
         assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
