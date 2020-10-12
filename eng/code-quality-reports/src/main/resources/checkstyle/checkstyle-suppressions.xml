@@ -269,6 +269,10 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.amqp.implementation.RetryUtil.java"/>
 
+  <!-- AMQP logger name set in lambda function to specify the function name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.core.amqp.implementation.ReactorConnection.java"/>
+
   <!-- The Identity Azure Platform End to tend Test.-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.endtoend.identity.IdentityTest.java"/>

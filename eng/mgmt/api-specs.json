@@ -146,6 +146,10 @@
     "source": "specification/hanaonazure/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "healthcareapis/resource-manager": {
+    "source": "specification/healthcareapis/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"

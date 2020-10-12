@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share
 
-
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
@@ -24,6 +23,7 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 
 class FileServiceAPITests extends APISpec {
     String shareName
@@ -196,7 +196,7 @@ class FileServiceAPITests extends APISpec {
         def shareName = generateShareName()
         def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
 
-        def time = getUTCNow()
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
         share.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED)
 
         when:
@@ -206,7 +206,7 @@ class FileServiceAPITests extends APISpec {
         def item = shares.next()
         item.getName() == shareName
         item.getProperties().getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        item.getProperties().getAccessTierChangeTime().isAfter(time)
+        item.getProperties().getAccessTierChangeTime().isEqual(time) || item.getProperties().getAccessTierChangeTime().isAfter(time)
         item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
     }

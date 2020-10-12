@@ -203,7 +203,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         Secret secret = vault.secrets().getByName(certOrderName);
 
-        byte[] certificate = Base64.getDecoder().decode(secret.value());
+        byte[] certificate = Base64.getDecoder().decode(secret.getValue());
 
         // upload certificate
         CertificateClient certificateClient = new CertificateClientBuilder()

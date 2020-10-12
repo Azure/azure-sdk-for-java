@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
@@ -21,8 +22,8 @@ class DeploymentSlotImpl
         DeploymentSlotImpl,
         WebAppImpl,
         DeploymentSlot.DefinitionStages.WithCreate,
-        DeploymentSlot.Update>
-    implements DeploymentSlot, DeploymentSlot.Definition, DeploymentSlot.Update {
+        DeploymentSlotBase.Update<DeploymentSlot>>
+    implements DeploymentSlot, DeploymentSlot.Definition {
 
     DeploymentSlotImpl(
         String name,

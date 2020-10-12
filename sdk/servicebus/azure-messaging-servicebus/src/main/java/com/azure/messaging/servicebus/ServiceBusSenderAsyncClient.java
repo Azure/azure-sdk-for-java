@@ -25,7 +25,6 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -48,10 +47,12 @@ import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
@@ -76,8 +77,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
 
     private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
+    private static final String SERVICE_BASE_NAME = "ServiceBus.";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicReference<String> linkName = new AtomicReference<>();
@@ -284,7 +289,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 : maximumLinkSize;
 
             return Mono.just(
-                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer));
+                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer,
+                    entityName, getFullyQualifiedNamespace()));
         }));
     }
 
@@ -558,7 +564,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(parentContext.get());
+                    sharedContext = tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, parentContext.get());
                 }
                 tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
@@ -572,17 +578,19 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             messages.add(message);
         }
 
-        final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
+        if (isTracingEnabled) {
+            final Context finalSharedContext = sharedContext == null
+                ? Context.NONE
+                : sharedContext
+                    .addData(ENTITY_PATH_KEY, entityName)
+                    .addData(HOST_NAME_KEY, connectionProcessor.getFullyQualifiedNamespace())
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
+            // Start send span and store updated context
+            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
+        }
 
         return withRetry(
             getSendLink().flatMap(link -> {
-                if (isTracingEnabled) {
-                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // Start send span and store updated context
-                    parentContext.set(tracerProvider.startSpan(
-                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                }
-
                 if (transactionContext != null && transactionContext.getTransactionId() != null) {
                     final TransactionalState deliveryState = new TransactionalState();
                     deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
@@ -594,17 +602,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         ? link.send(messages.get(0))
                         : link.send(messages);
                 }
-            })
-                .doOnEach(signal -> {
-                    if (isTracingEnabled) {
-                        tracerProvider.endSpan(parentContext.get(), signal);
-                    }
-                })
-                .doOnError(error -> {
-                    if (isTracingEnabled) {
-                        tracerProvider.endSpan(parentContext.get(), Signal.error(error));
-                    }
-                }), retryOptions.getTryTimeout(), retryPolicy);
+            }), retryOptions.getTryTimeout(), retryPolicy)
+            .doOnEach(signal -> {
+                if (isTracingEnabled) {
+                    tracerProvider.endSpan(parentContext.get(), signal);
+                }
+            });
 
     }
 
@@ -616,7 +619,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     final CreateBatchOptions batchOptions = new CreateBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
-                        link::getErrorContext, tracerProvider, messageSerializer));
+                        link::getErrorContext, tracerProvider, messageSerializer, entityName,
+                        link.getHostname()));
                 })
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)));
     }
@@ -649,11 +653,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         private final ErrorContextProvider contextProvider;
         private final TracerProvider tracerProvider;
         private final MessageSerializer serializer;
+        private final String entityPath;
+        private final String hostname;
 
         private volatile ServiceBusMessageBatch currentBatch;
 
         AmqpMessageCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
-            ErrorContextProvider contextProvider, TracerProvider tracerProvider, MessageSerializer serializer) {
+            ErrorContextProvider contextProvider, TracerProvider tracerProvider, MessageSerializer serializer,
+            String entityPath, String hostname) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
@@ -661,8 +668,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             this.contextProvider = contextProvider;
             this.tracerProvider = tracerProvider;
             this.serializer = serializer;
+            this.entityPath = entityPath;
+            this.hostname = hostname;
 
-            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer);
+            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer,
+                entityPath, hostname);
         }
 
         @Override
@@ -686,7 +696,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer);
+                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer,
+                    entityPath, hostname);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

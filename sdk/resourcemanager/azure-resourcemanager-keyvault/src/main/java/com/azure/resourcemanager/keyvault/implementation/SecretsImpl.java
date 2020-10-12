@@ -10,15 +10,16 @@ import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Secrets;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Secrets and its parent interfaces. */
-class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, KeyVaultSecret> implements Secrets {
+class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProperties> implements Secrets {
     private final SecretAsyncClient inner;
     private final Vault vault;
 
@@ -34,7 +35,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, KeyVaultSecr
 
     @Override
     protected SecretImpl wrapModel(String name) {
-        return new SecretImpl(name, new KeyVaultSecret(name, null), vault);
+        return new SecretImpl(name, new SecretProperties(), vault);
     }
 
     @Override
@@ -49,11 +50,18 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, KeyVaultSecr
     }
 
     @Override
-    protected SecretImpl wrapModel(KeyVaultSecret inner) {
-        if (inner == null) {
+    protected SecretImpl wrapModel(SecretProperties secretProperties) {
+        if (secretProperties == null) {
             return null;
         }
-        return new SecretImpl(inner.getName(), inner, vault);
+        return new SecretImpl(secretProperties.getName(), secretProperties, vault);
+    }
+
+    protected SecretImpl wrapModel(KeyVaultSecret keyVaultSecret) {
+        if (keyVaultSecret == null) {
+            return null;
+        }
+        return new SecretImpl(keyVaultSecret.getName(), keyVaultSecret, vault);
     }
 
     @Override
@@ -82,16 +90,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, KeyVaultSecr
 
     @Override
     public PagedFlux<Secret> listAsync() {
-        return PagedConverter
-            .flatMapPage(
-                inner.listPropertiesOfSecrets(),
-                s -> {
-                    if (s.isEnabled()) {
-                        return vault.secretClient().getSecret(s.getName(), s.getVersion()).map(this::wrapModel);
-                    } else {
-                        return Mono.just(wrapModel(new KeyVaultSecret(s.getName(), null).setProperties(s)));
-                    }
-                });
+        return inner.listPropertiesOfSecrets().mapPage(this::wrapModel);
     }
 
     @Override
