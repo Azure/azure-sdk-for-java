@@ -38,8 +38,7 @@ public class StoreClientFactory implements AutoCloseable {
                 configs,
                 connectionPolicy,
                 userAgent,
-                diagnosticsClientConfig,
-                addressResolver);
+                diagnosticsClientConfig);
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
@@ -47,7 +46,7 @@ public class StoreClientFactory implements AutoCloseable {
 
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
+                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext());
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
 
             } else {

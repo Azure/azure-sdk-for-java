@@ -31,19 +31,12 @@ public class SharedTransportClient extends TransportClient {
     private static SharedTransportClient sharedTransportClient;
     private final RntbdTransportClient.Options rntbdOptions;
 
-    public static TransportClient getOrCreateInstance(
-        Protocol protocol,
-        Configs configs,
-        ConnectionPolicy connectionPolicy,
-        UserAgentContainer userAgent,
-        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
-        IAddressResolver addressResolver) {
-
+    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent, DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent, addressResolver);
+                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -57,16 +50,11 @@ public class SharedTransportClient extends TransportClient {
 
     private final TransportClient transportClient;
 
-    private SharedTransportClient(
-        Protocol protocol,
-        Configs configs,
-        ConnectionPolicy connectionPolicy,
-        UserAgentContainer userAgent,
-        IAddressResolver addressResolver) {
+    private SharedTransportClient(Protocol protocol, Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-            this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
+            this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext());
 
         } else if (protocol == Protocol.HTTPS){
             this.rntbdOptions = null;

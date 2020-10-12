@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -59,8 +58,6 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     SocketAddress remoteAddress();
 
-    URI remoteURI();
-
     int requestQueueLength();
 
     Tag tag();
@@ -94,8 +91,6 @@ public interface RntbdEndpoint extends AutoCloseable {
         int evictions();
 
         RntbdEndpoint get(URI physicalAddress);
-
-        IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
     }
@@ -158,11 +153,6 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public long idleEndpointTimeoutInNanos() {
             return this.options.idleEndpointTimeout().toNanos();
-        }
-
-        @JsonProperty()
-        public boolean isConnectionEndpointRediscoveryEnabled() {
-            return this.options.isConnectionEndpointRediscoveryEnabled();
         }
 
         @JsonProperty

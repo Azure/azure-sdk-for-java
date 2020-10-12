@@ -114,7 +114,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         pipeline.addFirst(
             // Initialize sslHandler with jdkCompatibilityMode = true for OpenSSL context
-            // TODO (DANOBLE) Log an issue with netty for clarification on the design of this constructor and the
+            // TODO Log an issue with netty for clarification on the design of this constructor and the
             //  semantic differences between the JDK and OpenSSL implementations
             new SslHandler(this.config.sslContext().newEngine(channel.alloc())));
 

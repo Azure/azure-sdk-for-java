@@ -11,13 +11,6 @@ import reactor.core.publisher.Mono;
 public interface IAddressCache {
 
     /**
-     * Removes the physical address associated with the given {@link PartitionKeyRangeIdentity partition key range identity}
-     *
-     *
-     */
-    void removeAddress(PartitionKeyRangeIdentity partitionKeyRangeIdentity);
-
-    /**
      * Resolves physical addresses by either PartitionKeyRangeIdentity.
      *
      *
