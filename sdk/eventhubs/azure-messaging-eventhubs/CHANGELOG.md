@@ -12,6 +12,7 @@ the partition consumer to rebuild the connection later.
 ### Dependency Updates
 - Update `azure-core` dependency to `1.9.0`.
 - Update `azure-core-amqp` dependency to `1.6.0`.
+- Update `azure-identity` dependency to `1.1.3`.
 
 ## 5.2.0 (2020-09-11)
 - Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
