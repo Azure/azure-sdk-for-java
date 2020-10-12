@@ -13,6 +13,8 @@ import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.ProxyConfiguration;
+import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import junit.framework.AssertionFailedError;
@@ -61,6 +63,9 @@ public class SendTest extends ApiTestBase {
         // Setting anonymous peer for proxy because we don't have a signed certificate for this proxy.
         final CompletableFuture<MessagingFactory> factory = new MessagingFactory.MessagingFactoryBuilder(
             connectionString.getEndpoint().getHost(), provider, TestContext.EXECUTOR_SERVICE)
+            .setRetryPolicy(RetryPolicy.getNoRetry())
+            .setOperationTimeout(Duration.ofMinutes(1))
+            .setTransportType(TransportType.AMQP_WEB_SOCKETS)
             .setProxyConfiguration(ProxyConfiguration.SYSTEM_DEFAULTS)
             .setVerifyMode(verifyMode)
             .build();
