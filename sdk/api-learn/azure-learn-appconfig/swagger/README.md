@@ -18,4 +18,11 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 artifact-id: azure-learn-appconfig
 credential-types: tokencredential
+custom-types-subpackage: models
+custom-types: ConfigurationSetting
+required-fields-as-ctor-args: true
+directive:
+    - rename-model:
+        from: KeyValue
+        to: ConfigurationSetting
 ```

@@ -19,7 +19,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -34,6 +33,10 @@ public final class AzureAppConfigurationImplBuilder {
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = CoreUtils.getProperties("azure-learn-appconfig.properties");
+
+    public AzureAppConfigurationImplBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
+    }
 
     /*
      * Used to guarantee real-time consistency between requests.
@@ -161,22 +164,6 @@ public final class AzureAppConfigurationImplBuilder {
      */
     public AzureAppConfigurationImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /*
-     * The service API version that is used when making API requests.
-     */
-    private ServiceVersion serviceVersion;
-
-    /**
-     * Sets The service API version that is used when making API requests.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the AzureAppConfigurationImplBuilder.
-     */
-    public AzureAppConfigurationImplBuilder serviceVersion(ServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
         return this;
     }
 

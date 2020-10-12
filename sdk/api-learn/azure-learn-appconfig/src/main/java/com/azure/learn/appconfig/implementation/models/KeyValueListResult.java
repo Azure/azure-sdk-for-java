@@ -5,17 +5,18 @@
 package com.azure.learn.appconfig.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.learn.appconfig.models.ConfigurationSetting;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The KeyValueListResult model. */
+/** The result of a list request. */
 @Fluent
 public final class KeyValueListResult {
     /*
      * The collection value.
      */
     @JsonProperty(value = "items")
-    private List<KeyValue> items;
+    private List<ConfigurationSetting> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
@@ -28,7 +29,7 @@ public final class KeyValueListResult {
      *
      * @return the items value.
      */
-    public List<KeyValue> getItems() {
+    public List<ConfigurationSetting> getItems() {
         return this.items;
     }
 
@@ -38,7 +39,7 @@ public final class KeyValueListResult {
      * @param items the items value to set.
      * @return the KeyValueListResult object itself.
      */
-    public KeyValueListResult setItems(List<KeyValue> items) {
+    public KeyValueListResult setItems(List<ConfigurationSetting> items) {
         this.items = items;
         return this;
     }

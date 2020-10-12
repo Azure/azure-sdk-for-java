@@ -7,9 +7,10 @@ package com.azure.learn.appconfig.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.learn.appconfig.models.ConfigurationSetting;
 
 /** Contains all response data for the putKeyValue operation. */
-public final class PutKeyValueResponse extends ResponseBase<PutKeyValueHeaders, KeyValue> {
+public final class PutKeyValueResponse extends ResponseBase<PutKeyValueHeaders, ConfigurationSetting> {
     /**
      * Creates an instance of PutKeyValueResponse.
      *
@@ -20,13 +21,17 @@ public final class PutKeyValueResponse extends ResponseBase<PutKeyValueHeaders, 
      * @param headers the deserialized headers of the HTTP response.
      */
     public PutKeyValueResponse(
-            HttpRequest request, int statusCode, HttpHeaders rawHeaders, KeyValue value, PutKeyValueHeaders headers) {
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            ConfigurationSetting value,
+            PutKeyValueHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public KeyValue getValue() {
+    public ConfigurationSetting getValue() {
         return super.getValue();
     }
 }
