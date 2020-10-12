@@ -77,7 +77,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
