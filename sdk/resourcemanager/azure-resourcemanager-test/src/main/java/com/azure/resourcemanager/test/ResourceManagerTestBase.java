@@ -283,10 +283,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
      *
      * @param internalContext the internal runtime context
      * @param objects the manager classes to change internal context
-     * @param <InternalContext> the type of internal context
+     * @param <T> the type of internal context
      * @throws RuntimeException when field cannot be found or set.
      */
-    protected <InternalContext> void setInternalContext(InternalContext internalContext, Object... objects) {
+    protected <T> void setInternalContext(T internalContext, Object... objects) {
         try {
             for (Object obj : objects) {
                 for (final Field field : obj.getClass().getSuperclass().getDeclaredFields()) {
@@ -327,15 +327,16 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @param httpPipeline the http pipeline
      * @param azureConfigurable the azure configurable instance
      * @param impl the class type of azure configurable implementation
-     * @param <AzureConfigurable> the type of azure configurable
-     * @param <AzureConfigurableImpl> the type of azure configurable implementation
+     * @param <T> the type of azure configurable
+     * @param <S> the type of azure configurable implementation
      * @return the azure configurable instance after setting internal http pipeline
      * @throws RuntimeException when field cannot be found or set.
      */
-    protected <AzureConfigurable, AzureConfigurableImpl> AzureConfigurable setInternalHttpPipeline(HttpPipeline httpPipeline, AzureConfigurable azureConfigurable, Class<AzureConfigurableImpl> impl) {
+    protected <T, S> T setInternalHttpPipeline(HttpPipeline httpPipeline, T azureConfigurable, Class<S> impl) {
         try {
             Object internalObj = impl.cast(azureConfigurable);
-            Method method = internalObj.getClass().getSuperclass().getDeclaredMethod("withInternalHttpPipeline", httpPipeline.getClass());
+            Method method = internalObj.getClass().getSuperclass().getDeclaredMethod(
+                "withInternalHttpPipeline", httpPipeline.getClass());
             method.invoke(internalObj, httpPipeline);
             return azureConfigurable;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
