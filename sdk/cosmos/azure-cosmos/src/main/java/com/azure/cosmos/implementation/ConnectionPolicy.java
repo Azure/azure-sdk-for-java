@@ -53,7 +53,7 @@ public final class ConnectionPolicy {
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
-        this.tcpConnectionEndpointRediscoveryEnabled = true;
+        this.tcpConnectionEndpointRediscoveryEnabled = false;
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {

@@ -15,7 +15,7 @@ import java.time.Duration;
  */
 public final class DirectConnectionConfig {
     //  Constants
-    private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = true;
+    private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = false;
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
@@ -48,7 +48,7 @@ public final class DirectConnectionConfig {
      * <p>
      * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that may occur during maintenance operations.
      *
-     * By default, connection endpoint rediscovery is enabled.
+     * By default, connection endpoint rediscovery is disabled.
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
@@ -61,7 +61,7 @@ public final class DirectConnectionConfig {
      * <p>
      * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that may occur during maintenance operations.
      *
-     * By default, connection endpoint rediscovery is enabled.
+     * By default, connection endpoint rediscovery is disabled.
      *
      * @param connectionEndpointRediscoveryEnabled {@code true} if connection endpoint rediscovery is enabled; {@code
      *                                             false} otherwise.

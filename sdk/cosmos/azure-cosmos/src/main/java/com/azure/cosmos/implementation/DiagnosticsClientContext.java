@@ -186,7 +186,7 @@ public interface DiagnosticsClientContext {
             if (rntbdOptions == null) {
                 return null;
             }
-            return Strings.lenientFormat("(cto:%s, rto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cere:%s)",
+            return Strings.lenientFormat("(cto:%s, rto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
                 rntbdOptions.connectTimeout(),
                 rntbdOptions.requestTimeout(),
                 rntbdOptions.idleChannelTimeout(),
