@@ -4,6 +4,8 @@
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.azure.telemetry.TelemetrySender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -25,6 +27,7 @@ import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
@@ -46,6 +49,7 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AutoConfiguration.class);
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
 
@@ -71,13 +75,30 @@ public class AADOAuth2AutoConfiguration {
         Assert.hasText(tenantId, "azure.activedirectory.tenant-id should have text.");
         Assert.doesNotContain(tenantId, " ", "azure.activedirectory.tenant-id should not contain ' '.");
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
+
+        List<String> scope = aadAuthenticationProperties.getScope();
+        if (aadAuthenticationProperties.getUserGroup().getAllowedGroups() != null
+            && !scope.contains("https://graph.microsoft.com/user.read")){
+            LOGGER.warn("Lack the scope of accessing Microsoft Graph API, " +
+                "https://graph.microsoft.com/user.read has been added by default");
+            scope.add("https://graph.microsoft.com/user.read");
+        }
+        if (!scope.contains("openid")){
+            LOGGER.warn("Lack the scope of openid, add scope of openid and profile by default");
+            scope.add("openid");
+            scope.add("profile");
+        } else if(!scope.contains("profile")){
+            LOGGER.warn("Lack the scope of profile, add by default");
+            scope.add("profile");
+        }
+
         return ClientRegistration.withRegistrationId("azure")
                                  .clientId(aadAuthenticationProperties.getClientId())
                                  .clientSecret(aadAuthenticationProperties.getClientSecret())
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-                                 .scope(aadAuthenticationProperties.getScope())
+                                 .scope(scope)
                                  .authorizationUri(
                                      String.format(
                                          "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize",
