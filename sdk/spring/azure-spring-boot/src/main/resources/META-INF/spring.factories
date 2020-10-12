@@ -1,5 +1,4 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoundry.environment.VcapProcessor,\
-com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoundry.environment.VcapProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
