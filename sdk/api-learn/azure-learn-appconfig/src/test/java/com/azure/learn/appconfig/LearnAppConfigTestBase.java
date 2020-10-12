@@ -6,4 +6,5 @@ package com.azure.learn.appconfig;
 import com.azure.core.test.TestBase;
 
 public class LearnAppConfigTestBase extends TestBase {
+
 }
