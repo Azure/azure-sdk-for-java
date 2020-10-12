@@ -46,12 +46,7 @@ public final class DirectConnectionConfig {
     /**
      * Gets a value indicating whether Direct TCP connection endpoint rediscovery is enabled.
      * <p>
-     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that are likely
-     * to occur:
-     * <ul>
-     * <li>During rolling upgrades of a Cosmos instance or
-     * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
-     * </ul>
+     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that may occur during maintenance operations.
      *
      * By default, connection endpoint rediscovery is enabled.
      *
@@ -64,12 +59,7 @@ public final class DirectConnectionConfig {
     /**
      * Sets a value indicating whether Direct TCP connection endpoint rediscovery should be enabled.
      * <p>
-     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that are likely
-     * to occur:
-     * <ul>
-     * <li>During rolling upgrades of a Cosmos instance or
-     * <li>When a backend node is being decommissioned or restarted (e.g., to restart or remove an unhealthy replica.)
-     * </ul>
+     * The connection endpoint rediscovery feature is designed to reduce and spread-out latency spikes that may occur during maintenance operations.
      *
      * By default, connection endpoint rediscovery is enabled.
      *

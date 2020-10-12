@@ -66,12 +66,10 @@ public class RntbdConnectionStateListener {
                 // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
 
                 if (cause instanceof IOException) {
-                    final Class<?> type = cause.getClass();
 
-                    if (type == ClosedChannelException.class) {
+                    if (cause instanceof ClosedChannelException) {
                         this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
-                    }
-                    else {
+                    } else {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Will not raise the connection state change event for error {}", cause);
                         }
