@@ -184,8 +184,11 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         return new IOException(errorCondition.getDescription());
     }
 
-    private static com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration(ProxyConfiguration configuration) {
-        final ProxyAuthenticationType type = getProtonAuthenticationType(configuration.authentication());
+    private static com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration(
+        ProxyConfiguration configuration) {
+        final ProxyAuthenticationType type = configuration.authentication() != null
+            ? getProtonAuthenticationType(configuration.authentication())
+            : ProxyAuthenticationType.NONE;
         final String username = configuration.hasUserDefinedCredentials()
             ? configuration.credentials().getUserName()
             : null;
