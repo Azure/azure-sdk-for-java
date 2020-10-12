@@ -34,8 +34,8 @@ import java.util.Set;
 
 public class GremlinConfigurationSupportUnitTest {
 
-    private static final String TEST_CONFIG_PACKAGE_NAME = "com.microsoft.spring.data.gremlin.config";
-    private static final String TEST_DOMAIN_PACKAGE_NAME = "com.microsoft.spring.data.gremlin.common.domain";
+    private static final String TEST_CONFIG_PACKAGE_NAME = "com.azure.spring.data.gremlin.config";
+    private static final String TEST_DOMAIN_PACKAGE_NAME = "com.azure.spring.data.gremlin.common.domain";
     private TestConfig config;
 
     @Before

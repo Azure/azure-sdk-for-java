@@ -66,7 +66,7 @@ public class GremlinScriptLiteralEdgeUnitTest {
     public void testGenerateFindAllScript() {
         final List<String> queryList = new GremlinScriptLiteralEdge().generateFindAllScript(gremlinSource);
         assertEquals(queryList.get(0), "g.E().has(label, 'label-relationship')"
-            + ".has('_classname', 'com.microsoft.spring.data.gremlin.common.domain.Relationship')");
+            + ".has('_classname', 'com.azure.spring.data.gremlin.common.domain.Relationship')");
     }
 
     @Test
@@ -79,7 +79,7 @@ public class GremlinScriptLiteralEdgeUnitTest {
             + ".property('name', 'rel-name')"
             + ".property('project', '{\"id\":\"321\",\"name\":\"ms-project\",\"uri\":\"http\"}')"
             + ".property('location', 'china')"
-            + ".property('_classname', 'com.microsoft.spring.data.gremlin.common.domain.Relationship')");
+            + ".property('_classname', 'com.azure.spring.data.gremlin.common.domain.Relationship')");
     }
 
     @Test
@@ -90,7 +90,7 @@ public class GremlinScriptLiteralEdgeUnitTest {
             + ".property('name', 'rel-name')"
             + ".property('project', '{\"id\":\"321\",\"name\":\"ms-project\",\"uri\":\"http\"}')"
             + ".property('location', 'china')"
-            + ".property('_classname', 'com.microsoft.spring.data.gremlin.common.domain.Relationship')");
+            + ".property('_classname', 'com.azure.spring.data.gremlin.common.domain.Relationship')");
     }
 
     @Test
