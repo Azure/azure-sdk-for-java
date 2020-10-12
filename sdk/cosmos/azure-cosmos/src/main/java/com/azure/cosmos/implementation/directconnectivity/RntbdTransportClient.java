@@ -139,18 +139,10 @@ public final class RntbdTransportClient extends TransportClient {
 
     // region Methods
 
-    /**
-     * {@code true} if this {@linkplain RntbdTransportClient client} is closed.
-     *
-     * @return {@code true} if this {@linkplain RntbdTransportClient client} is closed; {@code false} otherwise.
-     */
     public boolean isClosed() {
         return this.closed.get();
     }
 
-    /**
-     * Closes this {@linkplain RntbdTransportClient client} and releases all resources associated with it.
-     */
     @Override
     public void close() {
 
@@ -163,12 +155,6 @@ public final class RntbdTransportClient extends TransportClient {
         logger.debug("already closed {}", this);
     }
 
-    /**
-     * The number of {@linkplain RntbdEndpoint endpoints} allocated to this {@linkplain RntbdTransportClient client}.
-     *
-     * @return The number of {@linkplain RntbdEndpoint endpoints} associated with this {@linkplain RntbdTransportClient
-     * client}.
-     */
     public int endpointCount() {
         return this.endpointProvider.count();
     }
@@ -177,31 +163,14 @@ public final class RntbdTransportClient extends TransportClient {
         return this.endpointProvider.evictions();
     }
 
-    /**
-     * The integer identity of this {@linkplain RntbdTransportClient client}.
-     * <p>
-     * Clients are numbered sequentially based on the order in which they are initialized.
-     *
-     * @return The integer identity of this {@linkplain RntbdTransportClient client}.
-     */
     public long id() {
         return this.id;
     }
 
-    /**
-     * Issues a Direct TCP request to the specified Cosmos service address asynchronously.
-     *
-     * @param addressUri A Cosmos service address.
-     * @param request The {@linkplain RxDocumentServiceRequest request} to issue.
-     *
-     * @return A {@link Mono} of type {@link StoreResponse} that will complete when the Direct TCP request completes.
-     * I shI
-     * @throws TransportException if this {@linkplain RntbdTransportClient client} is closed.
-     */
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
 
-        checkNotNull(addressUri, "expected non-null addressUri");
+        checkNotNull(addressUri, "expected non-null address");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
 
@@ -323,13 +292,6 @@ public final class RntbdTransportClient extends TransportClient {
         }).subscriberContext(reactorContext);
     }
 
-    /**
-     * The key-value pair used to classify and drill into metrics produced by this {@linkplain RntbdTransportClient
-     * client}.
-     *
-     * @return The key-value pair used to classify and drill into metrics collected by this {@linkplain
-     * RntbdTransportClient client}.
-     */
     public Tag tag() {
         return this.tag;
     }
@@ -339,13 +301,13 @@ public final class RntbdTransportClient extends TransportClient {
         return RntbdObjectMapper.toString(this);
     }
 
-    // endregion
-
-    // region Privates
-
     private static Tag tag(long id) {
         return Tag.of(TAG_NAME, Strings.padStart(Long.toHexString(id).toUpperCase(Locale.ROOT), 4, '0'));
     }
+
+    // endregion
+
+    // region Privates
 
     private void throwIfClosed() {
         if (this.closed.get()) {
@@ -400,6 +362,9 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration receiveHangDetectionTime;
 
         @JsonProperty()
+        private final Duration requestExpiryInterval;
+
+        @JsonProperty()
         private final Duration requestTimeout;
 
         @JsonProperty()
@@ -439,6 +404,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
             this.maxConcurrentRequestsPerEndpointOverride = builder.maxConcurrentRequestsPerEndpointOverride;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
+            this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
@@ -458,7 +424,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
             this.idleChannelTimerResolution = Duration.ofMillis(100);
-            this.idleEndpointTimeout = connectionPolicy.getIdleTcpEndpointTimeout();
+            this.idleEndpointTimeout = connectionPolicy.getIdleEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
@@ -466,6 +432,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxConcurrentRequestsPerEndpointOverride = -1;
 
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
+            this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = connectionPolicy.getRequestTimeout();
             this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
@@ -599,6 +566,7 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxRequestsPerChannel": 30,
          *   "maxConcurrentRequestsPerEndpointOverride": 500,
          *   "receiveHangDetectionTime": "PT1M5S",
+         *   "requestExpiryInterval": "PT5S",
          *   "requestTimeout": "PT5S",
          *   "requestTimerResolution": "PT0.5S",
          *   "sendHangDetectionTime": "PT10S",
@@ -666,7 +634,6 @@ public final class RntbdTransportClient extends TransportClient {
                     }
                 } finally {
                     if (options == null) {
-                        logger.info("Using default Direct TCP options: {}", DEFAULT_OPTIONS_PROPERTY_NAME);
                         DEFAULT_OPTIONS = new Options(ConnectionPolicy.getDefaultPolicy());
                     } else {
                         logger.info("Updated default Direct TCP options from system property {}: {}",
@@ -678,7 +645,7 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             private int bufferPageSize;
-            private Duration connectionAcquisitionTimeout;
+            private final Duration connectionAcquisitionTimeout;
             private boolean connectionEndpointRediscoveryEnabled;
             private Duration connectTimeout;
             private Duration idleChannelTimeout;
@@ -689,6 +656,7 @@ public final class RntbdTransportClient extends TransportClient {
             private int maxRequestsPerChannel;
             private int maxConcurrentRequestsPerEndpointOverride;
             private Duration receiveHangDetectionTime;
+            private Duration requestExpiryInterval;
             private Duration requestTimeout;
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
@@ -717,6 +685,7 @@ public final class RntbdTransportClient extends TransportClient {
                     DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;
 
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
+                this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
                 this.requestTimeout = connectionPolicy.getRequestTimeout();
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
@@ -747,7 +716,7 @@ public final class RntbdTransportClient extends TransportClient {
 
             public Builder connectionAcquisitionTimeout(final Duration value) {
                 checkNotNull(value, "expected non-null value");
-                this.connectionAcquisitionTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
+                this.connectTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
                 return this;
             }
 
@@ -771,9 +740,7 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             public Builder idleChannelTimerResolution(final Duration value) {
-                checkArgument(value != null && value.compareTo(Duration.ZERO) <= 0,
-                    "expected positive value, not %s",
-                    value);
+                checkNotNull(value, "expected non-null value");
                 this.idleChannelTimerResolution = value;
                 return this;
             }
@@ -817,6 +784,14 @@ public final class RntbdTransportClient extends TransportClient {
                     "expected positive value, not %s",
                     value);
                 this.receiveHangDetectionTime = value;
+                return this;
+            }
+
+            public Builder requestExpiryInterval(final Duration value) {
+                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
+                    "expected positive value, not %s",
+                    value);
+                this.requestExpiryInterval = value;
                 return this;
             }
 

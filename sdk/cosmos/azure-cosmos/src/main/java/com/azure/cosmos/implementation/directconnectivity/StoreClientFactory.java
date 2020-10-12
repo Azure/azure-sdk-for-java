@@ -10,6 +10,10 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 
+// TODO: DANOBLE: no support for ICommunicationEventSource ask Ji
+//  Links:
+//  https://msdata.visualstudio.com/CosmosDB/SDK/_workitems/edit/262496
+
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
 // by AutoCloseable (see: http://docs.oracle.com/javase/7/docs/api/java/lang/AutoCloseable.html#close()).
@@ -19,6 +23,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 public class StoreClientFactory implements AutoCloseable {
 
     private final Configs configs;
+    private final Protocol protocol;
     private final TransportClient transportClient;
     private volatile boolean isClosed;
 
@@ -29,9 +34,8 @@ public class StoreClientFactory implements AutoCloseable {
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
         boolean enableTransportClientSharing) {
-
         this.configs = configs;
-        Protocol protocol = configs.getProtocol();
+        this.protocol = configs.getProtocol();
         if (enableTransportClientSharing) {
             this.transportClient = SharedTransportClient.getOrCreateInstance(
                 protocol,
@@ -51,7 +55,7 @@ public class StoreClientFactory implements AutoCloseable {
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
 
             } else {
-                throw new IllegalArgumentException(String.format("protocol: %s", protocol));
+                throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
             }
         }
     }

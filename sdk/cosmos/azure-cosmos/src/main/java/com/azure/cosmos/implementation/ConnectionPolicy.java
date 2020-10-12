@@ -38,10 +38,10 @@ public final class ConnectionPolicy {
 
     //  Direct connection config properties
     private Duration connectTimeout;
-    private Duration idleTcpConnectionTimeout;
-    private Duration idleTcpEndpointTimeout;
+    private Duration idleEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private Duration idleTcpConnectionTimeout;
     private boolean tcpConnectionEndpointRediscoveryEnabled;
 
     /**
@@ -60,7 +60,7 @@ public final class ConnectionPolicy {
         this(ConnectionMode.DIRECT);
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
         this.idleTcpConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
-        this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
+        this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
@@ -446,17 +446,17 @@ public final class ConnectionPolicy {
      * Gets the idle endpoint timeout
      * @return the idle endpoint timeout
      */
-    public Duration getIdleTcpEndpointTimeout() {
-        return idleTcpEndpointTimeout;
+    public Duration getIdleEndpointTimeout() {
+        return idleEndpointTimeout;
     }
 
     /**
      * Sets the idle endpoint timeout
-     * @param idleTcpEndpointTimeout the idle endpoint timeout
+     * @param idleEndpointTimeout the idle endpoint timeout
      * @return the {@link ConnectionPolicy}
      */
-    public ConnectionPolicy setIdleTcpEndpointTimeout(Duration idleTcpEndpointTimeout) {
-        this.idleTcpEndpointTimeout = idleTcpEndpointTimeout;
+    public ConnectionPolicy setIdleEndpointTimeout(Duration idleEndpointTimeout) {
+        this.idleEndpointTimeout = idleEndpointTimeout;
         return this;
     }
 
@@ -513,7 +513,7 @@ public final class ConnectionPolicy {
             ", inetSocketProxyAddress=" + (proxy != null ? proxy.getAddress() : null) +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectTimeout=" + connectTimeout +
-            ", idleTcpEndpointTimeout=" + idleTcpEndpointTimeout +
+            ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +

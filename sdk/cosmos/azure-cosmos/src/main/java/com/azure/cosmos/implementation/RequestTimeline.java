@@ -151,17 +151,19 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         return RntbdObjectMapper.toString(this);
     }
 
-    @JsonPropertyOrder({ "name", "startTimeUTC" })
+    @JsonPropertyOrder({ "name", "startTimeUTC", "durationInMicroSec" })
     public static final class Event {
 
         @JsonIgnore
         private final Duration duration;
 
+        @JsonSerialize(using = ToStringSerializer.class)
+        private final long durationInMicroSec;
+
         @JsonProperty("eventName")
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)
-        @JsonProperty("startTimeUTC")
         private final Instant startTime;
 
         public Event(final String name, final Instant from, final Instant to) {
@@ -171,12 +173,11 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             this.name = name;
             this.startTime = from;
 
-            if (from == null) {
-                this.duration = null;
-            } else if (to == null) {
-                this.duration = Duration.ZERO;
+            this.duration = from == null ? null : to == null ? Duration.ZERO : Duration.between(from, to);
+            if(this.duration != null) {
+                this.durationInMicroSec = duration.toNanos()/1000L;
             } else {
-                this.duration = Duration.between(from, to);
+                this.durationInMicroSec = 0;
             }
         }
 
