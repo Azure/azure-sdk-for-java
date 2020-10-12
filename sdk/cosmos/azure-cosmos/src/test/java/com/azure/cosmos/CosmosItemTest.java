@@ -122,7 +122,7 @@ public class CosmosItemTest extends TestSuiteBase {
                 .setConsistencyLevel(ConsistencyLevel.EVENTUAL),
             ObjectNode.class);
 
-        System.out.println("REQUEST DIAGNOSTICS: " + readResponse1.getDiagnostics().toString());
+        logger.info("REQUEST DIAGNOSTICS: {}", readResponse1.getDiagnostics().toString());
         validateIdOfItemResponse(idAndPkValue, readResponse1);
     }
 
@@ -219,8 +219,8 @@ public class CosmosItemTest extends TestSuiteBase {
 
         CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
             container.queryItems(query, cosmosQueryRequestOptions, ObjectNode.class);
-        feedResponseIterator1.handle((r) -> System.out.println("Query RequestDiagnostics: " + r.getCosmosDiagnostics().toString()));
-        System.out.println("hello world");
+        feedResponseIterator1.handle(
+            (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
 
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
@@ -229,7 +229,8 @@ public class CosmosItemTest extends TestSuiteBase {
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
             container.queryItems(querySpec, cosmosQueryRequestOptions, ObjectNode.class);
-        feedResponseIterator3.handle((r) -> System.out.println("Query RequestDiagnostics: " + r.getCosmosDiagnostics().toString()));
+        feedResponseIterator3.handle(
+            (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
         assertThat(feedResponseIterator3.stream().count() == 1);
     }
