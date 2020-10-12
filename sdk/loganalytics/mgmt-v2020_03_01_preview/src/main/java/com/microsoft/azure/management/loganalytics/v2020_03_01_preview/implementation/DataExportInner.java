@@ -26,12 +26,6 @@ public class DataExportInner extends ProxyResource {
     private String dataExportId;
 
     /**
-     * When ‘true’, all workspace's tables are exported.
-     */
-    @JsonProperty(value = "properties.allTables")
-    private Boolean allTables;
-
-    /**
      * An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
      */
     @JsonProperty(value = "properties.tableNames")
@@ -93,26 +87,6 @@ public class DataExportInner extends ProxyResource {
      */
     public DataExportInner withDataExportId(String dataExportId) {
         this.dataExportId = dataExportId;
-        return this;
-    }
-
-    /**
-     * Get when ‘true’, all workspace's tables are exported.
-     *
-     * @return the allTables value
-     */
-    public Boolean allTables() {
-        return this.allTables;
-    }
-
-    /**
-     * Set when ‘true’, all workspace's tables are exported.
-     *
-     * @param allTables the allTables value to set
-     * @return the DataExportInner object itself.
-     */
-    public DataExportInner withAllTables(Boolean allTables) {
-        this.allTables = allTables;
         return this;
     }
 

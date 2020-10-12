@@ -1,7 +1,27 @@
 # Release History
 
-## 4.3.0-beta.2 (Unreleased)
+## 4.3.0-beta.3 (Unreleased)
 
+
+## 4.3.0-beta.2 (2020-10-09)
+
+### New Features
+- Added `KeyVaultSecretIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/models/KeyVaultSecretIdentifier.java#L79) method to parse the different elements of a given secret identifier.
+- Added API overloads that allow for passing specific polling intervals for long-running operations:
+    - `SecretAsyncClient`
+        - `beginDeleteSecret(String, Duration)`
+        - `beginRecoverDeletedSecret(String, Duration)`
+    - `SecretClient`
+        - `beginDeleteSecret(String, Duration)`
+        - `beginRecoverDeletedSecret(String, Duration)`
+- Added support for `com.azure.core.util.ClientOptions` in client builders.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.2`
+- Upgraded `azure-core-test` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.1.3`
 
 ## 4.3.0-beta.1 (2020-09-11)
 - Updated versions for azure-core and azure-identity.
