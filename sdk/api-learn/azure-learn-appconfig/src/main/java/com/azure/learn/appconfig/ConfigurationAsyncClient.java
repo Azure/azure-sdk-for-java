@@ -64,7 +64,7 @@ public final class ConfigurationAsyncClient {
                 return internalClient.getKeyValueWithResponseAsync(setting.getKey(), setting.getLabel(),
                     null, null, ifNoneMatchETag, null, context.addData(Tracer.AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                     .onErrorResume(HttpResponseException.class, throwable -> {
-                        HttpResponseException e = throwable;
+                        HttpResponseException e = (HttpResponseException) throwable;
                         HttpResponse httpResponse = e.getResponse();
                         if (httpResponse.getStatusCode() == 304) {
                             GetKeyValueResponse nullConfigSettingResponse = new GetKeyValueResponse(httpResponse.getRequest(),
