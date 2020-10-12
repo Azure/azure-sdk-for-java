@@ -23,13 +23,16 @@ import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 /**
- * class of KeyVaultOperation
+ * KeyVaultOperation wraps the operations to access Key Vault.
  */
+@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class KeyVaultOperation {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
@@ -53,11 +56,10 @@ public class KeyVaultOperation {
      * Stores the secret keys.
      */
     private final List<String> secretKeys;
-
     /**
      * Stores the timer object to schedule refresh task.
      */
-    private static final Timer TIMER = new Timer();
+    private static Timer timer;
 
     /**
      * Constructor.
@@ -80,13 +82,24 @@ public class KeyVaultOperation {
         refreshProperties();
 
         if (refreshInMillis > 0) {
-            final TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    refreshProperties();
+            synchronized (KeyVaultOperation.class) {
+                if (timer != null) {
+                    try {
+                        timer.cancel();
+                        timer.purge();
+                    } catch (RuntimeException runtimeException) {
+                        LOG.error("Error of terminating Timer", runtimeException);
+                    }
                 }
-            };
-            TIMER.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+                timer = new Timer();
+                final TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        refreshProperties();
+                    }
+                };
+                timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+            }
         }
     }
 
