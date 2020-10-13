@@ -173,7 +173,7 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
     /**
      * The entirety of the VirtualMachine definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -183,19 +183,19 @@ public interface VirtualMachine extends HasInner<VirtualMachineInner>, Indexable
         /**
          * The first stage of a VirtualMachine definition.
          */
-        interface Blank extends WithResourceGroup {
+        interface Blank extends WithLocation {
         }
 
         /**
          * The stage of the virtualmachine definition allowing to specify Location.
          */
-        interface WithResourceGroup {
+        interface WithLocation {
            /**
             * Specifies resourceGroupName.
             * @param resourceGroupName The name of the resource group
             * @return the next definition stage
             */
-            WithLocation withExistingResourceGroup(String resourceGroupName);
+            WithLocation withExistingLocation(String resourceGroupName);
         }
 
         /**
