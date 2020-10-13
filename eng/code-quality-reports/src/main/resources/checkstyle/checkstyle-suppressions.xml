@@ -619,9 +619,11 @@
 
   <!-- Suppress checks all azure-spring-cloud -->
   <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"></suppress>
-
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|ThrowFromClientLoggerCheck|ExternalDependencyExposedCheck|EnforceFinalFieldsCheck)"
             files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
 
 </suppressions>
