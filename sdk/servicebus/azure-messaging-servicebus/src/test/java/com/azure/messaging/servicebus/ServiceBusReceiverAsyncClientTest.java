@@ -427,18 +427,10 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages()
             .take(1)
-            .flatMap(context -> {
-                System.out.println("!!!! Test context : " +  context);
-                System.out.println("!!!! Test context.message  : " +  context.getMessage());
-                Mono<Void> operation = receiver.deadLetter(context.getMessage(), deadLetterOptions);
-                System.out.println("!!!! operation  : " +  operation);
-                return operation;
-            }))
+            .flatMap(context -> receiver.deadLetter(context.getMessage(), deadLetterOptions)))
             .then(() -> messageSink.next(message))
-            //.assertNext(aVoid -> )
-            //.expectNext()
+            .expectNext()
             .verifyComplete();
-        System.out.println("!!!! updateDisposition  will be called " );
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class));
     }
 

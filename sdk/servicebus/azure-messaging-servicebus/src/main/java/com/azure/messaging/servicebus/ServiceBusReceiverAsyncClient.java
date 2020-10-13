@@ -151,9 +151,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-       ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-       TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-       Duration maxAutoRenewLockDuration, UnnamedSessionManager unnamedSessionManager) {
+        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
+        Duration maxAutoRenewLockDuration, UnnamedSessionManager unnamedSessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");

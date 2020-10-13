@@ -71,7 +71,7 @@ public final class ServiceBusClientBuilder {
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
-    private static Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
+    private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
 
     private final Object connectionLock = new Object();
     private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
