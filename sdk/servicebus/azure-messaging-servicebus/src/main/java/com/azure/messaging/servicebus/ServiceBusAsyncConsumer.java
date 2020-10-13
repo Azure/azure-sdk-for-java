@@ -40,12 +40,12 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
 
-        this.processor = linkProcessor
+        this.processor = new ServiceBusRenewOperator(linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .publish(prefetch)
-            .autoConnect(1)
-            .transform(serviceBusReceivedMessageFlux -> new ServiceBusMessageOperator(serviceBusReceivedMessageFlux,
-                autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock));
+            .autoConnect(1),
+            autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+
     }
 
     /**

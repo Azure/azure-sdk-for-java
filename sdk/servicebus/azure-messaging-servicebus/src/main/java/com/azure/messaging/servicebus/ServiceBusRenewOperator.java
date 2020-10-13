@@ -22,10 +22,9 @@ import java.util.function.Function;
 /**
  * Operate on messages from to upstream, pushes them downstream  and start lock renewal.
  */
+final class ServiceBusRenewOperator extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage>  {
 
-final class ServiceBusMessageOperator extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage>  {
-
-    private final ClientLogger logger = new ClientLogger(ServiceBusMessageOperator.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusRenewOperator.class);
 
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
     private final boolean isAutoRenewLock;
@@ -36,7 +35,7 @@ final class ServiceBusMessageOperator extends FluxOperator<ServiceBusReceivedMes
      * Build a {@link FluxOperator} wrapper around the passed parent {@link org.reactivestreams.Publisher}
      * @param source the {@link org.reactivestreams.Publisher} to decorate
      */
-    ServiceBusMessageOperator(
+    ServiceBusRenewOperator(
         Flux<? extends ServiceBusReceivedMessage> source, boolean autoLockRenewal, Duration maxAutoLockRenewDuration,
         LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
         super(source);
