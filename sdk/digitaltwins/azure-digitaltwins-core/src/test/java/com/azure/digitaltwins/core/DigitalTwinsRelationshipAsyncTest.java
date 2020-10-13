@@ -268,29 +268,43 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             // Connect the created twins via relationships
             String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String roomContainedInFloorPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
             // Create relationships from Floor -> Room
-            final CountDownLatch createRelationshipsLatch = new CountDownLatch(BULK_RELATIONSHIP_COUNT);
-
             for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
-                asyncClient.createRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class)
-                    .doOnSuccess(s -> createdRelationshipIds.add(relationshipId))
-                    .doOnTerminate(createRelationshipsLatch::countDown)
-                    .subscribe();
+                StepVerifier.create(
+                    asyncClient.createRelationship(
+                        floorTwinId,
+                        relationshipId,
+                        deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
+                        BasicRelationship.class)).verifyComplete();
+                createdRelationshipIds.add(relationshipId);
             }
 
-            createRelationshipsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
+            // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
+            // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
+            // to the same floor.
+            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+                String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
+                StepVerifier.create(
+                    asyncClient.createRelationship(
+                        roomTwinId,
+                        relationshipId,
+                        deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class),
+                        BasicRelationship.class)).verifyComplete();
+                createdRelationshipIds.add(relationshipId);
+            }
 
-            AtomicInteger pageCount = new AtomicInteger();
+            AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
             // List models in multiple pages and verify more than one page was retrieved.
             StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
                 .thenConsumeWhile(
                     page -> {
-                        pageCount.getAndIncrement();
-                        logger.info("content for this page " + pageCount);
+                        outgoingRelationshipsPageCount.getAndIncrement();
+                        logger.info("content for this page " + outgoingRelationshipsPageCount);
                         for (BasicRelationship relationship : page.getValue()) {
                             logger.info(relationship.getId());
                         }
@@ -298,9 +312,23 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                     })
                 .verifyComplete();
 
-            int finalPageCount = pageCount.get();
+            assertTrue(outgoingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
 
-            assertTrue(finalPageCount > 1, "Number of pages must be more than one.");
+            AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
+            // List models in multiple pages and verify more than one page was retrieved.
+            StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
+                .thenConsumeWhile(
+                    page -> {
+                        incomingRelationshipsPageCount.getAndIncrement();
+                        logger.info("content for this page " + incomingRelationshipsPageCount);
+                        for (BasicRelationship relationship : page.getValue()) {
+                            logger.info(relationship.getId());
+                        }
+                        return true;
+                    })
+                .verifyComplete();
+
+            assertTrue(incomingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
         }
         catch (Exception ex) {
             fail("Test run failed", ex);

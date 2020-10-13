@@ -211,6 +211,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // Connect the created twins via relationships
             String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String roomContainedInFloorPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
@@ -221,22 +222,44 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 createdRelationshipIds.add(relationshipId);
             }
 
-            // LIST relationships
-            List<String> relationshipsTargetIds = new ArrayList<>();
-            PagedIterable<BasicRelationship> listRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
+            // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
+            // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
+            // to the same floor.
+            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+                String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
+                client.createRelationship(roomTwinId, relationshipId, deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class), BasicRelationship.class);
+                createdRelationshipIds.add(relationshipId);
+            }
 
-            AtomicInteger pageCount = new AtomicInteger();
-            listRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
-                pageCount.getAndIncrement();
-                logger.info("content for this page " + pageCount);
+            // LIST relationships
+            PagedIterable<BasicRelationship> listOutgoingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
+
+            AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
+            listOutgoingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
+                outgoingRelationshipsPageCount.getAndIncrement();
+                logger.info("content for this page " + outgoingRelationshipsPageCount);
                 for (BasicRelationship data: relationshipsPagedResponse.getValue())
                 {
                     logger.info(data.getId());
                 }
             });
 
-            assertTrue(pageCount.get() > 1, "Number of pages must be more than one.");
+            assertTrue(outgoingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
 
+            // LIST incoming relationships
+            PagedIterable<BasicRelationship> listIncomingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
+
+            AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
+            listIncomingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
+                incomingRelationshipsPageCount.getAndIncrement();
+                logger.info("content for this page " + incomingRelationshipsPageCount);
+                for (BasicRelationship data: relationshipsPagedResponse.getValue())
+                {
+                    logger.info(data.getId());
+                }
+            });
+
+            assertTrue(outgoingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
         } finally {
             // Clean up
             try {
