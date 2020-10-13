@@ -4,6 +4,8 @@
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.azure.telemetry.TelemetrySender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -25,7 +27,9 @@ import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
@@ -35,8 +39,8 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.tenant-id} property provided.
  * <p>
- * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying
- * {@literal azure.activedirectory.user-group.allowed-groups} property.
+ * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying {@literal
+ * azure.activedirectory.user-group.allowed-groups} property.
  */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
@@ -46,6 +50,7 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AutoConfiguration.class);
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final ServiceEndpointsProperties serviceEndpointsProperties;
 
@@ -71,13 +76,34 @@ public class AADOAuth2AutoConfiguration {
         Assert.hasText(tenantId, "azure.activedirectory.tenant-id should have text.");
         Assert.doesNotContain(tenantId, " ", "azure.activedirectory.tenant-id should not contain ' '.");
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
+
+        List<String> scope = aadAuthenticationProperties.getScope();
+        boolean allowedGroupsConfigured =
+            Optional.of(aadAuthenticationProperties)
+                    .map(AADAuthenticationProperties::getUserGroup)
+                    .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
+                    .map(allowedGroups -> !allowedGroups.isEmpty())
+                    .orElse(false);
+        if (allowedGroupsConfigured && !scope.contains("https://graph.microsoft.com/user.read")) {
+            scope.add("https://graph.microsoft.com/user.read");
+            LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
+        }
+        if (!scope.contains("openid")) {
+            scope.add("openid");
+            LOGGER.warn("scope 'openid' has been added.");
+        }
+        if (!scope.contains("profile")) {
+            scope.add("profile");
+            LOGGER.warn("scope 'profile' has been added.");
+        }
+
         return ClientRegistration.withRegistrationId("azure")
                                  .clientId(aadAuthenticationProperties.getClientId())
                                  .clientSecret(aadAuthenticationProperties.getClientSecret())
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-                                 .scope(aadAuthenticationProperties.getScope())
+                                 .scope(scope)
                                  .authorizationUri(
                                      String.format(
                                          "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize",
