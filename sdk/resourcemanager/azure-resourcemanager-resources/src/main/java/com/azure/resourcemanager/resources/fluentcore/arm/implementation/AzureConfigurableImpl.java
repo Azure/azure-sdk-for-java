@@ -38,6 +38,20 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     private List<TokenCredential> tokens;
     private HttpPipeline httpPipeline;
 
+    /**
+     *  Configures the http pipeline.
+     * (Internal use only)
+     *
+     * @param httpPipeline the http pipeline
+     * @param azureConfigurable the azure configurable instance
+     * @param <T> the type of azure configurable
+     * @return the azure configurable instance
+     */
+    public static <T extends AzureConfigurable<?>> T configureHttpPipeline(HttpPipeline httpPipeline, T azureConfigurable) {
+        ((AzureConfigurableImpl) azureConfigurable).withHttpPipeline(httpPipeline);
+        return azureConfigurable;
+    }
+
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
         scopes = new ArrayList<>();

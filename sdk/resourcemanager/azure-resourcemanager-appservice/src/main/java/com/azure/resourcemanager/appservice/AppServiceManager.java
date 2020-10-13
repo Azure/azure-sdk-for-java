@@ -103,13 +103,14 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        keyVaultManager = withHttpPipeline(httpPipeline, KeyVaultManager.configure())
+        keyVaultManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, KeyVaultManager.configure())
             .authenticate(null, profile);
-        storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
             .authenticate(null, profile);
-        authorizationManager = withHttpPipeline(httpPipeline, AuthorizationManager.configure())
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
             .authenticate(null, profile);
-        dnsZoneManager = withHttpPipeline(httpPipeline, DnsZoneManager.configure())
+        dnsZoneManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, DnsZoneManager.configure())
             .authenticate(null, profile);
     }
 

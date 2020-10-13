@@ -95,7 +95,7 @@ public final class ContainerRegistryManager
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        this.storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
             .authenticate(null, profile);
     }
 

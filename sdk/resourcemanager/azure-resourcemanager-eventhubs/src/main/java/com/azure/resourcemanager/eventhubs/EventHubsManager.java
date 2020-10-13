@@ -103,7 +103,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
             .authenticate(null, profile);
     }
 

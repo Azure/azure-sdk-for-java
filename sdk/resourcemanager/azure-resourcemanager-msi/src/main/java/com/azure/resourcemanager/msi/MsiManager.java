@@ -87,7 +87,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        authorizationManager = withHttpPipeline(httpPipeline, AuthorizationManager.configure())
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
             .authenticate(null, profile);
     }
 

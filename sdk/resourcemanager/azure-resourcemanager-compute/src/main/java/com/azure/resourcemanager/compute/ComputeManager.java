@@ -139,11 +139,12 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
             .authenticate(null, profile);
-        networkManager = withHttpPipeline(httpPipeline, NetworkManager.configure())
+        networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
             .authenticate(null, profile);
-        authorizationManager = withHttpPipeline(httpPipeline, AuthorizationManager.configure())
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
             .authenticate(null, profile);
     }
 

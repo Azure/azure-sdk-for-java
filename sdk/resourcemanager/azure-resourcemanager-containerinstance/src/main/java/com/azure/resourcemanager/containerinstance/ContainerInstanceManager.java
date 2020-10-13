@@ -89,11 +89,12 @@ public final class ContainerInstanceManager
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
 
-        this.storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
             .authenticate(null, profile);
-        this.authorizationManager = withHttpPipeline(httpPipeline, AuthorizationManager.configure())
+        this.authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
             .authenticate(null, profile);
-        this.networkManager = withHttpPipeline(httpPipeline, NetworkManager.configure())
+        this.networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
             .authenticate(null, profile);
     }
 

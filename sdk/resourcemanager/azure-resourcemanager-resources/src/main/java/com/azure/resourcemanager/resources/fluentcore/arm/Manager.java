@@ -26,7 +26,8 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
-            this.resourceManager = withHttpPipeline(httpPipeline, ResourceManager.configure())
+            this.resourceManager = AzureConfigurableImpl
+                .configureHttpPipeline(httpPipeline, ResourceManager.configure())
                 .authenticate(null, profile)
                 .withDefaultSubscription();
         }
@@ -56,11 +57,6 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
 
     protected final void withResourceManager(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
-    }
-
-    protected <T extends AzureConfigurable<?>> T withHttpPipeline(HttpPipeline httpPipeline, T azureConfigurable) {
-        ((AzureConfigurableImpl) azureConfigurable).withHttpPipeline(httpPipeline);
-        return azureConfigurable;
     }
 
     /**
