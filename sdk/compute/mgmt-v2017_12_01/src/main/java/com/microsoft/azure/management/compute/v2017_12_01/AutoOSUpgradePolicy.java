@@ -22,7 +22,7 @@ public class AutoOSUpgradePolicy {
     private Boolean disableAutoRollback;
 
     /**
-     * Get the disableAutoRollback value.
+     * Get whether OS image rollback feature should be disabled. Default value is false.
      *
      * @return the disableAutoRollback value
      */
@@ -31,7 +31,7 @@ public class AutoOSUpgradePolicy {
     }
 
     /**
-     * Set the disableAutoRollback value.
+     * Set whether OS image rollback feature should be disabled. Default value is false.
      *
      * @param disableAutoRollback the disableAutoRollback value to set
      * @return the AutoOSUpgradePolicy object itself.
