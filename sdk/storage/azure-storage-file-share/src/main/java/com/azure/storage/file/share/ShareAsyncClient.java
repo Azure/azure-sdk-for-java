@@ -19,12 +19,14 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ShareCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.ShareGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -443,7 +445,8 @@ public class ShareAsyncClient {
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, options.getDeleteSnapshotsOptions(),
+            .deleteWithRestResponseAsync(shareName, snapshot, null,
+                ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
                 requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
