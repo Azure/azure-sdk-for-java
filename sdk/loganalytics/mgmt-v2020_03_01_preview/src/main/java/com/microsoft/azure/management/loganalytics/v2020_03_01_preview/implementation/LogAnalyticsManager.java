@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.DataExports;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.DataSources;
+import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.DataCollectorLogs;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.IntelligencePacks;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.LinkedServices;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.LinkedStorageAccounts;
@@ -45,6 +46,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class LogAnalyticsManager extends ManagerCore<LogAnalyticsManager, OperationalInsightsManagementClientImpl> {
     private DataExports dataExports;
     private DataSources dataSources;
+    private DataCollectorLogs dataCollectorLogs;
     private IntelligencePacks intelligencePacks;
     private LinkedServices linkedServices;
     private LinkedStorageAccounts linkedStorageAccounts;
@@ -128,6 +130,16 @@ public final class LogAnalyticsManager extends ManagerCore<LogAnalyticsManager, 
             this.dataSources = new DataSourcesImpl(this);
         }
         return this.dataSources;
+    }
+
+    /**
+     * @return Entry point to manage DataCollectorLogs.
+     */
+    public DataCollectorLogs dataCollectorLogs() {
+        if (this.dataCollectorLogs == null) {
+            this.dataCollectorLogs = new DataCollectorLogsImpl(this);
+        }
+        return this.dataCollectorLogs;
     }
 
     /**

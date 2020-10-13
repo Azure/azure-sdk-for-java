@@ -130,12 +130,12 @@ public class UserPrincipalManager {
         }
     }
 
-    public UserPrincipal buildUserPrincipal(String idToken) throws ParseException, JOSEException, BadJOSEException {
-        final JWSObject jwsObject = JWSObject.parse(idToken);
+    public UserPrincipal buildUserPrincipal(String aadIssuedBearerToken) throws ParseException, JOSEException, BadJOSEException {
+        final JWSObject jwsObject = JWSObject.parse(aadIssuedBearerToken);
         final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());
-        final JWTClaimsSet jwtClaimsSet = validator.process(idToken, null);
+        final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
-        return new UserPrincipal(jwsObject, jwtClaimsSet);
+        return new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
     }
 
     public boolean isTokenIssuedByAAD(String token) {

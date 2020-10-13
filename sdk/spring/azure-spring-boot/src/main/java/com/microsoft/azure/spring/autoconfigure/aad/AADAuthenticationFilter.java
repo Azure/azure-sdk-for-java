@@ -39,14 +39,10 @@ import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREF
  */
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
-
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
-    private static final String CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN = "CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN";
-    private static final String CURRENT_USER_PRINCIPAL_JWT_TOKEN = "CURRENT_USER_PRINCIPAL_JWT_TOKEN";
 
-    private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final ServiceEndpointsProperties serviceEndpointsProperties;
     private final UserPrincipalManager userPrincipalManager;
+    private final AzureADGraphClient azureADGraphClient;
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    ServiceEndpointsProperties serviceEndpointsProperties,
@@ -83,9 +79,11 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    ServiceEndpointsProperties serviceEndpointsProperties,
                                    UserPrincipalManager userPrincipalManager) {
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.serviceEndpointsProperties = serviceEndpointsProperties;
         this.userPrincipalManager = userPrincipalManager;
+        this.azureADGraphClient = new AzureADGraphClient(
+            aadAuthenticationProperties,
+            serviceEndpointsProperties
+        );
     }
 
     @Override
@@ -105,29 +103,24 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
         }
         try {
             HttpSession httpSession = httpServletRequest.getSession();
-            String currentToken = getStringAttribute(httpSession, CURRENT_USER_PRINCIPAL_JWT_TOKEN);
-            String graphApiToken = getStringAttribute(httpSession, CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN);
-            UserPrincipal principal = (UserPrincipal) httpSession.getAttribute(CURRENT_USER_PRINCIPAL);
-            final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
-                aadAuthenticationProperties.getClientId(),
-                aadAuthenticationProperties.getClientSecret(),
-                aadAuthenticationProperties,
-                serviceEndpointsProperties
-            );
-            if (principal == null || graphApiToken == null || !aadIssuedBearerToken.equals(currentToken)) {
-                principal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
-                String tenantId = principal.getClaim().toString();
-                graphApiToken = azureADGraphClient.acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
-                                                  .accessToken();
-                principal.setUserGroups(azureADGraphClient.getGroups(graphApiToken));
-                httpSession.setAttribute(CURRENT_USER_PRINCIPAL, principal);
-                httpSession.setAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN, graphApiToken);
-                httpSession.setAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN, aadIssuedBearerToken);
+            UserPrincipal userPrincipal = (UserPrincipal) httpSession.getAttribute(CURRENT_USER_PRINCIPAL);
+            if (userPrincipal == null
+                || !userPrincipal.getAadIssuedBearerToken().equals(aadIssuedBearerToken)
+                || userPrincipal.getAccessTokenForGraphApi() == null
+            ) {
+                userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
+                String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
+                String accessTokenForGraphApi = azureADGraphClient
+                    .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
+                    .accessToken();
+                userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
+                userPrincipal.setUserGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
+                httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                principal,
+                userPrincipal,
                 null,
-                azureADGraphClient.convertGroupsToGrantedAuthorities(principal.getUserGroups())
+                azureADGraphClient.convertGroupsToGrantedAuthorities(userPrincipal.getUserGroups())
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -156,13 +149,5 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                        .map(SecurityContext::getAuthentication)
                        .map(Authentication::isAuthenticated)
                        .orElse(false);
-    }
-
-    private String getStringAttribute(HttpSession httpSession, String attributeName) {
-        return Optional.ofNullable(httpSession)
-                       .map(s -> (String) s.getAttribute(attributeName))
-                       .map(String::trim)
-                       .filter(s -> !s.isEmpty())
-                       .orElse(null);
     }
 }
