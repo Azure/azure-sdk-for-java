@@ -307,7 +307,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             }
 
             AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
-            // List models in multiple pages and verify more than one page was retrieved.
+            // List relationships in multiple pages and verify more than one page was retrieved.
             StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
                 .thenConsumeWhile(
                     page -> {
@@ -328,7 +328,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             assertThat(outgoingRelationshipsPageCount.get()).isGreaterThan(1);
 
             AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
-            // List models in multiple pages and verify more than one page was retrieved.
+            // List relationships in multiple pages and verify more than one page was retrieved.
             StepVerifier.create(asyncClient.listIncomingRelationships(floorTwinId, null).byPage())
                 .thenConsumeWhile(
                     page -> {
