@@ -14,6 +14,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Properties;
+import java.util.logging.ConsoleHandler;
+import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
@@ -84,6 +86,11 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             Security.insertProviderAt(provider, 1);
 
             try {
+                ConsoleHandler handler = new ConsoleHandler();
+                LOGGER.addHandler(handler);
+                LOGGER.setUseParentHandlers(false);
+                LOGGER.setLevel(INFO);
+                
                 Resource[] resources = new PathMatchingResourcePatternResolver()
                         .getResources("classpath:keyvault/*");
                 if (resources.length > 0) {
@@ -95,13 +102,17 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                             try (InputStream inputStream = resource.getInputStream()) {
                                 String alias = resource.getFilename();
                                 if (alias != null) {
-                                    alias = alias.substring(0, alias.lastIndexOf('.'));
+                                    if (alias.lastIndexOf('.') != -1) {
+                                        alias = alias.substring(0, alias.lastIndexOf('.'));
+                                    }
                                     byte[] bytes = inputStream.readAllBytes();
                                     try {
                                         CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                         X509Certificate certificate = (X509Certificate) cf.generateCertificate(
                                                 new ByteArrayInputStream(bytes));
                                         keystore.setCertificateEntry(alias, certificate);
+                                        LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}", 
+                                                new Object[] {alias, resource.getFilename()});
                                     } catch (KeyStoreException | CertificateException e) {
                                         LOGGER.log(WARNING, "Unable to side-load certificate", e);
                                     }
