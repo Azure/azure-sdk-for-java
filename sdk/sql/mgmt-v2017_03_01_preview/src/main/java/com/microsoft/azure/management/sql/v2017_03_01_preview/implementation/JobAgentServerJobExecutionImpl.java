@@ -29,7 +29,7 @@ class JobAgentServerJobExecutionImpl extends CreatableUpdatableImpl<JobAgentServ
         super(name, new JobExecutionInner());
         this.manager = manager;
         // Set resource name
-        this.jobExecutionId = UUID.fromString(name);
+        this.jobExecutionId = name;
         //
     }
 
@@ -37,7 +37,7 @@ class JobAgentServerJobExecutionImpl extends CreatableUpdatableImpl<JobAgentServ
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.jobExecutionId = UUID.fromString(inner.name());
+        this.jobExecutionId = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
