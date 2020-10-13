@@ -73,6 +73,12 @@ public class BigDataPoolResourceInfoInner extends Resource {
     private LibraryRequirements libraryRequirements;
 
     /**
+     * Spark configuration file to specify additional properties.
+     */
+    @JsonProperty(value = "properties.sparkConfigProperties")
+    private LibraryRequirements sparkConfigProperties;
+
+    /**
      * The Apache Spark version.
      */
     @JsonProperty(value = "properties.sparkVersion")
@@ -256,6 +262,26 @@ public class BigDataPoolResourceInfoInner extends Resource {
      */
     public BigDataPoolResourceInfoInner withLibraryRequirements(LibraryRequirements libraryRequirements) {
         this.libraryRequirements = libraryRequirements;
+        return this;
+    }
+
+    /**
+     * Get spark configuration file to specify additional properties.
+     *
+     * @return the sparkConfigProperties value
+     */
+    public LibraryRequirements sparkConfigProperties() {
+        return this.sparkConfigProperties;
+    }
+
+    /**
+     * Set spark configuration file to specify additional properties.
+     *
+     * @param sparkConfigProperties the sparkConfigProperties value to set
+     * @return the BigDataPoolResourceInfoInner object itself.
+     */
+    public BigDataPoolResourceInfoInner withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
+        this.sparkConfigProperties = sparkConfigProperties;
         return this;
     }
 
