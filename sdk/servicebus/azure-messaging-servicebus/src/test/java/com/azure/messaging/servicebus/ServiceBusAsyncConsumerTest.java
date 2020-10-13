@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
@@ -28,7 +29,9 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -61,6 +64,10 @@ class ServiceBusAsyncConsumerTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private MessageSerializer serializer;
+    @Mock
+    LockContainer<LockRenewalOperation> messageLockContainer;
+    @Mock
+    Function<String, Mono<OffsetDateTime>> onRenewLock;
 
     @BeforeAll
     static void beforeAll() {
@@ -102,12 +109,14 @@ class ServiceBusAsyncConsumerTest {
     /**
      * Verifies that we can receive messages from the processor and it does not auto complete them.
      */
-    /*@Test
+    @Test
     void receiveNoAutoComplete() {
         // Arrange
         final int prefetch = 10;
+
+
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch);
+            prefetch, false, null, null, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -137,17 +146,17 @@ class ServiceBusAsyncConsumerTest {
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
-*/
+
     /**
      * Verifies that if we dispose the consumer, it also completes.
      */
-   /* @Test
+    @Test
     void canDispose() {
         // Arrange
         final int prefetch = 10;
         final String lockToken = UUID.randomUUID().toString();
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch);
+            prefetch, false, null, null, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -170,5 +179,5 @@ class ServiceBusAsyncConsumerTest {
             .verifyComplete();
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
-    }*/
+    }
 }
