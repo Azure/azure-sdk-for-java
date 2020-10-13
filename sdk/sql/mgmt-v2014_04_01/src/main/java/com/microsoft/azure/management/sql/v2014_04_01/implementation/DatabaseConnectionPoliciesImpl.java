@@ -44,10 +44,14 @@ class DatabaseConnectionPoliciesImpl extends WrapperImpl<DatabaseConnectionPolic
     public Observable<DatabaseConnectionPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DatabaseConnectionPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<DatabaseConnectionPolicyInner, DatabaseConnectionPolicy>() {
+        .flatMap(new Func1<DatabaseConnectionPolicyInner, Observable<DatabaseConnectionPolicy>>() {
             @Override
-            public DatabaseConnectionPolicy call(DatabaseConnectionPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<DatabaseConnectionPolicy> call(DatabaseConnectionPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DatabaseConnectionPolicy)wrapModel(inner));
+                }
             }
        });
     }
