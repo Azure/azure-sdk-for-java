@@ -342,8 +342,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
             });
             return constructor.newInstance(httpPipeline, profile);
 
-        } catch (
-            NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException
+            | IllegalAccessException
+            | InstantiationException
+            | InvocationTargetException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         }
     }

@@ -47,7 +47,8 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
      * @param <T> the type of azure configurable
      * @return the azure configurable instance
      */
-    public static <T extends AzureConfigurable<?>> T configureHttpPipeline(HttpPipeline httpPipeline, T azureConfigurable) {
+    public static <T extends AzureConfigurable<?>> T configureHttpPipeline(HttpPipeline httpPipeline,
+                                                                           T azureConfigurable) {
         ((AzureConfigurableImpl) azureConfigurable).withHttpPipeline(httpPipeline);
         return azureConfigurable;
     }
