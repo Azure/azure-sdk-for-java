@@ -1,6 +1,7 @@
 # Release History
 
 ## 3.0.0-beta.1 (Unreleased)
+### Breaking Changes
 - Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:
     ```
     azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
