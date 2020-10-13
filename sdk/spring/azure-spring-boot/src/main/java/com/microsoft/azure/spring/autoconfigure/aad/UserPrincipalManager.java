@@ -24,7 +24,6 @@ import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -147,7 +146,6 @@ public class UserPrincipalManager {
                                     .map(Collection::stream)
                                     .orElseGet(Stream::empty)
                                     .map(r -> (String) r)
-                                    .filter(StringUtils::hasText)
                                     .collect(Collectors.toSet());
         userPrincipal.setRoles(roles);
         return userPrincipal;

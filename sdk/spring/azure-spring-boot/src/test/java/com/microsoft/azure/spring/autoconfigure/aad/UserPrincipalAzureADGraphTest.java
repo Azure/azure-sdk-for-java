@@ -115,7 +115,7 @@ public class UserPrincipalAzureADGraphTest {
             .getGrantedAuthorities(TestConstants.ACCESS_TOKEN);
 
         assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
-            .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
+                               .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))

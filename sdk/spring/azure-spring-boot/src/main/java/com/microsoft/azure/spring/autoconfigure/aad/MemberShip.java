@@ -3,27 +3,28 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserGroup implements Serializable {
+public class MemberShip implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;
+    public static final String OBJECT_TYPE_GROUP = "Group";
 
     private final String objectID;
     private final String objectType;
     private final String displayName;
 
     @JsonCreator
-    public UserGroup(
-            @JsonProperty("objectId") @JsonAlias("id") String objectID,
-            @JsonProperty("objectType") @JsonAlias("@odata.type") String objectType,
-            @JsonProperty("displayName") String displayName) {
+    public MemberShip(
+        @JsonProperty("objectId") @JsonAlias("id") String objectID,
+        @JsonProperty("objectType") @JsonAlias("@odata.type") String objectType,
+        @JsonProperty("displayName") String displayName) {
         this.objectID = objectID;
         this.objectType = objectType;
         this.displayName = displayName;
@@ -46,10 +47,10 @@ public class UserGroup implements Serializable {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof UserGroup)) {
+        if (!(o instanceof MemberShip)) {
             return false;
         }
-        final UserGroup group = (UserGroup) o;
+        final MemberShip group = (MemberShip) o;
         return this.getDisplayName().equals(group.getDisplayName())
                 && this.getObjectID().equals(group.getObjectID())
                 && this.getObjectType().equals(group.getObjectType());

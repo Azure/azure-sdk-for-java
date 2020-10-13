@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import com.google.common.collect.ImmutableSet;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.proc.BadJWTException;
@@ -25,11 +24,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
+import static com.microsoft.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
@@ -39,8 +42,6 @@ import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREF
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
-    private static final String ROLE_PREFIX = "ROLE_";
-    private static final Set<String> DEFAULT_ROLES = ImmutableSet.of("USER");
 
     private final UserPrincipalManager principalManager;
 
@@ -95,13 +96,16 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
     }
 
     protected Set<SimpleGrantedAuthority> toSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
-        return Optional.of(userPrincipal)
-                       .map(UserPrincipal::getRoles)
-                       .filter(roles -> !roles.isEmpty())
-                       .orElse(DEFAULT_ROLES)
-                       .stream()
-                       .filter(StringUtils::hasText)
-                       .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
-                       .collect(Collectors.toSet());
+        Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet =
+            Optional.of(userPrincipal)
+                    .map(UserPrincipal::getRoles)
+                    .map(Collection::stream)
+                    .orElseGet(Stream::empty)
+                    .filter(StringUtils::hasText)
+                    .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
+                    .collect(Collectors.toSet());
+        return Optional.of(simpleGrantedAuthoritySet)
+                       .filter(r -> !r.isEmpty())
+                       .orElse(DEFAULT_AUTHORITY_SET);
     }
 }

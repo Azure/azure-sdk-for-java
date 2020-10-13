@@ -3,23 +3,23 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import java.util.List;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserGroups {
+public class MemberShips {
 
     private String odataNextLink;
-    private List<UserGroup> value;
+    private List<MemberShip> value;
 
     @JsonCreator
-    public UserGroups(
-            @JsonProperty("odata.nextLink") String odataNextLink,
-            @JsonProperty("value") List<UserGroup> value) {
+    public MemberShips(
+        @JsonProperty("odata.nextLink") String odataNextLink,
+        @JsonProperty("value") List<MemberShip> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
     }
@@ -28,7 +28,7 @@ public class UserGroups {
         return odataNextLink;
     }
 
-    public List<UserGroup> getValue() {
+    public List<MemberShip> getValue() {
         return value;
     }
 
@@ -37,10 +37,10 @@ public class UserGroups {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof UserGroups)) {
+        if (!(o instanceof MemberShips)) {
             return false;
         }
-        final UserGroups groups = (UserGroups) o;
+        final MemberShips groups = (MemberShips) o;
         return this.getOdataNextLink().equals(groups.getOdataNextLink())
                 && this.getValue().equals(groups.getValue());
     }

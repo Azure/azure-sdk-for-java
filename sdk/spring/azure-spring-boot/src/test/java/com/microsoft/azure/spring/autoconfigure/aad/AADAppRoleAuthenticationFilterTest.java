@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -57,16 +56,20 @@ public class AADAppRoleAuthenticationFilterTest {
     private final SimpleGrantedAuthority roleUser;
     private final AADAppRoleStatelessAuthenticationFilter filter;
 
-    private UserPrincipal createUserPrincipal(Collection<String> roles) {
+    private UserPrincipal createUserPrincipal(Set<String> roles) {
         final JSONArray claims = new JSONArray();
         claims.addAll(roles);
         final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
             .subject("john doe")
             .claim("roles", claims)
             .build();
-        final JWSObject jwsObject = new JWSObject(new Builder(JWSAlgorithm.RS256).build(),
-            new Payload(jwtClaimsSet.toString()));
-        return new UserPrincipal("", jwsObject, jwtClaimsSet);
+        final JWSObject jwsObject = new JWSObject(
+            new Builder(JWSAlgorithm.RS256).build(),
+            new Payload(jwtClaimsSet.toString())
+        );
+        UserPrincipal userPrincipal = new UserPrincipal("", jwsObject, jwtClaimsSet);
+        userPrincipal.setRoles(roles);
+        return userPrincipal;
     }
 
     public AADAppRoleAuthenticationFilterTest() {
@@ -81,7 +84,7 @@ public class AADAppRoleAuthenticationFilterTest {
     @Test
     public void testDoFilterGoodCase()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
-        final UserPrincipal dummyPrincipal = createUserPrincipal(Arrays.asList("user", "admin"));
+        final UserPrincipal dummyPrincipal = createUserPrincipal(ImmutableSet.of("user", "admin"));
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);
@@ -124,7 +127,7 @@ public class AADAppRoleAuthenticationFilterTest {
     public void testDoFilterAddsDefaultRole()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
 
-        final UserPrincipal dummyPrincipal = createUserPrincipal(Collections.emptyList());
+        final UserPrincipal dummyPrincipal = createUserPrincipal(Collections.emptySet());
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);

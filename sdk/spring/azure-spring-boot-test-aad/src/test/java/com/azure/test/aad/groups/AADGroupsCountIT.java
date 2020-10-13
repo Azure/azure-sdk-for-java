@@ -3,11 +3,11 @@
 
 package com.azure.test.aad.groups;
 
-import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
-import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
 import com.azure.test.oauth.OAuthResponse;
 import com.azure.test.oauth.OAuthUtils;
 import com.azure.test.utils.AppRunner;
+import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
+import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -83,7 +83,7 @@ public class AADGroupsCountIT {
             String groupsCount = Optional.of(authToken)
                                          .map(PreAuthenticatedAuthenticationToken::getPrincipal)
                                          .map(p -> (UserPrincipal) p)
-                                         .map(UserPrincipal::getUserGroups)
+                                         .map(UserPrincipal::getGroups)
                                          .map(List::size)
                                          .map(String::valueOf)
                                          .orElse("");
