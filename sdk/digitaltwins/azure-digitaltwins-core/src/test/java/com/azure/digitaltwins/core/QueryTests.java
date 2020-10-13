@@ -70,7 +70,7 @@ public class QueryTests extends QueryTestBase{
                 }
 
                 if (digitalTwinsPage.getContinuationToken() != null) {
-                    assertFalse(elementsPerPage < pageSize, "Page with continuation token did not have the expected number of elements");
+                    assertFalse(elementsPerPage < pageSize, "Unexpected page size for a non-terminal page");
                 }
             }
 

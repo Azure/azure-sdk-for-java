@@ -77,7 +77,7 @@ public class QueryAsyncTests extends QueryTestBase{
                 .thenConsumeWhile(digitalTwinsPage ->  {
                     pageCount.incrementAndGet();
                     if (digitalTwinsPage.getContinuationToken() != null) {
-                        assertFalse(digitalTwinsPage.getValue().size() < pageSize, "Page with continuation token did not have the expected number of elements");
+                        assertFalse(digitalTwinsPage.getValue().size() < pageSize, "Unexpected page size for a non-terminal page");
                     }
                     return true;
                 })

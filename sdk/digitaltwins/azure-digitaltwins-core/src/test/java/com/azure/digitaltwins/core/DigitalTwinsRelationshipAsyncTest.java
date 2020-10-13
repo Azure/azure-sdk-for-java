@@ -30,6 +30,7 @@ import static java.net.HttpURLConnection.HTTP_PRECON_FAILED;
 import static javax.net.ssl.HttpsURLConnection.HTTP_NO_CONTENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipTestBase {
@@ -250,7 +251,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
     @Override
     public void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-
+        int pageSize = 5;
         String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
@@ -273,7 +274,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
             // Create relationships from Floor -> Room
-            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+            for (int i = 0; i < pageSize++; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 StepVerifier.create(
                     asyncClient.createRelationship(
@@ -287,7 +288,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
             // to the same floor.
-            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+            for (int i = 0; i < pageSize + 1; i++) {
                 String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 StepVerifier.create(
                     asyncClient.createRelationship(
@@ -308,6 +309,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                         for (BasicRelationship relationship : page.getValue()) {
                             logger.info(relationship.getId());
                         }
+
+                        if (page.getContinuationToken() != null) {
+                            assertEquals(RELATIONSHIP_PAGE_SIZE_DEFAULT, page.getValue().size(), "Unexpected page size for a non-terminal page");
+                        }
+
                         return true;
                     })
                 .verifyComplete();
@@ -324,6 +330,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                         for (BasicRelationship relationship : page.getValue()) {
                             logger.info(relationship.getId());
                         }
+
+                        if (page.getContinuationToken() != null) {
+                            assertEquals(RELATIONSHIP_PAGE_SIZE_DEFAULT, page.getValue().size(), "Unexpected page size for a non-terminal page");
+                        }
+
                         return true;
                     })
                 .verifyComplete();

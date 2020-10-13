@@ -26,6 +26,7 @@ import static com.azure.digitaltwins.core.helpers.UniqueIdHelper.getUniqueModelI
 import static java.net.HttpURLConnection.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBase {
@@ -238,9 +239,12 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             listOutgoingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
                 outgoingRelationshipsPageCount.getAndIncrement();
                 logger.info("content for this page " + outgoingRelationshipsPageCount);
-                for (BasicRelationship data: relationshipsPagedResponse.getValue())
-                {
+                for (BasicRelationship data: relationshipsPagedResponse.getValue()) {
                     logger.info(data.getId());
+                }
+
+                if (relationshipsPagedResponse.getContinuationToken() != null) {
+                    assertEquals(RELATIONSHIP_PAGE_SIZE_DEFAULT, relationshipsPagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
                 }
             });
 
@@ -253,9 +257,12 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             listIncomingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
                 incomingRelationshipsPageCount.getAndIncrement();
                 logger.info("content for this page " + incomingRelationshipsPageCount);
-                for (BasicRelationship data: relationshipsPagedResponse.getValue())
-                {
+                for (BasicRelationship data: relationshipsPagedResponse.getValue()) {
                     logger.info(data.getId());
+                }
+
+                if (relationshipsPagedResponse.getContinuationToken() != null) {
+                    assertEquals(RELATIONSHIP_PAGE_SIZE_DEFAULT, relationshipsPagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
                 }
             });
 
