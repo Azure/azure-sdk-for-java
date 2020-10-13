@@ -15,7 +15,7 @@ The Spring Data Gremlin Starter provides Spring Data support for the Gremlin que
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <version>2.3.6-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

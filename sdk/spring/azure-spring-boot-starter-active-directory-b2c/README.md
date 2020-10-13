@@ -19,7 +19,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>2.3.5</version>
+    <version>2.3.6-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"

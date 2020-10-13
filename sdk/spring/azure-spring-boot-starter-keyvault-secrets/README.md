@@ -15,7 +15,7 @@ Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vau
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.5</version>
+    <version>2.3.6-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
