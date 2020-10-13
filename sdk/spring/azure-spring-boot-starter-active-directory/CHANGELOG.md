@@ -1,6 +1,15 @@
 # Release History
 
 ## 3.0.0-beta.1 (Unreleased)
+- Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:
+    ```
+    azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+    azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+    azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
+    azure.activedirectory.user-group.allowed-groups=group1, group2
+    azure.activedirectory.scope = your-customized-scope1, your-customized-scope2
+    ```
+- Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
 
 
 ## 2.3.5 (2020-09-14)
