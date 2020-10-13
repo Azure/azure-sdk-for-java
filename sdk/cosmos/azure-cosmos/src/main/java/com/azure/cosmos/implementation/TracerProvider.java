@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import reactor.core.publisher.Mono;
@@ -106,6 +107,15 @@ public class TracerProvider {
                                                                                      String endpoint) {
         return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
             (T response) -> response.getStatusCode());
+    }
+
+    public Mono<TransactionalBatchResponse> traceEnabledBatchResponsePublisher(Mono<TransactionalBatchResponse> resultPublisher,
+                                                                               Context context,
+                                                                               String spanName,
+                                                                               String databaseId,
+                                                                               String endpoint) {
+        return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
+            TransactionalBatchResponse::getStatusCode);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosItemResponse<T>> resultPublisher,

@@ -44,9 +44,11 @@ public class AADAuthenticationFilterTest {
         userPrincipalManager = mock(UserPrincipalManager.class);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
-        filter = new AADAuthenticationFilter(mock(AADAuthenticationProperties.class),
+        filter = new AADAuthenticationFilter(
+            mock(AADAuthenticationProperties.class),
             mock(ServiceEndpointsProperties.class),
-            userPrincipalManager);
+            userPrincipalManager
+        );
     }
 
     @Ignore
