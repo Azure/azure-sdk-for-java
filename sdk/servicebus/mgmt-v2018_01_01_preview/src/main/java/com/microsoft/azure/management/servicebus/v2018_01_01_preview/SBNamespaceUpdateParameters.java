@@ -61,6 +61,18 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     private Boolean zoneRedundant;
 
     /**
+     * Properties of BYOK Encryption description.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
+
+    /**
+     * Properties of BYOK Identity description.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
+    /**
      * Get properties of SKU.
      *
      * @return the sku value
@@ -142,6 +154,46 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
      */
     public SBNamespaceUpdateParameters withZoneRedundant(Boolean zoneRedundant) {
         this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Encryption description.
+     *
+     * @return the encryption value
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set properties of BYOK Encryption description.
+     *
+     * @param encryption the encryption value to set
+     * @return the SBNamespaceUpdateParameters object itself.
+     */
+    public SBNamespaceUpdateParameters withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get properties of BYOK Identity description.
+     *
+     * @return the identity value
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set properties of BYOK Identity description.
+     *
+     * @param identity the identity value to set
+     * @return the SBNamespaceUpdateParameters object itself.
+     */
+    public SBNamespaceUpdateParameters withIdentity(Identity identity) {
+        this.identity = identity;
         return this;
     }
 
