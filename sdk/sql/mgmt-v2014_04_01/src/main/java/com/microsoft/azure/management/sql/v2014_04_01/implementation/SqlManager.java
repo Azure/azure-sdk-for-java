@@ -18,8 +18,6 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.sql.v2014_04_01.ServerAdvisors;
 import com.microsoft.azure.management.sql.v2014_04_01.DatabaseAdvisors;
-import com.microsoft.azure.management.sql.v2014_04_01.BackupLongTermRetentionPolicies;
-import com.microsoft.azure.management.sql.v2014_04_01.BackupLongTermRetentionVaults;
 import com.microsoft.azure.management.sql.v2014_04_01.RecoverableDatabases;
 import com.microsoft.azure.management.sql.v2014_04_01.RestorableDroppedDatabases;
 import com.microsoft.azure.management.sql.v2014_04_01.Capabilities;
@@ -64,8 +62,6 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClientImpl> {
     private ServerAdvisors serverAdvisors;
     private DatabaseAdvisors databaseAdvisors;
-    private BackupLongTermRetentionPolicies backupLongTermRetentionPolicies;
-    private BackupLongTermRetentionVaults backupLongTermRetentionVaults;
     private RecoverableDatabases recoverableDatabases;
     private RestorableDroppedDatabases restorableDroppedDatabases;
     private Capabilities capabilities;
@@ -166,26 +162,6 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.databaseAdvisors = new DatabaseAdvisorsImpl(this);
         }
         return this.databaseAdvisors;
-    }
-
-    /**
-     * @return Entry point to manage BackupLongTermRetentionPolicies.
-     */
-    public BackupLongTermRetentionPolicies backupLongTermRetentionPolicies() {
-        if (this.backupLongTermRetentionPolicies == null) {
-            this.backupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesImpl(this);
-        }
-        return this.backupLongTermRetentionPolicies;
-    }
-
-    /**
-     * @return Entry point to manage BackupLongTermRetentionVaults.
-     */
-    public BackupLongTermRetentionVaults backupLongTermRetentionVaults() {
-        if (this.backupLongTermRetentionVaults == null) {
-            this.backupLongTermRetentionVaults = new BackupLongTermRetentionVaultsImpl(this);
-        }
-        return this.backupLongTermRetentionVaults;
     }
 
     /**
