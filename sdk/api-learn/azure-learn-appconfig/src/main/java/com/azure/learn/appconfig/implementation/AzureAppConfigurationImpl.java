@@ -56,10 +56,10 @@ import com.azure.learn.appconfig.implementation.models.GetRevisionsResponse;
 import com.azure.learn.appconfig.implementation.models.Head6ItemsItem;
 import com.azure.learn.appconfig.implementation.models.Head7ItemsItem;
 import com.azure.learn.appconfig.implementation.models.Key;
-import com.azure.learn.appconfig.implementation.models.KeyValue;
 import com.azure.learn.appconfig.implementation.models.Label;
 import com.azure.learn.appconfig.implementation.models.PutKeyValueResponse;
 import com.azure.learn.appconfig.implementation.models.PutLockResponse;
+import com.azure.learn.appconfig.models.ConfigurationSetting;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -128,7 +128,12 @@ public final class AzureAppConfigurationImpl {
         return this.serializerAdapter;
     }
 
-    /** Initializes an instance of AzureAppConfiguration client. */
+    /**
+     * Initializes an instance of AzureAppConfiguration client.
+     *
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param endpoint The endpoint of the App Configuration instance to send requests to.
+     */
     AzureAppConfigurationImpl(String syncToken, String endpoint) {
         this(
                 new HttpPipelineBuilder()
@@ -143,6 +148,8 @@ public final class AzureAppConfigurationImpl {
      * Initializes an instance of AzureAppConfiguration client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param endpoint The endpoint of the App Configuration instance to send requests to.
      */
     AzureAppConfigurationImpl(HttpPipeline httpPipeline, String syncToken, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), syncToken, endpoint);
@@ -153,6 +160,8 @@ public final class AzureAppConfigurationImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param syncToken Used to guarantee real-time consistency between requests.
+     * @param endpoint The endpoint of the App Configuration instance to send requests to.
      */
     AzureAppConfigurationImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String syncToken, String endpoint) {
@@ -250,7 +259,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
-                @BodyParam("application/json") KeyValue entity,
+                @BodyParam("application/json") ConfigurationSetting entity,
                 Context context);
 
         @Delete("/kv/{key}")
@@ -456,7 +465,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(
+    public Mono<PagedResponse<ConfigurationSetting>> getKeyValuesSinglePageAsync(
             String key,
             String label,
             String after,
@@ -580,7 +589,12 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PutKeyValueResponse> putKeyValueWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+            String key,
+            String label,
+            String ifMatch,
+            String ifNoneMatch,
+            ConfigurationSetting entity,
+            Context context) {
         return service.putKeyValue(
                 this.getEndpoint(),
                 key,
@@ -793,7 +807,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(
+    public Mono<PagedResponse<ConfigurationSetting>> getRevisionsSinglePageAsync(
             String key, String label, String after, String acceptDatetime, List<Enum4> select, Context context) {
         String selectConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
@@ -885,7 +899,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<ConfigurationSetting>> getKeyValuesNextSinglePageAsync(String nextLink, Context context) {
         return service.getKeyValuesNext(nextLink, context)
                 .map(
                         res ->
@@ -933,7 +947,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<ConfigurationSetting>> getRevisionsNextSinglePageAsync(String nextLink, Context context) {
         return service.getRevisionsNext(nextLink, context)
                 .map(
                         res ->

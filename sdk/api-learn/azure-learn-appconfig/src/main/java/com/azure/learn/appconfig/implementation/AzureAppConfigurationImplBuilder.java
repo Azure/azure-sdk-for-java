@@ -35,6 +35,10 @@ public final class AzureAppConfigurationImplBuilder {
 
     private final Map<String, String> properties = CoreUtils.getProperties("azure-learn-appconfig.properties");
 
+    public AzureAppConfigurationImplBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
+    }
+
     /*
      * Used to guarantee real-time consistency between requests.
      */
