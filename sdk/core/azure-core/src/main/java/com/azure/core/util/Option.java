@@ -4,72 +4,64 @@
 package com.azure.core.util;
 
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 /**
- * The Option type, every Option is either has a value present including null,
- * or has no value present.
+ * The Option type to describe tri-state. Every Option instance is in one of
+ * the three states: a state representing a non-null-value, null-value, or no-value.
  *
  * @param <T> The value type.
  */
 public final class Option<T> {
-    private static final Option<?> UNSET = new Option<>();
-    private final boolean isSet;
+    private static final Option<?> UNINITIALIZED = new Option<>();
+    private static final Option<?> EMPTY = new Option<>(null);
+    private final boolean isInitialized;
     private final T value;
 
     /**
-     * Returns an {@link Option} instance with no value.
+     * Returns an {@link Option} with the specified null-value or non-null-value.
      *
      * @param <T> The value type.
-     * @return An Option type with no value present.
-     */
-    public static <T> Option<T> unset() {
-        @SuppressWarnings("unchecked")
-        Option<T> none = (Option<T>) UNSET;
-        return none;
-    }
-
-    /**
-     * Returns an {@link Option} with an empty value.
-     *
-     * @param <T> The value type.
-     * @return an {@link Option} with the empty value present.
-     */
-    public static <T> Option<T> empty() {
-        return new Option<>(null);
-    }
-
-    /**
-     * Returns an {@link Option} with the specified non-null value.
-     *
-     * @param <T> The value type.
-     * @param value the value, which must be non-null.
-     * @return an {@link Option} with the non-null value present.
-     * @throws NullPointerException if value is null.
-     */
-    public static <T> Option<T> of(T value) {
-        Objects.requireNonNull(value);
-        return new Option<>(value);
-    }
-
-    /**
-     * Returns an {@link Option} with the specified nullable value.
-     *
-     * @param <T> The value type.
-     * @param value the null or non-null value.
+     * @param value the value.
      * @return an {@link Option} with the value present.
      */
-    public static <T> Option<T> ofNullable(T value) {
-        return new Option<>(value);
+    public static <T> Option<T> of(T value) {
+        return value == null ? empty() : new Option<>(value);
     }
 
     /**
-     * Return {@code true} if there is a value present, otherwise {@code false}.
+     * Returns an {@link Option} with null-value.
+     * <p>
+     * {@code Option.empty()} is a syntactic sugar for {@code Option.of(null)}.
+     * </p>
+     * @param <T> The value type.
+     * @return an {@link Option} with a null-value.
+     */
+    public static <T> Option<T> empty() {
+        @SuppressWarnings("unchecked")
+        Option<T> empty = (Option<T>) EMPTY;
+        return empty;
+    }
+
+    /**
+     * Returns an {@link Option} instance with no-value.
+     *
+     * @param <T> Type of the non-existent value.
+     * @return An Option type with no-value.
+     */
+    public static <T> Option<T> uninitialized() {
+        @SuppressWarnings("unchecked")
+        Option<T> uninitialized = (Option<T>) UNINITIALIZED;
+        return uninitialized;
+    }
+
+    /**
+     * Return {@code true} if this instance is initialized with a null-value or non-null-value,
+     * otherwise {@code false}.
      *
      * @return {@code true} if there is a value present, otherwise {@code false}
      */
-    public boolean isSet() {
-        return this.isSet;
+    public boolean isInitialized() {
+        return this.isInitialized;
     }
 
     /**
@@ -79,19 +71,19 @@ public final class Option<T> {
      * @throws NoSuchElementException thrown if the {@link Option} has no value.
      */
     public T getValue() {
-        if (!this.isSet) {
+        if (!this.isInitialized) {
             throw new NoSuchElementException("No value present");
         }
         return this.value;
     }
 
     private Option() {
-        this.isSet = false;
+        this.isInitialized = false;
         this.value = null;
     }
 
     private Option(T value) {
-        this.isSet = true;
+        this.isInitialized = true;
         this.value = value;
     }
 }
