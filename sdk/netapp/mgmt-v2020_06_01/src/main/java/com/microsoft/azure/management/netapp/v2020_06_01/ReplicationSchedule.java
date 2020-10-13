@@ -25,12 +25,6 @@ public final class ReplicationSchedule extends ExpandableStringEnum<ReplicationS
     /** Static value daily for ReplicationSchedule. */
     public static final ReplicationSchedule DAILY = fromString("daily");
 
-    /** Static value weekly for ReplicationSchedule. */
-    public static final ReplicationSchedule WEEKLY = fromString("weekly");
-
-    /** Static value monthly for ReplicationSchedule. */
-    public static final ReplicationSchedule MONTHLY = fromString("monthly");
-
     /**
      * Creates or finds a ReplicationSchedule from its string representation.
      * @param name a name to look for
