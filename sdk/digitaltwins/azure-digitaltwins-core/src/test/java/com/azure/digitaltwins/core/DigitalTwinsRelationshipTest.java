@@ -259,7 +259,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 }
             });
 
-            assertTrue(outgoingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
+            assertTrue(incomingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
         } finally {
             // Clean up
             try {
