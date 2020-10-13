@@ -3,10 +3,10 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
+import com.google.common.collect.ImmutableSet;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.proc.BadJWTException;
-import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,8 +39,8 @@ import static com.microsoft.azure.spring.autoconfigure.aad.Constants.BEARER_PREF
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
-    private static final JSONArray DEFAULT_ROLE_CLAIM = new JSONArray().appendElement("USER");
     private static final String ROLE_PREFIX = "ROLE_";
+    private static final Set<String> DEFAULT_ROLES = ImmutableSet.of("USER");
 
     private final UserPrincipalManager principalManager;
 
@@ -64,16 +64,11 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
             return;
         }
         try {
-            final UserPrincipal principal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
-            final JSONArray roles = Optional.of(principal)
-                                            .map(UserPrincipal::getClaims)
-                                            .map(claims -> (JSONArray) claims.get("roles"))
-                                            .filter(r -> !r.isEmpty())
-                                            .orElse(DEFAULT_ROLE_CLAIM);
+            final UserPrincipal userPrincipal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                principal,
+                userPrincipal,
                 null,
-                rolesToGrantedAuthorities(roles)
+                toSimpleGrantedAuthoritySet(userPrincipal)
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -99,10 +94,14 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                        .orElse(false);
     }
 
-    protected Set<SimpleGrantedAuthority> rolesToGrantedAuthorities(JSONArray roles) {
-        return roles.stream()
-                    .filter(Objects::nonNull)
-                    .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
-                    .collect(Collectors.toSet());
+    protected Set<SimpleGrantedAuthority> toSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
+        return Optional.of(userPrincipal)
+                       .map(UserPrincipal::getRoles)
+                       .filter(roles -> !roles.isEmpty())
+                       .orElse(DEFAULT_ROLES)
+                       .stream()
+                       .filter(StringUtils::hasText)
+                       .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
+                       .collect(Collectors.toSet());
     }
 }

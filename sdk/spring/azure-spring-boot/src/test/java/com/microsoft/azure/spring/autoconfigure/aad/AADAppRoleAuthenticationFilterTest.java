@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.aad;
 
+import com.google.common.collect.ImmutableSet;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader.Builder;
@@ -13,7 +14,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.BadJWTException;
 import net.minidev.json.JSONArray;
 import org.assertj.core.api.Assertions;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -151,13 +152,36 @@ public class AADAppRoleAuthenticationFilterTest {
     }
 
     @Test
-    public void testRolesToGrantedAuthoritiesShouldConvertRolesAndFilterNulls() {
-        final JSONArray roles = new JSONArray().appendElement("user").appendElement(null).appendElement("ADMIN");
-        final AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
-        final Set<SimpleGrantedAuthority> result = filter.rolesToGrantedAuthorities(roles);
-        assertThat("Set should contain the two granted authority 'ROLE_user' and 'ROLE_ADMIN'", result,
-            CoreMatchers.hasItems(new SimpleGrantedAuthority("ROLE_user"),
-                new SimpleGrantedAuthority("ROLE_ADMIN")));
+    public void testToSimpleGrantedAuthoritySetWithWhitespaceRole() {
+        AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
+        UserPrincipal userPrincipal = new UserPrincipal(null, null, null);
+        Set<String> roles = ImmutableSet.of("user", "", "ADMIN");
+        userPrincipal.setRoles(roles);
+        Set<SimpleGrantedAuthority> result = filter.toSimpleGrantedAuthoritySet(userPrincipal);
+        assertThat(
+            "Set should contain the two granted authority 'ROLE_user' and 'ROLE_ADMIN'.",
+            result,
+            containsInAnyOrder(
+                new SimpleGrantedAuthority("ROLE_user"),
+                new SimpleGrantedAuthority("ROLE_ADMIN")
+            )
+        );
+    }
+
+    @Test
+    public void testToSimpleGrantedAuthoritySetWithNoRole() {
+        AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
+        UserPrincipal userPrincipal = new UserPrincipal(null, null, null);
+        Set<String> roles = ImmutableSet.of();
+        userPrincipal.setRoles(roles);
+        Set<SimpleGrantedAuthority> result = filter.toSimpleGrantedAuthoritySet(userPrincipal);
+        assertThat(
+            "Set should contain the default authority 'ROLE_USER'.",
+            result,
+            containsInAnyOrder(
+                new SimpleGrantedAuthority("ROLE_USER")
+            )
+        );
     }
 
     @Test

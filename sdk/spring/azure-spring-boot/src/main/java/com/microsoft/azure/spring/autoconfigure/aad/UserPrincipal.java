@@ -11,20 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;
 
+    private String aadIssuedBearerToken; // id_token or access_token
     private final JWSObject jwsObject;
     private final JWTClaimsSet jwtClaimsSet;
     private List<UserGroup> userGroups = new ArrayList<>();
-    private String aadIssuedBearerToken; // id_token or access_token
+    private Set<String> roles;
     private String accessTokenForGraphApi;
 
     public UserPrincipal(String aadIssuedBearerToken, JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
         this.aadIssuedBearerToken = aadIssuedBearerToken;
         this.jwsObject = jwsObject;
         this.jwtClaimsSet = jwtClaimsSet;
+    }
+
+    public String getAadIssuedBearerToken() {
+        return aadIssuedBearerToken;
+    }
+
+    public void setAadIssuedBearerToken(String aadIssuedBearerToken) {
+        this.aadIssuedBearerToken = aadIssuedBearerToken;
     }
 
     public List<UserGroup> getUserGroups() {
@@ -35,12 +45,12 @@ public class UserPrincipal implements Serializable {
         this.userGroups = groups;
     }
 
-    public String getAadIssuedBearerToken() {
-        return aadIssuedBearerToken;
+    public Set<String> getRoles() {
+        return roles;
     }
 
-    public void setAadIssuedBearerToken(String aadIssuedBearerToken) {
-        this.aadIssuedBearerToken = aadIssuedBearerToken;
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 
     public String getAccessTokenForGraphApi() {

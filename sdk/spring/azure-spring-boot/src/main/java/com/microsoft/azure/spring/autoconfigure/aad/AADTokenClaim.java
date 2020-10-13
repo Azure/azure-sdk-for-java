@@ -10,4 +10,5 @@ public class AADTokenClaim {
 
     public static final String NAME = "name";
     public static final String TID = "tid";
+    public static final String ROLES = "roles";
 }
