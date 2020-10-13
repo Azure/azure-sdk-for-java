@@ -3,4 +3,6 @@
 
 module com.azure.learn.appconfig {
     requires transitive com.azure.core;
+    exports com.azure.learn.appconfig;
+    exports com.azure.learn.appconfig.models;
 }
