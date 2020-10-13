@@ -7,6 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.azure.digitaltwins.core.models.DigitalTwinsListIncomingRelationshipsOptions;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -327,13 +329,13 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
             // List models in multiple pages and verify more than one page was retrieved.
-            StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
+            StepVerifier.create(asyncClient.listIncomingRelationships(floorTwinId, null).byPage())
                 .thenConsumeWhile(
                     page -> {
                         incomingRelationshipsPageCount.getAndIncrement();
                         logger.info("content for this page " + incomingRelationshipsPageCount);
-                        for (BasicRelationship relationship : page.getValue()) {
-                            logger.info(relationship.getId());
+                        for (IncomingRelationship relationship : page.getValue()) {
+                            logger.info(relationship.getSourceId());
                         }
 
                         if (page.getContinuationToken() != null) {
