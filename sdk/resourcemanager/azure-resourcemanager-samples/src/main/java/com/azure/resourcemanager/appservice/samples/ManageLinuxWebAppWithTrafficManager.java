@@ -246,7 +246,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
                 .create();
     }
 
-    private final static String WEB_APP_PACKAGE_URL =
+    private static final String WEB_APP_PACKAGE_URL =
         "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip";
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
