@@ -30,7 +30,7 @@ class JacksonJsonConverter implements JsonConverter {
      */
     @Override
     public Object fromJson(String string, Class<?> resultClass) {
-        LOGGER.log(FINEST, "Result Class: {1}, Json:\n {0}", new Object[] {string, resultClass});
+        LOGGER.entering("JacksonJsonConverter", "fromJson", new Object[] {string, resultClass});
         Object result = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -39,7 +39,7 @@ class JacksonJsonConverter implements JsonConverter {
         } catch (JsonProcessingException e) {
             LOGGER.log(WARNING, "Unable to convert from JSON", e);
         }
-        LOGGER.log(FINEST, "Object: {0}", result);
+        LOGGER.exiting("JacksonJsonConverter", "fromJson", result);
         return result;
     }
 
@@ -51,7 +51,7 @@ class JacksonJsonConverter implements JsonConverter {
      */
     @Override
     public String toJson(Object object) {
-        LOGGER.log(FINEST, "Object: {0}", object);
+        LOGGER.entering("JacksonJsonConverter", "toJson", object);
         String result = null;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -59,7 +59,7 @@ class JacksonJsonConverter implements JsonConverter {
         } catch (JsonProcessingException e) {
             LOGGER.log(WARNING, "Unable to convert to JSON", e);
         }
-        LOGGER.log(FINEST, "Json:\n {0}", result);
+        LOGGER.exiting("JacksonJsonConverter", "toJson", result);
         return result;
     }
 }

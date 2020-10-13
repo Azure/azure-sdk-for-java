@@ -34,7 +34,7 @@ public class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
     
     @Override
     protected void engineInit(KeyStore keystore, char[] password) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
-        LOGGER.log(INFO, "KeyVaultKeyManagerFactory.engineInit: {0}, {1}", 
+        LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", 
                 new Object[] {keystore, new String(password)});
         KeyVaultKeyManager manager = new KeyVaultKeyManager(keystore, password);
         keyManagers.add(manager);
@@ -46,7 +46,7 @@ public class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
 
     @Override
     protected KeyManager[] engineGetKeyManagers() {
-        LOGGER.log(INFO, "KeyVaultKeyManagerFactory.engineGetKeyManagers: {0}", keyManagers); 
+        LOGGER.exiting("KeyVaultKeyManagerFactory", "engineGetKeyManagers", keyManagers); 
         return keyManagers.toArray(new KeyManager[0]);
     }
 }

@@ -2,15 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import static java.util.logging.Level.ALL;
-import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**

@@ -133,6 +133,12 @@
             <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- SLF4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
