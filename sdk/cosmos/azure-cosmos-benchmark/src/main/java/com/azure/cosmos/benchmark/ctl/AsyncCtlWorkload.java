@@ -281,7 +281,7 @@ public class AsyncCtlWorkload {
                     return x;
                 }).onErrorResume(throwable -> {
                     failureCount.incrementAndGet();
-                    logger.error("Error during pre populating item "+throwable.getMessage());
+                    logger.error("Error during pre populating item ", throwable.getMessage());
                     return Mono.empty();
                 }).doOnSuccess(pojoizedJson -> {
                     successCount.incrementAndGet();
@@ -291,8 +291,8 @@ public class AsyncCtlWorkload {
             docsToRead.put(container.getId(),
                 Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block());
             logger.info("Finished pre-populating {} documents for container {}",
-                successCount.get()-failureCount.get(), container.getId());
-            if(failureCount.get() > 0) {
+                successCount.get() - failureCount.get(), container.getId());
+            if (failureCount.get() > 0) {
                 logger.info("Failed pre-populating {} documents for container {}",
                     failureCount.get(), container.getId());
             }
