@@ -24,7 +24,6 @@ import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionT
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOption;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
