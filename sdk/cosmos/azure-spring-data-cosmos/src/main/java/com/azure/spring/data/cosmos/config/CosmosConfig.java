@@ -7,7 +7,7 @@ import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import java.beans.ConstructorProperties;
 
 /**
- * Config properties of Cosmos DB
+ * Config properties of CosmosDB
  */
 public class CosmosConfig {
 
