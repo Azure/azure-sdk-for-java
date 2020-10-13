@@ -140,7 +140,8 @@ public class UserPrincipalManager {
      * @throws JOSEException If an internal processing exception is encountered.
      * @throws BadJOSEException If the JWT is rejected.
      */
-    public UserPrincipal buildUserPrincipal(String aadIssuedBearerToken) throws ParseException, JOSEException, BadJOSEException {
+    public UserPrincipal buildUserPrincipal(String aadIssuedBearerToken) throws ParseException, JOSEException,
+        BadJOSEException {
         final JWSObject jwsObject = JWSObject.parse(aadIssuedBearerToken);
         final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());
         final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
