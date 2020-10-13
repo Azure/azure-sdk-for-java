@@ -205,7 +205,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
         String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
         String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
 
-        List<String> createdRelationshipIds = new ArrayList<>();
+        List<String> createdOutgoingRelationshipIds = new ArrayList<>();
+        List<String> createdIncomingRelationshipIds = new ArrayList<>();
 
         try {
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
@@ -217,19 +218,19 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
             // Create relationships from Floor -> Room
-            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+            for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 client.createRelationship(floorTwinId, relationshipId, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
-                createdRelationshipIds.add(relationshipId);
+                createdOutgoingRelationshipIds.add(relationshipId);
             }
 
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
             // to the same floor.
-            for (int i = 0 ; i< BULK_RELATIONSHIP_COUNT ; i++) {
+            for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 client.createRelationship(roomTwinId, relationshipId, deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class), BasicRelationship.class);
-                createdRelationshipIds.add(relationshipId);
+                createdIncomingRelationshipIds.add(relationshipId);
             }
 
             // LIST relationships
@@ -248,7 +249,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 }
             });
 
-            assertTrue(outgoingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
+            assertThat(outgoingRelationshipsPageCount.get()).isGreaterThan(1);
 
             // LIST incoming relationships
             PagedIterable<BasicRelationship> listIncomingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
@@ -266,7 +267,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 }
             });
 
-            assertTrue(incomingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
+            assertThat(incomingRelationshipsPageCount.get()).isGreaterThan(1);
         } finally {
             // Clean up
             try {
@@ -274,7 +275,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
                 logger.info("Deleting created relationships.");
                 // Delete the created relationships.
-                createdRelationshipIds.forEach(relationshipId -> client.deleteRelationship(floorTwinId, relationshipId));
+                createdOutgoingRelationshipIds.forEach(relationshipId -> client.deleteRelationship(floorTwinId, relationshipId));
+                createdIncomingRelationshipIds.forEach(relationshipId -> client.deleteRelationship(roomTwinId, relationshipId));
 
                 // Now the twins and models can be deleted.
                 logger.info("Deleting created digital twins.");

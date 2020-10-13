@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -251,7 +252,6 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
     @Override
     public void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
-        int pageSize = 5;
         String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
@@ -260,9 +260,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
         String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
 
-        final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 30;
-
-        List<String> createdRelationshipIds = new ArrayList<>();
+        List<String> createdOutgoingRelationshipIds = new ArrayList<>();
+        List<String> createdIncomingRelationshipIds = new ArrayList<>();
 
         try {
             createModelsAndTwins(asyncClient, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
@@ -274,29 +273,35 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
             // Create relationships from Floor -> Room
-            for (int i = 0; i < pageSize++; i++) {
+            for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 StepVerifier.create(
                     asyncClient.createRelationship(
                         floorTwinId,
                         relationshipId,
                         deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class),
-                        BasicRelationship.class)).verifyComplete();
-                createdRelationshipIds.add(relationshipId);
+                        BasicRelationship.class))
+                    .assertNext(response ->
+                        logger.info("Created relationship with Id {}", relationshipId))
+                    .verifyComplete();
+                createdOutgoingRelationshipIds.add(relationshipId);
             }
 
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
             // to the same floor.
-            for (int i = 0; i < pageSize + 1; i++) {
+            for (int i = 0; i < BULK_RELATIONSHIP_COUNT; i++) {
                 String relationshipId = ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID + this.testResourceNamer.randomUuid();
                 StepVerifier.create(
                     asyncClient.createRelationship(
                         roomTwinId,
                         relationshipId,
                         deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class),
-                        BasicRelationship.class)).verifyComplete();
-                createdRelationshipIds.add(relationshipId);
+                        BasicRelationship.class))
+                    .assertNext(response ->
+                        logger.info("Created relationship with Id {}", relationshipId))
+                    .verifyComplete();
+                createdIncomingRelationshipIds.add(relationshipId);
             }
 
             AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
@@ -318,7 +323,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                     })
                 .verifyComplete();
 
-            assertTrue(outgoingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
+            assertThat(outgoingRelationshipsPageCount.get()).isGreaterThan(1);
 
             AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
             // List models in multiple pages and verify more than one page was retrieved.
@@ -339,7 +344,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                     })
                 .verifyComplete();
 
-            assertTrue(incomingRelationshipsPageCount.get() > 1, "Number of pages must be more than one.");
+            assertThat(incomingRelationshipsPageCount.get()).isGreaterThan(1);
         }
         catch (Exception ex) {
             fail("Test run failed", ex);
@@ -351,7 +356,8 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
                 logger.info("Deleting created relationships.");
                 // Delete the created relationships.
-                createdRelationshipIds.forEach(relationshipId -> asyncClient.deleteRelationship(floorTwinId, relationshipId).block());
+                createdOutgoingRelationshipIds.forEach(relationshipId -> asyncClient.deleteRelationship(floorTwinId, relationshipId).block());
+                createdIncomingRelationshipIds.forEach(relationshipId -> asyncClient.deleteRelationship(roomTwinId, relationshipId).block());
 
                 // Now the twins and models can be deleted.
                 logger.info("Deleting created digital twins.");
