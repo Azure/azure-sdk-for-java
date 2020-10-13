@@ -253,7 +253,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
         return azureResourceManager.webApps().define(name)
                 .withExistingLinuxPlan(plan)
                 .withExistingResourceGroup(rgName)
-                .withBuiltInImage(RuntimeStack.NODEJS_10_LTS)
+                .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JRE8)
                 .withManagedHostnameBindings(domain, name)
                 .defineSslBinding()
                     .forHostname(name + "." + domain.name())
