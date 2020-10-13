@@ -37,11 +37,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
     private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
-    private final LockContainer<OffsetDateTime> messageLockContainer;
+    private final LockContainer<LockRenewalOperation> messageLockContainer;
 
     ServiceBusMessageProcessor(boolean isAutoRenewLock, Duration maxAutoLockRenewal,
-        AmqpRetryOptions retryOptions, LockContainer<OffsetDateTime> messageLockContainer, AmqpErrorContext errorContext,
-        Function<String, Mono<OffsetDateTime>> onRenewLock) {
+        AmqpRetryOptions retryOptions, LockContainer<LockRenewalOperation> messageLockContainer,
+        AmqpErrorContext errorContext, Function<String, Mono<OffsetDateTime>> onRenewLock) {
 
         super();
 
@@ -304,21 +304,21 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private void next(ServiceBusReceivedMessage message) {
         final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
-        final OffsetDateTime initialLockedUntil = !CoreUtils.isNullOrEmpty(lockToken)
-            ? messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil(), message.getLockedUntil())
-            : message.getLockedUntil();
+        LockRenewalOperation renewLockOperation = null;
 
-        if (isAutoRenewLock && CoreUtils.isNullOrEmpty(lockToken)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot auto-renew message without a lock token on message. Sequence number: " + sequenceNumber));
-        }
+        if (isAutoRenewLock) {
+            if (CoreUtils.isNullOrEmpty(lockToken)) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot auto-renew message without a lock token on message. Sequence number: " + sequenceNumber));
+            } else if (message.getLockedUntil() ==  null) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot auto-renew message without a lock token until on message. Sequence number: " + sequenceNumber));
+            }
 
-        Duration maxRenewalDuration = maxAutoLockRenewal;
-        if (!isAutoRenewLock) {
-            maxRenewalDuration = Duration.ZERO;
+            renewLockOperation = new LockRenewalOperation(message.getLockToken(), maxAutoLockRenewal, false,
+                onRenewLock, message.getLockedUntil());
+            messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal), renewLockOperation);
         }
-        final LockRenewalOperation renewLockOperation = new LockRenewalOperation(message.getLockToken(),
-            maxRenewalDuration, false, onRenewLock, initialLockedUntil);
 
         final AtomicBoolean hasError = new AtomicBoolean();
         try {
@@ -329,7 +329,9 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
             setInternalError(e);
         } finally {
-            renewLockOperation.close();
+            if (renewLockOperation != null) {
+                renewLockOperation.close();
+            }
         }
 
         // An error occurred in downstream.onNext, while abandoning the message,

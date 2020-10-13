@@ -216,7 +216,6 @@ class LockRenewalOperation implements AutoCloseable {
                 logger.info("token[{}]. nextExpiration[{}]. next: [{}]. isSession[{}]", lockToken, offsetDateTime, next,
                     isSession);
 
-                System.out.println("!!!!" + this.getClass().getName() + " (getRenewLockOperation) next renew time offsetDateTime : " +  offsetDateTime.atZoneSameInstant(ZoneId.of("America/Los_Angeles")));
                 sink.next(MessageUtils.adjustServerTimeout(next));
                 return offsetDateTime;
             });

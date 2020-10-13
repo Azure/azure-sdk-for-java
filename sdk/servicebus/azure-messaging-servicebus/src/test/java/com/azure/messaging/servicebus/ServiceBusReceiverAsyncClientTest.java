@@ -137,7 +137,7 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @BeforeEach
-   /*void setup(TestInfo testInfo) {
+   void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
@@ -170,12 +170,12 @@ class ServiceBusReceiverAsyncClientTest {
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
-            tracerProvider, messageSerializer, onClientClose);
+            tracerProvider, messageSerializer, onClientClose, null);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
-            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
-    }*/
+            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose, null);
+    }
 
     @AfterEach
     void teardown(TestInfo testInfo) {
@@ -261,6 +261,7 @@ class ServiceBusReceiverAsyncClientTest {
         final List<Message> messages = getMessages();
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
         when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
             .thenReturn(receivedMessage);
@@ -326,12 +327,12 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we error if we complete in RECEIVE_AND_DELETE mode.
      */
-   /* @Test
+    @Test
     void completeInReceiveAndDeleteMode() {
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            messageSerializer, onClientClose, null);
 
         final String lockToken1 = UUID.randomUUID().toString();
 
@@ -344,7 +345,7 @@ class ServiceBusReceiverAsyncClientTest {
         } finally {
             client.close();
         }
-    }*/
+    }
 
     /**
      * Verifies that this peek batch of messages.
@@ -426,11 +427,18 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages()
             .take(1)
-            .flatMap(context -> receiver.deadLetter(context.getMessage(), deadLetterOptions)))
+            .flatMap(context -> {
+                System.out.println("!!!! Test context : " +  context);
+                System.out.println("!!!! Test context.message  : " +  context.getMessage());
+                Mono<Void> operation = receiver.deadLetter(context.getMessage(), deadLetterOptions);
+                System.out.println("!!!! operation  : " +  operation);
+                return operation;
+            }))
             .then(() -> messageSink.next(message))
-            .expectNext()
+            //.assertNext(aVoid -> )
+            //.expectNext()
             .verifyComplete();
-
+        System.out.println("!!!! updateDisposition  will be called " );
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class));
     }
 

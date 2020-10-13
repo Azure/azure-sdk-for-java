@@ -36,7 +36,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, int prefetch, boolean autoLockRenewal,
         Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions,
-        LockContainer messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
+        LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
 
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;

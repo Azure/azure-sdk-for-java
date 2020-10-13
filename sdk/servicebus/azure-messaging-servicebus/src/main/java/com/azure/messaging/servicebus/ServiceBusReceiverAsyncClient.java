@@ -1070,18 +1070,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             if (receiverOptions.isSessionReceiver()) {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                     null, entityType, receiverOptions.getSessionId());
-                    /*.handle((link, synchronousSink) -> {
-                        // Since this is the part where receive link for named session will be create.
-                        // We should have LockRenewal start here
-
-                        final LockRenewalOperation operation = new LockRenewalOperation(receiverOptions.getSessionId()
-                            , maxAutoRenewLockDuration, true, this::renewSessionLock);
-                        if (!sessionLockRenewalOperation.compareAndSet(null, operation)) {
-                            // throw error because lockoprtation is set previously.
-                        }
-                        synchronousSink.next(link);
-                    });*/
-
             } else {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                     null, entityType);
@@ -1106,7 +1094,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
             messageSerializer, receiverOptions.getPrefetchCount(), isAutoLockRenewal, maxAutoRenewLockDuration,
-            connectionProcessor.getRetryOptions(), managementNodeLocks, this::renewMessageLock);
+            connectionProcessor.getRetryOptions(), renewalContainer, this::renewMessageLock);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
