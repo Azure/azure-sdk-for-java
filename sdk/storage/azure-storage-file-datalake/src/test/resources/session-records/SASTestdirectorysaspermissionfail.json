@@ -1,0 +1,169 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66ff7950-2143-4b5a-a65c-250022248822"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D84AC6ECDF6E9C",
+      "Last-Modified" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "638ceaf8-b01e-0003-5daf-7cacc4000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:30 GMT",
+      "x-ms-client-request-id" : "66ff7950-2143-4b5a-a65c-250022248822"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail192736f599c70446a?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "213bbb91-7b85-45fd-bfea-2317550a47a9"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D84AC6ECF2DF00",
+      "Last-Modified" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a4229d29-d01f-0093-6eaf-7c96aa000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "x-ms-client-request-id" : "213bbb91-7b85-45fd-bfea-2317550a47a9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail192736f599c70446a?position=0&action=append",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "594d22ff-65e6-49b3-b79a-98dfe3e05e5e",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "a4229d2a-d01f-0093-6faf-7c96aa000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "x-ms-client-request-id" : "594d22ff-65e6-49b3-b79a-98dfe3e05e5e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail192736f599c70446a?position=7&retainUncommittedData=false&close=false&action=flush",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f8b1ae83-8108-48e4-9bb5-fb53e6b3f19f"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D84AC6ED10CE17",
+      "Last-Modified" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "false",
+      "x-ms-request-id" : "a4229d2b-d01f-0093-70af-7c96aa000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "x-ms-client-request-id" : "f8b1ae83-8108-48e4-9bb5-fb53e6b3f19f"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail260320bcc2b77d6e4?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93185a53-ad31-4148-8321-688125d019bb"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D84AC6ED4DDE32",
+      "Last-Modified" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "050ec416-801f-0045-01af-7c9843000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "x-ms-client-request-id" : "93185a53-ad31-4148-8321-688125d019bb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail260320bcc2b77d6e4?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A22%3A31Z&se=2020-08-28T20%3A22%3A31Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=cwd&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2fcbffa5-337a-4d08-b8ec-daade382aa5a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "retry-after" : "0",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "638ceb28-b01e-0003-7faf-7cacc4000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "x-ms-client-request-id" : "2fcbffa5-337a-4d08-b8ec-daade382aa5a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsdirectorysaspermissionfail&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e60932d-7d15-4d8b-9698-ba59316ff36c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "638ceb3a-b01e-0003-0caf-7cacc4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfsdirectorysaspermissionfail</Prefix><Containers><Container><Name>jtfsdirectorysaspermissionfail07713196e8849c7bbf4</Name><Properties><Last-Modified>Thu, 27 Aug 2020 20:22:31 GMT</Last-Modified><Etag>\"0x8D84AC6ECDF6E9C\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 27 Aug 2020 20:22:31 GMT",
+      "x-ms-client-request-id" : "0e60932d-7d15-4d8b-9698-ba59316ff36c",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea872988-c9b9-4923-b0ac-cd71234d3762"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "638ceb68-b01e-0003-2aaf-7cacc4000000",
+      "Date" : "Thu, 27 Aug 2020 20:22:32 GMT",
+      "x-ms-client-request-id" : "ea872988-c9b9-4923-b0ac-cd71234d3762"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsdirectorysaspermissionfail07713196e8849c7bbf4", "javapathdirectorysaspermissionfail192736f599c70446a", "javapathdirectorysaspermissionfail260320bcc2b77d6e4", "2020-08-27T20:22:31.919067400Z", "2020-08-27T20:22:31.919067400Z" ]
+}

@@ -1,0 +1,125 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "46b4c2e6-3c68-4697-b94c-866d3b8dc98c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "Retry-After" : "0",
+      "apim-request-id" : "91066a9c-9cd7-49da-9d8d-e9365f4642d9",
+      "Content-Length" : "309",
+      "StatusCode" : "429",
+      "Body" : "{\"error\":{\"code\":\"429\",\"message\": \"Requests to the Create a new data feed Operation under Metrics Advisor have exceeded rate limit of your current MetricsAdvisor S0 pricing tier. Please retry after 1 second. Please contact Azure support service if you would like to further increase the default rate limit.\"}}",
+      "Date" : "Sat, 12 Sep 2020 21:13:24 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "46b4c2e6-3c68-4697-b94c-866d3b8dc98c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "c8e35db7-7bda-4b3b-8c2e-228a7f851b98",
+      "x-envoy-upstream-service-time" : "337",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c8e35db7-7bda-4b3b-8c2e-228a7f851b98",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Sat, 12 Sep 2020 21:13:26 GMT",
+      "Location" : "https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/7c29e582-936f-48b7-9c6f-eb2b3d95f1db"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds/7c29e582-936f-48b7-9c6f-eb2b3d95f1db",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d95850de-97a4-43b3-ac35-f2b38045f9f7"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "Retry-After" : "0",
+      "apim-request-id" : "85d606c6-3f5f-4ef1-b56d-8242a5ba5d83",
+      "Content-Length" : "312",
+      "StatusCode" : "429",
+      "Body" : "{\"error\":{\"code\":\"429\",\"message\": \"Requests to the Get a data feed by its id Operation under Metrics Advisor have exceeded rate limit of your current MetricsAdvisor S0 pricing tier. Please retry after 1 second. Please contact Azure support service if you would like to further increase the default rate limit.\"}}",
+      "Date" : "Sat, 12 Sep 2020 21:13:26 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds/7c29e582-936f-48b7-9c6f-eb2b3d95f1db",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d95850de-97a4-43b3-ac35-f2b38045f9f7"
+    },
+    "Response" : {
+      "x-request-id" : "5dba2c37-de18-44d4-86fd-3ee8d13c664d",
+      "x-envoy-upstream-service-time" : "134",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "5dba2c37-de18-44d4-86fd-3ee8d13c664d",
+      "retry-after" : "0",
+      "Content-Length" : "1526",
+      "StatusCode" : "200",
+      "Body" : "{\"dataFeedId\":\"7c29e582-936f-48b7-9c6f-eb2b3d95f1db\",\"dataFeedName\":\"java_create_data_feed_test_sample4ae8e599-cb8f-45ef-bc25-ab7821c6ecb6\",\"metrics\":[{\"metricId\":\"0e4ed574-276f-47e6-8c96-bcf5a0df30d6\",\"metricName\":\"cost\",\"metricDisplayName\":\"cost\",\"metricDescription\":\"\"},{\"metricId\":\"be988201-592a-43a7-9c07-58ab423a6028\",\"metricName\":\"revenue\",\"metricDisplayName\":\"revenue\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"category\",\"dimensionDisplayName\":\"category\"},{\"dimensionName\":\"city\",\"dimensionDisplayName\":\"city\"}],\"dataStartFrom\":\"2019-10-01T00:00:00Z\",\"dataSourceType\":\"SqlServer\",\"timestampColumn\":\"\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":null,\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"PreviousValue\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":0,\"viewMode\":\"Private\",\"admins\":[\"savaity@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-09-12T21:13:26Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"connectionString\":\"REDACTED\",\"query\":\"select * from adsample2 where Timestamp = @StartTime\"}}",
+      "Date" : "Sat, 12 Sep 2020 21:13:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds/7c29e582-936f-48b7-9c6f-eb2b3d95f1db",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "203dca3e-8831-42d3-8bff-17d3ac58a9df"
+    },
+    "Response" : {
+      "x-request-id" : "031dadb4-31ab-4055-b0a7-2fe600c9df0c",
+      "x-envoy-upstream-service-time" : "252",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "031dadb4-31ab-4055-b0a7-2fe600c9df0c",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Sat, 12 Sep 2020 21:13:27 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds/7c29e582-936f-48b7-9c6f-eb2b3d95f1db",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "54822665-eedd-4eb3-8e7b-48e969f51652"
+    },
+    "Response" : {
+      "x-request-id" : "a5b9632c-b8d8-45f8-95a1-b24184781cb3",
+      "x-envoy-upstream-service-time" : "41",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a5b9632c-b8d8-45f8-95a1-b24184781cb3",
+      "retry-after" : "0",
+      "Content-Length" : "69",
+      "StatusCode" : "404",
+      "Body" : "{\"code\":\"ERROR_INVALID_PARAMETER\",\"message\":\"datafeedId is invalid.\"}",
+      "Date" : "Sat, 12 Sep 2020 21:13:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

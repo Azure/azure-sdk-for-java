@@ -10,7 +10,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GetIndexStatisticsResult model. */
+/**
+ * Statistics for a given index. Statistics are collected periodically and are not guaranteed to always be up-to-date.
+ */
 @Immutable
 public final class GetIndexStatisticsResult {
     /*
@@ -25,11 +27,18 @@ public final class GetIndexStatisticsResult {
     @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private long storageSize;
 
-    /** Creates an instance of GetIndexStatisticsResult class. */
+    /**
+     * Creates an instance of GetIndexStatisticsResult class.
+     *
+     * @param documentCount the documentCount value to set.
+     * @param storageSize the storageSize value to set.
+     */
     @JsonCreator
     public GetIndexStatisticsResult(
-            @JsonProperty(value = "documentCount") long documentCount,
-            @JsonProperty(value = "storageSize") long storageSize) {
+            @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long documentCount,
+            @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long storageSize) {
         this.documentCount = documentCount;
         this.storageSize = storageSize;
     }
@@ -51,11 +60,4 @@ public final class GetIndexStatisticsResult {
     public long getStorageSize() {
         return this.storageSize;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }
