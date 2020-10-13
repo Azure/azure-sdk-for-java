@@ -133,19 +133,6 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
-
-    /**
-     * Gets the OperationsInner object to access its operations.
-     * @return the OperationsInner object.
-     */
-    public OperationsInner operations() {
-        return this.operations;
-    }
-
-    /**
      * The NamespacesInner object to access its operations.
      */
     private NamespacesInner namespaces;
@@ -156,32 +143,6 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
      */
     public NamespacesInner namespaces() {
         return this.namespaces;
-    }
-
-    /**
-     * The DisasterRecoveryConfigsInner object to access its operations.
-     */
-    private DisasterRecoveryConfigsInner disasterRecoveryConfigs;
-
-    /**
-     * Gets the DisasterRecoveryConfigsInner object to access its operations.
-     * @return the DisasterRecoveryConfigsInner object.
-     */
-    public DisasterRecoveryConfigsInner disasterRecoveryConfigs() {
-        return this.disasterRecoveryConfigs;
-    }
-
-    /**
-     * The MigrationConfigsInner object to access its operations.
-     */
-    private MigrationConfigsInner migrationConfigs;
-
-    /**
-     * Gets the MigrationConfigsInner object to access its operations.
-     * @return the MigrationConfigsInner object.
-     */
-    public MigrationConfigsInner migrationConfigs() {
-        return this.migrationConfigs;
     }
 
     /**
@@ -211,16 +172,68 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The SubscriptionsInner object to access its operations.
+     * The DisasterRecoveryConfigsInner object to access its operations.
      */
-    private SubscriptionsInner subscriptions;
+    private DisasterRecoveryConfigsInner disasterRecoveryConfigs;
 
     /**
-     * Gets the SubscriptionsInner object to access its operations.
-     * @return the SubscriptionsInner object.
+     * Gets the DisasterRecoveryConfigsInner object to access its operations.
+     * @return the DisasterRecoveryConfigsInner object.
      */
-    public SubscriptionsInner subscriptions() {
-        return this.subscriptions;
+    public DisasterRecoveryConfigsInner disasterRecoveryConfigs() {
+        return this.disasterRecoveryConfigs;
+    }
+
+    /**
+     * The EventHubsInner object to access its operations.
+     */
+    private EventHubsInner eventHubs;
+
+    /**
+     * Gets the EventHubsInner object to access its operations.
+     * @return the EventHubsInner object.
+     */
+    public EventHubsInner eventHubs() {
+        return this.eventHubs;
+    }
+
+    /**
+     * The MigrationConfigsInner object to access its operations.
+     */
+    private MigrationConfigsInner migrationConfigs;
+
+    /**
+     * Gets the MigrationConfigsInner object to access its operations.
+     * @return the MigrationConfigsInner object.
+     */
+    public MigrationConfigsInner migrationConfigs() {
+        return this.migrationConfigs;
+    }
+
+    /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
+     * The PremiumMessagingRegionsInner object to access its operations.
+     */
+    private PremiumMessagingRegionsInner premiumMessagingRegions;
+
+    /**
+     * Gets the PremiumMessagingRegionsInner object to access its operations.
+     * @return the PremiumMessagingRegionsInner object.
+     */
+    public PremiumMessagingRegionsInner premiumMessagingRegions() {
+        return this.premiumMessagingRegions;
     }
 
     /**
@@ -250,29 +263,16 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The PremiumMessagingRegionsInner object to access its operations.
+     * The SubscriptionsInner object to access its operations.
      */
-    private PremiumMessagingRegionsInner premiumMessagingRegions;
+    private SubscriptionsInner subscriptions;
 
     /**
-     * Gets the PremiumMessagingRegionsInner object to access its operations.
-     * @return the PremiumMessagingRegionsInner object.
+     * Gets the SubscriptionsInner object to access its operations.
+     * @return the SubscriptionsInner object.
      */
-    public PremiumMessagingRegionsInner premiumMessagingRegions() {
-        return this.premiumMessagingRegions;
-    }
-
-    /**
-     * The EventHubsInner object to access its operations.
-     */
-    private EventHubsInner eventHubs;
-
-    /**
-     * Gets the EventHubsInner object to access its operations.
-     * @return the EventHubsInner object.
-     */
-    public EventHubsInner eventHubs() {
-        return this.eventHubs;
+    public SubscriptionsInner subscriptions() {
+        return this.subscriptions;
     }
 
     /**
@@ -310,17 +310,17 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.namespaces = new NamespacesInner(restClient().retrofit(), this);
-        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsInner(restClient().retrofit(), this);
-        this.migrationConfigs = new MigrationConfigsInner(restClient().retrofit(), this);
         this.queues = new QueuesInner(restClient().retrofit(), this);
         this.topics = new TopicsInner(restClient().retrofit(), this);
-        this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
+        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsInner(restClient().retrofit(), this);
+        this.eventHubs = new EventHubsInner(restClient().retrofit(), this);
+        this.migrationConfigs = new MigrationConfigsInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.premiumMessagingRegions = new PremiumMessagingRegionsInner(restClient().retrofit(), this);
         this.rules = new RulesInner(restClient().retrofit(), this);
         this.regions = new RegionsInner(restClient().retrofit(), this);
-        this.premiumMessagingRegions = new PremiumMessagingRegionsInner(restClient().retrofit(), this);
-        this.eventHubs = new EventHubsInner(restClient().retrofit(), this);
+        this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
