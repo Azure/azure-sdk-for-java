@@ -43,6 +43,7 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
@@ -107,7 +108,9 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
+        AzureResourceManager.Configurable configurable = AzureResourceManager.configure();
+        ((AzureConfigurableImpl) configurable).withHttpPipeline(httpPipeline);
+        azureResourceManager = configurable.authenticate(null, profile).withDefaultSubscription();
         setInternalContext(internalContext, azureResourceManager);
     }
 
