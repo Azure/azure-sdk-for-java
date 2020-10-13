@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.Integers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestTimeoutException;
@@ -156,10 +157,11 @@ public class ConsistencyWriter {
             }).flatMap(primaryUri -> {
                 try {
                     primaryURI.set(primaryUri);
-                    if (this.useMultipleWriteLocations &&
+                    if ((this.useMultipleWriteLocations || request.getOperationType() == OperationType.Batch) &&
                         RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
                         // Set session token to ensure session consistency for write requests
-                        // when writes can be issued to multiple locations
+                        // 1. when writes can be issued to multiple locations
+                        // 2. When we have Batch requests, since it can have Reads in it.
                         SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
                     } else {
                         // When writes can only go to single location, there is no reason
