@@ -12,7 +12,7 @@ jobs:
         AZURE_TEST_MODE: RECORD
         AZURE_METRICS_ADVISOR_ENDPOINT: $(metricsadvisor-test-service-endpoint)
         AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY: $(metricsadvisor-test-subscription-key)
-        AZURE_METRICS_ADVISOR_API_KEY: $(metricsadvisor-test-api-key)
+        AZURE_METRICS_ADVISOR_API_KEY: $(java-metricsadvisor-test-api-key)
         AZURE_METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING: $(metricsadvisor-test-sql-server-connection-string)
         AZURE_METRICS_ADVISOR_AZURE_TABLE_CONNECTION_STRING: $(metricsadvisor-test-azure-table-connection-string)
         AZURE_METRICS_ADVISOR_AZURE_BLOB_CONNECTION_STRING: $(metricsadvisor-test-azure-blob-connection-string)
