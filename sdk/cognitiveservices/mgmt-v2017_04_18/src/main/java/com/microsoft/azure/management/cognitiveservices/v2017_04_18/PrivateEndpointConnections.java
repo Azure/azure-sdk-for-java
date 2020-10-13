@@ -19,6 +19,16 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface PrivateEndpointConnections extends SupportsCreating<PrivateEndpointConnection.DefinitionStages.Blank>, HasInner<PrivateEndpointConnectionsInner> {
     /**
+     * Gets the private endpoint connections associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PrivateEndpointConnectionListResult> listAsync(String resourceGroupName, String accountName);
+
+    /**
      * Gets the specified private endpoint connection associated with the Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
