@@ -135,7 +135,7 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
     @Override
     public Mono<Secret> enableByNameAndVersionAsync(String name, String version) {
         Objects.requireNonNull(name);
-        return enableByNameAndVersionAsync(name, version, true);
+        return updateSecretEnableDisableAsync(name, version, true);
     }
 
     @Override
@@ -146,12 +146,13 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
     @Override
     public Mono<Void> disableByNameAndVersionAsync(String name, String version) {
         Objects.requireNonNull(name);
-        return enableByNameAndVersionAsync(name, version, false).then();
+        return updateSecretEnableDisableAsync(name, version, false).then();
     }
 
-    private Mono<Secret> enableByNameAndVersionAsync(String name, String version, boolean enabled) {
+    private Mono<Secret> updateSecretEnableDisableAsync(String name, String version, boolean enabled) {
         try {
-            String mockId = "https://foo.vault.azure.net/secrets/" + name;
+            // create SecretProperties with name and version via JSON serialization.
+            String mockId = "https://mock.vault.azure.net/secrets/" + name;
             if (!CoreUtils.isNullOrEmpty(version)) {
                 mockId += "/" + version;
             }
