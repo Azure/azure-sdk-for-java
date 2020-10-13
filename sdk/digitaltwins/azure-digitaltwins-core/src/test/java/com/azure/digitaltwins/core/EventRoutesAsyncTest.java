@@ -117,7 +117,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
 
                     // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
                     if (pagedResponseOfEventRoute.getContinuationToken() != null) {
-                        assertEquals(expectedPageSize, pagedResponseOfEventRoute.getValue().size());
+                        assertEquals(expectedPageSize, pagedResponseOfEventRoute.getValue().size(), "Unexpected page size for a non-terminal page");
                     }
                 })
             .verifyComplete();
