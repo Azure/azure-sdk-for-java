@@ -1,19 +1,19 @@
-# Azure Synapse Access Control client library for Java
+# Azure Synapse Spark client library for Java
 Azure Synapse is a limitless analytics service that brings together enterprise data warehousing and Big Data analytics. It gives you the freedom to query data on your terms, using either serverless on-demand or provisioned resources—at scale. Azure Synapse brings these two worlds together with a unified experience to ingest, prepare, manage, and serve data for immediate BI and machine learning needs.
 
-The Azure Synapse Analytics access control client library enables programmatically managing role assignments.
+The Azure Synapse Analytics Spark client library enables programmatically managing Spark jobs.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azsynapse_docs] | [Samples][accesscontrol_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azsynapse_docs] | [Samples][spark_samples]
 
 ## Getting started
 ### Adding the package to your project
-Maven dependency for the Azure Synapse Access Control client library. Add it to your project's POM file.
+Maven dependency for the Azure Synapse Spark client library. Add it to your project's POM file.
 
-[//]: # ({x-version-update-start;com.azure:azure-analytics-synapse-accesscontrol;current})
+[//]: # ({x-version-update-start;com.azure:azure-analytics-synapse-spark;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-analytics-synapse-accesscontrol</artifactId>
+    <artifactId>azure-analytics-synapse-spark</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -35,7 +35,7 @@ Maven dependency for the Azure Synapse Access Control client library. Add it to 
     ```
 
 ### Authenticate the client
-In order to interact with the Azure Synapse service, you'll need to create an instance of the [AccessControlClient](#create-access-control-client) class. You would need a **workspace endpoint** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Synapse service, you'll need to create an instance of the [SparkClient](#create-spark-client) class. You would need a **workspace endpoint** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
@@ -62,161 +62,135 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     }
     ```
 
-#### Create Access Control client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-workspace-endpoint** with the URI returned above, you can create the AccessControlClient:
+#### Create Spark client
+Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-workspace-endpoint** with the URI returned above, you can create Spark clients. For example, the following code creates SparkBatchClient:
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.analytics.synapse.accesscontrol.AccessControlClient;
-import com.azure.analytics.synapse.accesscontrol.AccessControlClientBuilder;
+import com.azure.analytics.synapse.spark.SparkBatchClient;
+import com.azure.analytics.synapse.spark.SparkClientBuilder;
 
-AccessControlClient client = new AccessControlClientBuilder()
+SparkBatchClient batchClient = new SparkClientBuilder()
     .endpoint("https://{YOUR_WORKSPACE_NAME}.dev.azuresynapse.net")
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+    .buildSparkBatchClient();
 ```
 
-> NOTE: For using an asynchronous client use AccessControlAsyncClient instead of AccessControlClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use SparkBatchAsyncClient instead of SparkBatchClient and call `buildSparkBatchAsyncClient()`
 
 ## Key concepts
-### AccessControlClient
-With a `AccessControlClient` you can get role assignments from the workspace, create new role assignments, and delete role assignments.
 
-### Role Assignment
-The way you control access to Synapse resources is to create role assignments. A role assignment is the process of attaching a role definition to a user, group, service principal, or managed identity at a particular scope for the purpose of granting access. Access is granted by creating a role assignment, and access is revoked by removing a role assignment.
+### Spark batch Client
+
+The Spark batch client performs the interactions with the Azure Synapse service for getting, setting, updating, deleting, and listing Spark batch jobs. Asynchronous (SparkBatchAsyncClient) and synchronous (SparkBatchClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 ## Examples
-The Azure.Analytics.Synapse.AccessControl package supports synchronous and asynchronous APIs. The following section covers some of the most common Azure Synapse Analytics access control related tasks:
+The Azure.Analytics.Synapse.Spark package supports synchronous and asynchronous APIs. The following section covers some of the most common Azure Synapse Analytics Spark job related tasks:
 
 ### Sync API
-The following sections provide several code snippets covering some of the most common Azure Synapse Access Control service tasks, including:
+The following sections provide several code snippets covering some of the most common Azure Synapse Spark service tasks, including:
 
-### Role assignment examples
-* [Create a role assignment](#create-a-role-assignment)
-* [Retrieve a role assignment](#retrieve-a-role-assignment)
-* [List role assignments](#list-role-assignments)
-* [Delete a role assignment](#delete-a-role-assignment)
+### Spark batch job examples
+* [Create a Spark batch job](#create-a-spark-batch-job)
+* [List role Spark batch jobs](#list-spark-batch-jobs)
+* [Cancel a Spark batch job](#delete-a-spark-batch-job)
 
-### Create a role assignment
+### Create a Spark batch job
 
-`createRoleAssignment` creates a role assignment.
+`createSparkBatchJob` creates a Spark batch job.
 
 ```java
-SynapseRole role = client.getRoleDefinitions().stream()
-    .filter(r -> r.getName().equalsIgnoreCase("Workspace Admin"))
-    .findAny()
-    .get();
+SparkBatchJobOptions options = new SparkBatchJobOptions()
+    .setName(name)
+    .setFile(file)
+    .setClassName("WordCount")
+    .setArguments(Arrays.asList(
+        String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/shakespeare.txt", fileSystem, storageAccount),
+        String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/result/", fileSystem, storageAccount)
+    ))
+    .setDriverMemory("28g")
+    .setDriverCores(4)
+    .setExecutorMemory("28g")
+    .setExecutorCores(4)
+    .setExecutorCount(2);
 
-RoleAssignmentOptions request = new RoleAssignmentOptions();
-request.setRoleId(role.getId());
-request.setPrincipalId(principalId);
-RoleAssignmentDetails roleAssignmentCreated = client.createRoleAssignment(request);
+SparkBatchJob jobCreated = batchClient.createSparkBatchJob(options);
 ```
 
-### Retrieve a role assignment
-
-`getRoleAssignmentById` retrieves a role assignment by the given principal ID.
-
-```java
-RoleAssignmentDetails roleAssignment = client.getRoleAssignmentById(roleAssignmentCreated.getId());
-System.out.printf("Role %s is assigned to %s. Role assignment id: %s\n",
-    role.getName(),
-    roleAssignment.getPrincipalId(),
-    roleAssignment.getId());
-```
-
-### List role assignments
-`getRoleAssignments` enumerates the role assignments in the Synapse workspace.
+### List Spark batch jobs
+`getSparkBatchJobs` enumerates the Spark batch jobs in the Synapse workspace.
 
 ```java
-List<RoleAssignmentDetails> allRoleAssignments = client.getRoleAssignments();
-for (RoleAssignmentDetails roleAssignment : allRoleAssignments)
-{
-    System.out.println(roleAssignment.getId());
+SparkBatchJobCollection jobs = batchClient.getSparkBatchJobs();
+for (SparkBatchJob job : jobs.getSessions()) {
+    System.out.println(job.getName());
 }
 ```
 
-### Delete a role assignment
+### Cancel a Spark batch job
 
-`deleteRoleAssignmentById` deletes a role assignment by the given principal ID.
+`cancelSparkBatchJob` cancels a Spark batch job by the given job ID.
 
 ```java
-client.deleteRoleAssignmentById(roleAssignment.getId());
+batchClient.cancelSparkBatchJob(jobId);
 ```
 
 ### Async API
-The following sections provide several code snippets covering some of the most common asynchronous Azure Synapse Access Control service tasks, including:
+The following sections provide several code snippets covering some of the most common asynchronous Azure Synapse Spark service tasks, including:
 
-* [Create a role assignment asynchronously](#create-a-role-assignment-asynchronously)
-* [Retrieve a role assignment asynchronously](#retrieve-a-role-assignment-asynchronously)
-* [List role assignments asynchronously](#list-role-assignments-asynchronously)
-* [Delete a role assignment asynchronously](#delete-a-role-assignment-asynchronously)
+* [Create a Spark job asynchronously](#create-a-spark-batch-job-asynchronously)
+* [Retrieve a Spark job asynchronously](#retrieve-a-spark-batch-job-asynchronously)
+* [List Spark jobs asynchronously](#list-spark-batch-jobs-asynchronously)
+* [Delete a Spark job asynchronously](#delete-a-spark-batch-job-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
-### Create a role assignment asynchronously
+### Create a Spark job asynchronously
 
-
-`createRoleAssignment` creates a role assignment.
+`createSparkBatchJob` creates a Spark batch job.
 
 ```java
-// Get the role definition of workspace admin.
-SynapseRole role = client.getRoleDefinitions().blockFirst();
+String storageAccount = "<storage-account>";
+String fileSystem = "<file-system>";
+String name = "<job-name>";
+String file = String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/wordcount.jar", fileSystem, storageAccount);
+SparkBatchJobOptions options = new SparkBatchJobOptions()
+    .setName(name)
+    .setFile(file)
+    .setClassName("WordCount")
+    .setArguments(Arrays.asList(
+        String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/shakespeare.txt", fileSystem, storageAccount),
+        String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/result/", fileSystem, storageAccount)
+    ))
+    .setDriverMemory("28g")
+    .setDriverCores(4)
+    .setExecutorMemory("28g")
+    .setExecutorCores(4)
+    .setExecutorCount(2);
 
-// Add a role assignment
-String principalId = UUID.randomUUID().toString();
-RoleAssignmentOptions request = new RoleAssignmentOptions();
-request.setRoleId(role.getId());
-request.setPrincipalId(principalId);
-client.createRoleAssignment(request)
-    .subscribe(r -> System.out.printf("Role assignment created with id \"%s\"", r.getId()));
+batchClient.createSparkBatchJob(options).subscribe(job -> System.out.printf("Job ID: %f\n", job.getId()));
 ```
 
-### Retrieve a role assignment asynchronously
-
-`getRoleAssignmentById` retrieves a role assignment by the given principal ID.
+### List Spark batch jobs asynchronously
+`getSparkBatchJobs` enumerates the Spark batch jobs in the Synapse workspace.
 
 ```java
-client.getRoleAssignmentById(roleAssignment.getId())
-    .subscribe(ra ->
-        System.out.printf("Role %s is assigned to %s. Role assignment id: %s\n",
-            ra.getRoleId(),
-            ra.getPrincipalId(),
-            ra.getId()));
+batchClient.getSparkBatchJobs().subscribe(jobs -> {
+    for (SparkBatchJob job : jobs.getSessions()) {
+        System.out.println(job.getName());
+    }
+});
 ```
 
-### List role assignments asynchronously
-`getRoleAssignments` enumerates the role assignments in the Synapse workspace.
+### Cancel a Spark batch job asynchronously
+
+`cancelSparkBatchJob` deletes a Spark batch job by the job ID.
 
 ```java
-client.getRoleAssignments()
-    .subscribe(allRoleAssignments -> {
-        for (RoleAssignmentDetails roleAssignment : allRoleAssignments)
-        {
-            System.out.println(roleAssignment.getId());
-        }
-    });
-```
-
-### Delete a role assignment asynchronously
-
-`deleteRoleAssignmentById` deletes a role assignment by the given principal ID.
-
-```java
-client.deleteRoleAssignmentById("roleAssignmentId").block();
+batchClient.cancelSparkBatchJob(jobId);
 ```
 
 ## Troubleshooting
-### General
-Azure Synapse Access Control clients raise exceptions. For example, if you try to retrieve a role assignment after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
-
-```java
-try {
-    RoleAssignmentDetails deletedRoleAssignment = client.getRoleAssignmentById(roleAssignmentCreated.getId());
-} catch (ResourceNotFoundException e) {
-    System.out.println(e.getMessage());
-}
-```
 
 ### Default HTTP client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
@@ -239,7 +213,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-spark/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azsynapse_docs]: https://docs.microsoft.com/azure/synapse-analytics/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
@@ -251,6 +225,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_synapse_cli_full]: https://docs.microsoft.com/cli/azure/synapse?view=azure-cli-latest
-[accesscontrol_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-accesscontrol/src/samples/java/com/azure/analytics/synapse/accesscontrol
+[spark_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/synapse/azure-analytics-synapse-spark/src/samples/java/com/azure/analytics/synapse/spark
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 

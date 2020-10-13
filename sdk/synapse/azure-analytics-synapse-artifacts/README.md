@@ -63,24 +63,27 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     ```
 
 #### Create Artifacts client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-workspace-endpoint** with the URI returned above, you can create the ArtifactsClient:
+Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-workspace-endpoint** with the URI returned above, you can create artifact clients. For example, the following code creates PipelineClient:
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.analytics.synapse.artifacts.ArtifactsClient;
+import com.azure.analytics.synapse.artifacts.PipelineClient;
 import com.azure.analytics.synapse.artifacts.ArtifactsClientBuilder;
 
-ArtifactsClient client = new ArtifactsClientBuilder()
+PipelineClient client = new ArtifactsClientBuilder()
     .endpoint("https://{YOUR_WORKSPACE_NAME}.dev.azuresynapse.net")
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+    .buildPipelineClient();
 ```
 
-> NOTE: For using an asynchronous client use ArtifactsAsyncClient instead of ArtifactsClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use PipelineAsyncClient instead of ArtifactsClient and call `buildPipelineAsyncClient()`
 
 ## Key concepts
-### ArtifactsClient
-With a `ArtifactsClient` you can manage artifacts, offering methods to create, update, list, and delete pipelines, datasets, data flows, notebooks, Spark job definitions, SQL scripts, linked services and triggers.
+
+### Pipeline Client
+
+The pipline client performs the interactions with the Azure Synapse service for getting, setting, updating, deleting, and listing piplines. Asynchronous (PipelineAsyncClient) and synchronous (PipelineClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
 ## Examples
 The Azure.Analytics.Synapse.Artifacts package supports synchronous and asynchronous APIs. The following section covers some of the most common Azure Synapse Analytics artifacts related tasks:
@@ -88,126 +91,102 @@ The Azure.Analytics.Synapse.Artifacts package supports synchronous and asynchron
 ### Sync API
 The following sections provide several code snippets covering some of the most common Azure Synapse Artifacts service tasks, including:
 
-### Notebook examples
-* [Create a notebook](#create-a-notebook)
-* [Retrieve a notebook](#retrieve-a-notebook)
-* [List notebooks](#list-notebooks)
-* [Delete a notebook](#delete-a-notebook)
+### Pipeline examples
+* [Create a pipeline](#create-a-pipeline)
+* [Retrieve a pipeline](#retrieve-a-pipeline)
+* [List pipelines](#list-pipelines)
+* [Delete a pipeline](#delete-a-pipeline)
 
-### Create a notebook
+### Create a pipeline
 
-`CreateOrUpdateNotebook` creates a notebook.
+`createOrUpdatePipeline` creates a pipeline.
 
-```C# Snippet:CreateNotebook
-Notebook notebook = new Notebook(
-    new NotebookMetadata
-    {
-        LanguageInfo = new NotebookLanguageInfo(name: "Python")
-    },
-    nbformat: 4,
-    nbformatMinor: 2,
-    new List<NotebookCell>()
-);
-var operation = notebookClient.StartCreateOrUpdateNotebook("MyNotebook", new NotebookResource(notebook));
-NotebookResource notebookResource = operation.WaitForCompletionAsync().ConfigureAwait(true).GetAwaiter().GetResult();
+```java
+String pipelineName = "MyPipeline" + new Random().nextInt(1000);
+PipelineResource createdPipeline = client.createOrUpdatePipeline(pipelineName, new PipelineResource()
+    .setActivities(new ArrayList<>()));
+System.out.printf("Created pipeline with id: %s\n", createdPipeline.getId());
 ```
 
-### Retrieve a notebook
+### Retrieve a pipeline
 
-`GetNoteBook` retrieves a notebook.
+`GetPipeline` retrieves a pipeline.
 
-```C# Snippet:RetrieveNotebook
-NotebookResource notebook = notebookClient.GetNotebook("MyNotebook");
+```java
+PipelineResource retrievedPipeline = client.getPipeline(pipelineName);
 ```
 
-### List notebooks
-`GetNotebooksByWorkspace` enumerates the notebooks in the Synapse workspace.
+### List pipelines
+`GetPipelinesByWorkspace` enumerates the pipeines in the Synapse workspace.
 
-```C# Snippet:ListNotebooks
-Pageable<NotebookResource> notebooks = notebookClient.GetNotebooksByWorkspace();
-foreach (NotebookResource notebook in notebooks)
-{
-    System.Console.WriteLine(notebook.Name);
+```java
+PagedIterable<PipelineResource> pipelines = client.getPipelinesByWorkspace();
+for (PipelineResource p : pipelines) {
+    System.out.printf("Retrieved pipeline with id: %s\n", p.getId());
 }
 ```
 
-### Delete a notebook
+### Delete a pipeline
 
-`DeleteNotebook` deletes a notebook.
+`DeletePipeline` deletes a pipeline.
 
-```C# Snippet:DeleteNotebook
-notebookClient.StartDeleteNotebook("MyNotebook");
+```java
+client.deletePipeline(pipelineName);
 ```
 
 ### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Synapse Artifacts service tasks, including:
 
-* [Create a role assignment asynchronously](#create-a-role-assignment-asynchronously)
-* [Retrieve a role assignment asynchronously](#retrieve-a-role-assignment-asynchronously)
-* [List role assignments asynchronously](#list-role-assignments-asynchronously)
-* [Delete a role assignment asynchronously](#delete-a-role-assignment-asynchronously)
+* [Create a pipeline asynchronously](#create-a-pipeline-asynchronously)
+* [Retrieve a pipeline asynchronously](#retrieve-a-pipeline-asynchronously)
+* [List pipelines asynchronously](#list-pipelines-asynchronously)
+* [Delete a pipeline asynchronously](#delete-a-pipeline-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
-### Create a role assignment asynchronously
+### Create a pipeline asynchronously
 
 
-`createRoleAssignment` creates a role assignment.
+`createOrUpdatePipeline` creates a pipeline.
 
 ```java
-// Get the role definition of workspace admin.
-SynapseRole role = client.getRoleDefinitions().blockFirst();
-
-// Add a role assignment
-String principalId = UUID.randomUUID().toString();
-RoleAssignmentOptions request = new RoleAssignmentOptions();
-request.setRoleId(role.getId());
-request.setPrincipalId(principalId);
-client.createRoleAssignment(request)
-    .subscribe(r -> System.out.printf("Role assignment created with id \"%s\"", r.getId()));
+String pipelineName = "MyPipeline" + new Random().nextInt(1000);
+client.createOrUpdatePipeline(pipelineName, new PipelineResource().setActivities(new ArrayList<>()))
+    .subscribe(p -> System.out.printf("Created pipeline with id: %s\n", p.getId()));
 ```
 
-### Retrieve a role assignment asynchronously
+### Retrieve a pipeline asynchronously
 
-`getRoleAssignmentById` retrieves a role assignment by the given principal ID.
+`getPipeline` retrieves a pipeline.
 
 ```java
-client.getRoleAssignmentById(roleAssignment.getId())
-    .subscribe(ra ->
-        System.out.printf("Role %s is assigned to %s. Role assignment id: %s\n",
-            ra.getRoleId(),
-            ra.getPrincipalId(),
-            ra.getId()));
+client.getPipeline(pipelineName).subscribe(pipelineResponse ->
+    System.out.printf("Retrieved pipeline with id: %s\n", pipelineResponse.getId()));
 ```
 
-### List role assignments asynchronously
-`getRoleAssignments` enumerates the role assignments in the Synapse workspace.
+### List pipelines asynchronously
+`getPipelinesByWorkspace` enumerates the pipelines in the Synapse workspace.
 
 ```java
-client.getRoleAssignments()
-    .subscribe(allRoleAssignments -> {
-        for (RoleAssignmentDetails roleAssignment : allRoleAssignments)
-        {
-            System.out.println(roleAssignment.getId());
-        }
-    });
+client.getPipelinesByWorkspace().subscribe(pipeline ->
+        System.out.printf("Retrieved pipeline with id: %s\n", pipeline.getId()));
 ```
 
-### Delete a role assignment asynchronously
+### Delete a pipeline asynchronously
 
-`deleteRoleAssignmentById` deletes a role assignment by the given principal ID.
+`deletePipeline` deletes a pipeline.
 
 ```java
-client.deleteRoleAssignmentById("roleAssignmentId").block();
+client.deletePipeline(pipelineName).block();
 ```
 
 ## Troubleshooting
 ### General
-Azure Synapse Artifacts clients raise exceptions. For example, if you try to retrieve a role assignment after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+Azure Synapse Artifacts clients raise exceptions. For example, if you try to retrieve an artifact after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 
 ```java
 try {
-    RoleAssignmentDetails deletedRoleAssignment = client.getRoleAssignmentById(roleAssignmentCreated.getId());
+    PipelineResource deletedPipeline = client.getPipeline(pipelineName);
 } catch (ResourceNotFoundException e) {
     System.out.println(e.getMessage());
 }
