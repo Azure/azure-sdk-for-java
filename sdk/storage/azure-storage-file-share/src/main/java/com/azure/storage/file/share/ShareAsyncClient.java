@@ -26,7 +26,6 @@ import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotRe
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
-import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
