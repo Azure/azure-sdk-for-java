@@ -28,8 +28,7 @@ public class ReplicationObject {
     private EndpointType endpointType;
 
     /**
-     * Schedule. Possible values include: '_10minutely', 'hourly', 'daily',
-     * 'weekly', 'monthly'.
+     * Schedule. Possible values include: '_10minutely', 'hourly', 'daily'.
      */
     @JsonProperty(value = "replicationSchedule", required = true)
     private ReplicationSchedule replicationSchedule;
@@ -87,7 +86,7 @@ public class ReplicationObject {
     }
 
     /**
-     * Get schedule. Possible values include: '_10minutely', 'hourly', 'daily', 'weekly', 'monthly'.
+     * Get schedule. Possible values include: '_10minutely', 'hourly', 'daily'.
      *
      * @return the replicationSchedule value
      */
@@ -96,7 +95,7 @@ public class ReplicationObject {
     }
 
     /**
-     * Set schedule. Possible values include: '_10minutely', 'hourly', 'daily', 'weekly', 'monthly'.
+     * Set schedule. Possible values include: '_10minutely', 'hourly', 'daily'.
      *
      * @param replicationSchedule the replicationSchedule value to set
      * @return the ReplicationObject object itself.
