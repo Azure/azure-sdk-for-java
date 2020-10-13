@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * entity class of UserPrincipal
@@ -20,13 +21,49 @@ public class UserPrincipal implements Serializable {
     private final JWSObject jwsObject;
     private final JWTClaimsSet jwtClaimsSet;
     private List<UserGroup> userGroups = new ArrayList<>();
+    private String aadIssuedBearerToken; // id_token or access_token
+    private String accessTokenForGraphApi;
 
-    public UserPrincipal(JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
+    public UserPrincipal(String aadIssuedBearerToken, JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
+        this.aadIssuedBearerToken = aadIssuedBearerToken;
         this.jwsObject = jwsObject;
         this.jwtClaimsSet = jwtClaimsSet;
     }
 
-    // claimset
+    public List<UserGroup> getUserGroups() {
+        return this.userGroups;
+    }
+
+    public void setUserGroups(List<UserGroup> groups) {
+        this.userGroups = groups;
+    }
+
+    public String getAadIssuedBearerToken() {
+        return aadIssuedBearerToken;
+    }
+
+    public void setAadIssuedBearerToken(String aadIssuedBearerToken) {
+        this.aadIssuedBearerToken = aadIssuedBearerToken;
+    }
+
+    public String getAccessTokenForGraphApi() {
+        return accessTokenForGraphApi;
+    }
+
+    public void setAccessTokenForGraphApi(String accessTokenForGraphApi) {
+        this.accessTokenForGraphApi = accessTokenForGraphApi;
+    }
+
+    public boolean isMemberOf(UserGroup group) {
+        return Optional.ofNullable(userGroups)
+                       .filter(groups -> groups.contains(group))
+                       .isPresent();
+    }
+
+    public String getKid() {
+        return jwsObject == null ? null : jwsObject.getHeader().getKeyID();
+    }
+
     public String getIssuer() {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getIssuer();
     }
@@ -39,41 +76,8 @@ public class UserPrincipal implements Serializable {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getClaims();
     }
 
-    public Object getClaim() {
-        return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim("tid");
-    }
-
     public Object getClaim(String name) {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim(name);
-    }
-
-    public String getUpn() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("upn");
-    }
-
-    public String getUniqueName() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("unique_name");
-    }
-
-    public String getName() {
-        return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("name");
-    }
-
-    // header
-    public String getKid() {
-        return jwsObject == null ? null : jwsObject.getHeader().getKeyID();
-    }
-
-    public void setUserGroups(List<UserGroup> groups) {
-        this.userGroups = groups;
-    }
-
-    public List<UserGroup> getUserGroups() {
-        return this.userGroups;
-    }
-
-    public boolean isMemberOf(UserGroup group) {
-        return !(userGroups == null || userGroups.isEmpty()) && userGroups.contains(group);
     }
 }
 

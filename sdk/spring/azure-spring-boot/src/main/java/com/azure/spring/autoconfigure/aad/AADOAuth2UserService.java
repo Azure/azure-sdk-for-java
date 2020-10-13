@@ -48,10 +48,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
-            final ClientRegistration registration = userRequest.getClientRegistration();
             final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
-                registration.getClientId(),
-                registration.getClientSecret(),
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );
@@ -81,7 +78,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
             .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
             .filter(s -> !s.isEmpty())
-            .orElse(AADAccessTokenClaim.NAME);
+            .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }

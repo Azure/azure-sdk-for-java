@@ -134,18 +134,18 @@ public class UserPrincipalManager {
 
     /**
      * Parse the id token to {@link UserPrincipal}.
-     * @param idToken The id token.
+     * @param aadIssuedBearerToken The token issued by AAD.
      * @return The parsed {@link UserPrincipal}.
      * @throws ParseException If the token couldn't be parsed to a valid JWS object.
      * @throws JOSEException If an internal processing exception is encountered.
      * @throws BadJOSEException If the JWT is rejected.
      */
-    public UserPrincipal buildUserPrincipal(String idToken) throws ParseException, JOSEException, BadJOSEException {
-        final JWSObject jwsObject = JWSObject.parse(idToken);
+    public UserPrincipal buildUserPrincipal(String aadIssuedBearerToken) throws ParseException, JOSEException, BadJOSEException {
+        final JWSObject jwsObject = JWSObject.parse(aadIssuedBearerToken);
         final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());
-        final JWTClaimsSet jwtClaimsSet = validator.process(idToken, null);
+        final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
-        return new UserPrincipal(jwsObject, jwtClaimsSet);
+        return new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
     }
 
     public boolean isTokenIssuedByAAD(String token) {

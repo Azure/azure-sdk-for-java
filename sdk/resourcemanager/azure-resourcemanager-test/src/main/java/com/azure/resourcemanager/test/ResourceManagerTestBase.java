@@ -212,7 +212,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
-                generateHttpClientWithProxy(null));
+                generateHttpClientWithProxy(null, null));
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
@@ -223,8 +223,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         initializeClients(httpPipeline, testProfile);
     }
 
-    private HttpClient generateHttpClientWithProxy(ProxyOptions proxyOptions) {
-        NettyAsyncHttpClientBuilder clientBuilder = new NettyAsyncHttpClientBuilder();
+    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions) {
+        if (clientBuilder == null) {
+            clientBuilder = new NettyAsyncHttpClientBuilder();
+        }
         if (proxyOptions != null) {
             clientBuilder.proxy(proxyOptions);
         } else {

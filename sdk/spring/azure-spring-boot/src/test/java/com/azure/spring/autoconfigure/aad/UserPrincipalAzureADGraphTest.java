@@ -49,10 +49,8 @@ public class UserPrincipalAzureADGraphTest {
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
     private AzureADGraphClient graphClientMock;
-    private String clientId;
-    private String clientSecret;
-    private AADAuthenticationProperties aadAuthProps;
-    private ServiceEndpointsProperties endpointsProps;
+    private AADAuthenticationProperties aadAuthenticationProperties;
+    private ServiceEndpointsProperties serviceEndpointsProperties;
     private String accessToken;
     private static String userGroupsJson;
 
@@ -73,19 +71,17 @@ public class UserPrincipalAzureADGraphTest {
     @Before
     public void setup() {
         accessToken = TestConstants.ACCESS_TOKEN;
-        aadAuthProps = new AADAuthenticationProperties();
-        endpointsProps = new ServiceEndpointsProperties();
+        aadAuthenticationProperties = new AADAuthenticationProperties();
+        serviceEndpointsProperties = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
         serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
-        endpointsProps.getEndpoints().put("global", serviceEndpoints);
-        clientId = "client";
-        clientSecret = "pass";
+        serviceEndpointsProperties.getEndpoints().put("global", serviceEndpoints);
     }
 
     @Test
     public void getAuthoritiesByUserGroups() throws Exception {
-        aadAuthProps.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
+        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
+        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
@@ -105,8 +101,8 @@ public class UserPrincipalAzureADGraphTest {
 
     @Test
     public void getGroups() throws Exception {
-        aadAuthProps.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
+        aadAuthenticationProperties.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
+        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
@@ -138,7 +134,7 @@ public class UserPrincipalAzureADGraphTest {
 
             final JWSObject jwsObject = JWSObject.parse(TestConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();
-            final UserPrincipal principal = new UserPrincipal(jwsObject, jwtClaimsSet);
+            final UserPrincipal principal = new UserPrincipal("", jwsObject, jwtClaimsSet);
 
             objectOutputStream.writeObject(principal);
 

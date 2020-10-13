@@ -65,7 +65,7 @@ public class AADAppRoleAuthenticationFilterTest {
             .build();
         final JWSObject jwsObject = new JWSObject(new Builder(JWSAlgorithm.RS256).build(),
             new Payload(jwtClaimsSet.toString()));
-        return new UserPrincipal(jwsObject, jwtClaimsSet);
+        return new UserPrincipal("", jwsObject, jwtClaimsSet);
     }
 
     public AADAppRoleAuthenticationFilterTest() {
