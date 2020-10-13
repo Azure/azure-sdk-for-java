@@ -340,13 +340,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
             });
             return constructor.newInstance(httpPipeline, profile);
 
-        } catch (NoSuchMethodException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (IllegalAccessException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (InstantiationException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (InvocationTargetException ex) {
+        } catch (
+            NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         }
     }

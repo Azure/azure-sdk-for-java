@@ -126,12 +126,19 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
+    /**
+     *  Sets the http pipeline.
+     * (Internal use only)
+     *
+     * @param httpPipeline the http pipeline
+     */
     public void withHttpPipeline(HttpPipeline httpPipeline) {
         Objects.requireNonNull(httpPipeline);
         this.httpPipeline = httpPipeline;
     }
 
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
+        // Check if this is internal build to make sure all managers could share same http pipeline in each module.
         if (this.httpPipeline != null) {
             return httpPipeline;
         }
