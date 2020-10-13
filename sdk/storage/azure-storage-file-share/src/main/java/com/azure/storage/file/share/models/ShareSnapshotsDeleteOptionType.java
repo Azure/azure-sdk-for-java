@@ -4,9 +4,9 @@
 package com.azure.storage.file.share.models;
 
 /**
- * Defines values for ShareSnapshotsDeleteOption.
+ * Defines values for ShareSnapshotsDeleteOptionType.
  */
-public enum ShareSnapshotsDeleteOption {
+public enum ShareSnapshotsDeleteOptionType {
     /**
      * The share's snapshots that do not have an active lease will be deleted with the share.
      */

@@ -4,17 +4,17 @@
 package com.azure.storage.file.share.implementation.util;
 
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOption;
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 public class ModelHelper {
 
     /**
      * Converts an internal type to a public type.
      *
-     * @param option {@link ShareSnapshotsDeleteOption}
+     * @param option {@link ShareSnapshotsDeleteOptionType}
      * @return {@link DeleteSnapshotsOptionType}
      */
-    public static DeleteSnapshotsOptionType toDeleteSnapshotsOptionType(ShareSnapshotsDeleteOption option) {
+    public static DeleteSnapshotsOptionType toDeleteSnapshotsOptionType(ShareSnapshotsDeleteOptionType option) {
         if (option == null) {
             return null;
         }

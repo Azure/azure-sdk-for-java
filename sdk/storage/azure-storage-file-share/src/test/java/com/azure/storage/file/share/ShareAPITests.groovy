@@ -14,7 +14,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareSnapshotInfo
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOption
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
@@ -216,7 +216,7 @@ class ShareAPITests extends APISpec {
         def snap2 = primaryShareClient.createSnapshot().getSnapshot()
 
         when:
-        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOption.INCLUDE),null, null)
+        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE),null, null)
 
         then:
         !primaryShareClient.getSnapshotClient(snap1).exists()

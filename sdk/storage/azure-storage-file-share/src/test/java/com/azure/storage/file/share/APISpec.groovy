@@ -25,10 +25,9 @@ import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOption
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
-import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
@@ -135,7 +134,7 @@ class APISpec extends Specification {
                     createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
                 }
 
-                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOption.INCLUDE), null, null)
+                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
             }
         }
     }
