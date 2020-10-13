@@ -116,7 +116,7 @@ class ServiceBusAsyncConsumerTest {
 
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, false, null, null, messageLockContainer, onRenewLock);
+            prefetch, false, null, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -156,7 +156,7 @@ class ServiceBusAsyncConsumerTest {
         final int prefetch = 10;
         final String lockToken = UUID.randomUUID().toString();
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, false, null, null, messageLockContainer, onRenewLock);
+            prefetch, false, null, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);

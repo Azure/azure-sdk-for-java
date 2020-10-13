@@ -40,8 +40,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final LockContainer<LockRenewalOperation> messageLockContainer;
 
     ServiceBusMessageProcessor(boolean isAutoRenewLock, Duration maxAutoLockRenewal,
-        AmqpRetryOptions retryOptions, LockContainer<LockRenewalOperation> messageLockContainer,
-        AmqpErrorContext errorContext, Function<String, Mono<OffsetDateTime>> onRenewLock) {
+        LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
 
         super();
 
