@@ -106,7 +106,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzureKeyCredential(
+                Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
         }
         return builder;
     }

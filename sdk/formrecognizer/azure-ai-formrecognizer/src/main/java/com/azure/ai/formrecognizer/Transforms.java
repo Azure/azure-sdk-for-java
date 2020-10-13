@@ -282,12 +282,6 @@ final class Transforms {
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        // ARRAY has ho value data, such as bounding box.
-        if (valueData == null && ARRAY != fieldValue.getType()) {
-            valueData = new FieldData(name, toBoundingBox(fieldValue.getBoundingBox()),
-                fieldValue.getPage() == null ? -1 : fieldValue.getPage(),
-                setReferenceElements(fieldValue.getElements(), readResults));
-        }
 
         return new FormField(name, null, valueData, value, setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
@@ -340,7 +334,16 @@ final class Transforms {
      */
     private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
         return valueArray.stream()
-            .map(fieldValue -> setFormField(fieldValue.getText(), null, fieldValue, readResults))
+            .map(fieldValue -> {
+                FieldData valueData = null;
+                // ARRAY has ho value data, such as bounding box.
+                if (ARRAY != fieldValue.getType()) {
+                    valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                        fieldValue.getPage() == null ? -1 : fieldValue.getPage(),
+                        setReferenceElements(fieldValue.getElements(), readResults));
+                }
+                return setFormField(null, valueData, fieldValue, readResults);
+            })
             .collect(Collectors.toList());
     }
 

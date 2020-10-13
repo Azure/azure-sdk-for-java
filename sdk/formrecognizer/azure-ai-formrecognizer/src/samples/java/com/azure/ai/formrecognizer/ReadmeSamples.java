@@ -248,31 +248,6 @@ public class ReadmeSamples {
                     });
                 }
             }
-            FormField addresses = recognizedFields.get("Addresses");
-            if (addresses != null) {
-                if (FieldValueType.LIST == addresses.getValue().getValueType()) {
-                    List<FormField> addressesItems = addresses.getValue().asList();
-                    addressesItems.stream().forEach(formField -> {
-                        if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                            String address = formField.getValue().asString();
-                            System.out.printf("Address: %s, confidence: %.2f%n", address, addresses.getConfidence());
-                        }
-                    });
-                }
-            }
-            FormField companyName = recognizedFields.get("CompanyNames");
-            if (companyName != null) {
-                if (FieldValueType.LIST == companyName.getValue().getValueType()) {
-                    List<FormField> companyNameItems = companyName.getValue().asList();
-                    companyNameItems.stream().forEach(formField -> {
-                        if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                            String companyNameValue = formField.getValue().asString();
-                            System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
-                                companyName.getConfidence());
-                        }
-                    });
-                }
-            }
         }
     }
 

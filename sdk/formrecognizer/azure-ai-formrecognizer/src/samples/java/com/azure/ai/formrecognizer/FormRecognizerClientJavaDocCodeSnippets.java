@@ -530,7 +530,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      */
     public void beginRecognizeBusinessCardsFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string
-        String businessCardUrl = "{file_source_url}";
+        String businessCardUrl = "{business_card_url}";
         formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl)
             .getFinalResult()
             .forEach(recognizedBusinessCard -> {
@@ -574,32 +574,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                         });
                     }
                 }
-                FormField addresses = recognizedFields.get("Addresses");
-                if (addresses != null) {
-                    if (FieldValueType.LIST == addresses.getValue().getValueType()) {
-                        List<FormField> addressesItems = addresses.getValue().asList();
-                        addressesItems.stream().forEach(formField -> {
-                            if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                String address = formField.getValue().asString();
-                                System.out.printf("Address: %s, confidence: %.2f%n", address,
-                                    addresses.getConfidence());
-                            }
-                        });
-                    }
-                }
-                FormField companyName = recognizedFields.get("CompanyNames");
-                if (companyName != null) {
-                    if (FieldValueType.LIST == companyName.getValue().getValueType()) {
-                        List<FormField> companyNameItems = companyName.getValue().asList();
-                        companyNameItems.stream().forEach(formField -> {
-                            if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                String companyNameValue = formField.getValue().asString();
-                                System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
-                                    companyName.getConfidence());
-                            }
-                        });
-                    }
-                }
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string
     }
@@ -610,7 +584,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      */
     public void beginRecognizeBusinessCardsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context
-        String businessCardUrl = "{file_source_url}";
+        String businessCardUrl = "{business_card_url}";
         formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
                 .setPollInterval(Duration.ofSeconds(5))
@@ -652,32 +626,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                                 String jobTitle = formField.getValue().asString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",
                                     jobTitle, jobTitles.getConfidence());
-                            }
-                        });
-                    }
-                }
-                FormField addresses = recognizedFields.get("Addresses");
-                if (addresses != null) {
-                    if (FieldValueType.LIST == addresses.getValue().getValueType()) {
-                        List<FormField> addressesItems = addresses.getValue().asList();
-                        addressesItems.stream().forEach(formField -> {
-                            if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                String address = formField.getValue().asString();
-                                System.out.printf("Address: %s, confidence: %.2f%n", address,
-                                    addresses.getConfidence());
-                            }
-                        });
-                    }
-                }
-                FormField companyName = recognizedFields.get("CompanyNames");
-                if (companyName != null) {
-                    if (FieldValueType.LIST == companyName.getValue().getValueType()) {
-                        List<FormField> companyNameItems = companyName.getValue().asList();
-                        companyNameItems.stream().forEach(formField -> {
-                            if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                String companyNameValue = formField.getValue().asString();
-                                System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
-                                    companyName.getConfidence());
                             }
                         });
                     }
@@ -738,32 +686,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                             });
                         }
                     }
-                    FormField addresses = recognizedFields.get("Addresses");
-                    if (addresses != null) {
-                        if (FieldValueType.LIST == addresses.getValue().getValueType()) {
-                            List<FormField> addressesItems = addresses.getValue().asList();
-                            addressesItems.stream().forEach(formField -> {
-                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                    String address = formField.getValue().asString();
-                                    System.out.printf("Address: %s, confidence: %.2f%n", address,
-                                        addresses.getConfidence());
-                                }
-                            });
-                        }
-                    }
-                    FormField companyName = recognizedFields.get("CompanyNames");
-                    if (companyName != null) {
-                        if (FieldValueType.LIST == companyName.getValue().getValueType()) {
-                            List<FormField> companyNameItems = companyName.getValue().asList();
-                            companyNameItems.stream().forEach(formField -> {
-                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                    String companyNameValue = formField.getValue().asString();
-                                    System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
-                                        companyName.getConfidence());
-                                }
-                            });
-                        }
-                    }
                 });
         }
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long
@@ -772,8 +694,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     /**
      * Code snippet for
      * {@link FormRecognizerClient#beginRecognizeBusinessCards(InputStream, long, RecognizeBusinessCardsOptions,
-     * Context)}
-     * with options
+     * Context)} with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -827,32 +748,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                                 String jobTitle = formField.getValue().asString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",
                                     jobTitle, jobTitles.getConfidence());
-                            }
-                        });
-                    }
-                }
-                FormField addresses = recognizedFields.get("Addresses");
-                if (addresses != null) {
-                    if (FieldValueType.LIST == addresses.getValue().getValueType()) {
-                        List<FormField> addressesItems = addresses.getValue().asList();
-                        addressesItems.stream().forEach(formField -> {
-                            if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                String address = formField.getValue().asString();
-                                System.out.printf("Address: %s, confidence: %.2f%n", address,
-                                    addresses.getConfidence());
-                            }
-                        });
-                    }
-                }
-                FormField companyName = recognizedFields.get("CompanyNames");
-                if (companyName != null) {
-                    if (FieldValueType.LIST == companyName.getValue().getValueType()) {
-                        List<FormField> companyNameItems = companyName.getValue().asList();
-                        companyNameItems.stream().forEach(formField -> {
-                            if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                String companyNameValue = formField.getValue().asString();
-                                System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
-                                    companyName.getConfidence());
                             }
                         });
                     }
