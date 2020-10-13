@@ -504,7 +504,6 @@ public class ShareClient {
      */
     public Response<ShareInfo> setPropertiesWithResponse(ShareSetPropertiesOptions options, Duration timeout,
         Context context) {
-        StorageImplUtils.assertNotNull("options", options);
         Mono<Response<ShareInfo>> response = client.setPropertiesWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

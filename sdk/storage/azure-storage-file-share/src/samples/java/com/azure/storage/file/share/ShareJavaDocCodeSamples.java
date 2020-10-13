@@ -467,12 +467,12 @@ public class ShareJavaDocCodeSamples {
      */
     public void setPropertiesWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetAccessTierOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context
         Response<ShareInfo> response = shareClient.setPropertiesWithResponse(
             new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.HOT).setQuotaInGb(1024),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting the share access tier completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetAccessTierOptions-Duration-Context
+        // END: com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context
     }
 
     /**
