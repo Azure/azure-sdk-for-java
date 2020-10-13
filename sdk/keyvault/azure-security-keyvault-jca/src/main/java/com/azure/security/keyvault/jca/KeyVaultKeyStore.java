@@ -193,7 +193,14 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineSetCertificateEntry(String alias, Certificate cert) throws KeyStoreException {
+    public void engineSetCertificateEntry(String alias, Certificate certificate) throws KeyStoreException {
+        if (aliases == null) {
+            aliases = keyVault.getAliases();
+        }
+        if (!aliases.contains(alias)) {
+            aliases.add(alias);
+            certificates.put(alias, certificate);
+        }
     }
 
     @Override
