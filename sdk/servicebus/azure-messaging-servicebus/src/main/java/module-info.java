@@ -3,6 +3,7 @@
 
 module com.azure.messaging.servicebus {
     requires transitive com.azure.core.amqp;
+    requires transitive org.reactivestreams;
 
     exports com.azure.messaging.servicebus;
     exports com.azure.messaging.servicebus.administration;

@@ -314,7 +314,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
             renewLockOperation = new LockRenewalOperation(message.getLockToken(), maxAutoLockRenewal, false,
                 onRenewLock, message.getLockedUntil());
-            messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal), renewLockOperation);
+            messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),
+                renewLockOperation);
         }
 
         final AtomicBoolean hasError = new AtomicBoolean();
