@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
-import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 import java.util.logging.Logger;
@@ -72,7 +71,6 @@ class KeyVaultClient extends DelegateRestClient {
      */
     public KeyVaultClient(String keyVaultUri) {
         super(RestClientFactory.createClient());
-        LOGGER.log(FINE, "KeyVault URI: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
@@ -89,8 +87,6 @@ class KeyVaultClient extends DelegateRestClient {
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
         this(keyVaultUri);
-        LOGGER.log(FINE, "\nKeyVault URI: {0}\nTenant ID: {1}\nClient ID: {2}\nClient Secret: {3}",
-                new Object[] {keyVaultUri, tenantId, clientId, clientSecret});
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -102,6 +98,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @return the access token.
      */
     private String getAccessToken() {
+        LOGGER.entering("KeyVaultClient", "getAccessToken");
         String accessToken = null;
         try {
             AuthClient authClient = new AuthClient();
@@ -114,7 +111,7 @@ class KeyVaultClient extends DelegateRestClient {
         } catch (UnsupportedEncodingException uee) {
             LOGGER.log(WARNING, "Unsupported encoding", uee);
         }
-        LOGGER.log(FINE, "Access token: {0}", accessToken);
+        LOGGER.exiting("KeyVaultClient", "getAccessToken", accessToken);
         return accessToken;
     }
 
@@ -187,6 +184,8 @@ class KeyVaultClient extends DelegateRestClient {
      * @return the certificate, or null if not found.
      */
     public Certificate getCertificate(String alias) {
+        LOGGER.entering("KeyVaultClient", "getCertificate", alias);
+        LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         if (certificateBundle != null) {
@@ -202,6 +201,7 @@ class KeyVaultClient extends DelegateRestClient {
                 }
             }
         }
+        LOGGER.exiting("KeyVaultClient", "getCertificate", certificate);
         return certificate;
     }
 
@@ -213,6 +213,8 @@ class KeyVaultClient extends DelegateRestClient {
      * @return the key.
      */
     public Key getKey(String alias, char[] password) {
+        LOGGER.entering("KeyVaultClient", "getKey", new Object[] {alias, password});
+        LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         if (certificateBundle != null
@@ -250,6 +252,7 @@ class KeyVaultClient extends DelegateRestClient {
             // the intent of the usage at this stage we skip this key.
             //
         }
+        LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;
     }
 }

@@ -73,7 +73,6 @@ class AuthClient extends DelegateRestClient {
      * @return the authorization token.
      */
     public String getAccessToken(String resource) {
-        LOGGER.log(FINER, "Resource: {0}", resource);
         String result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
@@ -82,7 +81,6 @@ class AuthClient extends DelegateRestClient {
         } else {
             result = getAccessTokenOnOthers(resource);
         }
-        LOGGER.log(FINER, "Access token: {0}", result);
         return result;
     }
 
@@ -97,8 +95,9 @@ class AuthClient extends DelegateRestClient {
      */
     public String getAccessToken(String resource, String tenantId,
             String clientId, String clientSecret) {
-        LOGGER.log(FINER, "\nResource: {0}\nTenant ID: {1}\nClient ID: {2}\nClient secret: {3}", 
-                new Object[] {resource, tenantId, clientId, clientSecret});
+        LOGGER.entering("AuthClient", "getAccessToken", new Object[] {
+            resource, tenantId, clientId, clientSecret});
+        LOGGER.info("Getting access token using client ID / client secret");
         String result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
@@ -129,7 +128,8 @@ class AuthClient extends DelegateRestClient {
      * @return the authorization token.
      */
     private String getAccessTokenOnAppService(String resource) {
-        LOGGER.log(FINER, "Resource: {0}", resource);
+        LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
+        LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
         String result = null;
 
         StringBuilder url = new StringBuilder();
@@ -147,7 +147,7 @@ class AuthClient extends DelegateRestClient {
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
             result = token.getAccess_token();
         }
-        LOGGER.log(FINER, "Access Token: {0}", result);
+        LOGGER.exiting("AuthClient", "getAccessTokenOnAppService", result);
         return result;
     }
 
@@ -158,7 +158,8 @@ class AuthClient extends DelegateRestClient {
      * @return the authorization token.
      */
     private String getAccessTokenOnOthers(String resource) {
-        LOGGER.log(FINER, "Resource: {0}", resource);
+        LOGGER.entering("AuthClient", "getAccessTokenOnOthers", resource);
+        LOGGER.info("Getting access token using managed identity");
         String result = null;
 
         StringBuilder url = new StringBuilder();
@@ -174,7 +175,7 @@ class AuthClient extends DelegateRestClient {
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
             result = token.getAccess_token();
         }
-        LOGGER.log(FINER, "Access token: {0}", result);
+        LOGGER.exiting("AuthClient", "getAccessTokenOnOthers", result);
         return result;
     }
 }
