@@ -61,7 +61,7 @@ public class AzureStorageResourcePatternResolver implements ResourcePatternResol
     /**
      * Constructor.
      *
-     * @param blobServiceClient  the BlobServiceClient.
+     * @param blobServiceClient the BlobServiceClient.
      * @param shareServiceClient the ShareServiceClient.
      */
     public AzureStorageResourcePatternResolver(
@@ -97,7 +97,8 @@ public class AzureStorageResourcePatternResolver implements ResourcePatternResol
 
         if (AzureStorageUtils.isAzureStorageResource(location, StorageType.BLOB) && blobServiceClient.isPresent()) {
             resource = new BlobStorageResource(blobServiceClient.get(), location, true);
-        } else if (AzureStorageUtils.isAzureStorageResource(location, StorageType.FILE) && shareServiceClient.isPresent()) {
+        } else if (AzureStorageUtils.isAzureStorageResource(location, StorageType.FILE)
+                && shareServiceClient.isPresent()) {
             resource = new FileStorageResource(shareServiceClient.get(), location, true);
         }
         if (null == resource) {

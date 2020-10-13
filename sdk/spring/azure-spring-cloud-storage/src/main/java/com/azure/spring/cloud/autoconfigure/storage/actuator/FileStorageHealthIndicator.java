@@ -30,7 +30,8 @@ public class FileStorageHealthIndicator implements HealthIndicator {
             healthBuilder.withDetail(AzureStorageActuatorConstants.URL_FIELD, internalClient.getFileServiceUrl());
             Response<ShareServiceProperties> infoResponse = null;
             try {
-                infoResponse = internalClient.getPropertiesWithResponse().block(AzureStorageActuatorConstants.POLL_TIMEOUT);
+                infoResponse = internalClient.getPropertiesWithResponse()
+                    .block(AzureStorageActuatorConstants.POLL_TIMEOUT);
                 if (infoResponse != null) {
                     healthBuilder.up();
                 }

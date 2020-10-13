@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 public class ServiceBusTopicInboundChannelAdapter extends AbstractInboundChannelAdapter {
 
     public ServiceBusTopicInboundChannelAdapter(String destination,
-                                                @NonNull SubscribeByGroupOperation subscribeByGroupOperation, String consumerGroup) {
+        @NonNull SubscribeByGroupOperation subscribeByGroupOperation, String consumerGroup) {
         super(destination);
         Assert.hasText(consumerGroup, "consumerGroup cannot be null or empty");
         this.subscribeByGroupOperation = subscribeByGroupOperation;

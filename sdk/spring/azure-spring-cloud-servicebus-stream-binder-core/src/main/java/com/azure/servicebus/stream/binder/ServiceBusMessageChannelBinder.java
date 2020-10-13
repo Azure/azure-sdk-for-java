@@ -48,7 +48,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
 
     @Override
     protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
-                                                          ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
+        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getSendOperation());
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());

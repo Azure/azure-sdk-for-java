@@ -16,7 +16,7 @@ class ListenerExecutionFailedException extends NestedRuntimeException {
     /**
      * Constructor for ListenerExecutionFailedException.
      *
-     * @param msg   the detail message
+     * @param msg the detail message
      * @param cause the exception thrown by the listener method
      */
     ListenerExecutionFailedException(String msg, Throwable cause) {

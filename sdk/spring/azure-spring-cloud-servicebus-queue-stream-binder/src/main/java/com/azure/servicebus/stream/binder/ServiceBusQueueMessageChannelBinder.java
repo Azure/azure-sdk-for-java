@@ -37,7 +37,7 @@ public class ServiceBusQueueMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-                                                     ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
         this.serviceBusQueueOperation.setCheckpointConfig(buildCheckpointConfig(properties));
         this.serviceBusQueueOperation.setClientConfig(buildClientConfig(properties));
@@ -56,7 +56,7 @@ public class ServiceBusQueueMessageChannelBinder extends
 
     @Override
     protected MessageHandler getErrorMessageHandler(ConsumerDestination destination,
-                                                    String group, final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        String group, final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         return new MessageHandler() {
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {

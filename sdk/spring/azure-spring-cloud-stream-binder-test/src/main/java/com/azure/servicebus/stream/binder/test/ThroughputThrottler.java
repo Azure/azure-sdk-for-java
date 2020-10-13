@@ -36,7 +36,7 @@ public class ThroughputThrottler {
 
     /**
      * @param targetThroughput Can be messages/sec or bytes/sec
-     * @param startMs          When the very first message is sent
+     * @param startMs When the very first message is sent
      */
     public ThroughputThrottler(long targetThroughput, long startMs) {
         this.startMs = startMs;

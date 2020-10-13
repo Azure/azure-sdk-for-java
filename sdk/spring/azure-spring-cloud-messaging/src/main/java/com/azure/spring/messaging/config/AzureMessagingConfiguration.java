@@ -19,7 +19,8 @@ public class AzureMessagingConfiguration {
 
     @ConditionalOnMissingBean
     @Bean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
-    public ListenerContainerFactory<? extends MessageListenerContainer> azureListenerContainerFactory(SubscribeByGroupOperation subscribeByGroupOperation) {
+    public ListenerContainerFactory<? extends MessageListenerContainer> azureListenerContainerFactory(
+        SubscribeByGroupOperation subscribeByGroupOperation) {
         return new DefaultAzureListenerContainerFactory(subscribeByGroupOperation);
     }
 }

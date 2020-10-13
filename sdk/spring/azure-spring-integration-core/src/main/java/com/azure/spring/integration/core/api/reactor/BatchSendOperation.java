@@ -23,7 +23,7 @@ public interface BatchSendOperation {
      * @param messages message set
      * @param partitionSupplier partition supplier
      * @param <T> payload type in message
-     * @return  Mono Void
+     * @return Mono Void
      */
     <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
                              PartitionSupplier partitionSupplier);

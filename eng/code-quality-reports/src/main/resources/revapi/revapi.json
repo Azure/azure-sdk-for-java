@@ -14,13 +14,13 @@
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
-            "com\\.microsoft\\.spring\\..+",
             "javax\\.jms(\\..+)?",
             "javax\\.servlet(\\..+)?",
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+",
+            "com\\.microsoft\\.spring\\.data\\.gremlin\\..+",
+            "com\\.azure\\.spring(\\..+)?",
             "org\\.apache\\.avro\\..+"
           ]
         }
@@ -42,89 +42,6 @@
   {
     "extension": "revapi.ignore",
     "configuration": [
-      {
-       "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.microsoft.azure.AzureEnvironment",
-        "justification": "A class from supplementary archives is used in a public capacity in the API. "
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.nonPublicPartOfAPI",
-        "new": "class .*com\\.azure\\.spring\\.cloud\\..*",
-        "justification":"This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.nonPublicPartOfAPI",
-        "new": "class .*com\\.azure\\.spring\\.messaging\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.azure\\.spring\\.cloud\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.azure\\.spring\\.integration\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.azure\\.cosmos\\..*",
-        "justification":"This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*org\\.springframework\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.azure\\.security\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.azure\\.spring\\.data\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.microsoft\\.spring\\.data\\.gremlin\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*com\\.microsoft\\.applicationinsights\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*io\\.micrometer\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.newClass",
-        "new": "missing\\-class .*javax\\..*",
-        "justification": "This is a preview release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.nonPublicPartOfAPI",
-        "new": "class .*com\\.microsoft\\.azure\\.telemetry\\..*",
-        "justification": "This is a preview release."
-      },
       {
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",

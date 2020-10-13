@@ -176,7 +176,8 @@ public class AzureListenerAnnotationBeanPostProcessor
             Map<Method, Set<AzureMessageListener>> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
                 (MethodIntrospector.MetadataLookup<Set<AzureMessageListener>>) method -> {
                     Set<AzureMessageListener> listenerMethods = AnnotatedElementUtils
-                        .getMergedRepeatableAnnotations(method, AzureMessageListener.class, AzureMessageListeners.class);
+                        .getMergedRepeatableAnnotations(method, AzureMessageListener.class,
+                            AzureMessageListeners.class);
                     return (!listenerMethods.isEmpty() ? listenerMethods : null);
                 });
             if (annotatedMethods.isEmpty()) {
@@ -203,8 +204,8 @@ public class AzureListenerAnnotationBeanPostProcessor
      * registering a corresponding endpoint for the given bean instance.
      *
      * @param azureMessageListener the annotation to process
-     * @param mostSpecificMethod   the annotated method
-     * @param bean                 the instance to invoke the method on
+     * @param mostSpecificMethod the annotated method
+     * @param bean the instance to invoke the method on
      * @see #createMethodAzureListenerEndpoint()
      * @see AzureListenerEndpointRegistrar#registerEndpoint
      */

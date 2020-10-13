@@ -81,8 +81,8 @@ class AzureListenerEndpointRegistry
      * <p>The {@code startImmediately} flag determines if the container should be
      * started immediately.
      *
-     * @param endpoint         the endpoint to add
-     * @param factory          the listener factory to use
+     * @param endpoint the endpoint to add
+     * @param factory the listener factory to use
      * @param startImmediately start the container immediately if necessary
      * @see #getListenerContainers()
      */
@@ -112,7 +112,7 @@ class AzureListenerEndpointRegistry
      * with regards to its configuration.
      *
      * @param endpoint the endpoint to add
-     * @param factory  the listener factory to use
+     * @param factory the listener factory to use
      * @see #registerListenerContainer(AzureListenerEndpoint, ListenerContainerFactory, boolean)
      */
     public void registerListenerContainer(AzureListenerEndpoint endpoint, ListenerContainerFactory<?> factory) {

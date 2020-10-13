@@ -80,7 +80,7 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientFactory clientFactory(EventHubConnectionStringProvider connectionStringProvider,
-                                               AzureEventHubProperties eventHubProperties, EnvironmentProvider environmentProvider) {
+        AzureEventHubProperties eventHubProperties, EnvironmentProvider environmentProvider) {
         String checkpointConnectionString;
         if (resourceManagerProvider != null) {
             StorageAccount checkpointStorageAccount = resourceManagerProvider.getStorageAccountManager().getOrCreate(

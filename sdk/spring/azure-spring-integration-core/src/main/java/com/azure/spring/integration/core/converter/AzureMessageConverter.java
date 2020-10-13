@@ -23,7 +23,7 @@ public interface AzureMessageConverter<T> {
      * Convert the payload of a {@link Message} from a serialized form to a typed Object
      * of the specified target class.
      *
-     * @param message     the input message
+     * @param message the input message
      * @param targetClass the target class for the conversion
      * @return the result of the conversion, or {@code null} if the converter cannot
      * perform the conversion
@@ -35,8 +35,8 @@ public interface AzureMessageConverter<T> {
      * Create a {@link Message} whose payload is the result of converting the given
      * payload Object to serialized form. The optional {@link MessageHeaders} parameter
      * may contain additional headers to be added to the message.
-     * @param azureMessage       the Object to convert
-     * @param headers            optional headers for the message
+     * @param azureMessage the Object to convert
+     * @param headers optional headers for the message
      * @param targetPayloadClass the target payload class for the conversion
      * @param <U> payload class type in message
      * @return the new message, or {@code null} if the converter does not support the
