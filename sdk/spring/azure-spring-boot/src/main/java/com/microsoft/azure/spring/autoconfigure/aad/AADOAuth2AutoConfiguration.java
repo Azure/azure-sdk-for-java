@@ -78,11 +78,12 @@ public class AADOAuth2AutoConfiguration {
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
 
         List<String> scope = aadAuthenticationProperties.getScope();
-        boolean allowedGroupsConfigured = Optional.of(aadAuthenticationProperties)
-                                                  .map(AADAuthenticationProperties::getUserGroup)
-                                                  .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
-                                                  .map(allowedGroups -> !allowedGroups.isEmpty())
-                                                  .orElse(false);
+        boolean allowedGroupsConfigured =
+            Optional.of(aadAuthenticationProperties)
+                    .map(AADAuthenticationProperties::getUserGroup)
+                    .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
+                    .map(allowedGroups -> !allowedGroups.isEmpty())
+                    .orElse(false);
         if (allowedGroupsConfigured && !scope.contains("https://graph.microsoft.com/user.read")) {
             scope.add("https://graph.microsoft.com/user.read");
             LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
