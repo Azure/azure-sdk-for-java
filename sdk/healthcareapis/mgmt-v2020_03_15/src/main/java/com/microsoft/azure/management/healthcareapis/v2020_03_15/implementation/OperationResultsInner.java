@@ -10,6 +10,7 @@ package com.microsoft.azure.management.healthcareapis.v2020_03_15.implementation
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.healthcareapis.v2020_03_15.ErrorDetailsInnerException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
