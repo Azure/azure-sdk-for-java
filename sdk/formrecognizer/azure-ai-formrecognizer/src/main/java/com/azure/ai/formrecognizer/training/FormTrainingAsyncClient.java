@@ -735,7 +735,7 @@ public final class FormTrainingAsyncClient {
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
         getTrainingActivationOperation(
         String trainingFilesUrl, boolean useTrainingLabels, boolean includeSubfolders, String filePrefix,
-        String modelDisplayName, Context context) {
+        String modelName, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
@@ -746,7 +746,7 @@ public final class FormTrainingAsyncClient {
                     .setSource(trainingFilesUrl)
                     .setSourceFilter(trainSourceFilter)
                     .setUseLabelFile(useTrainingLabels)
-                    .setModelName(modelDisplayName);
+                    .setModelName(modelName);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
                     .map(response ->
                         new FormRecognizerOperationResult(

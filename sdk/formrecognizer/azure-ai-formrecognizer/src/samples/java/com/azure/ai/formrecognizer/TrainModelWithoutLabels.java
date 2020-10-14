@@ -40,7 +40,8 @@ public class TrainModelWithoutLabels {
         SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
             = client.beginTraining(trainingFilesUrl,
             false,
-            new TrainingOptions().setModelName("composed model name"),
+            new TrainingOptions()
+                .setModelName("composed model name"),
             Context.NONE);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
@@ -48,7 +49,7 @@ public class TrainModelWithoutLabels {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model display name: %s%n", customFormModel.getModelName());
+        System.out.printf("Model name: %s%n", customFormModel.getModelName());
         System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
         System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
@@ -57,6 +58,7 @@ public class TrainModelWithoutLabels {
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
+            System.out.printf("Submodel Id: %s%n", customFormSubmodel.getModelId());
             System.out.printf("The submodel has form type %s%n", customFormSubmodel.getFormType());
             customFormSubmodel.getFields().forEach((field, customFormModelField) ->
                 System.out.printf("The model found field '%s' with label: %s%n",

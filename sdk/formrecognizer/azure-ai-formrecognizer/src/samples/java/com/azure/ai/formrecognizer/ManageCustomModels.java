@@ -44,6 +44,9 @@ public class ManageCustomModels {
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
+            if (customFormModelInfo.getCustomModelProperties() != null) {
+                System.out.printf("Is it a composed model? : %s%n", customFormModelInfo.getCustomModelProperties().isComposed());
+            }
             // get custom model info
             modelId.set(customFormModelInfo.getModelId());
             CustomFormModel customModel = client.getCustomModel(customFormModelInfo.getModelId());

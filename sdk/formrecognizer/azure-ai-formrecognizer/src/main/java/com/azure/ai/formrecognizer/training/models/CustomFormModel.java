@@ -156,7 +156,7 @@ public final class CustomFormModel {
     /**
      * Get the user defined model display name.
      *
-     * @return the modelDisplayName value.
+     * @return the modelName value.
      */
     public String getModelName() {
         return modelName;

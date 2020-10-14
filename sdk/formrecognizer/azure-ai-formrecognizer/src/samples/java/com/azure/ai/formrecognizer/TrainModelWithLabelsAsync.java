@@ -41,7 +41,8 @@ public class TrainModelWithLabelsAsync {
         PollerFlux<FormRecognizerOperationResult, CustomFormModel> trainingPoller
             = client.beginTraining(trainingFilesUrl,
             true,
-            new TrainingOptions().setModelName("composed model name"));
+            new TrainingOptions()
+                .setModelName("model trained with labels"));
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()
@@ -59,7 +60,7 @@ public class TrainModelWithLabelsAsync {
             // Model Info
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-            System.out.printf("Model display name: %s%n", customFormModel.getModelName());
+            System.out.printf("Model name: %s%n", customFormModel.getModelName());
             System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
             System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
@@ -68,6 +69,7 @@ public class TrainModelWithLabelsAsync {
             System.out.println("Recognized Fields:");
             // Since the data is labeled, we are able to return the accuracy of the model
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
+                System.out.printf("Submodel Id: %s%n", customFormSubmodel.getModelId());
                 System.out.printf("The submodel with form type %s has accuracy: %.2f%n",
                     customFormSubmodel.getFormType(), customFormSubmodel.getAccuracy());
                 customFormSubmodel.getFields().forEach((label, customFormModelField) ->

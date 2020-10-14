@@ -779,7 +779,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     //  */
     // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     // @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    // public void beginTrainingUnlabeledModelDisplayName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    // public void beginTrainingUnlabeledModelName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
     //     client = getFormTrainingAsyncClient(httpClient, serviceVersion);
     //     beginTrainingUnlabeledRunner((trainingFilesUrl, notUseTrainingLabels) -> {
     //         SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
@@ -803,22 +803,23 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingLabeledModelDisplayName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void beginTrainingLabeledModelName(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
                 = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels,
-                new TrainingOptions().setPollInterval(durationTestMode).setModelName("modelDisplayName"))
+                new TrainingOptions().setPollInterval(durationTestMode).setModelName("model trained with labels"))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.getCustomModel(createdModel.getModelId()))
-                .assertNext(response -> assertEquals("modelDisplayName", response.getModelName()))
+                .assertNext(response -> assertEquals("model trained with labels", response.getModelName()))
                 .verifyComplete();
 
             validateCustomModelData(createdModel, true, false);
+            client.deleteModel(createdModel.getModelId());
         });
     }
 }

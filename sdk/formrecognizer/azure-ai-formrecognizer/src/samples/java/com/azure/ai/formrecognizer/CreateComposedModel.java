@@ -62,7 +62,7 @@ public class CreateComposedModel {
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model display name: %s%n", customFormModel.getModelName());
+        System.out.printf("Model name: %s%n", customFormModel.getModelName());
         System.out.printf("Is this a composed model: %s%n",
             customFormModel.getCustomModelProperties().isComposed());
         System.out.printf("Composed model creation started on: ", customFormModel.getTrainingStartedOn());
@@ -70,6 +70,7 @@ public class CreateComposedModel {
 
         System.out.println("Recognized Fields:");
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
+            System.out.printf("Submodel Id: %s%n", customFormSubmodel.getModelId());
             System.out.printf("The subModel with form type %s has accuracy: %.2f%n",
                 customFormSubmodel.getFormType(), customFormSubmodel.getAccuracy());
             customFormSubmodel.getFields().forEach((label, customFormModelField) ->

@@ -63,18 +63,18 @@ public final class TrainingOptions {
     }
 
     /**
-     * Get the optional model name defined by the user. (max length: 1024).
+     * Get the optional model name defined by the user.
      *
-     * @return the modelDisplayName.
+     * @return the modelName.
      */
     public String getModelName() {
         return modelName;
     }
 
     /**
-     * Set the optional model name defined by the user. (max length: 1024).
+     * Set the optional model name defined by the user.
      *
-     * @param modelName the user defined model display name to set.
+     * @param modelName the user defined model name to set.
      *
      * @return the updated {@code TrainingOptions} value.
      */

@@ -1107,8 +1107,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
                 assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());
                 formTrainingClient.deleteModel(createdModel.getModelId());
-
-                formTrainingClient.deleteModel(createdModel.getModelId());
             });
         }, FORM_JPG);
     }

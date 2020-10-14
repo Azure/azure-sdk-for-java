@@ -19,7 +19,7 @@ public final class CreateComposedModelOptions {
     /**
      * Get the optional model name defined by the user.
      *
-     * @return the modelDisplayName.
+     * @return the modelName.
      */
     public String getModelName() {
         return modelName;
@@ -28,7 +28,7 @@ public final class CreateComposedModelOptions {
     /**
      * Set the optional model name defined by the user.
      *
-     * @param modelName the user defined model display name to set.
+     * @param modelName the user defined model name to set.
      *
      * @return the updated {@code CreateComposedModelOptions} value.
      */
