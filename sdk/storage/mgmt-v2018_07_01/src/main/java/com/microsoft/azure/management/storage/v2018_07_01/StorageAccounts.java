@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
+import rx.Completable;
 import com.microsoft.azure.management.storage.v2018_07_01.implementation.StorageAccountsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -37,7 +38,7 @@ public interface StorageAccounts extends SupportsCreating<StorageAccount.Definit
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -64,6 +65,16 @@ public interface StorageAccounts extends SupportsCreating<StorageAccount.Definit
      * @return the observable for the request
      */
     Observable<ListServiceSasResponse> listServiceSASAsync(String resourceGroupName, String accountName, ServiceSasParameters parameters);
+
+    /**
+     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become primary after failover.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable failoverAsync(String resourceGroupName, String accountName);
 
     /**
      * Checks that the storage account name is valid and is not already in use.
