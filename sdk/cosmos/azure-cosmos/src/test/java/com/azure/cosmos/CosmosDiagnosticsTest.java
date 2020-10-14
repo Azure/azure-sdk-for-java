@@ -311,7 +311,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void queryMetricsInADifferentLocale() {
+    public void queryMetricsWithADifferentLocale() {
 
         Locale.setDefault(Locale.GERMAN);
         String query = "select * from root where root.id= \"someid\"";

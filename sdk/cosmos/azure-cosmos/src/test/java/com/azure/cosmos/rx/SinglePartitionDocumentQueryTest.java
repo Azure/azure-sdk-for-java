@@ -123,7 +123,6 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     }
 
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocuments_ParameterizedQueryWithInClause() throws Exception {
         String query = "SELECT * from c where c.prop IN (@param1, @param2)";
