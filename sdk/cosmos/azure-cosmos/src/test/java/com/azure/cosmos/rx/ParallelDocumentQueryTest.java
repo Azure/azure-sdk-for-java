@@ -677,9 +677,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithItemOperations() throws Exception {
-        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("Skipping gateway mode. This needs to be fixed");
-        }
 
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {

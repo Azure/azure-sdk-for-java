@@ -3,16 +3,22 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class QueryMetricsUtils {
+    private static final Logger logger = LoggerFactory.getLogger(QueryMetricsUtils.class);
     static final String Indent = StringUtils.SPACE;
     private static final int NANOS_TO_MILLIS = 1000000;
     private static final String BytesUnitString = "bytes";
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.getDefault());
 
     static HashMap<String, Double> parseDelimitedString(String delimitedString) {
         if (delimitedString == null) {
@@ -33,8 +39,20 @@ public class QueryMetricsUtils {
             }
 
             String attributeKey = attributeKeyValue[key];
-            double attributeValue = Double.parseDouble(attributeKeyValue[value]);
-            metrics.put(attributeKey, attributeValue);
+            String attributeValue = attributeKeyValue[value];
+            Number number = Double.NaN;
+            try {
+                number = NUMBER_FORMAT.parse(attributeValue);
+            } catch (ParseException | NumberFormatException e) {
+                logger.warn("NumberFormat failed to parse {} with locale {}", attributeValue,
+                            Locale.getDefault(), e);
+            }
+
+            double attributeDoubleValue = Double.NaN;
+            if (number != null) {
+                attributeDoubleValue = number.doubleValue();
+            }
+            metrics.put(attributeKey, attributeDoubleValue);
         }
 
         return metrics;
