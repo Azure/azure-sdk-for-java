@@ -341,28 +341,28 @@ public class BatchIntegrationTestBase {
     }
 
     static NetworkConfiguration createNetworkConfiguration(){
-        String vnetName = "AzureBatchTestVnet";
-        String subnetName = "AzureBatchTestSubnet";
+        String vnetName = System.getenv("AZURE_VNET");
+        String subnetName = System.getenv("AZURE_VNET_SUBNET");
         if(isRecordMode()) {
             AzureTokenCredentials token = new ApplicationTokenCredentials(
                 System.getenv("CLIENT_ID"),
                 "72f988bf-86f1-41af-91ab-2d7cd011db47",
                 System.getenv("APPLICATION_SECRET"),
                 AzureEnvironment.AZURE);
-            Azure azure = Azure.authenticate(token).withSubscription("677f962b-9abf-4423-a27b-0c2f4094dcec");
+            Azure azure = Azure.authenticate(token).withSubscription(System.getenv("SUBSCRIPTION_ID"));
             if (azure.networks().list().size() == 0) {
                 Network virtualNetwork = azure.networks().define(vnetName)
-                    .withRegion("westcentralus")
-                    .withExistingResourceGroup("sdktest2")
-                    .withAddressSpace("192.168.0.0/16")
-                    .withSubnet(subnetName, "192.168.1.0/24")
+                    .withRegion(System.getenv("AZURE_BATCH_REGION"))
+                    .withExistingResourceGroup(System.getenv("AZURE_VNET_RESOURCE_GROUP"))
+                    .withAddressSpace(System.getenv("AZURE_VNET_ADDRESS_SPACE"))
+                    .withSubnet(subnetName, System.getenv("AZURE_VNET_SUBNET_ADDRESS_SPACE"))
                     .create();
             }
         }
         String vNetResourceId = String.format(
             "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
-            "677f962b-9abf-4423-a27b-0c2f4094dcec",
-            "sdktest2",
+            System.getenv("SUBSCRIPTION_ID"),
+            System.getenv("AZURE_VNET_RESOURCE_GROUP"),
             vnetName,
             subnetName);
         return new NetworkConfiguration().withSubnetId(vNetResourceId);
