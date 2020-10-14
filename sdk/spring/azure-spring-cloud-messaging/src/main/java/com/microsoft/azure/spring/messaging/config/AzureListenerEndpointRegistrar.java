@@ -5,6 +5,8 @@ package com.microsoft.azure.spring.messaging.config;
 
 import com.microsoft.azure.spring.messaging.container.ListenerContainerFactory;
 import com.microsoft.azure.spring.messaging.endpoint.AzureListenerEndpoint;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -12,9 +14,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
 import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Helper bean for registering {@link AzureListenerEndpoint} with a {@link AzureListenerEndpointRegistry}.
@@ -39,8 +38,7 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
     private Object mutex = this.endpointDescriptors;
 
     /**
-     * A {@link BeanFactory} only needs to be available in conjunction with
-     * {@link #setContainerFactoryBeanName}.
+     * A {@link BeanFactory} only needs to be available in conjunction with {@link #setContainerFactoryBeanName}.
      */
     @Override
     public void setBeanFactory(BeanFactory beanFactory) {
@@ -60,7 +58,7 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
         synchronized (this.mutex) {
             for (AzureListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
                 this.endpointRegistry
-                        .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor));
+                    .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor));
             }
             this.startImmediately = true;  // trigger immediate startup
         }
@@ -75,7 +73,7 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
             Assert.state(this.beanFactory != null, "BeanFactory must be set to obtain container factory by bean name");
             // Consider changing this if live change of the factory is required...
             this.containerFactory =
-                    this.beanFactory.getBean(this.containerFactoryBeanName, ListenerContainerFactory.class);
+                this.beanFactory.getBean(this.containerFactoryBeanName, ListenerContainerFactory.class);
             return this.containerFactory;
         } else {
             throw new IllegalStateException(
@@ -85,8 +83,8 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
     }
 
     /**
-     * Register a new {@link AzureListenerEndpoint} alongside the
-     * {@link ListenerContainerFactory} to use to create the underlying container.
+     * Register a new {@link AzureListenerEndpoint} alongside the {@link ListenerContainerFactory} to use to create the
+     * underlying container.
      * <p>The {@code factory} may be {@code null} if the default factory has to be
      * used for that endpoint.
      */
@@ -101,7 +99,7 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
             if (this.startImmediately) {  // register and start immediately
                 Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
                 this.endpointRegistry
-                        .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor), true);
+                    .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor), true);
             } else {
                 this.endpointDescriptors.add(descriptor);
             }
@@ -109,8 +107,8 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
     }
 
     /**
-     * Register a new {@link AzureListenerEndpoint} using the default
-     * {@link ListenerContainerFactory} to create the underlying container.
+     * Register a new {@link AzureListenerEndpoint} using the default {@link ListenerContainerFactory} to create the
+     * underlying container.
      *
      * @see #setContainerFactory(ListenerContainerFactory)
      * @see #registerEndpoint(AzureListenerEndpoint, ListenerContainerFactory)
@@ -145,10 +143,10 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
 
     private static class AzureListenerEndpointDescriptor {
 
-        public final AzureListenerEndpoint endpoint;
+        private final AzureListenerEndpoint endpoint;
 
         @Nullable
-        public final ListenerContainerFactory<?> containerFactory;
+        private final ListenerContainerFactory<?> containerFactory;
 
         AzureListenerEndpointDescriptor(AzureListenerEndpoint endpoint,
                                         @Nullable ListenerContainerFactory<?> containerFactory) {
@@ -156,6 +154,7 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
             this.endpoint = endpoint;
             this.containerFactory = containerFactory;
         }
+
     }
 
 }

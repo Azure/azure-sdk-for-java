@@ -8,7 +8,7 @@
 * Added new API to support AAD role-based access control in Cosmos. This is a preview feature which needs to be enabled at the account settings.
 * Added handler API(beta) to `CosmosPagedFlux`/`CosmosPagedIterable` to be invoked on every response.
 
-### 4.5.2 (2020-09-29)
+### 4.5.2 (2020-09-29) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.5.2 AND ABOVE
 #### Key Bug Fixes
 * Increased robustness of query execution and fetching metadata cache in case of intermittent connectivity issues.
 
