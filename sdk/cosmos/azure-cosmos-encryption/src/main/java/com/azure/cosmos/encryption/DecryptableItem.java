@@ -55,7 +55,7 @@ import reactor.core.publisher.Mono;
 public abstract class DecryptableItem {
 
     // TODO: moderakh finalize the class name
-    public class DecryptionResult<T> {
+    public static class DecryptionResult<T> {
         private T result;
         private DecryptionContext context;
 

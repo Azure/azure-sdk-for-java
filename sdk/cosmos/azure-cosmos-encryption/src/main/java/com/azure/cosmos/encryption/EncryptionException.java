@@ -40,11 +40,10 @@ public class EncryptionException extends AzureException {
      * @param innerException The inner exceptio
      */
     EncryptionException(String dataEncryptionKeyId,
-                               String encryptedContent,
-                               Exception innerException) {
+                        String encryptedContent,
+                        Exception innerException) {
         super(innerException.getMessage(), innerException);
 
-        Preconditions.checkNotNull(dataEncryptionKeyId, "dataEncryptionKeyId");
         Preconditions.checkNotNull(encryptedContent, "encryptedContent");
 
         this.dataEncryptionKeyId = dataEncryptionKeyId;

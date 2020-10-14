@@ -58,8 +58,6 @@ class DecryptableItemCore extends DecryptableItem {
                     return Mono.error(t);
                 }
 
-                assert exception != null;
-
                 JsonNode encryptedInfo = decryptableContentAsObjectNode.get(Constants.ENCRYPTION_INFO);
                 ObjectNode encryptedInfoObject = Utils.as(encryptedInfo, ObjectNode.class);
 

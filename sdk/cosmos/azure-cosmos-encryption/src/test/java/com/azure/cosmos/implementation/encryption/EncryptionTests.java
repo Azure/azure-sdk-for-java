@@ -98,7 +98,6 @@ public class EncryptionTests extends TestSuiteBase {
     private static CosmosDataEncryptionKeyProvider dekProvider;
     //    private static TestEncryptor encryptor;
     private String decryptionFailedDocId;
-    private List<com.azure.cosmos.encryption.DecryptionResult> capturedDecryptionResults = Collections.synchronizedList(new ArrayList<>());
 
     private static byte[] rawDekForKeyVault;
     private static URI keyVaultKeyUri;
@@ -147,7 +146,6 @@ public class EncryptionTests extends TestSuiteBase {
         keyVaultKeyUri = new URI("https://testdemo1.vault.azure.net/keys/testkey1/47d306aeaae74baab294672354603ca3");
         EncryptionTests.azureKeyVaultKeyWrapMetadata = new AzureKeyVaultKeyWrapMetadata(keyVaultKeyUri.toURL());
 
-        capturedDecryptionResults.clear();
         EncryptionTests.encryptor.failDecryption = false;
     }
 
@@ -1468,17 +1466,6 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(ResponseStatusCode.NO_CONTENT);
         assertThat(deleteResponse.getItem()).isNull();
         return deleteResponse;
-    }
-
-    private void errorHandler(com.azure.cosmos.encryption.DecryptionResult decryptionErrorDetails) {
-        capturedDecryptionResults.add(decryptionErrorDetails);
-        assertThat(decryptionErrorDetails.getException().getMessage()).isEqualTo("Null DataEncryptionKey returned.");
-        byte[] content = decryptionErrorDetails.getEncryptedContent();
-
-        ObjectNode itemJObj = TestCommon.fromStream(content, ObjectNode.class);
-        JsonNode encryptionPropertiesJProp = itemJObj.get("_ei");
-        assertThat(encryptionPropertiesJProp).isNotNull();
-        assertThat(itemJObj.get("id").textValue()).isEqualTo(decryptionFailedDocId);
     }
 
     private static Mono<EncryptionKeyWrapResult> wrapDekKeyVaultAsync(byte[] rawDek, EncryptionKeyWrapMetadata wrapMetaData) {
