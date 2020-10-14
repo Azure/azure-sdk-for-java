@@ -625,8 +625,4 @@
             files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
             files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
-
-  <!-- Suppress checks in  azure-spring-cloud-servicebus-stream-binder-core -->
-  <suppress checks="com.azure.tools.checkstyle.checks.(ExternalDependencyExposedCheck|MissingJavadocMethod|EnforceFinalFieldsCheck)"
-            files=".*[/\\]com[/\\]azure[/\\]servicebus[/\\]stream[/\\].*"/>
 </suppressions>
