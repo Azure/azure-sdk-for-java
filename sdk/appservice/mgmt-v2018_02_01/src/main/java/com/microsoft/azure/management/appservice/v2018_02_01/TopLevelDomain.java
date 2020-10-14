@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.TopL
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing TopLevelDomain.
  */
-public interface TopLevelDomain extends HasInner<TopLevelDomainInner>, Indexable, Refreshable<TopLevelDomain>, HasManager<AppServiceManager> {
+public interface TopLevelDomain extends HasInner<TopLevelDomainInner>, Indexable, Refreshable<TopLevelDomain>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
