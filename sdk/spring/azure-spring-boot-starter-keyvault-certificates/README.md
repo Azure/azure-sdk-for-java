@@ -217,7 +217,7 @@ Note the alias (certificate name) is constructed from the filename of the
 certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
 
-Be aware that certificates coming from Azure KeyVault take precendence over 
+Be aware that certificates coming from Azure KeyVault take precedence over 
 side-loaded certificates.
 
 ## Testing the current version under development 
