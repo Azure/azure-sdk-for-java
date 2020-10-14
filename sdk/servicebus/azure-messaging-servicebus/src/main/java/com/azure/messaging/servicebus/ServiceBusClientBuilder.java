@@ -787,12 +787,11 @@ public final class ServiceBusClientBuilder {
 
             if (CoreUtils.isNullOrEmpty(sessionId)) {
                 sessionManager = new UnnamedSessionManager(entityPath, entityType,
-                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
-                    messageSerializer, receiverOptions, maxAutoRenewDuration);
+                    connectionProcessor, tracerProvider, messageSerializer, receiverOptions, maxAutoRenewDuration);
             } else {
                 sessionManager = new UnnamedSessionManager(entityPath, entityType,
-                    connectionProcessor, connectionProcessor.getRetryOptions().getTryTimeout(), tracerProvider,
-                    messageSerializer, receiverOptions, maxAutoRenewDuration, sessionId);
+                    connectionProcessor, tracerProvider, messageSerializer, receiverOptions, maxAutoRenewDuration,
+                    sessionId);
             }
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,

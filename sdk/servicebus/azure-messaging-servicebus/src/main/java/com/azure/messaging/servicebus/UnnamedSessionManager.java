@@ -77,24 +77,24 @@ class UnnamedSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
 
     UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, Duration maxSessionLockRenewDuration) {
 
         this(entityPath,  entityType,
-             connectionProcessor, operationTimeout, tracerProvider,
+             connectionProcessor, tracerProvider,
              messageSerializer, receiverOptions, maxSessionLockRenewDuration, null);
 
     }
 
     UnnamedSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, Duration operationTimeout, TracerProvider tracerProvider,
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, Duration maxSessionLockRenewDuration,
         String sessionId) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
         this.connectionProcessor = connectionProcessor;
-        this.operationTimeout = operationTimeout;
+        this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
         this.userProvidedSessionId = sessionId;
