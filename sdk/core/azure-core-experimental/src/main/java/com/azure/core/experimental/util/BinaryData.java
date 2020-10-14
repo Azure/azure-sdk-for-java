@@ -189,12 +189,12 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link JsonSerializer}. This will
-     * require client to configure Json serializer in classpath.
+     * require the client to configure Json serializer in classpath.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws NullPointerException if {@code data} is null.
-     * @return {@link BinaryData} representing binary data. Or {@code null} if it fails to serialize the data.
      * @throws IllegalStateException If cannot find any JSON serializer provider on the classpath.
+     * @return {@link BinaryData} representing binary data. Or {@code null} if it fails to serialize the data.
      *
      * @see JsonSerializer
      */
