@@ -13,6 +13,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
@@ -25,6 +26,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -87,6 +89,8 @@ public final class FormRecognizerClientBuilder {
     private final HttpHeaders headers;
     private final String clientName;
     private final String clientVersion;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private String endpoint;
     private AzureKeyCredential credential;
@@ -97,6 +101,7 @@ public final class FormRecognizerClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
+    private ClientOptions clientOptions;
 
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
@@ -175,17 +180,28 @@ public final class FormRecognizerClientBuilder {
     }
 
     private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
+
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
-
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
         policies.add(new AddDatePolicy());
+
         // Authentications
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
@@ -196,7 +212,8 @@ public final class FormRecognizerClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        policies.addAll(this.policies);
+        policies.addAll(perRetryPolicies);
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -284,7 +301,13 @@ public final class FormRecognizerClientBuilder {
      * @throws NullPointerException If {@code policy} is null.
      */
     public FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
         return this;
     }
 
@@ -367,6 +390,19 @@ public final class FormRecognizerClientBuilder {
      */
     public FormRecognizerClientBuilder serviceVersion(FormRecognizerServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
+     * certain properties, as well as support the addition of custom header information. Refer to the
+     * {@link ClientOptions} documentation for more information.
+     *
+     * @param clientOptions to be set on the client.
+     * @return The updated {@link FormRecognizerClientBuilder} object.
+     */
+    public FormRecognizerClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 }
