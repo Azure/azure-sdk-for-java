@@ -200,7 +200,7 @@ public final class  BinaryData {
         Objects.requireNonNull(data, "'data' cannot be null.");
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try{
+        try {
             JacksonAdapter.createDefaultSerializerAdapter().serialize(data, SerializerEncoding.JSON, outputStream);
         } catch (IOException ex) {
             LOGGER.warning("Failed to serialize {} to JSON.", data.getClass(), ex);
