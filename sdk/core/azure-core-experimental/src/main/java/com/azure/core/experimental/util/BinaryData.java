@@ -193,7 +193,7 @@ public final class  BinaryData {
      * Any error in searializing the data will be logged and {@code null} will be returned.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
-     * @throws NullPointerException if {@code inputStream} or {@code serializer} is null.
+     * @throws NullPointerException if {@code data} is null.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromObject(Object data) {
