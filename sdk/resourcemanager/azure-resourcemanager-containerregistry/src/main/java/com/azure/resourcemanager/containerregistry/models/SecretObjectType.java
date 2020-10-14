@@ -13,6 +13,9 @@ public final class SecretObjectType extends ExpandableStringEnum<SecretObjectTyp
     /** Static value Opaque for SecretObjectType. */
     public static final SecretObjectType OPAQUE = fromString("Opaque");
 
+    /** Static value Vaultsecret for SecretObjectType. */
+    public static final SecretObjectType VAULTSECRET = fromString("Vaultsecret");
+
     /**
      * Creates or finds a SecretObjectType from its string representation.
      *

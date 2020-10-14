@@ -3,7 +3,7 @@
 
 package com.microsoft.spring.data.gremlin.web.service.repository;
 
-import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
+import com.azure.spring.data.gremlin.repository.GremlinRepository;
 import com.microsoft.spring.data.gremlin.web.service.domain.ServicesDataFlow;
 import org.springframework.stereotype.Repository;
 

@@ -351,6 +351,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
             case Create:
+            case Batch:
                 return this.create(request);
             case Upsert:
                 return this.upsert(request);
@@ -414,7 +415,9 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
-        if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
+        if (request.getResourceType() == ResourceType.DocumentCollection &&
+            request.getOperationType() == OperationType.Delete) {
+
             String resourceId;
             if (request.getIsNameBased()) {
                 resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
@@ -431,21 +434,28 @@ class RxGatewayStoreModel implements RxStoreModel {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
+        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+
+        boolean sessionTokenApplicable =
+            Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()) ||
+                (this.defaultConsistencyLevel == ConsistencyLevel.SESSION &&
+                    // skip applying the session token when Eventual Consistency is explicitly requested
+                    // on request-level for data plane operations.
+                    // The session token is ignored on teh backend/gateway in this case anyway
+                    // and the session token can be rather large (even run in the 16 KB header length problem
+                    // on the gateway - so not worth sending when not needed
+                    (!request.isReadOnlyRequest() ||
+                        request.getResourceType() != ResourceType.Document ||
+                        !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
+
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+            if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
             return; //User is explicitly controlling the session.
         }
 
-        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-
-        boolean sessionConsistency =
-                this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||
-                        (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
-
-        if (!sessionConsistency || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+        if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
             return; // Only apply the session token in case of session consistency and when resource is not a master resource
         }
 

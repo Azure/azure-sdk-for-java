@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
+import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
@@ -27,6 +28,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public class TaskInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskInner.class);
+
+    /*
+     * Identity for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityProperties identity;
 
     /*
      * The provisioning state of the task.
@@ -82,6 +89,26 @@ public class TaskInner extends Resource {
      */
     @JsonProperty(value = "properties.credentials")
     private Credentials credentials;
+
+    /**
+     * Get the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the TaskInner object itself.
+     */
+    public TaskInner withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the task.
@@ -249,6 +276,9 @@ public class TaskInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (platform() != null) {
             platform().validate();
         }
