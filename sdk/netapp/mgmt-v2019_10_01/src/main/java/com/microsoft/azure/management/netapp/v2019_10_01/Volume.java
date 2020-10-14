@@ -67,7 +67,7 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
     /**
      * @return the mountTargets value.
      */
-    Object mountTargets();
+    List<MountTargetProperties> mountTargets();
 
     /**
      * @return the name value.
@@ -242,7 +242,7 @@ public interface Volume extends HasInner<VolumeInner>, Indexable, Refreshable<Vo
              * @param mountTargets List of mount targets
              * @return the next definition stage
              */
-            WithCreate withMountTargets(Object mountTargets);
+            WithCreate withMountTargets(List<MountTargetProperties> mountTargets);
         }
 
         /**
