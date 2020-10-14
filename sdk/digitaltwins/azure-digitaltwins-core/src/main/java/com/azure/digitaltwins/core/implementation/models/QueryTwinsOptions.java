@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter group. */
 @Fluent
-public final class EventRoutesListOptions {
+public final class QueryTwinsOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -43,9 +43,9 @@ public final class EventRoutesListOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the EventRoutesListOptions object itself.
+     * @return the QueryTwinsOptions object itself.
      */
-    public EventRoutesListOptions setTraceparent(String traceparent) {
+    public QueryTwinsOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,9 +65,9 @@ public final class EventRoutesListOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the EventRoutesListOptions object itself.
+     * @return the QueryTwinsOptions object itself.
      */
-    public EventRoutesListOptions setTracestate(String tracestate) {
+    public QueryTwinsOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
@@ -87,9 +87,9 @@ public final class EventRoutesListOptions {
      * return less than the requested number.
      *
      * @param maxItemsPerPage the maxItemsPerPage value to set.
-     * @return the EventRoutesListOptions object itself.
+     * @return the QueryTwinsOptions object itself.
      */
-    public EventRoutesListOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
+    public QueryTwinsOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
         this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }

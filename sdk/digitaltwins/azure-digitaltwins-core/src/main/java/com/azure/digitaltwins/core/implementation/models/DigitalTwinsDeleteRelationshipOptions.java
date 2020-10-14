@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter group. */
 @Fluent
-public final class EventRoutesListOptions {
+public final class DigitalTwinsDeleteRelationshipOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
@@ -24,11 +24,11 @@ public final class EventRoutesListOptions {
     private String tracestate;
 
     /*
-     * The maximum number of items to retrieve per request. The server may
-     * choose to return less than the requested number.
+     * Only perform the operation if the entity's etag matches one of the etags
+     * provided or * is provided.
      */
-    @JsonProperty(value = "MaxItemsPerPage")
-    private Integer maxItemsPerPage;
+    @JsonProperty(value = "If-Match")
+    private String ifMatch;
 
     /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
@@ -43,9 +43,9 @@ public final class EventRoutesListOptions {
      * Set the traceparent property: Identifies the request in a distributed tracing system.
      *
      * @param traceparent the traceparent value to set.
-     * @return the EventRoutesListOptions object itself.
+     * @return the DigitalTwinsDeleteRelationshipOptions object itself.
      */
-    public EventRoutesListOptions setTraceparent(String traceparent) {
+    public DigitalTwinsDeleteRelationshipOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
     }
@@ -65,32 +65,32 @@ public final class EventRoutesListOptions {
      * traceparent.
      *
      * @param tracestate the tracestate value to set.
-     * @return the EventRoutesListOptions object itself.
+     * @return the DigitalTwinsDeleteRelationshipOptions object itself.
      */
-    public EventRoutesListOptions setTracestate(String tracestate) {
+    public DigitalTwinsDeleteRelationshipOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;
     }
 
     /**
-     * Get the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested number.
+     * Get the ifMatch property: Only perform the operation if the entity's etag matches one of the etags provided or *
+     * is provided.
      *
-     * @return the maxItemsPerPage value.
+     * @return the ifMatch value.
      */
-    public Integer getMaxItemsPerPage() {
-        return this.maxItemsPerPage;
+    public String getIfMatch() {
+        return this.ifMatch;
     }
 
     /**
-     * Set the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to
-     * return less than the requested number.
+     * Set the ifMatch property: Only perform the operation if the entity's etag matches one of the etags provided or *
+     * is provided.
      *
-     * @param maxItemsPerPage the maxItemsPerPage value to set.
-     * @return the EventRoutesListOptions object itself.
+     * @param ifMatch the ifMatch value to set.
+     * @return the DigitalTwinsDeleteRelationshipOptions object itself.
      */
-    public EventRoutesListOptions setMaxItemsPerPage(Integer maxItemsPerPage) {
-        this.maxItemsPerPage = maxItemsPerPage;
+    public DigitalTwinsDeleteRelationshipOptions setIfMatch(String ifMatch) {
+        this.ifMatch = ifMatch;
         return this;
     }
 
