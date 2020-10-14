@@ -5,6 +5,7 @@ package com.azure.keyvault.certificates.starter;
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import java.security.Security;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -22,7 +23,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificatesEnvironmentPostProcessor.class.getName());
-    
+
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
             SpringApplication application) {
@@ -50,20 +51,35 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
             String keyStoreType = environment.getProperty("server.ssl.key-store-type");
 
-            if (keyStoreType != null && (keyStoreType.equals("DKS") || keyStoreType.equals("AzureKeyVault"))) {
+            if (keyStoreType != null && keyStoreType.equals("AzureKeyVault")) {
                 MutablePropertySources sources = environment.getPropertySources();
                 Properties properties = new Properties();
                 properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
+
+                try {
+                    Class.forName("org.apache.tomcat.InstanceManager");
+                    properties.put("server.ssl.key-store-type", "DKS");
+                } catch (ClassNotFoundException ex) {
+                }
+
                 PropertySource propertySource = new PropertiesPropertySource("KeyStorePropertySource", properties);
                 sources.addFirst(propertySource);
+
             }
 
             String trustStoreType = environment.getProperty("server.ssl.trust-store-type");
 
-            if (trustStoreType != null && (trustStoreType.equals("DKS") || trustStoreType.equals("AzureKeyVault"))) {
+            if (trustStoreType != null && trustStoreType.equals("AzureKeyVault")) {
                 MutablePropertySources sources = environment.getPropertySources();
                 Properties properties = new Properties();
                 properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
+
+                try {
+                    Class.forName("org.apache.tomcat.InstanceManager");
+                    properties.put("server.ssl.trust-store-type", "DKS");
+                } catch (ClassNotFoundException ex) {
+                }
+
                 PropertySource propertySource = new PropertiesPropertySource("TrustStorePropertySource", properties);
                 sources.addFirst(propertySource);
             }
