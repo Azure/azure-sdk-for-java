@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.function.BiConsumer;
 
 /**
@@ -24,6 +25,8 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
+    // default time interval for polling
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
     }

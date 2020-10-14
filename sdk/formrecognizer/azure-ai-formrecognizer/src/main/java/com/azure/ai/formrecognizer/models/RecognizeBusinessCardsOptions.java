@@ -7,12 +7,13 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
+
 /**
  * Options that may be passed when using recognize business card APIs on Form Recognizer client.
  */
 @Fluent
 public final class RecognizeBusinessCardsOptions {
-    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;

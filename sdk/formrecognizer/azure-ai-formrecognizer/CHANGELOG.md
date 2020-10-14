@@ -1,8 +1,11 @@
 # Release History
 
 ## 3.1.0-beta.1 (Unreleased)
+### Breaking Changes
+- It defaults to the latest supported API version, which currently is 2.1-preview.1.
+
 ### New Features
-- Added support for business card recognition.
+- Added support for pre-built business card recognition.
 
 ## 3.0.2 (2020-10-06)
 ### Dependency updates
@@ -16,7 +19,7 @@
 First stable release of the azure-ai-formrecognizer client library supporting Azure Form Recognizer service API version v2.0.
 
 ### Breaking Changes
-- Renamed `BoundingBox` model to `FieldBoundingBox`
+- Renamed `BoundingBox` model to `FieldBoundingBox`.
 
 ## 3.0.0-beta.1 (2020-08-11)
 This beta version targets Azure Form Recognizer service API version v2.0.
