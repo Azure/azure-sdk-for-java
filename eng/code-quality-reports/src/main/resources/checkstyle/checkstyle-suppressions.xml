@@ -570,7 +570,7 @@
 
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]gremlin[/\\]*"/>
+  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
   <!--BlacklistedWordsCheck: B2C is the product name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"></suppress>
@@ -586,8 +586,16 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
 
   <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
-  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.core.api.CheckpointConfig.java"/>
-  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"></suppress>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|ExternalDependencyExposedCheck|EnforceFinalFieldsCheck)"
+            files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
   <!-- ### end: Spring related suppression -->
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->

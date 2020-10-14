@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.spring.messaging.config;
+package com.azure.spring.messaging.config;
 
-import com.microsoft.azure.spring.messaging.container.ListenerContainerFactory;
-import com.microsoft.azure.spring.messaging.endpoint.AzureListenerEndpoint;
+import com.azure.spring.messaging.container.ListenerContainerFactory;
+import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.BeanFactory;
