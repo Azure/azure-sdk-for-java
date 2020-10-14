@@ -1,16 +1,5 @@
 # Azure Key Vault Certificates Spring Boot starter 
 
-If you want to test the current version under development you will have to
-
-1. Build and install the [Microsoft Azure JCA Provider](../../keyvault/azure-security-keyvault-jca/README.md) for KeyVault
-1. Build and install this starter.
-
-To build and install the starter use the following command line:
-
-```
-  mvn clean install -DskipTests=true
-```
-
 ## Server side SSL
 
 ### Using a managed identity
@@ -215,4 +204,31 @@ To grant access use the command line below:
         --key-permisssions get list \
         --secret-permissions get list \
         --certificate-permissions get list
+```
+
+## Side-loading certificates
+
+This starter allows you to side-load certificates by supplying them as part of
+the application. 
+
+To side-load add your certificates to the `src/main/resources/keyvault` folder.
+
+Note the alias (certificate name) is constructed from the filename of the 
+certificate (minus the extension). So if your filename is `mycert.x509` the
+certificate will be added with the alias of `mycert`. 
+
+Be aware that certificates coming from Azure KeyVault take precendence over 
+side-loaded certificates.
+
+## Testing the current version under development 
+
+If you want to test the current version under development you will have to
+
+1. Build and install the [Microsoft Azure JCA Provider](../../keyvault/azure-security-keyvault-jca/README.md) for KeyVault
+1. Build and install this starter.
+
+To build and install the starter use the following command line:
+
+```
+  mvn clean install -DskipTests=true
 ```
