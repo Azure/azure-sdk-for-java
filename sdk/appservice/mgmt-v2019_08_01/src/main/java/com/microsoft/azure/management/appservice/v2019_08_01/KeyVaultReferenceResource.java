@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.KeyVaultReferenceResourceInner;
 
 /**
  * Type representing KeyVaultReferenceResource.
  */
-public interface KeyVaultReferenceResource extends HasInner<KeyVaultReferenceResourceInner>, HasManager<AppServiceManager> {
+public interface KeyVaultReferenceResource extends HasInner<KeyVaultReferenceResourceInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the details value.
      */

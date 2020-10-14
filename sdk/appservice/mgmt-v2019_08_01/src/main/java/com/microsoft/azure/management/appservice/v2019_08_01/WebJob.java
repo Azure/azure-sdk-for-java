@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.WebJ
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 
 /**
  * Type representing WebJob.
  */
-public interface WebJob extends HasInner<WebJobInner>, Indexable, Refreshable<WebJob>, HasManager<AppServiceManager> {
+public interface WebJob extends HasInner<WebJobInner>, Indexable, Refreshable<WebJob>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the error value.
      */

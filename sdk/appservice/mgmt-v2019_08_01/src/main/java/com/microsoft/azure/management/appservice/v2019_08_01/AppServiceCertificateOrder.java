@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 import org.joda.time.DateTime;
 import java.util.List;
@@ -26,7 +26,7 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppS
 /**
  * Type representing AppServiceCertificateOrder.
  */
-public interface AppServiceCertificateOrder extends HasInner<AppServiceCertificateOrderInner>, Resource, GroupableResourceCore<AppServiceManager, AppServiceCertificateOrderInner>, HasResourceGroup, Refreshable<AppServiceCertificateOrder>, Updatable<AppServiceCertificateOrder.Update>, HasManager<AppServiceManager> {
+public interface AppServiceCertificateOrder extends HasInner<AppServiceCertificateOrderInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServiceCertificateOrderInner>, HasResourceGroup, Refreshable<AppServiceCertificateOrder>, Updatable<AppServiceCertificateOrder.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the appServiceCertificateNotRenewableReasons value.
      */

@@ -31,8 +31,8 @@ import com.microsoft.azure.management.appservice.v2019_08_01.StaticSiteBuildARMR
 import com.microsoft.azure.management.appservice.v2019_08_01.StaticSiteFunctionOverviewARMResource;
 import com.microsoft.azure.management.appservice.v2019_08_01.StaticSiteCustomDomainOverviewARMResource;
 
-class StaticSitesImpl extends GroupableResourcesCoreImpl<StaticSiteARMResource, StaticSiteARMResourceImpl, StaticSiteARMResourceInner, StaticSitesInner, AppServiceManager>  implements StaticSites {
-    protected StaticSitesImpl(AppServiceManager manager) {
+class StaticSitesImpl extends GroupableResourcesCoreImpl<StaticSiteARMResource, StaticSiteARMResourceImpl, StaticSiteARMResourceInner, StaticSitesInner, CertificateRegistrationManager>  implements StaticSites {
+    protected StaticSitesImpl(CertificateRegistrationManager manager) {
         super(manager.inner().staticSites(), manager);
     }
 

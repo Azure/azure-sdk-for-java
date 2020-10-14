@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 
 /**
  * Type representing AppServiceCertificateResource.
  */
-public interface AppServiceCertificateResource extends HasInner<AppServiceCertificateResourceInner>, Indexable, Refreshable<AppServiceCertificateResource>, Updatable<AppServiceCertificateResource.Update>, HasManager<AppServiceManager> {
+public interface AppServiceCertificateResource extends HasInner<AppServiceCertificateResourceInner>, Indexable, Refreshable<AppServiceCertificateResource>, Updatable<AppServiceCertificateResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */

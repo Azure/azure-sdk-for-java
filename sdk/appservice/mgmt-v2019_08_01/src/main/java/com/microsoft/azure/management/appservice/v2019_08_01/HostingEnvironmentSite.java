@@ -11,7 +11,7 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.SiteInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import java.util.UUID;
 import org.joda.time.DateTime;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Type representing HostingEnvironmentSite.
  */
-public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<AppServiceManager> {
+public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the availabilityState value.
      */

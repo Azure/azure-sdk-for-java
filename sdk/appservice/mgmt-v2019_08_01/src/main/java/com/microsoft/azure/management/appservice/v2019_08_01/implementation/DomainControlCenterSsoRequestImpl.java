@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.DomainControlCenter
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class DomainControlCenterSsoRequestImpl extends WrapperImpl<DomainControlCenterSsoRequestInner> implements DomainControlCenterSsoRequest {
-    private final AppServiceManager manager;
-    DomainControlCenterSsoRequestImpl(DomainControlCenterSsoRequestInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    DomainControlCenterSsoRequestImpl(DomainControlCenterSsoRequestInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

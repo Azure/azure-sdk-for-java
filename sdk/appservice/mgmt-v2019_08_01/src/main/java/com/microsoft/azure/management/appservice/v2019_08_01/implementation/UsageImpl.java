@@ -14,14 +14,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ComputeModeOptions;
 import org.joda.time.DateTime;
 
 class UsageImpl extends WrapperImpl<UsageInner> implements Usage {
-    private final AppServiceManager manager;
-    UsageImpl(UsageInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    UsageImpl(UsageInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

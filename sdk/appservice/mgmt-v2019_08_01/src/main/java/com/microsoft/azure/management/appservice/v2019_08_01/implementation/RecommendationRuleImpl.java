@@ -16,14 +16,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.NotificationLevel;
 import java.util.UUID;
 
 class RecommendationRuleImpl extends WrapperImpl<RecommendationRuleInner> implements RecommendationRule {
-    private final AppServiceManager manager;
-    RecommendationRuleImpl(RecommendationRuleInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    RecommendationRuleImpl(RecommendationRuleInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

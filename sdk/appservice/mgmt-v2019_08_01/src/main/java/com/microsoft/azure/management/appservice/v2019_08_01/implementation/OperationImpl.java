@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.Operation;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.ErrorEntity;
@@ -17,15 +18,15 @@ import java.util.UUID;
 import com.microsoft.azure.management.appservice.v2019_08_01.OperationStatus;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    OperationImpl(OperationInner inner,  AppServiceManager manager) {
+    OperationImpl(OperationInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

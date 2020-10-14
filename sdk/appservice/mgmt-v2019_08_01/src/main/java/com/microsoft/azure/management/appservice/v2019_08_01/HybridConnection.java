@@ -11,12 +11,12 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.HybridConnectionInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing HybridConnection.
  */
-public interface HybridConnection extends HasInner<HybridConnectionInner>, HasManager<AppServiceManager> {
+public interface HybridConnection extends HasInner<HybridConnectionInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the hostname value.
      */

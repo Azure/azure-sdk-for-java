@@ -26,14 +26,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.SiteSealRequest;
 import com.microsoft.azure.management.appservice.v2019_08_01.AppServiceCertificateResource;
 
 class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateOrdersInner> implements AppServiceCertificateOrders {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServiceCertificateOrdersImpl(AppServiceManager manager) {
+    AppServiceCertificateOrdersImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServiceCertificateOrders());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

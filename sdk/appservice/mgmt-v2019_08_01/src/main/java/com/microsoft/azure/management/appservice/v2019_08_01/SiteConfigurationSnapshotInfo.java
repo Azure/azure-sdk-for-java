@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.SiteConfigurationSnapshotInfoInner;
 import org.joda.time.DateTime;
 
 /**
  * Type representing SiteConfigurationSnapshotInfo.
  */
-public interface SiteConfigurationSnapshotInfo extends HasInner<SiteConfigurationSnapshotInfoInner>, HasManager<AppServiceManager> {
+public interface SiteConfigurationSnapshotInfo extends HasInner<SiteConfigurationSnapshotInfoInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
