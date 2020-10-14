@@ -240,30 +240,6 @@ public interface SqlServer
              * @return the first stage of the new SQL Elastic Pool definition
              */
             SqlElasticPool.DefinitionStages.Blank<WithCreate> defineElasticPool(String elasticPoolName);
-
-            /**
-             * Creates new elastic pool in the SQL Server.
-             *
-             * @deprecated use {@link #defineElasticPool}
-             * @param elasticPoolName name of the elastic pool to be created
-             * @param elasticPoolEdition edition of the elastic pool
-             * @param databaseNames names of the database to be included in the elastic pool
-             * @return Next stage of the SQL Server definition
-             */
-            @Deprecated
-            WithCreate withNewElasticPool(
-                String elasticPoolName, ElasticPoolEdition elasticPoolEdition, String... databaseNames);
-
-            /**
-             * Creates new elastic pool in the SQL Server.
-             *
-             * @deprecated use {@link #defineElasticPool}
-             * @param elasticPoolName name of the elastic pool to be created
-             * @param elasticPoolEdition edition of the elastic pool
-             * @return Next stage of the SQL Server definition
-             */
-            @Deprecated
-            WithCreate withNewElasticPool(String elasticPoolName, ElasticPoolEdition elasticPoolEdition);
         }
 
         /** A SQL Server definition for specifying the databases. */
@@ -275,16 +251,6 @@ public interface SqlServer
              * @return the first stage of the new SQL Database definition
              */
             SqlDatabase.DefinitionStages.Blank<WithCreate> defineDatabase(String databaseName);
-
-            /**
-             * Creates new database in the SQL Server.
-             *
-             * @deprecated use {@link #defineDatabase}
-             * @param databaseName name of the database to be created
-             * @return Next stage of the SQL Server definition
-             */
-            @Deprecated
-            WithCreate withNewDatabase(String databaseName);
         }
 
         /** The stage of the SQL Server definition allowing to specify the SQL Firewall rules. */
@@ -306,39 +272,6 @@ public interface SqlServer
              * @return the first stage of the new SQL Firewall rule definition
              */
             SqlFirewallRule.DefinitionStages.Blank<WithCreate> defineFirewallRule(String firewallRuleName);
-
-            /**
-             * Creates new firewall rule in the SQL Server.
-             *
-             * @deprecated use {@link #defineFirewallRule}
-             * @param ipAddress ipAddress for the firewall rule
-             * @return Next stage of the SQL Server definition
-             */
-            @Deprecated
-            WithCreate withNewFirewallRule(String ipAddress);
-
-            /**
-             * Creates new firewall rule in the SQL Server.
-             *
-             * @deprecated use {@link #defineFirewallRule}
-             * @param startIPAddress start IP address for the firewall rule
-             * @param endIPAddress end IP address for the firewall rule
-             * @return Next stage of the SQL Server definition
-             */
-            @Deprecated
-            WithCreate withNewFirewallRule(String startIPAddress, String endIPAddress);
-
-            /**
-             * Creates new firewall rule in the SQL Server.
-             *
-             * @deprecated use {@link #defineFirewallRule}
-             * @param startIPAddress start IP address for the firewall rule
-             * @param endIPAddress end IP address for the firewall rule
-             * @param firewallRuleName name for the firewall rule
-             * @return Next stage of the SQL Server definition
-             */
-            @Deprecated
-            WithCreate withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName);
         }
 
         /** The stage of the SQL Server definition allowing to specify the SQL Virtual Network Rules. */
@@ -415,30 +348,6 @@ public interface SqlServer
                 String elasticPoolName);
 
             /**
-             * Create new elastic pool in the SQL Server.
-             *
-             * @deprecated use {@link #defineElasticPool}
-             * @param elasticPoolName name of the elastic pool to be created
-             * @param elasticPoolEdition edition of the elastic pool
-             * @param databaseNames names of the database to be included in the elastic pool
-             * @return Next stage of the SQL Server update
-             */
-            @Deprecated
-            Update withNewElasticPool(
-                String elasticPoolName, ElasticPoolEdition elasticPoolEdition, String... databaseNames);
-
-            /**
-             * Create new elastic pool in the SQL Server.
-             *
-             * @deprecated use {@link #defineElasticPool}
-             * @param elasticPoolName name of the elastic pool to be created
-             * @param elasticPoolEdition edition of the elastic pool
-             * @return Next stage of the SQL Server update
-             */
-            @Deprecated
-            Update withNewElasticPool(String elasticPoolName, ElasticPoolEdition elasticPoolEdition);
-
-            /**
              * Removes elastic pool from the SQL Server.
              *
              * @param elasticPoolName name of the elastic pool to be removed
@@ -456,16 +365,6 @@ public interface SqlServer
              * @return the first stage of the new SQL Database definition
              */
             SqlDatabase.DefinitionStages.Blank<DefinitionStages.WithCreate> defineDatabase(String databaseName);
-
-            /**
-             * Create new database in the SQL Server.
-             *
-             * @deprecated use {@link #defineDatabase}
-             * @param databaseName name of the database to be created
-             * @return Next stage of the SQL Server update
-             */
-            @Deprecated
-            Update withNewDatabase(String databaseName);
 
             /**
              * Remove database from the SQL Server.
@@ -486,39 +385,6 @@ public interface SqlServer
              */
             SqlFirewallRule.DefinitionStages.Blank<DefinitionStages.WithCreate> defineFirewallRule(
                 String firewallRuleName);
-
-            /**
-             * Create new firewall rule in the SQL Server.
-             *
-             * @deprecated use {@link #defineFirewallRule}
-             * @param ipAddress IP address for the firewall rule
-             * @return Next stage of the SQL Server update
-             */
-            @Deprecated
-            Update withNewFirewallRule(String ipAddress);
-
-            /**
-             * Create new firewall rule in the SQL Server.
-             *
-             * @deprecated use {@link #defineFirewallRule}
-             * @param startIPAddress Start IP address for the firewall rule
-             * @param endIPAddress IP address for the firewall rule
-             * @return Next stage of the SQL Server update
-             */
-            @Deprecated
-            Update withNewFirewallRule(String startIPAddress, String endIPAddress);
-
-            /**
-             * Creates new firewall rule in the SQL Server.
-             *
-             * @deprecated use {@link #defineFirewallRule}
-             * @param startIPAddress start IP address for the firewall rule
-             * @param endIPAddress end IP address for the firewall rule
-             * @param firewallRuleName name for the firewall rule
-             * @return Next stage of the SQL Server update
-             */
-            @Deprecated
-            Update withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName);
 
             /**
              * Removes firewall rule from the SQL Server.
