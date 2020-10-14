@@ -68,9 +68,6 @@ public final class SearchIndexerSkillsetConverter {
             searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String description = obj.getDescription();
-        searchIndexerSkillset.setDescription(description);
-
         searchIndexerSkillset.setDescription(obj.getDescription());
         searchIndexerSkillset.setETag(obj.getETag());
 
