@@ -3,6 +3,9 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -32,12 +35,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Vault and its parent interfaces. */
-class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
+class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
     implements Key, Key.Definition, Key.UpdateWithCreate, Key.UpdateWithImport {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     private final Vault vault;
 
@@ -46,6 +50,8 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
     private ImportKeyOptions importKeyRequest = null;
 
     private CryptographyAsyncClient cryptographyClient;
+
+    private JsonWebKey jsonWebKey;
 
     private CryptographyAsyncClient cryptographyClient() {
         return cryptographyClient;
@@ -56,8 +62,14 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
         private List<KeyOperation> keyOperations = new ArrayList<>();
     }
 
-    KeyImpl(String name, KeyVaultKey innerObject, Vault vault) {
+    KeyImpl(String name, KeyProperties innerObject, Vault vault) {
         super(name, innerObject);
+        this.vault = vault;
+    }
+
+    KeyImpl(String name, KeyVaultKey keyVaultKey, Vault vault) {
+        super(name, keyVaultKey.getProperties());
+        this.jsonWebKey = keyVaultKey.getKey();
         this.vault = vault;
     }
 
@@ -65,58 +77,66 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
         this.createKeyRequest = null;
         this.updateKeyRequest = new UpdateKeyOptions();
         if (innerModel() != null) {
-            updateKeyRequest.keyProperties = innerModel().getProperties();
+            updateKeyRequest.keyProperties = innerModel();
             if (createNewCryptographyClient) {
                 cryptographyClient =
                     new CryptographyClientBuilder()
-                        .keyIdentifier(innerModel().getKey().getId())
+                        .keyIdentifier(innerModel().getId())
                         .pipeline(vault.vaultHttpPipeline())
                         .buildAsyncClient();
             }
         }
     }
 
-    private KeyImpl wrapModel(KeyVaultKey key) {
-        return new KeyImpl(key.getName(), key, vault);
+    private KeyImpl wrapModel(KeyProperties keyProperties) {
+        return new KeyImpl(keyProperties.getName(), keyProperties, vault);
     }
 
     @Override
     public String id() {
-        return this.innerModel() == null ? null : this.innerModel().getId();
+        return this.innerModel().getId();
     }
 
     @Override
     public JsonWebKey getJsonWebKey() {
-        return innerModel().getKey();
+        return this.getJsonWebKeyAsync().block();
     }
 
     @Override
-    public KeyProperties getAttributes() {
-        return innerModel().getProperties();
+    public Mono<JsonWebKey> getJsonWebKeyAsync() {
+        if (jsonWebKey != null) {
+            return Mono.just(jsonWebKey);
+        } else {
+            return this.getInnerAsync().map(ignored -> jsonWebKey);
+        }
     }
 
     @Override
-    public Map<String, String> getTags() {
-        return innerModel().getProperties().getTags();
+    public KeyProperties attributes() {
+        return innerModel();
     }
 
     @Override
-    public boolean isManaged() {
-        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().getProperties().isManaged());
+    public Map<String, String> tags() {
+        return innerModel().getTags();
     }
 
     @Override
-    public Iterable<Key> listVersions() {
-        return listVersionsAsync().toIterable();
+    public boolean managed() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isManaged());
     }
 
     @Override
-    public Flux<Key> listVersionsAsync() {
+    public PagedIterable<Key> listVersions() {
+        return new PagedIterable<>(listVersionsAsync());
+    }
+
+    @Override
+    public PagedFlux<Key> listVersionsAsync() {
         return vault
             .keyClient()
             .listPropertiesOfKeyVersions(this.name())
-            .flatMap(p -> vault.keyClient().getKey(p.getName(), p.getVersion()))
-            .map(this::wrapModel);
+            .mapPage(this::wrapModel);
     }
 
     @Override
@@ -190,8 +210,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
     }
 
     @Override
-    protected Mono<KeyVaultKey> getInnerAsync() {
-        return vault.keyClient().getKey(this.name());
+    protected Mono<KeyProperties> getInnerAsync() {
+        return vault.keyClient().getKey(this.name()).map(keyVaultKey -> {
+            this.jsonWebKey = keyVaultKey.getKey();
+            return keyVaultKey.getProperties();
+        });
     }
 
     @Override
@@ -229,8 +252,9 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
         }
         return mono
             .map(
-                inner -> {
-                    this.setInner(inner);
+                keyVaultKey -> {
+                    this.setInner(keyVaultKey.getProperties());
+                    this.jsonWebKey = keyVaultKey.getKey();
                     init(true);
                     return this;
                 });
@@ -269,8 +293,9 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
                     .updateKeyProperties(
                         updateKeyRequest.keyProperties, updateKeyRequest.keyOperations.toArray(new KeyOperation[0]))
                     .map(
-                        inner -> {
-                            this.setInner(inner);
+                        keyVaultKey -> {
+                            this.setInner(keyVaultKey.getProperties());
+                            this.jsonWebKey = keyVaultKey.getKey();
                             init(false);
                             return this;
                         }));
@@ -319,7 +344,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public KeyImpl withLocalKeyToImport(JsonWebKey key) {
-        importKeyRequest = new ImportKeyOptions(name(), key);
+        if (importKeyRequest == null) {
+            importKeyRequest = new ImportKeyOptions(name(), key);
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("Not in import flow"));
+        }
         return this;
     }
 
@@ -340,7 +369,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public KeyImpl withHsm(boolean isHsm) {
-        importKeyRequest.setHardwareProtected(isHsm);
+        if (importKeyRequest != null) {
+            importKeyRequest.setHardwareProtected(isHsm);
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("Not in import flow"));
+        }
         return this;
     }
 

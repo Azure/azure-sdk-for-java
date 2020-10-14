@@ -19,7 +19,7 @@
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "com\\.microsoft\\.spring\\.data\\.gremlin\\..+",
+            "com\\.azure\\.spring\\.data\\.gremlin\\..+",
             "com\\.azure\\.spring(\\..+)?",
             "org\\.apache\\.avro\\..+"
           ]
