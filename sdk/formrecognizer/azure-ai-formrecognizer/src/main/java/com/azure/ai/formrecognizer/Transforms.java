@@ -339,7 +339,7 @@ final class Transforms {
                 // ARRAY has ho value data, such as bounding box.
                 if (ARRAY != fieldValue.getType()) {
                     valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                        fieldValue.getPage() == null ? -1 : fieldValue.getPage(),
+                        fieldValue.getPage() == null ? 1 : fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults));
                 }
                 return setFormField(null, valueData, fieldValue, readResults);
