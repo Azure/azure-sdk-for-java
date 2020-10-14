@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.WebS
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 
 /**
  * Type representing WebSiteInstanceStatus.
  */
-public interface WebSiteInstanceStatus extends HasInner<WebSiteInstanceStatusInner>, Indexable, Refreshable<WebSiteInstanceStatus>, HasManager<AppServiceManager> {
+public interface WebSiteInstanceStatus extends HasInner<WebSiteInstanceStatusInner>, Indexable, Refreshable<WebSiteInstanceStatus>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the consoleUrl value.
      */

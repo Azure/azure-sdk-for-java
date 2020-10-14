@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Cert
 /**
  * Type representing Certificate.
  */
-public interface Certificate extends HasInner<CertificateInner>, Resource, GroupableResourceCore<AppServiceManager, CertificateInner>, HasResourceGroup, Refreshable<Certificate>, Updatable<Certificate.Update>, HasManager<AppServiceManager> {
+public interface Certificate extends HasInner<CertificateInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, CertificateInner>, HasResourceGroup, Refreshable<Certificate>, Updatable<Certificate.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the canonicalName value.
      */

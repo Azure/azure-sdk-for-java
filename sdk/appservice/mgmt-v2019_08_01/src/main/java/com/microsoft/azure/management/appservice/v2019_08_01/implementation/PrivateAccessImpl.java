@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.PrivateAccessVirtualNetwork;
 
 class PrivateAccessImpl extends WrapperImpl<PrivateAccessInner> implements PrivateAccess {
-    private final AppServiceManager manager;
-    PrivateAccessImpl(PrivateAccessInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    PrivateAccessImpl(PrivateAccessInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

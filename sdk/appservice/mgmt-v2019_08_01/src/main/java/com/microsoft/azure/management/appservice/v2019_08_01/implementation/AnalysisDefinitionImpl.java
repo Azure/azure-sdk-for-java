@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 
 class AnalysisDefinitionImpl extends IndexableRefreshableWrapperImpl<AnalysisDefinition, AnalysisDefinitionInner> implements AnalysisDefinition {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String siteName;
     private String diagnosticCategory;
     private String analysisName;
 
-    AnalysisDefinitionImpl(AnalysisDefinitionInner inner,  AppServiceManager manager) {
+    AnalysisDefinitionImpl(AnalysisDefinitionInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -30,7 +30,7 @@ class AnalysisDefinitionImpl extends IndexableRefreshableWrapperImpl<AnalysisDef
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

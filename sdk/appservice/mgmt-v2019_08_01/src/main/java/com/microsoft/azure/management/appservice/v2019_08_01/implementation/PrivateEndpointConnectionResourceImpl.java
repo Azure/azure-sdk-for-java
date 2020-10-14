@@ -17,13 +17,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.PrivateLinkConnecti
 import rx.functions.Func1;
 
 class PrivateEndpointConnectionResourceImpl extends CreatableUpdatableImpl<PrivateEndpointConnectionResource, PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceImpl> implements PrivateEndpointConnectionResource, PrivateEndpointConnectionResource.Definition, PrivateEndpointConnectionResource.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String privateEndpointConnectionName;
     private PrivateLinkConnectionApprovalRequestResource createOrUpdateParameter;
 
-    PrivateEndpointConnectionResourceImpl(String name, AppServiceManager manager) {
+    PrivateEndpointConnectionResourceImpl(String name, CertificateRegistrationManager manager) {
         super(name, new PrivateEndpointConnectionResourceInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class PrivateEndpointConnectionResourceImpl extends CreatableUpdatableImpl<Priva
         this.createOrUpdateParameter = new PrivateLinkConnectionApprovalRequestResource();
     }
 
-    PrivateEndpointConnectionResourceImpl(PrivateEndpointConnectionResourceInner inner, AppServiceManager manager) {
+    PrivateEndpointConnectionResourceImpl(PrivateEndpointConnectionResourceInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -46,7 +46,7 @@ class PrivateEndpointConnectionResourceImpl extends CreatableUpdatableImpl<Priva
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

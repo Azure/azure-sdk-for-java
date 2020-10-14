@@ -11,7 +11,7 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.OperationInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Type representing Operation.
  */
-public interface Operation extends HasInner<OperationInner>, HasManager<AppServiceManager> {
+public interface Operation extends HasInner<OperationInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the createdTime value.
      */

@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class KeyInfoImpl extends CreatableUpdatableImpl<KeyInfo, KeyInfoInner, KeyInfoImpl> implements KeyInfo, KeyInfo.Definition {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String functionName;
     private String keyName;
 
-    KeyInfoImpl(String name, AppServiceManager manager) {
+    KeyInfoImpl(String name, CertificateRegistrationManager manager) {
         super(name, new KeyInfoInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class KeyInfoImpl extends CreatableUpdatableImpl<KeyInfo, KeyInfoInner, KeyInfoI
         //
     }
 
-    KeyInfoImpl(KeyInfoInner inner, AppServiceManager manager) {
+    KeyInfoImpl(KeyInfoInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -36,7 +36,7 @@ class KeyInfoImpl extends CreatableUpdatableImpl<KeyInfo, KeyInfoInner, KeyInfoI
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
