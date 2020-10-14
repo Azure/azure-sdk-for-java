@@ -5,9 +5,9 @@ package com.azure.core.experimental.util;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -188,24 +188,21 @@ public final class  BinaryData {
     }
 
     /**
-     * Serialize the given {@link Object} into {@link BinaryData} using the default {@link ObjectSerializer} for
-     * {@link SerializerEncoding#JSON}. This will require one of the searializer is configured in classpath.
-     * Any error in searializing the data will be logged and {@code null} will be returned.
+     * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link JsonSerializer}. This will
+     * require client to configure Json serializer in classpath.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws NullPointerException if {@code data} is null.
-     * @return {@link BinaryData} representing binary data.
+     * @return {@link BinaryData} representing binary data. Or {@code null} if it fails to serialize the data.
+     * @throws IllegalStateException If cannot find any JSON serializer provider on the classpath.
+     *
+     * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
         Objects.requireNonNull(data, "'data' cannot be null.");
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            JacksonAdapter.createDefaultSerializerAdapter().serialize(data, SerializerEncoding.JSON, outputStream);
-        } catch (IOException ex) {
-            LOGGER.warning("Failed to serialize {} to JSON.", data.getClass(), ex);
-            return null;
-        }
+        JsonSerializerProviders.createInstance().serialize(outputStream, data);
         return new BinaryData(outputStream.toByteArray());
     }
 
