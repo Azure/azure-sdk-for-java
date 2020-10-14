@@ -15,39 +15,18 @@ jobs:
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
-        Java 8 Windows (AzureCloud Canary):
-          ProfileFlag: ''
-          JavaTestVersion: '1.8'
-          OSVmImage: windows-2019
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          ArmTemplateParameters: $(azureCloudArmParameters)
-          Location: 'eastus2euap'
         Java LTS Windows (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
-        Java LTS Windows (AzureCloud Canary):
-          ProfileFlag: '-Pjava-lts'
-          JavaTestVersion: '1.11'
-          OSVmImage: windows-2019
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          ArmTemplateParameters: $(azureCloudArmParameters)
-          Location: 'eastus2euap'
         Java 8 Linux (AzureCloud):
           ProfileFlag: ''
           JavaTestVersion: '1.8'
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
-        Java 8 Linux (AzureCloud Canary):
-          ProfileFlag: ''
-          JavaTestVersion: '1.8'
-          OSVmImage: ubuntu-18.04
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          ArmTemplateParameters: $(azureCloudArmParameters)
-          Location: 'eastus2euap'
         Java LTS Linux (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaTestVersion: '1.11'
@@ -67,26 +46,12 @@ jobs:
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
-        Java 8 MacOS (AzureCloud Canary):
-          ProfileFlag: ''
-          JavaTestVersion: '1.8'
-          OSVmImage: macOS-10.15
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          ArmTemplateParameters: $(azureCloudArmParameters)
-          Location: 'eastus2euap'
         Java LTS MacOS (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaTestVersion: '1.11'
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
-        Java LTS MacOS (AzureCloud Canary):
-          ProfileFlag: '-Pjava-lts'
-          JavaTestVersion: '1.11'
-          OSVmImage: macOS-10.15
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          ArmTemplateParameters: $(azureCloudArmParameters)
-          Location: 'eastus2euap'
         Java 8 Windows (AzureUSGovernment):
           ProfileFlag: ''
           JavaTestVersion: '1.8'
