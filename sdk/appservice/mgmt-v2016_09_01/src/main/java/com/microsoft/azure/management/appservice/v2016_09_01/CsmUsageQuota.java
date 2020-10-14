@@ -11,13 +11,13 @@ package com.microsoft.azure.management.appservice.v2016_09_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.CsmUsageQuotaInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing CsmUsageQuota.
  */
-public interface CsmUsageQuota extends HasInner<CsmUsageQuotaInner>, HasManager<AppServiceManager> {
+public interface CsmUsageQuota extends HasInner<CsmUsageQuotaInner>, HasManager<WebManager> {
     /**
      * @return the currentValue value.
      */
