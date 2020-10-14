@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID;
 import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
@@ -84,7 +84,7 @@ public class AADGroupsCountIT {
                                          .map(PreAuthenticatedAuthenticationToken::getPrincipal)
                                          .map(p -> (UserPrincipal) p)
                                          .map(UserPrincipal::getGroups)
-                                         .map(List::size)
+                                         .map(Set::size)
                                          .map(String::valueOf)
                                          .orElse("");
             return new ResponseEntity<>(groupsCount, HttpStatus.OK);
