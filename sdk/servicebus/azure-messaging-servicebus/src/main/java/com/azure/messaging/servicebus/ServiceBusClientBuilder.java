@@ -783,13 +783,13 @@ public final class ServiceBusClientBuilder {
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
 
-            final UnnamedSessionManager sessionManager;
+            final ServiceBusSessionManager sessionManager;
 
             if (CoreUtils.isNullOrEmpty(sessionId)) {
-                sessionManager = new UnnamedSessionManager(entityPath, entityType,
+                sessionManager = new ServiceBusSessionManager(entityPath, entityType,
                     connectionProcessor, tracerProvider, messageSerializer, receiverOptions, maxAutoRenewDuration);
             } else {
-                sessionManager = new UnnamedSessionManager(entityPath, entityType,
+                sessionManager = new ServiceBusSessionManager(entityPath, entityType,
                     connectionProcessor, tracerProvider, messageSerializer, receiverOptions, maxAutoRenewDuration,
                     sessionId);
             }

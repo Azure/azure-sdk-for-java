@@ -104,7 +104,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
-    private final UnnamedSessionManager unnamedSessionManager;
+    private final ServiceBusSessionManager sessionManager;
     private final Duration maxAutoRenewLockDuration;;
 
     // Starting at -1 because that is before the beginning of the stream.
@@ -147,13 +147,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             renewal.close();
         });
 
-        this.unnamedSessionManager = null;
+        this.sessionManager = null;
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-        Duration maxAutoRenewLockDuration, UnnamedSessionManager unnamedSessionManager) {
+        Duration maxAutoRenewLockDuration, ServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -163,7 +163,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
-        this.unnamedSessionManager = Objects.requireNonNull(unnamedSessionManager, "'sessionManager' cannot be null.");
+        this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
         this.maxAutoRenewLockDuration = maxAutoRenewLockDuration;
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
@@ -394,8 +394,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
         }
 
-        if (unnamedSessionManager != null) {
-            return unnamedSessionManager.getSessionState(sessionId);
+        if (sessionManager != null) {
+            return sessionManager.getSessionState(sessionId);
         } else {
             return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -595,8 +595,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
-        if (unnamedSessionManager != null) {
-            return unnamedSessionManager.receive();
+        if (sessionManager != null) {
+            return sessionManager.receive();
         } else {
             return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
         }
@@ -797,8 +797,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
         }
 
-        final String linkName = unnamedSessionManager != null
-            ? unnamedSessionManager.getLinkName(sessionId)
+        final String linkName = sessionManager != null
+            ? sessionManager.getLinkName(sessionId)
             : null;
 
         return connectionProcessor
@@ -859,8 +859,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
         }
 
-        final String linkName = unnamedSessionManager != null
-            ? unnamedSessionManager.getLinkName(sessionId)
+        final String linkName = sessionManager != null
+            ? sessionManager.getLinkName(sessionId)
             : null;
 
         return connectionProcessor
@@ -960,8 +960,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             disposed.close();
         }
 
-        if (unnamedSessionManager != null) {
-            unnamedSessionManager.close();
+        if (sessionManager != null) {
+            sessionManager.close();
         }
 
         onClientClose.run();
@@ -1029,8 +1029,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 renewalContainer.remove(lockToken);
             }));
 
-        if (unnamedSessionManager != null) {
-            return unnamedSessionManager.updateDisposition(lockToken, sessionId, dispositionStatus, propertiesToModify,
+        if (sessionManager != null) {
+            return sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus, propertiesToModify,
                 deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
@@ -1113,8 +1113,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return The name of the receive link, or null of it has not connected via a receive link.
      */
     private String getLinkName(String sessionId) {
-        if (unnamedSessionManager != null && !CoreUtils.isNullOrEmpty(sessionId)) {
-            return unnamedSessionManager.getLinkName(sessionId);
+        if (sessionManager != null && !CoreUtils.isNullOrEmpty(sessionId)) {
+            return sessionManager.getLinkName(sessionId);
         } else if (!CoreUtils.isNullOrEmpty(sessionId) && !receiverOptions.isSessionReceiver()) {
             return null;
         } else {

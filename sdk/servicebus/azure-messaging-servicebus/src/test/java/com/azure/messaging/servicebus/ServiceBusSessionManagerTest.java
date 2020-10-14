@@ -56,7 +56,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class UnnamedSessionManagerTest {
+class ServiceBusSessionManagerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
@@ -73,7 +73,7 @@ class UnnamedSessionManagerTest {
     private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
     private ServiceBusConnectionProcessor connectionProcessor;
-    private UnnamedSessionManager sessionManager;
+    private ServiceBusSessionManager sessionManager;
 
     @Mock
     private ServiceBusReceiveLink amqpReceiveLink;
@@ -146,7 +146,7 @@ class UnnamedSessionManagerTest {
     void receiveNull() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
-        sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
 
         // Act & Assert
@@ -162,7 +162,7 @@ class UnnamedSessionManagerTest {
     void singleUnnamedSession() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
-        sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
 
         final String sessionId = "session-1";
@@ -214,7 +214,7 @@ class UnnamedSessionManagerTest {
     void multipleSessions() {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 1);
-        sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
 
         final int numberOfMessages = 5;

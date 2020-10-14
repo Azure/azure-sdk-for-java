@@ -37,17 +37,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Integration tests for {@link UnnamedSessionManager}.
+ * Integration tests for {@link ServiceBusSessionManager}.
  */
 @Tag("integration")
-class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
+class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
 
-    UnnamedSessionManagerIntegrationTest() {
-        super(new ClientLogger(UnnamedSessionManagerIntegrationTest.class));
+    ServiceBusSessionManagerIntegrationTest() {
+        super(new ClientLogger(ServiceBusSessionManagerIntegrationTest.class));
     }
 
     @Override
