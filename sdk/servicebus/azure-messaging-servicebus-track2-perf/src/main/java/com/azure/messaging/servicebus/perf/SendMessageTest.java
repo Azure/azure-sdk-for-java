@@ -7,15 +7,17 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 /**
  * Performance test.
  */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));;
+    private final ServiceBusMessage message;
 
     /**
      * Creates test object
@@ -23,11 +25,9 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEK_LOCK);
-    }
-
-    @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync();
+        String messageId = UUID.randomUUID().toString();
+        message = new ServiceBusMessage(CONTENTS);
+        message.setMessageId(messageId);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return senderAsync.sendMessage(message);
+        return senderAsync.sendMessage(message).then();
     }
 }

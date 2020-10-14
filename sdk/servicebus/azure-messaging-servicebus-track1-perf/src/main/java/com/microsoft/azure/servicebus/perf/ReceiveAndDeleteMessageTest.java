@@ -34,13 +34,13 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     }
 
     @Override
-    public Mono<Void> globalCleanupAsync() {
+    public Mono<Void> cleanupAsync() {
         return Mono.fromFuture(CompletableFuture.allOf(sender.closeAsync(), receiver.closeAsync()))
-            .then(super.globalCleanupAsync());
+            .then(super.cleanupAsync());
     }
 
     private Mono<Void> sendMessage() {
-        int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+        int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
 
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
@@ -53,9 +53,9 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
+    public Mono<Void> setupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        return super.globalSetupAsync()
+        return super.setupAsync()
             .then(sendMessage());
     }
 
@@ -74,16 +74,14 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> runAsync() {
-        System.out.println("Async received  Entry");
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
             .handle((messages, synchronousSink) -> {
                 int count = messages.size();
                 logger.verbose(" Async received  size of received : {}", count);
-                System.out.println("Async received  size of received " + count);
                 if (count <= 0) {
                     synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
                 }
                 synchronousSink.complete();
-            });
+            }).then();
     }
 }

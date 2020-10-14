@@ -35,7 +35,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     }
 
     private Mono<Void> sendMessage() {
-        int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+        int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
             Message message = new Message(CONTENTS);
@@ -46,9 +46,9 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
+    public Mono<Void> setupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        return super.globalSetupAsync()
+        return super.setupAsync()
             .then(sendMessage());
     }
 
@@ -73,17 +73,9 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive())
-            .thenComposeAsync(iMessages -> {
-                CompletableFuture<Void> completeTask = CompletableFuture.runAsync(() -> { });
-                for (IMessage message : iMessages) {
-                    if (completeTask == null) {
-                        completeTask = receiver.completeAsync(message.getLockToken());
-                    } else {
-                        completeTask = completeTask.thenCompose(ignore -> receiver.completeAsync(message.getLockToken()));
-                    }
-                }
-                return completeTask;
-            }));
+            .thenComposeAsync(iMessages -> CompletableFuture.allOf(iMessages
+                .stream()
+                .map(x -> receiver.completeAsync(x.getLockToken())).toArray(CompletableFuture[]::new))));
     }
 
     /**
@@ -91,8 +83,8 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
      * @return An empty {@link Mono}
      */
     @Override
-    public Mono<Void> globalCleanupAsync() {
+    public Mono<Void> cleanupAsync() {
         return Mono.fromFuture(CompletableFuture.allOf(sender.closeAsync(), receiver.closeAsync()))
-            .then(super.globalCleanupAsync());
+            .then(super.cleanupAsync());
     }
 }

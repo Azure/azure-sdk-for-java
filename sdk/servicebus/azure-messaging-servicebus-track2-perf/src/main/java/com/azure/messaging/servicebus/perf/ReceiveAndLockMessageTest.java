@@ -34,10 +34,10 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
+    public Mono<Void> setupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
-            int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+            int total = options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
                 ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
@@ -71,13 +71,6 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
             .take(options.getMessagesToReceive())
             .flatMap(messageContext -> {
                 return receiverAsync.complete(messageContext.getMessage()).thenReturn(true);
-            })
-            .count()
-            .handle((aLong, sink) -> {
-                if (aLong <= 0) {
-                    sink.error(new RuntimeException("Error. Should have received some messages."));
-                }
-                sink.complete();
-            });
+            }, 1).then();
     }
 }

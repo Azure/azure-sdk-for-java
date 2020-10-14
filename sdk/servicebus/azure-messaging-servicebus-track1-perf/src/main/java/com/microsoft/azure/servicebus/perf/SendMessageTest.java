@@ -32,11 +32,6 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync();
-    }
-
-    @Override
     public void run() {
         try {
             sender.send(message);
