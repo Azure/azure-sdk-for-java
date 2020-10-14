@@ -240,22 +240,6 @@ for (String areaCode
 }
 ```
 
-### Create Search
-
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L315-L324 -->
-```java
-PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
-
-System.out.println("SearchId: " + createSearchResponse.getSearchId());
-PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
-
-for (String phoneNumber
-    : phoneNumberSearch.getPhoneNumbers()) {
-    System.out.println("Phone Number: " + phoneNumber);
-}
-```
-
 ### Purchase Search
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L334-L335 -->
@@ -274,20 +258,18 @@ phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 
 ## Long Running Operations
 
-The Phone Number Client supports a variety of long running operations that allow indefinite polling time to the functions listed down below. Because these functions may take a long time to resolve, the use of long running operations is encouraged.
+The Phone Number Client supports a variety of long running operations that allow indefinite polling time to the functions listed down below.
 
 ### Create Search
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L395-L407 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L370-L380 -->
 ```java
-PhoneNumberAsyncClient phoneNumberClient = createPhoneNumberAsyncClient();
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
     phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
-AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
-    poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-    .blockLast();
-PhoneNumberSearch result = asyncRes.getValue();
+res.waitForCompletion();
+PhoneNumberSearch result = res.getFinalResult();
 
 System.out.println("Search Id: " + result.getSearchId());
 for (String phoneNumber: result.getPhoneNumbers()) {
