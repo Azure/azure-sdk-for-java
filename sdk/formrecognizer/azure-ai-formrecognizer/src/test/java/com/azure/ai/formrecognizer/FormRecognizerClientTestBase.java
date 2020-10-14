@@ -44,6 +44,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -920,5 +922,29 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             });
         interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
         return deserializeRawResponse(serializerAdapter, networkCallRecord, AnalyzeOperationResult.class);
+    }
+
+    void validateNetworkCallRecord(String requestParam, String value) {
+        final NetworkCallRecord networkCallRecord =
+            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> true);
+        interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
+
+        URL url = null;
+        try {
+            url = new URL(networkCallRecord.getUri());
+        } catch (MalformedURLException e) {
+            assertFalse(false, e.getMessage());
+        }
+        Pattern.compile("&").splitAsStream(url.getQuery())
+            .map(s -> Arrays.copyOf(s.split("="), 2))
+            .map(o -> new AbstractMap.SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+            .map(entry -> {
+                if (entry.getKey().equals(requestParam)) {
+                    assertEquals(value, entry.getValue());
+                    return true;
+                } else {
+                    return false;
+                }
+            });
     }
 }

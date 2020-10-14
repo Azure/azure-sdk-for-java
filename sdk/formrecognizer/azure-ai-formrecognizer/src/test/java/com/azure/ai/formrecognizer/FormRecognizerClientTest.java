@@ -1531,4 +1531,39 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             validateBusinessCardResultData(syncPoller.getFinalResult(), true);
         }, BUSINESS_CARD_PNG);
     }
+
+    /*
+     * Verify unsupported locales throws when an invalid locale supplied
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void invalidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+            () -> client.beginRecognizeReceipts(
+                getContentDetectionFileData(RECEIPT_JPG_LOCAL_URL),
+                RECEIPT_FILE_LENGTH,
+                new RecognizeReceiptsOptions().setPollInterval(durationTestMode).setLocale("random"),
+                Context.NONE)
+        );
+
+        assertEquals("UnsupportedLocale",
+            ((FormRecognizerErrorInformation) httpResponseException.getValue()).getErrorCode());
+    }
+
+    /**
+     * Verify locale parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void receiptValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClient(httpClient, serviceVersion);
+        client.beginRecognizeReceipts(
+                getContentDetectionFileData(RECEIPT_JPG_LOCAL_URL),
+                RECEIPT_FILE_LENGTH,
+                new RecognizeReceiptsOptions().setPollInterval(durationTestMode).setLocale("en-US"),
+                Context.NONE);
+
+        validateNetworkCallRecord("locale", "en-US");
+    }
 }

@@ -460,7 +460,8 @@ public final class FormRecognizerAsyncClient {
 
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
-            final String localeInfo = recognizeReceiptsOptions.getLocaleInfo();
+            final String localeInfo
+                = recognizeReceiptsOptions.getLocale() == null ? "" : recognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
@@ -552,7 +553,8 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
-            final String localeInfo = recognizeReceiptsOptions.getLocaleInfo();
+            final String localeInfo
+                = recognizeReceiptsOptions.getLocale() == null ? "" : recognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 streamActivationOperation(
