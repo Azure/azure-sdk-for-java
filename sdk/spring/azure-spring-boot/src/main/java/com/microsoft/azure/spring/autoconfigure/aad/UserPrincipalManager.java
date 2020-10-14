@@ -145,7 +145,7 @@ public class UserPrincipalManager {
                                     .map(r -> (JSONArray) r)
                                     .map(Collection::stream)
                                     .orElseGet(Stream::empty)
-                                    .map(r -> (String) r)
+                                    .map(Object::toString)
                                     .collect(Collectors.toSet());
         userPrincipal.setRoles(roles);
         return userPrincipal;
