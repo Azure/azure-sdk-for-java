@@ -6,12 +6,14 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -21,7 +23,9 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -38,6 +42,7 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
@@ -216,7 +221,7 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream() {
-        return openInputStream(new BlobRange(0), null);
+        return openInputStream(null, null);
     }
 
     /**
@@ -230,7 +235,23 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), requestConditions);
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        options = options == null ? new BlobInputStreamOptions() : options;
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            options.getRequestConditions(), getProperties());
     }
 
     /**
@@ -265,6 +286,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -289,6 +315,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -314,12 +345,18 @@ public class BlobClientBase {
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
         return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
-            .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setRehydratePriority(priority).setSourceRequestConditions(
+                ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -376,6 +413,9 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -394,6 +434,9 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -425,6 +468,9 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -622,8 +668,37 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions, context);
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+            .setParallelTransferOptions(finalParallelTransferOptions)
+            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
+            .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDownloadToFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the blob properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(options, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 
@@ -1097,7 +1172,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(new BlobQueryOptions(expression));
+        return openQueryInputStreamWithResponse(new BlobQueryOptions(expression)).getValue();
     }
 
     /**
@@ -1111,9 +1186,10 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions}
      *
      * @param queryOptions {@link BlobQueryOptions The query options}.
-     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
+     * that represents the stream to use for reading the query response.
      */
-    public InputStream openQueryInputStream(BlobQueryOptions queryOptions) {
+    public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
@@ -1122,7 +1198,8 @@ public class BlobClientBase {
         if (response == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
-        return new FluxInputStream(response.getValue());
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
     }
 
     /**

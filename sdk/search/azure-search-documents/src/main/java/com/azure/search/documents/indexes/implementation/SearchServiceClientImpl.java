@@ -24,9 +24,11 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -69,6 +71,18 @@ public final class SearchServiceClientImpl {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /** The DataSourcesImpl object to access its operations. */
@@ -131,12 +145,17 @@ public final class SearchServiceClientImpl {
         return this.indexes;
     }
 
-    /** Initializes an instance of SearchServiceClient client. */
+    /**
+     * Initializes an instance of SearchServiceClient client.
+     *
+     * @param endpoint The endpoint URL of the search service.
+     */
     SearchServiceClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint);
     }
 
@@ -144,9 +163,22 @@ public final class SearchServiceClientImpl {
      * Initializes an instance of SearchServiceClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The endpoint URL of the search service.
      */
     SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    }
+
+    /**
+     * Initializes an instance of SearchServiceClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The endpoint URL of the search service.
+     */
+    SearchServiceClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = "2020-06-30";
         this.dataSources = new DataSourcesImpl(this);
@@ -154,7 +186,8 @@ public final class SearchServiceClientImpl {
         this.skillsets = new SkillsetsImpl(this);
         this.synonymMaps = new SynonymMapsImpl(this);
         this.indexes = new IndexesImpl(this);
-        this.service = RestProxy.create(SearchServiceClientService.class, this.httpPipeline);
+        this.service =
+                RestProxy.create(SearchServiceClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -163,11 +196,11 @@ public final class SearchServiceClientImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClient")
-    private interface SearchServiceClientService {
+    public interface SearchServiceClientService {
         @Get("/servicestats")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<ServiceStatistics>> getServiceStatistics(
+        Mono<Response<SearchServiceStatistics>> getServiceStatistics(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
@@ -186,15 +219,8 @@ public final class SearchServiceClientImpl {
      * @return service level statistics for a search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponseAsync(
+    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponseAsync(
             RequestOptions requestOptions, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

@@ -4,6 +4,7 @@
 package com.azure.spring.data.cosmos.config;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 
 /**
  * To configure cosmos with client, cosmos factory and template
@@ -38,28 +40,30 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
      *
      * @param cosmosMappingContext cosmosMappingContext
      * @return MappingCosmosConverter bean
-     * @throws ClassNotFoundException if the class type is invalid
      */
     @Bean
-    public MappingCosmosConverter mappingCosmosConverter(CosmosMappingContext cosmosMappingContext)
-        throws ClassNotFoundException {
+    public MappingCosmosConverter mappingCosmosConverter(CosmosMappingContext cosmosMappingContext) {
         return new MappingCosmosConverter(cosmosMappingContext, objectMapper);
     }
 
     /**
      * Declare CosmosAsyncClient bean.
      *
-     * @param cosmosClientConfig CosmosClientConfig
+     * @param cosmosClientBuilder cosmosClientBuilder
      * @return CosmosAsyncClient bean
      */
     @Bean
-    public CosmosAsyncClient cosmosAsyncClient(CosmosClientConfig cosmosClientConfig) {
-        return CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+    public CosmosAsyncClient cosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
+        return CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
     }
 
     @Qualifier(Constants.OBJECT_MAPPER_BEAN_NAME)
     @Autowired(required = false)
     private ObjectMapper objectMapper;
+
+    @Qualifier(Constants.AUDITING_HANDLER_BEAN_NAME)
+    @Autowired(required = false)
+    private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     /**
      * Declare CosmosTemplate bean.
@@ -73,7 +77,7 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     public CosmosTemplate cosmosTemplate(CosmosFactory cosmosFactory,
                                          CosmosConfig cosmosConfig,
                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new CosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter);
+        return new CosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
     }
 
     /**
@@ -88,7 +92,7 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     public ReactiveCosmosTemplate reactiveCosmosTemplate(CosmosFactory cosmosFactory,
                                                          CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter);
+        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
     }
 
     /**

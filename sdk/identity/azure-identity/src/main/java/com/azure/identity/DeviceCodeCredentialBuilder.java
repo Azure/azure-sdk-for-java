@@ -15,11 +15,14 @@ import java.util.function.Consumer;
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<DeviceCodeCredentialBuilder> {
-    private Consumer<DeviceCodeInfo> challengeConsumer;
+    private Consumer<DeviceCodeInfo> challengeConsumer =
+        deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+
     private boolean automaticAuthentication = true;
 
     /**
-     * Sets the consumer to meet the device code challenge.
+     * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
+     * the device code info message to stdout.
      *
      * @param challengeConsumer A method allowing the user to meet the device code challenge.
      * @return the InteractiveBrowserCredentialBuilder itself
@@ -37,7 +40,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @return An updated instance of this builder.
      */
     public DeviceCodeCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 

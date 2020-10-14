@@ -16,11 +16,11 @@ import static org.junit.Assert.assertTrue;
 public class CosmosRepositoryFactoryUnitTest {
 
     @Mock
-    CosmosTemplate dbTemplate;
+    CosmosTemplate cosmosTemplate;
 
     @Test
     public void useMappingCosmosDBEntityInfoIfMappingContextSet() {
-        final CosmosRepositoryFactory factory = new CosmosRepositoryFactory(dbTemplate);
+        final CosmosRepositoryFactory factory = new CosmosRepositoryFactory(cosmosTemplate);
         final EntityInformation<Person, String> entityInfo = factory.getEntityInformation(Person.class);
         assertTrue(entityInfo instanceof CosmosEntityInformation);
     }

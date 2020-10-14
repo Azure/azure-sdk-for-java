@@ -16,6 +16,8 @@ import com.azure.storage.blob.options.BlobReleaseLeaseOptions
 import com.azure.storage.blob.options.BlobRenewLeaseOptions
 import spock.lang.Unroll
 
+import java.time.Duration
+
 class LeaseAPITest extends APISpec {
     private BlobClientBase createBlobClient() {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -338,7 +340,7 @@ class LeaseAPITest extends APISpec {
 
         when:
         leaseClient.acquireLease(leaseTime)
-        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriodInSeconds(breakPeriod), null, null)
+        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null)
         def leaseState = bc.getProperties().getLeaseState()
 
         then:
@@ -784,7 +786,7 @@ class LeaseAPITest extends APISpec {
         def leaseClient = createLeaseClient(cc, getRandomUUID())
         leaseClient.acquireLease(leaseTime)
 
-        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriodInSeconds(breakPeriod), null, null)
+        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null)
         def state = cc.getProperties().getLeaseState()
 
         expect:

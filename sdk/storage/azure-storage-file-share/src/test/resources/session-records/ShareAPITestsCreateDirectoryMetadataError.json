@@ -1,47 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatedirectorymetadataerror80151b6c985c?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatedirectorymetadataerror13597d9ddf62?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "d03642b8-3968-4d97-b86b-cd4cf2a671d4"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "71e3d61a-3201-4bad-8378-56c23e3b3975"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911FE25CE84",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:48 GMT",
+      "ETag" : "0x8D8448C96293511",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:47 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99f05-201a-0011-1ffa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:47 GMT",
-      "x-ms-client-request-id" : "d03642b8-3968-4d97-b86b-cd4cf2a671d4"
+      "x-ms-request-id" : "8c89f91c-601a-0022-2375-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:47 GMT",
+      "x-ms-client-request-id" : "71e3d61a-3201-4bad-8378-56c23e3b3975"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatedirectorymetadataerror80151b6c985c/testdirectory?restype=directory",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatedirectorymetadataerror13597d9ddf62/testdirectory?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e09f6468-687d-4ea8-8cb3-4cecbc1f1ce0"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6b00aae7-5a72-4d4b-bab5-85ab4109a123"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9ba99f07-201a-0011-20fa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:9ba99f07-201a-0011-20fa-aa088f000000\nTime:2019-12-04T23:30:48.2340077Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:47 GMT",
-      "x-ms-client-request-id" : "e09f6468-687d-4ea8-8cb3-4cecbc1f1ce0",
+      "x-ms-request-id" : "8c89f91e-601a-0022-2475-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:8c89f91e-601a-0022-2475-761fdd000000\nTime:2020-08-19T22:09:47.9038862Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:47 GMT",
+      "x-ms-client-request-id" : "6b00aae7-5a72-4d4b-bab5-85ab4109a123",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatedirectorymetadataerror80151b6c985c" ]
+  "variables" : [ "shareapitestscreatedirectorymetadataerror13597d9ddf62" ]
 }

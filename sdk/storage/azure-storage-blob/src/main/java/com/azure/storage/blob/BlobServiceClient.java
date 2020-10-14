@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.FilterBlobItem;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
@@ -207,7 +208,7 @@ public final class BlobServiceClient {
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(String query) {
+    public PagedIterable<TaggedBlobItem> findBlobsByTags(String query) {
         return this.findBlobsByTags(new FindBlobsOptions(query), null, Context.NONE);
     }
 
@@ -225,7 +226,7 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
+    public PagedIterable<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options, timeout, context));
     }
 
@@ -450,13 +451,11 @@ public final class BlobServiceClient {
      * @param deletedContainerVersion The version of the previously deleted container.
      * @return The {@link BlobContainerClient} used to interact with the restored container.
      */
-    /*
     public BlobContainerClient undeleteBlobContainer(String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion), null,
             Context.NONE).getValue();
     }
-    */
 
     /**
      * Restores a previously deleted container. The restored container
@@ -479,14 +478,12 @@ public final class BlobServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
      * to interact with the restored container.
      */
-    /*
     public Response<BlobContainerClient> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options, Duration timeout, Context context) {
         Mono<Response<BlobContainerClient>> response =
             this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(options, context)
             .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
 
-        return blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
-     */
 }

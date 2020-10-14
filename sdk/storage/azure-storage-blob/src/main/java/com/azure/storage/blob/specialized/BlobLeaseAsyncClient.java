@@ -28,6 +28,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -383,7 +384,7 @@ public final class BlobLeaseAsyncClient {
         RequestConditions modifiedRequestConditions) {
         try {
             return withContext(context -> breakLeaseWithResponse(new BlobBreakLeaseOptions()
-                .setBreakPeriodInSeconds(breakPeriodInSeconds)
+                .setBreakPeriod(breakPeriodInSeconds == null ? null : Duration.ofSeconds(breakPeriodInSeconds))
                 .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
                 context));
         } catch (RuntimeException ex) {
@@ -418,17 +419,19 @@ public final class BlobLeaseAsyncClient {
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
+        Integer breakPeriod = options.getBreakPeriod() == null ? null
+            : Math.toIntExact(options.getBreakPeriod().getSeconds());
 
         if (this.isBlob) {
             return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null,
-                options.getBreakPeriodInSeconds(), requestConditions.getIfModifiedSince(),
+                breakPeriod, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         } else {
             return this.client.containers().breakLeaseWithRestResponseAsync(null, null,
-                options.getBreakPeriodInSeconds(), requestConditions.getIfModifiedSince(),
+                breakPeriod, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         }

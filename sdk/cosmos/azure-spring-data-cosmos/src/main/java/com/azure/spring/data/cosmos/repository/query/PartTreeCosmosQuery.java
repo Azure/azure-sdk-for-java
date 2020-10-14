@@ -4,8 +4,7 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import org.apache.commons.lang3.NotImplementedException;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.data.repository.query.parser.Part;
@@ -23,6 +22,7 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
 
     /**
      * Initialization
+     *
      * @param method CosmosQueryMethod
      * @param operations CosmosOperations
      */
@@ -35,13 +35,16 @@ public class PartTreeCosmosQuery extends AbstractCosmosQuery {
     }
 
     @Override
-    protected DocumentQuery createQuery(CosmosParameterAccessor accessor) {
+    protected CosmosQuery createQuery(CosmosParameterAccessor accessor) {
         final CosmosQueryCreator creator = new CosmosQueryCreator(tree, accessor, mappingContext);
 
-        final DocumentQuery query = creator.createQuery();
+        final CosmosQuery query = creator.createQuery();
 
         if (tree.isLimiting()) {
-            throw new NotImplementedException("Limiting is not supported.");
+            Integer limit = tree.getMaxResults();
+            if (limit != null) {
+                query.setLimit(limit);
+            }
         }
 
         return query;

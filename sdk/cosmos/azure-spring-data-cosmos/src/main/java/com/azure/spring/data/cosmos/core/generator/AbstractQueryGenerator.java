@@ -4,13 +4,13 @@ package com.azure.spring.data.cosmos.core.generator;
 
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.exception.IllegalQueryException;
-import org.javatuples.Pair;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
+import org.springframework.data.util.Pair;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -56,7 +56,7 @@ public abstract class AbstractQueryGenerator {
         final String parameter = generateQueryParameter(subject);
         final Part.IgnoreCaseType ignoreCase = criteria.getIgnoreCase();
         final String sqlKeyword = criteria.getType().getSqlKeyword();
-        parameters.add(Pair.with(parameter, subjectValue));
+        parameters.add(Pair.of(parameter, subjectValue));
 
         if (CriteriaType.isFunction(criteria.getType())) {
             return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter);
@@ -111,8 +111,8 @@ public abstract class AbstractQueryGenerator {
         final String parameter2 = generateQueryParameter(subject2);
         final String keyword = criteria.getType().getSqlKeyword();
 
-        parameters.add(Pair.with(parameter1, value1));
-        parameters.add(Pair.with(parameter2, value2));
+        parameters.add(Pair.of(parameter1, value1));
+        parameters.add(Pair.of(parameter2, value2));
 
         return String.format("(r.%s %s @%s AND @%s)", subject, keyword, parameter1, parameter2);
     }
@@ -140,7 +140,7 @@ public abstract class AbstractQueryGenerator {
             if (o instanceof String || o instanceof Integer || o instanceof Long || o instanceof Boolean) {
                 String key = "p" + parameters.size();
                 paras.add("@" + key);
-                parameters.add(Pair.with(key, o));
+                parameters.add(Pair.of(key, o));
             } else {
                 throw new IllegalQueryException("IN keyword Range only support Number and String type.");
             }
@@ -177,6 +177,7 @@ public abstract class AbstractQueryGenerator {
             case CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
+            case ARRAY_CONTAINS:
                 return generateBinaryQuery(criteria, parameters);
             case AND:
             case OR:
@@ -201,7 +202,7 @@ public abstract class AbstractQueryGenerator {
      * @return A pair tuple compose of Sql query.
      */
     @NonNull
-    private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull DocumentQuery query) {
+    private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull CosmosQuery query) {
         final List<Pair<String, Object>> parameters = new ArrayList<>();
         String queryString = this.generateQueryBody(query.getCriteria(), parameters);
 
@@ -209,7 +210,7 @@ public abstract class AbstractQueryGenerator {
             queryString = String.join(" ", "WHERE", queryString);
         }
 
-        return Pair.with(queryString, parameters);
+        return Pair.of(queryString, parameters);
     }
 
     private String getParameter(@NonNull Sort.Order order) {
@@ -234,7 +235,7 @@ public abstract class AbstractQueryGenerator {
     }
 
     @NonNull
-    private String generateQueryTail(@NonNull DocumentQuery query) {
+    private String generateQueryTail(@NonNull CosmosQuery query) {
         final List<String> queryTails = new ArrayList<>();
 
         queryTails.add(generateQuerySort(query.getSort()));
@@ -243,16 +244,22 @@ public abstract class AbstractQueryGenerator {
     }
 
 
-    protected SqlQuerySpec generateCosmosQuery(@NonNull DocumentQuery query,
+    protected SqlQuerySpec generateCosmosQuery(@NonNull CosmosQuery query,
                                                @NonNull String queryHead) {
         final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query);
-        final String queryString = String.join(" ", queryHead, queryBody.getValue0(), generateQueryTail(query));
-        final List<Pair<String, Object>> parameters = queryBody.getValue1();
+        String queryString = String.join(" ", queryHead, queryBody.getFirst(), generateQueryTail(query));
+        final List<Pair<String, Object>> parameters = queryBody.getSecond();
 
         List<SqlParameter> sqlParameters = parameters.stream()
-                                                     .map(p -> new SqlParameter("@" + p.getValue0(),
-                                                         toCosmosDbValue(p.getValue1())))
+                                                     .map(p -> new SqlParameter("@" + p.getFirst(),
+                                                         toCosmosDbValue(p.getSecond())))
                                                      .collect(Collectors.toList());
+
+        if (query.getLimit() > 0) {
+            queryString = new StringBuilder(queryString)
+                .append("OFFSET 0 LIMIT ")
+                .append(query.getLimit()).toString();
+        }
 
         return new SqlQuerySpec(queryString, sqlParameters);
     }

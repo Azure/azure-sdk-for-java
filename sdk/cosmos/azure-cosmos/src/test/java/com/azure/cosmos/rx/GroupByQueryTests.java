@@ -17,8 +17,10 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.tuple.Triple;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -27,11 +29,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GroupByQueryTests extends TestSuiteBase {
+    private final static int INSERT_DOCUMENTS_CNT = 40;
     List<Person> personList;
     private CosmosAsyncContainer createdCollection;
     private ArrayList<InternalObjectNode> docs = new ArrayList<>();
@@ -71,28 +75,53 @@ public class GroupByQueryTests extends TestSuiteBase {
         return rand.nextInt(100);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void queryDocuments() {
+    @DataProvider
+    public static Object[] groupByConfigProvider() {
+        // left: groupBy property
+        // right: maxItemCount
+        return new Object[]{
+            Triple.of(
+                "city",
+                new Function<Person, City>() {
+                    @Override
+                    public City apply(Person person) {
+                        return person.getCity();
+                    }
+                }, 35),
+            Triple.of(
+                "guid",
+                new Function<Person, UUID>() {
+                @Override
+                public UUID apply(Person person) {
+                    return person.getGuid();
+                }
+            }, INSERT_DOCUMENTS_CNT/2) // this is to make sure we are testing paging scenario
+        };
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "groupByConfigProvider", timeOut = TIMEOUT)
+    public void queryDocuments(Triple<String, Function<Person, Object>, Integer> groupByConfig) {
         boolean qmEnabled = true;
 
-        String query = "SELECT sum(c.age) as sum_age, c.city FROM c group by c.city";
+        String query =
+            String.format("SELECT sum(c.age) as sum_age, c.%s FROM c group by c.%s", groupByConfig.getLeft(), groupByConfig.getLeft());
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 35);
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, groupByConfig.getRight());
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query,
                                                                                  options,
                                                                                  JsonNode.class);
-        Map<City, Integer> resultMap = personList.stream()
-                                           .collect(Collectors.groupingBy(Person::getCity,
+        Map<Object, Integer> resultMap = personList.stream()
+                                           .collect(Collectors.groupingBy(groupByConfig.getMiddle(),
                                                                           Collectors.summingInt(Person::getAge)));
 
         List<Document> expectedDocumentsList = new ArrayList<>();
-        resultMap.forEach((city, sum) ->
+        resultMap.forEach((groupByObj, sum) ->
                           {
                               Document d = new Document();
                               d.set("sum_age", sum);
-                              d.set("city", city);
+                              d.set(groupByConfig.getLeft(), groupByObj);
                               expectedDocumentsList.add(d);
                           });
 
@@ -100,6 +129,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
 
         List<JsonNode> queryResults = new ArrayList<>();
+
         queryResultPages
             .forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
 
@@ -108,18 +138,21 @@ public class GroupByQueryTests extends TestSuiteBase {
         for (int i = 0; i < expectedDocumentsList.size(); i++) {
             assertThat(expectedDocumentsList.get(i).toString().equals(queryResults.get(i).toString()));
         }
+
+        double totalRequestCharge =  queryResultPages.stream().collect(Collectors.summingDouble(FeedResponse::getRequestCharge));
+        assertThat(totalRequestCharge).isGreaterThan(0);
     }
 
     public void bulkInsert() {
-        generateTestData();
+        generateTestData(INSERT_DOCUMENTS_CNT);
         voidBulkInsertBlocking(createdCollection, docs);
     }
 
-    public void generateTestData() {
+    public void generateTestData(int documentCnt) {
         personList = new ArrayList<>();
         Random rand = new Random();
         ObjectMapper mapper = new ObjectMapper();
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < documentCnt; i++) {
             Person person = getRandomPerson(rand);
             try {
                 docs.add(new InternalObjectNode(mapper.writeValueAsString(person)));
@@ -151,13 +184,6 @@ public class GroupByQueryTests extends TestSuiteBase {
         Pet pet = getRandomPet(rand);
         UUID guid = UUID.randomUUID();
         return new Person(name, city, income, people, age, pet, guid);
-    }
-
-    void generateQueryConfig(){
-        Map<City, Integer> resultMap = personList.stream()
-                                           .collect(Collectors.groupingBy(Person::getCity,
-                                                                          Collectors.summingInt(Person::getAge)));
-
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

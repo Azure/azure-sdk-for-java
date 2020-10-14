@@ -19,6 +19,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -71,7 +72,10 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-        policies.add(interceptorManager.getRecordPolicy());
+
+        if (getTestMode() == TestMode.RECORD) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))

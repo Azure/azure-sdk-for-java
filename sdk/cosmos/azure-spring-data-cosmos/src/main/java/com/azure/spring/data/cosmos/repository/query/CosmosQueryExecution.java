@@ -4,11 +4,12 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.ReturnedType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public interface CosmosQueryExecution {
      * @param container container to conduct query
      * @return Object according to execution result
      */
-    Object execute(DocumentQuery query, Class<?> type, String container);
+    Object execute(CosmosQuery query, Class<?> type, String container);
 
     /**
      * Container operation implementation to execute a container name query
@@ -39,7 +40,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.getContainerName(type);
         }
     }
@@ -56,7 +57,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.find(query, type, container);
         }
     }
@@ -75,10 +76,12 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String collection) {
-            final List<?> results = operations.find(query, type, collection);
+        public Object execute(CosmosQuery query, Class<?> type, String collection) {
+            Iterable<?> resultsIterable = operations.find(query, type, collection);
+            final List<Object> results = new ArrayList<>();
+            resultsIterable.forEach(results::add);
             final Object result;
-            if (results == null || results.isEmpty()) {
+            if (results.isEmpty()) {
                 result = null;
             } else if (results.size() == 1) {
                 result = results.get(0);
@@ -110,7 +113,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.exists(query, type, container);
         }
     }
@@ -127,7 +130,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.delete(query, type, container);
         }
     }
@@ -145,9 +148,9 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             if (pageable.getPageNumber() != 0
-                    && !(pageable instanceof CosmosPageRequest)) {
+                && !(pageable instanceof CosmosPageRequest)) {
                 throw new IllegalStateException("Not the first page but Pageable is not a valid "
                     + "CosmosPageRequest, requestContinuation is required for non first page request");
             }

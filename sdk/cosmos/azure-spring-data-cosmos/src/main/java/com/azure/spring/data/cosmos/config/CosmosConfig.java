@@ -22,7 +22,8 @@ public class CosmosConfig {
      * @param queryMetricsEnabled must not be {@literal null}
      */
     @ConstructorProperties({"responseDiagnosticsProcessor", "queryMetricsEnabled"})
-    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor, boolean queryMetricsEnabled) {
+    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                        boolean queryMetricsEnabled) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.queryMetricsEnabled = queryMetricsEnabled;
     }
@@ -62,6 +63,7 @@ public class CosmosConfig {
         private boolean queryMetricsEnabled;
         CosmosConfigBuilder() {
         }
+
 
         /**
          * Set responseDiagnosticsProcessor

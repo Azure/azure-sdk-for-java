@@ -3,7 +3,6 @@
 
 module com.azure.search.documents {
     requires transitive com.azure.core;
-    requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;

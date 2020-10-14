@@ -188,7 +188,7 @@ public class LeaseClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         BlobBreakLeaseOptions options = new BlobBreakLeaseOptions()
-            .setBreakPeriodInSeconds(retainLeaseInSeconds)
+            .setBreakPeriod(Duration.ofSeconds(retainLeaseInSeconds))
             .setRequestConditions(requestConditions);
 
         System.out.printf("The broken lease has %d seconds remaining on the lease", client

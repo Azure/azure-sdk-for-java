@@ -8,11 +8,13 @@ import com.azure.cosmos.models.FeedResponse;
 
 /**
  * Diagnostics class of cosmos and feed response
+ * <p>
+ * NOTE: activityId will be null in case of cross partition queries
  */
 public class ResponseDiagnostics {
 
-    private CosmosDiagnostics cosmosDiagnostics;
-    private CosmosResponseStatistics cosmosResponseStatistics;
+    private final CosmosDiagnostics cosmosDiagnostics;
+    private final CosmosResponseStatistics cosmosResponseStatistics;
 
     /**
      * Initialization
@@ -36,30 +38,12 @@ public class ResponseDiagnostics {
     }
 
     /**
-     * To set diagnostics of cosmos response
-     *
-     * @param cosmosDiagnostics cannot be null
-     */
-    public void setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-        this.cosmosDiagnostics = cosmosDiagnostics;
-    }
-
-    /**
      * To get the statistics value of cosmos response
      *
      * @return CosmosResponseStatistics
      */
     public CosmosResponseStatistics getCosmosResponseStatistics() {
         return cosmosResponseStatistics;
-    }
-
-    /**
-     * To set statistics of cosmos response
-     *
-     * @param cosmosResponseStatistics cannot be null
-     */
-    public void setCosmosResponseStatistics(CosmosResponseStatistics cosmosResponseStatistics) {
-        this.cosmosResponseStatistics = cosmosResponseStatistics;
     }
 
     @Override
@@ -83,6 +67,8 @@ public class ResponseDiagnostics {
 
     /**
      * Generates statistics from cosmos response
+     * <p>
+     * NOTE: activityId will be null in case of cross partition queries
      */
     public static class CosmosResponseStatistics {
 

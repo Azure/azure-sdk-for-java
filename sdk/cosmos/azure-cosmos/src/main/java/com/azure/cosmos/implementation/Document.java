@@ -29,6 +29,15 @@ public class Document extends Resource {
     }
 
     /**
+     * Constructor.
+     *
+     * @param content byte[] encoding of the json string that represents the resource.
+     */
+    public Document(byte[] content) {
+        super(content);
+    }
+
+    /**
      * Initialize a document object.
      */
     public Document() {
@@ -125,5 +134,15 @@ public class Document extends Resource {
     @Override
     public Object get(String propertyName) {
         return super.get(propertyName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

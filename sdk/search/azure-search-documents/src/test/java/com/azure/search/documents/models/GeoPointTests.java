@@ -6,14 +6,11 @@ package com.azure.search.documents.models;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,15 +25,11 @@ public class GeoPointTests extends SearchTestBase {
 
     private SearchClient client;
 
-    private void uploadDocuments() throws Exception {
-        Reader docsData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
-            .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS)));
+    private void uploadDocuments() {
+        InputStream docsData = Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS));
 
-        ObjectMapper mapper = new ObjectMapper();
-        SerializationUtil.configureMapper(mapper);
-        List<Map<String, Object>> documents = mapper.readValue(docsData,
-            new TypeReference<List<Map<String, Object>>>() {
-            });
+        List<Map<String, Object>> documents = TestHelpers.convertStreamToList(docsData);
         client.uploadDocuments(documents);
 
         waitForIndexing();
@@ -48,7 +41,7 @@ public class GeoPointTests extends SearchTestBase {
     }
 
 //    @Test
-//    public void canDeserializeGeoPoint() throws Exception {
+//    public void canDeserializeGeoPoint() {
 //        client = getSearchClientBuilder(createHotelIndex()).buildClient();
 //
 //        uploadDocuments();
@@ -57,11 +50,11 @@ public class GeoPointTests extends SearchTestBase {
 //            searchOptions, Context.NONE);
 //        assertNotNull(results);
 //
-//        String expected = createPointGeometryString(47.678581, -122.131577);
+//        PointGeometry expected = createPointGeometry(47.678581, -122.131577);
 //        assertObjectEquals(expected, getSearchResults(results).get(0).get("Location"),
 //            true, "properties");
 //    }
-//
+
 //    @Test
 //    public void canSerializeGeoPoint() {
 //        SearchIndex index = new SearchIndex("geopoints")
@@ -86,7 +79,7 @@ public class GeoPointTests extends SearchTestBase {
 //        Map<String, Object> doc = new LinkedHashMap<>();
 //        doc.put("Id", "1");
 //        doc.put("Name", "test");
-//        doc.put("Location", createPointGeometryString(1.0, 100.0));
+//        doc.put("Location", createPointGeometry(1.0, 100.0));
 //        docs.add(doc);
 //        IndexDocumentsResult indexResult = client.uploadDocuments(docs);
 //

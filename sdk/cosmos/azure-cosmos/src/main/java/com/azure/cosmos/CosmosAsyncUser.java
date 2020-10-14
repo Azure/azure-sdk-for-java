@@ -6,12 +6,12 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Permission;
-import com.azure.cosmos.models.CosmosPermissionResponse;
-import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
-import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.CosmosPermissionResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -188,15 +188,16 @@ public class CosmosAsyncUser {
      * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, CosmosQueryRequestOptions options) {
+        CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryPermissions." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
                 spanName,
                 this.getDatabase().getClient().getServiceEndpoint(),
                 this.getDatabase().getId());
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase().getDocClientWrapper()
-                       .queryPermissions(getLink(), query, options)
+                       .queryPermissions(getLink(), query, requestOptions)
                        .map(response -> BridgeInternal.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));

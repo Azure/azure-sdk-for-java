@@ -8,10 +8,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-
-import java.util.Base64;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.Base64;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -52,7 +52,6 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         byte[] dek = client.unwrapKey("A128KW", ek);
         assertArrayEquals(dek, cek);
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")

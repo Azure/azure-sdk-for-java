@@ -19,7 +19,7 @@ public class AvroReaderFactory {
      * @param avroHeader A reactive stream that contains the Avro header.
      * @param avroBody A reactive stream that starts at the offset and represents the start of a block.
      * @param offset The body offset.
-     * @param thresholdIndex The index after which to start returning objects.
+     * @param thresholdIndex The inclusive index after which to start returning objects.
      * @return An AvroReader.
      */
     public AvroReader getAvroReader(Flux<ByteBuffer> avroHeader, Flux<ByteBuffer> avroBody, long offset,

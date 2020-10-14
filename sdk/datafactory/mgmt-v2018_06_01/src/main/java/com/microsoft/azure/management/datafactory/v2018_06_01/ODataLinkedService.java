@@ -65,6 +65,15 @@ public class ODataLinkedService extends LinkedServiceInner {
     private Object servicePrincipalId;
 
     /**
+     * Indicates the azure cloud type of the service principle auth. Allowed
+     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
+     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.azureCloudType")
+    private Object azureCloudType;
+
+    /**
      * Specify the resource you are requesting authorization to use Directory.
      * Type: string (or Expression with resultType string).
      */
@@ -226,6 +235,26 @@ public class ODataLinkedService extends LinkedServiceInner {
      */
     public ODataLinkedService withServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
+        return this;
+    }
+
+    /**
+     * Get indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     *
+     * @return the azureCloudType value
+     */
+    public Object azureCloudType() {
+        return this.azureCloudType;
+    }
+
+    /**
+     * Set indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     *
+     * @param azureCloudType the azureCloudType value to set
+     * @return the ODataLinkedService object itself.
+     */
+    public ODataLinkedService withAzureCloudType(Object azureCloudType) {
+        this.azureCloudType = azureCloudType;
         return this;
     }
 

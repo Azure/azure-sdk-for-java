@@ -36,7 +36,7 @@ class KeyvaultKeyTest extends APISpec {
         }
 
         keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_0))
+            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_1))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
             .buildClient()
@@ -48,7 +48,7 @@ class KeyvaultKeyTest extends APISpec {
             .setKeySize(2048))
 
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_0))
+            .pipeline(getHttpPipeline(getHttpClient(), KeyServiceVersion.V7_1))
             .httpClient(getHttpClient())
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()

@@ -18,6 +18,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class TestCommon {
+
+    static <T> T fromStream(byte[] content, Class<T> classType) {
+        return Utils.parse(content, classType);
+    }
+
     static byte[] GenerateRandomByteArray() {
         Random random = new Random();
         byte[] b = new byte[10];

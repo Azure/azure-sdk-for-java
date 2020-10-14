@@ -22,10 +22,10 @@ import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
+import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
-import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
@@ -714,7 +714,7 @@ class ContainerAPITest extends APISpec {
         normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
-        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(5)).waitForCompletion()
+        copyBlob.beginCopy(normal.getBlobUrl(), getPollingDuration(5000)).waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
@@ -777,6 +777,17 @@ class ContainerAPITest extends APISpec {
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata().get("foo") == "bar"
         blobs.size() == 4 // Normal, copy, metadata, tags
+    }
+
+    @Requires( { playbackMode() } )
+    def "List blobs flat options last access time"() {
+        when:
+        def b = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        b.upload(defaultInputStream.get(), defaultData.remaining())
+        def blob = cc.listBlobs().iterator().next()
+
+        then:
+        blob.getProperties().getLastAccessedTime()
     }
 
     def "List blobs flat options tags"() {
@@ -1696,5 +1707,21 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
+            .credential(primaryCredential)
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient()
+
+        when:
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

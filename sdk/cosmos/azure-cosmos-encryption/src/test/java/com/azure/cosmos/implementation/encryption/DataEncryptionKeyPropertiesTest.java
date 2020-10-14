@@ -4,22 +4,9 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableList;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

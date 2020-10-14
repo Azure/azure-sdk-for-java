@@ -5,6 +5,8 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +21,22 @@ public class CosmosItemRequestOptions {
     private PartitionKey partitionKey;
     private String ifMatchETag;
     private String ifNoneMatchETag;
+
+
+    /**
+     * copy constructor
+     */
+    CosmosItemRequestOptions(CosmosItemRequestOptions options) {
+        consistencyLevel = options.consistencyLevel;
+        indexingDirective = options.indexingDirective;
+        preTriggerInclude = options.preTriggerInclude != null ? new ArrayList<>(options.preTriggerInclude) : null;
+        postTriggerInclude = options.postTriggerInclude != null ? new ArrayList<>(options.postTriggerInclude) : null;
+        sessionToken = options.sessionToken;
+        partitionKey = options.partitionKey;
+        ifMatchETag = options.ifMatchETag;
+        ifNoneMatchETag = options.ifNoneMatchETag;
+    }
+
 
     /**
      * Constructor
@@ -82,18 +100,25 @@ public class CosmosItemRequestOptions {
      *
      * @return the consistency level.
      */
-
-    ConsistencyLevel getConsistencyLevel() {
+    public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
     /**
-     * Sets the consistency level required for the request.
+     * Sets the consistency level required for the request. The effective consistency level
+     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * is for example Session you can specify on a request-by-request level for individual requests
+     * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
+     * request but will not guarantee session consistency (read-your-own-write) anymore
+     * NOTE: If the consistency-level set on a request level here is SESSION and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
      *
      * @param consistencyLevel the consistency level.
      * @return the CosmosItemRequestOptions.
      */
-    CosmosItemRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    public CosmosItemRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }

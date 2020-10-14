@@ -11,8 +11,9 @@ import java.time.OffsetDateTime;
  * Code snippets for {@link BlobChangefeedAsyncClient}
  */
 public class BlobChangefeedAsyncClientJavaDocCodeSnippets {
+    private String endpoint = "endpoint";
     private BlobChangefeedAsyncClient client = new BlobChangefeedClientBuilder(
-        new BlobServiceClientBuilder().buildClient()).buildAsyncClient();
+        new BlobServiceClientBuilder().endpoint(endpoint).buildClient()).buildAsyncClient();
 
     /**
      * Code snippet for {@link BlobChangefeedAsyncClient#getEvents()}

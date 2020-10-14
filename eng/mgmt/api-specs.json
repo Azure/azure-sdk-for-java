@@ -146,8 +146,16 @@
     "source": "specification/hanaonazure/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "healthcareapis/resource-manager": {
+    "source": "specification/healthcareapis/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "hybridcompute/resource-manager": {
+    "source": "specification/hybridcompute/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "iotcentral/resource-manager": {
@@ -345,7 +353,10 @@
   },
   "subscription/resource-manager": {
     "source": "specification/subscription/resource-manager/readme.md",
-    "args": "--multiapi --fluent"
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"Subscription\""
+    }
   },
   "support/resource-manager": {
     "source": "specification/support/resource-manager/readme.md",

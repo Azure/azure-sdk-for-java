@@ -34,8 +34,8 @@ public final class NamespacesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     NamespacesImpl(ServiceBusManagementClientImpl client) {
-        this.service = RestProxy.create(NamespacesService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

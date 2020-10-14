@@ -29,7 +29,6 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
         super(keyId, pipeline, version);
     }
 
-
     /**
      * Get the identifier of the key to use for cryptography operations.
      *

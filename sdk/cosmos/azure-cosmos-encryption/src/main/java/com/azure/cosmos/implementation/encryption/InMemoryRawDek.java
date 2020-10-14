@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
+import com.azure.cosmos.encryption.DataEncryptionKey;
 
 import java.time.Duration;
 import java.time.Instant;

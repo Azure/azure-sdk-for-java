@@ -12,13 +12,14 @@ public class UserAgentContainer {
     private final String baseUserAgent;
     private String suffix;
     private String userAgent;
+    public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
     private UserAgentContainer(String sdkName, String sdkVersion) {
         this.baseUserAgent = Utils.getUserAgent(sdkName, sdkVersion);
         this.suffix = "";
         this.userAgent = baseUserAgent;
     }
-    
+
     public UserAgentContainer() {
         this(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.SDK_VERSION);
     }
@@ -33,7 +34,7 @@ public class UserAgentContainer {
         }
 
         this.suffix = suffix;
-        this.userAgent = baseUserAgent.concat(this.suffix);
+        this.userAgent = baseUserAgent.concat(" ").concat(this.suffix);
     }
 
     public String getUserAgent() {

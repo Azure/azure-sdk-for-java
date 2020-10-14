@@ -9,6 +9,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -18,6 +19,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
@@ -119,9 +121,9 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#downloadToFile(String)} and
+     * Code snippets for {@link BlobClientBase#downloadToFile(String)},
      * {@link BlobClientBase#downloadToFileWithResponse(String, BlobRange, ParallelTransferOptions, DownloadRetryOptions, BlobRequestConditions,
-     * boolean, Duration, Context)}
+     * boolean, Duration, Context)} and {@link BlobClientBase#downloadToFileWithResponse(BlobDownloadToFileOptions, Duration, Context)}
      */
     public void downloadToFile() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String
@@ -154,6 +156,15 @@ public class BlobClientBaseJavaDocCodeSnippets {
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions-Duration-Context
+        client.downloadToFileWithResponse(new BlobDownloadToFileOptions(file)
+            .setRange(new BlobRange(1024, 2018L))
+            .setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(5))
+            .setOpenOptions(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+                StandardOpenOption.READ))), timeout, new Context(key2, value2));
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions-Duration-Context
     }
 
     /**
@@ -235,8 +246,6 @@ public class BlobClientBaseJavaDocCodeSnippets {
         client.setAccessTier(AccessTier.HOT);
         System.out.println("Set tier completed.");
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTier#AccessTier
-
-
     }
 
     /**
@@ -293,7 +302,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
-        RequestConditions modifiedRequestConditions = new RequestConditions()
+        BlobBeginCopySourceRequestConditions modifiedRequestConditions = new BlobBeginCopySourceRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
         SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(new BlobBeginCopyOptions(url).setMetadata(metadata)
@@ -341,7 +350,6 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(BlobCopyFromUrlOptions, Duration, Context)}
      */
     public void copyFromUrlWithResponse2CodeSnippets() {
-
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
@@ -489,7 +497,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
                 .setPriority(RehydratePriority.STANDARD)
                 .setLeaseId(leaseId)
-                .setIfTagsMatch(tags),
+                .setTagsConditions(tags),
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context
     }
@@ -552,7 +560,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#openQueryInputStream(BlobQueryOptions)}
+     * Code snippet for {@link BlobClientBase#openQueryInputStreamWithResponse(BlobQueryOptions)}
      */
     public void openQueryInputStream2() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
@@ -577,7 +585,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        InputStream inputStream = client.openQueryInputStream(queryOptions);
+        InputStream inputStream = client.openQueryInputStreamWithResponse(queryOptions).getValue();
         // Now you can read from the input stream like you would normally.
         // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
     }

@@ -27,7 +27,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
@@ -160,18 +160,18 @@ class UnnamedSessionManager implements AutoCloseable {
      * @return The next expiration time for the session lock.
      * @throws IllegalStateException if the receiver is a non-session receiver.
      */
-    Mono<Instant> renewSessionLock(String sessionId) {
+    Mono<OffsetDateTime> renewSessionLock(String sessionId) {
         return validateParameter(sessionId, "sessionId", "renewSessionLock").then(
             getManagementNode().flatMap(channel -> {
                 final UnnamedSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-                return channel.renewSessionLock(sessionId, associatedLinkName).handle((instant, sink) -> {
+                return channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
                     if (receiver != null) {
-                        receiver.setSessionLockedUntil(instant);
+                        receiver.setSessionLockedUntil(offsetDateTime);
                     }
 
-                    sink.next(instant);
+                    sink.next(offsetDateTime);
                 });
             }));
     }
@@ -283,9 +283,7 @@ class UnnamedSessionManager implements AutoCloseable {
                 }
 
                 return new UnnamedSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
-                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler,
-                    receiverOptions.autoLockRenewalEnabled(), receiverOptions.getMaxAutoLockRenewalDuration(),
-                    this::renewSessionLock);
+                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock);
             })))
             .flatMapMany(session -> session.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");

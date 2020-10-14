@@ -12,25 +12,25 @@ import java.time.OffsetDateTime;
 
 /** The RuleDescription model. */
 @JacksonXmlRootElement(
-        localName = "null",
+        localName = "RuleDescription",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
 public final class RuleDescription {
     /*
-     * The Filter property.
+     * The filter property.
      */
     @JacksonXmlProperty(
             localName = "Filter",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private RuleFilter filter;
+    private RuleFilterImpl filter;
 
     /*
-     * The Action property.
+     * The action property.
      */
     @JacksonXmlProperty(
             localName = "Action",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private RuleAction action;
+    private RuleActionImpl action;
 
     /*
      * The exact time the rule was created.
@@ -41,7 +41,7 @@ public final class RuleDescription {
     private OffsetDateTime createdAt;
 
     /*
-     * The Name property.
+     * The name property.
      */
     @JacksonXmlProperty(
             localName = "Name",
@@ -49,41 +49,41 @@ public final class RuleDescription {
     private String name;
 
     /**
-     * Get the filter property: The Filter property.
+     * Get the filter property: The filter property.
      *
      * @return the filter value.
      */
-    public RuleFilter getFilter() {
+    public RuleFilterImpl getFilter() {
         return this.filter;
     }
 
     /**
-     * Set the filter property: The Filter property.
+     * Set the filter property: The filter property.
      *
      * @param filter the filter value to set.
      * @return the RuleDescription object itself.
      */
-    public RuleDescription setFilter(RuleFilter filter) {
+    public RuleDescription setFilter(RuleFilterImpl filter) {
         this.filter = filter;
         return this;
     }
 
     /**
-     * Get the action property: The Action property.
+     * Get the action property: The action property.
      *
      * @return the action value.
      */
-    public RuleAction getAction() {
+    public RuleActionImpl getAction() {
         return this.action;
     }
 
     /**
-     * Set the action property: The Action property.
+     * Set the action property: The action property.
      *
      * @param action the action value to set.
      * @return the RuleDescription object itself.
      */
-    public RuleDescription setAction(RuleAction action) {
+    public RuleDescription setAction(RuleActionImpl action) {
         this.action = action;
         return this;
     }
@@ -109,7 +109,7 @@ public final class RuleDescription {
     }
 
     /**
-     * Get the name property: The Name property.
+     * Get the name property: The name property.
      *
      * @return the name value.
      */
@@ -118,7 +118,7 @@ public final class RuleDescription {
     }
 
     /**
-     * Set the name property: The Name property.
+     * Set the name property: The name property.
      *
      * @param name the name value to set.
      * @return the RuleDescription object itself.

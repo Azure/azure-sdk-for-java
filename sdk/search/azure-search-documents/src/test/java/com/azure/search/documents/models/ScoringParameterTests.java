@@ -65,7 +65,7 @@ public class ScoringParameterTests {
 //
 //        assertEquals(expectValue, toFlattenString);
 //    }
-//
+
 //    @Test
 //    public void testConstructorWithNullGeopoint() {
 //        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint", (PointGeometry) null));

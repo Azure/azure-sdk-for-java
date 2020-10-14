@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
@@ -15,6 +16,7 @@ import com.azure.core.util.DateTimeRfc1123
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.queue.implementation.util.BuilderHelper
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -24,6 +26,7 @@ import spock.lang.Specification
 class BuildHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.queue.core.windows.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -35,8 +38,8 @@ class BuildHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), null,
-            new FreshDateTestClient(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
+            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -53,6 +56,7 @@ class BuildHelperTest extends Specification {
             .endpoint(endpoint)
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -71,6 +75,58 @@ class BuildHelperTest extends Specification {
             .queueName("queue")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
+            .buildClient()
+
+        then:
+        StepVerifier.create(queueClient.getHttpPipeline().send(request(queueClient.getQueueUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
+     */
+    def "Custom application id in UA string"() {
+        when:
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
+            new ApplicationIdUAStringTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+
+        then:
+        StepVerifier.create(pipeline.send(request(endpoint)))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     */
+    def "Service client custom application id in UA string"() {
+        when:
+        def serviceClient = new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .buildClient()
+
+        then:
+        StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getQueueServiceUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the queue client builder's default pipeline.
+     */
+    def "Queue client custom application id in UA string"() {
+        when:
+        def queueClient = new QueueClientBuilder()
+            .endpoint(endpoint)
+            .queueName("queue")
+            .credential(credentials)
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
             .buildClient()
 
         then:
@@ -99,6 +155,26 @@ class BuildHelperTest extends Specification {
             }
 
             return new DateTimeRfc1123(dateHeader)
+        }
+    }
+
+    def "Parse protocol"() {
+        when:
+        def parts = BuilderHelper.parseEndpoint(endpoint +
+            "?sv=2019-12-12&ss=bfqt&srt=s&sp=rwdlacupx&se=2020-08-15T05:43:05Z&st=2020-08-14T21:43:05Z&spr=https,http&sig=sig", null)
+
+        then:
+        parts.getSasToken().contains("https%2Chttp")
+    }
+
+    private static final class ApplicationIdUAStringTestClient implements HttpClient {
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+                throw new RuntimeException("Failed to set 'User-Agent' header.")
+            }
+            assert request.getHeaders().getValue("User-Agent").startsWith("custom-id")
+            return Mono.just(new MockHttpResponse(request, 200))
         }
     }
 }

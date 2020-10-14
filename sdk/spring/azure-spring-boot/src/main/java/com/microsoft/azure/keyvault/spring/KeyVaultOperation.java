@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -22,10 +23,13 @@ import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
+@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class KeyVaultOperation {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
@@ -49,6 +53,10 @@ public class KeyVaultOperation {
      * Stores the secret keys.
      */
     private final List<String> secretKeys;
+    /**
+     * Stores the timer object to schedule refresh task.
+     */
+    private static Timer timer;
 
     /**
      * Constructor.
@@ -72,14 +80,24 @@ public class KeyVaultOperation {
         refreshProperties();
 
         if (refreshInMillis > 0) {
-            final Timer timer = new Timer();
-            final TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    refreshProperties();
+            synchronized (KeyVaultOperation.class) {
+                if (timer != null) {
+                    try {
+                        timer.cancel();
+                        timer.purge();
+                    } catch (RuntimeException runtimeException) {
+                        LOG.error("Error of terminating Timer", runtimeException);
+                    }
                 }
-            };
-            timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+                timer = new Timer();
+                final TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        refreshProperties();
+                    }
+                };
+                timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+            }
         }
     }
 
@@ -125,6 +143,7 @@ public class KeyVaultOperation {
                 .orElseGet(Stream::empty)
                 .map(PagedResponse::getElements)
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+                .filter(SecretProperties::isEnabled)
                 .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(

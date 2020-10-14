@@ -3,18 +3,17 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A builder class that is used to create URLs.
  */
 public final class UrlBuilder {
-    private final ClientLogger logger = new ClientLogger(UrlBuilder.class);
+    private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
 
     private String scheme;
     private String host;
@@ -293,15 +292,22 @@ public final class UrlBuilder {
     }
 
     /**
-     * Parse a UrlBuilder from the provided URL string.
+     * Parses the passed {@code url} string into a UrlBuilder.
      *
-     * @param url The string to parse.
-     * @return The UrlBuilder that was parsed from the string.
+     * @param url The URL string to parse.
+     * @return The UrlBuilder that was created from parsing the passed URL string.
      */
     public static UrlBuilder parse(String url) {
-        final UrlBuilder result = new UrlBuilder();
-        result.with(url, UrlTokenizerState.SCHEME_OR_HOST);
-        return result;
+        /*
+         * Parsing the URL string into a UrlBuilder is a non-trivial operation and many calls into RestProxy will use
+         * the same root URL string. To save CPU costs we retain a parsed version of the URL string in memory. Given
+         * that UrlBuilder is mutable we must return a cloned version of the cached UrlBuilder.
+         */
+        // ConcurrentHashMap doesn't allow for null keys, coerce it into an empty string.
+        String concurrentSafeUrl = (url == null) ? "" : url;
+
+        return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
+            new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
     }
 
     /**
@@ -345,5 +351,17 @@ public final class UrlBuilder {
 
     private static String emptyToNull(String value) {
         return value == null || value.isEmpty() ? null : value;
+    }
+
+    private UrlBuilder copy() {
+        UrlBuilder copy = new UrlBuilder();
+
+        copy.scheme = this.scheme;
+        copy.host = this.host;
+        copy.path = this.path;
+        copy.port = this.port;
+        copy.query.putAll(this.query);
+
+        return copy;
     }
 }

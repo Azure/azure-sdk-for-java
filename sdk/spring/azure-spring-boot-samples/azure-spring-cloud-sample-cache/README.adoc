@@ -1,0 +1,83 @@
+= Azure redis cache spring cloud starter shared library for Java
+== Key concepts
+== Getting started
+
+This starter is based on spring-boot-starter-data-redis.
+It fetches and auto configures redis properties via Azure Redis Cache Management SDK.
+
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+Maven coordinates:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>spring-starter-azure-cache</artifactId>
+</dependency>
+----
+
+Gradle coordinates:
+
+[source]
+----
+dependencies {
+    compile group: 'com.microsoft.azure', name: 'spring-starter-azure-cache'
+}
+----
+
+=== How to run
+
+1. Create azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how to create credential file]
++
+....
+$  az login
+$  az account set --subscription <name or id>
+$  az ad sp create-for-rbac --sdk-auth > my.azureauth
+....
++
+Make sure `my.azureauth` is encoded with UTF-8.
+
+2. Put auth file under `src/main/resources/`
+
+3. Create an Azure Redis cache instance.
+Please follow
+https://docs.microsoft.com/en-us/azure/redis-cache/[Azure redis cache].
+
+4. Update `src/main/resources/application.properties` to specify resource group, cache instance name and credential file path:
++
+....
+# Enter 'my.azureauth' here if following step 1 and 2
+spring.cloud.azure.credential-file-path=[credential-file-path]
+
+spring.cloud.azure.resource-group=[resource-group]
+spring.cloud.azure.region=[region]
+
+spring.cloud.azure.redis.name=[azure-redis-instance-name]
+....
++
+
+5. Run the application using the `$ mvn spring-boot:run` command.
+6. Send a GET request to check, where `name` could be any string:
++
+....
+$ curl -XGET http://localhost:8080/{name}
+....
+
+7. Confirm from Azure Redis Cache console in Azure Portal
++
+....
+$ keys *
+....
+
+8. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+link:../../azure-spring-cloud-cache-sample[Here]
+is a sample application that uses this starter.
+
+== Troubleshooting
+== Next steps
+== Contributing

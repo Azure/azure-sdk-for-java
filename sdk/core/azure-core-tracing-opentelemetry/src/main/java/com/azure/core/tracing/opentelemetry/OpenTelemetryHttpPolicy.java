@@ -15,7 +15,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.common.AttributeValue;
-import io.opentelemetry.context.propagation.HttpTextFormat;
+import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.Tracer;
@@ -53,7 +53,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
     // request
-    private final HttpTextFormat<SpanContext> traceContextFormat = TRACER.getHttpTextFormat();
+    private final TextMapPropagator traceContextFormat = OpenTelemetry.getPropagators().getTextMapPropagator();
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -79,7 +79,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
         SpanContext spanContext = span.getContext();
         if (spanContext.isValid()) {
-            traceContextFormat.inject(spanContext, request, contextSetter);
+            traceContextFormat.inject(io.grpc.Context.current(), request, contextSetter);
         }
 
         // run the next policy and handle success and error
@@ -166,6 +166,6 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     // lambda that actually injects arbitrary header into the request
-    private final HttpTextFormat.Setter<HttpRequest> contextSetter =
+    private final TextMapPropagator.Setter<HttpRequest> contextSetter =
         (request, key, value) -> request.getHeaders().put(key, value);
 }

@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.data.repository.query.ReturnedType;
@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.ReturnedType;
 public abstract class AbstractCosmosQuery implements RepositoryQuery {
 
     private final CosmosQueryMethod method;
-    private final CosmosOperations operations;
+    protected final CosmosOperations operations;
 
     /**
      * Initialization
@@ -33,9 +33,10 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
      * @param parameters must not be {@literal null}.
      * @return execution result. Can be {@literal null}.
      */
+    @Override
     public Object execute(Object[] parameters) {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(method, parameters);
-        final DocumentQuery query = createQuery(accessor);
+        final CosmosQuery query = createQuery(accessor);
 
         final ResultProcessor processor = method.getResultProcessor().withDynamicProjection(accessor);
         final String container = ((CosmosEntityMetadata) method.getEntityInformation()).getContainerName();
@@ -76,7 +77,7 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         return method;
     }
 
-    protected abstract DocumentQuery createQuery(CosmosParameterAccessor accessor);
+    protected abstract CosmosQuery createQuery(CosmosParameterAccessor accessor);
 
     protected abstract boolean isDeleteQuery();
 

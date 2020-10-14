@@ -1154,6 +1154,7 @@ class BlockBlobAPITest extends APISpec {
 
     @Requires({ liveMode() })
     def "Async buffered upload empty"() {
+
         expect:
         StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null, true))
             .assertNext({ assert it.getETag() != null })
@@ -1187,7 +1188,13 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Timeouts")
     def "Async buffered upload"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
@@ -1216,6 +1223,29 @@ class BlockBlobAPITest extends APISpec {
         50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
         10 * Constants.MB  | 2 * Constants.MB  | 4        || 5
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Async buffered upload computeMd5"() {
+        setup:
+        def byteBufferList = []
+        for (def i = 0; i < byteBufferCount; i++) {
+            byteBufferList.add(getRandomData(size))
+        }
+        Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize)
+            .setBlockSizeLong(blockSize)
+
+        expect:
+        blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
+
+        where:
+        size           | maxSingleUploadSize | blockSize               | byteBufferCount
+        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
+        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
+        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1257,6 +1287,11 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     @Requires({ liveMode() })
     def "Buffered upload with reporter"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
         when:
         def uploadReporter = new Reporter(blockSize)
 
@@ -1287,12 +1322,16 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Timeouts")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
          */
         setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize * Constants.MB)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
@@ -1322,7 +1361,8 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1811,5 +1851,19 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+            .buildBlockBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

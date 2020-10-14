@@ -3,6 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
  */
 public class AsyncSample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -24,10 +26,11 @@ public class AsyncSample {
     public static void main(String[] args) {
         // Create a file service client
         ShareServiceAsyncClient fileServiceAsyncClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
+                                                            .sasToken(SASTOKEN)
                                                             .buildAsyncClient();
         // Create a share
         String shareName = generateRandomName();
-        fileServiceAsyncClient.createShareWithResponse(shareName, null, null).subscribe(
+        fileServiceAsyncClient.createShareWithResponse(shareName, (ShareCreateOptions) null, null).subscribe(
             response -> System.out.printf("Successfully created a share with status code: %d.",
                 response.getStatusCode()),
             err -> System.out.println("Failed to create a share. Reasons: " + err.getMessage()),

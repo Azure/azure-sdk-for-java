@@ -1,14 +1,17 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Specification
 
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.*
@@ -24,6 +27,10 @@ class BlobChangefeedPagedFluxTest extends Specification {
     List<BlobChangefeedEventWrapper> mockEventWrappers
 
     def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
         setupEvents()
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockChangefeedFactory = mock(ChangefeedFactory.class)
@@ -209,16 +216,19 @@ class BlobChangefeedPagedFluxTest extends Specification {
             BlobChangefeedEvent event = MockedChangefeedResources.getMockBlobChangefeedEvent(i)
             mockEvents.add(event)
         }
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:15:00", "shard0", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:16:00", "shard1", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:17:00", "shard2", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-02T20:01:00", "shard3", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-03T20:08:00", "shard4", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-04T20:06:00", "shard5", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-05T20:04:00", "shard6", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:03:00", "shard7", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:06:00", "shard8", null, 0, 0))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:12:00", "shard9", null, 0, 0))
+        String urlHost = 'testaccount.blob.core.windows.net'
+        OffsetDateTime endTime = OffsetDateTime.of(2020, 10, 2, 20, 15, 0, 0, ZoneOffset.UTC)
+        String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/00/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/01/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/02/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/03/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/04/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/05/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/06/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/07/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/08/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/09/2020/08/02/2300/"))
         for (int i = 0; i < 10; i++) {
             mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(i), mockCursors.get(i)))
         }

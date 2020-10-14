@@ -62,10 +62,13 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
                         // Valid document
                         entitiesResult.getEntities().forEach(linkedEntity -> {
                             System.out.println("Linked Entities:");
-                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s,"
+                                    + " Bing Entity Search API ID: %s.%n",
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                                linkedEntity.getDataSource(), linkedEntity.getBingEntitySearchApiId());
                             linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                                "\tMatched entity: %s, confidence score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                                "\tMatched entity: %s, confidence score: %f.%n",
+                                entityMatch.getText(), entityMatch.getConfidenceScore()));
                         });
                     }
                 }

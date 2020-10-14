@@ -6,13 +6,10 @@ package com.azure.spring.data.cosmos;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.common.PropertyLoader;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import java.lang.reflect.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-
-import java.lang.reflect.Field;
 
 /**
  * Factory class for CosmosDb to create client
@@ -29,7 +26,7 @@ public class CosmosFactory {
         Constants.USER_AGENT_SUFFIX + PropertyLoader.getProjectVersion();
 
     private static String getUserAgentSuffix() {
-        return ";" + USER_AGENT_SUFFIX;
+        return USER_AGENT_SUFFIX;
     }
 
     /**
@@ -66,16 +63,14 @@ public class CosmosFactory {
     /**
      * Create Cosmos Async Client
      *
-     * @param config CosmosClientConfig
+     * @param cosmosClientBuilder CosmosClientBuilder
      * @return CosmosAsyncClient
      */
-    public static CosmosAsyncClient createCosmosAsyncClient(CosmosClientConfig config) {
-        final CosmosClientBuilder cosmosClientBuilder = getCosmosClientBuilderFromConfig(config);
-        return cosmosClientBuilder.buildAsyncClient();
+    public static CosmosAsyncClient createCosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
+        return updateCosmosClientBuilderWithUASuffix(cosmosClientBuilder).buildAsyncClient();
     }
 
-    private static CosmosClientBuilder getCosmosClientBuilderFromConfig(CosmosClientConfig cosmosClientConfig) {
-        final CosmosClientBuilder cosmosClientBuilder = cosmosClientConfig.getCosmosClientBuilder();
+    private static CosmosClientBuilder updateCosmosClientBuilderWithUASuffix(CosmosClientBuilder cosmosClientBuilder) {
         cosmosClientBuilder.contentResponseOnWriteEnabled(true);
         final String userAgentSuffixValue = getUserAgentSuffixValue(cosmosClientBuilder);
         String userAgentSuffix = getUserAgentSuffix();
@@ -83,15 +78,15 @@ public class CosmosFactory {
             userAgentSuffix += userAgentSuffixValue;
         }
 
-        return cosmosClientConfig.getCosmosClientBuilder().userAgentSuffix(userAgentSuffix);
+        return cosmosClientBuilder.userAgentSuffix(userAgentSuffix);
     }
 
     private static String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) {
-        final Field userAgentSuffix = FieldUtils.getDeclaredField(CosmosClientBuilder.class,
-            "userAgentSuffix", true);
         try {
-            return (String) userAgentSuffix.get(cosmosClientBuilder);
-        } catch (IllegalAccessException e) {
+            final Field userAgentSuffixField = cosmosClientBuilder.getClass().getDeclaredField("userAgentSuffix");
+            userAgentSuffixField.setAccessible(true);
+            return (String) userAgentSuffixField.get(cosmosClientBuilder);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             LOGGER.error("Error occurred while getting userAgentSuffix from CosmosClientBuilder",
                 e);
         }

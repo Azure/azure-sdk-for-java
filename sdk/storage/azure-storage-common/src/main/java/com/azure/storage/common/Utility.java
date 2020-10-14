@@ -280,4 +280,21 @@ public final class Utility {
                 });
         });
     }
+
+    /**
+     * Appends a query parameter to a url.
+     *
+     * @param url The url.
+     * @param key The query key.
+     * @param value The query value.
+     * @return The updated url.
+     */
+    public static String appendQueryParameter(String url, String key, String value) {
+        if (url.contains("?")) {
+            url = String.format("%s&%s=%s", url, key, value);
+        } else {
+            url = String.format("%s?%s=%s", url, key, value);
+        }
+        return url;
+    }
 }

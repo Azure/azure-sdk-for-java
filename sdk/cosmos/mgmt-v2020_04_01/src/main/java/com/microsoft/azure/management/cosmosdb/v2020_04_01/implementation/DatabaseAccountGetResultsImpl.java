@@ -18,6 +18,7 @@ import com.microsoft.azure.management.cosmosdb.v2020_04_01.ApiProperties;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.Capability;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.ConnectorOffer;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.ConsistencyPolicy;
+import com.microsoft.azure.management.cosmosdb.v2020_04_01.CorsPolicy;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.DatabaseAccountOfferType;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.FailoverPolicy;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.IpAddressOrRange;
@@ -102,6 +103,11 @@ class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAc
     @Override
     public ConsistencyPolicy consistencyPolicy() {
         return this.inner().consistencyPolicy();
+    }
+
+    @Override
+    public List<CorsPolicy> cors() {
+        return this.inner().cors();
     }
 
     @Override
@@ -268,6 +274,16 @@ class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAc
             this.createParameter.withConsistencyPolicy(consistencyPolicy);
         } else {
             this.updateParameter.withConsistencyPolicy(consistencyPolicy);
+        }
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountGetResultsImpl withCors(List<CorsPolicy> cors) {
+        if (isInCreateMode()) {
+            this.createParameter.withCors(cors);
+        } else {
+            this.updateParameter.withCors(cors);
         }
         return this;
     }

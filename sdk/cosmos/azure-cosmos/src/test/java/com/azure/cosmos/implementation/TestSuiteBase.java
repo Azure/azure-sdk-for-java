@@ -276,7 +276,7 @@ public class TestSuiteBase extends DocumentClientTest {
                                                       RequestOptions options) {
         AsyncDocumentClient client = createGatewayHouseKeepingDocumentClient().build();
         try {
-            return client.createCollection("dbs/" + databaseId, collection, options).single().block().getResource();
+            return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
         } finally {
             client.close();
         }
@@ -284,12 +284,12 @@ public class TestSuiteBase extends DocumentClientTest {
 
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection, RequestOptions options) {
-        return client.createCollection("dbs/" + databaseId, collection, options).single().block().getResource();
+        return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
     }
 
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection) {
-        return client.createCollection("dbs/" + databaseId, collection, null).single().block().getResource();
+        return client.createCollection("dbs/" + databaseId, collection, null).block().getResource();
     }
 
     private static DocumentCollection getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes() {
@@ -413,7 +413,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document, RequestOptions options) {
-        return client.createDocument(TestUtils.getCollectionNameLink(databaseId, collectionId), document, options, false).single().block().getResource();
+        return client.createDocument(TestUtils.getCollectionNameLink(databaseId, collectionId), document, options, false).block().getResource();
     }
 
     public Flux<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
@@ -435,7 +435,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
-        return client.createUser("dbs/" + databaseId, user, null).single().block().getResource();
+        return client.createUser("dbs/" + databaseId, user, null).block().getResource();
     }
 
     public static User safeCreateUser(AsyncDocumentClient client, String databaseId, User user) {
@@ -494,7 +494,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteCollection(AsyncDocumentClient client, String collectionLink) {
-        client.deleteCollection(collectionLink, null).single().block();
+        client.deleteCollection(collectionLink, null).block();
     }
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
@@ -511,7 +511,7 @@ public class TestSuiteBase extends DocumentClientTest {
     public static void safeDeleteDocument(AsyncDocumentClient client, String documentLink, RequestOptions options) {
         if (client != null && documentLink != null) {
             try {
-                client.deleteDocument(documentLink, options).single().block();
+                client.deleteDocument(documentLink, options).block();
             } catch (Exception e) {
                 CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
@@ -522,7 +522,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteDocument(AsyncDocumentClient client, String documentLink) {
-        client.deleteDocument(documentLink, null).single().block();
+        client.deleteDocument(documentLink, null).block();
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {
@@ -535,7 +535,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteUser(AsyncDocumentClient client, String userLink) {
-        client.deleteUser(userLink, null).single().block();
+        client.deleteUser(userLink, null).block();
     }
 
     public static String getDatabaseLink(Database database) {
@@ -549,7 +549,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected Database createDatabase(AsyncDocumentClient client, Database database) {
         Mono<ResourceResponse<Database>> databaseObservable = client.createDatabase(database, null);
-        return databaseObservable.single().block().getResource();
+        return databaseObservable.block().getResource();
     }
 
     static protected Database createDatabase(AsyncDocumentClient client, String databaseId) {
@@ -579,7 +579,7 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
         if (client != null) {
             try {
-                client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).single().block();
+                client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).block();
             } catch (Exception e) {
             }
         }
@@ -594,7 +594,7 @@ public class TestSuiteBase extends DocumentClientTest {
                     .block();
 
             for (DocumentCollection collection : collections) {
-                client.deleteCollection(collection.getSelfLink(), null).single().block().getResource();
+                client.deleteCollection(collection.getSelfLink(), null).block().getResource();
             }
         }
     }
@@ -602,7 +602,7 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected void safeDeleteCollection(AsyncDocumentClient client, DocumentCollection collection) {
         if (client != null && collection != null) {
             try {
-                client.deleteCollection(collection.getSelfLink(), null).single().block();
+                client.deleteCollection(collection.getSelfLink(), null).block();
             } catch (Exception e) {
             }
         }
@@ -611,7 +611,7 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected void safeDeleteCollection(AsyncDocumentClient client, String databaseId, String collectionId) {
         if (client != null && databaseId != null && collectionId != null) {
             try {
-                client.deleteCollection("/dbs/" + databaseId + "/colls/" + collectionId, null).single().block();
+                client.deleteCollection("/dbs/" + databaseId + "/colls/" + collectionId, null).block();
             } catch (Exception e) {
             }
         }
@@ -954,6 +954,7 @@ public class TestSuiteBase extends DocumentClientTest {
         return new Object[][]{
                 {true},
                 {false},
+                {null}
         };
     }
 }

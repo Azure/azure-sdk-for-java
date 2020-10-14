@@ -1,5 +1,5 @@
 # Create a configuration setting with Azure Core Tracing OpenTelemetry
- 
+
 Following documentation describes instructions to run a sample program for creating a Configuration Setting with tracing instrumentation.
 
 ## Getting Started
@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.2.4</version>
+    <version>0.6.0</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.2.4</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -28,7 +28,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 
@@ -36,11 +36,11 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 ```java
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 
@@ -54,8 +54,8 @@ public class Sample {
 
     private static Tracer configureOpenTelemetryAndLoggingExporter() {
         LoggingSpanExporter exporter = new LoggingSpanExporter();
-        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerProvider();
-        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+        TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
+        tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
         return tracerSdkProvider.get("Sample");
     }
 

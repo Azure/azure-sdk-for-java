@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class RuleDescriptionEntryContent {
     /*
-     * Type of content in queue response
+     * Type of content in rule response
      */
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
@@ -27,7 +27,7 @@ public final class RuleDescriptionEntryContent {
     private RuleDescription ruleDescription;
 
     /**
-     * Get the type property: Type of content in queue response.
+     * Get the type property: Type of content in rule response.
      *
      * @return the type value.
      */
@@ -36,7 +36,7 @@ public final class RuleDescriptionEntryContent {
     }
 
     /**
-     * Set the type property: Type of content in queue response.
+     * Set the type property: Type of content in rule response.
      *
      * @param type the type value to set.
      * @return the RuleDescriptionEntryContent object itself.

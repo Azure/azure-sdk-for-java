@@ -140,6 +140,30 @@ class CassandraResourcesImpl extends WrapperImpl<CassandraResourcesInner> implem
     }
 
     @Override
+    public Observable<ThroughputSettingsGetResults> migrateCassandraKeyspaceToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName) {
+        CassandraResourcesInner client = this.inner();
+        return client.migrateCassandraKeyspaceToAutoscaleAsync(resourceGroupName, accountName, keyspaceName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateCassandraKeyspaceToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName) {
+        CassandraResourcesInner client = this.inner();
+        return client.migrateCassandraKeyspaceToManualThroughputAsync(resourceGroupName, accountName, keyspaceName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<ThroughputSettingsGetResults> getCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName) {
         CassandraResourcesInner client = this.inner();
         return client.getCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName)
@@ -155,6 +179,30 @@ class CassandraResourcesImpl extends WrapperImpl<CassandraResourcesInner> implem
     public Observable<ThroughputSettingsGetResults> updateCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
         CassandraResourcesInner client = this.inner();
         return client.updateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateCassandraTableToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName) {
+        CassandraResourcesInner client = this.inner();
+        return client.migrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateCassandraTableToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName) {
+        CassandraResourcesInner client = this.inner();
+        return client.migrateCassandraTableToManualThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName)
         .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
             @Override
             public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {

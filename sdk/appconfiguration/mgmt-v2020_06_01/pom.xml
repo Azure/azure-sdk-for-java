@@ -15,7 +15,7 @@
         <relativePath>../../parents/azure-arm-parent/pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-appconfiguration</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0-beta-1</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for AppConfiguration Management</name>
     <description>This package contains Microsoft AppConfiguration Management SDK.</description>

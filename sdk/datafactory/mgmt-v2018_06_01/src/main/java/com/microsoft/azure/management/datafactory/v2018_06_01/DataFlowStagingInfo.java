@@ -21,10 +21,11 @@ public class DataFlowStagingInfo {
     private LinkedServiceReference linkedService;
 
     /**
-     * Folder path for staging blob.
+     * Folder path for staging blob. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "folderPath")
-    private String folderPath;
+    private Object folderPath;
 
     /**
      * Get staging linked service reference.
@@ -47,21 +48,21 @@ public class DataFlowStagingInfo {
     }
 
     /**
-     * Get folder path for staging blob.
+     * Get folder path for staging blob. Type: string (or Expression with resultType string).
      *
      * @return the folderPath value
      */
-    public String folderPath() {
+    public Object folderPath() {
         return this.folderPath;
     }
 
     /**
-     * Set folder path for staging blob.
+     * Set folder path for staging blob. Type: string (or Expression with resultType string).
      *
      * @param folderPath the folderPath value to set
      * @return the DataFlowStagingInfo object itself.
      */
-    public DataFlowStagingInfo withFolderPath(String folderPath) {
+    public DataFlowStagingInfo withFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
     }

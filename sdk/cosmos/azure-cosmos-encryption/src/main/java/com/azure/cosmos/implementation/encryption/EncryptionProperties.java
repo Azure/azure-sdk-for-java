@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.Constants;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -27,7 +26,7 @@ import java.io.IOException;
 
 @JsonSerialize(using = EncryptionProperties.JsonSerializer.class)
 @JsonDeserialize(using = EncryptionProperties.JsonDeserializer.class)
-public class EncryptionProperties {
+class EncryptionProperties {
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static ObjectReader getObjectReader() {

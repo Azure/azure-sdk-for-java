@@ -311,6 +311,19 @@ class AzureFileSystemProviderTest extends APISpec {
         props.getCacheControl() == "myControl"
     }
 
+    def "Create dir fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        fs.provider().createDirectory(path)
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "Copy source"() {
         setup:
@@ -630,6 +643,32 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    def "Copy closed fs"() {
+        setup:
+        def fs = createFS(config)
+        basicSetupForCopyTest(fs)
+        def fsDest = createFS(config)
+        def destPath = fs.getPath(getDefaultDir(fsDest), generateBlobName())
+        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        if (sourceClosed) {
+            fs.close()
+        } else {
+            fsDest.close()
+        }
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(IOException)
+
+        where:
+        sourceClosed | _
+        true         | _
+        false        | _
+    }
+
+    @Unroll
     def "Delete"() {
         setup:
         def fs = createFS(config)
@@ -709,6 +748,23 @@ class AzureFileSystemProviderTest extends APISpec {
         !client.exists()
     }
 
+    def "Delete closed fs"() {
+        setup:
+        def fs = createFS(config)
+
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        putDirectoryBlob(blobClient)
+
+        when:
+        fs.close()
+        fs.provider().delete(path)
+
+        then:
+        thrown(IOException)
+    }
+
     def "DirectoryStream"() {
         setup:
         def fs = createFS(config)
@@ -733,6 +789,19 @@ class AzureFileSystemProviderTest extends APISpec {
 
         when:
         fs.provider().newDirectoryStream(fs.getPath("fakeRoot:"), { path -> true })
+
+        then:
+        thrown(IOException)
+    }
+
+    def "DirectoryStream closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(getDefaultDir(fs))
+
+        when:
+        fs.close()
+        fs.provider().newDirectoryStream(path, null)
 
         then:
         thrown(IOException)
@@ -795,6 +864,23 @@ class AzureFileSystemProviderTest extends APISpec {
 
         when:
         fs.provider().newInputStream(fs.getPath("foo"))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "InputStream fs closed"() {
+        setup:
+        def fs = createFS(config)
+
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().newInputStream(path)
 
         then:
         thrown(IOException)
@@ -959,6 +1045,19 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
+    def "OutputStream closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        fs.provider().newOutputStream(path)
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "GetAttributeView"() {
         setup:
@@ -1033,6 +1132,22 @@ class AzureFileSystemProviderTest extends APISpec {
         when: "Path does not exist"
         // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), BasicFileAttributes.class)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ReadAttributes fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().readAttributes(path, AzureBasicFileAttributes.class)
 
         then:
         thrown(IOException)
@@ -1126,6 +1241,22 @@ class AzureFileSystemProviderTest extends APISpec {
         when: "Path does not exist"
         // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), "basic:creationTime")
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ReadAttributes str closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().readAttributes(path, "basic:*")
 
         then:
         thrown(IOException)
@@ -1270,6 +1401,22 @@ class AzureFileSystemProviderTest extends APISpec {
         when: "Path does not exist"
         // Covers virtual directory, too
         fs.provider().setAttribute(fs.getPath("path"), "azureBlob:metadata", Collections.emptyMap())
+
+        then:
+        thrown(IOException)
+    }
+
+    def "SetAttributes fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().setAttribute(path, "azureBlob:blobHttpHeaders", new BlobHttpHeaders())
 
         then:
         thrown(IOException)
