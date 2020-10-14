@@ -20,13 +20,11 @@ import com.azure.perf.test.core.PerfStressTest;
 import java.time.Duration;
 
 /**
- * Base class for performance etest.
+ * Base class for performance test.
  * @param <TOptions> for performance configuration.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
-    protected static final Duration TIMEOUT = Duration.ofSeconds(60);
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
@@ -63,7 +61,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         // Setup the service client
         final ServiceBusClientBuilder baseBuilder = new ServiceBusClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(RETRY_OPTIONS)
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(60)))
             .transportType(AmqpTransportType.AMQP)
             .connectionString(connectionString);
 

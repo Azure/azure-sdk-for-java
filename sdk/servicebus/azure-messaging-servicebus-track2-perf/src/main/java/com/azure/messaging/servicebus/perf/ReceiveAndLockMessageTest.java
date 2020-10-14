@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Performance test.
@@ -41,7 +42,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
                 ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
-                message.setMessageId((i + 1) + "");
+                message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
             return senderAsync.sendMessages(messages);
