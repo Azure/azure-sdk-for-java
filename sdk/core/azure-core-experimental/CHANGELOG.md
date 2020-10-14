@@ -2,6 +2,7 @@
 
 ## 1.0.0-beta.7 (Unreleased)
 
+- Added : API `fromObject()` in `BinaryData` which uses `JsonSerializer` present in the classpath.
 
 ## 1.0.0-beta.6 (2020-10-06)
 
