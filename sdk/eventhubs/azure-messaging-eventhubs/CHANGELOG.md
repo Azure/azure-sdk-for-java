@@ -1,7 +1,21 @@
 # Release History
 
-## 5.3.0-beta.1 (Unreleased)
+## 5.4.0-beta.1 (Unreleased)
 
+
+## 5.3.0 (2020-10-12)
+### New Features
+- Add `clientOptions` to `EventHubClientBuilder` to support for setting user's application id in the user-agent property
+of the amqp connection.
+
+### Other Changes
+- `EventHubProcessorClient` checks connection status of each partition consumer periodically and closes
+the partition consumer to rebuild the connection later.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.9.0`.
+- Update `azure-core-amqp` dependency to `1.6.0`.
+- Update `azure-identity` dependency to `1.1.3`.
 
 ## 5.2.0 (2020-09-11)
 - Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 

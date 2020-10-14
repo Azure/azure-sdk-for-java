@@ -22,7 +22,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "JsonWriteSettings", value = JsonWriteSettings.class),
     @JsonSubTypes.Type(name = "DelimitedTextWriteSettings", value = DelimitedTextWriteSettings.class),
-    @JsonSubTypes.Type(name = "AvroWriteSettings", value = AvroWriteSettings.class)
+    @JsonSubTypes.Type(name = "OrcWriteSettings", value = OrcWriteSettings.class),
+    @JsonSubTypes.Type(name = "AvroWriteSettings", value = AvroWriteSettings.class),
+    @JsonSubTypes.Type(name = "ParquetWriteSettings", value = ParquetWriteSettings.class)
 })
 public class FormatWriteSettings {
     /**

@@ -57,6 +57,11 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
     String provisioningState();
 
     /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * @return the repoConfiguration value.
      */
     FactoryRepoConfiguration repoConfiguration();
@@ -137,6 +142,18 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
         }
 
         /**
+         * The stage of the factory definition allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess Whether or not public network access is allowed for the data factory. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
          * The stage of the factory definition allowing to specify RepoConfiguration.
          */
         interface WithRepoConfiguration {
@@ -153,7 +170,7 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Factory>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithGlobalParameters, DefinitionStages.WithIdentity, DefinitionStages.WithRepoConfiguration {
+        interface WithCreate extends Creatable<Factory>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithGlobalParameters, DefinitionStages.WithIdentity, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithRepoConfiguration {
         }
     }
     /**

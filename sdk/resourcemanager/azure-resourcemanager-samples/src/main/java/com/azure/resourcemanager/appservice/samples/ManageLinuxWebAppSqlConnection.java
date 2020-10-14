@@ -81,7 +81,7 @@ public final class ManageLinuxWebAppSqlConnection {
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                    .withBuiltInImage(RuntimeStack.PHP_5_6)
+                    .withBuiltInImage(RuntimeStack.PHP_7_2)
                     .defineSourceControl()
                     .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
                     .withBranch("master")
