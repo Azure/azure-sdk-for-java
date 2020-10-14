@@ -146,6 +146,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]opentelemetry[/\\]exporters[/\\]azuremonitor[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -196,6 +197,9 @@
             files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.opentelemetry.exporters.azuremonitor.AzureMonitorExporter"/>
+
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -252,6 +256,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerProvider.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.gson.JsonNodeUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.jackson.JsonNodeUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.util.BinaryData.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -263,6 +268,10 @@
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.amqp.implementation.RetryUtil.java"/>
+
+  <!-- AMQP logger name set in lambda function to specify the function name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.core.amqp.implementation.ReactorConnection.java"/>
 
   <!-- The Identity Azure Platform End to tend Test.-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
@@ -427,6 +436,7 @@
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.opentelemetry.exporters.azuremonitor.implementation.*"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
@@ -455,6 +465,7 @@
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]monitor[/\\].*"/>
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
@@ -511,10 +522,6 @@
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
 
   <!-- Checkstyle suppressions for azure-test-watch package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
@@ -550,25 +557,38 @@
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.PhoneNumberAsyncClient.java"/>
-  
-  <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
-  <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
 
-  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
-  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
-  <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
-  <suppress checks="ConstantName|MemberName" files="com.azure.cosmos.UserRepositoryConfiguration|AppConfiguration|MyItem.java" />
+  <!-- ### begin: Spring related suppression -->
+  <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
+  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"></suppress>
 
-  <!-- Checkstyle suppressions for spring-data-gremlin package  -->
-  <suppress checks="PackageName" files="com.microsoft.spring.data.gremlin.*" />
-  <suppress checks="MethodName" files="com.microsoft.spring.data.gremlin.common.GremlinConfig.java" />
+  <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"></suppress>
 
-  <!-- Checkstyle suppressions for azure-spring-integration-core package -->
+  <!-- Package Name: B2C is the product name -->
+  <suppress checks="PackageName" files="com.azure.spring.b2c.*|com.azure.spring.autoconfigure.b2c.*"/>
+
+  <!-- MissingJavadocMethod: Temporarily skip -->
+  <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]gremlin[/\\]*"/>
+
+  <!--BlacklistedWordsCheck: B2C is the product name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"></suppress>
+
+  <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties" />
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.UserGroups" />
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver" />
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.gremlin.conversion.source.AbstractGremlinSource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
+
+  <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.core.api.CheckpointConfig.java"/>
-
-  <!-- Checkstyle suppressions for azure-spring-integration-servicebus package -->
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+  <!-- ### end: Spring related suppression -->
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->

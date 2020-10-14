@@ -9,17 +9,20 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareAccessPolicy
+import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions
+import com.azure.storage.file.share.options.ShareSetAccessTierOptions
 import com.azure.storage.file.share.options.ShareSetMetadataOptions
 import com.azure.storage.file.share.options.ShareSetQuotaOptions
 import spock.lang.Unroll
@@ -28,6 +31,7 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
@@ -124,11 +128,12 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(metadata, quota, null, null), 201)
 
         where:
-        metadata     | quota
-        null         | null
-        null         | 1
-        testMetadata | null
-        testMetadata | 1
+        metadata     | quota | accessTier
+        null         | null  | null
+        null         | 1     | null
+        testMetadata | null  | null
+        null         | null  | ShareAccessTier.HOT
+        testMetadata | 1     | ShareAccessTier.HOT
     }
 
     @Unroll
@@ -511,6 +516,59 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
+    def "Set access tier"() {
+        given:
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
+
+        when:
+        def getAccessTierBeforeResponse = primaryShareClient.getProperties()
+        def setAccessTierResponse = primaryShareClient.setAccessTierWithResponse(new ShareSetAccessTierOptions(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null)
+        def getAccessTierAfterResponse = primaryShareClient.getProperties()
+
+        then:
+        getAccessTierBeforeResponse.getAccessTier() == ShareAccessTier.HOT.toString()
+        FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
+        getAccessTierAfterResponse.getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
+        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
+        getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
+        getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
+    }
+
+    def "Set access tier lease"() {
+        given:
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        when:
+        def setAccessTierResponse = primaryShareClient.setAccessTierWithResponse(
+            new ShareSetAccessTierOptions(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
+    }
+
+    def "Set access tier lease error"() {
+        given:
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        def setAccessTierResponse = primaryShareClient.setAccessTierWithResponse(
+            new ShareSetAccessTierOptions(ShareAccessTier.TRANSACTION_OPTIMIZED).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    def "Set access tier error"() {
+        when:
+        primaryShareClient.setAccessTier(ShareAccessTier.HOT)
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
     def "Set metadata"() {
         given:
         primaryShareClient.createWithResponse(testMetadata, null, null, null)
@@ -883,5 +941,21 @@ class ShareAPITests extends APISpec {
     def "Get Share Name"() {
         expect:
         shareName == primaryShareClient.getShareName()
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        primaryShareClient.create()
+
+        def shareClient = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = shareClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

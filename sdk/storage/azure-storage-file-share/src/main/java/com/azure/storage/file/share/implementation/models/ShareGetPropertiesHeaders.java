@@ -115,6 +115,24 @@ public final class ShareGetPropertiesHeaders {
     private LeaseStatusType leaseStatus;
 
     /*
+     * Returns the access tier set on the share.
+     */
+    @JsonProperty(value = "x-ms-access-tier")
+    private String accessTier;
+
+    /*
+     * Returns the last modified time (in UTC) of the access tier of the share.
+     */
+    @JsonProperty(value = "x-ms-access-tier-change-time")
+    private DateTimeRfc1123 accessTierChangeTime;
+
+    /*
+     * Returns the transition state betweeen access tiers, when present.
+     */
+    @JsonProperty(value = "x-ms-access-tier-transition-state")
+    private String accessTierTransitionState;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -449,6 +467,78 @@ public final class ShareGetPropertiesHeaders {
      */
     public ShareGetPropertiesHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
+        return this;
+    }
+
+    /**
+     * Get the accessTier property: Returns the access tier set on the share.
+     *
+     * @return the accessTier value.
+     */
+    public String getAccessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Set the accessTier property: Returns the access tier set on the share.
+     *
+     * @param accessTier the accessTier value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setAccessTier(String accessTier) {
+        this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the accessTierChangeTime property: Returns the last modified time
+     * (in UTC) of the access tier of the share.
+     *
+     * @return the accessTierChangeTime value.
+     */
+    public OffsetDateTime getAccessTierChangeTime() {
+        if (this.accessTierChangeTime == null) {
+            return null;
+        }
+        return this.accessTierChangeTime.getDateTime();
+    }
+
+    /**
+     * Set the accessTierChangeTime property: Returns the last modified time
+     * (in UTC) of the access tier of the share.
+     *
+     * @param accessTierChangeTime the accessTierChangeTime value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+        if (accessTierChangeTime == null) {
+            this.accessTierChangeTime = null;
+        } else {
+            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the accessTierTransitionState property: Returns the transition state
+     * betweeen access tiers, when present.
+     *
+     * @return the accessTierTransitionState value.
+     */
+    public String getAccessTierTransitionState() {
+        return this.accessTierTransitionState;
+    }
+
+    /**
+     * Set the accessTierTransitionState property: Returns the transition state
+     * betweeen access tiers, when present.
+     *
+     * @param accessTierTransitionState the accessTierTransitionState value to
+     * set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setAccessTierTransitionState(String accessTierTransitionState) {
+        this.accessTierTransitionState = accessTierTransitionState;
         return this;
     }
 

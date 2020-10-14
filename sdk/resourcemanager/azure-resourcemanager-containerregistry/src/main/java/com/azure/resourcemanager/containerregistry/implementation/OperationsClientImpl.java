@@ -70,7 +70,9 @@ public final class OperationsClientImpl implements OperationsClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            Context context);
     }
 
     /**
@@ -88,7 +90,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, context))
             .<PagedResponse<OperationDefinitionInner>>map(
@@ -120,7 +122,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01";
+        final String apiVersion = "2019-05-01";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, context)
@@ -202,8 +204,14 @@ public final class OperationsClientImpl implements OperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), context))
             .<PagedResponse<OperationDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -231,9 +239,15 @@ public final class OperationsClientImpl implements OperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(

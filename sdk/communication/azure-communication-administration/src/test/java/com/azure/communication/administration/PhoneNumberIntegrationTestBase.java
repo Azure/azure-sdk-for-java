@@ -2,25 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.communication.administration;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import static org.junit.jupiter.api.Assertions.fail;
-
 public class PhoneNumberIntegrationTestBase extends TestBase {
-    private static final String PLAYBACK_ACCESS_KEY = "QWNjZXNzS2V5";
-    private static final String PLAYBACK_ENDPOINT = "https://REDACTED.communication.azure.com";
     private static final String ENV_ACCESS_KEY =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY");
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");
     private static final String ENV_ENDPOINT =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT");
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
+    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String COUNTRY_CODE =
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
@@ -66,27 +60,25 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
     protected static final String LOCATION_OPTION_CITY =
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-LA");
+    protected static final String SEARCH_OPTIONS_DESCRIPTION =
+        Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_DESCRIPTION", "testsearch20200014");
+    protected static final String SEARCH_OPTIONS_NAME =
+        Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_NAME", "testsearch20200014");
 
     protected PhoneNumberClientBuilder getClientBuilder() {
-        String endpoint;
         HttpClient httpClient;
-        CommunicationClientCredential credential;
 
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
-            endpoint = PLAYBACK_ENDPOINT;
-            credential = this.createCommunicationClientCredential(PLAYBACK_ACCESS_KEY);
         } else {
             httpClient = new NettyAsyncHttpClientBuilder().build();
-            endpoint = ENV_ENDPOINT;
-            credential = this.createCommunicationClientCredential(ENV_ACCESS_KEY);
         }
 
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
         builder
             .httpClient(httpClient)
-            .endpoint(endpoint)
-            .credential(credential);
+            .endpoint(ENV_ENDPOINT)
+            .accessKey(ENV_ACCESS_KEY);
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -95,13 +87,24 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return builder;
     }
 
-    private CommunicationClientCredential createCommunicationClientCredential(String accessKey) {
-        try {
-            return new CommunicationClientCredential(accessKey);
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            fail(e);
+    protected PhoneNumberClientBuilder getClientBuilderWithConnectionString() {
+        HttpClient httpClient;
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            httpClient = interceptorManager.getPlaybackClient();
+        } else {
+            httpClient = new NettyAsyncHttpClientBuilder().build();
         }
 
-        return null;
+        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        builder
+            .httpClient(httpClient)
+            .connectionString(CONNECTION_STRING);
+
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
     }
 }
