@@ -20,15 +20,15 @@ import com.microsoft.azure.management.appservice.v2016_03_01.ResourceScopeType;
 import java.util.List;
 
 class RecommendationImpl extends WrapperImpl<RecommendationInner> implements Recommendation {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    RecommendationImpl(RecommendationInner inner,  AppServiceManager manager) {
+    RecommendationImpl(RecommendationInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
