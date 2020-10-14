@@ -71,6 +71,7 @@ class KeyVaultClient extends DelegateRestClient {
      */
     public KeyVaultClient(String keyVaultUri) {
         super(RestClientFactory.createClient());
+        LOGGER.log(INFO, "Using KeyVault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }

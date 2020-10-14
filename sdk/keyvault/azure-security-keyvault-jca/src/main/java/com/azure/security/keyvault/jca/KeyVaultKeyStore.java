@@ -2,8 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.Key;
 import java.security.KeyStore;
@@ -14,11 +18,17 @@ import java.security.UnrecoverableEntryException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
+import java.util.logging.Logger;
 
 /**
  * The Azure KeyVault implementation of the KeyStoreSpi.
@@ -26,6 +36,11 @@ import java.util.List;
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultKeyStore extends KeyStoreSpi {
+
+    /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
     /**
      * Stores the list of aliases.
@@ -186,10 +201,12 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
                     parameter.getClientId(),
                     parameter.getClientSecret());
         }
+        sideLoad();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) throws IOException, NoSuchAlgorithmException, CertificateException {
+        sideLoad();
     }
 
     @Override
@@ -227,5 +244,79 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineStore(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException, CertificateException {
+    }
+
+    /**
+     * Get the filenames.
+     *
+     * @param path the path.
+     * @return the filenames.
+     * @throws IOException when an I/O error occurs.
+     */
+    private String[] getFilenames(String path) throws IOException {
+        List<String> filenames = new ArrayList<>();
+        InputStream in = getClass().getResourceAsStream(path);
+        if (in != null) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String resource;
+            while ((resource = br.readLine()) != null) {
+                filenames.add(resource);
+            }
+        }
+        return filenames.toArray(new String[0]);
+    }
+
+    /**
+     * Read all the bytes for a given input stream.
+     *
+     * @param inputStream the input stream.
+     * @return the byte-array.
+     * @throws IOException when an I/O error occurs.
+     */
+    private byte[] readAllBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        while (true) {
+            int r = inputStream.read(buffer);
+            if (r == -1) {
+                break;
+            }
+            byteOutput.write(buffer, 0, r);
+        }
+        return byteOutput.toByteArray();
+    }
+
+    /**
+     * Side-load certificate from classpath.
+     */
+    private void sideLoad() {
+        try {
+            String[] filenames = getFilenames("/keyvault");
+            if (filenames.length > 0) {
+                for (String filename : filenames) {
+                    try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
+                        String alias = filename;
+                        if (alias != null) {
+                            if (alias.lastIndexOf('.') != -1) {
+                                alias = alias.substring(0, alias.lastIndexOf('.'));
+                            }
+                            byte[] bytes = readAllBytes(inputStream);
+                            try {
+                                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                                X509Certificate certificate = (X509Certificate) cf.generateCertificate(
+                                        new ByteArrayInputStream(bytes));
+                                engineSetCertificateEntry(alias, certificate);
+                                LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
+                                        new Object[]{alias, filename});
+                            } catch (KeyStoreException | CertificateException e) {
+                                LOGGER.log(WARNING, "Unable to side-load certificate", e);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException ioe) {
+            LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
+        }
     }
 }
