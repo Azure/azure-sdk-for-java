@@ -706,7 +706,7 @@ public interface SqlDatabase
              * @param skuName sku name to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSku(ServiceObjectiveName skuName);
+            // SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSku(ServiceObjectiveName skuName);
 
             /**
              * Sets the sku for the SQL Database.
@@ -856,7 +856,7 @@ public interface SqlDatabase
              * @param skuName sku name to be set for database
              * @return The next stage of the update
              */
-            Update withSku(ServiceObjectiveName skuName);
+            // Update withSku(ServiceObjectiveName skuName);
 
             /**
              * Sets the sku for the SQL Database.

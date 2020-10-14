@@ -212,7 +212,7 @@ public interface SqlElasticPool
              * @param capacity the capacity to be set for elastic pool
              * @return The next stage of the definition
              */
-            SqlElasticPool.DefinitionStages.WithAttach<ParentT> withSku(String skuName, long capacity);
+            // SqlElasticPool.DefinitionStages.WithAttach<ParentT> withSku(String skuName, long capacity);
 
             /**
              * Sets the sku for the SQL Elastic Pool.
