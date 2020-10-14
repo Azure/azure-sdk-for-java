@@ -3,6 +3,7 @@
 
 package com.azure.communication.administration;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,10 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 
 public class ReadmeSamples {
 
@@ -137,6 +142,28 @@ public class ReadmeSamples {
             .accessKey(accessKey)
             .httpClient(httpClient)
             .buildClient();
+
+        return phoneNumberClient;
+    }
+
+    /**
+     * Sample code for creating an async Phone Number Client.
+     *
+     * @return the Phone Number Async Client.
+     */
+    public PhoneNumberAsyncClient createPhoneNumberAsyncClient() {
+        // You can find your endpoint and access token from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        String accessKey = "SECRET";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        PhoneNumberAsyncClient phoneNumberClient = new PhoneNumberClientBuilder()
+            .endpoint(endpoint)
+            .accessKey(accessKey)
+            .httpClient(httpClient)
+            .buildAsyncClient();
 
         return phoneNumberClient;
     }
@@ -345,5 +372,70 @@ public class ReadmeSamples {
         pstnConfiguration.setCallbackUrl("CALLBACK_URL");
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
         phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
+    }
+
+    /**
+     * Sample code to async create a search as a long running operation
+     */
+    public void beginCreateSearchAsync() {
+        String phonePlanId = "PHONE_PLAN_ID";
+
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add(phonePlanId);
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode("AREA_CODE_FOR_SEARCH")
+            .setDescription("DESCRIPTION_FOR_SEARCH")
+            .setDisplayName("NAME_FOR_SEARCH")
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+        
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumberAsyncClient phoneNumberClient = createPhoneNumberAsyncClient();
+
+        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
+            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .blockLast();
+        PhoneNumberSearch result = asyncRes.getValue();
+
+        System.out.println("Search Id: " + result.getSearchId());
+        for (String phoneNumber: result.getPhoneNumbers()) {
+            System.out.println("Phone Number: " + phoneNumber);
+        }
+    }
+
+
+    /**
+     * Sample code to create a search as a long running operation
+     */
+    public void beginCreateSearch() {
+        String phonePlanId = "PHONE_PLAN_ID";
+
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add(phonePlanId);
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode("AREA_CODE_FOR_SEARCH")
+            .setDescription("DESCRIPTION_FOR_SEARCH")
+            .setDisplayName("NAME_FOR_SEARCH")
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+        
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        res.waitForCompletion();
+        PhoneNumberSearch result = res.getFinalResult();
+
+        System.out.println("Search Id: " + result.getSearchId());
+        for (String phoneNumber: result.getPhoneNumbers()) {
+            System.out.println("Phone Number: " + phoneNumber);
+        }
     }
 }

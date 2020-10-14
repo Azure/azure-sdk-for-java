@@ -272,6 +272,29 @@ PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 ```
 
+## Long Running Operations
+
+The Phone Number Client supports a variety of long running operations that allow indefinite polling time to the functions listed down below. Because these functions may take a long time to resolve, the use of long running operations is encouraged.
+
+### Create Search
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L395-L407 -->
+```java
+PhoneNumberAsyncClient phoneNumberClient = createPhoneNumberAsyncClient();
+
+PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
+    phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch> asyncRes = 
+    poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+    .blockLast();
+PhoneNumberSearch result = asyncRes.getValue();
+
+System.out.println("Search Id: " + result.getSearchId());
+for (String phoneNumber: result.getPhoneNumbers()) {
+    System.out.println("Phone Number: " + phoneNumber);
+}
+```
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
