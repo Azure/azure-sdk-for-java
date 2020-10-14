@@ -2,7 +2,6 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // ------------------------------------------------------------
 
-
 package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.implementation.ItemDeserializer;

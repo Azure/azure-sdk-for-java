@@ -38,11 +38,11 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.models.EncryptionModelBridgeInternal.createCosmosItemResponse;
 import static com.azure.cosmos.models.EncryptionModelBridgeInternal.createEncryptionItemResponse;
 
 
 // TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
+// TODO: should we test the apis for byte-array (streaming api replacement)?
 public class EncryptionCosmosAsyncContainer {
     private final Scheduler encryptionScheduler;
     private final Encryptor encryptor;
@@ -208,7 +208,6 @@ public class EncryptionCosmosAsyncContainer {
             return container.createItem(item, partitionKey, requestOptions);
         }
 
-
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
@@ -253,8 +252,6 @@ public class EncryptionCosmosAsyncContainer {
                         return this.responseFactory.createItemResponse(rsp, (Class<T>) item.getClass());
                     }
                 );
-
-            // TODO: no support for streaming
         }
     }
 
@@ -348,8 +345,6 @@ public class EncryptionCosmosAsyncContainer {
                         return this.responseFactory.createItemResponse(rsp, (Class<T>) item.getClass());
                     }
                 );
-
-            // TODO: no support for streaming
         }
     }
 
@@ -427,8 +422,6 @@ public class EncryptionCosmosAsyncContainer {
                         return this.responseFactory.createItemResponse(rsp, (Class<T>) item.getClass());
                     }
                 );
-
-            // TODO: no support for streaming
         }
     }
 
@@ -610,7 +603,6 @@ public class EncryptionCosmosAsyncContainer {
                                     BridgeInternal.queryMetricsFromFeedResponse(page),
                                     ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
                             );
-
                         }
                     }
                 )

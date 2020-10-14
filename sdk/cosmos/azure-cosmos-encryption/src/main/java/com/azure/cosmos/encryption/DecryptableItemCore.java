@@ -46,7 +46,6 @@ class DecryptableItemCore extends DecryptableItem {
         Mono<Pair<ObjectNode, DecryptionContext>> decryptedItemAndContextPairMono =
             EncryptionProcessor.decrypt(decryptableContentAsObjectNode, this.encryptor);
 
-
         return decryptedItemAndContextPairMono.map(
             decryptedItemAndContextPair -> {
                 T ii = this.cosmosSerializer.convert(classType, decryptedItemAndContextPair.getLeft());
