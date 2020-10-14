@@ -319,7 +319,7 @@ can be found [here][service_recognize_business_card].
 See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
 information from a business card. The given sample is for `receipt` but the same approach applies to `business card`.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L200-L251-->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L200-L254-->
 ```java
 String businessCardUrl =
     "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
@@ -340,20 +340,23 @@ for (int i = 0; i < businessCardPageResults.size(); i++) {
             List<FormField> businessCardItems = contactNames.getValue().asList();
             businessCardItems.stream()
                 .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
-                .map(formField -> formField.getValue().asMap())
+                .map(formField -> {
+                    System.out.printf("Contact name: %s%n", formField.getValueData().getText());
+                    return formField.getValue().asMap();
+                })
                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                     if ("FirstName".equals(key)) {
                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                             String firstName = formField.getValue().asString();
-                            System.out.printf("First Name: %s, confidence: %.2f%n",
-                                firstName, contactNames.getConfidence());
+                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                firstName, formField.getConfidence());
                         }
                     }
                     if ("LastName".equals(key)) {
                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                             String lastName = formField.getValue().asString();
-                            System.out.printf("Last Name: %s, confidence: %.2f%n",
-                                lastName, contactNames.getConfidence());
+                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                lastName, formField.getConfidence());
                         }
                     }
                 }));
@@ -363,11 +366,11 @@ for (int i = 0; i < businessCardPageResults.size(); i++) {
     if (jobTitles != null) {
         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-            jobTitlesItems.stream().forEach(formField -> {
-                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                    String jobTitle = formField.getValue().asString();
+            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                    String jobTitle = jobTitlesItem.getValue().asString();
                     System.out.printf("Job Title: %s, confidence: %.2f%n",
-                        jobTitle, jobTitles.getConfidence());
+                        jobTitle, jobTitlesItem.getConfidence());
                 }
             });
         }
@@ -379,7 +382,7 @@ for (int i = 0; i < businessCardPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L255-L275 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L258-L278 -->
 ```java
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -406,7 +409,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models in your Form Recognizer account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L279-L307 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L282-L310 -->
 ```java
 // First, we see how many custom models we have, and what our limit is
 AccountProperties accountProperties = formTrainingClient.getAccountProperties();
@@ -447,7 +450,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L314-L318 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L317-L321 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -482,7 +485,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `FormRecognizerAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L325-L328 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L328-L331 -->
 ```java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))

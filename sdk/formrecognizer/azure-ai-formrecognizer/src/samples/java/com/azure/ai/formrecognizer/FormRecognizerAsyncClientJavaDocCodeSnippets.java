@@ -576,22 +576,24 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         if (FieldValueType.LIST == contactNames.getValue().getValueType()) {
                             List<FormField> businessCardItems = contactNames.getValue().asList();
                             businessCardItems.stream()
-                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue()
-                                                                                      .getValueType())
-                                .map(formField -> formField.getValue().asMap())
+                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
+                                .map(formField -> {
+                                    System.out.printf("Contact name: %s%n", formField.getValueData().getText());
+                                    return formField.getValue().asMap();
+                                })
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("FirstName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String firstName = formField.getValue().asString();
-                                            System.out.printf("First Name: %s, confidence: %.2f%n",
-                                                firstName, contactNames.getConfidence());
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, formField.getConfidence());
                                         }
                                     }
                                     if ("LastName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String lastName = formField.getValue().asString();
-                                            System.out.printf("Last Name: %s, confidence: %.2f%n",
-                                                lastName, contactNames.getConfidence());
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, formField.getConfidence());
                                         }
                                     }
                                 }));
@@ -601,11 +603,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(formField -> {
-                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                    String jobTitle = formField.getValue().asString();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
-                                        jobTitle, jobTitles.getConfidence());
+                                        jobTitle, jobTitlesItem.getConfidence());
                                 }
                             });
                         }
@@ -639,22 +641,24 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         if (FieldValueType.LIST == contactNames.getValue().getValueType()) {
                             List<FormField> businessCardItems = contactNames.getValue().asList();
                             businessCardItems.stream()
-                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue()
-                                                                                      .getValueType())
-                                .map(formField -> formField.getValue().asMap())
+                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
+                                .map(formField -> {
+                                    System.out.printf("Contact name: %s%n", formField.getValueData().getText());
+                                    return formField.getValue().asMap();
+                                })
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("FirstName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String firstName = formField.getValue().asString();
-                                            System.out.printf("First Name: %s, confidence: %.2f%n",
-                                                firstName, contactNames.getConfidence());
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, formField.getConfidence());
                                         }
                                     }
                                     if ("LastName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String lastName = formField.getValue().asString();
-                                            System.out.printf("Last Name: %s, confidence: %.2f%n",
-                                                lastName, contactNames.getConfidence());
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, formField.getConfidence());
                                         }
                                     }
                                 }));
@@ -664,11 +668,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(formField -> {
-                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                    String jobTitle = formField.getValue().asString();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
-                                        jobTitle, jobTitles.getConfidence());
+                                        jobTitle, jobTitlesItem.getConfidence());
                                 }
                             });
                         }
@@ -700,22 +704,24 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         if (FieldValueType.LIST == contactNames.getValue().getValueType()) {
                             List<FormField> businessCardItems = contactNames.getValue().asList();
                             businessCardItems.stream()
-                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue()
-                                                                                      .getValueType())
-                                .map(formField -> formField.getValue().asMap())
+                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
+                                .map(formField -> {
+                                    System.out.printf("Contact name: %s%n", formField.getValueData().getText());
+                                    return formField.getValue().asMap();
+                                })
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("FirstName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String firstName = formField.getValue().asString();
-                                            System.out.printf("First Name: %s, confidence: %.2f%n",
-                                                firstName, contactNames.getConfidence());
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, formField.getConfidence());
                                         }
                                     }
                                     if ("LastName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String lastName = formField.getValue().asString();
-                                            System.out.printf("Last Name: %s, confidence: %.2f%n",
-                                                lastName, contactNames.getConfidence());
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, formField.getConfidence());
                                         }
                                     }
                                 }));
@@ -725,11 +731,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(formField -> {
-                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                    String jobTitle = formField.getValue().asString();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
-                                        jobTitle, jobTitles.getConfidence());
+                                        jobTitle, jobTitlesItem.getConfidence());
                                 }
                             });
                         }
@@ -769,22 +775,24 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         if (FieldValueType.LIST == contactNames.getValue().getValueType()) {
                             List<FormField> businessCardItems = contactNames.getValue().asList();
                             businessCardItems.stream()
-                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue()
-                                                                                      .getValueType())
-                                .map(formField -> formField.getValue().asMap())
+                                .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
+                                .map(formField -> {
+                                    System.out.printf("Contact name: %s%n", formField.getValueData().getText());
+                                    return formField.getValue().asMap();
+                                })
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("FirstName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String firstName = formField.getValue().asString();
-                                            System.out.printf("First Name: %s, confidence: %.2f%n",
-                                                firstName, contactNames.getConfidence());
+                                            System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                                firstName, formField.getConfidence());
                                         }
                                     }
                                     if ("LastName".equals(key)) {
                                         if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                             String lastName = formField.getValue().asString();
-                                            System.out.printf("Last Name: %s, confidence: %.2f%n",
-                                                lastName, contactNames.getConfidence());
+                                            System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                                lastName, formField.getConfidence());
                                         }
                                     }
                                 }));
@@ -794,11 +802,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     if (jobTitles != null) {
                         if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                             List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                            jobTitlesItems.stream().forEach(formField -> {
-                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                    String jobTitle = formField.getValue().asString();
+                            jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                                if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                                    String jobTitle = jobTitlesItem.getValue().asString();
                                     System.out.printf("Job Title: %s, confidence: %.2f%n",
-                                        jobTitle, jobTitles.getConfidence());
+                                        jobTitle, jobTitlesItem.getConfidence());
                                 }
                             });
                         }

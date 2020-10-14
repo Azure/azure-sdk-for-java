@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import java.time.Duration;
 
 /**
- * Options that may be passed when using recognize receipt APIs on Form Recognizer client.
+ * Options that may be passed when using recognize business card APIs on Form Recognizer client.
  */
 @Fluent
 public final class RecognizeBusinessCardsOptions {

@@ -47,6 +47,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -68,6 +69,7 @@ import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
@@ -101,16 +103,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
 
     // Business Card fields
-    static final String CONTACT_NAMES = "ContactNames";
-    static final String JOB_TITLES = "JobTitles";
-    static final String DEPARTMENTS = "Departments";
-    static final String EMAILS = "Emails";
-    static final String WEBSITES = "Websites";
-    static final String MOBILE_PHONES = "MobilePhones";
-    static final String OTHER_PHONES = "OtherPhones";
-    static final String FAXES = "Faxes";
-    static final String ADDRESSES = "Addresses";
-    static final String COMPANY_NAMES = "CompanyNames";
+    static final List<String> businessCardFields = Arrays.asList("ContactNames", "JobTitles", "Departments",
+        "Emails", "Websites", "MobilePhones", "OtherPhones", "Faxes", "Addresses", "CompanyNames");
 
     Duration durationTestMode;
 
@@ -666,35 +660,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
         Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
 
-        validateFieldValueTransforms(expectedReceiptFields.get(CONTACT_NAMES),
-            actualRecognizedBusinessCardFields.get(CONTACT_NAMES), readResults, includeFieldElements);
+        businessCardFields.forEach(businessCardField ->
+            validateFieldValueTransforms(expectedReceiptFields.get(businessCardField),
+                actualRecognizedBusinessCardFields.get(businessCardField), readResults, includeFieldElements));
 
-        validateFieldValueTransforms(expectedReceiptFields.get(JOB_TITLES),
-            actualRecognizedBusinessCardFields.get(JOB_TITLES), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(DEPARTMENTS),
-            actualRecognizedBusinessCardFields.get(DEPARTMENTS), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(EMAILS),
-            actualRecognizedBusinessCardFields.get(EMAILS), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(WEBSITES),
-            actualRecognizedBusinessCardFields.get(WEBSITES), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(MOBILE_PHONES),
-            actualRecognizedBusinessCardFields.get(MOBILE_PHONES), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(OTHER_PHONES),
-            actualRecognizedBusinessCardFields.get(OTHER_PHONES), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(FAXES),
-            actualRecognizedBusinessCardFields.get(FAXES), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(ADDRESSES),
-            actualRecognizedBusinessCardFields.get(ADDRESSES), readResults, includeFieldElements);
-
-        validateFieldValueTransforms(expectedReceiptFields.get(COMPANY_NAMES),
-            actualRecognizedBusinessCardFields.get(COMPANY_NAMES), readResults, includeFieldElements);
     }
 
     void validateBusinessCardResultData(List<RecognizedForm> actualBusinessCardList, boolean includeFieldElements) {
@@ -818,6 +787,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
+                assertNull(formField.getLabelData());
             });
         });
     }
