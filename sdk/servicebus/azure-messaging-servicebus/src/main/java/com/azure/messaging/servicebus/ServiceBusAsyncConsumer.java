@@ -30,7 +30,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final String linkName;
     private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
-    private final Flux<ServiceBusReceivedMessage> processor;
+    private final Flux<ServiceBusReceivedMessage> messageSource;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, int prefetch, boolean autoLockRenewal,
@@ -40,11 +40,17 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
 
-        this.processor = new ServiceBusRenewOperator(linkProcessor
+        Flux<ServiceBusReceivedMessage> source = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .publish(prefetch)
-            .autoConnect(1),
-            autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+            .autoConnect(1);
+
+        if (autoLockRenewal) {
+            this.messageSource = new ServiceBusMessageRenewOperator(source,
+                true, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+        } else {
+            this.messageSource = source;
+        }
 
     }
 
@@ -63,7 +69,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     Flux<ServiceBusReceivedMessage> receive() {
-        return processor;
+        return messageSource;
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,

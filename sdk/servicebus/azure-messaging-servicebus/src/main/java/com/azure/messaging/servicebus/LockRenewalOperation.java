@@ -198,11 +198,9 @@ class LockRenewalOperation implements AutoCloseable {
 
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink();
-
         sink.next(initialInterval);
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
-
         return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)

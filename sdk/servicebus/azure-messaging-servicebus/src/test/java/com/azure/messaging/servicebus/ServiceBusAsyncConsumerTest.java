@@ -20,6 +20,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -109,14 +111,16 @@ class ServiceBusAsyncConsumerTest {
     /**
      * Verifies that we can receive messages from the processor and it does not auto complete them.
      */
-    @Test
-    void receiveNoAutoComplete() {
+    @ValueSource(booleans = {true, false})
+    @ParameterizedTest
+    void receiveNoAutoComplete(boolean autoLockRenewal) {
         // Arrange
         final int prefetch = 10;
-
+        Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
+        OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, false, null, messageLockContainer, onRenewLock);
+            prefetch, autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -127,6 +131,8 @@ class ServiceBusAsyncConsumerTest {
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+        when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
+        when(receivedMessage2.getLockedUntil()).thenReturn(lockedUntil);
 
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
         when(serializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
@@ -150,18 +156,22 @@ class ServiceBusAsyncConsumerTest {
     /**
      * Verifies that if we dispose the consumer, it also completes.
      */
-    @Test
-    void canDispose() {
+    @ValueSource(booleans = {true, false})
+    @ParameterizedTest
+    void canDispose(boolean autoLockRenewal) {
         // Arrange
         final int prefetch = 10;
+        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, false, null, messageLockContainer, onRenewLock);
+            prefetch, autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken);
+        when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert
