@@ -103,7 +103,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
 
     // Business Card fields
-    static final List<String> businessCardFields = Arrays.asList("ContactNames", "JobTitles", "Departments",
+    static final List<String> BUSINESS_CARD_FIELDS = Arrays.asList("ContactNames", "JobTitles", "Departments",
         "Emails", "Websites", "MobilePhones", "OtherPhones", "Faxes", "Addresses", "CompanyNames");
 
     Duration durationTestMode;
@@ -660,7 +660,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
         Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
 
-        businessCardFields.forEach(businessCardField ->
+        BUSINESS_CARD_FIELDS.forEach(businessCardField ->
             validateFieldValueTransforms(expectedReceiptFields.get(businessCardField),
                 actualRecognizedBusinessCardFields.get(businessCardField), readResults, includeFieldElements));
 

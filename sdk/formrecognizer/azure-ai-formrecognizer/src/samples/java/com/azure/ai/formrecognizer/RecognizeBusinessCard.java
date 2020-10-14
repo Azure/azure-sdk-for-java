@@ -8,7 +8,6 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.ByteArrayInputStream;
