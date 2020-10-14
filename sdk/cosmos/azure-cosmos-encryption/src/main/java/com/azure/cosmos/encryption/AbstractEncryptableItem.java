@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 /**
- * Input type should implement this abstract class for lazy decryption & to retrieve the details in the write path.
+ * Input type should implement this abstract class for lazy decryption and to retrieve the details in the write path.
  */
 abstract class AbstractEncryptableItem {
 

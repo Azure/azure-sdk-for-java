@@ -18,7 +18,7 @@ public final class DecryptionInfo {
     /**
      * Gets the list of JSON paths decrypted.
      *
-     * @return List<String>
+     * @return list of decrypted paths.
      */
     public List<String> getPathsDecrypted() {
         return PathsDecrypted;

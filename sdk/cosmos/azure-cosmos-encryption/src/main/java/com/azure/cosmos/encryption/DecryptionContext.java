@@ -16,7 +16,7 @@ public class DecryptionContext {
     /**
      * Gets the list of {@link DecryptionInfo} corresponding to the DataEncryptionKey(s) used.
      *
-     * @return
+     * @return list of DecryptionInfos.
      */
     public List<DecryptionInfo> getDecryptionInfoList() {
         return DecryptionInfoList;
