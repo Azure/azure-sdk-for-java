@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/capabilities/capabilities-id-1?api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.1 (11.0.8; Mac OS X 10.15.6)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "1367ms",
+      "MS-CV" : "4EZnktsXRkWOjvW/rNuVjg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0ioJpXwAAAAAZGoNaTEV1Q55RcXGoYnOZWVZSMzBFREdFMDQxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"capabilitiesUpdateId\":\"capabilities-id-1\",\"createdAt\":\"2020-09-22T04:23:52.1185774+00:00\",\"capabilitiesUpdateStatus\":\"Complete\",\"phoneNumberCapabilitiesUpdates\":{\"+17771234567\":{\"add\":[\"InboundCalling\"],\"remove\":[]}}}",
+      "Date" : "Tue, 22 Sep 2020 04:50:19 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

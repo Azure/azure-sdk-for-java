@@ -12,4 +12,8 @@ final class Utility {
     public static void traceInformation(String payload) {
         LOGGER.info(payload);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61

@@ -3,6 +3,14 @@
 ## 1.7.0-beta.1 (Unreleased)
 
 
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.6.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
 ## 1.6.0 (2020-09-03)
 
 - Added new APIs to configure request write timeout, response timeout, and response body read timeout.

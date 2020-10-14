@@ -62,4 +62,8 @@ Check out other client libraries for Azure communication service
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+<<<<<<< HEAD
 [coc_contact]: mailto:opencode@microsoft.com
+=======
+[coc_contact]: mailto:opencode@microsoft.com
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61

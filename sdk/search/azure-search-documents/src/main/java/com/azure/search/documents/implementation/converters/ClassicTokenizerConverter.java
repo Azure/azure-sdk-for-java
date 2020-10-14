@@ -37,7 +37,7 @@ public final class ClassicTokenizerConverter {
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         classicTokenizer.setMaxTokenLength(maxTokenLength);
-        classicTokenizer.validate();
+
         return classicTokenizer;
     }
 

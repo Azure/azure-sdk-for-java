@@ -395,7 +395,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -408,7 +407,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(15, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -421,7 +419,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(22, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -434,7 +431,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(30, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -447,7 +443,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(14, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -460,7 +455,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(15, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -473,7 +467,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -486,7 +479,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(13, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -499,7 +491,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeEntities(document))
                 .assertNext(result -> result.forEach(categorizedEntity -> {
                     assertEquals(126, categorizedEntity.getOffset());
-                    assertEquals(9, categorizedEntity.getLength());
                 })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
@@ -633,7 +624,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(8, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -646,7 +636,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(10, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -659,7 +648,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(17, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -672,7 +660,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(25, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -685,7 +672,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(9, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -698,7 +684,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(10, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -711,7 +696,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(8, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -724,7 +708,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(8, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -737,7 +720,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> result.forEach(piiEntity -> {
                     assertEquals(121, piiEntity.getOffset());
-                    assertEquals(11, piiEntity.getLength());
                 })).verifyComplete(), PII_ENTITY_OFFSET_INPUT
         );
     }
@@ -903,7 +885,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -918,7 +899,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(15, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -933,7 +913,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(22, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -948,7 +927,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(30, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -963,7 +941,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(14, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -978,7 +955,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(15, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -993,7 +969,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -1008,7 +983,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(13, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -1023,7 +997,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(result -> result.forEach(linkedEntity -> {
                     linkedEntity.getMatches().forEach(linkedEntityMatch -> {
                         assertEquals(126, linkedEntityMatch.getOffset());
-                        assertEquals(9, linkedEntityMatch.getLength());
                     });
                 })).verifyComplete(), LINKED_ENTITY_INPUTS.get(1)
         );
@@ -1251,8 +1224,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 TextSentiment.NEUTRAL,
                 new SentimentConfidenceScores(0.0, 0.0, 0.0),
                 new IterableStream<>(Arrays.asList(
-                    new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 0, 1),
-                    new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 1, 4)
+                    new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 0),
+                    new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null, 1)
                 )), null);
             StepVerifier.create(client.analyzeSentiment(input))
                 .assertNext(response -> validateAnalyzedSentiment(false, expectedDocumentSentiment, response))
@@ -1507,7 +1480,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(34, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1520,7 +1492,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(36, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1533,7 +1504,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(43, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1546,7 +1516,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(51, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1559,7 +1528,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(35, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1572,7 +1540,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(36, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1585,7 +1552,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(34, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1598,7 +1564,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(34, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }
@@ -1611,7 +1576,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentiment(document))
                 .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
                     assertEquals(0, sentenceSentiment.getOffset());
-                    assertEquals(147, sentenceSentiment.getLength());
                 })).verifyComplete(), SENTIMENT_OFFSET_INPUT
         );
     }

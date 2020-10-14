@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceMetricAvailability model. */
+/** Metrics availability and retention. */
 @Immutable
 public final class ResourceMetricAvailability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricAvailability.class);

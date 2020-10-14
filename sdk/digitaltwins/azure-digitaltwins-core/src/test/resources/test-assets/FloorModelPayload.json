@@ -1,7 +1,7 @@
 {
   "@id": "FLOOR_MODEL_ID",
   "@type": "Interface",
-  "@context": "dtmi:dtdl:context;2",
+  "@context": ["dtmi:dtdl:context;2"],
   "displayName": "Floor",
   "description": "A building story.",
   "contents": [

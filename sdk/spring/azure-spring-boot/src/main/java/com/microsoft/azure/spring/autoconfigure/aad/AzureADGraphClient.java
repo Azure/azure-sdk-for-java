@@ -52,12 +52,11 @@ public class AzureADGraphClient {
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
     private static final String V2_VERSION_ENV_FLAG = "v2-graph";
 
-    private final String clientId;
-    private final String clientSecret;
     private final ServiceEndpoints serviceEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final boolean graphApiVersionIsV2;
 
+<<<<<<< HEAD
     public AzureADGraphClient(String clientId,
                               String clientSecret,
                               AADAuthenticationProperties aadAuthProps,
@@ -67,6 +66,16 @@ public class AzureADGraphClient {
         this.aadAuthenticationProperties = aadAuthProps;
         this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthProps.getEnvironment());
         this.graphApiVersionIsV2 = aadAuthProps.getEnvironment().contains(V2_VERSION_ENV_FLAG);
+=======
+    public AzureADGraphClient(AADAuthenticationProperties aadAuthenticationProperties,
+                              ServiceEndpointsProperties serviceEndpointsProps) {
+        this.aadAuthenticationProperties = aadAuthenticationProperties;
+        this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
+        this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
+                .map(AADAuthenticationProperties::getEnvironment)
+                .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
+                .orElse(false);
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -187,12 +196,13 @@ public class AzureADGraphClient {
 
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
         throws ServiceUnavailableException {
-        final IClientCredential clientCredential = ClientCredentialFactory.createFromSecret(clientSecret);
+        final IClientCredential clientCredential =
+            ClientCredentialFactory.createFromSecret(aadAuthenticationProperties.getClientSecret());
         final UserAssertion assertion = new UserAssertion(idToken);
         IAuthenticationResult result = null;
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
-                .builder(clientId, clientCredential)
+                .builder(aadAuthenticationProperties.getClientId(), clientCredential)
                 .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
@@ -212,7 +222,8 @@ public class AzureADGraphClient {
             LOGGER.error("acquire on behalf of token for graph api error", e);
         }
         if (result == null) {
-            throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client " + clientId);
+            throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client "
+                + aadAuthenticationProperties.getClientId());
         }
         return result;
     }

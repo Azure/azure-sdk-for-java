@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceNameAvailabilityRequest model. */
+/** Resource name availability request content. */
 @Fluent
 public final class ResourceNameAvailabilityRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNameAvailabilityRequest.class);

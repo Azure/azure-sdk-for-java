@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The DictionaryDecompounderTokenFilter model. */
+/** Decomposes compound words found in many Germanic languages. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter")
 @JsonFlatten
@@ -54,10 +54,16 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     @JsonProperty(value = "onlyLongestMatch")
     private Boolean onlyLongestMatch;
 
-    /** Creates an instance of DictionaryDecompounderTokenFilter class. */
+    /**
+     * Creates an instance of DictionaryDecompounderTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param wordList the wordList value to set.
+     */
     @JsonCreator
     public DictionaryDecompounderTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "wordList") List<String> wordList) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "wordList", required = true) List<String> wordList) {
         super(name);
         this.wordList = wordList;
     }
@@ -71,12 +77,6 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
         return this.wordList;
     }
 
-    /**
-     * Set the wordList property: The list of words to match against.
-     *
-     * @param wordList the wordList value to set.
-     * @return the DictionaryDecompounderTokenFilter object itself.
-     */
     /**
      * Get the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
      * Maximum is 300.
@@ -163,19 +163,5 @@ public class DictionaryDecompounderTokenFilter extends TokenFilter {
     public DictionaryDecompounderTokenFilter setOnlyLongestMatch(Boolean onlyLongestMatch) {
         this.onlyLongestMatch = onlyLongestMatch;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getWordList() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property wordList in model DictionaryDecompounderTokenFilter");
-        }
     }
 }

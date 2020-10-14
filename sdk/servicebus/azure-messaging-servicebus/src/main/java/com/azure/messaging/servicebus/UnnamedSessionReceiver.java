@@ -21,7 +21,6 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -78,7 +77,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
                 //TODO (conniey): For session receivers, do they have a message lock token?
                 if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken()) && deserialized.getLockedUntil() != null) {
-                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil().toInstant(),
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
                         deserialized.getLockedUntil());
                 } else {
                     logger.info("sessionId[{}] message[{}]. There is no lock token.",
@@ -126,13 +125,13 @@ class UnnamedSessionReceiver implements AutoCloseable {
             }
         }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
-            if (!sessionLockedUntil.compareAndSet(null, lockedUntil.atOffset(ZoneOffset.UTC))) {
+            if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
                 return;
             }
 
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                Duration.ZERO, true, renewSessionLock, lockedUntil.atOffset(ZoneOffset.UTC)));
+                Duration.ZERO, true, renewSessionLock, lockedUntil));
         }));
     }
 

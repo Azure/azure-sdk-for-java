@@ -5,8 +5,6 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
 
 /**
  * Entry point to queue authorization rules management API.
@@ -14,6 +12,5 @@ import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
 @Fluent
 public interface QueueAuthorizationRules extends
     AuthorizationRules<QueueAuthorizationRule>,
-    SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank>,
-    HasInner<QueuesClient> {
+    SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank> {
 }

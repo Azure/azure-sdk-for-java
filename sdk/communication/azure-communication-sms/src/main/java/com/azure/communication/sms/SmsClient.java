@@ -40,7 +40,11 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public Response<SendSmsResponse> sendMessageWithResponse(PhoneNumber from, List<PhoneNumber> to, String message,
+=======
+    public Response<SendSmsResponse> sendMessageWithResponse(PhoneNumber from, List<PhoneNumber> to, String message, 
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
         SendSmsOptions smsOptions, Context context) {
         return this.smsAsyncClient.sendMessageWithResponse(from, to, message, smsOptions, context).block();
     }
@@ -54,7 +58,11 @@ public final class SmsClient {
      * @param message message to send to recipient.
      * @return response for a successful send Sms request.
      */
+<<<<<<< HEAD
     @ServiceMethod(returns = ReturnType.SINGLE)
+=======
+    @ServiceMethod(returns = ReturnType.SINGLE)    
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
     public SendSmsResponse sendMessage(PhoneNumber from, List<PhoneNumber> to, String message) {
         return this.smsAsyncClient.sendMessage(from, to, message).block();
     }
@@ -67,7 +75,11 @@ public final class SmsClient {
      * @param message message to send to recipient.
      * @return response for a successful send Sms request.
      */
+<<<<<<< HEAD
     @ServiceMethod(returns = ReturnType.SINGLE)
+=======
+    @ServiceMethod(returns = ReturnType.SINGLE)    
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
     public SendSmsResponse sendMessage(PhoneNumber from, PhoneNumber to, String message) {
         if (to == null) {
             logger.logThrowableAsError(new NullPointerException("Argument 'to' cannot be null."));
@@ -77,7 +89,11 @@ public final class SmsClient {
         toList.add(to);
 
         return this.smsAsyncClient.sendMessage(from, toList, message).block();
+<<<<<<< HEAD
     }
+=======
+    }     
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
@@ -91,7 +107,11 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+<<<<<<< HEAD
     public SendSmsResponse sendMessage(PhoneNumber from, List<PhoneNumber> to, String message,
+=======
+    public SendSmsResponse sendMessage(PhoneNumber from, List<PhoneNumber> to, String message, 
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
         SendSmsOptions smsOptions) {
         return this.smsAsyncClient.sendMessage(from, to, message, smsOptions).block();
     }

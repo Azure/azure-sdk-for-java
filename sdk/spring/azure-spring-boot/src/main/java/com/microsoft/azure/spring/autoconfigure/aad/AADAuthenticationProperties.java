@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -25,31 +26,36 @@ import java.util.concurrent.TimeUnit;
 public class AADAuthenticationProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
-
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
-
-    private static final long DEFAULT_JWKSETCACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
 
     /**
      * Default UserGroup configuration.
      */
     private UserGroupProperties userGroup = new UserGroupProperties();
 
-
     /**
      * Azure service environment/region name, e.g., cn, global
      */
     private String environment = DEFAULT_SERVICE_ENVIRONMENT;
+
     /**
      * Registered application ID in Azure AD.
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
+
     /**
      * API Access Key of the registered application.
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
+
+    /**
+     * Optional. scope doc:
+     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
+     */
+    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -74,7 +80,7 @@ public class AADAuthenticationProperties {
     /**
      * The lifespan of the cached JWK set before it expires, default is 5 minutes.
      */
-    private long jwkSetCacheLifespan = DEFAULT_JWKSETCACHE_LIFESPAN;
+    private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
      * Azure Tenant ID.
@@ -92,8 +98,9 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    @DeprecatedConfigurationProperty(reason = "Configuration moved to UserGroup class to keep UserGroup properties "
-            + "together", replacement = "azure.activedirectory.user-group.allowed-groups")
+    @DeprecatedConfigurationProperty(
+        reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
+        replacement = "azure.activedirectory.user-group.allowed-groups")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
@@ -121,7 +128,7 @@ public class AADAuthenticationProperties {
          * Node is a UserGroup.
          */
         @NotEmpty
-        private String value = AADGraphApiObjectType.GROUP;
+        private String value = Constants.OBJECT_TYPE_GROUP;
 
         /**
          * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
@@ -238,6 +245,14 @@ public class AADAuthenticationProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public void setScope(List<String> scope) {
+        this.scope = scope;
+    }
+
+    public List<String> getScope() {
+        return scope;
     }
 
     @Deprecated

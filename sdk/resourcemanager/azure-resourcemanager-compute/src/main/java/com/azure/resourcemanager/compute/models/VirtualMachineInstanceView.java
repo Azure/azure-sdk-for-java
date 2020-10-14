@@ -3,13 +3,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInstanceViewInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInstanceViewInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure VM Instance View object. */
 @Fluent
-public interface VirtualMachineInstanceView extends HasInner<VirtualMachineInstanceViewInner> {
+public interface VirtualMachineInstanceView extends HasInnerModel<VirtualMachineInstanceViewInner> {
     /**
      * Get specifies the update domain of the virtual machine.
      *

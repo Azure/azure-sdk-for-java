@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import org.testng.annotations.Test;
 
@@ -14,8 +15,8 @@ public class SharedGatewayHttpClientTest {
         HttpClient httpClient1 = null;
         HttpClient httpClient2 = null;
         try {
-            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
-            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
+            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
+            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
 
             assertThat(httpClient2).isSameAs(httpClient1);
             assertThat(((SharedGatewayHttpClient) httpClient1).getReferenceCounter()).isEqualTo(2);
@@ -30,8 +31,8 @@ public class SharedGatewayHttpClientTest {
         HttpClient httpClient1 = null;
         HttpClient httpClient2 = null;
         try {
-            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
-            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
+            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
+            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
 
             assertThat(httpClient2).isSameAs(httpClient1);
             assertThat(((SharedGatewayHttpClient) httpClient1).getReferenceCounter()).isEqualTo(2);
@@ -48,13 +49,13 @@ public class SharedGatewayHttpClientTest {
         HttpClient httpClient3 = null;
 
         try {
-            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
-            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
+            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
+            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
 
             httpClient2.shutdown();
             assertThat(((SharedGatewayHttpClient) httpClient1).getReferenceCounter()).isEqualTo(1);
 
-            httpClient3 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
+            httpClient3 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
             assertThat(httpClient3).isSameAs(httpClient1);
             assertThat(((SharedGatewayHttpClient) httpClient1).getReferenceCounter()).isEqualTo(2);
         } finally {
@@ -70,13 +71,13 @@ public class SharedGatewayHttpClientTest {
         HttpClient httpClient3 = null;
 
         try {
-            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
-            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
+            httpClient1 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
+            httpClient2 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
             httpClient1.shutdown();
             httpClient2.shutdown();
             assertThat(((SharedGatewayHttpClient) httpClient1).getReferenceCounter()).isEqualTo(0);
 
-            httpClient3 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()));
+            httpClient3 = SharedGatewayHttpClient.getOrCreateInstance(new HttpClientConfig(new Configs()), new DiagnosticsClientContext.DiagnosticsClientConfig());
             assertThat(httpClient3).isNotSameAs(httpClient1);
             assertThat(((SharedGatewayHttpClient) httpClient3).getReferenceCounter()).isEqualTo(1);
         } finally {

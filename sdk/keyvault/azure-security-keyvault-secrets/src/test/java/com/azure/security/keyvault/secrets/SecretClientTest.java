@@ -43,7 +43,7 @@ public class SecretClientTest extends SecretClientTestBase {
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getPollDuration()).thenReturn(Duration.ofMillis(10));
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
         client = new SecretClient(asyncClient);

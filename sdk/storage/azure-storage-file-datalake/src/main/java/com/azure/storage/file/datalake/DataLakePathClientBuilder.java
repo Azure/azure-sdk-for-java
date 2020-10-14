@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -62,7 +63,8 @@ public final class DataLakePathClientBuilder {
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions = new HttpLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
@@ -121,7 +123,7 @@ public final class DataLakePathClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -169,7 +171,7 @@ public final class DataLakePathClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
             pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
@@ -240,6 +242,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, file system name, path name)
      *
+     * <p>If the path name contains special characters, pass in the url encoded version of the path name. </p>
+     *
      * <p>If the endpoint is to a file/directory in the root container, this method will fail as it will interpret the
      * path name as the file system name. With only one path element, it is impossible to distinguish between a file
      * system name and a path in the root file system, so it is assumed to be the file system name as this is much more
@@ -291,7 +295,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the name of the file/directory.
      *
-     * @param pathName Name of the path.
+     * @param pathName Name of the path. If the path name contains special characters, pass in the url encoded version
+     * of the path name.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pathName} is {@code null}
      */
@@ -328,7 +333,12 @@ public final class DataLakePathClientBuilder {
      */
     public DataLakePathClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobClientBuilder.addPolicy(pipelinePolicy);
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 

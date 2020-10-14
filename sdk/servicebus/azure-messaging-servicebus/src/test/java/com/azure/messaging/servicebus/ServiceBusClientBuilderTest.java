@@ -289,6 +289,22 @@ class ServiceBusClientBuilderTest {
         Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
 
+    @Test
+    public void testConnectionStringWithSas() {
+        String connectionStringWithEntityPath = "Endpoint=sb://sb-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name";
+        assertNotNull(new ServiceBusClientBuilder()
+            .connectionString(connectionStringWithEntityPath));
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusClientBuilder()
+                .connectionString("SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name"));
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new ServiceBusClientBuilder()
+                .connectionString("Endpoint=sb://sb-name.servicebus.windows.net/;EntityPath=sb-name"));
+    }
+
     private static Stream<Arguments> getProxyConfigurations() {
         return Stream.of(
             Arguments.of("http://localhost:8080", true),

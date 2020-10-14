@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GalleryUpdate model. */
+/** Specifies information about the Shared Image Gallery that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryUpdate extends UpdateResourceDefinition {

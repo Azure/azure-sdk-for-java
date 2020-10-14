@@ -49,6 +49,12 @@ public class BigDataPoolResourceInfoInner extends Resource {
     private AutoPauseProperties autoPause;
 
     /**
+     * Whether compute isolation is required or not.
+     */
+    @JsonProperty(value = "properties.isComputeIsolationEnabled")
+    private Boolean isComputeIsolationEnabled;
+
+    /**
      * The Spark events folder.
      */
     @JsonProperty(value = "properties.sparkEventsFolder")
@@ -80,7 +86,8 @@ public class BigDataPoolResourceInfoInner extends Resource {
 
     /**
      * The level of compute power that each node in the Big Data pool has.
-     * Possible values include: 'None', 'Small', 'Medium', 'Large'.
+     * Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge',
+     * 'XXLarge'.
      */
     @JsonProperty(value = "properties.nodeSize")
     private NodeSize nodeSize;
@@ -169,6 +176,26 @@ public class BigDataPoolResourceInfoInner extends Resource {
      */
     public BigDataPoolResourceInfoInner withAutoPause(AutoPauseProperties autoPause) {
         this.autoPause = autoPause;
+        return this;
+    }
+
+    /**
+     * Get whether compute isolation is required or not.
+     *
+     * @return the isComputeIsolationEnabled value
+     */
+    public Boolean isComputeIsolationEnabled() {
+        return this.isComputeIsolationEnabled;
+    }
+
+    /**
+     * Set whether compute isolation is required or not.
+     *
+     * @param isComputeIsolationEnabled the isComputeIsolationEnabled value to set
+     * @return the BigDataPoolResourceInfoInner object itself.
+     */
+    public BigDataPoolResourceInfoInner withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled) {
+        this.isComputeIsolationEnabled = isComputeIsolationEnabled;
         return this;
     }
 
@@ -273,7 +300,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large'.
+     * Get the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'.
      *
      * @return the nodeSize value
      */
@@ -282,7 +309,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large'.
+     * Set the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'.
      *
      * @param nodeSize the nodeSize value to set
      * @return the BigDataPoolResourceInfoInner object itself.

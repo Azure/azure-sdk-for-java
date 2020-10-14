@@ -45,4 +45,8 @@ Get-ChildItem "$repoRoot/sdk" -Filter CHANGELOG.md -Recurse | Sort-Object -Prope
     }
 }
 
+<<<<<<< HEAD
 return $InstallNotes, $ReleaseNotes
+=======
+return $InstallNotes, $ReleaseNotes
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetOSDisk model. */
+/** Describes a virtual machine scale set operating system disk. */
 @Fluent
 public final class VirtualMachineScaleSetOSDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetOSDisk.class);

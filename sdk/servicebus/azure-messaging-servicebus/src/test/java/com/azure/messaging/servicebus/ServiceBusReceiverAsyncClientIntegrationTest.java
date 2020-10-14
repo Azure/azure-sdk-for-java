@@ -3,10 +3,17 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.administration.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +30,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -160,7 +169,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
             .verifyComplete();
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
@@ -205,19 +214,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Mono<Void> operation;
         switch (dispositionStatus) {
             case COMPLETED:
-                operation = receiver.complete(receivedMessage, transaction.get());
+                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
                 messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, transaction.get());
+                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
                 break;
             case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
+                    .setDeadLetterReason(deadLetterReason);
+                operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
                 messagesPending.decrementAndGet();
                 break;
             case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, transaction.get());
+                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -268,7 +278,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
 
-        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
+        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
             .verifyComplete();
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
@@ -356,6 +366,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.peekMessage())
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an empty entity does not error when peeking.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+
+        final int fromSequenceNumber = 1;
+
+        // Assert & Act
+        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
             .verifyComplete();
     }
 
@@ -456,12 +482,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekBatchMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         final BiConsumer<ServiceBusReceivedMessage, Integer> checkCorrectMessage = (message, index) -> {
-            final Map<String, Object> properties = message.getProperties();
+            final Map<String, Object> properties = message.getApplicationProperties();
             final Object value = properties.get(MESSAGE_POSITION_ID);
             assertTrue(value instanceof Integer, "Did not contain correct position number: " + value);
 
@@ -508,7 +534,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
+    void peekMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
@@ -522,6 +548,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
             .expectNextCount(maxMessages)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that an empty entity does not error when peeking.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void peekMessagesFromSequenceEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+
+        final int maxMessages = 10;
+        final int fromSequenceNumber = 1;
+
+        // Assert & Act
+        StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
             .verifyComplete();
     }
 
@@ -604,7 +647,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         try {
             StepVerifier.create(Mono.delay(Duration.ofSeconds(7))
-                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.getLockToken()))))
+                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage))))
                 .assertNext(lockedUntil -> {
                     assertTrue(lockedUntil.isAfter(initialLock),
                         String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
@@ -794,7 +837,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
 
-        Map<String, Object> sentProperties = messageToSend.getProperties();
+        Map<String, Object> sentProperties = messageToSend.getApplicationProperties();
         sentProperties.put("NullProperty", null);
         sentProperties.put("BooleanProperty", true);
         sentProperties.put("ByteProperty", (byte) 1);
@@ -815,7 +858,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
 
-                final Map<String, Object> received = receivedMessage.getMessage().getProperties();
+                final Map<String, Object> received = receivedMessage.getMessage().getApplicationProperties();
 
                 assertEquals(sentProperties.size(), received.size());
 
@@ -941,7 +984,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(lockedUntil);
 
         // Assert & Act
-        StepVerifier.create(receiver.getAutoRenewMessageLock(receivedMessage.getLockToken(), maximumDuration))
+        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maximumDuration))
             .thenAwait(sleepDuration)
             .then(() -> {
                 logger.info("Completing message.");
@@ -951,6 +994,133 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .expectComplete()
             .verify(Duration.ofMinutes(3));
+    }
+
+    /**
+     * Verifies that we can receive a message which have different section set (i.e header, footer, annotations,
+     * application properties etc).
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void receiveAndValidateProperties(MessagingEntityType entityType) {
+        // Arrange
+        final boolean isSessionEnabled = false;
+        final String subject = "subject";
+        final Map<String, Object> footer = new HashMap<>();
+        footer.put("footer-key-1", "footer-value-1");
+        footer.put("footer-key-2", "footer-value-2");
+
+        final Map<String, Object> aplicaitonProperties = new HashMap<>();
+        aplicaitonProperties.put("ap-key-1", "ap-value-1");
+        aplicaitonProperties.put("ap-key-2", "ap-value-2");
+
+        final Map<String, Object> deliveryAnnotation = new HashMap<>();
+        deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");
+        deliveryAnnotation.put("delivery-annotations-key-2", "delivery-annotations-value-2");
+
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
+
+        final String messageId = UUID.randomUUID().toString();
+        final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
+        expectedAmqpProperties.getProperties().setSubject(subject);
+        expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
+        expectedAmqpProperties.getProperties().setReplyTo("replyto");
+        expectedAmqpProperties.getProperties().setContentType("content-type");
+        expectedAmqpProperties.getProperties().setCorrelationId("corelation-id");
+        expectedAmqpProperties.getProperties().setTo("to");
+        expectedAmqpProperties.getProperties().setAbsoluteExpiryTime(OffsetDateTime.now().plusSeconds(60));
+        expectedAmqpProperties.getProperties().setUserId("user-id-1".getBytes());
+        expectedAmqpProperties.getProperties().setContentEncoding("string");
+        expectedAmqpProperties.getProperties().setGroupSequence(Long.valueOf(2));
+        expectedAmqpProperties.getProperties().setCreationTime(OffsetDateTime.now().plusSeconds(30));
+
+        expectedAmqpProperties.getHeader().setPriority(Short.valueOf((short) 2));
+        expectedAmqpProperties.getHeader().setFirstAcquirer(true);
+        expectedAmqpProperties.getHeader().setDurable(true);
+
+        expectedAmqpProperties.getFooter().putAll(footer);
+        expectedAmqpProperties.getDeliveryAnnotations().putAll(deliveryAnnotation);
+        expectedAmqpProperties.getApplicationProperties().putAll(aplicaitonProperties);
+
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+
+        final AmqpAnnotatedMessage amqpAnnotatedMessage = message.getAmqpAnnotatedMessage();
+        amqpAnnotatedMessage.getMessageAnnotations().putAll(expectedAmqpProperties.getMessageAnnotations());
+        amqpAnnotatedMessage.getApplicationProperties().putAll(expectedAmqpProperties.getApplicationProperties());
+        amqpAnnotatedMessage.getDeliveryAnnotations().putAll(expectedAmqpProperties.getDeliveryAnnotations());
+        amqpAnnotatedMessage.getFooter().putAll(expectedAmqpProperties.getFooter());
+
+        final AmqpMessageHeader header = amqpAnnotatedMessage.getHeader();
+        header.setFirstAcquirer(expectedAmqpProperties.getHeader().isFirstAcquirer());
+        header.setTimeToLive(expectedAmqpProperties.getHeader().getTimeToLive());
+        header.setDurable(expectedAmqpProperties.getHeader().isDurable());
+        header.setDeliveryCount(expectedAmqpProperties.getHeader().getDeliveryCount());
+        header.setPriority(expectedAmqpProperties.getHeader().getPriority());
+
+        final AmqpMessageProperties amqpMessageProperties = amqpAnnotatedMessage.getProperties();
+        amqpMessageProperties.setReplyTo((expectedAmqpProperties.getProperties().getReplyTo()));
+        amqpMessageProperties.setContentEncoding((expectedAmqpProperties.getProperties().getContentEncoding()));
+        amqpMessageProperties.setAbsoluteExpiryTime((expectedAmqpProperties.getProperties().getAbsoluteExpiryTime()));
+        amqpMessageProperties.setSubject((expectedAmqpProperties.getProperties().getSubject()));
+        amqpMessageProperties.setContentType(expectedAmqpProperties.getProperties().getContentType());
+        amqpMessageProperties.setCorrelationId(expectedAmqpProperties.getProperties().getCorrelationId());
+        amqpMessageProperties.setTo(expectedAmqpProperties.getProperties().getTo());
+        amqpMessageProperties.setGroupSequence(expectedAmqpProperties.getProperties().getGroupSequence());
+        amqpMessageProperties.setUserId(expectedAmqpProperties.getProperties().getUserId());
+        amqpMessageProperties.setAbsoluteExpiryTime(expectedAmqpProperties.getProperties().getAbsoluteExpiryTime());
+        amqpMessageProperties.setCreationTime(expectedAmqpProperties.getProperties().getCreationTime());
+        amqpMessageProperties.setReplyToGroupId(expectedAmqpProperties.getProperties().getReplyToGroupId());
+
+        // Send the message
+        sendMessage(message).block(TIMEOUT);
+
+        StepVerifier.create(receiver.receiveMessages().map(ServiceBusReceivedMessageContext::getMessage))
+            .assertNext(received -> {
+                assertNotNull(received.getLockToken());
+                AmqpAnnotatedMessage actual = received.getAmqpAnnotatedMessage();
+                try {
+                    assertArrayEquals(CONTENTS_BYTES, message.getBody());
+                    assertEquals(expectedAmqpProperties.getHeader().getPriority(), actual.getHeader().getPriority());
+                    assertEquals(expectedAmqpProperties.getHeader().isFirstAcquirer(), actual.getHeader().isFirstAcquirer());
+                    assertEquals(expectedAmqpProperties.getHeader().isDurable(), actual.getHeader().isDurable());
+
+                    assertEquals(expectedAmqpProperties.getProperties().getSubject(), actual.getProperties().getSubject());
+                    assertEquals(expectedAmqpProperties.getProperties().getReplyToGroupId(), actual.getProperties().getReplyToGroupId());
+                    assertEquals(expectedAmqpProperties.getProperties().getReplyTo(), actual.getProperties().getReplyTo());
+                    assertEquals(expectedAmqpProperties.getProperties().getContentType(), actual.getProperties().getContentType());
+                    assertEquals(expectedAmqpProperties.getProperties().getCorrelationId(), actual.getProperties().getCorrelationId());
+                    assertEquals(expectedAmqpProperties.getProperties().getTo(), actual.getProperties().getTo());
+                    assertEquals(expectedAmqpProperties.getProperties().getAbsoluteExpiryTime().toEpochSecond(), actual.getProperties().getAbsoluteExpiryTime().toEpochSecond());
+                    assertEquals(expectedAmqpProperties.getProperties().getSubject(), actual.getProperties().getSubject());
+                    assertEquals(expectedAmqpProperties.getProperties().getContentEncoding(), actual.getProperties().getContentEncoding());
+                    assertEquals(expectedAmqpProperties.getProperties().getGroupSequence(), actual.getProperties().getGroupSequence());
+                    assertEquals(expectedAmqpProperties.getProperties().getCreationTime().toEpochSecond(), actual.getProperties().getCreationTime().toEpochSecond());
+                    assertArrayEquals(expectedAmqpProperties.getProperties().getUserId(), actual.getProperties().getUserId());
+
+                    assertMapValues(expectedAmqpProperties.getDeliveryAnnotations(), actual.getDeliveryAnnotations());
+                    assertMapValues(expectedAmqpProperties.getMessageAnnotations(), actual.getMessageAnnotations());
+                    assertMapValues(expectedAmqpProperties.getApplicationProperties(), actual.getApplicationProperties());
+                    assertMapValues(expectedAmqpProperties.getFooter(), actual.getFooter());
+                } finally {
+                    logger.info("Completing message.");
+                    receiver.complete(received).block(Duration.ofSeconds(15));
+                    messagesPending.decrementAndGet();
+                }
+            })
+            .thenCancel()
+            .verify(Duration.ofMinutes(2));
+    }
+
+    /**
+     * Asserts the length and values with in the map.
+     */
+    private void assertMapValues(Map<String, Object> expectedMap, Map<String, Object> actualMap) {
+        assertTrue(actualMap.size() >= expectedMap.size());
+        Iterator<String> expectedKeys = expectedMap.keySet().iterator();
+        while (expectedKeys.hasNext()) {
+            String key = expectedKeys.next();
+            assertEquals(expectedMap.get(key), actualMap.get(key), "Value is not equal for Key " + key);
+        }
     }
 
     /**
@@ -1046,6 +1216,5 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
-
     }
 }

@@ -33,7 +33,11 @@ import java.util.Objects;
 public final class CommunicationIdentityClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+<<<<<<< HEAD
     private static final String COMMUNICATION_ADMINISTRATION_PROPERTIES =
+=======
+    private static final String COMMUNICATION_ADMINISTRATION_PROPERTIES = 
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
         "azure-communication-administration.properties";
 
     private String endpoint;
@@ -41,8 +45,13 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
+<<<<<<< HEAD
     private Configuration configuration;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_ADMINISTRATION_PROPERTIES);
+=======
+    private Configuration configuration;    
+    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_ADMINISTRATION_PROPERTIES);    
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
     /**
@@ -112,7 +121,11 @@ public final class CommunicationIdentityClientBuilder {
     /**
      * Apply additional HttpPipelinePolicy
      *
+<<<<<<< HEAD
      * @param customPolicy HttpPipelinePolicy object to be applied after
+=======
+     * @param customPolicy HttpPipelinePolicy object to be applied after 
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return CommunicationIdentityClientBuilder
      */
@@ -190,7 +203,11 @@ public final class CommunicationIdentityClientBuilder {
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
+<<<<<<< HEAD
             HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(credential);
+=======
+            HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(credential);            
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
             builderPipeline = createHttpPipeline(httpClient,
                 hmacAuthenticationPolicy,
                 customPolicies);
@@ -199,7 +216,11 @@ public final class CommunicationIdentityClientBuilder {
         CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
         return clientBuilder.buildClient();
     }
 
@@ -229,5 +250,9 @@ public final class CommunicationIdentityClientBuilder {
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(httpLogOptions));
+<<<<<<< HEAD
     }
+=======
+    }  
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
 }

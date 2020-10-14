@@ -3,21 +3,15 @@
 
 package com.azure.storage.blob.perf;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
-
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.BlobTestBase;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
+
 public class UploadBlobTest extends BlobTestBase<PerfStressOptions> {
-
-    private final Flux<ByteBuffer> randomByteBufferFlux;
-
     public UploadBlobTest(PerfStressOptions options) {
         super(options);
-        this.randomByteBufferFlux = createRandomByteBufferFlux(options.getSize());
     }
 
     @Override
@@ -27,6 +21,7 @@ public class UploadBlobTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.upload(randomByteBufferFlux, null, true).then();
+        return blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true)
+            .then();
     }
 }

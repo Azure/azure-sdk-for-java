@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The MetricAvailability model. */
+/**
+ * Metric availability specifies the time grain (aggregation interval or frequency) and the retention period for that
+ * time grain.
+ */
 @Fluent
 public final class MetricAvailability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAvailability.class);

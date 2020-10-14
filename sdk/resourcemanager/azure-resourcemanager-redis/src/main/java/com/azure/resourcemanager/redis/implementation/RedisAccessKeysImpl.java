@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
-import com.azure.resourcemanager.redis.fluent.inner.RedisAccessKeysInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 

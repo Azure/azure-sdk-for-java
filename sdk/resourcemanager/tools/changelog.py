@@ -68,4 +68,8 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(format = '%(asctime)s %(levelname)s %(message)s')
+<<<<<<< HEAD
     main()
+=======
+    main()
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61

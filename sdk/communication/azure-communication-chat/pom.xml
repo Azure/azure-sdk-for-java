@@ -18,8 +18,13 @@
 
   <name>Microsoft Azure client library for chat application</name>
   <description>
+<<<<<<< HEAD
     This package contains a Java SDK for Chat Azure Communication Service.
     For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/CHANGELOG.md.
+=======
+    This package contains a Java SDK for Chat Azure Communication Service. 
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/CHANGELOG.md. 
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
     Microsoft Azure Communication Chat quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/chat/get-started?pivots=programming-language-java
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

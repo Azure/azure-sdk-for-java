@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInner;
 
 /** Response containing the SQL Active Directory administrator. */
 public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzureADAdministratorInner>
@@ -17,21 +17,21 @@ public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzure
 
     @Override
     public AdministratorType administratorType() {
-        return this.inner().administratorType();
+        return this.innerModel().administratorType();
     }
 
     @Override
     public String signInName() {
-        return this.inner().login();
+        return this.innerModel().login();
     }
 
     @Override
     public String id() {
-        return this.inner().sid().toString();
+        return this.innerModel().sid().toString();
     }
 
     @Override
     public String tenantId() {
-        return this.inner().tenantId().toString();
+        return this.innerModel().tenantId().toString();
     }
 }

@@ -49,10 +49,8 @@ public class UserPrincipalAzureADGraphTest {
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
     private AzureADGraphClient graphClientMock;
-    private String clientId;
-    private String clientSecret;
-    private AADAuthenticationProperties aadAuthProps;
-    private ServiceEndpointsProperties endpointsProps;
+    private AADAuthenticationProperties aadAuthenticationProperties;
+    private ServiceEndpointsProperties serviceEndpointsProperties;
     private String accessToken;
     private static String userGroupsJson;
 
@@ -72,20 +70,18 @@ public class UserPrincipalAzureADGraphTest {
 
     @Before
     public void setup() {
-        accessToken = Constants.ACCESS_TOKEN;
-        aadAuthProps = new AADAuthenticationProperties();
-        endpointsProps = new ServiceEndpointsProperties();
+        accessToken = TestConstants.ACCESS_TOKEN;
+        aadAuthenticationProperties = new AADAuthenticationProperties();
+        serviceEndpointsProperties = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
         serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
-        endpointsProps.getEndpoints().put("global", serviceEndpoints);
-        clientId = "client";
-        clientSecret = "pass";
+        serviceEndpointsProperties.getEndpoints().put("global", serviceEndpoints);
     }
 
     @Test
     public void getAuthoritiesByUserGroups() throws Exception {
-        aadAuthProps.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
+        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
+        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
@@ -94,8 +90,8 @@ public class UserPrincipalAzureADGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        assertThat(graphClientMock.getGrantedAuthorities(Constants.ACCESS_TOKEN)).isNotEmpty()
-                .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
+        assertThat(graphClientMock.getGrantedAuthorities(TestConstants.ACCESS_TOKEN)).isNotEmpty()
+                                                                                     .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
@@ -105,8 +101,8 @@ public class UserPrincipalAzureADGraphTest {
 
     @Test
     public void getGroups() throws Exception {
-        aadAuthProps.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
+        aadAuthenticationProperties.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
+        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
@@ -116,7 +112,7 @@ public class UserPrincipalAzureADGraphTest {
                 .withBody(userGroupsJson)));
 
         final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(Constants.ACCESS_TOKEN);
+            .getGrantedAuthorities(TestConstants.ACCESS_TOKEN);
 
         assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
@@ -136,9 +132,9 @@ public class UserPrincipalAzureADGraphTest {
              FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
-            final JWSObject jwsObject = JWSObject.parse(Constants.JWT_TOKEN);
+            final JWSObject jwsObject = JWSObject.parse(TestConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();
-            final UserPrincipal principal = new UserPrincipal(jwsObject, jwtClaimsSet);
+            final UserPrincipal principal = new UserPrincipal("", jwsObject, jwtClaimsSet);
 
             objectOutputStream.writeObject(principal);
 

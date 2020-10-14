@@ -13,6 +13,7 @@
     <module>azure-resourcemanager-appplatform</module>
     <module>azure-resourcemanager-appservice</module>
     <module>azure-resourcemanager-authorization</module>
+    <module>azure-resourcemanager-cdn</module>
     <module>azure-resourcemanager-compute</module>
     <module>azure-resourcemanager-containerinstance</module>
     <module>azure-resourcemanager-containerregistry</module>

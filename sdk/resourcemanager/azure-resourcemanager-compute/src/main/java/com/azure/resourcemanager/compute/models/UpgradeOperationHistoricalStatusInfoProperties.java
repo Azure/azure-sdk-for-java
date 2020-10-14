@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpgradeOperationHistoricalStatusInfoProperties model. */
+/** Describes each OS upgrade on the Virtual Machine Scale Set. */
 @Immutable
 public final class UpgradeOperationHistoricalStatusInfoProperties {
     @JsonIgnore

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ImageStorageProfile model. */
+/** Describes a storage profile. */
 @Fluent
 public final class ImageStorageProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageStorageProfile.class);

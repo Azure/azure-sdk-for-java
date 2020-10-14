@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IndexingPolicy model. */
+/** Cosmos DB indexing policy. */
 @Fluent
 public final class IndexingPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IndexingPolicy.class);

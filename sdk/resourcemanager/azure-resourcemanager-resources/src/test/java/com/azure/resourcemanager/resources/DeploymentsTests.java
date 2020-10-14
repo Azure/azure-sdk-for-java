@@ -10,10 +10,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Optional;
 
 public class DeploymentsTests extends ResourceManagementTest {
@@ -236,6 +237,8 @@ public class DeploymentsTests extends ResourceManagementTest {
 
     @Test
     public void canDeployVirtualNetworkSyncPoll() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         final String dp = "dpD" + testId;
 
         // Begin create
@@ -250,17 +253,17 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
-        int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
@@ -269,6 +272,8 @@ public class DeploymentsTests extends ResourceManagementTest {
 
     @Test
     public void canDeployVirtualNetworkSyncPollWithFailure() throws Exception {
+        final long defaultDelayInMillis = 10 * 1000;
+
         final String templateJson = "{ \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\", \"contentVersion\": \"1.0.0.0\", \"resources\": [ { \"type\": \"Microsoft.Storage/storageAccounts\", \"apiVersion\": \"2019-04-01\", \"name\": \"satestnameconflict\", \"location\": \"eastus\", \"sku\": { \"name\": \"Standard_LRS\" }, \"kind\": \"StorageV2\", \"properties\": { \"supportsHttpsTrafficOnly\": true } } ] }";
 
         final String dp = "dpE" + testId;
@@ -284,17 +289,17 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
 
         LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
-        int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
-            ? 0
-            : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
+        long delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
+            ? defaultDelayInMillis
+            : acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
             delayInMills = pollResponse.getRetryAfter() == null
-                ? 10000
-                : (int) pollResponse.getRetryAfter().toMillis();
+                ? defaultDelayInMillis
+                : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
@@ -317,15 +322,15 @@ public class DeploymentsTests extends ResourceManagementTest {
 
             pollStatus = acceptedDeployment.getActivationResponse().getStatus();
             delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
-                ? 0
+                ? defaultDelayInMillis
                 : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
             while (!pollStatus.isComplete()) {
-                SdkContext.sleep(delayInMills);
+                ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
                 PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
                 pollStatus = pollResponse.getStatus();
                 delayInMills = pollResponse.getRetryAfter() == null
-                    ? 10000
+                    ? defaultDelayInMillis
                     : (int) pollResponse.getRetryAfter().toMillis();
             }
             Assertions.assertEquals(LongRunningOperationStatus.FAILED, pollStatus);

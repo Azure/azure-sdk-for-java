@@ -19,7 +19,7 @@ import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -67,7 +67,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int entityIndex = TestUtils.USE_CASE_SINGLE_SESSION;
         final String messageId = "singleUnnamedSession";
-        final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
+        final String sessionId = "singleUnnamedSession-" + OffsetDateTime.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
         final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
@@ -112,7 +112,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSION;
         final String messageId = "singleUnnamedSession";
-        final String now = Instant.now().toString();
+        final String now = OffsetDateTime.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)
             .mapToObj(number -> String.join("-", String.valueOf(number), "singleUnnamedSession", now))
             .collect(Collectors.toList());

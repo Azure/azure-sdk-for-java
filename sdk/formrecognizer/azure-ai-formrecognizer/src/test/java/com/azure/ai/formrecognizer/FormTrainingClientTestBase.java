@@ -59,19 +59,17 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    static final String EXPECTED_INVALID_MODEL_ERROR = "Unable to list blobs on the Azure blob storage account.";
-    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with model Id ";
-    static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
-    static final String EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE = ", errorCode: [" + EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE + "], "
-            + "message: " + EXPECTED_INVALID_MODEL_ERROR;
     static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
-    static final String NO_VALID_BLOB_FOUND = "No valid blobs found in the specified Azure blob container."
-        + " Please conform to the document format/size/page/dimensions requirements.";
     static final String PREFIX_SUBFOLDER = "subfolder";
     static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
+
+    // Error Code
+    static final String COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION_ERROR_CODE = "1002";
+    static final String INVALID_MODEL_STATUS_ERROR_CODE = "2012";
+    static final String NO_VALID_BLOB_FOUND_ERROR_CODE = "2014";
 
     Duration durationTestMode;
 

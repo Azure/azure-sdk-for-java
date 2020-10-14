@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
-import com.azure.resourcemanager.sql.fluent.inner.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerDnsAliasInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -91,7 +91,7 @@ public class SqlServerDnsAliasImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -101,19 +101,19 @@ public class SqlServerDnsAliasImpl
 
     @Override
     public String azureDnsRecord() {
-        return this.inner().azureDnsRecord();
+        return this.innerModel().azureDnsRecord();
     }
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public void delete() {
         this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -152,7 +152,7 @@ public class SqlServerDnsAliasImpl
         final SqlServerDnsAliasImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name())
             .map(
@@ -171,7 +171,7 @@ public class SqlServerDnsAliasImpl
     public Mono<Void> deleteResourceAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -180,7 +180,7 @@ public class SqlServerDnsAliasImpl
     protected Mono<ServerDnsAliasInner> getInnerAsync() {
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getServerDnsAliases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }

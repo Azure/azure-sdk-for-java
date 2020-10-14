@@ -33,10 +33,9 @@ In order to try the authorization action with this sample with minimum effort, [
 ### Configure application.properties
 
 ```properties
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
-
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 # It's suggested the logged in user should at least belong to one of the below groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
 azure.activedirectory.user-group.allowed-groups=group1, group2
@@ -65,6 +64,7 @@ mvn spring-boot:run
 3. Access `group1 Message` link, should success
 4. Access `group2 Message` link, should fail with forbidden error message
 
+<<<<<<< HEAD
 
 ### <strong>*</strong> Take full control over every configuration property
 
@@ -90,16 +90,20 @@ azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
+=======
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
 ## Troubleshooting
 
-### If registered application is not multi-tenanted, how to run this sample?
-In this auto-configuration, by [default](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
-
-Configure endpoints with specific tenant-id by replacing `common` in your application.properties file:
+### If registered application is multi-tenanted, how to run this sample?
+Set `azure.activedirectory.tenant-id=common` in your application.properties file:
 ```properties
+<<<<<<< HEAD
 spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/v2.0/authorize
 spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/{your-tenant-id}/oauth2/v2.0/token
 spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/{your-tenant-id}/discovery/v2.0/keys
+=======
+azure.activedirectory.tenant-id=common
+>>>>>>> 95a27a56ad7e94c066c6b4113935ad5901940c61
 ```
 ---
 ### Meet with `AADSTS240002: Input id_token cannot be used as 'urn:ietf:params:oauth:grant-type:jwt-bearer' grant` error.
