@@ -55,29 +55,29 @@ public class RecognizeBusinessCardFromUrlAsync {
                 RecognizedForm recognizedForm = businessCardPageResults.get(i);
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();
                 System.out.printf("----------- Recognized business card info for page %d -----------%n", i);
-                FormField contactNames = recognizedFields.get("ContactNames");
-                if (contactNames != null) {
-                    if (FieldValueType.LIST == contactNames.getValue().getValueType()) {
-                        List<FormField> businessCardItems = contactNames.getValue().asList();
-                        businessCardItems.stream()
-                            .filter(businessCardItem -> FieldValueType.MAP == businessCardItem.getValue().getValueType())
-                            .map(formField -> {
-                                System.out.printf("Contact name: %s%n", formField.getValueData().getText());
-                                return formField.getValue().asMap();
+                FormField contactNamesFormField = recognizedFields.get("ContactNames");
+                if (contactNamesFormField != null) {
+                    if (FieldValueType.LIST == contactNamesFormField.getValue().getValueType()) {
+                        List<FormField> contactNamesValueFormFields = contactNamesFormField.getValue().asList();
+                        contactNamesValueFormFields.stream()
+                            .filter(contactNamesValueFormField -> FieldValueType.MAP == contactNamesValueFormField.getValue().getValueType())
+                            .map(contactNamesValueFormField -> {
+                                System.out.printf("Contact name: %s%n", contactNamesValueFormField.getValueData().getText());
+                                return contactNamesValueFormField.getValue().asMap();
                             })
-                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
-                                if ("FirstName".equals(key)) {
-                                    if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                        String firstName = formField.getValue().asString();
+                            .forEach(contactNamesFormFieldMap -> contactNamesFormFieldMap.forEach((label, contactNameFormField) -> {
+                                if ("FirstName".equals(label)) {
+                                    if (FieldValueType.STRING == contactNameFormField.getValue().getValueType()) {
+                                        String firstName = contactNameFormField.getValue().asString();
                                         System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
-                                            firstName, formField.getConfidence());
+                                            firstName, contactNameFormField.getConfidence());
                                     }
                                 }
-                                if ("LastName".equals(key)) {
-                                    if (FieldValueType.STRING == formField.getValue().getValueType()) {
-                                        String lastName = formField.getValue().asString();
+                                if ("LastName".equals(label)) {
+                                    if (FieldValueType.STRING == contactNameFormField.getValue().getValueType()) {
+                                        String lastName = contactNameFormField.getValue().asString();
                                         System.out.printf("\tLast Name: %s, confidence: %.2f%n",
-                                            lastName, formField.getConfidence());
+                                            lastName, contactNameFormField.getConfidence());
                                     }
                                 }
                             }));
