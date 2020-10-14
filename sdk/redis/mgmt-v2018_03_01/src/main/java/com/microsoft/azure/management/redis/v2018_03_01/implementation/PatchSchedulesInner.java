@@ -209,7 +209,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
+     * Create or replace the patching schedule for Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
@@ -224,7 +224,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
+     * Create or replace the patching schedule for Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
@@ -238,7 +238,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
+     * Create or replace the patching schedule for Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
@@ -256,7 +256,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
+     * Create or replace the patching schedule for Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
@@ -307,7 +307,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Deletes the patching schedule of a redis cache (requires Premium SKU).
+     * Deletes the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -320,7 +320,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Deletes the patching schedule of a redis cache (requires Premium SKU).
+     * Deletes the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -333,7 +333,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Deletes the patching schedule of a redis cache (requires Premium SKU).
+     * Deletes the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -350,7 +350,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Deletes the patching schedule of a redis cache (requires Premium SKU).
+     * Deletes the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -394,7 +394,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Gets the patching schedule of a redis cache (requires Premium SKU).
+     * Gets the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -408,7 +408,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Gets the patching schedule of a redis cache (requires Premium SKU).
+     * Gets the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -421,7 +421,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Gets the patching schedule of a redis cache (requires Premium SKU).
+     * Gets the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -438,7 +438,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Gets the patching schedule of a redis cache (requires Premium SKU).
+     * Gets the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
