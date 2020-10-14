@@ -66,7 +66,8 @@ class DocumentProducer<T extends Resource> {
         void populatePartitionedQueryMetrics() {
             String queryMetricsDelimitedString = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS);
             if (!StringUtils.isEmpty(queryMetricsDelimitedString)) {
-                queryMetricsDelimitedString += String.format(Locale.ROOT, ";%s=%.2f",
+                queryMetricsDelimitedString += String.format(Locale.ROOT,
+                                                             ";%s=%.2f",
                                                              QueryMetricsConstants.RequestCharge,
                                                              pageResult.getRequestCharge());
                 ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
