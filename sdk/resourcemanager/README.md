@@ -110,18 +110,31 @@ The key concepts of Azure Management Libraries includes:
 
 ### Service features
 
+- App Services
+- Authorization
 - Compute
-- Storage
-- Networking
-- SQL Database
-- Container and Kubernetes (AKS)
-- Web app and Function app
+- Container Services (AKS)
+- Cosmos DB
+- Insight (Monitor)
 - Key Vault
-- Cosmos
-- Monitor
-- Spring Cloud
+- Managed Identity
+- Network
+- Resources
+- Storage
+
+Services in preview
+
+- CDN
+- Container Instance
+- Container Registry
+- DNS
 - Event Hubs
-- Redis Cache
+- Private DNS
+- Redis
+- Service Bus
+- Spring Cloud
+- SQL
+- Traffic Manager
 
 ## Examples
 
