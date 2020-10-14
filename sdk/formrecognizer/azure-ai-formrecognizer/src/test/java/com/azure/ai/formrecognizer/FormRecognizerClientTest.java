@@ -1064,7 +1064,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 // check formtype set on submodel
                 final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
-                assertEquals("custom:model1", submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+                assertEquals("custom:model1", submodel.getFormType());
+                formTrainingClient.deleteModel(createdModel.getModelId());
             });
         }, FORM_JPG);
     }
@@ -1104,7 +1105,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 // check formtype set on submodel
                 final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
-                assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+                assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());
+                formTrainingClient.deleteModel(createdModel.getModelId());
 
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
@@ -1145,8 +1147,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 // check formtype set on submodel
                 final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
-                assertEquals("form-0", submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
-
+                assertEquals("form-0", submodel.getFormType());
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
         }, FORM_JPG);
@@ -1186,7 +1187,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 // check formtype set on submodel
                 final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
-                assertEquals("form-0", submodel.getFormType());   formTrainingClient.deleteModel(createdModel.getModelId());
+                assertEquals("form-0", submodel.getFormType());
 
                 formTrainingClient.deleteModel(createdModel.getModelId());
             });
@@ -1240,15 +1241,19 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
-                // TODO: (savaity) service currently returning docType = "custom:", confirm
-                // assertTrue(recognizedForm.getFormType().equals("custom:" + createdModel.getModelId())
-                //     || recognizedForm.getFormType().equals("custom:" + createdModel1.getModelId()));
+                // since none of the models have a name
+                assertTrue("custom:".equals(recognizedForm.getFormType()));
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
                 // check formtype set on submodel
-                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
-                assertTrue(submodel.getFormType().equals("custom:" + createdModel.getModelId())
-                    || submodel.getFormType().equals("custom:" + createdModel1.getModelId()));
+                composedModel.getSubmodels()
+                    .forEach(customFormSubmodel -> {
+                        if (createdModel.getModelId().equals(customFormSubmodel.getModelId())) {
+                            assertEquals("custom:" + createdModel.getModelId(), customFormSubmodel.getFormType());
+                        } else {
+                            assertEquals("custom:" + createdModel1.getModelId(), customFormSubmodel.getFormType());
+                        }
+                    });
 
                 formTrainingClient.deleteModel(createdModel.getModelId());
                 formTrainingClient.deleteModel(createdModel1.getModelId());
@@ -1286,7 +1291,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
                     = formTrainingClient.beginCreateComposedModel(
                     Arrays.asList(createdModel.getModelId(), createdModel1.getModelId()),
-                    new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                    new CreateComposedModelOptions().setPollInterval(durationTestMode)
+                        .setModelName("composedModelName"),
                     Context.NONE);
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
@@ -1304,14 +1310,16 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller3.waitForCompletion();
 
                 final RecognizedForm recognizedForm = syncPoller3.getFinalResult().stream().findFirst().get();
-                assertTrue(recognizedForm.getFormType().equals("custom:" + createdModel.getModelName())
-                    || recognizedForm.getFormType().equals("custom:" + createdModel1.getModelName()));
+                String expectedFormType1 = "composedModelName:model1";
+                String expectedFormType2 = "composedModelName:model2";
+                assertTrue(expectedFormType1.equals(recognizedForm.getFormType())
+                    || expectedFormType2.equals(recognizedForm.getFormType()));
+
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
                 // check formtype set on submodel
-                final CustomFormSubmodel submodel = createdModel.getSubmodels().get(0);
-                assertTrue(submodel.getFormType().equals("custom:" + createdModel.getModelName())
-                    || submodel.getFormType().equals("custom:" + createdModel1.getModelName()));
+                final CustomFormSubmodel submodel = composedModel.getSubmodels().get(0);
+                assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());
 
                 formTrainingClient.deleteModel(createdModel.getModelId());
                 formTrainingClient.deleteModel(createdModel1.getModelId());
