@@ -246,21 +246,21 @@ public final class ManageLinuxWebAppWithTrafficManager {
                 .create();
     }
 
+    private static final String WEB_APP_PACKAGE_URL =
+        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip";
+
     private static WebApp createWebApp(String name, AppServicePlan plan) {
         return azureResourceManager.webApps().define(name)
                 .withExistingLinuxPlan(plan)
                 .withExistingResourceGroup(rgName)
-                .withBuiltInImage(RuntimeStack.NODEJS_4_5)
+                .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JRE8)
                 .withManagedHostnameBindings(domain, name)
                 .defineSslBinding()
                     .forHostname(name + "." + domain.name())
                     .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
                     .withSniBasedSsl()
                     .attach()
-                .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                    .withBranch("master")
-                    .attach()
+                .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", WEB_APP_PACKAGE_URL)
                 .create();
     }
 

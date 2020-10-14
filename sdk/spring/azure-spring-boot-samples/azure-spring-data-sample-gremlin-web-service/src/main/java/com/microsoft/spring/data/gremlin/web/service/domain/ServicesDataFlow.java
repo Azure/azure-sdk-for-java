@@ -3,9 +3,9 @@
 
 package com.microsoft.spring.data.gremlin.web.service.domain;
 
-import com.microsoft.spring.data.gremlin.annotation.Edge;
-import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
-import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
+import com.azure.spring.data.gremlin.annotation.Edge;
+import com.azure.spring.data.gremlin.annotation.EdgeFrom;
+import com.azure.spring.data.gremlin.annotation.EdgeTo;
 import org.springframework.data.annotation.Id;
 
 import java.util.HashMap;
