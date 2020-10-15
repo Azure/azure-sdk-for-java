@@ -36,14 +36,14 @@ public class ConditionalAccessSample {
         ConfigurationSetting newFontColor =
             configurationClient.getConfigurationSettingWithResponse(configCache.get(FONT_COLOR), true, Context.NONE).getValue();
         if (newFontColor != null) {
-            configCache.putIfAbsent(FONT_COLOR, newFontColor);
+            configCache.put(FONT_COLOR, newFontColor);
         }
 
         ConfigurationSetting newGreetingText =
             configurationClient.getConfigurationSettingWithResponse(configCache.get(GREETING_TEXT), true,
                 Context.NONE).getValue();
         if (newGreetingText != null) {
-            configCache.putIfAbsent(GREETING_TEXT, newGreetingText);
+            configCache.put(GREETING_TEXT, newGreetingText);
         }
     }
 
