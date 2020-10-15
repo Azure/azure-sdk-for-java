@@ -154,7 +154,7 @@ public class UserPrincipalManager {
         Set<String> roles = Optional.of(userPrincipal)
                                     .map(p -> p.getClaim(AADTokenClaim.ROLES))
                                     .map(r -> (JSONArray) r)
-                                    .map(Collection::stream)
+                                    .map(Collection<Object>::stream)
                                     .orElseGet(Stream::empty)
                                     .map(Object::toString)
                                     .collect(Collectors.toSet());
