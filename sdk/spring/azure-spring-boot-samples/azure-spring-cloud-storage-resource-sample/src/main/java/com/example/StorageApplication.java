@@ -3,8 +3,6 @@
 
 package com.example;
 
-import java.nio.file.FileSystems;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
