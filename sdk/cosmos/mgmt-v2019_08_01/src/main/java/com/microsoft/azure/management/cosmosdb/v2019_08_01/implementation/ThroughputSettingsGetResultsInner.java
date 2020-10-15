@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cosmosdb.v2019_08_01.implementation;
 
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.ThroughputSettingsGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties;
@@ -18,59 +19,29 @@ import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties
 @JsonFlatten
 public class ThroughputSettingsGetResultsInner extends ARMResourceProperties {
     /**
-     * Value of the Cosmos DB resource throughput.
+     * The resource property.
      */
-    @JsonProperty(value = "properties.throughput", required = true)
-    private int throughput;
+    @JsonProperty(value = "properties.resource")
+    private ThroughputSettingsGetPropertiesResource resource;
 
     /**
-     * The minimum throughput of the resource.
-     */
-    @JsonProperty(value = "properties.minimumThroughput", access = JsonProperty.Access.WRITE_ONLY)
-    private String minimumThroughput;
-
-    /**
-     * The throughput replace is pending.
-     */
-    @JsonProperty(value = "properties.offerReplacePending", access = JsonProperty.Access.WRITE_ONLY)
-    private String offerReplacePending;
-
-    /**
-     * Get value of the Cosmos DB resource throughput.
+     * Get the resource value.
      *
-     * @return the throughput value
+     * @return the resource value
      */
-    public int throughput() {
-        return this.throughput;
+    public ThroughputSettingsGetPropertiesResource resource() {
+        return this.resource;
     }
 
     /**
-     * Set value of the Cosmos DB resource throughput.
+     * Set the resource value.
      *
-     * @param throughput the throughput value to set
+     * @param resource the resource value to set
      * @return the ThroughputSettingsGetResultsInner object itself.
      */
-    public ThroughputSettingsGetResultsInner withThroughput(int throughput) {
-        this.throughput = throughput;
+    public ThroughputSettingsGetResultsInner withResource(ThroughputSettingsGetPropertiesResource resource) {
+        this.resource = resource;
         return this;
-    }
-
-    /**
-     * Get the minimum throughput of the resource.
-     *
-     * @return the minimumThroughput value
-     */
-    public String minimumThroughput() {
-        return this.minimumThroughput;
-    }
-
-    /**
-     * Get the throughput replace is pending.
-     *
-     * @return the offerReplacePending value
-     */
-    public String offerReplacePending() {
-        return this.offerReplacePending;
     }
 
 }

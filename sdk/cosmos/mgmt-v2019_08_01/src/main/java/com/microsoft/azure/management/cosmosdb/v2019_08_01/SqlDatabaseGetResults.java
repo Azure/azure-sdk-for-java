@@ -24,31 +24,6 @@ import java.util.Map;
  */
 public interface SqlDatabaseGetResults extends HasInner<SqlDatabaseGetResultsInner>, Indexable, Refreshable<SqlDatabaseGetResults>, Updatable<SqlDatabaseGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _colls value.
-     */
-    String _colls();
-
-    /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the _users value.
-     */
-    String _users();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -64,9 +39,9 @@ public interface SqlDatabaseGetResults extends HasInner<SqlDatabaseGetResultsInn
     String name();
 
     /**
-     * @return the sqlDatabaseGetResultsId value.
+     * @return the resource value.
      */
-    String sqlDatabaseGetResultsId();
+    SqlDatabaseGetPropertiesResource resource();
 
     /**
      * @return the tags value.
