@@ -1,6 +1,14 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
+
+## 1.6.0 (2020-10-12)
+### New Features
+- Added peer certificate verification options when connecting to an AMQP endpoint.
+### Breaking Changes
+- Removed `BinaryData` type which was used for `AmqpAnnotatedMessage`. 
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`.
 
 ## 1.5.1 (2020-09-10)
 - Add support for SAS when authenticating.

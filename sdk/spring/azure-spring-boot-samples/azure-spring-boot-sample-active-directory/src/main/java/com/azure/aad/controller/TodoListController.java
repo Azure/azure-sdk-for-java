@@ -4,9 +4,9 @@
 package com.azure.aad.controller;
 
 import com.azure.aad.model.TodoItem;
-import com.microsoft.azure.spring.autoconfigure.aad.Constants;
-import com.microsoft.azure.spring.autoconfigure.aad.UserGroup;
-import com.microsoft.azure.spring.autoconfigure.aad.UserPrincipal;
+import com.azure.spring.autoconfigure.aad.Constants;
+import com.azure.spring.autoconfigure.aad.UserGroup;
+import com.azure.spring.autoconfigure.aad.UserPrincipal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

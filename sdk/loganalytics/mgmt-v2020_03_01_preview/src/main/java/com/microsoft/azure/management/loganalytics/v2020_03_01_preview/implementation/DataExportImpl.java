@@ -72,11 +72,6 @@ class DataExportImpl extends CreatableUpdatableImpl<DataExport, DataExportInner,
 
 
     @Override
-    public Boolean allTables() {
-        return this.inner().allTables();
-    }
-
-    @Override
     public String createdDate() {
         return this.inner().createdDate();
     }
@@ -141,12 +136,6 @@ class DataExportImpl extends CreatableUpdatableImpl<DataExport, DataExportInner,
     @Override
     public DataExportImpl withResourceId(String resourceId) {
         this.inner().withResourceId(resourceId);
-        return this;
-    }
-
-    @Override
-    public DataExportImpl withAllTables(Boolean allTables) {
-        this.inner().withAllTables(allTables);
         return this;
     }
 

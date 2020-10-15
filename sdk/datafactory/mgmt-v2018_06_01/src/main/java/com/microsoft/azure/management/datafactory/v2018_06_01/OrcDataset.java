@@ -28,7 +28,7 @@ public class OrcDataset extends DatasetInner {
     private DatasetLocation location;
 
     /**
-     * Possible values include: 'none', 'zlib', 'snappy'.
+     * Possible values include: 'none', 'zlib', 'snappy', 'lzo'.
      */
     @JsonProperty(value = "typeProperties.orcCompressionCodec")
     private OrcCompressionCodec orcCompressionCodec;
@@ -54,7 +54,7 @@ public class OrcDataset extends DatasetInner {
     }
 
     /**
-     * Get possible values include: 'none', 'zlib', 'snappy'.
+     * Get possible values include: 'none', 'zlib', 'snappy', 'lzo'.
      *
      * @return the orcCompressionCodec value
      */
@@ -63,7 +63,7 @@ public class OrcDataset extends DatasetInner {
     }
 
     /**
-     * Set possible values include: 'none', 'zlib', 'snappy'.
+     * Set possible values include: 'none', 'zlib', 'snappy', 'lzo'.
      *
      * @param orcCompressionCodec the orcCompressionCodec value to set
      * @return the OrcDataset object itself.

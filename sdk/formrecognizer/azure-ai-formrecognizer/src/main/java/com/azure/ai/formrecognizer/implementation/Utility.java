@@ -6,9 +6,11 @@ package com.azure.ai.formrecognizer.implementation;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +19,10 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Utility method class.
@@ -209,5 +215,20 @@ public final class Utility {
                     errorResponseException.getValue().getError().getMessage()));
         }
         return throwable;
+    }
+
+    /*
+     * Poller's ACTIVATION operation that takes URL as input.
+     */
+    public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
+        urlActivationOperation(
+        Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
+        return pollingContext -> {
+            try {
+                return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 }

@@ -218,7 +218,7 @@ public class ManageSpringCloud {
 
             Secret secret = vault.secrets().getByName(certOrderName);
 
-            byte[] certificate = Base64.getDecoder().decode(secret.value());
+            byte[] certificate = Base64.getDecoder().decode(secret.getValue());
 
             String thumbprint = secret.tags().get("Thumbprint");
             if (thumbprint == null || thumbprint.isEmpty()) {
@@ -228,7 +228,7 @@ public class ManageSpringCloud {
                 thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
             }
 
-            System.out.printf("Get certificate: %s%n", secret.value());
+            System.out.printf("Get certificate: %s%n", secret.getValue());
             System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
             // upload certificate

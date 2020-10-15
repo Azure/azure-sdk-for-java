@@ -5,6 +5,7 @@ package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,9 @@ import org.slf4j.LoggerFactory;
 public class WebSocketConnectionHandler extends ConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketConnectionHandler.class);
 
-    public WebSocketConnectionHandler(AmqpConnection amqpConnection) {
-        super(amqpConnection, StringUtil.getRandomString("WS"));
+    public WebSocketConnectionHandler(AmqpConnection amqpConnection, String connectionId,
+        SslDomain.VerifyMode verifyMode) {
+        super(amqpConnection, connectionId, verifyMode);
     }
 
     @Override

@@ -33,6 +33,8 @@ import com.microsoft.azure.batch.protocol.models.MetadataItem;
 import com.microsoft.azure.batch.protocol.models.OnAllTasksComplete;
 import com.microsoft.azure.batch.protocol.models.PoolInformation;
 import com.microsoft.azure.batch.protocol.models.TaskCounts;
+import com.microsoft.azure.batch.protocol.models.TaskCountsResult;
+import com.microsoft.azure.batch.protocol.models.TaskSlotCounts;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -617,11 +619,69 @@ public class JobOperations implements IInheritedBehaviors {
      * @return the TaskCounts object if successful.
      */
     public TaskCounts getTaskCounts(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        return getTaskCountsResult(jobId, additionalBehaviors).taskCounts();
+
+    }
+
+    /**
+     * Gets the task slot counts for the specified job.
+     * Task slot counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     *
+     * @param jobId The ID of the job.
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @return the TaskSlotCounts object if successful.
+     */
+    public TaskSlotCounts getTaskSlotCounts(String jobId) throws BatchErrorException, IOException {
+        return getTaskSlotCounts(jobId, null);
+    }
+
+    /**
+     * Gets the task slot counts for the specified job.
+     * Task slot counts provide a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     *
+     * @param jobId The ID of the job.
+     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @return the TaskSlotCounts object if successful.
+     */
+    public TaskSlotCounts getTaskSlotCounts(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        return getTaskCountsResult(jobId, additionalBehaviors).taskSlotCounts();
+
+    }
+
+    /**
+     * Gets the task counts result for the specified job.
+     * The result includes both task counts and task slot counts. Each counts object provides a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     *
+     * @param jobId The ID of the job.
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @return the TaskCountsResult object if successful.
+     */
+    public TaskCountsResult getTaskCountsResult(String jobId)
+    throws BatchErrorException, IOException {
+        return getTaskCountsResult(jobId, null);
+    }
+
+    /**
+     * Gets the task counts result for the specified job.
+     * The result includes both task counts and task slot counts. Each counts object provides a count of the tasks by active, running or completed task state, and a count of tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     *
+     * @param jobId The ID of the job.
+     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @return the TaskCountsResult object if successful.
+     */
+    public TaskCountsResult getTaskCountsResult(
+        String jobId,
+        Iterable<BatchClientBehavior> additionalBehaviors
+    ) throws BatchErrorException, IOException {
         JobGetTaskCountsOptions options = new JobGetTaskCountsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
-
         return this.parentBatchClient.protocolLayer().jobs().getTaskCounts(jobId, options);
     }
-
 }

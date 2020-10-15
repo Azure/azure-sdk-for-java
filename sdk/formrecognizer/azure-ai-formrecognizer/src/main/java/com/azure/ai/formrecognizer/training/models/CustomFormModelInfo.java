@@ -3,14 +3,11 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.time.OffsetDateTime;
 
 /**
  * The CustomFormModelInfo model.
  */
-@Immutable
 public final class CustomFormModelInfo {
 
     /*
@@ -33,6 +30,10 @@ public final class CustomFormModelInfo {
      */
     private final OffsetDateTime trainingCompletedOn;
 
+    private final String modelName;
+
+    private final CustomFormModelProperties customFormModelProperties;
+
     /**
      * Constructs a {@link CustomFormModelInfo} object.
      *
@@ -47,6 +48,30 @@ public final class CustomFormModelInfo {
         this.status = status;
         this.trainingStartedOn = trainingStartedOn;
         this.trainingCompletedOn = trainingCompletedOn;
+        this.modelName = null;
+        this.customFormModelProperties = null;
+    }
+
+    // TODO: remove this constructor
+    /**
+     * Constructs a {@link CustomFormModelInfo} object.
+     *
+     * @param modelId The model identifier.
+     * @param status The status of the model.
+     * @param trainingStartedOn Date and time (UTC) when the training of the model was started.
+     * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
+     * @param modelName The model name.
+     * @param customFormModelProperties The custom form model properties.
+     */
+    public CustomFormModelInfo(final String modelId, final CustomFormModelStatus status,
+        final OffsetDateTime trainingStartedOn, final OffsetDateTime trainingCompletedOn, final String modelName,
+        final CustomFormModelProperties customFormModelProperties) {
+        this.modelId = modelId;
+        this.status = status;
+        this.trainingStartedOn = trainingStartedOn;
+        this.trainingCompletedOn = trainingCompletedOn;
+        this.modelName = modelName;
+        this.customFormModelProperties = customFormModelProperties;
     }
 
     /**
@@ -85,4 +110,21 @@ public final class CustomFormModelInfo {
         return this.trainingCompletedOn;
     }
 
+    /**
+     * Get model metadata properties.
+     *
+     * @return the custom model metadata properties.
+     */
+    public CustomFormModelProperties getCustomModelProperties() {
+        return customFormModelProperties;
+    }
+
+    /**
+     * Get the user defined model display name.
+     *
+     * @return the modelName value.
+     */
+    public String getModelName() {
+        return modelName;
+    }
 }
