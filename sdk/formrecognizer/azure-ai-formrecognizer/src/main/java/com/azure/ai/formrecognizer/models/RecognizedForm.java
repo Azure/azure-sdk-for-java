@@ -3,8 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +10,6 @@ import java.util.Map;
 /**
  * The RecognizedForm model.
  */
-@Immutable
 public final class RecognizedForm {
 
     /*
@@ -37,6 +34,10 @@ public final class RecognizedForm {
      */
     private final List<FormPage> pages;
 
+    private final Float formTypeConfidence;
+
+    private final String modelId;
+
     /**
      * Constructs a RecognizedForm object.
      *
@@ -51,6 +52,30 @@ public final class RecognizedForm {
         this.formType = formType;
         this.pageRange = pageRange;
         this.pages = pages == null ? null : Collections.unmodifiableList(pages);
+        this.formTypeConfidence = null;
+        this.modelId = null;
+    }
+
+    // TODO: remove this constructor
+    /**
+     * Constructs a RecognizedForm object.
+     *
+     * @param fields Dictionary of named field values.
+     * @param formType Form type.
+     * @param pageRange First and last page number where the document is found.
+     * @param pages List of extracted pages from the form.
+     * @param formTypeConfidence The form type confidence score.
+     * @param modelId The model id.
+     */
+    public RecognizedForm(final Map<String, FormField> fields, final String formType,
+        final FormPageRange pageRange, final List<FormPage> pages, final Float formTypeConfidence,
+        final String modelId) {
+        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
+        this.formType = formType;
+        this.pageRange = pageRange;
+        this.pages = pages == null ? null : Collections.unmodifiableList(pages);
+        this.formTypeConfidence = formTypeConfidence;
+        this.modelId = modelId;
     }
 
     /**
@@ -89,5 +114,24 @@ public final class RecognizedForm {
      */
     public List<FormPage> getPages() {
         return this.pages;
+    }
+
+    /**
+     * Get the confidence of the form type identified by the model.
+     *
+     * @return the formTypeConfidence value.
+     */
+    public Float getFormTypeConfidence() {
+        return formTypeConfidence;
+    }
+
+    /**
+     * Get the identifier of the model that was used for recognition, if not using a prebuilt
+     * model.
+     *
+     * @return the modelId value.
+     */
+    public String getModelId() {
+        return modelId;
     }
 }

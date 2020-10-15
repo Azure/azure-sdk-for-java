@@ -32,7 +32,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
         super(passwordCredential);
         if (passwordCredential.customKeyIdentifier() != null && passwordCredential.customKeyIdentifier().length > 0) {
             this.name = new String(
-                Base64.getDecoder().decode(
+                Base64.getMimeDecoder().decode(
                     new String(passwordCredential.customKeyIdentifier(), StandardCharsets.UTF_8)),
                 StandardCharsets.UTF_8);
         } else {

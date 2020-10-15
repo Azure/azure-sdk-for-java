@@ -3,15 +3,12 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.util.Collections;
 import java.util.Map;
 
 /**
  * The CustomFormSubmodel model.
  */
-@Immutable
 public final class CustomFormSubmodel {
 
     /*
@@ -31,6 +28,8 @@ public final class CustomFormSubmodel {
      */
     private final String formType;
 
+    private final String modelId;
+
     /**
      * Constructs a CustomFormSubmodel object.
      *
@@ -43,6 +42,24 @@ public final class CustomFormSubmodel {
         this.accuracy = accuracy;
         this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
+        this.modelId = null;
+    }
+
+    // TODO: remove this constructor
+    /**
+     * Constructs a CustomFormSubmodel object.
+     *
+     * @param accuracy The estimated extraction accuracy for this model.
+     * @param fields The Map of fields used to train the model.
+     * @param formType The recognized form type.
+     * @param modelId The model id.
+     */
+    public CustomFormSubmodel(final Float accuracy, final Map<String, CustomFormModelField> fields,
+        final String formType, final String modelId) {
+        this.accuracy = accuracy;
+        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
+        this.formType = formType;
+        this.modelId = modelId;
     }
 
     /**
@@ -72,5 +89,14 @@ public final class CustomFormSubmodel {
      */
     public Map<String, CustomFormModelField> getFields() {
         return this.fields;
+    }
+
+    /**
+     * Get the unique identifier for the submodel.
+     *
+     * @return the modelId value.
+     */
+    public String getModelId() {
+        return modelId;
     }
 }
