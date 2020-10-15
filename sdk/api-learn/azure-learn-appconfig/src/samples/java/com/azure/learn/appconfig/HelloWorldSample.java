@@ -18,7 +18,7 @@ public class HelloWorldSample {
     public static void main(String[] args) {
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("https://jiachapi-learn-azconfig-net.azconfig.io") // System.getenv("API-LEARN_ENDPOINT"))
+            .endpoint(System.getenv("API-LEARN_ENDPOINT")) //"https://jiachapi-learn-azconfig-net.azconfig.io") //
             .buildClient();
 
         ConfigurationSetting fontColor = configurationClient.getConfigurationSetting("FontColor");
