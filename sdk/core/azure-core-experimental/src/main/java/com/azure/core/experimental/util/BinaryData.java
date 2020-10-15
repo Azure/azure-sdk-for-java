@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
@@ -71,15 +70,6 @@ public final class  BinaryData {
      */
     public InputStream toStream() {
         return new ByteArrayInputStream(this.data);
-    }
-
-    /**
-     * Provides {@link Mono} of {@link InputStream} for the data represented by this {@link BinaryData} object.
-     *
-     * @return {@link InputStream} representation of the {@link BinaryData}.
-     */
-    public Mono<InputStream> toStreamAsync() {
-        return Mono.fromCallable(() -> toStream());
     }
 
     /**
@@ -147,23 +137,6 @@ public final class  BinaryData {
     }
 
     /**
-     * Create {@link BinaryData} instance with given data and character set.
-     *
-     * <p><strong>Create an instance from String</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#String}
-     *
-     * @param data to use.
-     * @param charSet to use.
-     * @throws NullPointerException if {@code inputStream} is null.
-     * @return {@link BinaryData} representing the binary data.
-     */
-    public static BinaryData fromString(String data, Charset charSet) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-
-        return new BinaryData(data.getBytes(charSet));
-    }
-
-    /**
      * Create {@link BinaryData} instance with given data. The {@link String} is converted into bytes  using
      * {@link StandardCharsets#UTF_8} character set.
      *
@@ -188,13 +161,13 @@ public final class  BinaryData {
     }
 
     /**
-     * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link JsonSerializer}. This will
-     * require the client to configure Json serializer in classpath.
+     * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available in classpath.
+     * The serializer must implement {@link JsonSerializer} interface.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws NullPointerException if {@code data} is null.
-     * @throws IllegalStateException If cannot find any JSON serializer provider on the classpath.
-     * @return {@link BinaryData} representing binary data. Or {@code null} if it fails to serialize the data.
+     * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
+     * @return {@link BinaryData} representing binary data.
      *
      * @see JsonSerializer
      */
@@ -237,7 +210,6 @@ public final class  BinaryData {
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
         return Mono.fromCallable(() -> fromObject(data, serializer));
-
     }
 
     /**
@@ -257,16 +229,6 @@ public final class  BinaryData {
      */
     public String toString() {
         return new String(this.data, StandardCharsets.UTF_8);
-    }
-
-    /**
-     * Provides {@link String} representation of this {@link BinaryData} object given a character set.
-     *
-     * @param charSet to use to convert bytes into {@link String}.
-     * @return {@link String} representation of the the binary data.
-     */
-    public String toString(Charset charSet) {
-        return new String(this.data, charSet);
     }
 
     /**
@@ -302,5 +264,37 @@ public final class  BinaryData {
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
         return Mono.fromCallable(() -> toObject(clazz, serializer));
+    }
+
+    /**
+     * Deserialize the bytes into the {@link Object} of given type by applying the provided {@link ObjectSerializer} on
+     * the data. The serializer must implement {@link JsonSerializer} interface.
+     *
+     * @param clazz representing the type of the Object.
+     * @param <T> Generic type that the data is deserialized into.
+     * @return The {@link Object} of given type after deserializing the bytes.
+     */
+    public <T> T toObject(Class<T> clazz) {
+        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
+
+        TypeReference<T>  ref = TypeReference.createInstance(clazz);
+        InputStream jsonStream = new ByteArrayInputStream(this.data);
+        return JsonSerializerProviders.createInstance().deserialize(jsonStream, ref);
+    }
+
+    /**
+     * Return a {@link Mono} by deserialize the bytes into the {@link Object} of given type after applying the Json
+     * serializer found on classpath.
+     *
+     * <p><strong>Gets the specified object</strong></p>
+     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
+     *
+     * @param clazz representing the type of the Object.
+     * @param <T> Generic type that the data is deserialized into.
+     * @throws NullPointerException if {@code clazz} or {@code serializer} is null.
+     * @return The {@link Object} of given type after deserializing the bytes.
+     */
+    public  <T> Mono<T> toObjectAsync(Class<T> clazz) {
+        return Mono.fromCallable(() -> toObject(clazz));
     }
 }

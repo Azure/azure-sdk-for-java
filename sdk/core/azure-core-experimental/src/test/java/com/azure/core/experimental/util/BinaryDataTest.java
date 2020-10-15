@@ -85,19 +85,6 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void createFromStringCharSet() {
-        // Arrange
-        final String expected = "Doe";
-
-        // Act
-        final BinaryData data = BinaryData.fromString(expected, StandardCharsets.UTF_8);
-
-        // Assert
-        assertArrayEquals(expected.getBytes(), data.toBytes());
-        assertEquals(expected, data.toString(StandardCharsets.UTF_8));
-    }
-
-    @Test
     public void createFromByteArray() {
         // Arrange
         final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
@@ -148,27 +135,6 @@ public class BinaryDataTest {
         StepVerifier.create(BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)))
             .assertNext(actual -> {
                 Assertions.assertArrayEquals(expected, actual.toBytes());
-            })
-            .verifyComplete();
-    }
-
-    @Test
-    public void createToStreamAsync() {
-        // Arrange
-        final byte[] expected = "Doe".getBytes(StandardCharsets.UTF_8);
-        final BinaryData actual = BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)).block();
-        // Act & Assert
-        StepVerifier.create(actual.toStreamAsync())
-            .assertNext(inutStream -> {
-                byte[] actualBytes = new byte[expected.length];
-
-                // Act
-                try {
-                    inutStream.read(actualBytes, 0, expected.length);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Assertions.assertArrayEquals(expected, actualBytes);
             })
             .verifyComplete();
     }
