@@ -124,6 +124,10 @@ public final class TableAsyncClient {
         return TablesServiceVersion.fromString(implementation.getVersion());
     }
 
+    public TableAsyncBatch createBatch(String partitionKey) {
+        return new TableAsyncBatch(partitionKey, this);
+    }
+
     /**
      * Creates the table within the Tables service.
      *

@@ -72,6 +72,10 @@ public class TableClient {
         return this.client.getApiVersion();
     }
 
+    public TableBatch createBatch(String partitionKey) {
+        return new TableBatch(partitionKey, client);
+    }
+
     /**
      * Creates the table within the Tables service.
      *
