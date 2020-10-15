@@ -31,13 +31,13 @@ class ApplicationDefinitionsImpl extends GroupableResourcesCoreImpl<ApplicationD
     @Override
     protected Observable<ApplicationDefinitionInner> getInnerAsync(String resourceGroupName, String name) {
         ApplicationDefinitionsInner client = this.inner();
-        return client.getByResourceGroupAsync(resourceGroupName, name);
+        return client.getAsync(resourceGroupName, name);
     }
 
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         ApplicationDefinitionsInner client = this.inner();
-        return client.deleteAsync(resourceGroupName, name).toCompletable();
+        return client.deleteByIdAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
@@ -49,7 +49,7 @@ class ApplicationDefinitionsImpl extends GroupableResourcesCoreImpl<ApplicationD
         for (String id : ids) {
             final String resourceGroupName = ResourceUtilsCore.groupFromResourceId(id);
             final String name = ResourceUtilsCore.nameFromResourceId(id);
-            Observable<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            Observable<String> o = RXMapper.map(this.inner().deleteByIdAsync(resourceGroupName, name), id);
             observables.add(o);
         }
         return Observable.mergeDelayError(observables);
@@ -102,15 +102,27 @@ class ApplicationDefinitionsImpl extends GroupableResourcesCoreImpl<ApplicationD
     }
 
     @Override
-    public Completable deleteByIdAsync(String applicationDefinitionId) {
+    public Completable deleteAsync(String resourceGroupName, String applicationDefinitionName) {
         ApplicationDefinitionsInner client = this.inner();
-        return client.deleteByIdAsync(applicationDefinitionId).toCompletable();
+        return client.deleteAsync(resourceGroupName, applicationDefinitionName).toCompletable();
     }
 
     @Override
-    public Observable<ApplicationDefinition> createOrUpdateByIdAsync(String applicationDefinitionId, ApplicationDefinitionInner parameters) {
+    public Observable<ApplicationDefinition> getByIdAsync(String resourceGroupName, String applicationDefinitionName) {
         ApplicationDefinitionsInner client = this.inner();
-        return client.createOrUpdateByIdAsync(applicationDefinitionId, parameters)
+        return client.getByIdAsync(resourceGroupName, applicationDefinitionName)
+        .map(new Func1<ApplicationDefinitionInner, ApplicationDefinition>() {
+            @Override
+            public ApplicationDefinition call(ApplicationDefinitionInner inner) {
+                return new ApplicationDefinitionImpl(inner.name(), inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ApplicationDefinition> createOrUpdateByIdAsync(String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
+        ApplicationDefinitionsInner client = this.inner();
+        return client.createOrUpdateByIdAsync(resourceGroupName, applicationDefinitionName, parameters)
         .map(new Func1<ApplicationDefinitionInner, ApplicationDefinition>() {
             @Override
             public ApplicationDefinition call(ApplicationDefinitionInner inner) {
