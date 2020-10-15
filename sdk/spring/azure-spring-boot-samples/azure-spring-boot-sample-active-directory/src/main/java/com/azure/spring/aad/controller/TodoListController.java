@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.aad.controller;
+package com.azure.spring.aad.controller;
 
-import com.azure.aad.model.TodoItem;
+import com.azure.spring.aad.model.TodoItem;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.MemberShip;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
