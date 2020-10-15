@@ -76,7 +76,7 @@ public final class ServiceBusClientBuilder {
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
     private ClientOptions clientOptions;
-    private Configuration configuration = Configuration.getGlobalConfiguration().clone();
+    private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
     private String connectionStringEntityName;
     private TokenCredential credentials;
@@ -331,6 +331,7 @@ public final class ServiceBusClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
+        configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
         if (credentials == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                 + "They can be set using: connectionString(String), connectionString(String, String), "
