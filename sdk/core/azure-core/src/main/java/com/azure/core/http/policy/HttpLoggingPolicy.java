@@ -42,18 +42,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
-    private static final Function<HttpRequest, LogLevel> DEFAULT_REQUEST_LOG_LEVEL_FUNCTION =
-        httpRequest -> LogLevel.INFORMATIONAL;
-    private static final BiFunction<HttpResponse, Duration, LogLevel> DEFAULT_RESPONSE_LOG_LEVEL_FUNCTION =
-        ((httpResponse, duration) -> LogLevel.INFORMATIONAL);
 
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
 
-    private final Function<HttpRequest, LogLevel> requestLogLevelFunction;
+    private final LogLevel defaultLogLevel;
+    private final Function<HttpPipelineCallContext, LogLevel> requestLogLevelFunction;
     private final BiFunction<HttpResponse, Duration, LogLevel> responseLogLevelFunction;
+    private final Function<HttpPipelineCallContext, Mono<String>> requestLoggingFunction;
+    private final BiFunction<HttpResponse, Duration, Mono<String>> responseLoggingFunction;
 
     /**
      * Key for {@link Context} to pass request retry count metadata for logging.
@@ -71,8 +70,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
             this.prettyPrintBody = false;
-            this.requestLogLevelFunction = DEFAULT_REQUEST_LOG_LEVEL_FUNCTION;
-            this.responseLogLevelFunction = DEFAULT_RESPONSE_LOG_LEVEL_FUNCTION;
+
+            this.defaultLogLevel = LogLevel.INFORMATIONAL;
+            this.requestLogLevelFunction = null;
+            this.responseLogLevelFunction = null;
         } else {
             this.httpLogDetailLevel = httpLogOptions.getLogLevel();
             this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames()
@@ -84,12 +85,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
-            this.requestLogLevelFunction = (httpLogOptions.getRequestLogLevelFunction() == null)
-                ? DEFAULT_REQUEST_LOG_LEVEL_FUNCTION
-                : httpLogOptions.getRequestLogLevelFunction();
-            this.responseLogLevelFunction = (httpLogOptions.getResponseLogLevelFunction() == null)
-                ? DEFAULT_RESPONSE_LOG_LEVEL_FUNCTION
-                : httpLogOptions.getResponseLogLevelFunction();
+
+            this.defaultLogLevel = (httpLogOptions.getDefaultLogLevel() == null)
+                ? LogLevel.INFORMATIONAL
+                : httpLogOptions.getDefaultLogLevel();
+            this.requestLogLevelFunction = httpLogOptions.getRequestLogLevelFunction();
+            this.responseLogLevelFunction = httpLogOptions.getResponseLogLevelFunction();
         }
     }
 
@@ -116,13 +117,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param request HTTP request being sent to Azure.
      * @return A Mono which will emit the string to log.
      */
-    private Mono<Void> logRequest(final ClientLogger logger, final HttpPipelineCallContext callContext) {
+    private Mono<String> logRequest(final HttpPipelineCallContext callContext) {
         final HttpRequest request = callContext.getHttpRequest();
-
-        final LogLevel logLevel = sanitizeLogLevel(requestLogLevelFunction.apply(request));
-        if (!logger.canLogAtLevel(logLevel)) {
-            return Mono.empty();
-        }
 
         StringBuilder requestLogMessage = new StringBuilder();
         if (httpLogDetailLevel.shouldLogUrl()) {
@@ -143,7 +139,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         addHeadersToLogMessage(logger, request.getHeaders(), requestLogMessage);
 
         if (!httpLogDetailLevel.shouldLogBody()) {
-            return logAndReturn(logger, logLevel, requestLogMessage, null);
+            return Mono.just(requestLogMessage.toString());
         }
 
         if (request.getBody() == null) {
@@ -153,7 +149,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .append(request.getHttpMethod())
                 .append(System.lineSeparator());
 
-            return logAndReturn(logger, logLevel, requestLogMessage, null);
+            return Mono.just(requestLogMessage.toString());
         }
 
         String contentType = request.getHeaders().getValue("Content-Type");
@@ -179,6 +175,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                             .append(System.lineSeparator());
 
                         logger.info(requestLogMessage.toString());
+
                     }));
 
             return Mono.empty();
@@ -190,7 +187,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .append(request.getHttpMethod())
                 .append(System.lineSeparator());
 
-            return logAndReturn(logger, logLevel, requestLogMessage, null);
+            return Mono.just(requestLogMessage.toString());
         }
     }
 
