@@ -141,6 +141,8 @@ public class AzureADGraphClient {
     }
 
     /**
+     * @param graphApiToken token of graph api.
+     * @return set of SimpleGrantedAuthority
      * @throws IOException throw exception if get groups failed by IOException.
      */
     public Set<SimpleGrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
