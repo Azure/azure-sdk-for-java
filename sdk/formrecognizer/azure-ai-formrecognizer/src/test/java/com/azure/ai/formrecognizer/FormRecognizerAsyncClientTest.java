@@ -109,7 +109,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         localFilePathRunner((filePath, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
                 toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength,
-                new RecognizeReceiptsOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                new RecognizeReceiptsOptions().set  PollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), false);
         }, RECEIPT_CONTOSO_JPG);

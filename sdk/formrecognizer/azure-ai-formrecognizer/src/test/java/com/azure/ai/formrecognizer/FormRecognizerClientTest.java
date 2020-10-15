@@ -1539,16 +1539,17 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void invalidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.beginRecognizeReceipts(
-                getContentDetectionFileData(RECEIPT_JPG_LOCAL_URL),
-                RECEIPT_FILE_LENGTH,
-                new RecognizeReceiptsOptions().setPollInterval(durationTestMode).setLocale("random"),
-                Context.NONE)
-        );
 
-        assertEquals("UnsupportedLocale",
-            ((FormRecognizerErrorInformation) httpResponseException.getValue()).getErrorCode());
+        localFilePathRunner((filePath, dataLength) -> {
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeReceipts(
+                    getContentDetectionFileData(filePath),
+                    dataLength,
+                    new RecognizeReceiptsOptions().setPollInterval(durationTestMode).setLocale("random"),
+                    Context.NONE));
+            assertEquals("UnsupportedLocale",
+                ((FormRecognizerErrorInformation) httpResponseException.getValue()).getErrorCode());
+            }, RECEIPT_CONTOSO_JPG);
     }
 
     /**
@@ -1558,12 +1559,15 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void receiptValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        client.beginRecognizeReceipts(
-                getContentDetectionFileData(RECEIPT_JPG_LOCAL_URL),
-                RECEIPT_FILE_LENGTH,
+
+        localFilePathRunner((filePath, dataLength) -> {
+            client.beginRecognizeReceipts(
+                getContentDetectionFileData(filePath),
+                dataLength,
                 new RecognizeReceiptsOptions().setPollInterval(durationTestMode).setLocale("en-US"),
                 Context.NONE);
+            validateNetworkCallRecord("locale", "en-US");
 
-        validateNetworkCallRecord("locale", "en-US");
+        }, RECEIPT_CONTOSO_JPG);
     }
 }
