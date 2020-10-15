@@ -45,6 +45,7 @@ Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 Check out the [API reference documentation][java_fr_ref_docs] to learn more about
 what you can do with the Azure Form Recognizer client library.
 Following section provides code samples for some of the advanced scenarios in Form Recognizer Client library:
+
 |**Advanced Sample File Name**|**Description**|
 |----------------|-------------|
 |[StronglyTypedRecognizedForm][strongly_typed_sample]|Use the fields in your recognized forms to create a receipt object with strongly-typed US receipt fields|
