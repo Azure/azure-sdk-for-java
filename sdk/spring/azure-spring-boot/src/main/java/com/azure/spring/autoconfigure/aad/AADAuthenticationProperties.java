@@ -221,7 +221,7 @@ public class AADAuthenticationProperties {
                 LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
             }
         } else if (!allowedGroupsConfigured()) {
-            throw new IllegalStateException("One of the User Group Properties must be populated. "
+            throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
     }
