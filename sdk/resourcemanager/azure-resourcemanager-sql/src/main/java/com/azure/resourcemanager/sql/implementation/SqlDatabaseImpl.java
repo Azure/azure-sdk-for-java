@@ -977,21 +977,6 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
-    public SqlDatabaseImpl withEdition(DatabaseEdition edition) {
-        if (this.innerModel().sku() == null) {
-            this.innerModel().withSku(new Sku());
-        }
-        this.innerModel().sku().withTier(edition.toString());
-        if (this.innerModel().sku().name() == null) {
-            this.innerModel().sku().withName(edition.toString());
-        }
-        this.innerModel().sku().withCapacity(null);
-        this.innerModel().withElasticPoolId(null);
-
-        return this;
-    }
-
-    @Override
     public SqlDatabaseImpl withBasicEdition() {
         return this.withBasicEdition(SqlDatabaseBasicStorage.MAX_2_GB);
     }
@@ -1039,33 +1024,23 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
-    public SqlDatabaseImpl withCustomEdition(Sku sku) {
+    public SqlDatabaseImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
         this.innerModel().withElasticPoolId(null);
         return this;
     }
 
-    @Override
-    public SqlDatabaseImpl withCustomEdition(
-        DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity) {
-        Sku sku =
-            new Sku()
-                .withName(serviceObjective.toString())
-                .withTier(edition.toString())
-                .withCapacity(capacity <= 0 ? null : capacity);
-
-        return this.withCustomEdition(sku);
-    }
-
-    @Override
-    public SqlDatabaseImpl withServiceObjective(ServiceObjectiveName serviceLevelObjective) {
-        if (this.innerModel().sku() == null) {
-            this.innerModel().withSku(new Sku());
-        }
-        this.innerModel().sku().withName(serviceLevelObjective.toString());
-        this.innerModel().sku().withCapacity(null);
-        return this;
-    }
+//    @Override
+//    public SqlDatabaseImpl withCustomEdition(
+//        DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity) {
+//        Sku sku =
+//            new Sku()
+//                .withName(serviceObjective.toString())
+//                .withTier(edition.toString())
+//                .withCapacity(capacity <= 0 ? null : capacity);
+//
+//        return this.withCustomEdition(sku);
+//    }
 
     @Override
     public SqlDatabaseImpl withTags(Map<String, String> tags) {
