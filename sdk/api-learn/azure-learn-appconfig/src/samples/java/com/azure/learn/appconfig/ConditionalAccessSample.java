@@ -16,7 +16,7 @@ public class ConditionalAccessSample {
     public static void main(String[] args) throws InterruptedException {
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(System.getenv("APP_CONFIG_URL"))
+            .endpoint(System.getenv("API-LEARN_ENDPOINT"))
             .buildClient();
 
 
