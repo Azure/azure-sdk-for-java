@@ -7,18 +7,21 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeActual;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
+import com.azure.resourcemanager.sql.models.CapabilityStatus;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.sql.models.CreateMode;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
 import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
@@ -52,9 +55,11 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -63,6 +68,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1641,6 +1647,47 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase, String databaseName) {
         validateSqlDatabase(sqlDatabase, databaseName);
         Assertions.assertEquals(SQL_ELASTIC_POOL_NAME, sqlDatabase.elasticPoolName());
+    }
+
+    @Test
+    public void testRandomSku() {
+        List<DatabaseSku> databaseSkus = Lists.newArrayList(DatabaseSku.getAll().toArray(new DatabaseSku[0]));
+        Collections.shuffle(databaseSkus);
+        List<ElasticPoolSku> elasticPoolSkus = Lists.newArrayList(ElasticPoolSku.getAll().toArray(new ElasticPoolSku[0]));
+        Collections.shuffle(elasticPoolSkus);
+
+        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+            .forEach((x, serverVersionCapability) -> {
+                serverVersionCapability.supportedEditions().forEach(edition -> {
+                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
+                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT) {
+                            databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
+                        }
+                    });
+                });
+                serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
+                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
+                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT) {
+                            elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
+                        }
+                    });
+                });
+            });
+
+        SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin("userName")
+            .withAdministratorPassword(password())
+            .create();
+
+        Flux.merge(
+            Flux.range(0, 5)
+                .flatMap(i -> sqlServer.databases().define("database" + i).withSku(databaseSkus.get(i)).createAsync().cast(Indexable.class)),
+            Flux.range(0, 5)
+                .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
+        )
+            .blockLast();
     }
 
     @Test
