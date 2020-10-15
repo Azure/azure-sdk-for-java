@@ -190,6 +190,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
@@ -265,6 +266,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
                                                   Context context) {
+        context = context == null ? Context.NONE : context;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
@@ -371,7 +373,8 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                  Duration timeout, Context context) {
+                                                  Duration timeout, Context inputContext) {
+        Context context = inputContext == null ? Context.NONE : inputContext;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
@@ -503,6 +506,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
                                                   Context context) {
+        context = context == null ? Context.NONE : context;
         String matchParam = eTag == null ? "*" : eTag;
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         context = context == null ? Context.NONE : context;
@@ -611,6 +615,7 @@ public final class TableAsyncClient {
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
+        context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())

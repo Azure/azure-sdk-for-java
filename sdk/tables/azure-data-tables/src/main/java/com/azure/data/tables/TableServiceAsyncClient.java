@@ -269,6 +269,7 @@ public class TableServiceAsyncClient {
 
     private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
                                                       ListTablesOptions options) {
+        context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
