@@ -10,13 +10,15 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SqlPoolTableInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 
 /**
  * Type representing SqlPoolTable.
  */
-public interface SqlPoolTable extends HasInner<SqlPoolTableInner>, HasManager<SynapseManager> {
+public interface SqlPoolTable extends HasInner<SqlPoolTableInner>, Indexable, Refreshable<SqlPoolTable>, HasManager<SynapseManager> {
     /**
      * @return the id value.
      */

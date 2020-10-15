@@ -434,6 +434,58 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ExtendedSqlPoolBlobAuditingPoliciesInner object to access its operations.
+     */
+    private ExtendedSqlPoolBlobAuditingPoliciesInner extendedSqlPoolBlobAuditingPolicies;
+
+    /**
+     * Gets the ExtendedSqlPoolBlobAuditingPoliciesInner object to access its operations.
+     * @return the ExtendedSqlPoolBlobAuditingPoliciesInner object.
+     */
+    public ExtendedSqlPoolBlobAuditingPoliciesInner extendedSqlPoolBlobAuditingPolicies() {
+        return this.extendedSqlPoolBlobAuditingPolicies;
+    }
+
+    /**
+     * The DataMaskingPoliciesInner object to access its operations.
+     */
+    private DataMaskingPoliciesInner dataMaskingPolicies;
+
+    /**
+     * Gets the DataMaskingPoliciesInner object to access its operations.
+     * @return the DataMaskingPoliciesInner object.
+     */
+    public DataMaskingPoliciesInner dataMaskingPolicies() {
+        return this.dataMaskingPolicies;
+    }
+
+    /**
+     * The DataMaskingRulesInner object to access its operations.
+     */
+    private DataMaskingRulesInner dataMaskingRules;
+
+    /**
+     * Gets the DataMaskingRulesInner object to access its operations.
+     * @return the DataMaskingRulesInner object.
+     */
+    public DataMaskingRulesInner dataMaskingRules() {
+        return this.dataMaskingRules;
+    }
+
+    /**
+     * The SqlPoolColumnsInner object to access its operations.
+     */
+    private SqlPoolColumnsInner sqlPoolColumns;
+
+    /**
+     * Gets the SqlPoolColumnsInner object to access its operations.
+     * @return the SqlPoolColumnsInner object.
+     */
+    public SqlPoolColumnsInner sqlPoolColumns() {
+        return this.sqlPoolColumns;
+    }
+
+    /**
      * The WorkspacesInner object to access its operations.
      */
     private WorkspacesInner workspaces;
@@ -686,6 +738,10 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
         this.sqlPoolVulnerabilityAssessmentScans = new SqlPoolVulnerabilityAssessmentScansInner(restClient().retrofit(), this);
         this.sqlPoolSecurityAlertPolicies = new SqlPoolSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.sqlPoolVulnerabilityAssessmentRuleBaselines = new SqlPoolVulnerabilityAssessmentRuleBaselinesInner(restClient().retrofit(), this);
+        this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesInner(restClient().retrofit(), this);
+        this.dataMaskingPolicies = new DataMaskingPoliciesInner(restClient().retrofit(), this);
+        this.dataMaskingRules = new DataMaskingRulesInner(restClient().retrofit(), this);
+        this.sqlPoolColumns = new SqlPoolColumnsInner(restClient().retrofit(), this);
         this.workspaces = new WorkspacesInner(restClient().retrofit(), this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsInner(restClient().retrofit(), this);
         this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsInner(restClient().retrofit(), this);

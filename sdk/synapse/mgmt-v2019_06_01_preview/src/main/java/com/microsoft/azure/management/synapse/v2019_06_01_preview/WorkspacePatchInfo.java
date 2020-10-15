@@ -30,6 +30,12 @@ public class WorkspacePatchInfo {
     private ManagedIdentity identity;
 
     /**
+     * Managed Virtual Network Settings.
+     */
+    @JsonProperty(value = "managedVirtualNetworkSettings")
+    private WorkspacePatchInfoManagedVirtualNetworkSettings managedVirtualNetworkSettings;
+
+    /**
      * SQL administrator login password.
      */
     @JsonProperty(value = "properties.sqlAdministratorLoginPassword")
@@ -78,6 +84,26 @@ public class WorkspacePatchInfo {
      */
     public WorkspacePatchInfo withIdentity(ManagedIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get managed Virtual Network Settings.
+     *
+     * @return the managedVirtualNetworkSettings value
+     */
+    public WorkspacePatchInfoManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.managedVirtualNetworkSettings;
+    }
+
+    /**
+     * Set managed Virtual Network Settings.
+     *
+     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withManagedVirtualNetworkSettings(WorkspacePatchInfoManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
         return this;
     }
 
