@@ -325,6 +325,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             requestCharge += feedResponse.getRequestCharge();
         }
         assertThat(requestCharge).isGreaterThan(0);
+        // resetting locale
+        Locale.setDefault(Locale.ROOT);
     }
 
     private static void validateQueryDiagnostics(
