@@ -10,11 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class is used to deserialize json to object.
+ * Refs: https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberShips {
 
-    private String odataNextLink;
-    private List<MemberShip> value;
+    private final String odataNextLink;
+    private final List<MemberShip> value;
 
     @JsonCreator
     public MemberShips(

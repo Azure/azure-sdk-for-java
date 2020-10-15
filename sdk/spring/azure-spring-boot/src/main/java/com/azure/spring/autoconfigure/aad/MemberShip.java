@@ -11,6 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * This class is used to deserialize json to object.
+ * Refs: https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberShip implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;

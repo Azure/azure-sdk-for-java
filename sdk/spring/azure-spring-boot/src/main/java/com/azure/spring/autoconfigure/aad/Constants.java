@@ -8,6 +8,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
 
+/**
+ * Constants used for AAD related logic.
+ */
 public class Constants {
     public static final String SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
     public static final String CAP_CLAIMS = "CAP_Claims";

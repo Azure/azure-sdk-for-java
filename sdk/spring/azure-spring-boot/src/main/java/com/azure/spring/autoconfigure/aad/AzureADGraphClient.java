@@ -111,6 +111,12 @@ public class AzureADGraphClient {
         }
     }
 
+    /**
+     *
+     * @param graphApiToken token used to access graph api.
+     * @return groups in graph api.
+     * @throws IOException throw exception if get groups failed by IOException.
+     */
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
