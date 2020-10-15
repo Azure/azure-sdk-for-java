@@ -62,7 +62,7 @@
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
 
-/sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
+/sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @geneh @alongafni
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak
