@@ -589,6 +589,13 @@
   <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.core.api.CheckpointConfig.java"/>
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->	
+  <suppress checks="MethodName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
+  <suppress checks="PackageName" files="com.azure.spring.data.cosmos.multidatasource.*\.java"/>
+  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
+  
   <!-- ### end: Spring related suppression -->
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
