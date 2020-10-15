@@ -395,6 +395,14 @@ public interface SqlDatabaseOperations
             /**
              * Sets the sku for the SQL Database.
              *
+             * @param sku sku to be set for database.
+             * @return The next stage of the definition
+             */
+            SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withSku(DatabaseSku sku);
+
+            /**
+             * Sets the sku for the SQL Database.
+             *
              * @param sku sku/edition to be set for database, all possible capabilities could be found by
              *     {@link SqlServers#getCapabilitiesByRegion(Region)}
              * @return The next stage of the definition

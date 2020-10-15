@@ -50,14 +50,12 @@ public interface SqlElasticPoolOperations
         /** The SQL Elastic Pool definition to set the edition type. */
         interface WithEdition {
             /**
-             * Sets the sku for the SQL Elastic Pool. All possible capabilities could be found by
-             * {@link SqlServers#getCapabilitiesByRegion(Region)}.
+             * Sets the sku for the SQL Elastic Pool.
              *
-             * @param skuName the sku name to be set for elastic pool
-             * @param capacity the capacity to be set for elastic pool
+             * @param sku the sku to be set for elastic pool
              * @return The next stage of the definition
              */
-            // SqlElasticPoolOperations.DefinitionStages.WithCreate withSku(String skuName, long capacity);
+            SqlElasticPoolOperations.DefinitionStages.WithCreate withSku(ElasticPoolSku sku);
 
             /**
              * Sets the sku for the SQL Elastic Pool.

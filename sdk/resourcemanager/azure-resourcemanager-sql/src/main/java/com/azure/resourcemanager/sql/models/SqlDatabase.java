@@ -703,10 +703,10 @@ public interface SqlDatabase
             /**
              * Sets the sku for the SQL Database.
              *
-             * @param skuName sku name to be set for database
+             * @param sku sku to be set for database
              * @return The next stage of the definition
              */
-            // SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSku(ServiceObjectiveName skuName);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSku(DatabaseSku sku);
 
             /**
              * Sets the sku for the SQL Database.
@@ -853,10 +853,10 @@ public interface SqlDatabase
             /**
              * Sets the sku for the SQL Database.
              *
-             * @param skuName sku name to be set for database
+             * @param sku sku to be set for database
              * @return The next stage of the update
              */
-            // Update withSku(ServiceObjectiveName skuName);
+            Update withSku(DatabaseSku sku);
 
             /**
              * Sets the sku for the SQL Database.

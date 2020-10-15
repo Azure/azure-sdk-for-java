@@ -205,14 +205,12 @@ public interface SqlElasticPool
          */
         interface WithEdition<ParentT> {
             /**
-             * Sets the sku for the SQL Elastic Pool. All possible capabilities could be found by
-             * {@link SqlServers#getCapabilitiesByRegion(Region)}.
+             * Sets the sku for the SQL Elastic Pool.
              *
-             * @param skuName the sku name to be set for elastic pool
-             * @param capacity the capacity to be set for elastic pool
+             * @param sku the sku to be set for elastic pool
              * @return The next stage of the definition
              */
-            // SqlElasticPool.DefinitionStages.WithAttach<ParentT> withSku(String skuName, long capacity);
+            SqlElasticPool.DefinitionStages.WithAttach<ParentT> withSku(ElasticPoolSku sku);
 
             /**
              * Sets the sku for the SQL Elastic Pool.
