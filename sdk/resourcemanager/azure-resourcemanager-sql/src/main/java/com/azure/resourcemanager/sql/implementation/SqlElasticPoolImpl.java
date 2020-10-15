@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
+import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -503,6 +504,11 @@ public class SqlElasticPoolImpl
         this.innerModel().sku().withTier(edition.toString());
         this.innerModel().sku().withName(edition.toString() + "Pool");
         return this;
+    }
+
+    @Override
+    public SqlElasticPoolImpl withSku(ElasticPoolSku sku) {
+        return withSku(sku.toSku());
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
+import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
 import com.azure.resourcemanager.sql.models.ImportRequest;
@@ -1024,23 +1025,16 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
+    public SqlDatabaseImpl withSku(DatabaseSku sku) {
+        return withSku(sku.toSku());
+    }
+
+    @Override
     public SqlDatabaseImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
         this.innerModel().withElasticPoolId(null);
         return this;
     }
-
-//    @Override
-//    public SqlDatabaseImpl withCustomEdition(
-//        DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity) {
-//        Sku sku =
-//            new Sku()
-//                .withName(serviceObjective.toString())
-//                .withTier(edition.toString())
-//                .withCapacity(capacity <= 0 ? null : capacity);
-//
-//        return this.withCustomEdition(sku);
-//    }
 
     @Override
     public SqlDatabaseImpl withTags(Map<String, String> tags) {

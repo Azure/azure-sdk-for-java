@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
@@ -38,8 +38,9 @@ public class SqlElasticPoolForDatabaseImpl
         return this.sqlDatabase;
     }
 
-    public SqlElasticPoolForDatabaseImpl withEdition(ElasticPoolEdition edition) {
-        this.sqlElasticPool.withEdition(edition);
+    @Override
+    public SqlElasticPoolForDatabaseImpl withSku(ElasticPoolSku sku) {
+        this.sqlElasticPool.withSku(sku);
         return this;
     }
 
