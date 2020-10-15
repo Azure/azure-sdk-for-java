@@ -122,6 +122,9 @@
             <configuration>
               <argLine>
                 <!-- tests fail without these exports. -->
+                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
+
+                --add-opens com.azure.resourcemanager.network/com.azure.resourcemanager.network=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
               </argLine>
