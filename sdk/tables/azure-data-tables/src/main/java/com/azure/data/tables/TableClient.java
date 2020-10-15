@@ -127,11 +127,10 @@ public class TableClient {
      * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
      *                                    table.
      * @throws IllegalArgumentException if the provided entity is invalid.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createEntity(TableEntity entity, Duration timeout) {
-        createEntityWithResponse(entity, timeout, null).getValue();
+        createEntityWithResponse(entity, timeout, null);
     }
 
     /**
@@ -144,11 +143,10 @@ public class TableClient {
      * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
      *                                    table.
      * @throws IllegalArgumentException if the provided entity is invalid.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
-        return client.createEntityWithResponse(entity, context).block(timeout);
+        return client.createEntityWithResponse(entity, timeout, context).block();
     }
 
     /**
