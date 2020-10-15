@@ -5,6 +5,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.learn.appconfig.models.ConfigurationSetting;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
