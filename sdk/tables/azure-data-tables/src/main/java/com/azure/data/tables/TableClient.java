@@ -200,11 +200,10 @@ public class TableClient {
      * @param updateMode The type of update to perform if the entity already exits.
      * @param timeout Duration to wait for the operation to complete.
      * @throws IllegalArgumentException if the provided entity is invalid.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upsertEntity(TableEntity entity, UpdateMode updateMode, Duration timeout) {
-        upsertEntityWithResponse(entity, updateMode, timeout, null).getValue();
+        upsertEntityWithResponse(entity, updateMode, timeout, null);
     }
 
     /**
@@ -224,7 +223,6 @@ public class TableClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
      * @throws IllegalArgumentException if the provided entity is invalid.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
@@ -300,11 +298,10 @@ public class TableClient {
      *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
      *                                    not match that of the provided entity.
      * @throws IllegalArgumentException if the provided entity is invalid.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged, Duration timeout) {
-        updateEntityWithResponse(entity, updateMode, ifUnchanged, timeout, null).getValue();
+        updateEntityWithResponse(entity, updateMode, ifUnchanged, timeout, null);
     }
 
     /**
@@ -326,7 +323,6 @@ public class TableClient {
      *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
      *                                    not match that of the provided entity.
      * @throws IllegalArgumentException if the provided entity is invalid.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
@@ -413,7 +409,6 @@ public class TableClient {
      *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
      *                                    does not match that of the provided entity.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEntity(String partitionKey, String rowKey, String eTag, Duration timeout) {
@@ -434,7 +429,6 @@ public class TableClient {
      *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
      *                                    does not match that of the provided entity.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
@@ -590,7 +584,6 @@ public class TableClient {
      *                                    table.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
      *                                  {@code select} OData query option is malformed.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
@@ -613,7 +606,6 @@ public class TableClient {
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
      *                                  {@code select} OData query option is malformed, or if an instance of the
      *                                  provided {@code resultType} can't be created.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType,
@@ -635,7 +627,6 @@ public class TableClient {
      *                                    table.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
      *                                  {@code select} OData query option is malformed.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
@@ -660,7 +651,6 @@ public class TableClient {
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
      *                                  {@code select} OData query option is malformed, or if an instance of the
      *                                  provided {@code resultType} can't be created.
-     * @throws RuntimeException if the provided timeout expires.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T extends TableEntity> Response<T> getEntityWithResponse(String partitionKey, String rowKey, String select,
