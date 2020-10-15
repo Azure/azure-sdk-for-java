@@ -666,6 +666,23 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String}
+     *
+     * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return new PagedFlux<>(
+            () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, null, context)),
+            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(nextLink, null, context)));
+    }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options}
      *
      * @param digitalTwinId The Id of the target digital twin.

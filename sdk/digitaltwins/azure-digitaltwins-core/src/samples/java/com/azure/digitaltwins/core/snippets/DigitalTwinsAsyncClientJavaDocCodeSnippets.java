@@ -497,10 +497,21 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
 
     /**
      * Generates code samples for using
+     * {@link DigitalTwinsAsyncClient#listIncomingRelationships(String)} and
      * {@link DigitalTwinsAsyncClient#listIncomingRelationships(String, ListIncomingRelationshipsOptions)}
      */
     @Override
     public void listIncomingRelationships() {
+        // BEGIN: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String
+        digitalTwinsAsyncClient.listIncomingRelationships("myDigitalTwinId")
+            .doOnNext(incomingRel -> System.out.println(
+                "Retrieved relationship with Id: " +
+                    incomingRel.getRelationshipId() +
+                    " from: " + incomingRel.getSourceId() +
+                    " to: myDigitalTwinId"))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String
+
         // BEGIN: com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String-Options
         digitalTwinsAsyncClient.listIncomingRelationships(
             "myDigitalTwinId",
