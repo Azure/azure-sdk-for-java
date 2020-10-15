@@ -19,7 +19,7 @@ public interface PrivateLinkResources extends HasInner<PrivateLinkResourcesInner
     /**
      * Gets the private link resources that need to be created for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -30,7 +30,7 @@ public interface PrivateLinkResources extends HasInner<PrivateLinkResourcesInner
     /**
      * Gets the private link resources that need to be created for a Cosmos DB account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
