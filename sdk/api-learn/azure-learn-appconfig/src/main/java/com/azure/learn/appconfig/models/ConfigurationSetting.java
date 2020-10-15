@@ -219,4 +219,5 @@ public final class ConfigurationSetting {
         this.etag = etag;
         return this;
     }
+
 }
