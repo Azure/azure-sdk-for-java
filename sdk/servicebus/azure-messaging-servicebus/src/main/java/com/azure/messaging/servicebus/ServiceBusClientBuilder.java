@@ -620,7 +620,7 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusSessionReceiverClientBuilder {
-
+        private boolean enableAutoComplete = false;
         private Integer maxConcurrentSessions = null;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
@@ -630,6 +630,21 @@ public final class ServiceBusClientBuilder {
         private String topicName;
 
         private ServiceBusSessionReceiverClientBuilder() {
+        }
+
+        /**
+         * Enables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) completed}. If an error happens when
+         * the message is processed, it is
+         * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandoned}.
+         *
+         * @param enableAutoComplete True to enable auto-complete and false otherwise.
+         *
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         */
+        public ServiceBusSessionReceiverClientBuilder enableAutoComplete(boolean enableAutoComplete) {
+            this.enableAutoComplete = enableAutoComplete;
+            return this;
         }
 
         /**
@@ -752,8 +767,8 @@ public final class ServiceBusClientBuilder {
             validateAndThrow(prefetchCount);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, enableAutoComplete,
+                sessionId, isRollingSessionReceiver(), maxConcurrentSessions, true);
 
             if (CoreUtils.isNullOrEmpty(sessionId)) {
                 final UnnamedSessionManager sessionManager = new UnnamedSessionManager(entityPath, entityType,
@@ -816,6 +831,7 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusReceiverClientBuilder {
+        private boolean enableAutoComplete = false;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private SubQueue subQueue;
@@ -824,6 +840,21 @@ public final class ServiceBusClientBuilder {
         private String topicName;
 
         private ServiceBusReceiverClientBuilder() {
+        }
+
+        /**
+         * Enables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
+         * {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) completed}. If an error happens when
+         * the message is processed, it is
+         * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandoned}.
+         *
+         * @param enableAutoComplete True to enable auto-complete and false otherwise.
+         *
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder enableAutoComplete(boolean enableAutoComplete) {
+            this.enableAutoComplete = enableAutoComplete;
+            return this;
         }
 
         /**
@@ -928,7 +959,7 @@ public final class ServiceBusClientBuilder {
             validateAndThrow(prefetchCount);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount, enableAutoComplete);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,

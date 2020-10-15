@@ -13,11 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Unit tests for {@link ServiceBusAdministrationClientBuilder}.
  */
 public class ServiceBusAdministrationClientBuilderTest {
-    private final String connectionString = "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey";
 
     @Test
     void buildClientDifferentApplicationIdTest() {
         // Arrange
+        String connectionString =
+            "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey";
         ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .connectionString(connectionString)
             .httpLogOptions(new HttpLogOptions().setApplicationId("appid"))

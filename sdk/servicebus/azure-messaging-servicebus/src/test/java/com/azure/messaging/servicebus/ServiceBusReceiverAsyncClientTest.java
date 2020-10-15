@@ -15,9 +15,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.models.AbandonOptions;
-import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -25,6 +22,9 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -169,11 +169,12 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, false), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, false, "Some-Session",
+                false, null, true),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
@@ -328,7 +329,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);

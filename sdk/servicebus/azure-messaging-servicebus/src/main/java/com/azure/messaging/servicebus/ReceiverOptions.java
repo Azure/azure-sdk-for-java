@@ -11,28 +11,25 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 class ReceiverOptions {
     private final ReceiveMode receiveMode;
     private final int prefetchCount;
+    private final boolean enableAutoComplete;
     private final String sessionId;
     private final boolean isRollingSessionReceiver;
     private final Integer maxConcurrentSessions;
     private final boolean isSessionReceiver;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
-        this.receiveMode = receiveMode;
-        this.prefetchCount = prefetchCount;
-        this.sessionId = null;
-        this.isRollingSessionReceiver = false;
-        this.maxConcurrentSessions = null;
-        this.isSessionReceiver = false;
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, boolean enableAutoComplete) {
+        this(receiveMode, prefetchCount, enableAutoComplete, null, false, null, false);
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount,
-        String sessionId, boolean isRollingSessionReceiver, Integer maxConcurrentSessions) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, boolean enableAutoComplete,
+        String sessionId, boolean isRollingSessionReceiver, Integer maxConcurrentSessions, boolean isSessionReceiver) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.enableAutoComplete = true;
         this.sessionId = sessionId;
         this.isRollingSessionReceiver = isRollingSessionReceiver;
         this.maxConcurrentSessions = maxConcurrentSessions;
-        this.isSessionReceiver = true;
+        this.isSessionReceiver = isSessionReceiver;
     }
 
     /**
@@ -88,5 +85,9 @@ class ReceiverOptions {
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
+    }
+
+    public boolean isEnableAutoComplete() {
+        return enableAutoComplete;
     }
 }
