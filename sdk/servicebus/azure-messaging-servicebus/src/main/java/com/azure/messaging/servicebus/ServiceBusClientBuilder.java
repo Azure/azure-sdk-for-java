@@ -76,7 +76,7 @@ public final class ServiceBusClientBuilder {
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
     private ClientOptions clientOptions;
-    private Configuration configuration;
+    private Configuration configuration = Configuration.getGlobalConfiguration().clone();
     private ServiceBusConnectionProcessor sharedConnection;
     private String connectionStringEntityName;
     private TokenCredential credentials;
