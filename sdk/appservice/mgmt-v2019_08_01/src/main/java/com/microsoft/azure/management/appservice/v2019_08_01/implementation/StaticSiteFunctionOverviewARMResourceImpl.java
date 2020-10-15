@@ -10,18 +10,19 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.StaticSiteFunctionOverviewARMResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.TriggerTypes;
 
 class StaticSiteFunctionOverviewARMResourceImpl extends WrapperImpl<StaticSiteFunctionOverviewARMResourceInner> implements StaticSiteFunctionOverviewARMResource {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    StaticSiteFunctionOverviewARMResourceImpl(StaticSiteFunctionOverviewARMResourceInner inner,  AppServiceManager manager) {
+    StaticSiteFunctionOverviewARMResourceImpl(StaticSiteFunctionOverviewARMResourceInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

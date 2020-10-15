@@ -15,12 +15,12 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2019_08_01.BuildStatus;
 
 class StaticSiteBuildARMResourceImpl extends IndexableRefreshableWrapperImpl<StaticSiteBuildARMResource, StaticSiteBuildARMResourceInner> implements StaticSiteBuildARMResource {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String prId;
 
-    StaticSiteBuildARMResourceImpl(StaticSiteBuildARMResourceInner inner,  AppServiceManager manager) {
+    StaticSiteBuildARMResourceImpl(StaticSiteBuildARMResourceInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -30,7 +30,7 @@ class StaticSiteBuildARMResourceImpl extends IndexableRefreshableWrapperImpl<Sta
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

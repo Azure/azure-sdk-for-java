@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.PrivateLinkResource;
 
 class PrivateLinkResourcesWrapperImpl extends WrapperImpl<PrivateLinkResourcesWrapperInner> implements PrivateLinkResourcesWrapper {
-    private final AppServiceManager manager;
-    PrivateLinkResourcesWrapperImpl(PrivateLinkResourcesWrapperInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    PrivateLinkResourcesWrapperImpl(PrivateLinkResourcesWrapperInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

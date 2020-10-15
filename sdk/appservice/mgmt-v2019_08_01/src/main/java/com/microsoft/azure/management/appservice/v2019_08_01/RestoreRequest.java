@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.RestoreRequestInner;
 import java.util.List;
 
 /**
  * Type representing RestoreRequest.
  */
-public interface RestoreRequest extends HasInner<RestoreRequestInner>, HasManager<AppServiceManager> {
+public interface RestoreRequest extends HasInner<RestoreRequestInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the adjustConnectionStrings value.
      */
