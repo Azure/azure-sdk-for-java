@@ -71,8 +71,4 @@ public final class ConfigurationClientBuilder {
         return this;
     }
 
-    public ConfigurationClientBuilder connectionString(String connectionString) {
-        // implementation
-        return this;
-    }
 }
