@@ -17,12 +17,12 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DatabaseBackupSetti
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItemStatus;
 
 class BackupItemImpl extends IndexableRefreshableWrapperImpl<BackupItem, BackupItemInner> implements BackupItem {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String backupId;
 
-    BackupItemImpl(BackupItemInner inner,  AppServiceManager manager) {
+    BackupItemImpl(BackupItemInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -32,7 +32,7 @@ class BackupItemImpl extends IndexableRefreshableWrapperImpl<BackupItem, BackupI
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
