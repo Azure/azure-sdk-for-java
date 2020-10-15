@@ -571,7 +571,17 @@
 
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]gremlin[/\\]*"/>
+  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!-- JavadocThrowsChecks|EnforceFinalFieldsCheck: Temporarily skip -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|EnforceFinalFieldsCheck)"
+            files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!--BlacklistedWordsCheck: URL is the name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
 
   <!--BlacklistedWordsCheck: B2C is the product name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"></suppress>
@@ -587,8 +597,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
 
   <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
-  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.core.api.CheckpointConfig.java"/>
-  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+  
+  <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->	
   <suppress checks="MethodName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>

@@ -10,9 +10,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-application</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-application;current} -->
   <packaging>jar</packaging>
 
   <properties>
@@ -34,9 +34,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot-starter-keyvault-secrets;current} -->
+      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <!-- util dependencies -->
     <dependency>

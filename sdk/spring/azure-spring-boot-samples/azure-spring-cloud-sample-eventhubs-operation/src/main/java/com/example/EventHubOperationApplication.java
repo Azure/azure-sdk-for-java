@@ -3,7 +3,7 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

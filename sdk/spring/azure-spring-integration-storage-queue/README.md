@@ -10,10 +10,10 @@ The *Spring Integration for Storage Queue* extension project provides inbound an
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-integration-storage-queue;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-integration-storage-queue;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-storage-queue</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>

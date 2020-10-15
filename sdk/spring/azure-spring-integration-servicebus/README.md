@@ -14,10 +14,10 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-integration-servicebus;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-integration-servicebus;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-servicebus</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>
