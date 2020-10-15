@@ -147,11 +147,16 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Context context) {
-        return implementation.getTables().createWithResponseAsync(new TableProperties().setTableName(tableName), null,
-            ResponseFormat.RETURN_NO_CONTENT, null, context).map(response -> {
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                null);
-            });
+        context = context == null ? Context.NONE : context;
+        final TableProperties properties = new TableProperties().setTableName(tableName);
+
+        try {
+            return implementation.getTables().createWithResponseAsync(properties, null,
+                ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .map(response -> new SimpleResponse<>(response, null));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -437,10 +442,9 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return implementation.getTables().deleteWithResponseAsync(tableName, null, context).map(response -> {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                null);
-        });
+        context = context == null ? Context.NONE : context;
+        return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
