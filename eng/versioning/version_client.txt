@@ -126,12 +126,12 @@ com.azure:azure-spring-integration-servicebus;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-spring-integration-storage-queue;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-spring-integration-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-spring-starter-storage;2.0.0-beta.1;2.0.0-beta.1
-com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-azure-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-azure-feature-management;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config-test;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:spring-cloud-azure-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:spring-cloud-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:spring-cloud-azure-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:spring-cloud-azure-feature-management;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:spring-cloud-starter-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:spring-cloud-starter-azure-appconfiguration-config-test;1.2.8-beta.1;1.2.8-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

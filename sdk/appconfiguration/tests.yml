@@ -6,7 +6,7 @@ jobs:
       ServiceDirectory: appconfiguration
       Artifacts:
         - name: azure-spring-cloud-starter-appconfiguration-config-test
-          groupId: com.microsoft.azure
+          groupId: com.azure.spring
           safeName: azurespringcloudstarterappconfigurationconfigtest
       TimeoutInMinutes: 90
       EnvVars:
