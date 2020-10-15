@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.resources.v2019_06_01.implementation;
 
+import com.microsoft.azure.management.resources.v2019_06_01.TenantCategory;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,6 +30,37 @@ public class TenantIdDescriptionInner {
     private String tenantId;
 
     /**
+     * The tenant category. Possible values include: 'Home', 'ProjectedBy',
+     * 'ManagedBy'.
+     */
+    @JsonProperty(value = "tenantCategory", access = JsonProperty.Access.WRITE_ONLY)
+    private TenantCategory tenantCategory;
+
+    /**
+     * Country/region name of the address for the tenant.
+     */
+    @JsonProperty(value = "country", access = JsonProperty.Access.WRITE_ONLY)
+    private String country;
+
+    /**
+     * Country/region abbreviation for the tenant.
+     */
+    @JsonProperty(value = "countryCode", access = JsonProperty.Access.WRITE_ONLY)
+    private String countryCode;
+
+    /**
+     * The display name of the tenant.
+     */
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String displayName;
+
+    /**
+     * The list of domains for the tenant.
+     */
+    @JsonProperty(value = "domains", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> domains;
+
+    /**
      * Get the fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
      *
      * @return the id value
@@ -43,6 +76,51 @@ public class TenantIdDescriptionInner {
      */
     public String tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Get the tenant category. Possible values include: 'Home', 'ProjectedBy', 'ManagedBy'.
+     *
+     * @return the tenantCategory value
+     */
+    public TenantCategory tenantCategory() {
+        return this.tenantCategory;
+    }
+
+    /**
+     * Get country/region name of the address for the tenant.
+     *
+     * @return the country value
+     */
+    public String country() {
+        return this.country;
+    }
+
+    /**
+     * Get country/region abbreviation for the tenant.
+     *
+     * @return the countryCode value
+     */
+    public String countryCode() {
+        return this.countryCode;
+    }
+
+    /**
+     * Get the display name of the tenant.
+     *
+     * @return the displayName value
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Get the list of domains for the tenant.
+     *
+     * @return the domains value
+     */
+    public List<String> domains() {
+        return this.domains;
     }
 
 }
