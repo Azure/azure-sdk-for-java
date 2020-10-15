@@ -94,11 +94,4 @@ public final class QueryOptions {
         this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }
-
-    public QueryTwinsOptions toProtocolLayerOptions() {
-        return new QueryTwinsOptions()
-            .setTraceparent(this.traceparent)
-            .setTracestate(this.tracestate)
-            .setMaxItemsPerPage(this.maxItemsPerPage);
-    }
 }

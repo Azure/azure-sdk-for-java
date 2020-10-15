@@ -70,8 +70,4 @@ public final class DeleteModelOptions {
         this.tracestate = tracestate;
         return this;
     }
-
-    public DigitalTwinModelsDeleteOptions toProtocolLayerOptions() {
-        return new DigitalTwinModelsDeleteOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }

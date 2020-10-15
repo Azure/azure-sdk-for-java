@@ -99,8 +99,4 @@ public final class DeleteRelationshipOptions {
         this.ifMatch = ifMatch;
         return this;
     }
-
-    public DigitalTwinsDeleteRelationshipOptions toProtocolLayerOptions() {
-        return new DigitalTwinsDeleteRelationshipOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }

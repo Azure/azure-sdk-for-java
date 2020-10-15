@@ -70,8 +70,4 @@ public final class DeleteEventRouteOptions {
         this.tracestate = tracestate;
         return this;
     }
-
-    public EventRoutesDeleteOptions toProtocolLayerOptions() {
-        return new EventRoutesDeleteOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }

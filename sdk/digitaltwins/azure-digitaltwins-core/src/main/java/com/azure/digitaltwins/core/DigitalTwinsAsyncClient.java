@@ -145,7 +145,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> createDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin, options != null ? options.toProtocolLayerOptions() : null, context)
+            .addWithResponseAsync(digitalTwinId, digitalTwin, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -220,7 +220,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, GetDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .getByIdWithResponseAsync(digitalTwinId, options != null ? options.toProtocolLayerOptions() : null, context)
+            .getByIdWithResponseAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -279,7 +279,7 @@ public final class DigitalTwinsAsyncClient {
     Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, List<Object> jsonPatch, UpdateDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .updateWithResponseAsync(digitalTwinId, jsonPatch, options != null ? options.toProtocolLayerOptions() : null, context)
+            .updateWithResponseAsync(digitalTwinId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -323,7 +323,7 @@ public final class DigitalTwinsAsyncClient {
     Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .deleteWithResponseAsync(digitalTwinId, options != null ? options.toProtocolLayerOptions() : null, context);
+            .deleteWithResponseAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     //endregion Digital twin APIs
@@ -385,7 +385,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, options != null ? options.toProtocolLayerOptions() : null, context)
+            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -452,7 +452,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, GetRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, options != null ? options.toProtocolLayerOptions() : null, context)
+            .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -507,7 +507,7 @@ public final class DigitalTwinsAsyncClient {
     Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, List<Object> jsonPatch, UpdateRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, jsonPatch, options != null ? options.toProtocolLayerOptions() : null, context)
+            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -551,7 +551,7 @@ public final class DigitalTwinsAsyncClient {
     Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, options != null ? options.toProtocolLayerOptions() : null, context);
+            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -609,7 +609,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, options != null ? options.toProtocolLayerOptions() : null, context)
+            .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(
                 objectPagedResponse -> {
                     List<T> list = objectPagedResponse.getValue().stream()
@@ -637,7 +637,7 @@ public final class DigitalTwinsAsyncClient {
     <T> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, ListRelationshipsOptions options, Context context) {
         return protocolLayer
             .getDigitalTwins()
-            .listRelationshipsNextSinglePageAsync(nextLink, options != null ? options.toProtocolLayerOptions() : null, context)
+            .listRelationshipsNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> {
                 List<T> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
@@ -685,12 +685,12 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, ListIncomingRelationshipsOptions options, Context context){
-        return protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, options != null ? options.toProtocolLayerOptions() : null, context)
+        return protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
     Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, ListIncomingRelationshipsOptions options, Context context){
-        return protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, options != null ? options.toProtocolLayerOptions() : null, context)
+        return protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
@@ -758,7 +758,7 @@ public final class DigitalTwinsAsyncClient {
             }
         }
 
-        return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, options != null ? options.toProtocolLayerOptions() : null, context)
+        return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(listResponse -> {
                 Iterable<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
                     .map(DigitalTwinsModelDataConverter::map)
@@ -803,7 +803,7 @@ public final class DigitalTwinsAsyncClient {
     Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, GetModelOptions options, Context context){
         return protocolLayer
             .getDigitalTwinModels()
-            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, options != null ? options.toProtocolLayerOptions() : null, context)
+            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(response -> {
                 com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData modelData = response.getValue();
                 return new SimpleResponse<>(
@@ -949,7 +949,7 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteModelWithResponse(String modelId, DeleteModelOptions options, Context context){
-        return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, options != null ? options.toProtocolLayerOptions() : null, context);
+        return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -989,7 +989,7 @@ public final class DigitalTwinsAsyncClient {
             .appendReplaceOperation("/decommissioned", true)
             .getUpdateOperations();
 
-        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, options != null ? options.toProtocolLayerOptions() : null, context);
+        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     //endregion Model APIs
@@ -1035,7 +1035,7 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, GetComponentOptions options, Context context) {
-        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, options != null ? options.toProtocolLayerOptions() : null, context)
+        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentPath, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -1088,7 +1088,7 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
-        return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentPath, jsonPatch, options != null ? options.toProtocolLayerOptions() : null, context)
+        return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentPath, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
             .flatMap(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
@@ -1137,7 +1137,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer
             .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, options != null ? options.toProtocolLayerOptions() : null, context)
+            .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(
                 objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(),
@@ -1162,7 +1162,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer
             .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, options != null ? options.toProtocolLayerOptions() : null, context)
+            .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(
                 objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(),
@@ -1224,7 +1224,7 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> createEventRouteWithResponse(String eventRouteId, EventRoute eventRoute, CreateEventRouteOptions options, Context context)
     {
-        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), options != null ? options.toProtocolLayerOptions() : null, context);
+        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -1263,7 +1263,7 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<EventRoute>> getEventRouteWithResponse(String eventRouteId, GetEventRouteOptions options, Context context)
     {
-        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, options != null ? options.toProtocolLayerOptions() : null, context)
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(eventRouteResponse -> new SimpleResponse<>(
                 eventRouteResponse.getRequest(),
                 eventRouteResponse.getStatusCode(),
@@ -1307,7 +1307,7 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, DeleteEventRouteOptions options, Context context)
     {
-        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, options != null ? options.toProtocolLayerOptions() : null, context);
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, OptionsConverter.toProtocolLayerOptions(options), context);
     }
 
     /**
@@ -1356,14 +1356,14 @@ public final class DigitalTwinsAsyncClient {
     Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(ListEventRoutesOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
-            .listSinglePageAsync(options != null ? options.toProtocolLayerOptions() : null, context)
+            .listSinglePageAsync(OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedEventRouteMappingFunction);
     }
 
     Mono<PagedResponse<EventRoute>> listEventRoutesNextPage(String nextLink, ListEventRoutesOptions options, Context context) {
         return protocolLayer
             .getEventRoutes()
-            .listNextSinglePageAsync(nextLink, options != null ? options.toProtocolLayerOptions() : null, context)
+            .listNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(pagedEventRouteMappingFunction);
     }
 

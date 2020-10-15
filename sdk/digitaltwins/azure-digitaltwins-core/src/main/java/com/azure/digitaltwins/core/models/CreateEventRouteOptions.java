@@ -70,8 +70,4 @@ public final class CreateEventRouteOptions {
         this.tracestate = tracestate;
         return this;
     }
-
-    public EventRoutesAddOptions toProtocolLayerOptions() {
-        return new EventRoutesAddOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }

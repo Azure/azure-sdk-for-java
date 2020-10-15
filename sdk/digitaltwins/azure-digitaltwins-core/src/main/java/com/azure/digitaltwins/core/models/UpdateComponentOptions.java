@@ -101,11 +101,4 @@ public final class UpdateComponentOptions {
         this.ifMatch = ifMatch;
         return this;
     }
-
-    public DigitalTwinsUpdateComponentOptions toProtocolLayerOptions() {
-        return new DigitalTwinsUpdateComponentOptions()
-            .setTraceparent(this.traceparent)
-            .setTracestate(this.tracestate)
-            .setIfMatch(this.ifMatch);
-    }
 }

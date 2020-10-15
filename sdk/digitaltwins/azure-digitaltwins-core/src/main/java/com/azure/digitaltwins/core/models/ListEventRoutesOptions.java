@@ -99,11 +99,4 @@ public final class ListEventRoutesOptions {
         this.maxItemsPerPage = maxItemsPerPage;
         return this;
     }
-
-    public EventRoutesListOptions toProtocolLayerOptions() {
-        return new EventRoutesListOptions()
-            .setTraceparent(this.traceparent)
-            .setTracestate(this.tracestate)
-            .setMaxItemsPerPage(this.maxItemsPerPage);
-    }
 }

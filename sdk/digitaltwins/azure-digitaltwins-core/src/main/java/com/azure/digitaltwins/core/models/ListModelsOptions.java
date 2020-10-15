@@ -146,11 +146,4 @@ public final class ListModelsOptions {
         this.dependenciesFor = dependenciesFor;
         return this;
     }
-
-    DigitalTwinModelsListOptions toProtocolLayerOptions() {
-        return new DigitalTwinModelsListOptions()
-            .setTraceparent(this.traceparent)
-            .setTracestate(this.tracestate)
-            .setMaxItemsPerPage(this.maxItemsPerPage);
-    }
 }

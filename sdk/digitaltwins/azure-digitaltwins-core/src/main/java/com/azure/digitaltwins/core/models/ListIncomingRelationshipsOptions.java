@@ -70,8 +70,4 @@ public final class ListIncomingRelationshipsOptions {
         this.tracestate = tracestate;
         return this;
     }
-
-    public DigitalTwinsListIncomingRelationshipsOptions toProtocolLayerOptions() {
-        return new DigitalTwinsListIncomingRelationshipsOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }

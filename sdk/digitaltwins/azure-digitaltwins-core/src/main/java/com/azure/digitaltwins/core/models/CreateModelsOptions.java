@@ -70,8 +70,4 @@ public final class CreateModelsOptions {
         this.tracestate = tracestate;
         return this;
     }
-
-    public DigitalTwinModelsAddOptions toProtocolLayerOptions() {
-        return new DigitalTwinModelsAddOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }

@@ -99,8 +99,4 @@ public final class PublishTelemetryOptions {
         this.timestamp = timestamp;
         return this;
     }
-
-    DigitalTwinsSendTelemetryOptions toProtocolLayerOptions() {
-        return new DigitalTwinsSendTelemetryOptions().setTraceparent(this.traceparent).setTracestate(this.tracestate);
-    }
 }
