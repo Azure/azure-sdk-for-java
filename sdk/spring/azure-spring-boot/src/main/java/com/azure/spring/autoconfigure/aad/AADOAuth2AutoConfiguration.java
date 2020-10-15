@@ -29,7 +29,6 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
@@ -78,13 +77,9 @@ public class AADOAuth2AutoConfiguration {
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
 
         List<String> scope = aadAuthenticationProperties.getScope();
-        boolean allowedGroupsConfigured =
-            Optional.of(aadAuthenticationProperties)
-                    .map(AADAuthenticationProperties::getUserGroup)
-                    .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
-                    .map(allowedGroups -> !allowedGroups.isEmpty())
-                    .orElse(false);
-        if (allowedGroupsConfigured && !scope.contains("https://graph.microsoft.com/user.read")) {
+        if (aadAuthenticationProperties.allowedGroupsConfigured()
+            && !scope.contains("https://graph.microsoft.com/user.read")
+        ) {
             scope.add("https://graph.microsoft.com/user.read");
             LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
         }
