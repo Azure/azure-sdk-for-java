@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.storage.storage;
+package com.azure.spring.storage;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.spring.storage.storage.service.BlobContainerService;
-import com.azure.spring.storage.storage.service.BlobService;
+import com.azure.spring.storage.service.BlobContainerService;
+import com.azure.spring.storage.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

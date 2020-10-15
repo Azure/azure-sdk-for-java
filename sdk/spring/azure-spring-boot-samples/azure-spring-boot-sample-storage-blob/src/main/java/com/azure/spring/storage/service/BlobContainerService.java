@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.storage.storage.service;
+package com.azure.spring.storage.service;
 
-import com.azure.spring.storage.storage.utils.LogUtils;
+import com.azure.spring.storage.utils.LogUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 
 public class BlobContainerService {
