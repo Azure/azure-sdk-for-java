@@ -3,8 +3,10 @@
 
 package com.azure.spring.storage.service;
 
-import com.azure.spring.storage.utils.LogUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+
+import static com.azure.spring.storage.utils.LogUtils.logError;
+import static com.azure.spring.storage.utils.LogUtils.logInfo;
 
 public class BlobContainerService {
 
@@ -21,23 +23,23 @@ public class BlobContainerService {
 
         if (containerExists == null || !containerExists) {
             blobContainerAsyncClient.create().subscribe(
-                v -> LogUtils.logInfo("Creating container %s.", containerName),
-                e -> LogUtils.logError("Error occurred when creating container %s.", containerName),
-                () -> LogUtils.logInfo("Completed creating container %s.", containerName)
+                v -> logInfo("Creating container %s.", containerName),
+                e -> logError("Error occurred when creating container %s.", containerName),
+                () -> logInfo("Completed creating container %s.", containerName)
             );
         }
     }
 
     public void deleteContainer() {
         blobContainerAsyncClient.delete().subscribe(
-            v -> LogUtils.logInfo("Deleting container %s.", containerName),
-            e -> LogUtils.logError("Error occurred when deleting container %s.", containerName),
-            () -> LogUtils.logInfo("Completed deleting container %s.", containerName)
+            v -> logInfo("Deleting container %s.", containerName),
+            e -> logError("Error occurred when deleting container %s.", containerName),
+            () -> logInfo("Completed deleting container %s.", containerName)
         );
     }
 
     public void listBlobsInContainer() {
         blobContainerAsyncClient.listBlobs().subscribe(
-            blob -> LogUtils.logInfo("Name: %s, Directory? %b", blob.getName(), blob.isPrefix()));
+            blob -> logInfo("Name: %s, Directory? %b", blob.getName(), blob.isPrefix()));
     }
 }
