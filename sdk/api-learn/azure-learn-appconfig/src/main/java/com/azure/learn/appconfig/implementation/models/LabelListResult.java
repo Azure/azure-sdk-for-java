@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a list request. */
+/** The LabelListResult model. */
 @Fluent
 public final class LabelListResult {
     /*
