@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.jms;
 
+import static com.microsoft.azure.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -33,12 +34,16 @@ public class ServiceBusJMSAutoConfiguration {
         final String connectionString = serviceBusJMSProperties.getConnectionString();
         final String clientId = serviceBusJMSProperties.getTopicClientId();
         final long idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+
         final ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
-        final ServiceBusJmsConnectionFactory serviceBusJmsConnectionFactory =
-            new ServiceBusJmsConnectionFactory(connectionString, settings);
-        serviceBusJmsConnectionFactory.setClientId(clientId);
-        return new CachingConnectionFactory(serviceBusJmsConnectionFactory);
+        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+            new SpringServiceBusJmsConnectionFactory(connectionString, settings);
+
+        springServiceBusJmsConnectionFactory.setClientId(clientId);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
+
+        return new CachingConnectionFactory(springServiceBusJmsConnectionFactory);
     }
 
     @Bean
