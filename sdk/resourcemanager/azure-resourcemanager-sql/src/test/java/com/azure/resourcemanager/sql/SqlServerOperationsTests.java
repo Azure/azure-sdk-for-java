@@ -17,6 +17,7 @@ import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.sql.models.CreateMode;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
+import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
@@ -1153,7 +1154,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .databases()
                 .define(SQL_DATABASE_NAME)
                 .withCollation(COLLATION)
-                .withSku(new Sku().withName("DW1000C").withTier(DatabaseEdition.DATA_WAREHOUSE.toString()))
+                .withSku(DatabaseSku.DATAWAREHOUSE_DW1000C)
                 .createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
