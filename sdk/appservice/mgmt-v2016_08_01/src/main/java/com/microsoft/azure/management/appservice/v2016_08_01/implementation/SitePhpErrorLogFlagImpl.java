@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2016_08_01.SitePhpErrorLogFlag
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class SitePhpErrorLogFlagImpl extends WrapperImpl<SitePhpErrorLogFlagInner> implements SitePhpErrorLogFlag {
-    private final AppServiceManager manager;
-    SitePhpErrorLogFlagImpl(SitePhpErrorLogFlagInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    SitePhpErrorLogFlagImpl(SitePhpErrorLogFlagInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
