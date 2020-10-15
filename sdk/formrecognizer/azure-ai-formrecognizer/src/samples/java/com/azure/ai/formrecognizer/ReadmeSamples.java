@@ -139,7 +139,7 @@ public class ReadmeSamples {
         }
     }
 
-    public void recognizeReceipt() {
+    public void recognizeReceiptFromUrl() {
         String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
@@ -194,6 +194,64 @@ public class ReadmeSamples {
                                 }
                             }
                         }));
+                }
+            }
+        }
+    }
+
+    public void recognizeBusinessCardFromUrl() {
+        String businessCardUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeBusinessCardPoller =
+            formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl);
+
+        List<RecognizedForm> businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
+
+        for (int i = 0; i < businessCardPageResults.size(); i++) {
+            RecognizedForm recognizedForm = businessCardPageResults.get(i);
+            Map<String, FormField> recognizedFields = recognizedForm.getFields();
+            System.out.printf("----------- Recognized business card info for page %d -----------%n", i);
+            FormField contactNamesFormField = recognizedFields.get("ContactNames");
+            if (contactNamesFormField != null) {
+                if (FieldValueType.LIST == contactNamesFormField.getValue().getValueType()) {
+                    List<FormField> contactNamesList = contactNamesFormField.getValue().asList();
+                    contactNamesList.stream()
+                        .filter(contactName -> FieldValueType.MAP == contactName.getValue().getValueType())
+                        .map(contactName -> {
+                            System.out.printf("Contact name: %s%n", contactName.getValueData().getText());
+                            return contactName.getValue().asMap();
+                        })
+                        .forEach(contactNamesMap -> contactNamesMap.forEach((key, contactName) -> {
+                            if ("FirstName".equals(key)) {
+                                if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                    String firstName = contactName.getValue().asString();
+                                    System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
+                                        firstName, contactName.getConfidence());
+                                }
+                            }
+                            if ("LastName".equals(key)) {
+                                if (FieldValueType.STRING == contactName.getValue().getValueType()) {
+                                    String lastName = contactName.getValue().asString();
+                                    System.out.printf("\tLast Name: %s, confidence: %.2f%n",
+                                        lastName, contactName.getConfidence());
+                                }
+                            }
+                        }));
+                }
+            }
+            FormField jobTitles = recognizedFields.get("JobTitles");
+            if (jobTitles != null) {
+                if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
+                    List<FormField> jobTitlesItems = jobTitles.getValue().asList();
+                    jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                        if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
+                            String jobTitle = jobTitlesItem.getValue().asString();
+                            System.out.printf("Job Title: %s, confidence: %.2f%n",
+                                jobTitle, jobTitlesItem.getConfidence());
+                        }
+                    });
                 }
             }
         }

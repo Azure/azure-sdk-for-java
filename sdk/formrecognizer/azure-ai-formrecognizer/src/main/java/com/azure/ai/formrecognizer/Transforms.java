@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
+import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -208,7 +209,7 @@ final class Transforms {
      *
      * @param documentResultItem The extracted document level information.
      * @param readResults The text extraction result returned by the service.
-     * @return The {@code RecognizedForm#getFields}.
+     * @return The {@link RecognizedForm#getFields}.
      */
     private static Map<String, FormField> getLabeledFieldMap(DocumentResult documentResultItem,
         List<ReadResult> readResults) {
@@ -219,14 +220,13 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    if ("ReceiptType".equals(key) || com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY == fieldValue.getType()) {
+                    if ("ReceiptType".equals(key) || ARRAY == fieldValue.getType()) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                             fieldValue.getPage(), formElementList);
                     }
-                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue,
-                        readResults));
+                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
                 } else {
                     recognizedFieldMap.put(key, new FormField(key, null, null, null,
                         DEFAULT_CONFIDENCE_VALUE));
@@ -295,8 +295,8 @@ final class Transforms {
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        return new FormField(name, null, valueData, value,
-            setDefaultConfidenceValue(fieldValue.getConfidence()));
+
+        return new FormField(name, null, valueData, value, setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
 
     /**
@@ -323,12 +323,15 @@ final class Transforms {
         List<ReadResult> readResults) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) ->
-            fieldValueObjectMap.put(key, setFormField(key, new FieldData(fieldValue.getText(),
-                toBoundingBox(fieldValue.getBoundingBox()),
-                fieldValue.getPage(),
-                setReferenceElements(fieldValue.getElements(), readResults)
-            ), fieldValue,
-                readResults)));
+            fieldValueObjectMap.put(key,
+                setFormField(key,
+                    new FieldData(fieldValue.getText(),
+                        toBoundingBox(fieldValue.getBoundingBox()),
+                        fieldValue.getPage(),
+                        setReferenceElements(fieldValue.getElements(), readResults)),
+                    fieldValue,
+                    readResults)
+            ));
         return fieldValueObjectMap;
     }
 
@@ -344,7 +347,16 @@ final class Transforms {
      */
     private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
         return valueArray.stream()
-            .map(fieldValue -> setFormField(null, null, fieldValue, readResults))
+            .map(fieldValue -> {
+                FieldData valueData = null;
+                // ARRAY has ho value data, such as bounding box.
+                if (ARRAY != fieldValue.getType()) {
+                    valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                        fieldValue.getPage() == null ? 1 : fieldValue.getPage(),
+                        setReferenceElements(fieldValue.getElements(), readResults));
+                }
+                return setFormField(null, valueData, fieldValue, readResults);
+            })
             .collect(Collectors.toList());
     }
 

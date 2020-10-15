@@ -50,9 +50,9 @@ public final class CustomFormModel {
      */
     private final List<TrainingDocumentInfo> trainingDocuments;
 
-    private String modelName;
+    private final String modelName;
 
-    private CustomFormModelProperties customFormModelProperties;
+    private final CustomFormModelProperties customFormModelProperties;
 
     /**
      * Constructs a CustomFormModel object.
@@ -78,6 +78,40 @@ public final class CustomFormModel {
         this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
         this.trainingDocuments = trainingDocuments == null ? null
             : Collections.unmodifiableList(trainingDocuments);
+        this.modelName = null;
+        this.customFormModelProperties = null;
+    }
+
+    // TODO: remove this constructor
+    /**
+     * Constructs a CustomFormModel object.
+     *
+     * @param modelId Model identifier.
+     * @param modelStatus Status of the model.
+     * @param trainingStartedOn Date and time (UTC) when the training of model was started.
+     * @param trainingCompletedOn Date and time (UTC) when the model training was completed.
+     * @param submodels List of sub model that are part of this model, each of which can recognize and extract fields
+     * from a different type of form.
+     * @param modelError List of errors returned during the training operation.
+     * @param trainingDocuments List of the documents used to train the model.
+     * @param modelName The model name.
+     * @param customFormModelProperties The custom form model properties.
+     */
+    public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
+        final OffsetDateTime trainingStartedOn, final OffsetDateTime trainingCompletedOn,
+        final List<CustomFormSubmodel> submodels, final List<FormRecognizerError> modelError,
+        final List<TrainingDocumentInfo> trainingDocuments, final String modelName,
+        final CustomFormModelProperties customFormModelProperties) {
+        this.modelId = modelId;
+        this.modelStatus = modelStatus;
+        this.trainingStartedOn = trainingStartedOn;
+        this.trainingCompletedOn = trainingCompletedOn;
+        this.submodels = submodels == null ? null : Collections.unmodifiableList(submodels);
+        this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
+        this.trainingDocuments = trainingDocuments == null ? null
+            : Collections.unmodifiableList(trainingDocuments);
+        this.modelName = modelName;
+        this.customFormModelProperties = customFormModelProperties;
     }
 
     /**
