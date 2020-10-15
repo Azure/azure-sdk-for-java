@@ -15,10 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StorageApplication {
 
     public static void main(String[] args) {
-        System.out.println("Running in " + FileSystems.getDefault().getPath("").toAbsolutePath().toString());
-        System.getenv().forEach((key, val) -> {
-            System.err.println(key + ":" + val);
-        });
         SpringApplication.run(StorageApplication.class, args);
     }
 }
