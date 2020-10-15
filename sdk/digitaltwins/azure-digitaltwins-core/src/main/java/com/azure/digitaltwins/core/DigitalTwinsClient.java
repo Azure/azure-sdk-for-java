@@ -666,14 +666,14 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getComponent#String-String-Class}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
      * @return The deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getComponent(String digitalTwinId, String componentPath, Class<T> clazz) {
-        return getComponentWithResponse(digitalTwinId, componentPath, clazz, null, Context.NONE).getValue();
+    public <T> T getComponent(String digitalTwinId, String componentName, Class<T> clazz) {
+        return getComponentWithResponse(digitalTwinId, componentName, clazz, null, Context.NONE).getValue();
     }
 
     /**
@@ -684,7 +684,7 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.getComponentWithResponse#String-String-Class-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
-     * @param componentPath The path of the component on the digital twin to retrieve.
+     * @param componentName The name of the component on the digital twin to retrieve.
      * @param clazz The class to deserialize the application/json component into.
      * @param <T> The generic type to deserialize the application/json component into.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -692,8 +692,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the component of the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentPath, Class<T> clazz, GetComponentOptions options, Context context) {
-        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentPath, clazz, options, context).block();
+    public <T> DigitalTwinsResponse<T> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, GetComponentOptions options, Context context) {
+        return digitalTwinsAsyncClient.getComponentWithResponse(digitalTwinId, componentName, clazz, options, context).block();
     }
 
     /**
@@ -704,13 +704,13 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateComponent#String-String-List}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
-     * @param componentPath The path of the component on the digital twin.
+     * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link UpdateOperationUtility}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateComponent(String digitalTwinId, String componentPath, List<Object> jsonPatch) {
-        updateComponentWithResponse(digitalTwinId, componentPath, jsonPatch, null, Context.NONE);
+    public void updateComponent(String digitalTwinId, String componentName, List<Object> jsonPatch) {
+        updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, null, Context.NONE);
     }
 
     /**
@@ -721,7 +721,7 @@ public final class DigitalTwinsClient {
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateComponentWithResponse#String-String-List-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
-     * @param componentPath The path of the component on the digital twin.
+     * @param componentName The name of the component on the digital twin.
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -729,8 +729,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentPath, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
-        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentPath, jsonPatch, options, context).block();
+    public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentName, List<Object> jsonPatch, UpdateComponentOptions options, Context context) {
+        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options, context).block();
     }
 
     //endregion Component APIs
