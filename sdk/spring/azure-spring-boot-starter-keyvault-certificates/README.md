@@ -167,7 +167,7 @@ azure:
 Note if your routes point to services with self-signed certificates where the
 hostname does not match the certificate you cannot use the solution above. If
 you own the self-signed certificate re-issue it with the proper hostname. If you
-do not own the self-signed certificate either have the owner to re-issue the
+do not own the self-signed certificate either have the owner re-issue the
 certificate, or apply the configuration below (note the configuration below
 blindly trusts any certificate so it is NOT recommended for production use).
 
