@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServicePlanInner;
 
 /**
  * Type representing AppServicePlan.
  */
-public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<AppServiceManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<AppServiceManager> {
+public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<WebManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<WebManager> {
     /**
      * @return the adminSiteName value.
      */
