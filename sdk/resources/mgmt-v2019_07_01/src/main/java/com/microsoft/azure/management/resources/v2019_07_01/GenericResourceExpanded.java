@@ -9,15 +9,26 @@
 package com.microsoft.azure.management.resources.v2019_07_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.resources.v2019_07_01.implementation.GenericResourceExpandedInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.resources.v2019_07_01.implementation.ResourcesManager;
-import com.microsoft.azure.management.resources.v2019_07_01.implementation.GenericResourceInner;
+import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
- * Type representing GenericResource.
+ * Type representing GenericResourceExpanded.
  */
-public interface GenericResource extends HasInner<GenericResourceInner>, HasManager<ResourcesManager> {
+public interface GenericResourceExpanded extends HasInner<GenericResourceExpandedInner>, HasManager<ResourcesManager> {
+    /**
+     * @return the changedTime value.
+     */
+    DateTime changedTime();
+
+    /**
+     * @return the createdTime value.
+     */
+    DateTime createdTime();
+
     /**
      * @return the id value.
      */
@@ -57,6 +68,11 @@ public interface GenericResource extends HasInner<GenericResourceInner>, HasMana
      * @return the properties value.
      */
     Object properties();
+
+    /**
+     * @return the provisioningState value.
+     */
+    String provisioningState();
 
     /**
      * @return the sku value.
