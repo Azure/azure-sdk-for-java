@@ -674,7 +674,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getComponent#String-String-Class
         digitalTwinsAsyncClient.getComponent(
             "myDigitalTwinId",
-            "myComponentPath",
+            "myComponentName",
             String.class)
         .subscribe();
         // END: com.azure.digitaltwins.core.asyncClient.getComponent#String-String-Class
@@ -689,7 +689,7 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
         // BEGIN: com.azure.digitaltwins.core.asyncClient.getComponentWithResponse#String-String-Class-Options
         digitalTwinsAsyncClient.getComponentWithResponse(
             "myDigitalTwinId",
-            "myComponentPath",
+            "myComponentName",
             String.class,
             new GetComponentOptions())
         .subscribe(response ->

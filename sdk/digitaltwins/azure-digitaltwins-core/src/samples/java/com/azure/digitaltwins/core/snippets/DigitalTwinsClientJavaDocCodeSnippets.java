@@ -741,7 +741,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getComponent#String-String-Class
         String componentString = digitalTwinsSyncClient.getComponent(
             "myDigitalTwinId",
-            "myComponentPath",
+            "myComponentName",
             String.class);
 
         System.out.println("Retrieved component: " + componentString);
@@ -757,7 +757,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
         // BEGIN: com.azure.digitaltwins.core.syncClient.getComponentWithResponse#String-String-Class-Options-Context
         Response<String> componentStringWithResponse = digitalTwinsSyncClient.getComponentWithResponse(
             "myDigitalTwinId",
-            "myComponentPath",
+            "myComponentName",
             String.class,
             new GetComponentOptions(),
             new Context("key", "value"));
