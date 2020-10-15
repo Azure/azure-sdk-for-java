@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.Map;
 
 class HostKeysImpl extends WrapperImpl<HostKeysInner> implements HostKeys {
-    private final AppServiceManager manager;
-    HostKeysImpl(HostKeysInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    HostKeysImpl(HostKeysInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

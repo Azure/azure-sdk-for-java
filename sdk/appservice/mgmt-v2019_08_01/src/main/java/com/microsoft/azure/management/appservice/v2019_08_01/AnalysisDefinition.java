@@ -13,12 +13,12 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Anal
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing AnalysisDefinition.
  */
-public interface AnalysisDefinition extends HasInner<AnalysisDefinitionInner>, Indexable, Refreshable<AnalysisDefinition>, HasManager<AppServiceManager> {
+public interface AnalysisDefinition extends HasInner<AnalysisDefinitionInner>, Indexable, Refreshable<AnalysisDefinition>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the description value.
      */

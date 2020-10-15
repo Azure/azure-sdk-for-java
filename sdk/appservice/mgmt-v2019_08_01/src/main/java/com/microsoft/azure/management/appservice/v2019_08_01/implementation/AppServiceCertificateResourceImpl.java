@@ -17,13 +17,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.KeyVaultSecretStatu
 import rx.functions.Func1;
 
 class AppServiceCertificateResourceImpl extends CreatableUpdatableImpl<AppServiceCertificateResource, AppServiceCertificateResourceInner, AppServiceCertificateResourceImpl> implements AppServiceCertificateResource, AppServiceCertificateResource.Definition, AppServiceCertificateResource.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String certificateOrderName;
     private String name;
     private AppServiceCertificatePatchResource updateParameter;
 
-    AppServiceCertificateResourceImpl(String name, AppServiceManager manager) {
+    AppServiceCertificateResourceImpl(String name, CertificateRegistrationManager manager) {
         super(name, new AppServiceCertificateResourceInner());
         this.manager = manager;
         // Set resource name
@@ -32,7 +32,7 @@ class AppServiceCertificateResourceImpl extends CreatableUpdatableImpl<AppServic
         this.updateParameter = new AppServiceCertificatePatchResource();
     }
 
-    AppServiceCertificateResourceImpl(AppServiceCertificateResourceInner inner, AppServiceManager manager) {
+    AppServiceCertificateResourceImpl(AppServiceCertificateResourceInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -46,7 +46,7 @@ class AppServiceCertificateResourceImpl extends CreatableUpdatableImpl<AppServic
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

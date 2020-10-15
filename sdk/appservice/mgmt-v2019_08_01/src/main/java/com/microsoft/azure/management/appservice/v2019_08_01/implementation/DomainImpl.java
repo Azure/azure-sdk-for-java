@@ -22,9 +22,9 @@ import com.microsoft.azure.management.appservice.v2019_08_01.DomainPurchaseConse
 import com.microsoft.azure.management.appservice.v2019_08_01.DnsType;
 import rx.functions.Func1;
 
-class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainImpl, AppServiceManager> implements Domain, Domain.Definition, Domain.Update {
+class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainImpl, CertificateRegistrationManager> implements Domain, Domain.Definition, Domain.Update {
     private DomainPatchResource updateParameter;
-    DomainImpl(String name, DomainInner inner, AppServiceManager manager) {
+    DomainImpl(String name, DomainInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new DomainPatchResource();
     }

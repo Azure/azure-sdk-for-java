@@ -15,14 +15,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.ApplicationStack;
 import com.microsoft.azure.management.appservice.v2019_08_01.StackMajorVersion;
 
 class ApplicationStackResourceImpl extends WrapperImpl<ApplicationStackResourceInner> implements ApplicationStackResource {
-    private final AppServiceManager manager;
-    ApplicationStackResourceImpl(ApplicationStackResourceInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    ApplicationStackResourceImpl(ApplicationStackResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.CsmPublishingCreden
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class CsmPublishingCredentialsPoliciesCollectionImpl extends WrapperImpl<CsmPublishingCredentialsPoliciesCollectionInner> implements CsmPublishingCredentialsPoliciesCollection {
-    private final AppServiceManager manager;
-    CsmPublishingCredentialsPoliciesCollectionImpl(CsmPublishingCredentialsPoliciesCollectionInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    CsmPublishingCredentialsPoliciesCollectionImpl(CsmPublishingCredentialsPoliciesCollectionInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

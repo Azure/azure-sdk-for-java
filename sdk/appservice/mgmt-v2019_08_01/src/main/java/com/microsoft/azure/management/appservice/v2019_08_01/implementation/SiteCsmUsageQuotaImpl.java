@@ -10,19 +10,20 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.SiteCsmUsageQuota;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.LocalizableString;
 import org.joda.time.DateTime;
 
 class SiteCsmUsageQuotaImpl extends WrapperImpl<CsmUsageQuotaInner> implements SiteCsmUsageQuota {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    SiteCsmUsageQuotaImpl(CsmUsageQuotaInner inner,  AppServiceManager manager) {
+    SiteCsmUsageQuotaImpl(CsmUsageQuotaInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
