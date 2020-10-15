@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0
+## 1.0.0 (2020-10-31)
 
 - Regenerate protocol layer from service API version 2020-10-31
 - Update service API version to use service API version 2020-10-31 by default
