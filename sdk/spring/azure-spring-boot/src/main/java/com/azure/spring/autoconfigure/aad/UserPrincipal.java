@@ -7,10 +7,9 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * entity class of UserPrincipal
@@ -18,24 +17,29 @@ import java.util.Optional;
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;
 
-    private final JWSObject jwsObject;
-    private final JWTClaimsSet jwtClaimsSet;
-    private List<UserGroup> userGroups = new ArrayList<>();
     private String aadIssuedBearerToken; // id_token or access_token
+
+    private final JWSObject jwsObject;
+
+    private final JWTClaimsSet jwtClaimsSet;
+
+    /**
+     * All groups in aadIssuedBearerToken. Including the ones not exist in aadAuthenticationProperties.getUserGroup()
+     * .getAllowedGroups()
+     */
+    private Set<String> groups;
+
+    /**
+     * All roles in aadIssuedBearerToken.
+     */
+    private Set<String> roles;
+
     private String accessTokenForGraphApi;
 
     public UserPrincipal(String aadIssuedBearerToken, JWSObject jwsObject, JWTClaimsSet jwtClaimsSet) {
         this.aadIssuedBearerToken = aadIssuedBearerToken;
         this.jwsObject = jwsObject;
         this.jwtClaimsSet = jwtClaimsSet;
-    }
-
-    public List<UserGroup> getUserGroups() {
-        return this.userGroups;
-    }
-
-    public void setUserGroups(List<UserGroup> groups) {
-        this.userGroups = groups;
     }
 
     public String getAadIssuedBearerToken() {
@@ -46,6 +50,22 @@ public class UserPrincipal implements Serializable {
         this.aadIssuedBearerToken = aadIssuedBearerToken;
     }
 
+    public Set<String> getGroups() {
+        return this.groups;
+    }
+
+    public void setGroups(Set<String> groups) {
+        this.groups = groups;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
     public String getAccessTokenForGraphApi() {
         return accessTokenForGraphApi;
     }
@@ -54,10 +74,11 @@ public class UserPrincipal implements Serializable {
         this.accessTokenForGraphApi = accessTokenForGraphApi;
     }
 
-    public boolean isMemberOf(UserGroup group) {
-        return Optional.ofNullable(userGroups)
-                       .filter(groups -> groups.contains(group))
-                       .isPresent();
+    public boolean isMemberOf(AADAuthenticationProperties aadAuthenticationProperties, String group) {
+        return aadAuthenticationProperties.isAllowedGroup(group)
+            && Optional.of(groups)
+                       .map(g -> g.contains(group))
+                       .orElse(false);
     }
 
     public String getKid() {

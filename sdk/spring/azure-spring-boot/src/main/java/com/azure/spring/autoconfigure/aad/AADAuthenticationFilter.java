@@ -114,13 +114,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                     .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
                     .accessToken();
                 userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
-                userPrincipal.setUserGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
+                userPrincipal.setGroups(azureADGraphClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                 userPrincipal,
                 null,
-                azureADGraphClient.convertGroupsToGrantedAuthorities(userPrincipal.getUserGroups())
+                azureADGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups())
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
