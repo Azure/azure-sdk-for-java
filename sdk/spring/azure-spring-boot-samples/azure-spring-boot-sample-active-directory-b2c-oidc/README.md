@@ -55,7 +55,7 @@ azure:
 Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
 ### Run with Maven
-
+First, we need to ensure that this [instruction] is completed before run.
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -86,3 +86,5 @@ And also available for Amazon, Azure AD, FaceBook, Github, Linkedin and Twitter.
 
 ## Next steps
 ## Contributing
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
