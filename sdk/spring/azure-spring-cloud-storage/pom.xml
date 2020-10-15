@@ -40,13 +40,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Identity -->
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-identity-spring-library</artifactId>
-			<version>1.0.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-identity-spring-library;current} -->
-		</dependency>
-
 		<!-- Storage -->
 		<dependency>
 			<groupId>com.azure</groupId>

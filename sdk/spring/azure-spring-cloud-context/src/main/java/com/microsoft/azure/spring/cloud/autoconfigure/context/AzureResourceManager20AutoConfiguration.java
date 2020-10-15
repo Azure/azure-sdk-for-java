@@ -5,6 +5,10 @@ package com.microsoft.azure.spring.cloud.autoconfigure.context;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,6 +31,11 @@ import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
 public class AzureResourceManager20AutoConfiguration {
 
+    private static Logger logger = LoggerFactory.getLogger(AzureResourceManager20AutoConfiguration.class);
+
+    @Autowired(required = false)
+    private AzureTokenCredentials credentials;
+
     @Bean
     @ConditionalOnMissingBean
     public com.azure.resourcemanager.Azure.Authenticated azure20(TokenCredential tokenCredential,
@@ -41,10 +50,12 @@ public class AzureResourceManager20AutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenCredential tokenCredential(AzureTokenCredentials credentials, Environment environment,
-            AzureProperties azureProperties) {
+    public TokenCredential tokenCredential(Environment environment, AzureProperties azureProperties) {
         SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder().fromEnvironment(environment);
         if (!StringUtils.isBlank(azureProperties.getCredentialFilePath())) {
+            if (credentials == null) {
+                logger.error("Legacy azure credentials not initialized though credential-file-path was provided");
+            }
             builder.overrideNamedCredential("", new LegacyTokenCredentialAdapter(credentials));
         }
         return builder.build();
