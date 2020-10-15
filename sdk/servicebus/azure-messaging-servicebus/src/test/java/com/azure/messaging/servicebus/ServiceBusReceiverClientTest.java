@@ -78,7 +78,7 @@ class ServiceBusReceiverClientTest {
         MockitoAnnotations.initMocks(this);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null));
 
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }

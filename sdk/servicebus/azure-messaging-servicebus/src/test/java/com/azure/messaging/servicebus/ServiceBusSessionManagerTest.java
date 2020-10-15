@@ -145,9 +145,9 @@ class ServiceBusSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5, MAX_LOCK_RENEWAL);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
+            tracerProvider, messageSerializer, receiverOptions);
 
         // Act & Assert
         StepVerifier.create(sessionManager.receive())
@@ -161,9 +161,9 @@ class ServiceBusSessionManagerTest {
     @Test
     void singleUnnamedSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null, MAX_LOCK_RENEWAL);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
+            tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
@@ -213,9 +213,9 @@ class ServiceBusSessionManagerTest {
     @Test
     void multipleSessions() {
         // Arrange
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 1);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 1, MAX_LOCK_RENEWAL);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            tracerProvider, messageSerializer, receiverOptions, MAX_LOCK_RENEWAL);
+            tracerProvider, messageSerializer, receiverOptions);
 
         final int numberOfMessages = 5;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));

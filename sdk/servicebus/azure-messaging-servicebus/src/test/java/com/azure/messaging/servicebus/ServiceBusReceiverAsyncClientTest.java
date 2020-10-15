@@ -169,11 +169,11 @@ class ServiceBusReceiverAsyncClientTest {
                     connectionOptions.getRetry()));
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH), connectionProcessor, CLEANUP_INTERVAL,
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null), connectionProcessor, CLEANUP_INTERVAL,
             tracerProvider, messageSerializer, onClientClose, null);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null),
+            new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, "Some-Session", false, null, null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose, null);
     }
 
@@ -329,7 +329,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose, null);

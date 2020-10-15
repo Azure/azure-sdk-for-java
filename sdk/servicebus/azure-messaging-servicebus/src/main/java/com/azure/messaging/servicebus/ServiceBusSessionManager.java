@@ -77,19 +77,8 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-                             ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-                             MessageSerializer messageSerializer, ReceiverOptions receiverOptions, Duration maxSessionLockRenewDuration) {
-
-        this(entityPath,  entityType,
-             connectionProcessor, tracerProvider,
-             messageSerializer, receiverOptions, maxSessionLockRenewDuration, null);
-
-    }
-
-    ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-                             ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-                             MessageSerializer messageSerializer, ReceiverOptions receiverOptions, Duration maxSessionLockRenewDuration,
-                             String sessionId) {
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -97,8 +86,8 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
-        this.userProvidedSessionId = sessionId;
-        this.maxSessionLockRenewDuration = maxSessionLockRenewDuration;
+        this.userProvidedSessionId = receiverOptions.getSessionId();
+        this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.

@@ -638,7 +638,6 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private String subscriptionName;
         private String topicName;
-        // .Net have default of  5 minutes
         private Duration maxAutoRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusSessionReceiverClientBuilder() {
@@ -654,6 +653,7 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder mxAutoRenewDuration(Duration maxAutoRenewDuration) {
+            validateAndThrow(maxAutoRenewDuration);
             this.maxAutoRenewDuration = maxAutoRenewDuration;
             return this;
         }
@@ -689,6 +689,7 @@ public final class ServiceBusClientBuilder {
          * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder prefetchCount(int prefetchCount) {
+            validateAndThrow(prefetchCount);
             this.prefetchCount = prefetchCount;
             return this;
         }
@@ -776,23 +777,12 @@ public final class ServiceBusClientBuilder {
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
-            validateAndThrow(prefetchCount);
-            validateAndThrow(maxAutoRenewDuration);
-
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId, isRollingSessionReceiver(), maxConcurrentSessions);
+                sessionId, isRollingSessionReceiver(), maxConcurrentSessions, maxAutoRenewDuration);
 
-            final ServiceBusSessionManager sessionManager;
-
-            if (CoreUtils.isNullOrEmpty(sessionId)) {
-                sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                    connectionProcessor, tracerProvider, messageSerializer, receiverOptions, maxAutoRenewDuration);
-            } else {
-                sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                    connectionProcessor, tracerProvider, messageSerializer, receiverOptions, maxAutoRenewDuration,
-                    sessionId);
-            }
+            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
+                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -867,6 +857,7 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder maxAutoRenewDuration(Duration maxAutoRenewDuration) {
+            validateAndThrow(maxAutoRenewDuration);
             this.maxAutoRenewDuration = maxAutoRenewDuration;
             return this;
         }
@@ -884,6 +875,7 @@ public final class ServiceBusClientBuilder {
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder prefetchCount(int prefetchCount) {
+            validateAndThrow(prefetchCount);
             this.prefetchCount = prefetchCount;
             return this;
         }
@@ -971,11 +963,10 @@ public final class ServiceBusClientBuilder {
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 subQueue);
-            validateAndThrow(prefetchCount);
-            validateAndThrow(maxAutoRenewDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+                maxAutoRenewDuration);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,

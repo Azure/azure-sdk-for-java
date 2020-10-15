@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
-
 import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -23,7 +22,7 @@ import java.util.function.Function;
 /**
  * Represents a renewal session or message lock renewal operation that.
  */
-class LockRenewalOperation implements AutoCloseable {
+final class LockRenewalOperation implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(LockRenewalOperation.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
@@ -64,6 +63,7 @@ class LockRenewalOperation implements AutoCloseable {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
+
         Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");
         Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
 
@@ -80,7 +80,7 @@ class LockRenewalOperation implements AutoCloseable {
             .cache(Duration.ofMinutes(2));
 
         this.completionMono = renewLockOperation.then();
-        this.subscription = renewLockOperation.subscribe(this.lockedUntil::set,
+        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
             error -> {
                 logger.error("token[{}]. Error occurred while renewing lock token.", error);
                 status.set(LockRenewalStatus.FAILED);
@@ -183,6 +183,7 @@ class LockRenewalOperation implements AutoCloseable {
 
         final OffsetDateTime now = OffsetDateTime.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
+
         if (initialInterval.isNegative()) {
             logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             initialInterval = Duration.ZERO;
@@ -198,6 +199,7 @@ class LockRenewalOperation implements AutoCloseable {
 
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink();
+
         sink.next(initialInterval);
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));

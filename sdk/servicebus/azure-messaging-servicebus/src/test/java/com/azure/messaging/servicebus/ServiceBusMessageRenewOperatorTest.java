@@ -92,7 +92,8 @@ public class ServiceBusMessageRenewOperatorTest {
             autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, renewalFunction);
 
         // Act & Assert
-        StepVerifier.create(renewOperator)
+
+        StepVerifier.create(renewOperator.take(1))
             .expectNextMatches(actual -> {
                 try {
                     // Assuming the processing time for the message
@@ -104,6 +105,20 @@ public class ServiceBusMessageRenewOperatorTest {
             })
             .verifyComplete();
 
+        renewOperator
+            .take(1)
+            .doOnComplete(() -> {
+                System.out.println("!!!! TEST second subscriber comeplete ");
+            })
+            .subscribe(serviceBusReceivedMessage -> {
+            System.out.println("!!!! TEST message received in second subscriber " + serviceBusReceivedMessage.getLockToken());
+        });
+        try {
+            // Assuming the processing time for the message
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (autoLockRenewal) {
             verify(messageLockContainer).addOrUpdate(eq(LOCK_TOKEN), any(OffsetDateTime.class), any(LockRenewalOperation.class));
             verify(renewalFunction, Mockito.atLeast(atLeast)).apply(eq(LOCK_TOKEN));
@@ -184,6 +199,9 @@ public class ServiceBusMessageRenewOperatorTest {
 
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(messageSource,
             false, maxAutoLockRenewDuration, null, renewalFunction));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(messageSource,
+            false, maxAutoLockRenewDuration, messageLockContainer, null));
 
     }
 }
