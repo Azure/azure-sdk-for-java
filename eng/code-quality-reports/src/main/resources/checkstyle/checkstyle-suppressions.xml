@@ -573,6 +573,16 @@
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
   <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
+  <!-- JavadocThrowsChecks|EnforceFinalFieldsCheck: Temporarily skip -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|EnforceFinalFieldsCheck)"
+            files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!--BlacklistedWordsCheck: URL is the name -->
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
+            files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
+
   <!--BlacklistedWordsCheck: B2C is the product name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"></suppress>
 
@@ -590,12 +600,6 @@
   <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
   <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
 
-  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(JavadocThrowsChecks|EnforceFinalFieldsCheck)"
-            files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
-            files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
-            files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
   <!-- ### end: Spring related suppression -->
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
