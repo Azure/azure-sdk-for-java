@@ -754,10 +754,28 @@ public class DigitalTwinsAsyncClientJavaDocCodeSnippets extends CodeSnippetBase 
     //region QuerySnippets
 
     /**
-     * Generates code samples for using {@link DigitalTwinsAsyncClient#query(String, Class, QueryOptions)}
+     * Generates code samples for using {@link DigitalTwinsAsyncClient#query(String, Class)} and
+     * {@link DigitalTwinsAsyncClient#query(String, Class, QueryOptions)}
      */
     @Override
     public void query() {
+        // BEGIN: com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin
+        digitalTwinsAsyncClient.query(
+            "SELECT * FROM digitaltwins",
+            BasicDigitalTwin.class)
+            .doOnNext(
+                basicTwin -> System.out.println("Retrieved digitalTwin query result with Id: " + basicTwin.getId()))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin
+
+        // BEGIN: com.azure.digitaltwins.core.asyncClient.query#String#String
+        digitalTwinsAsyncClient.query(
+            "SELECT * FROM digitaltwins",
+            String.class)
+            .doOnNext(twinString -> System.out.println("Retrieved digitalTwin query result with Id: " + twinString))
+            .subscribe();
+        // END: com.azure.digitaltwins.core.asyncClient.query#String#String
+
         // BEGIN: com.azure.digitaltwins.core.asyncClient.query#String-Options#BasicDigitalTwin
         digitalTwinsAsyncClient.query(
             "SELECT * FROM digitaltwins",
