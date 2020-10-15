@@ -14,5 +14,6 @@ public class HelloWorldSample {
      */
     public static void main(String[] args) {
         // TODO: write sample to create configuration client and get configs
+        // Some implementation
     }
 }
