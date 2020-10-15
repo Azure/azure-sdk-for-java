@@ -27,7 +27,6 @@ import com.microsoft.azure.management.containerservice.v2020_07_01.ManagedCluste
 import com.microsoft.azure.management.containerservice.v2020_07_01.ManagedClusterAADProfile;
 import com.microsoft.azure.management.containerservice.v2020_07_01.ManagedClusterUpgradeProfile;
 import com.microsoft.azure.management.containerservice.v2020_07_01.ManagedClusterAccessProfile;
-import com.microsoft.azure.management.containerservice.v2020_07_01.AgentPool;
 
 class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, ManagedClusterImpl, ManagedClusterInner, ManagedClustersInner, ContainerServiceManager>  implements ManagedClusters {
     protected ManagedClustersImpl(ContainerServiceManager manager) {
@@ -215,18 +214,6 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
             @Override
             public ManagedClusterAccessProfile call(ManagedClusterAccessProfileInner inner) {
                 return new ManagedClusterAccessProfileImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<AgentPool> upgradeNodeImageVersionAsync(String resourceGroupName, String resourceName, String agentPoolName) {
-        ManagedClustersInner client = this.inner();
-        return client.upgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName)
-        .map(new Func1<AgentPoolInner, AgentPool>() {
-            @Override
-            public AgentPool call(AgentPoolInner inner) {
-                return new AgentPoolImpl(inner, manager());
             }
         });
     }
