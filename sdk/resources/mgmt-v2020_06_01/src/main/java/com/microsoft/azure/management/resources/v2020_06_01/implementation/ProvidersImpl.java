@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.v2020_06_01.Providers;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
+import rx.Completable;
 import com.microsoft.azure.management.resources.v2020_06_01.Provider;
 
 class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
@@ -42,6 +43,12 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
                 return new ProviderImpl(inner, manager());
             }
         });
+    }
+
+    @Override
+    public Completable registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId) {
+        ProvidersInner client = this.inner();
+        return client.registerAtManagementGroupScopeAsync(resourceProviderNamespace, groupId).toCompletable();
     }
 
     @Override
