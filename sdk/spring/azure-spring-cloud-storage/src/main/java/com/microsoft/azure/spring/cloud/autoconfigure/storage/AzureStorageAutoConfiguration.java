@@ -22,7 +22,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -34,8 +33,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.microsoft.azure.identity.spring.SpringEnvironmentTokenBuilder;
-import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureResourceManager20AutoConfiguration;
 import com.microsoft.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.microsoft.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
@@ -49,7 +47,7 @@ import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureResourceManager20AutoConfiguration.class)
 @ConditionalOnClass({ BlobServiceClientBuilder.class, ShareServiceClientBuilder.class })
 @ConditionalOnProperty(name = "spring.cloud.azure.storage.account")
 @EnableConfigurationProperties(AzureStorageProperties.class)
@@ -66,13 +64,10 @@ public class AzureStorageAutoConfiguration {
         TelemetryCollector.getInstance().addService(STORAGE);
     }
 
-    @Autowired
-    private Environment environment;
-
     @Bean
     @ConditionalOnMissingBean
     public BlobServiceClientBuilder blobServiceClientBuilder(AzureStorageProperties storageProperties,
-            EnvironmentProvider environmentProvider) {
+            EnvironmentProvider environmentProvider, TokenCredential tokenCredential) {
 
         BlobServiceClientBuilder authenticatedClientBuilder = null;
 
@@ -91,10 +86,7 @@ public class AzureStorageAutoConfiguration {
             authenticatedClientBuilder = new BlobServiceClientBuilder().connectionString(connectionString);
 
         } else {
-            TokenCredential defaultIdentityCredential = new SpringEnvironmentTokenBuilder().fromEnvironment(environment)
-                    .defaultCredential().build();
-
-            authenticatedClientBuilder = new BlobServiceClientBuilder().credential(defaultIdentityCredential)
+            authenticatedClientBuilder = new BlobServiceClientBuilder().credential(tokenCredential)
                     .endpoint(StorageEndpointStringBuilder.buildBlobEndpoint(storageProperties.getAccount(),
                             environmentProvider.getEnvironment(), storageProperties.isSecureTransfer()));
         }
@@ -106,7 +98,7 @@ public class AzureStorageAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ShareServiceClientBuilder shareServiceClientBuilder(AzureStorageProperties storageProperties,
-            EnvironmentProvider environmentProvider) {
+            EnvironmentProvider environmentProvider, TokenCredential tokenCredential) {
 
         ShareServiceClientBuilder authenticatedClientBuilder = null;
         // Use storage credentials where provided, default identity otherwise.
@@ -126,13 +118,10 @@ public class AzureStorageAutoConfiguration {
             authenticatedClientBuilder = new ShareServiceClientBuilder().connectionString(connectionString);
         } else {
 
-            TokenCredential defaultIdentityCredential = new SpringEnvironmentTokenBuilder().fromEnvironment(environment)
-                    .defaultCredential().build();
-
             String endpoint = StorageEndpointStringBuilder.buildSharesEndpoint(storageProperties.getAccount(),
                     environmentProvider.getEnvironment(), storageProperties.isSecureTransfer());
 
-            HttpPipeline pipeline = BuilderHelper.buildPipeline(null, defaultIdentityCredential, null, endpoint,
+            HttpPipeline pipeline = BuilderHelper.buildPipeline(null, tokenCredential, null, endpoint,
                     new RequestRetryOptions(), new HttpLogOptions(), HttpClient.createDefault(),
                     Collections.emptyList(), new com.azure.core.util.Configuration(),
                     new ClientLogger(this.getClass()));

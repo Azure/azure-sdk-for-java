@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ChainedTokenCredential;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -54,121 +56,143 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  */
 public class SpringEnvironmentTokenBuilder {
 
-	/**
-	 * Defines the AZURE_CREDENTIAL_PREFIX.
-	 */
-	private static final String AZURE_CREDENTIAL_PREFIX = "azure.credential.";
+    /**
+     * Defines the AZURE_CREDENTIAL_PREFIX.
+     */
+    private static final String AZURE_CREDENTIAL_PREFIX = "azure.credential.";
 
-	/**
-	 * Stores the named credentials.
-	 */
-	private final HashMap<String, TokenCredential> credentials;
+    /**
+     * Stores the named credentials.
+     */
+    private final HashMap<String, TokenCredential> credentials;
 
-	/**
-	 * Stores the name of the credential to be returned. If omitted, the default
-	 * credential will be returned.
-	 */
-	private String name = "";
+    /**
+     * Stores the name of the credential to be returned. If omitted, the default
+     * credential will be returned.
+     */
+    private String name = "";
 
-	/**
-	 * Constructor.
-	 */
-	public SpringEnvironmentTokenBuilder() {
-		credentials = new HashMap<>();
-		credentials.put("", new DefaultAzureCredentialBuilder().build());
-	}
+    /**
+     * Constructor.
+     */
+    public SpringEnvironmentTokenBuilder() {
+        credentials = new HashMap<>();
+        credentials.put("", new DefaultAzureCredentialBuilder().build());
+    }
 
-	/**
-	 * Populate from Environment.
-	 *
-	 * @param environment the environment.
-	 */
-	public SpringEnvironmentTokenBuilder fromEnvironment(Environment environment) {
-		populateNamedCredential(environment, "");
-		String credentialNamesKey = AZURE_CREDENTIAL_PREFIX + "names";
-		if (environment.containsProperty(credentialNamesKey)) {
-			String[] credentialNames = environment.getProperty(credentialNamesKey).split(",");
-			for (int i = 0; i < credentialNames.length; i++) {
-				populateNamedCredential(environment, credentialNames[i]);
-			}
-		}
-		return this;
-	}
+    /**
+     * Populate from Environment.
+     *
+     * @param environment the environment.
+     */
+    public SpringEnvironmentTokenBuilder fromEnvironment(Environment environment) {
+        populateNamedCredential(environment, "");
+        String credentialNamesKey = AZURE_CREDENTIAL_PREFIX + "names";
+        if (environment.containsProperty(credentialNamesKey)) {
+            String[] credentialNames = environment.getProperty(credentialNamesKey).split(",");
+            for (int i = 0; i < credentialNames.length; i++) {
+                populateNamedCredential(environment, credentialNames[i]);
+            }
+        }
+        return this;
+    }
 
-	/**
-	 * Populate a named credential.
-	 *
-	 * @param environment the environment
-	 * @param name        the name.
-	 */
-	private void populateNamedCredential(Environment environment, String name) {
-		String standardizedName = name;
+    /**
+     * Sets a credential to override a named credential. If this credential fails to produce a token,
+     * the original token credential will be used.
+     * 
+     * @param name
+     * @param credential
+     * @return
+     */
+    public SpringEnvironmentTokenBuilder overrideNamedCredential(String name, TokenCredential credential) {
+        TokenCredential currentCredential = credentials.get(name);
+        if (currentCredential == null) {
+            credentials.put(name, credential);
+        } else {
+            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder();
+            builder.addFirst(credential);
+            builder.addLast(currentCredential);
+            credentials.put(name, builder.build());
+        }
 
-		if (!standardizedName.equals("") && !standardizedName.endsWith(".")) {
-			standardizedName = standardizedName + ".";
-		}
+        return this;
+    }
 
-		String tenantIdKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "tenantId";
-		String clientIdKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientId";
-		String clientSecretKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientSecret";
+    /**
+     * Populate a named credential.
+     *
+     * @param environment the environment
+     * @param name        the name.
+     */
+    private void populateNamedCredential(Environment environment, String name) {
+        String standardizedName = name;
 
-		String tenantId = environment.getProperty(tenantIdKey);
-		String clientId = environment.getProperty(clientIdKey);
-		String clientSecret = environment.getProperty(clientSecretKey);
+        if (!standardizedName.equals("") && !standardizedName.endsWith(".")) {
+            standardizedName = standardizedName + ".";
+        }
 
-		if (tenantId != null && clientId != null && clientSecret != null) {
-			TokenCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId)
-					.clientSecret(clientSecret).build();
-			credentials.put(name, credential);
-			return;
-		}
+        String tenantIdKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "tenantId";
+        String clientIdKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientId";
+        String clientSecretKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientSecret";
 
-		String clientCertificateKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientCertificate";
-		String clientCertificatePath = environment.getProperty(clientCertificateKey);
+        String tenantId = environment.getProperty(tenantIdKey);
+        String clientId = environment.getProperty(clientIdKey);
+        String clientSecret = environment.getProperty(clientSecretKey);
 
-		if (tenantId != null && clientId != null && clientCertificatePath != null) {
-			TokenCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId)
-					.pemCertificate(clientCertificatePath).build();
-			credentials.put(name, credential);
-			return;
-		}
+        if (tenantId != null && clientId != null && clientSecret != null) {
+            TokenCredential credential = new ClientSecretCredentialBuilder().tenantId(tenantId).clientId(clientId)
+                    .clientSecret(clientSecret).build();
+            credentials.put(name, credential);
+            return;
+        }
 
-		if (!name.equals("")) {
-			throw new IllegalStateException("Configuration for azure.credential." + name + " is incomplete");
-		}
-	}
+        String clientCertificateKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientCertificate";
+        String clientCertificatePath = environment.getProperty(clientCertificateKey);
 
-	/**
-	 * Sets the builder to return a credential named <code>name</code>
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public SpringEnvironmentTokenBuilder namedCredential(String name) {
-		this.name = name;
-		return this;
-	}
+        if (tenantId != null && clientId != null && clientCertificatePath != null) {
+            TokenCredential credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId)
+                    .pemCertificate(clientCertificatePath).build();
+            credentials.put(name, credential);
+            return;
+        }
 
-	/**
-	 * Sets the builder to return the default credential.
-	 */
-	public SpringEnvironmentTokenBuilder defaultCredential() {
-		return namedCredential("");
-	}
+        if (!name.equals("")) {
+            throw new IllegalStateException("Configuration for azure.credential." + name + " is incomplete");
+        }
+    }
 
-	/**
-	 * Builds an Azure TokenCredendial.
-	 * 
-	 * @throws IllegalArgumentException if attempting to retrieve a named credential
-	 *                                  not defined in the environment.
-	 */
-	public TokenCredential build() {
-		TokenCredential result = credentials.get(name);
-		if (result == null) {
-			throw new IllegalArgumentException(
-					"Attempting to retrieve Azure credential not configured in the environment. (name=" + name + ")");
-		} else {
-			return result;
-		}
-	}
+    /**
+     * Sets the builder to return a credential named <code>name</code>
+     * 
+     * @param name
+     * @return
+     */
+    public SpringEnvironmentTokenBuilder namedCredential(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Sets the builder to return the default credential.
+     */
+    public SpringEnvironmentTokenBuilder defaultCredential() {
+        return namedCredential("");
+    }
+
+    /**
+     * Builds an Azure TokenCredendial.
+     * 
+     * @throws IllegalArgumentException if attempting to retrieve a named credential
+     *                                  not defined in the environment.
+     */
+    public TokenCredential build() {
+        TokenCredential result = credentials.get(name);
+        if (result == null) {
+            throw new IllegalArgumentException(
+                    "Attempting to retrieve Azure credential not configured in the environment. (name=" + name + ")");
+        } else {
+            return result;
+        }
+    }
 }

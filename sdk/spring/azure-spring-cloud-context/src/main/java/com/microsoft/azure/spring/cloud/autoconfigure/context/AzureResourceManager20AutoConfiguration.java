@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.autoconfigure.context;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +17,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.Azure;
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.identity.spring.SpringEnvironmentTokenBuilder;
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 
@@ -37,7 +41,12 @@ public class AzureResourceManager20AutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenCredential tokenCredential(Environment environment) {
-        return new SpringEnvironmentTokenBuilder().fromEnvironment(environment).build();
+    public TokenCredential tokenCredential(AzureTokenCredentials credentials, Environment environment,
+            AzureProperties azureProperties) {
+        SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder().fromEnvironment(environment);
+        if (!StringUtils.isBlank(azureProperties.getCredentialFilePath())) {
+            builder.overrideNamedCredential("", new LegacyTokenCredentialAdapter(credentials));
+        }
+        return builder.build();
     }
 }
