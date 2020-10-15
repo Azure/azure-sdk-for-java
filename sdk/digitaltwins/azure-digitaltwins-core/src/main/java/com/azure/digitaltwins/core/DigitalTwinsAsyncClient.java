@@ -17,6 +17,7 @@ import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilde
 import com.azure.digitaltwins.core.implementation.converters.EventRouteConverter;
 import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshipConverter;
 import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
+import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
 import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -855,13 +857,9 @@ public final class DigitalTwinsAsyncClient {
         // default values for these options
         List<String> getDependenciesFor = null;
         boolean includeModelDefinition = true; //service default is false, but we expect customers to want the model definitions by default
-        com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
+        com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = OptionsConverter.toProtocolLayerOptions(options);
 
         if (options != null) {
-            protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
-                .setMaxItemsPerPage(options.getMaxItemsPerPage())
-                .setTraceparent(options.getTraceparent())
-                .setTracestate(options.getTracestate());
             getDependenciesFor = options.getDependenciesFor();
             includeModelDefinition = options.getIncludeModelDefinition();
         }
