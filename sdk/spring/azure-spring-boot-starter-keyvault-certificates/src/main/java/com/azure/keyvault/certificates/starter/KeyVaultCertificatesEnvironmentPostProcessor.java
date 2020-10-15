@@ -3,9 +3,9 @@
 package com.azure.keyvault.certificates.starter;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
+import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 import java.security.Security;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -86,6 +86,13 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
             KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
             Security.insertProviderAt(provider, 1);
+            
+            String enabled = environment.getProperty("azure.keyvault.overrideTrustManagerFactory");
+            if (Boolean.valueOf(enabled)) {
+                KeyVaultTrustManagerFactoryProvider factoryProvider =
+                        new KeyVaultTrustManagerFactoryProvider();
+                Security.insertProviderAt(factoryProvider, 1);
+            }
         }
     }
 }

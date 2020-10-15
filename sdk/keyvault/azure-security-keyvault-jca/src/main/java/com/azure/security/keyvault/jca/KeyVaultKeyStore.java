@@ -129,10 +129,14 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
-        if (certificates.containsValue(cert)) {
-            for (String candidate : certificates.keySet()) {
-                if (certificates.get(candidate).equals(cert)) {
-                    alias = candidate;
+        if (cert != null) {
+            if (aliases == null) {
+                aliases = keyVault.getAliases();
+            }
+            for (String candidateAlias : aliases) {
+                Certificate certificate = engineGetCertificate(candidateAlias);
+                if (certificate.equals(cert)) {
+                    alias = candidateAlias;
                     break;
                 }
             }
