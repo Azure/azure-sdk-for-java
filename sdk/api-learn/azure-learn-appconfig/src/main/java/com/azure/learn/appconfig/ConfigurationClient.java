@@ -9,9 +9,12 @@ import com.azure.learn.appconfig.models.ConfigurationSetting;
 
 @ServiceClient(builder = ConfigurationClientBuilder.class)
 public final class ConfigurationClient {
+    private final ConfigurationAsyncClient asyncClient;
 
-    ConfigurationClient() {
-        // package-private constructor
+
+
+    ConfigurationClient(ConfigurationAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

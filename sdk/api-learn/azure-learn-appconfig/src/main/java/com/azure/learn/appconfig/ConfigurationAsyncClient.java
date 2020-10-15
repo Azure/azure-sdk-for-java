@@ -4,23 +4,36 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.learn.appconfig.implementation.AzureAppConfigurationImpl;
+import com.azure.learn.appconfig.implementation.AzureAppConfigurationImplBuilder;
 import com.azure.learn.appconfig.models.ConfigurationSetting;
 import reactor.core.publisher.Mono;
+
 
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true)
 public final class ConfigurationAsyncClient {
 
-    ConfigurationAsyncClient() {
-        // package-private constructor
+    private final AzureAppConfigurationImpl internalClient;
+
+
+    ConfigurationAsyncClient(AzureAppConfigurationImpl internalClient) {
+        this.internalClient = internalClient;
+    }
+
+    AzureAppConfigurationImplBuilder internalBuilder = new AzureAppConfigurationImplBuilder();
+    public ConfigurationAsyncClient buildAsyncClient() {
+        AzureAppConfigurationImpl internalClient = internalBuilder.buildClient();
+        return new ConfigurationAsyncClient(internalClient);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getConfigurationSetting(String key) {
-        return Mono.empty();
+        return getConfigurationSetting(key, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getConfigurationSetting(String key, String label) {
+
         return Mono.empty();
     }
 
