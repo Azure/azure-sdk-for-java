@@ -13,7 +13,7 @@ import java.util.Map;
 @Fluent
 public final class UpdatePhoneNumberCapabilitiesResponse {
     /*
-     * The id of the phone number capabilties update
+     * The id of the phone number capabilities update
      */
     @JsonProperty(value = "capabilitiesUpdateId")
     private String capabilitiesUpdateId;
@@ -37,7 +37,7 @@ public final class UpdatePhoneNumberCapabilitiesResponse {
     private Map<String, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdates;
 
     /**
-     * Get the capabilitiesUpdateId property: The id of the phone number capabilties update.
+     * Get the capabilitiesUpdateId property: The id of the phone number capabilities update.
      *
      * @return the capabilitiesUpdateId value.
      */
@@ -46,7 +46,7 @@ public final class UpdatePhoneNumberCapabilitiesResponse {
     }
 
     /**
-     * Set the capabilitiesUpdateId property: The id of the phone number capabilties update.
+     * Set the capabilitiesUpdateId property: The id of the phone number capabilities update.
      *
      * @param capabilitiesUpdateId the capabilitiesUpdateId value to set.
      * @return the UpdatePhoneNumberCapabilitiesResponse object itself.

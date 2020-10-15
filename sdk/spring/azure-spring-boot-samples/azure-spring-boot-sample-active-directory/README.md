@@ -98,8 +98,8 @@ Open application.properties in your project to configure:
 
 2. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
 ```properties
-azure.activedirectory.client-id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-azure.activedirectory.client-secret=ABCDEFGHIJKLMNOOPQRSTUVWXYZABCDEFGHIJKLMNOPQ
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 ```
 
 3. List all the AAD groups `ActiveDirectoryGroups` that you want to have a Spring Security role object mapping to it. The role objects can then be used to manage access to resources that is behind Spring Security. e.g.
@@ -135,6 +135,7 @@ msalProvider.init(
 
 ### Step 6: Give it a run
 
+First, we need to ensure that this [instruction] is completed before run.
    - Use Maven 
 
      ```
@@ -150,3 +151,6 @@ msalProvider.init(
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

@@ -3,17 +3,20 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
-import com.azure.ai.formrecognizer.training.FormTrainingClient;
-import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Code snippet for {@link FormTrainingClient}
@@ -282,5 +285,55 @@ public class FormTrainingClientJavaDocCodeSnippets {
             copyAuthorization.getResourceRegion()
         );
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.getCopyAuthorizationWithResponse#string-string-Context
+    }
+
+    /**
+     * Code snippet for {@link FormTrainingClient#beginCreateComposedModel(List)}
+     */
+    public void beginCreateComposedModel() {
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list
+        String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        final CustomFormModel customFormModel
+            = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2))
+            .getFinalResult();
+        System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+        System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+        System.out.printf("Is this a composed model: %s%n",
+            customFormModel.getCustomModelProperties().isComposed());
+        customFormModel.getSubmodels()
+            .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                .forEach((key, customFormModelField) ->
+                    System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
+                        key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list
+    }
+
+    /**
+     * Code snippet for {@link FormTrainingClient#beginCreateComposedModel(List, CreateComposedModelOptions, Context)}
+     * with options
+     */
+    public void beginCreateComposedModelWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
+        String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
+        String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
+        final CustomFormModel customFormModel
+            = formTrainingClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
+            new CreateComposedModelOptions()
+                .setModelName("my composed model name")
+                .setPollInterval(Duration.ofSeconds(5)),
+            Context.NONE)
+                .getFinalResult();
+        System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+        System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+        System.out.printf("Model display name: %s%n", customFormModel.getModelName());
+        System.out.printf("Is this a composed model: %s%n",
+            customFormModel.getCustomModelProperties().isComposed());
+        customFormModel.getSubmodels()
+            .forEach(customFormSubmodel -> customFormSubmodel.getFields()
+                .forEach((key, customFormModelField) ->
+                    System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
+                        key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
     }
 }

@@ -310,7 +310,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets the list of the acquired phone numbers.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,7 +344,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets the list of the acquired phone numbers.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -372,7 +372,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets the list of the acquired phone numbers.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +390,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets the list of the acquired phone numbers.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -410,7 +410,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets the list of the acquired phone numbers.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -426,7 +426,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets the list of the acquired phone numbers.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -806,7 +806,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets a list of supported countries.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -840,7 +840,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets a list of supported countries.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -868,7 +868,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets a list of supported countries.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -886,7 +886,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets a list of supported countries.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -906,7 +906,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets a list of supported countries.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -922,7 +922,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets a list of supported countries.
      *
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -1226,7 +1226,7 @@ public final class PhoneNumberAdministrationsImpl {
      * Gets a list of phone plan groups for the given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param includeRateInformation The includeRateInformation parameter.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
@@ -1264,7 +1264,7 @@ public final class PhoneNumberAdministrationsImpl {
      * Gets a list of phone plan groups for the given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param includeRateInformation The includeRateInformation parameter.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
@@ -1306,7 +1306,7 @@ public final class PhoneNumberAdministrationsImpl {
      * Gets a list of phone plan groups for the given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param includeRateInformation The includeRateInformation parameter.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
@@ -1327,7 +1327,7 @@ public final class PhoneNumberAdministrationsImpl {
      * Gets a list of phone plan groups for the given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param includeRateInformation The includeRateInformation parameter.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
@@ -1356,7 +1356,7 @@ public final class PhoneNumberAdministrationsImpl {
      * Gets a list of phone plan groups for the given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param includeRateInformation The includeRateInformation parameter.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
@@ -1375,7 +1375,7 @@ public final class PhoneNumberAdministrationsImpl {
      * Gets a list of phone plan groups for the given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param includeRateInformation The includeRateInformation parameter.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
@@ -1402,7 +1402,7 @@ public final class PhoneNumberAdministrationsImpl {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1440,7 +1440,7 @@ public final class PhoneNumberAdministrationsImpl {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -1477,7 +1477,7 @@ public final class PhoneNumberAdministrationsImpl {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1498,7 +1498,7 @@ public final class PhoneNumberAdministrationsImpl {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -1520,7 +1520,7 @@ public final class PhoneNumberAdministrationsImpl {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1539,7 +1539,7 @@ public final class PhoneNumberAdministrationsImpl {
      *
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes.
      * @param take An optional parameter for how many entries to return, for pagination purposes.
      * @param context The context to associate with this operation.
@@ -1560,7 +1560,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
      * @param phonePlanId The phonePlanId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1587,7 +1587,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
      * @param phonePlanId The phonePlanId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1613,7 +1613,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
      * @param phonePlanId The phonePlanId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1639,7 +1639,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
      * @param phonePlanId The phonePlanId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1666,7 +1666,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
      * @param phonePlanId The phonePlanId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1684,7 +1684,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @param countryCode The ISO 3166-2 country code.
      * @param phonePlanGroupId The phonePlanGroupId parameter.
      * @param phonePlanId The phonePlanId parameter.
-     * @param locale A language-locale pairing which will be used to localise the names of countries.
+     * @param locale A language-locale pairing which will be used to localize the names of countries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2731,7 +2731,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of searchs or releases, as part of the response when fetching all searches or releases.
+     * @return represents a list of searches or releases, as part of the response when fetching all searches or
+     *     releases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberEntity>> getAllReleasesNextSinglePageAsync(String nextLink) {
@@ -2755,7 +2756,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of searchs or releases, as part of the response when fetching all searches or releases.
+     * @return represents a list of searches or releases, as part of the response when fetching all searches or
+     *     releases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberEntity>> getAllReleasesNextSinglePageAsync(String nextLink, Context context) {
@@ -2778,7 +2780,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of searchs or releases, as part of the response when fetching all searches or releases.
+     * @return represents a list of searches or releases, as part of the response when fetching all searches or
+     *     releases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberEntity>> getAllSearchesNextSinglePageAsync(String nextLink) {
@@ -2802,7 +2805,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of searchs or releases, as part of the response when fetching all searches or releases.
+     * @return represents a list of searches or releases, as part of the response when fetching all searches or
+     *     releases.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberEntity>> getAllSearchesNextSinglePageAsync(String nextLink, Context context) {

@@ -54,10 +54,10 @@ public class AppPlatformTest extends ResourceManagerTestBase {
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rg", 20);
-        appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile);
-        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
-        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        appPlatformManager = buildManager(AppPlatformManager.class, httpPipeline, profile);
+        appServiceManager = buildManager(AppServiceManager.class, httpPipeline, profile);
+        dnsZoneManager = buildManager(DnsZoneManager.class, httpPipeline, profile);
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
     }
 
     @Override

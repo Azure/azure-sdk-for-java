@@ -6,7 +6,6 @@ package com.azure.storage.file.share
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareAccessPolicy
 import com.azure.storage.file.share.models.ShareAccessTier
@@ -15,6 +14,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
@@ -31,6 +31,7 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
@@ -215,7 +216,7 @@ class ShareAPITests extends APISpec {
         def snap2 = primaryShareClient.createSnapshot().getSnapshot()
 
         when:
-        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(DeleteSnapshotsOptionType.INCLUDE),null, null)
+        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE),null, null)
 
         then:
         !primaryShareClient.getSnapshotClient(snap1).exists()
@@ -518,7 +519,7 @@ class ShareAPITests extends APISpec {
     def "Set access tier"() {
         given:
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def time = getUTCNow()
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
 
         when:
         def getAccessTierBeforeResponse = primaryShareClient.getProperties()
@@ -529,7 +530,7 @@ class ShareAPITests extends APISpec {
         getAccessTierBeforeResponse.getAccessTier() == ShareAccessTier.HOT.toString()
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
         getAccessTierAfterResponse.getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
+        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
         getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }

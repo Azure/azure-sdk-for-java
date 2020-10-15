@@ -3,6 +3,7 @@
 ## 3.0.0-beta.1 (Unreleased)
 - Updated properties prefix from `azure.cosmosdb.xxx` to `azure.cosmos.xxx`.
 - Added new property items `azure.cosmos.connection-mode`.
+- Update `com.azure` group id to `com.azure.spring`.
 
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes

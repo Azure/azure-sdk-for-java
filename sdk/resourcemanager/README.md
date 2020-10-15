@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.6.1</version>
+  <version>1.6.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -110,18 +110,31 @@ The key concepts of Azure Management Libraries includes:
 
 ### Service features
 
+- App Services
+- Authorization
 - Compute
-- Storage
-- Networking
-- SQL Database
-- Container and Kubernetes (AKS)
-- Web app and Function app
+- Container Services (AKS)
+- Cosmos DB
+- Insight (Monitor)
 - Key Vault
-- Cosmos
-- Monitor
-- Spring Cloud
+- Managed Identity
+- Network
+- Resources
+- Storage
+
+Services in preview
+
+- CDN
+- Container Instance
+- Container Registry
+- DNS
 - Event Hubs
-- Redis Cache
+- Private DNS
+- Redis
+- Service Bus
+- Spring Cloud
+- SQL
+- Traffic Manager
 
 ## Examples
 

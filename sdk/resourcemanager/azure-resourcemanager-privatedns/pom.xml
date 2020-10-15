@@ -112,6 +112,8 @@
                 <!-- tests fail without these exports. -->
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
+
+                --add-opens com.azure.resourcemanager.privatedns/com.azure.resourcemanager.privatedns=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

@@ -64,10 +64,9 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        privateZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        privateZoneManager = buildManager(PrivateDnsZoneManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        resourceManager = privateZoneManager.resourceManager();
         rgName = generateRandomResourceName("prdnsvnltest", 15);
         topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
         vnetName = generateRandomResourceName("prdnsvnet", 15);
