@@ -60,6 +60,7 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             this.subscription = subscription;
             actual.onSubscribe(subscription);
+            subscription.request(1L);
         } else {
             logger.error("Already subscribed once.");
         }
