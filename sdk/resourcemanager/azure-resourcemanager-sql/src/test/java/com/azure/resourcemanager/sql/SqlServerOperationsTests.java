@@ -28,12 +28,15 @@ import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.ServiceObjective;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
+import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
+import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -255,7 +258,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .define("dbCopy")
                 .withSourceDatabase(dbSample)
                 .withMode(CreateMode.COPY)
-                .withServiceObjective(ServiceObjectiveName.P1)
+                .withPremiumEdition(SqlDatabasePremiumServiceObjective.P1)
                 .create();
 
         Assertions.assertNotNull(dbCopy);
@@ -767,7 +770,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals("0.0.0.0", firewallRule.startIpAddress());
         Assertions.assertEquals("0.0.0.0", firewallRule.endIpAddress());
 
-        sqlServer.update().withNewFirewallRule("0.0.0.2", "0.0.0.2", "newFirewallRule1").apply();
+        sqlServer.update().defineFirewallRule("newFirewallRule1")
+            .withIpAddress("0.0.0.2")
+            .attach()
+            .apply();
         sqlServer.firewallRules().delete("newFirewallRule2");
 
         final SqlServer finalSqlServer1 = sqlServer;
@@ -887,14 +893,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withAdministratorLogin("userName")
                 .withAdministratorPassword("Password~1")
                 .withoutAccessFromAzureServices()
-                .withNewDatabase(SQL_DATABASE_NAME)
-                .withNewDatabase(database2Name)
-                .withNewElasticPool(elasticPool1Name, ElasticPoolEdition.STANDARD)
-                .withNewElasticPool(elasticPool2Name, ElasticPoolEdition.PREMIUM, database1InEPName, database2InEPName)
-                .withNewElasticPool(elasticPool3Name, ElasticPoolEdition.STANDARD)
-                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS, SQL_FIREWALLRULE_NAME)
-                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS)
-                .withNewFirewallRule(START_IPADDRESS)
+                .defineDatabase(SQL_DATABASE_NAME).attach()
+                .defineDatabase(database2Name).attach()
+                .defineElasticPool(elasticPool1Name).withStandardPool().attach()
+                .defineElasticPool(elasticPool2Name).withPremiumPool().attach()
+                .defineElasticPool(elasticPool3Name).withStandardPool().attach()
+                .defineDatabase(database1InEPName).withExistingElasticPool(elasticPool2Name).attach()
+                .defineDatabase(database2InEPName).withExistingElasticPool(elasticPool2Name).attach()
+                .defineFirewallRule(SQL_FIREWALLRULE_NAME).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
+                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
+                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddress(START_IPADDRESS).attach()
                 .create();
 
         validateMultiCreation(
@@ -917,14 +925,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer =
             sqlServer
                 .update()
-                .withNewDatabase(SQL_DATABASE_NAME)
-                .withNewDatabase(database2Name)
-                .withNewElasticPool(elasticPool1Name, ElasticPoolEdition.STANDARD)
-                .withNewElasticPool(elasticPool2Name, ElasticPoolEdition.PREMIUM, database1InEPName, database2InEPName)
-                .withNewElasticPool(elasticPool3Name, ElasticPoolEdition.STANDARD)
-                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS, SQL_FIREWALLRULE_NAME)
-                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS)
-                .withNewFirewallRule(START_IPADDRESS)
+                .defineDatabase(SQL_DATABASE_NAME).attach()
+                .defineDatabase(database2Name).attach()
+                .defineElasticPool(elasticPool1Name).withStandardPool().attach()
+                .defineElasticPool(elasticPool2Name).withPremiumPool().attach()
+                .defineElasticPool(elasticPool3Name).withStandardPool().attach()
+                .defineDatabase(database1InEPName).withExistingElasticPool(elasticPool2Name).attach()
+                .defineDatabase(database2InEPName).withExistingElasticPool(elasticPool2Name).attach()
+                .defineFirewallRule(SQL_FIREWALLRULE_NAME).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
+                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
+                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddress(START_IPADDRESS).attach()
                 .withTag("tag2", "value2")
                 .apply();
 
@@ -964,7 +974,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = createSqlServer();
         Mono<SqlDatabase> resourceStream =
-            sqlServer.databases().define(SQL_DATABASE_NAME).withEdition(DatabaseEdition.STANDARD).createAsync();
+            sqlServer.databases().define(SQL_DATABASE_NAME).withStandardEdition(SqlDatabaseStandardServiceObjective.S0).createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
 
@@ -1014,7 +1024,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         // Create another database with above created database as source database.
         Creatable<SqlElasticPool> sqlElasticPoolCreatable =
-            sqlServer.elasticPools().define(SQL_ELASTIC_POOL_NAME).withEdition(ElasticPoolEdition.STANDARD);
+            sqlServer.elasticPools().define(SQL_ELASTIC_POOL_NAME).withStandardPool();
         String anotherDatabaseName = "anotherDatabase";
         SqlDatabase anotherDatabase =
             sqlServer
@@ -1043,8 +1053,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServer
                 .databases()
                 .define("newDatabase")
-                .withEdition(DatabaseEdition.STANDARD)
                 .withCollation(COLLATION)
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
                 .createAsync();
 
         sqlDatabase = resourceStream.block();
@@ -1070,8 +1080,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServer1
                 .databases()
                 .define(SQL_DATABASE_NAME)
-                .withEdition(DatabaseEdition.STANDARD)
                 .withCollation(COLLATION)
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
                 .createAsync();
 
         SqlDatabase databaseInServer1 = resourceStream.block();
@@ -1137,9 +1147,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServer
                 .databases()
                 .define(SQL_DATABASE_NAME)
-                .withEdition(DatabaseEdition.DATA_WAREHOUSE)
-                .withServiceObjective(ServiceObjectiveName.fromString("DW1000C"))
                 .withCollation(COLLATION)
+                .withSku(new Sku().withName("DW1000C").withTier(DatabaseEdition.DATA_WAREHOUSE.toString()))
                 .createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
@@ -1182,7 +1191,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServer
                 .elasticPools()
                 .define(SQL_ELASTIC_POOL_NAME)
-                .withEdition(ElasticPoolEdition.STANDARD)
+                .withStandardPool()
                 .withTag("tag1", "value1");
 
         Mono<SqlDatabase> resourceStream =
@@ -1214,20 +1223,19 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlDatabase
             .update()
             .withoutElasticPool()
-            .withEdition(DatabaseEdition.STANDARD)
-            .withServiceObjective(ServiceObjectiveName.S3)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
             .apply();
         sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
         Assertions.assertNull(sqlDatabase.elasticPoolName());
 
         // Update edition of the SQL database
-        sqlDatabase.update().withEdition(DatabaseEdition.PREMIUM).withServiceObjective(ServiceObjectiveName.P1).apply();
+        sqlDatabase.update().withPremiumEdition(SqlDatabasePremiumServiceObjective.P1).apply();
         sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
         Assertions.assertEquals(sqlDatabase.edition(), DatabaseEdition.PREMIUM);
         Assertions.assertEquals(sqlDatabase.currentServiceObjectiveName(), ServiceObjectiveName.P1.toString());
 
         // Update just the service level objective for database.
-        sqlDatabase.update().withServiceObjective(ServiceObjectiveName.P2).apply();
+        sqlDatabase.update().withPremiumEdition(SqlDatabasePremiumServiceObjective.P2).apply();
         sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
         Assertions.assertEquals(sqlDatabase.currentServiceObjectiveName(), ServiceObjectiveName.P2.toString());
         Assertions.assertEquals(sqlDatabase.requestedServiceObjectiveName(), ServiceObjectiveName.P2.toString());
@@ -1301,7 +1309,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServer
                 .elasticPools()
                 .define(SQL_ELASTIC_POOL_NAME)
-                .withEdition(ElasticPoolEdition.STANDARD)
+                .withStandardPool()
                 .withTag("tag1", "value1")
                 .createAsync();
         SqlElasticPool sqlElasticPool = resourceStream.block();
@@ -1311,9 +1319,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlElasticPool =
             sqlElasticPool
                 .update()
-                .withDtu(100)
-                .withDatabaseDtuMax(20)
-                .withDatabaseDtuMin(10)
+                .withReservedDtu(SqlElasticPoolBasicEDTUs.eDTU_100)
+                .withDatabaseMaxCapacity(20)
+                .withDatabaseMinCapacity(10)
                 .withStorageCapacity(102400 * 1024 * 1024L)
                 .withNewDatabase(SQL_DATABASE_NAME)
                 .withTag("tag2", "value2")
@@ -1336,7 +1344,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         // Add another database to the server
         resourceStream =
-            sqlServer.elasticPools().define("newElasticPool").withEdition(ElasticPoolEdition.STANDARD).createAsync();
+            sqlServer.elasticPools().define("newElasticPool").withStandardPool().createAsync();
 
         sqlElasticPool = resourceStream.block();
 

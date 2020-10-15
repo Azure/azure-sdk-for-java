@@ -69,11 +69,11 @@ import java.util.Objects;
 /** Implementation for SqlDatabase and its parent interfaces. */
 class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
     implements SqlDatabase,
-        SqlDatabase.SqlDatabaseDefinition<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
+        SqlDatabase.SqlDatabaseDefinition<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<SqlServerImpl>,
+        SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<SqlServerImpl>,
         SqlDatabase.Update,
         SqlDatabaseOperations.DefinitionStages.WithExistingDatabaseAfterElasticPool,
         SqlDatabaseOperations.DefinitionStages.WithStorageKeyAfterElasticPool,

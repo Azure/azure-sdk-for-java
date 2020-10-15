@@ -53,7 +53,7 @@ import java.util.Objects;
 public class SqlElasticPoolImpl
     extends ExternalChildResourceImpl<SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer>
     implements SqlElasticPool,
-        SqlElasticPool.SqlElasticPoolDefinition<SqlServer.DefinitionStages.WithCreate>,
+        SqlElasticPool.SqlElasticPoolDefinition<SqlServerImpl>,
         SqlElasticPoolOperations.DefinitionStages.WithCreate,
         SqlElasticPool.Update,
         SqlElasticPoolOperations.SqlElasticPoolOperationsDefinition {

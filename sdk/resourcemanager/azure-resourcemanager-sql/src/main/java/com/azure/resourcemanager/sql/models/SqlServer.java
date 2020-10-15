@@ -239,7 +239,7 @@ public interface SqlServer
              * @param elasticPoolName the name of the new SQL Elastic Pool
              * @return the first stage of the new SQL Elastic Pool definition
              */
-            SqlElasticPool.DefinitionStages.Blank<WithCreate> defineElasticPool(String elasticPoolName);
+            SqlElasticPool.DefinitionStages.Blank<? extends WithCreate> defineElasticPool(String elasticPoolName);
         }
 
         /** A SQL Server definition for specifying the databases. */
@@ -250,7 +250,7 @@ public interface SqlServer
              * @param databaseName the name of the new SQL Database
              * @return the first stage of the new SQL Database definition
              */
-            SqlDatabase.DefinitionStages.Blank<WithCreate> defineDatabase(String databaseName);
+            SqlDatabase.DefinitionStages.Blank<? extends WithCreate> defineDatabase(String databaseName);
         }
 
         /** The stage of the SQL Server definition allowing to specify the SQL Firewall rules. */
@@ -271,7 +271,7 @@ public interface SqlServer
              * @param firewallRuleName the name of the new SQL Firewall rule
              * @return the first stage of the new SQL Firewall rule definition
              */
-            SqlFirewallRule.DefinitionStages.Blank<WithCreate> defineFirewallRule(String firewallRuleName);
+            SqlFirewallRule.DefinitionStages.Blank<? extends WithCreate> defineFirewallRule(String firewallRuleName);
         }
 
         /** The stage of the SQL Server definition allowing to specify the SQL Virtual Network Rules. */
@@ -282,7 +282,7 @@ public interface SqlServer
              * @param virtualNetworkRuleName the name of the new SQL Virtual Network Rule
              * @return the first stage of the new SQL Virtual Network Rule definition
              */
-            SqlVirtualNetworkRule.DefinitionStages.Blank<WithCreate> defineVirtualNetworkRule(
+            SqlVirtualNetworkRule.DefinitionStages.Blank<? extends WithCreate> defineVirtualNetworkRule(
                 String virtualNetworkRuleName);
         }
 
@@ -344,7 +344,7 @@ public interface SqlServer
              * @param elasticPoolName the name of the new SQL Elastic Pool
              * @return the first stage of the new SQL Elastic Pool definition
              */
-            SqlElasticPool.DefinitionStages.Blank<DefinitionStages.WithCreate> defineElasticPool(
+            SqlElasticPool.DefinitionStages.Blank<? extends Update> defineElasticPool(
                 String elasticPoolName);
 
             /**
@@ -364,7 +364,7 @@ public interface SqlServer
              * @param databaseName the name of the new SQL Database
              * @return the first stage of the new SQL Database definition
              */
-            SqlDatabase.DefinitionStages.Blank<DefinitionStages.WithCreate> defineDatabase(String databaseName);
+            SqlDatabase.DefinitionStages.Blank<? extends Update> defineDatabase(String databaseName);
 
             /**
              * Remove database from the SQL Server.
@@ -383,7 +383,7 @@ public interface SqlServer
              * @param firewallRuleName the name of the new SQL Firewall rule
              * @return the first stage of the new SQL Firewall rule definition
              */
-            SqlFirewallRule.DefinitionStages.Blank<DefinitionStages.WithCreate> defineFirewallRule(
+            SqlFirewallRule.DefinitionStages.Blank<? extends Update> defineFirewallRule(
                 String firewallRuleName);
 
             /**
