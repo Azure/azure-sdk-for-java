@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.sql;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.AdministratorType;
@@ -56,9 +56,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -1635,5 +1640,53 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase, String databaseName) {
         validateSqlDatabase(sqlDatabase, databaseName);
         Assertions.assertEquals(SQL_ELASTIC_POOL_NAME, sqlDatabase.elasticPoolName());
+    }
+
+    @Test
+    @Disabled("Only run for updating sku")
+    public void generateSku() throws IOException {
+        StringBuilder databaseSkuBuilder = new StringBuilder();
+        StringBuilder elasticPoolSkuBuilder = new StringBuilder();
+        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+            .forEach((x, serverVersionCapability) -> {
+                serverVersionCapability.supportedEditions().forEach(edition -> {
+                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
+                        addStaticSkuDefinition(databaseSkuBuilder, edition.name(), serviceObjective.name(), serviceObjective.sku(), "DatabaseSku");
+                    });
+                });
+                serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
+                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
+                        String detailName = String.format("%s_%d", performance.sku().name(), performance.sku().capacity());
+                        addStaticSkuDefinition(elasticPoolSkuBuilder, edition.name(), detailName, performance.sku(), "ElasticPoolSku");
+                    });
+                });
+            });
+
+        String databaseSku = new String(getClass().getResourceAsStream("/DatabaseSku.java").readAllBytes(), StandardCharsets.UTF_8);
+        databaseSku = databaseSku.replace("<Generated>", databaseSkuBuilder.toString());
+        Files.writeString(new File("src/main/java/com/azure/resourcemanager/sql/models/DatabaseSku.java").toPath(), databaseSku);
+
+        String elasticPoolSku = new String(getClass().getResourceAsStream("/ElasticPoolSku.java").readAllBytes(), StandardCharsets.UTF_8);
+        elasticPoolSku = elasticPoolSku.replace("<Generated>", elasticPoolSkuBuilder.toString());
+        Files.writeString(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(), elasticPoolSku);
+
+        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST).create(); // for deletion
+    }
+
+    private void addStaticSkuDefinition(StringBuilder builder, String edition, String detailName, Sku sku, String className) {
+        builder
+            .append("\n    ").append("/** ").append(edition).append(" Edition with ").append(detailName).append(" sku. */")
+            .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT)))
+                .append(" = new ").append(className).append("(")
+                .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
+                .append(", ")
+                .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
+                .append(", ")
+                .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
+                .append(", ")
+                .append(sku.capacity())
+                .append(", ")
+                .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
+                .append(");");
     }
 }
