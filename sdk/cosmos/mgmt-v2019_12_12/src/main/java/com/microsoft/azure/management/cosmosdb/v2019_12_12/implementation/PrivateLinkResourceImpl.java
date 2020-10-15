@@ -62,6 +62,11 @@ class PrivateLinkResourceImpl extends IndexableRefreshableWrapperImpl<PrivateLin
     }
 
     @Override
+    public List<String> requiredZoneNames() {
+        return this.inner().requiredZoneNames();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }

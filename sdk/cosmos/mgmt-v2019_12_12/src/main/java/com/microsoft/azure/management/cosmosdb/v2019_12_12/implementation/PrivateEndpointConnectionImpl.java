@@ -72,6 +72,11 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
 
 
     @Override
+    public String groupId() {
+        return this.inner().groupId();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -92,6 +97,11 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     }
 
     @Override
+    public String provisioningState() {
+        return this.inner().provisioningState();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }
@@ -104,6 +114,12 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     }
 
     @Override
+    public PrivateEndpointConnectionImpl withGroupId(String groupId) {
+        this.inner().withGroupId(groupId);
+        return this;
+    }
+
+    @Override
     public PrivateEndpointConnectionImpl withPrivateEndpoint(PrivateEndpointProperty privateEndpoint) {
         this.inner().withPrivateEndpoint(privateEndpoint);
         return this;
@@ -112,6 +128,12 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     @Override
     public PrivateEndpointConnectionImpl withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
         this.inner().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withProvisioningState(String provisioningState) {
+        this.inner().withProvisioningState(provisioningState);
         return this;
     }
 
