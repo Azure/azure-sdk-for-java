@@ -14,14 +14,14 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2016_08_01.MSDeployProvisioningState;
 
 class MSDeployStatusImpl extends WrapperImpl<MSDeployStatusInner> implements MSDeployStatus {
-    private final AppServiceManager manager;
-    MSDeployStatusImpl(MSDeployStatusInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    MSDeployStatusImpl(MSDeployStatusInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
