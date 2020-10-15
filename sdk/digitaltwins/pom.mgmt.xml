@@ -10,5 +10,6 @@
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
     <module>mgmt-v2020_03_01_preview</module>
+    <module>mgmt-v2020_10_31</module>
   </modules>
 </project>

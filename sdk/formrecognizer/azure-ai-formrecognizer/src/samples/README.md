@@ -36,6 +36,7 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 |[TrainUnlabeledModel][train_unlabeled_model] and [TrainUnlabeledModelAsync][train_unlabeled_model_async]|Train a custom model with unlabeled data|
 |[ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]|Manage the custom models in your account|
 |[CopyModel][copy_model] and [CopyModelAsync][copy_model_async]|Copy custom model from one Form Recognizer resource to another|
+|[CreateComposedModel][create_composed_model] and [CreateComposedModelAsync][create_composed_model_async]|Creates a composed model from a collection of existing trained models with labels|
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -63,6 +64,8 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
 [java_fr_ref_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 
+[create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/f90e98012c042179bbedec11b77614b62088d2e1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CreateComposedModel.java
+[create_composed_model_async] : https://github.com/Azure/azure-sdk-for-java/blob/f90e98012c042179bbedec11b77614b62088d2e1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CreateComposedModelAsync.java
 [authentication_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/Authentication.java
 [differentiate_custom_forms_with_labeled_and_unlabeled_models]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledData.java
 [differentiate_custom_forms_with_labeled_and_unlabeled_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledDataAsync.java

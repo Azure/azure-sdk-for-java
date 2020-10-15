@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * the Job Release Task runs again when the Compute Node starts up. The Job is
  * not marked as complete until all Job Release Tasks have completed. The Job
  * Release Task runs in the background. It does not occupy a scheduling slot;
- * that is, it does not count towards the maxTasksPerNode limit specified on
+ * that is, it does not count towards the taskSlotsPerNode limit specified on
  * the Pool.
  */
 public class JobReleaseTask {
