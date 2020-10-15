@@ -15,6 +15,8 @@ import com.azure.data.tables.models.UpdateMode;
 
 import java.time.Duration;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
 /**
  * Provides a synchronous service client for accessing a table in the Azure Tables service.
  *
@@ -89,7 +91,7 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(Duration timeout) {
-        client.create().block(timeout);
+        blockWithOptionalTimeout(client.create(), timeout);
     }
 
     /**
@@ -103,7 +105,7 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Duration timeout, Context context) {
-        return client.createWithResponse(context).block(timeout);
+        return blockWithOptionalTimeout(client.createWithResponse(context), timeout);
     }
 
     /**
@@ -351,7 +353,7 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(Duration timeout) {
-        client.delete().block(timeout);
+        blockWithOptionalTimeout(client.delete(), timeout);
     }
 
     /**
@@ -365,7 +367,7 @@ public class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        return client.deleteWithResponse(context).block(timeout);
+        return blockWithOptionalTimeout(client.deleteWithResponse(context), timeout);
     }
 
     /**
