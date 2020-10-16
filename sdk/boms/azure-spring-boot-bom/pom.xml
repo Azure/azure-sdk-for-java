@@ -89,11 +89,6 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-boot-starter-metrics</artifactId>
-        <version>${azure.spring.boot.integration.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>

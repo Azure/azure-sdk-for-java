@@ -1,5 +1,7 @@
 # Azure Metrics Spring Boot Starter client library for Java
 
+We are deprecating this starter. If you want to know more about Application Insights Java side, please follow here [Application Insights for Java](https://github.com/Microsoft/ApplicationInsights-Java).
+
 With this starter you could easily use Azure Metrics with Spring Boot.
 
 [Package (Maven)][package] | [API reference documentation][refdocs]
@@ -11,12 +13,11 @@ With this starter you could easily use Azure Metrics with Spring Boot.
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-metrics;current})
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-metrics</artifactId>
-    <version>3.0.0-beta.1</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-spring-boot-metrics-starter</artifactId>
+    <version>2.3.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

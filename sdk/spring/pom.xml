@@ -16,7 +16,6 @@
     <module>azure-spring-boot-starter-cosmos</module>
     <module>azure-spring-boot-starter-data-gremlin</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
-    <module>azure-spring-boot-starter-metrics</module>
     <module>azure-spring-boot-starter-servicebus-jms</module>
     <module>azure-spring-boot-test-application</module>
     <module>azure-spring-boot-test-core</module>
