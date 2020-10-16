@@ -28,7 +28,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
     private final ClientLogger logger = new ClientLogger(LockRenewSubscriber.class);
 
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
-    private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
     private final LockContainer<LockRenewalOperation> messageLockContainer;
     private final CoreSubscriber<? super ServiceBusReceivedMessage> actual;
@@ -38,8 +37,8 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         AtomicReferenceFieldUpdater.newUpdater(LockRenewSubscriber.class, Subscription.class,
             "subscription");
 
-    LockRenewSubscriber(CoreSubscriber<? super ServiceBusReceivedMessage> actual, boolean autoLockRenewal,
-        Duration maxAutoLockRenewDuration, LockContainer<LockRenewalOperation> messageLockContainer,
+    LockRenewSubscriber(CoreSubscriber<? super ServiceBusReceivedMessage> actual, Duration maxAutoLockRenewDuration,
+        LockContainer<LockRenewalOperation> messageLockContainer,
         Function<String, Mono<OffsetDateTime>> onRenewLock) {
         this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
         this.actual = actual;
@@ -48,7 +47,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
 
         this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
             "'maxAutoLockRenewDuration' cannot be null.");
-        this.isAutoRenewLock = autoLockRenewal;
 
     }
     /**
@@ -77,7 +75,7 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
 
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error("Errors occurred upstream.");
+        logger.error("Errors occurred upstream.", throwable);
         actual.onError(throwable);
         dispose();
     }
@@ -94,11 +92,15 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         final OffsetDateTime lockedUntil = message.getLockedUntil();
         final LockRenewalOperation renewOperation;
 
-        if (isAutoRenewLock && !Objects.isNull(lockedUntil) && !Objects.isNull(lockToken)) {
+        if (!Objects.isNull(lockedUntil) && !Objects.isNull(lockToken)) {
 
             renewOperation = new LockRenewalOperation(lockToken, maxAutoLockRenewal, false, onRenewLock,
                 lockedUntil);
-            messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal), renewOperation);
+            try {
+                messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal), renewOperation);
+            } catch (Exception e) {
+                logger.error("Exception occurred while updating lockContainer.", e);
+            }
         } else {
 
             renewOperation = COMPLETED_ONE;
@@ -107,7 +109,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         try {
             actual.onNext(message);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("Exception occurred while handling downstream onNext operation.", e);
             onError(e);
         } finally {

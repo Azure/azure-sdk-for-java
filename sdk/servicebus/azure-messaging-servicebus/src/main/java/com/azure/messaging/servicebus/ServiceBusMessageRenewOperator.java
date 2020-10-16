@@ -25,7 +25,6 @@ final class ServiceBusMessageRenewOperator extends FluxOperator<ServiceBusReceiv
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageRenewOperator.class);
 
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
-    private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
     private final LockContainer<LockRenewalOperation> messageLockContainer;
     private final AtomicReference<LockRenewSubscriber> lockRenewSubscriber = new AtomicReference<>();
@@ -35,7 +34,7 @@ final class ServiceBusMessageRenewOperator extends FluxOperator<ServiceBusReceiv
      * @param source the {@link Publisher} to decorate
      */
     ServiceBusMessageRenewOperator(
-        Flux<? extends ServiceBusReceivedMessage> source, boolean autoLockRenewal, Duration maxAutoLockRenewDuration,
+        Flux<? extends ServiceBusReceivedMessage> source, Duration maxAutoLockRenewDuration,
         LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
         super(source);
 
@@ -45,14 +44,13 @@ final class ServiceBusMessageRenewOperator extends FluxOperator<ServiceBusReceiv
 
         this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
             "'maxAutoLockRenewDuration' cannot be null.");
-        this.isAutoRenewLock = autoLockRenewal;
 
     }
 
     @Override
     public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> actual) {
-        LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(actual, isAutoRenewLock,
-            maxAutoLockRenewal, messageLockContainer, onRenewLock);
+        LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(actual, maxAutoLockRenewal,
+            messageLockContainer, onRenewLock);
         if (!lockRenewSubscriber.compareAndSet(null, newLockRenewSubscriber)) {
             newLockRenewSubscriber.dispose();
             logger.error("Already subscribed once.");

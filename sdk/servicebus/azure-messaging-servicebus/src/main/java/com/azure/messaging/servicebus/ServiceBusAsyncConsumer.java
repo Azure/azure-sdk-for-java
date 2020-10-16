@@ -46,8 +46,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             .autoConnect(1);
 
         if (autoLockRenewal) {
-            this.messageSource = new ServiceBusMessageRenewOperator(source,
-                true, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+            this.messageSource = new ServiceBusMessageRenewOperator(source, maxAutoLockRenewDuration,
+                messageLockContainer, onRenewLock);
         } else {
             this.messageSource = source;
         }

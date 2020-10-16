@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -30,7 +28,6 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -71,9 +68,8 @@ public class ServiceBusMessageRenewOperatorTest {
     /**
      * Test that the function to renew lock is invoked.
      */
-    @ValueSource(booleans = {true, false})
-    @ParameterizedTest
-    void lockRenewed(boolean autoLockRenewal) {
+    @Test
+    void lockRenewed() {
         // Arrange
         final int atLeast = 1;
         final int processingTimeSeconds = 3;
@@ -89,7 +85,7 @@ public class ServiceBusMessageRenewOperatorTest {
         final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message});
 
         ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
-            autoLockRenewal, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act & Assert
 
@@ -105,15 +101,10 @@ public class ServiceBusMessageRenewOperatorTest {
             })
             .verifyComplete();
 
-        if (autoLockRenewal) {
-            verify(messageLockContainer).addOrUpdate(eq(LOCK_TOKEN), any(OffsetDateTime.class), any(LockRenewalOperation.class));
-            verify(renewalFunction, Mockito.atLeast(atLeast)).apply(eq(LOCK_TOKEN));
-            verify(renewalFunction, Mockito.atLeast(atLeast)).apply(LOCK_TOKEN);
-        } else {
-            verify(messageLockContainer, never()).addOrUpdate(eq(LOCK_TOKEN), any(OffsetDateTime.class), any(LockRenewalOperation.class));
-            verify(renewalFunction, never()).apply(eq(LOCK_TOKEN));
-            verify(renewalFunction, never()).apply(LOCK_TOKEN);
-        }
+        verify(messageLockContainer).addOrUpdate(eq(LOCK_TOKEN), any(OffsetDateTime.class), any(LockRenewalOperation.class));
+        verify(renewalFunction, Mockito.atLeast(atLeast)).apply(eq(LOCK_TOKEN));
+        verify(renewalFunction, Mockito.atLeast(atLeast)).apply(LOCK_TOKEN);
+
     }
 
     /**
@@ -139,7 +130,7 @@ public class ServiceBusMessageRenewOperatorTest {
         final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message, message});
 
         ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
-            autoLockRenewal, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act
         Disposable disposable = renewOperator
@@ -176,13 +167,13 @@ public class ServiceBusMessageRenewOperatorTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(null,
-            false, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction));
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(messageSource,
-            false, MAX_AUTO_LOCK_RENEW_DURATION, null, renewalFunction));
+            MAX_AUTO_LOCK_RENEW_DURATION, null, renewalFunction));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(messageSource,
-            false, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, null));
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, null));
 
     }
 }

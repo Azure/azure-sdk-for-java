@@ -638,7 +638,7 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private String subscriptionName;
         private String topicName;
-        private Duration maxAutoRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -647,13 +647,13 @@ public final class ServiceBusClientBuilder {
          * Sets the amount of time to continue auto-renewing the session lock. Setting {@link Duration#ZERO} or
          * {@code null} disables auto-renewal.
          *
-         * @param maxAutoRenewDuration the amount of time to continue auto-renewing the session lock.
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the session lock.
          * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
          *
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
          */
-        public ServiceBusSessionReceiverClientBuilder mxAutoRenewDuration(Duration maxAutoRenewDuration) {
-            this.maxAutoRenewDuration = maxAutoRenewDuration;
+        public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
 
@@ -768,7 +768,7 @@ public final class ServiceBusClientBuilder {
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
          * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         * @throws IllegalArgumentException {#code maxAutoRenewDuration} is negative.
+         * @throws IllegalArgumentException {#code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
@@ -777,11 +777,11 @@ public final class ServiceBusClientBuilder {
                 SubQueue.NONE);
 
             validateAndThrow(prefetchCount);
-            validateAndThrow(maxAutoRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                sessionId, isRollingSessionReceiver(), maxConcurrentSessions, maxAutoRenewDuration);
+                sessionId, isRollingSessionReceiver(), maxConcurrentSessions, maxAutoLockRenewDuration);
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
                 connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
@@ -789,7 +789,7 @@ public final class ServiceBusClientBuilder {
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose,
-                maxAutoRenewDuration, sessionManager);
+                maxAutoLockRenewDuration, sessionManager);
         }
 
         /**
@@ -844,7 +844,7 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
-        private Duration maxAutoRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
 
         private ServiceBusReceiverClientBuilder() {
         }
@@ -853,13 +853,13 @@ public final class ServiceBusClientBuilder {
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal.
          *
-         * @param maxAutoRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO} or
-         * {@code null} indicates that auto-renewal is disabled.
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
          *
          * @return The updated {@link ServiceBusReceiverClientBuilder} object.
          */
-        public ServiceBusReceiverClientBuilder maxAutoRenewDuration(Duration maxAutoRenewDuration) {
-            this.maxAutoRenewDuration = maxAutoRenewDuration;
+        public ServiceBusReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
 
@@ -956,7 +956,7 @@ public final class ServiceBusClientBuilder {
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
          * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         * @throws IllegalArgumentException {#code maxAutoRenewDuration} is negative.
+         * @throws IllegalArgumentException {#code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
@@ -964,15 +964,15 @@ public final class ServiceBusClientBuilder {
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 subQueue);
             validateAndThrow(prefetchCount);
-            validateAndThrow(maxAutoRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoRenewDuration);
+                maxAutoLockRenewDuration);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, maxAutoRenewDuration);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, maxAutoLockRenewDuration);
         }
 
         /**
