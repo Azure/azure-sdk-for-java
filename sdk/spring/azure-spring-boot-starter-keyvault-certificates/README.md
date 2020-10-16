@@ -162,7 +162,8 @@ to add the following configuration:
 azure:
   keyvault:
     uri: <the URI of the Azure KeyVault to use>
-    overrideTrustManagerFactory: true
+    jca: 
+      overrideTrustManagerFactory: true
 ```
 
 Note if any of your routes point to a service where the FQDN does not match the
@@ -174,7 +175,8 @@ hostname verification:
 ```yaml
 azure:
   keyvault:
-    disableHostnameVerification: true
+    jca:
+      disableHostnameVerification: true
 ```
 
 If you are developing you can completely disable certificate and hostname

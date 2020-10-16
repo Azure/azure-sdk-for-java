@@ -88,14 +88,14 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
             Security.insertProviderAt(provider, 1);
             
-            String enabled = environment.getProperty("azure.keyvault.overrideTrustManagerFactory");
+            String enabled = environment.getProperty("azure.keyvault.jca.overrideTrustManagerFactory");
             if (Boolean.valueOf(enabled)) {
                 KeyVaultTrustManagerFactoryProvider factoryProvider =
                         new KeyVaultTrustManagerFactoryProvider();
                 Security.insertProviderAt(factoryProvider, 1);
             }
             
-            enabled = environment.getProperty("azure.keyvault.disableHostnameVerification");
+            enabled = environment.getProperty("azure.keyvault.jca.disableHostnameVerification");
             if (Boolean.valueOf(enabled)) {
                 HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
                     return true;
