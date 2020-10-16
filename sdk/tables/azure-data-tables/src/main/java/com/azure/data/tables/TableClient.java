@@ -127,7 +127,7 @@ public class TableClient {
      * @param entity The entity to insert.
      * @param timeout Duration to wait for the operation to complete.
      * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
-     *                                    table.
+     *                                    table, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided entity is invalid.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -143,7 +143,7 @@ public class TableClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
      * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
-     *                                    table.
+     *                                    table, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided entity is invalid.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -199,6 +199,7 @@ public class TableClient {
      * @param entity The entity to upsert.
      * @param updateMode The type of update to perform if the entity already exits.
      * @param timeout Duration to wait for the operation to complete.
+     * @throws TableServiceErrorException if the provided timeout expires.
      * @throws IllegalArgumentException if the provided entity is invalid.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -222,6 +223,7 @@ public class TableClient {
      * @param timeout Duration to wait for the operation to complete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
+     * @throws TableServiceErrorException if the provided timeout expires.
      * @throws IllegalArgumentException if the provided entity is invalid.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -296,7 +298,7 @@ public class TableClient {
      * @param timeout Duration to wait for the operation to complete.
      * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table,
      *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
-     *                                    not match that of the provided entity.
+     *                                    not match that of the provided entity, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided entity is invalid.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -321,7 +323,7 @@ public class TableClient {
      * @return The HTTP response.
      * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table,
      *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
-     *                                    not match that of the provided entity.
+     *                                    not match that of the provided entity, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided entity is invalid.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -407,7 +409,8 @@ public class TableClient {
      * @param timeout Duration to wait for the operation to complete.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
      *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity.
+     *                                    does not match that of the provided entity, or if the provided timeout
+     *                                    expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -427,7 +430,8 @@ public class TableClient {
      * @return The HTTP response.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
      *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity.
+     *                                    does not match that of the provided entity, or if the provided timeout
+     *                                    expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -581,7 +585,7 @@ public class TableClient {
      *
      * @return The entity.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
+     *                                    table, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
      *                                  {@code select} OData query option is malformed.
      */
@@ -602,7 +606,7 @@ public class TableClient {
      *
      * @return The entity.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
+     *                                    table, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
      *                                  {@code select} OData query option is malformed, or if an instance of the
      *                                  provided {@code resultType} can't be created.
@@ -624,7 +628,7 @@ public class TableClient {
      *
      * @return The HTTP response containing the entity.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
+     *                                    table, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
      *                                  {@code select} OData query option is malformed.
      */
@@ -647,7 +651,7 @@ public class TableClient {
      *
      * @return The HTTP response containing the entity.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
+     *                                    table, or if the provided timeout expires.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
      *                                  {@code select} OData query option is malformed, or if an instance of the
      *                                  provided {@code resultType} can't be created.
