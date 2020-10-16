@@ -1,6 +1,6 @@
-# Azure JCA Provider for KeyVault
+# JCA Provider for Azure Key Vault
 
-The Azure JCA Provider for KeyVault is a JCA provider for certificates in 
+The JCA Provider for Azure Key Vault is a JCA provider for certificates in 
 Azure Key Vault. It is built on four core principles:
  
 1. Must be extremely thin to run within a JVM
