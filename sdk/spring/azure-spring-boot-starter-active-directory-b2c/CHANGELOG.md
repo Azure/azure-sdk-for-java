@@ -1,7 +1,9 @@
 # Release History
 
 ## 3.0.0-beta.1 (Unreleased)
-- Update `com.azure` group id to `com.azure.spring`.
+### Breaking Changes
+- Update `com.microsoft.azure` group id to `com.azure.spring`.
+- Update `azure-active-directory-b2c-spring-boot-starter` artifact id to `azure-spring-boot-starter-active-directory-b2c`.
 
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes
