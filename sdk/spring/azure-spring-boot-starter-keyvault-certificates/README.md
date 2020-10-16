@@ -161,6 +161,7 @@ to add the following configuration:
 ```yaml
 azure:
   keyvault:
+    uri: <the URI of the Azure KeyVault to use>
     overrideTrustManagerFactory: true
 ```
 
