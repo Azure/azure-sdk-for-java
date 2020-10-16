@@ -28,6 +28,6 @@ public interface SqlPoolTableColumns extends HasInner<SqlPoolTableColumnsInner> 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SqlPoolColumn> listByTableNameAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName, final String schemaName, final String tableName);
+    Observable<TableSchemaSqlPoolWorkspaceSqlPoolColumn> listByTableNameAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName, final String schemaName, final String tableName);
 
 }

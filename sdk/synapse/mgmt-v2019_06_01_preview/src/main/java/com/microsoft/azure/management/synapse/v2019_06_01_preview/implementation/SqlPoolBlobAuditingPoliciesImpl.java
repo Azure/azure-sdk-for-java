@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolBlobAuditingPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolBlobAuditingPolicy;
 
 class SqlPoolBlobAuditingPoliciesImpl extends WrapperImpl<SqlPoolBlobAuditingPoliciesInner> implements SqlPoolBlobAuditingPolicies {
@@ -38,6 +39,24 @@ class SqlPoolBlobAuditingPoliciesImpl extends WrapperImpl<SqlPoolBlobAuditingPol
 
     private SqlPoolBlobAuditingPolicyImpl wrapModel(String name) {
         return new SqlPoolBlobAuditingPolicyImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<SqlPoolBlobAuditingPolicy> listBySqlPoolAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        SqlPoolBlobAuditingPoliciesInner client = this.inner();
+        return client.listBySqlPoolAsync(resourceGroupName, workspaceName, sqlPoolName)
+        .flatMapIterable(new Func1<Page<SqlPoolBlobAuditingPolicyInner>, Iterable<SqlPoolBlobAuditingPolicyInner>>() {
+            @Override
+            public Iterable<SqlPoolBlobAuditingPolicyInner> call(Page<SqlPoolBlobAuditingPolicyInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SqlPoolBlobAuditingPolicyInner, SqlPoolBlobAuditingPolicy>() {
+            @Override
+            public SqlPoolBlobAuditingPolicy call(SqlPoolBlobAuditingPolicyInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override

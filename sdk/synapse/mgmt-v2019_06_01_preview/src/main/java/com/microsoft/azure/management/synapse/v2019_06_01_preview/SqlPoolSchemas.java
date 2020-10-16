@@ -17,6 +17,18 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface SqlPoolSchemas extends HasInner<SqlPoolSchemasInner> {
     /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlPoolSchema> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
+
+    /**
      * Gets schemas of a given SQL pool.
      * Gets schemas of a given SQL pool.
      *

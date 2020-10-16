@@ -9,20 +9,37 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolTable;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 
-class SqlPoolTableImpl extends WrapperImpl<SqlPoolTableInner> implements SqlPoolTable {
+class SqlPoolTableImpl extends IndexableRefreshableWrapperImpl<SqlPoolTable, SqlPoolTableInner> implements SqlPoolTable {
     private final SynapseManager manager;
+    private String resourceGroupName;
+    private String workspaceName;
+    private String sqlPoolName;
+    private String schemaName;
+    private String tableName;
 
     SqlPoolTableImpl(SqlPoolTableInner inner,  SynapseManager manager) {
-        super(inner);
+        super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
+        this.sqlPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "sqlPools");
+        this.schemaName = IdParsingUtils.getValueFromIdByName(inner.id(), "schemas");
+        this.tableName = IdParsingUtils.getValueFromIdByName(inner.id(), "tables");
     }
 
     @Override
     public SynapseManager manager() {
         return this.manager;
+    }
+
+    @Override
+    protected Observable<SqlPoolTableInner> getInnerAsync() {
+        SqlPoolTablesInner client = this.manager().inner().sqlPoolTables();
+        return client.getAsync(this.resourceGroupName, this.workspaceName, this.sqlPoolName, this.schemaName, this.tableName);
     }
 
 
