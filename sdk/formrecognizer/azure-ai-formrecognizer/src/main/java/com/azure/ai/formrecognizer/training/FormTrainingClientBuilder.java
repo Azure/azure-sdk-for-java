@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.training;
 
+import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
@@ -26,6 +27,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -96,6 +98,9 @@ public final class FormTrainingClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
+    private ClientOptions clientOptions;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -176,21 +181,30 @@ public final class FormTrainingClientBuilder {
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
-
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
         policies.add(new AddDatePolicy());
+
         // Authentications
         if (tokenCredential != null) {
-            // User token based policy
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         } else if (credential != null) {
             policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
@@ -199,7 +213,8 @@ public final class FormTrainingClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        policies.addAll(this.policies);
+        policies.addAll(perRetryPolicies);
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -275,6 +290,19 @@ public final class FormTrainingClientBuilder {
      */
     public FormTrainingClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} to be sent from the client built from this builder, enabling customization of
+     * certain properties, as well as support the addition of custom header information. Refer to the
+     * {@link ClientOptions} documentation for more information.
+     *
+     * @param clientOptions to be set on the client.
+     * @return The updated {@link FormTrainingClientBuilder} object.
+     */
+    public FormTrainingClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 

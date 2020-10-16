@@ -3,13 +3,18 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -18,6 +23,7 @@ import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for Form Recognizer client builder
@@ -102,5 +108,42 @@ public class FormTrainingClientBuilderUnitTest {
         Exception exception = assertThrows(RuntimeException.class, () ->
             clientBuilder.buildClient().beginRecognizeContentFromUrl(VALID_URL).getFinalResult());
         assertEquals(exception.getMessage(), HTTPS_EXCEPTION_MESSAGE);
+    }
+
+    /**
+     * Verifies that form training client builder use log options application Id in user-agent string when specified.
+     */
+    @Test
+    public void useLogOptionsApplicationIdWhenSpecified() {
+        FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
+            .endpoint(VALID_HTTP_LOCALHOST)
+            .credential(new AzureKeyCredential("apiKey"))
+            .httpLogOptions(new HttpLogOptions().setApplicationId("httpLogOptionAppId"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("httpLogOptionAppId"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 500)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, () -> formTrainingClient.getCustomModel("modelId"));
+    }
+
+    /**
+     * Verifies that form training client builder uses client options over log options application Id in user-agent string when specified.
+     */
+    @Test
+    void preferClientOptionsWhenSpecified() {
+        FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
+            .endpoint(VALID_HTTP_LOCALHOST)
+            .credential(new AzureKeyCredential("apiKey"))
+            .httpLogOptions(new HttpLogOptions().setApplicationId("httpLogOptionAppId"))
+            .clientOptions(new ClientOptions().setApplicationId("clientOptionAppId"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("clientOptionAppId"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 500)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, () -> formTrainingClient.getCustomModel("modelId"));
     }
 }
