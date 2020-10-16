@@ -142,17 +142,16 @@ public class ServiceBusMessageRenewOperatorTest {
             autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, renewalFunction);
 
         // Act
-       Disposable disposable = renewOperator
-             .subscribe(serviceBusReceivedMessage -> {
-                 throw new RuntimeException("fake user generated exception.");
+        Disposable disposable = renewOperator
+            .subscribe(serviceBusReceivedMessage -> {
+                throw new RuntimeException("fake user generated exception.");
                 },
-                 throwable -> {
-                    onErrorCalled.set(true);
+                throwable -> {
+                onErrorCalled.set(true);
                 },
                 () -> {
-                    onCompleteCalled.set(true);
-                });
-
+                onCompleteCalled.set(true);
+            });
         TimeUnit.SECONDS.sleep(waitForSubscriberSeconds);
 
         // Assert

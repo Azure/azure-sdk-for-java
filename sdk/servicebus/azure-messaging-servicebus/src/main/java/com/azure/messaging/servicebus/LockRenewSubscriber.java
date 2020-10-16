@@ -25,7 +25,7 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
     private static final LockRenewalOperation COMPLETED_ONE = new LockRenewalOperation("lock-no-renew",
         Duration.ZERO, false, (id) -> Mono.empty(), COMPLETED_RENEW_TIME);
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusMessageRenewOperator.class);
+    private final ClientLogger logger = new ClientLogger(LockRenewSubscriber.class);
 
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
     private final boolean isAutoRenewLock;
