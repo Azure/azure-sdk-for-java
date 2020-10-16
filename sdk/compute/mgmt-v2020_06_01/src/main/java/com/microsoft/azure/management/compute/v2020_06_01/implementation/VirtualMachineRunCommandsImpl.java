@@ -13,8 +13,9 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineRunCommands;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.compute.v2020_06_01.RunCommandDocument;
+import com.microsoft.azure.management.compute.v2020_06_01.LocationVirtualMachineRunCommand;
 import com.microsoft.azure.Page;
+import rx.Completable;
 
 class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommandsInner> implements VirtualMachineRunCommands {
     private final ComputeManager manager;
@@ -28,11 +29,20 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
         return this.manager;
     }
 
-    private RunCommandDocumentImpl wrapRunCommandDocumentModel(RunCommandDocumentInner inner) {
-        return  new RunCommandDocumentImpl(inner, manager());
+    @Override
+    public LocationVirtualMachineRunCommandImpl defineRunCommand(String name) {
+        return wrapRunCommandModel(name);
     }
 
-    private Observable<RunCommandDocumentInner> getRunCommandDocumentInnerUsingVirtualMachineRunCommandsInnerAsync(String id) {
+    private LocationVirtualMachineRunCommandImpl wrapRunCommandModel(String name) {
+        return new LocationVirtualMachineRunCommandImpl(name, this.manager());
+    }
+
+    private LocationVirtualMachineRunCommandImpl wrapLocationVirtualMachineRunCommandModel(VirtualMachineRunCommandInner inner) {
+        return  new LocationVirtualMachineRunCommandImpl(inner, manager());
+    }
+
+    private Observable<VirtualMachineRunCommandInner> getVirtualMachineRunCommandInnerUsingVirtualMachineRunCommandsInnerAsync(String id) {
         String location = IdParsingUtils.getValueFromIdByName(id, "locations");
         String commandId = IdParsingUtils.getValueFromIdByName(id, "runCommands");
         VirtualMachineRunCommandsInner client = this.inner();
@@ -40,23 +50,23 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
     }
 
     @Override
-    public Observable<RunCommandDocument> getAsync(String location, String commandId) {
+    public Observable<LocationVirtualMachineRunCommand> getAsync(String location, String commandId) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.getAsync(location, commandId)
-        .flatMap(new Func1<RunCommandDocumentInner, Observable<RunCommandDocument>>() {
+        .flatMap(new Func1<VirtualMachineRunCommandInner, Observable<LocationVirtualMachineRunCommand>>() {
             @Override
-            public Observable<RunCommandDocument> call(RunCommandDocumentInner inner) {
+            public Observable<LocationVirtualMachineRunCommand> call(VirtualMachineRunCommandInner inner) {
                 if (inner == null) {
                     return Observable.empty();
                 } else {
-                    return Observable.just((RunCommandDocument)wrapRunCommandDocumentModel(inner));
+                    return Observable.just((LocationVirtualMachineRunCommand)wrapLocationVirtualMachineRunCommandModel(inner));
                 }
             }
        });
     }
 
     @Override
-    public Observable<RunCommandDocument> listAsync(final String location) {
+    public Observable<LocationVirtualMachineRunCommand> listAsync(final String location) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.listAsync(location)
         .flatMapIterable(new Func1<Page<RunCommandDocumentBaseInner>, Iterable<RunCommandDocumentBaseInner>>() {
@@ -65,16 +75,46 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
                 return page.items();
             }
         })
-        .flatMap(new Func1<RunCommandDocumentBaseInner, Observable<RunCommandDocumentInner>>() {
+        .map(new Func1<VirtualMachineRunCommandInner, LocationVirtualMachineRunCommand>() {
             @Override
-            public Observable<RunCommandDocumentInner> call(RunCommandDocumentBaseInner inner) {
-                return getRunCommandDocumentInnerUsingVirtualMachineRunCommandsInnerAsync(inner.id());
+            public LocationVirtualMachineRunCommand call(VirtualMachineRunCommandInner inner) {
+                return wrapLocationVirtualMachineRunCommandModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteAsync(String resourceGroupName, String vmName, String runCommandName) {
+        VirtualMachineRunCommandsInner client = this.inner();
+        return client.deleteAsync(resourceGroupName, vmName, runCommandName).toCompletable();
+    }
+
+    @Override
+    public Observable<LocationVirtualMachineRunCommand> getByVirtualMachineAsync(String resourceGroupName, String vmName, String runCommandName) {
+        VirtualMachineRunCommandsInner client = this.inner();
+        return client.getByVirtualMachineAsync(resourceGroupName, vmName, runCommandName)
+        .map(new Func1<VirtualMachineRunCommandInner, LocationVirtualMachineRunCommand>() {
+            @Override
+            public LocationVirtualMachineRunCommand call(VirtualMachineRunCommandInner inner) {
+                return new LocationVirtualMachineRunCommandImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<LocationVirtualMachineRunCommand> listByVirtualMachineAsync(final String resourceGroupName, final String vmName) {
+        VirtualMachineRunCommandsInner client = this.inner();
+        return client.listByVirtualMachineAsync(resourceGroupName, vmName)
+        .flatMapIterable(new Func1<Page<VirtualMachineRunCommandInner>, Iterable<VirtualMachineRunCommandInner>>() {
+            @Override
+            public Iterable<VirtualMachineRunCommandInner> call(Page<VirtualMachineRunCommandInner> page) {
+                return page.items();
             }
         })
-        .map(new Func1<RunCommandDocumentInner, RunCommandDocument>() {
+        .map(new Func1<VirtualMachineRunCommandInner, LocationVirtualMachineRunCommand>() {
             @Override
-            public RunCommandDocument call(RunCommandDocumentInner inner) {
-                return wrapRunCommandDocumentModel(inner);
+            public LocationVirtualMachineRunCommand call(VirtualMachineRunCommandInner inner) {
+                return new LocationVirtualMachineRunCommandImpl(inner, manager());
             }
         });
     }
