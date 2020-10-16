@@ -18,7 +18,6 @@ Else, use this package (Recommended).
     <version>1.2.8</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Getting started
 please check [azure-spring-starter-storage][azure-spring-starter-storage] to see how to use Azure Spring Storage Starter with Spring Boot.

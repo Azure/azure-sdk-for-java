@@ -20,7 +20,6 @@ With this starter you could easily use Azure Metrics with Spring Boot.
     <version>2.3.5</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 **Java agent based monitoring**: Azure Application Insights has released one Java agent that can be used to capture metrics inside JVM. Consider use the Java agent based approach. 
