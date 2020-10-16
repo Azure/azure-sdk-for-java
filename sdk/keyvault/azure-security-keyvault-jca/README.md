@@ -6,7 +6,7 @@ Azure Key Vault. It is build on four core principles:
 1. Must be extremely thin to run within a JVM
 1. Must not introduce any library version conflicts with Java app code dependencies
 1. Must not introduce any class loader hierarchy conflicts with Java app code dependencies
-1. Must be ready for "never trust, always verify", Zero Trust environments.
+1. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
 ## Testing the version under development
 
