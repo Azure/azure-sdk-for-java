@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * FluxOperator that auto-completes or auto-abandons messages when control is returned successfully.
+ * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
 class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator<T, T> {
     private final Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
