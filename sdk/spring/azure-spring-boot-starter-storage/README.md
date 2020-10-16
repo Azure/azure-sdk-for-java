@@ -11,13 +11,15 @@ If the Spring Boot version less than 2.3.0, use this package (Deprecated).
 ```
 Else, use this package (Recommended).
 
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-starter-storage;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-starter-azure-storage</artifactId>
-    <version>1.2.8</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-starter-storage</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Getting started
 please check [azure-spring-starter-storage][azure-spring-starter-storage] to see how to use Azure Spring Storage Starter with Spring Boot.
