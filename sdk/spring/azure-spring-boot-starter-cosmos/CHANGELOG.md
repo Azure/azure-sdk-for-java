@@ -4,8 +4,8 @@
 ### Breaking Changes
 - Updated properties prefix from `azure.cosmosdb.xxx` to `azure.cosmos.xxx`.
 - Added new property items `azure.cosmos.connection-mode`.
-- Update `com.microsoft.azure` group id to `com.azure.spring`.
-- Update `azure-cosmosdb-spring-boot-starter` artifact id to `azure-spring-boot-starter-cosmos`.
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `azure-cosmosdb-spring-boot-starter` to `azure-spring-boot-starter-cosmos`.
 
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes

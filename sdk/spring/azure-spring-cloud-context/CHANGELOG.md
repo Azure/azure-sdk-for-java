@@ -2,8 +2,8 @@
 
 ## 2.0.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Update `com.microsoft.azure` group id to `com.azure.spring`.
-- Update `spring-cloud-azure-autoconfigure` artifact id to `azure-spring-cloud-autoconfigure`.
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `spring-cloud-azure-autoconfigure` to `azure-spring-cloud-autoconfigure`.
 
 ## 1.2.8 (2020-09-14)
 ### Breaking Changes

@@ -2,8 +2,8 @@
 
 ## 3.0.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Update `com.microsoft.azure` group id to `com.azure.spring`.
-- Update `azure-active-directory-b2c-spring-boot-starter` artifact id to `azure-spring-boot-starter-active-directory-b2c`.
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `azure-active-directory-b2c-spring-boot-starter` to `azure-spring-boot-starter-active-directory-b2c`.
 
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes

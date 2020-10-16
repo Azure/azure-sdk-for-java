@@ -2,5 +2,5 @@
 
 ## 1.0.0 (Unreleased)
 ### Breaking Changes
-- Update `com.microsoft.azure` group id to `com.azure.spring`.
-- Update `azure-spring-boot-test-aad` artifact id to `azure-spring-boot-test-aad`.
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `azure-spring-boot-test-aad` to `azure-spring-boot-test-aad`.

@@ -2,8 +2,8 @@
 
 ## 3.0.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Update `com.microsoft.azure` group id to `com.azure.spring`.
-- Update `azure-servicebus-jms-spring-boot-starter` artifact id to `azure-spring-boot-starter-servicebus-jms`.
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `azure-servicebus-jms-spring-boot-starter` to `azure-spring-boot-starter-servicebus-jms`.
 
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes

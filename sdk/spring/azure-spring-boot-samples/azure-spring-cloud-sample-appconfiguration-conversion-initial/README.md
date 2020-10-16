@@ -199,8 +199,8 @@ In this section, you clone a containerized Spring Boot application and test it l
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-        <version>1.2.2</version>
+        <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
+        <version>1.2.8</version>
     </dependency>
     ```
 
