@@ -425,7 +425,7 @@ public interface SqlElasticPool
 
     /** The template for a SQL Elastic Pool update operation, containing all the settings that can be modified. */
     interface Update
-    extends UpdateStages.WithReservedDTUAndStorageCapacity,
+        extends UpdateStages.WithReservedDTUAndStorageCapacity,
             UpdateStages.WithDatabaseMinCapacity,
             UpdateStages.WithDatabaseMaxCapacity,
             UpdateStages.WithStorageCapacity,
