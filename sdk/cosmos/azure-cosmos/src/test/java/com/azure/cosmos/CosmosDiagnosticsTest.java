@@ -46,6 +46,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -307,6 +308,25 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 }
             }
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryMetricsWithADifferentLocale() {
+
+        Locale.setDefault(Locale.GERMAN);
+        String query = "select * from root where root.id= \"someid\"";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
+                                                                                        InternalObjectNode.class)
+                                                                  .iterableByPage().iterator();
+        double requestCharge = 0;
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            requestCharge += feedResponse.getRequestCharge();
+        }
+        assertThat(requestCharge).isGreaterThan(0);
+        // resetting locale
+        Locale.setDefault(Locale.ROOT);
     }
 
     private static void validateQueryDiagnostics(
