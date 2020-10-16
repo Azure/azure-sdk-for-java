@@ -46,7 +46,8 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
             "'messageLockContainer' cannot be null.");
 
-        this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration, "'maxAutoLockRenewDuration' cannot be null.");
+        this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
+            "'maxAutoLockRenewDuration' cannot be null.");
         this.isAutoRenewLock = autoLockRenewal;
 
     }
@@ -60,7 +61,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             this.subscription = subscription;
             actual.onSubscribe(subscription);
-            subscription.request(1L);
         } else {
             logger.error("Already subscribed once.");
         }
