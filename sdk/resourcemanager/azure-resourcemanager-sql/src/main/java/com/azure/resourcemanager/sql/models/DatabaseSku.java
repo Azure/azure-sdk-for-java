@@ -322,7 +322,12 @@ public final class DatabaseSku {
     /** @return the underneath sku description */
     @JsonValue
     public Sku toSku() {
-        return this.sku;
+        return new Sku()
+            .withName(sku.name())
+            .withTier(sku.tier())
+            .withFamily(sku.family())
+            .withCapacity(sku.capacity())
+            .withSize(sku.size());
     }
 
     @Override
