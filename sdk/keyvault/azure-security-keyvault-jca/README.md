@@ -1,4 +1,14 @@
-# Microsoft Azure JCA Provider for KeyVault
+# Azure JCA Provider for KeyVault
+
+The Azure JCA Provider for KeyVault is a JCA provider for certificates in 
+Azure Key Vault. It is build on four core principles:
+ 
+1. Must be extremely thin to run within a JVM
+1. Must not introduce any library version conflicts with Java app code dependencies
+1. Must not introduce any class loader hierarchy conflicts with Java app code dependencies
+1. Must be ready for "never trust, always verify", Zero Trust environments.
+
+## Testing the version under development
 
 If you want to test the current version under development you will have to
 build and install it into your local Maven repository. To do so use the 
