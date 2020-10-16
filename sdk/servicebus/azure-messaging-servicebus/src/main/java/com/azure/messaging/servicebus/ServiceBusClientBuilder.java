@@ -653,7 +653,6 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder mxAutoRenewDuration(Duration maxAutoRenewDuration) {
-            validateAndThrow(maxAutoRenewDuration);
             this.maxAutoRenewDuration = maxAutoRenewDuration;
             return this;
         }
@@ -777,6 +776,9 @@ public final class ServiceBusClientBuilder {
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
+            validateAndThrow(prefetchCount);
+            validateAndThrow(maxAutoRenewDuration);
+
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 sessionId, isRollingSessionReceiver(), maxConcurrentSessions, maxAutoRenewDuration);
@@ -857,7 +859,6 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder maxAutoRenewDuration(Duration maxAutoRenewDuration) {
-            validateAndThrow(maxAutoRenewDuration);
             this.maxAutoRenewDuration = maxAutoRenewDuration;
             return this;
         }
@@ -875,7 +876,6 @@ public final class ServiceBusClientBuilder {
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder prefetchCount(int prefetchCount) {
-            validateAndThrow(prefetchCount);
             this.prefetchCount = prefetchCount;
             return this;
         }
@@ -963,6 +963,8 @@ public final class ServiceBusClientBuilder {
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 subQueue);
+            validateAndThrow(prefetchCount);
+            validateAndThrow(maxAutoRenewDuration);
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
