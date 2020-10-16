@@ -66,7 +66,7 @@ public class VisualStudioCacheAccessor {
         Map<String, String> details = new HashMap<>();
 
         String tenant = null;
-        String cloud = "Azure";
+        String cloud = "AzureCloud";
 
         if (userSettings != null && !userSettings.isNull()) {
             if (userSettings.has("azure.tenant")) {
@@ -160,7 +160,7 @@ public class VisualStudioCacheAccessor {
     public String getAzureAuthHost(String cloud) {
 
         switch (cloud) {
-            case "Azure":
+            case "AzureCloud":
                 return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
             case "AzureChina":
                 return AzureAuthorityHosts.AZURE_CHINA;
