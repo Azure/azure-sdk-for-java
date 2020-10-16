@@ -302,17 +302,6 @@ public final class Utils {
     }
 
     /**
-     * Creates a random UUID.
-     * Please provider your own implementation, or avoid using the method, if code is to be used in production.
-     *
-     * @param authenticated the AzureResourceManager.Authenticated instance.
-     * @return the random UUID.
-     */
-    public static String randomUuid(AzureResourceManager.Authenticated authenticated) {
-        return authenticated.roleAssignments().manager().internalContext().randomUuid();
-    }
-
-    /**
      * Print resource group info.
      *
      * @param resource a resource group

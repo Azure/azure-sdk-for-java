@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.models.ListEventRoutesOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -98,8 +98,8 @@ public class EventRoutesTest extends EventRoutesTestBase {
         }
 
         // list event routes by page, make sure that all non-final pages have the expected page size
-        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemCount(expectedPageSize);
-        PagedIterable<EventRoute> eventRoutes = client.listEventRoutes(eventRoutesListOptions, Context.NONE);
+        ListEventRoutesOptions listEventRoutesOptions = (new ListEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        PagedIterable<EventRoute> eventRoutes = client.listEventRoutes(listEventRoutesOptions, Context.NONE);
         Iterable<PagedResponse<EventRoute>> eventRoutePages = eventRoutes.iterableByPage();
         int pageCount = 0;
         for (PagedResponse<EventRoute> eventRoutePagedResponse : eventRoutePages) {
@@ -107,7 +107,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
 
             // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
             if (eventRoutePagedResponse.getContinuationToken() != null) {
-                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size());
+                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
             }
         }
 

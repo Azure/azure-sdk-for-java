@@ -47,7 +47,7 @@ public class ContainerInstanceManagementTest extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile);
+        containerInstanceManager = buildManager(ContainerInstanceManager.class, httpPipeline, profile);
         setInternalContext(internalContext, containerInstanceManager);
     }
 

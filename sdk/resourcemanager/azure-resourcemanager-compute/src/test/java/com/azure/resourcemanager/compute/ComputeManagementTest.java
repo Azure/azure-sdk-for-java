@@ -70,14 +70,13 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        computeManager = ComputeManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        msiManager = MsiManager.authenticate(httpPipeline, profile);
+        computeManager = buildManager(ComputeManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
+        resourceManager = computeManager.resourceManager();
         setInternalContext(internalContext, computeManager, networkManager, keyVaultManager, msiManager);
     }
 

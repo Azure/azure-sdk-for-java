@@ -10,17 +10,17 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>spring-starter-azure-cache</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-starter-azure-cache;current} -->
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-cache</artifactId>
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-cache;current} -->
 
   <name>Azure Spring Cloud Starter Cache</name>
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-autoconfigure</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -43,7 +43,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-autoconfigure:[1.3.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
                 <include>org.springframework.boot:spring-boot-starter-cache:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-data-redis:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
               </includes>

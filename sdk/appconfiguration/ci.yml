@@ -51,3 +51,7 @@ extends:
       - name: spring-cloud-starter-azure-appconfiguration-config
         groupId: com.microsoft.azure
         safeName: springcloudstarterazureappconfigurationconfig
+    AdditionalModules:
+      - name: azure-spring-cloud-starter-appconfiguration-config-test
+        groupId: com.microsoft.azure
+        safeName: azurespringcloudstarterappconfigurationconfigtest

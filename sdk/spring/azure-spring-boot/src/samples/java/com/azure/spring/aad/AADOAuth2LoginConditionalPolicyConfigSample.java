@@ -3,8 +3,8 @@
 
 package com.azure.spring.aad;
 
-import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFailureHandler;
-import com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2AuthorizationRequestResolver;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationFailureHandler;
+import com.azure.spring.autoconfigure.aad.AADOAuth2AuthorizationRequestResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

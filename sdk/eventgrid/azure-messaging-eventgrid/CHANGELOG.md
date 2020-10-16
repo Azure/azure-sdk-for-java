@@ -1,5 +1,8 @@
 # Release History
 
+## 2.0.0-beta.4 (Unreleased)
+
+
 ## 2.0.0-beta.3 (2020-10-06)
 ### New Features
 - Added support for distributed tracing.

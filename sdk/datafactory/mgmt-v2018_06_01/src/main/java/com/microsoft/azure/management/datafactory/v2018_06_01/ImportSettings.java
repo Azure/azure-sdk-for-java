@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ImportSettings.class)
 @JsonTypeName("ImportSettings")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeImportCommand", value = AzureDatabricksDeltaLakeImportCommand.class),
     @JsonSubTypes.Type(name = "SnowflakeImportCopyCommand", value = SnowflakeImportCopyCommand.class)
 })
 public class ImportSettings {
