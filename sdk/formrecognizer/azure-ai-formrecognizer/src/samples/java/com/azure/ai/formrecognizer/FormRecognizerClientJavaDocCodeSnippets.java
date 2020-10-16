@@ -338,8 +338,10 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         String receiptUrl = "{receipt_url}";
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeReceiptsOptions()
+                .setLocale("en-US")
                 .setPollInterval(Duration.ofSeconds(5))
-                .setFieldElementsIncluded(true), Context.NONE).getFinalResult()
+                .setFieldElementsIncluded(true), Context.NONE)
+            .getFinalResult()
             .forEach(recognizedReceipt -> {
                 Map<String, FormField> recognizedFields = recognizedReceipt.getFields();
                 FormField merchantNameField = recognizedFields.get("MerchantName");
@@ -474,6 +476,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 new RecognizeReceiptsOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(includeFieldElements)
+                    .setLocale("en-US")
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();

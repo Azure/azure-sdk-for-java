@@ -460,11 +460,14 @@ public final class FormRecognizerAsyncClient {
 
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
+            final String localeInfo  = recognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
-                        "", new SourcePath().setSource(receiptUrl), context)
+                        localeInfo,
+                        new SourcePath().setSource(receiptUrl),
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -549,11 +552,17 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
             recognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
             final boolean isFieldElementsIncluded = recognizeReceiptsOptions.isFieldElementsIncluded();
+            final String localeInfo = recognizeReceiptsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeReceiptsOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
-                        contentType, receipt, length, isFieldElementsIncluded, "", context)
+                        contentType,
+                        receipt,
+                        length,
+                        isFieldElementsIncluded,
+                        localeInfo,
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
                     receipt, recognizeReceiptsOptions.getContentType()),
@@ -628,11 +637,14 @@ public final class FormRecognizerAsyncClient {
 
             recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
             final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
+            final String localeInfo = recognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeBusinessCardsOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
-                        "", new SourcePath().setSource(businessCardUrl), context)
+                        localeInfo,
+                        new SourcePath().setSource(businessCardUrl),
+                        context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     logger),
@@ -641,7 +653,9 @@ public final class FormRecognizerAsyncClient {
                     new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
-                        modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded, null))
+                        modelSimpleResponse.getValue().getAnalyzeResult(),
+                        isFieldElementsIncluded,
+                        null))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -713,20 +727,28 @@ public final class FormRecognizerAsyncClient {
             Objects.requireNonNull(businessCard, "'businessCard' is required and cannot be null.");
             recognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
             final boolean isFieldElementsIncluded = recognizeBusinessCardsOptions.isFieldElementsIncluded();
+            final String localeInfo = recognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
                 recognizeBusinessCardsOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, businessCard, length, isFieldElementsIncluded, "", context)
-                                        .map(response -> new FormRecognizerOperationResult(
-                                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
+                        contentType,
+                        businessCard,
+                        length,
+                        isFieldElementsIncluded,
+                        localeInfo,
+                        context)
+                        .map(response -> new FormRecognizerOperationResult(
+                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
                     businessCard, recognizeBusinessCardsOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> service.getAnalyzeBusinessCardResultWithResponseAsync(resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
-                        modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded, null))
+                        modelSimpleResponse.getValue().getAnalyzeResult(),
+                        isFieldElementsIncluded,
+                        null))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
