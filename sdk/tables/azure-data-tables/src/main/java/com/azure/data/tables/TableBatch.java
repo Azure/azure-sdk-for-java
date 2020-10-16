@@ -17,7 +17,7 @@ public final class TableBatch extends TableBatchBase<TableBatch> {
     }
 
     @Override
-    public List<TableBatchResult> submitTransaction() {
+    public synchronized List<TableBatchResult> submitTransaction() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {
@@ -27,7 +27,7 @@ public final class TableBatch extends TableBatchBase<TableBatch> {
     }
 
     @Override
-    public Response<List<Response<TableBatchResult>>> submitTransactionWithResponse() {
+    public synchronized Response<List<Response<TableBatchResult>>> submitTransactionWithResponse() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {

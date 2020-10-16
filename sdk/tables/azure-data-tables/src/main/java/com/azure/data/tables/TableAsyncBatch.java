@@ -17,7 +17,7 @@ public final class TableAsyncBatch extends TableBatchBase<TableAsyncBatch> {
     }
 
     @Override
-    public Flux<TableBatchResult> submitTransaction() {
+    public synchronized Flux<TableBatchResult> submitTransaction() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {
@@ -27,7 +27,7 @@ public final class TableAsyncBatch extends TableBatchBase<TableAsyncBatch> {
     }
 
     @Override
-    public Mono<Response<Flux<Response<TableBatchResult>>>> submitTransactionWithResponse() {
+    public synchronized Mono<Response<Flux<Response<TableBatchResult>>>> submitTransactionWithResponse() {
         freeze();
 
         for (BatchOperation operation : getOperations()) {

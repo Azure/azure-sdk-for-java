@@ -32,7 +32,7 @@ abstract class TableBatchBase<T extends TableBatchBase<?>> {
     @SuppressWarnings("unchecked")
     public T createEntity(TableEntity entity) {
         validate(entity);
-        operations.add(new BatchOperation.CreateEntity(entity));
+        addOperation(new BatchOperation.CreateEntity(entity));
         return (T)this;
     }
 
@@ -43,7 +43,7 @@ abstract class TableBatchBase<T extends TableBatchBase<?>> {
     @SuppressWarnings("unchecked")
     public T upsertEntity(TableEntity entity, UpdateMode updateMode) {
         validate(entity);
-        operations.add(new BatchOperation.UpsertEntity(entity, updateMode));
+        addOperation(new BatchOperation.UpsertEntity(entity, updateMode));
         return (T)this;
     }
 
@@ -58,7 +58,7 @@ abstract class TableBatchBase<T extends TableBatchBase<?>> {
     @SuppressWarnings("unchecked")
     public T updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
         validate(entity);
-        operations.add(new BatchOperation.UpdateEntity(entity, updateMode, ifUnchanged));
+        addOperation(new BatchOperation.UpdateEntity(entity, updateMode, ifUnchanged));
         return (T)this;
     }
 
@@ -69,7 +69,7 @@ abstract class TableBatchBase<T extends TableBatchBase<?>> {
     @SuppressWarnings("unchecked")
     protected T deleteEntity(String rowKey, String eTag) {
         validate(partitionKey, rowKey);
-        operations.add(new BatchOperation.DeleteEntity(partitionKey, rowKey, eTag));
+        addOperation(new BatchOperation.DeleteEntity(partitionKey, rowKey, eTag));
         return (T)this;
     }
 
@@ -81,9 +81,13 @@ abstract class TableBatchBase<T extends TableBatchBase<?>> {
         return client;
     }
 
-    protected void freeze() {
+    protected synchronized void freeze() {
         this.frozen = true;
         this.operations = Collections.unmodifiableList(this.operations);
+    }
+
+    private synchronized void addOperation(BatchOperation operation) {
+        operations.add(operation);
     }
 
     private void validate(TableEntity entity) {
