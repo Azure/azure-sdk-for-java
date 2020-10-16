@@ -165,12 +165,21 @@ azure:
     overrideTrustManagerFactory: true
 ```
 
-Note if your routes point to services with self-signed certificates where the
-hostname does not match the certificate you cannot use the solution above. If
-you own the self-signed certificate re-issue it with the proper hostname. If you
-do not own the self-signed certificate either have the owner re-issue the
-certificate, or apply the configuration below (note the configuration below
-blindly trusts any certificate so it is NOT recommended for production use).
+Note if any of your routes point to a service where the FQDN does not match the
+issued certificate you will need to disable hostname verification. This will
+be the case if your service is dynamically assigned a hostname by the hosting
+platform you use. In this particular case add the configuration below to disable
+hostname verification:
+
+```yaml
+azure:
+  keyvault:
+    disableHostnameVerification: true
+```
+
+If you are developing you can completely disable certificate and hostname
+validation altogether by using the configuration below. Note this is NOT 
+recommended for production!
 
 ```yaml
 spring:

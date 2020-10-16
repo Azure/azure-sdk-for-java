@@ -7,6 +7,7 @@ import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 import java.security.Security;
 import java.util.Properties;
 import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
@@ -92,6 +93,13 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                 KeyVaultTrustManagerFactoryProvider factoryProvider =
                         new KeyVaultTrustManagerFactoryProvider();
                 Security.insertProviderAt(factoryProvider, 1);
+            }
+            
+            enabled = environment.getProperty("azure.keyvault.disableHostnameVerification");
+            if (Boolean.valueOf(enabled)) {
+                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
+                    return true;
+                });
             }
         }
     }
