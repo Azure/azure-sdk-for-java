@@ -189,4 +189,42 @@ class ServiceBusAsyncConsumerTest {
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
+
+    /**
+     * Verifies that if publisher errors out, it also complete with error.
+     */
+    @ValueSource(booleans = {true, false})
+    @ParameterizedTest
+    void onError(boolean autoLockRenewal) {
+        // Arrange
+        final int prefetch = 10;
+        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
+        final String lockToken = UUID.randomUUID().toString();
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            prefetch, autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+
+        final Message message1 = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
+
+        when(receivedMessage1.getLockToken()).thenReturn(lockToken);
+        when(receivedMessage1.getLockedUntil()).thenReturn(lockedUntil);
+        when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
+
+        // Act and Assert
+        StepVerifier.create(consumer.receive())
+            .then(() -> {
+                linkPublisher.next(link);
+                endpointPublisher.next(AmqpEndpointState.ACTIVE);
+                messagePublisher.next(message1);
+            })
+            .expectNext(receivedMessage1)
+            .then(() -> {
+                linkPublisher.error(new Throwable("fake error"));
+                endpointPublisher.complete();
+            })
+            .verifyError();
+
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
+    }
 }

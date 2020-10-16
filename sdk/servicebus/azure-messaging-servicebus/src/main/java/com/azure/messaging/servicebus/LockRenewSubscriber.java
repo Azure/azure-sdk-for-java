@@ -66,6 +66,28 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         }
     }
 
+    /**
+     * When upstream has completed emitting messages.
+     */
+    @Override
+    public void hookOnComplete() {
+        logger.info("Upstream has completed.");
+        actual.onComplete();
+    }
+
+    @Override
+    protected void hookOnError(Throwable throwable) {
+        logger.error("Errors occurred upstream.");
+        actual.onError(throwable);
+        dispose();
+    }
+
+    @Override
+    protected void hookOnCancel() {
+        logger.error("Upstream cancelled.");
+        subscription.cancel();
+    }
+
     @Override
     protected void hookOnNext(ServiceBusReceivedMessage message) {
         final String lockToken = message.getLockToken();

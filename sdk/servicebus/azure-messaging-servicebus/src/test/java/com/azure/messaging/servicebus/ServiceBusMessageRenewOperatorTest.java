@@ -41,7 +41,7 @@ public class ServiceBusMessageRenewOperatorTest {
 
     private static final UUID LOCK_TOKEN_UUID = UUID.randomUUID();
     private static final String LOCK_TOKEN = LOCK_TOKEN_UUID.toString();
-    private static final Duration maxAutoLockRenewDuration = Duration.ofSeconds(10);
+    private static final Duration MAX_AUTO_LOCK_RENEW_DURATION = Duration.ofSeconds(10);
 
     @Mock
     LockContainer<LockRenewalOperation> messageLockContainer;
@@ -73,7 +73,7 @@ public class ServiceBusMessageRenewOperatorTest {
      */
     @ValueSource(booleans = {true, false})
     @ParameterizedTest
-    void lockRenewed(boolean autoLockRenewal){
+    void lockRenewed(boolean autoLockRenewal) {
         // Arrange
         final int atLeast = 1;
         final int processingTimeSeconds = 3;
@@ -89,7 +89,7 @@ public class ServiceBusMessageRenewOperatorTest {
         final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message});
 
         ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
-            autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, renewalFunction);
+            autoLockRenewal, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act & Assert
 
@@ -139,19 +139,15 @@ public class ServiceBusMessageRenewOperatorTest {
         final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message, message});
 
         ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
-            autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, renewalFunction);
+            autoLockRenewal, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act
         Disposable disposable = renewOperator
             .subscribe(serviceBusReceivedMessage -> {
                 throw new RuntimeException("fake user generated exception.");
-                },
-                throwable -> {
-                onErrorCalled.set(true);
-                },
-                () -> {
-                onCompleteCalled.set(true);
-            });
+            },
+                throwable -> onErrorCalled.set(true),
+                () -> onCompleteCalled.set(true));
         TimeUnit.SECONDS.sleep(waitForSubscriberSeconds);
 
         // Assert
@@ -180,13 +176,13 @@ public class ServiceBusMessageRenewOperatorTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(null,
-            false, maxAutoLockRenewDuration, messageLockContainer, renewalFunction));
+            false, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(messageSource,
-            false, maxAutoLockRenewDuration, null, renewalFunction));
+            false, MAX_AUTO_LOCK_RENEW_DURATION, null, renewalFunction));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(messageSource,
-            false, maxAutoLockRenewDuration, messageLockContainer, null));
+            false, MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, null));
 
     }
 }
