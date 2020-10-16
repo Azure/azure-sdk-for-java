@@ -1549,7 +1549,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     Context.NONE));
             assertEquals("UnsupportedLocale",
                 ((FormRecognizerErrorInformation) httpResponseException.getValue()).getErrorCode());
-            }, RECEIPT_CONTOSO_JPG);
+        }, RECEIPT_CONTOSO_JPG);
     }
 
     /**
