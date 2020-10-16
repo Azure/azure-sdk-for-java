@@ -11,7 +11,7 @@ For users new to the Java SDK for resource management libraries, please see the 
 * [Updated Maven depedencies](#updated-maven-dependencies)
 * [General Changes](#general-changes)
   * [Authentication](#authentication)
-  * [AzureResourceManager](#azureresourcemanager-class)
+  * [AzureResourceManager Class](#azureresourcemanager-class)
   * [Customized Policy](#customized-policy)
   * [Custom HTTP Client](#custom-http-client)
   * [Error Handling](#error-handling)
@@ -74,7 +74,7 @@ Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscripti
 
 For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
 
-## AzureResourceManager class
+## AzureResourceManager Class
 
 The `Azure` class is renamed to `AzureResourceManager`.
 
