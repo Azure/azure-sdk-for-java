@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.data.tables.implementation.BatchOperation;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.UpdateMode;
@@ -11,7 +12,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-abstract class TableBatchBase {
+@Fluent
+abstract class TableBatchBase<T extends TableBatchBase<?>> {
     private final String partitionKey;
     private final TableAsyncClient client;
     private final HashSet<String> rowKeys = new HashSet<>();
@@ -24,48 +26,59 @@ abstract class TableBatchBase {
         this.client = client;
     }
 
-    public void createEntity(TableEntity entity) {
+    public abstract Object submitTransaction();
+    public abstract Object submitTransactionWithResponse();
+
+    @SuppressWarnings("unchecked")
+    public T createEntity(TableEntity entity) {
         validate(entity);
         operations.add(new BatchOperation.CreateEntity(entity));
+        return (T)this;
     }
 
-    public void upsertEntity(TableEntity entity) {
-        validate(entity);
-        operations.add(new BatchOperation.UpsertEntity(entity, UpdateMode.MERGE));
+    public T upsertEntity(TableEntity entity) {
+        return upsertEntity(entity, UpdateMode.MERGE);
     }
 
-    public void upsertEntity(TableEntity entity, UpdateMode updateMode) {
+    @SuppressWarnings("unchecked")
+    public T upsertEntity(TableEntity entity, UpdateMode updateMode) {
         validate(entity);
         operations.add(new BatchOperation.UpsertEntity(entity, updateMode));
+        return (T)this;
     }
 
-    public void updateEntity(TableEntity entity) {
-        validate(entity);
-        operations.add(new BatchOperation.UpdateEntity(entity, UpdateMode.MERGE, false));
+    public T updateEntity(TableEntity entity) {
+        return updateEntity(entity, UpdateMode.MERGE);
     }
 
-    public void updateEntity(TableEntity entity, UpdateMode updateMode) {
-        validate(entity);
-        operations.add(new BatchOperation.UpdateEntity(entity, updateMode, false));
+    public T updateEntity(TableEntity entity, UpdateMode updateMode) {
+        return updateEntity(entity, updateMode, false);
     }
 
-    public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
+    @SuppressWarnings("unchecked")
+    public T updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
         validate(entity);
         operations.add(new BatchOperation.UpdateEntity(entity, updateMode, ifUnchanged));
+        return (T)this;
     }
 
-    public void deleteEntity(String rowKey) {
-        validate(partitionKey, rowKey);
-        operations.add(new BatchOperation.DeleteEntity(partitionKey, rowKey, "*"));
+    protected T deleteEntity(String rowKey) {
+        return deleteEntity(rowKey, "*");
     }
 
-    public void deleteEntity(String rowKey, String eTag) {
+    @SuppressWarnings("unchecked")
+    protected T deleteEntity(String rowKey, String eTag) {
         validate(partitionKey, rowKey);
         operations.add(new BatchOperation.DeleteEntity(partitionKey, rowKey, eTag));
+        return (T)this;
     }
 
     protected List<BatchOperation> getOperations() {
         return operations;
+    }
+
+    protected TableAsyncClient getClient() {
+        return client;
     }
 
     protected void freeze() {
@@ -92,5 +105,4 @@ abstract class TableBatchBase {
             rowKeys.add(rowKey);
         }
     }
-
 }

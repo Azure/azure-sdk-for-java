@@ -2,18 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.Response;
 import com.azure.data.tables.implementation.BatchOperation;
 import com.azure.data.tables.models.TableBatchResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class TableAsyncBatch extends TableBatchBase {
+@Fluent
+public final class TableAsyncBatch extends TableBatchBase<TableAsyncBatch> {
 
     TableAsyncBatch(String partitionKey, TableAsyncClient client) {
         super(partitionKey, client);
     }
 
+    @Override
     public Flux<TableBatchResult> submitTransaction() {
         freeze();
 
@@ -23,6 +26,7 @@ public final class TableAsyncBatch extends TableBatchBase {
         return null;
     }
 
+    @Override
     public Mono<Response<Flux<Response<TableBatchResult>>>> submitTransactionWithResponse() {
         freeze();
 
