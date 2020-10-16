@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.commerce.v2015_06_01_preview.implementation;
 
+import com.microsoft.azure.management.commerce.v2015_06_01_preview.MonetaryCommitment;
+import com.microsoft.azure.management.commerce.v2015_06_01_preview.MonetaryCredit;
+import com.microsoft.azure.management.commerce.v2015_06_01_preview.RecurringCharge;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
