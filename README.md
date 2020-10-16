@@ -62,7 +62,6 @@ Management libraries can be identified by namespaces that start with `azure-mgmt
 
 The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-New-Releases) for latest **GA** release.<br/>
 
-
 ### Release branches (Release tagging)
 
 For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
