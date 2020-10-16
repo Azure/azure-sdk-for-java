@@ -34,9 +34,9 @@ public final class RecognizedForm {
      */
     private final List<FormPage> pages;
 
-    private final Float formTypeConfidence;
+    private Float formTypeConfidence;
 
-    private final String modelId;
+    private String modelId;
 
     /**
      * Constructs a RecognizedForm object.
@@ -52,30 +52,6 @@ public final class RecognizedForm {
         this.formType = formType;
         this.pageRange = pageRange;
         this.pages = pages == null ? null : Collections.unmodifiableList(pages);
-        this.formTypeConfidence = null;
-        this.modelId = null;
-    }
-
-    // TODO: remove this constructor
-    /**
-     * Constructs a RecognizedForm object.
-     *
-     * @param fields Dictionary of named field values.
-     * @param formType Form type.
-     * @param pageRange First and last page number where the document is found.
-     * @param pages List of extracted pages from the form.
-     * @param formTypeConfidence The form type confidence score.
-     * @param modelId The model id.
-     */
-    public RecognizedForm(final Map<String, FormField> fields, final String formType,
-        final FormPageRange pageRange, final List<FormPage> pages, final Float formTypeConfidence,
-        final String modelId) {
-        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
-        this.formType = formType;
-        this.pageRange = pageRange;
-        this.pages = pages == null ? null : Collections.unmodifiableList(pages);
-        this.formTypeConfidence = formTypeConfidence;
-        this.modelId = modelId;
     }
 
     /**

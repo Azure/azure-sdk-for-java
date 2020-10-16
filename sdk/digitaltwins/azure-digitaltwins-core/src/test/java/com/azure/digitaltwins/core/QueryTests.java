@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.QueryTwinsOptions;
+import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -49,7 +49,7 @@ public class QueryTests extends QueryTestBase{
 
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
-            PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryTwinsOptions().setMaxItemsPerPage(pageSize), Context.NONE);
+            PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
                 assertThat(digitalTwin.getCustomProperties().get("IsOccupied"))
