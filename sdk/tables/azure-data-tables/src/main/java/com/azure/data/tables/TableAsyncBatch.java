@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.rest.Response;
+import com.azure.data.tables.implementation.BatchOperation;
 import com.azure.data.tables.models.TableBatchResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,10 +15,20 @@ public final class TableAsyncBatch extends TableBatchBase {
     }
 
     public Flux<TableBatchResult> submitTransaction() {
+        freeze();
+
+        for (BatchOperation operation : getOperations()) {
+            // do something
+        }
         return null;
     }
 
     public Mono<Response<Flux<Response<TableBatchResult>>>> submitTransactionWithResponse() {
+        freeze();
+
+        for (BatchOperation operation : getOperations()) {
+            // do something
+        }
         return null;
     }
 }

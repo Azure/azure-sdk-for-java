@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.rest.Response;
+import com.azure.data.tables.implementation.BatchOperation;
 import com.azure.data.tables.models.TableBatchResult;
 
 import java.util.List;
@@ -14,10 +15,20 @@ public final class TableBatch extends TableBatchBase {
     }
 
     public List<TableBatchResult> submitTransaction() {
+        freeze();
+
+        for (BatchOperation operation : getOperations()) {
+            // do something
+        }
         return null;
     }
 
     public Response<List<Response<TableBatchResult>>> submitTransactionWithResponse() {
+        freeze();
+
+        for (BatchOperation operation : getOperations()) {
+            // do something
+        }
         return null;
     }
 
