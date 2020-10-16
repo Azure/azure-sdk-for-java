@@ -3,9 +3,9 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.ConnectionString;
 import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.CommunicationClientCredential;
+import com.azure.communication.common.implementation.ConnectionString;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;

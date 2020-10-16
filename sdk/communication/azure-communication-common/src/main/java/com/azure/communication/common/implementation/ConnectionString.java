@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
 import java.util.Objects;
+
+import com.azure.core.annotation.Immutable;
 
 /**
  * Parse and store Connection String values
  */
-public class ConnectionString {
+@Immutable
+public final class ConnectionString {
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
     private static final String ENDPOINT_NAME = "endpoint";

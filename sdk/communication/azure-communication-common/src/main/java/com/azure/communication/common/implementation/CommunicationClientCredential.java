@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -44,7 +44,7 @@ public final class CommunicationClientCredential {
     // Previously DateTimeFormatter.RFC_1123_DATE_TIME was being used. There
     // was an issue with the day of month part. RFC_1123_DATE_TIME does not
     // append a leading '0' on days that are less than 10. 
-    static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN = 
+    public static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN = 
         DateTimeFormatter.ofPattern("E, dd MMM YYYY HH:mm:ss 'GMT'");
 
     private final ClientLogger logger = new ClientLogger(CommunicationClientCredential.class);
@@ -69,7 +69,7 @@ public final class CommunicationClientCredential {
         this.sha256HMAC = sha256HMAC;
     }
 
-    Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
+    public Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {
                 try {

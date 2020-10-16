@@ -25,6 +25,7 @@ import java.util.Base64;
 
 import java.nio.ByteBuffer;
 
+import com.azure.communication.common.implementation.CommunicationClientCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;

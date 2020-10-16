@@ -29,8 +29,8 @@ It is intended to provide cross cutting concerns, e.g. authentication.
 To work with Azure Communication Services, a resource access key is used for authentication. 
 
 Azure Communication Service supports HMAC authentication with resource access key. To
-apply HMAC authentication, construct CommunicationClientCredential with the access key and instantiate
-a CommunicationIdentityClient to manage users and tokens.
+apply HMAC authentication, pass in the access key and endpoint and instantiate a CommunicationIdentityClient
+to manage users and tokens.
 
 ### CommunicationUserCredential
 

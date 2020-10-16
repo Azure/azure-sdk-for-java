@@ -5,6 +5,9 @@ package com.azure.communication.common;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
+
+import com.azure.communication.common.implementation.CommunicationClientCredential;
+
 import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

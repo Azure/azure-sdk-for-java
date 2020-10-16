@@ -5,6 +5,8 @@ package com.azure.communication.common;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.communication.common.implementation.CommunicationClientCredential;
+
 public class CommunicationClientCredentialTests {
 
     @Test

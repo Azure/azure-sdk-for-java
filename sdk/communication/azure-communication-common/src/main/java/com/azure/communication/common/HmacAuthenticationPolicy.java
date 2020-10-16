@@ -5,6 +5,7 @@ package com.azure.communication.common;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
+import com.azure.communication.common.implementation.CommunicationClientCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
