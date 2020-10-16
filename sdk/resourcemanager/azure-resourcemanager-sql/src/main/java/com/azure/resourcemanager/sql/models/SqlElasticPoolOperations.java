@@ -224,7 +224,6 @@ public interface SqlElasticPoolOperations
             /**
              * Sets the storage limit for the SQL Azure Database Elastic Pool in Bytes.
              *
-             * @deprecated use specific edition instead
              * @param storageCapacity storage limit for the SQL Azure Database Elastic Pool in Bytes
              * @return The next stage of the definition.
              */
