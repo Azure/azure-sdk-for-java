@@ -12,7 +12,9 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.EHNamespace;
 import rx.Observable;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Sku;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Identity;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Encryption;
 
 class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespaceInner, EHNamespaceImpl, EventHubsManager> implements EHNamespace, EHNamespace.Definition, EHNamespace.Update {
     EHNamespaceImpl(String name, EHNamespaceInner inner, EventHubsManager manager) {
@@ -46,8 +48,23 @@ class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespace
 
 
     @Override
+    public String clusterArmId() {
+        return this.inner().clusterArmId();
+    }
+
+    @Override
     public DateTime createdAt() {
         return this.inner().createdAt();
+    }
+
+    @Override
+    public Encryption encryption() {
+        return this.inner().encryption();
+    }
+
+    @Override
+    public Identity identity() {
+        return this.inner().identity();
     }
 
     @Override
@@ -93,6 +110,24 @@ class EHNamespaceImpl extends GroupableResourceCoreImpl<EHNamespace, EHNamespace
     @Override
     public Boolean zoneRedundant() {
         return this.inner().zoneRedundant();
+    }
+
+    @Override
+    public EHNamespaceImpl withClusterArmId(String clusterArmId) {
+        this.inner().withClusterArmId(clusterArmId);
+        return this;
+    }
+
+    @Override
+    public EHNamespaceImpl withEncryption(Encryption encryption) {
+        this.inner().withEncryption(encryption);
+        return this;
+    }
+
+    @Override
+    public EHNamespaceImpl withIdentity(Identity identity) {
+        this.inner().withIdentity(identity);
+        return this;
     }
 
     @Override

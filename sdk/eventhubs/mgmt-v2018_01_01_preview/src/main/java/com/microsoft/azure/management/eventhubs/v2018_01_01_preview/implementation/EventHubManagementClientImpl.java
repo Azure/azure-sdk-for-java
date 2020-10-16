@@ -14,9 +14,9 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
 /**
- * Initializes a new instance of the EventHub2018PreviewManagementClientImpl class.
+ * Initializes a new instance of the EventHubManagementClientImpl class.
  */
-public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient {
+public class EventHubManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -46,21 +46,9 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
      */
-    public EventHub2018PreviewManagementClientImpl withSubscriptionId(String subscriptionId) {
+    public EventHubManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
-    }
-
-    /** Client API version. */
-    private String apiVersion;
-
-    /**
-     * Gets Client API version.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
     }
 
     /** The preferred language for the response. */
@@ -81,7 +69,7 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public EventHub2018PreviewManagementClientImpl withAcceptLanguage(String acceptLanguage) {
+    public EventHubManagementClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -104,7 +92,7 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public EventHub2018PreviewManagementClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public EventHubManagementClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -127,22 +115,9 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public EventHub2018PreviewManagementClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public EventHubManagementClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
-    }
-
-    /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
-
-    /**
-     * Gets the OperationsInner object to access its operations.
-     * @return the OperationsInner object.
-     */
-    public OperationsInner operations() {
-        return this.operations;
     }
 
     /**
@@ -159,19 +134,6 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
     }
 
     /**
-     * The ConfigurationsInner object to access its operations.
-     */
-    private ConfigurationsInner configurations;
-
-    /**
-     * Gets the ConfigurationsInner object to access its operations.
-     * @return the ConfigurationsInner object.
-     */
-    public ConfigurationsInner configurations() {
-        return this.configurations;
-    }
-
-    /**
      * The NamespacesInner object to access its operations.
      */
     private NamespacesInner namespaces;
@@ -185,44 +147,153 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
     }
 
     /**
-     * Initializes an instance of EventHub2018PreviewManagementClient client.
+     * The PrivateEndpointConnectionsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsInner privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsInner object.
+     */
+    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesInner object to access its operations.
+     */
+    private PrivateLinkResourcesInner privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * @return the PrivateLinkResourcesInner object.
+     */
+    public PrivateLinkResourcesInner privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
+     * The ConfigurationsInner object to access its operations.
+     */
+    private ConfigurationsInner configurations;
+
+    /**
+     * Gets the ConfigurationsInner object to access its operations.
+     * @return the ConfigurationsInner object.
+     */
+    public ConfigurationsInner configurations() {
+        return this.configurations;
+    }
+
+    /**
+     * The DisasterRecoveryConfigsInner object to access its operations.
+     */
+    private DisasterRecoveryConfigsInner disasterRecoveryConfigs;
+
+    /**
+     * Gets the DisasterRecoveryConfigsInner object to access its operations.
+     * @return the DisasterRecoveryConfigsInner object.
+     */
+    public DisasterRecoveryConfigsInner disasterRecoveryConfigs() {
+        return this.disasterRecoveryConfigs;
+    }
+
+    /**
+     * The EventHubsInner object to access its operations.
+     */
+    private EventHubsInner eventHubs;
+
+    /**
+     * Gets the EventHubsInner object to access its operations.
+     * @return the EventHubsInner object.
+     */
+    public EventHubsInner eventHubs() {
+        return this.eventHubs;
+    }
+
+    /**
+     * The ConsumerGroupsInner object to access its operations.
+     */
+    private ConsumerGroupsInner consumerGroups;
+
+    /**
+     * Gets the ConsumerGroupsInner object to access its operations.
+     * @return the ConsumerGroupsInner object.
+     */
+    public ConsumerGroupsInner consumerGroups() {
+        return this.consumerGroups;
+    }
+
+    /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
+     * The RegionsInner object to access its operations.
+     */
+    private RegionsInner regions;
+
+    /**
+     * Gets the RegionsInner object to access its operations.
+     * @return the RegionsInner object.
+     */
+    public RegionsInner regions() {
+        return this.regions;
+    }
+
+    /**
+     * Initializes an instance of EventHubManagementClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public EventHub2018PreviewManagementClientImpl(ServiceClientCredentials credentials) {
+    public EventHubManagementClientImpl(ServiceClientCredentials credentials) {
         this("https://management.azure.com", credentials);
     }
 
     /**
-     * Initializes an instance of EventHub2018PreviewManagementClient client.
+     * Initializes an instance of EventHubManagementClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public EventHub2018PreviewManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public EventHubManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of EventHub2018PreviewManagementClient client.
+     * Initializes an instance of EventHubManagementClient client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public EventHub2018PreviewManagementClientImpl(RestClient restClient) {
+    public EventHubManagementClientImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-01-01-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.clusters = new ClustersInner(restClient().retrofit(), this);
-        this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
         this.namespaces = new NamespacesInner(restClient().retrofit(), this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
+        this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
+        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsInner(restClient().retrofit(), this);
+        this.eventHubs = new EventHubsInner(restClient().retrofit(), this);
+        this.consumerGroups = new ConsumerGroupsInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.regions = new RegionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -233,6 +304,6 @@ public class EventHub2018PreviewManagementClientImpl extends AzureServiceClient 
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "EventHub2018PreviewManagementClient", "2018-01-01-preview");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "EventHubManagementClient", "2018-01-01-preiew");
     }
 }
