@@ -107,8 +107,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength,
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeReceipts(toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength,
                 new RecognizeReceiptsOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), false);
@@ -1241,7 +1241,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeBusinessCardSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        storageUrlRunner(sourceUrl -> {
+        urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1295,7 +1295,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeBusinessCardFromUrlIncludeFieldElements(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        storageUrlRunner(sourceUrl -> {
+        urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
                     new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true)
@@ -1315,7 +1315,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeBusinessCardSourceUrlWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        storageUrlRunner(sourceUrl -> {
+        urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
                     new RecognizeBusinessCardsOptions().setFieldElementsIncluded(true)
@@ -1324,5 +1324,59 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             validateBusinessCardResultData(syncPoller.getFinalResult(), true);
         }, BUSINESS_CARD_PNG);
+    }
+
+    /**
+     * Verify locale parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void receiptValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeReceiptsFromUrl(sourceUrl,
+                    new RecognizeReceiptsOptions()
+                        .setLocale("en-US")
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.getFinalResult();
+            validateNetworkCallRecord("locale", "en-US");
+        }, RECEIPT_CONTOSO_JPG);
+    }
+
+    /**
+     * Verify empty locale parameter passed when specified by user.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void receiptEmptyLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeReceiptsFromUrl(sourceUrl,
+                    new RecognizeReceiptsOptions()
+                        .setLocale("")
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.getFinalResult();
+            validateNetworkCallRecord("locale", "");
+        }, RECEIPT_CONTOSO_JPG);
+    }
+
+    /**
+     * Verify locale parameter passed when specified by user for business cards API.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void businessCardValidLocale(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeBusinessCardsFromUrl(sourceUrl,
+                    new RecognizeBusinessCardsOptions()
+                        .setLocale("en-US")
+                        .setPollInterval(durationTestMode)).getSyncPoller();
+            syncPoller.getFinalResult();
+            validateNetworkCallRecord("locale", "en-US");
+        }, RECEIPT_CONTOSO_JPG);
     }
 }

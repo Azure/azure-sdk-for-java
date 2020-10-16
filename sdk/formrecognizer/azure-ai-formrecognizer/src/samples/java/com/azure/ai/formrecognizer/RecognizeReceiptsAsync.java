@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
- * Async sample for recognizing commonly found US receipt fields from a local file input stream.
+ * Async sample for recognizing commonly found receipt fields from a local file input stream.
  * For a suggested approach to extracting information from receipts, see StronglyTypedRecognizedForm.java.
  * See fields found on a receipt here:
  * https://aka.ms/formrecognizer/receiptfields
