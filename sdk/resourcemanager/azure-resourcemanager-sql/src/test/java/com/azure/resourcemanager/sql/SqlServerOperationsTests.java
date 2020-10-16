@@ -62,8 +62,10 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
@@ -1698,11 +1700,17 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
+                    if (edition.name().equalsIgnoreCase("System")) {
+                        return;
+                    }
                     edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
                         addStaticSkuDefinition(databaseSkuBuilder, edition.name(), serviceObjective.name(), serviceObjective.sku(), "DatabaseSku");
                     });
                 });
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
+                    if (edition.name().equalsIgnoreCase("System")) {
+                        return;
+                    }
                     edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
                         String detailName = String.format("%s_%d", performance.sku().name(), performance.sku().capacity());
                         addStaticSkuDefinition(elasticPoolSkuBuilder, edition.name(), detailName, performance.sku(), "ElasticPoolSku");
@@ -1710,22 +1718,36 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 });
             });
 
-        String databaseSku = new String(getClass().getResourceAsStream("/DatabaseSku.java").readAllBytes(), StandardCharsets.UTF_8);
+        String databaseSku = new String(readAllBytes(getClass().getResourceAsStream("/DatabaseSku.java")), StandardCharsets.UTF_8);
         databaseSku = databaseSku.replace("<Generated>", databaseSkuBuilder.toString());
-        Files.writeString(new File("src/main/java/com/azure/resourcemanager/sql/models/DatabaseSku.java").toPath(), databaseSku);
+        Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/DatabaseSku.java").toPath(), databaseSku.getBytes(StandardCharsets.UTF_8));
 
-        String elasticPoolSku = new String(getClass().getResourceAsStream("/ElasticPoolSku.java").readAllBytes(), StandardCharsets.UTF_8);
+        String elasticPoolSku = new String(readAllBytes(getClass().getResourceAsStream("/ElasticPoolSku.java")), StandardCharsets.UTF_8);
         elasticPoolSku = elasticPoolSku.replace("<Generated>", elasticPoolSkuBuilder.toString());
-        Files.writeString(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(), elasticPoolSku);
+        Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(), elasticPoolSku.getBytes(StandardCharsets.UTF_8));
 
         sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST).create(); // for deletion
+    }
+
+    private byte[] readAllBytes(InputStream inputStream) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] data = new byte[4096];
+            while (true) {
+                int size = inputStream.read(data);
+                if (size > 0) {
+                    outputStream.write(data, 0, size);
+                } else {
+                    return outputStream.toByteArray();
+                }
+            }
+        }
     }
 
     private void addStaticSkuDefinition(StringBuilder builder, String edition, String detailName, Sku sku, String className) {
         builder
             .append("\n    ").append("/** ").append(edition).append(" Edition with ").append(detailName).append(" sku. */")
-            .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT)))
-                .append(" = new ").append(className).append("(")
+            .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT))).append(" =")
+            .append("\n        new ").append(className).append("(")
                 .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
                 .append(", ")
                 .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
