@@ -3,7 +3,6 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.identity.AuthenticationRecord;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.ITenantProfile;
 

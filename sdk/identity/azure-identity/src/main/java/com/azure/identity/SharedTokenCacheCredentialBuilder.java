@@ -4,6 +4,8 @@
 package com.azure.identity;
 
 
+import com.azure.identity.implementation.AuthenticationRecord;
+
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
  *
@@ -30,7 +32,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder.
      */
-    public SharedTokenCacheCredentialBuilder disallowUnencryptedCache() {
+    SharedTokenCacheCredentialBuilder disallowUnencryptedCache() {
         this.identityClientOptions.setAllowUnencryptedCache(false);
         return this;
     }
@@ -42,7 +44,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    public SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
