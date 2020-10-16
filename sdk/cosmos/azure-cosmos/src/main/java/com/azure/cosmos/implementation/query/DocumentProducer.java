@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
@@ -65,7 +66,10 @@ class DocumentProducer<T extends Resource> {
         void populatePartitionedQueryMetrics() {
             String queryMetricsDelimitedString = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS);
             if (!StringUtils.isEmpty(queryMetricsDelimitedString)) {
-                queryMetricsDelimitedString += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, pageResult.getRequestCharge());
+                queryMetricsDelimitedString += String.format(Locale.ROOT,
+                                                             ";%s=%.2f",
+                                                             QueryMetricsConstants.RequestCharge,
+                                                             pageResult.getRequestCharge());
                 ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
                         new ImmutablePair<>(targetRange.getId(), fetchSchedulingMetrics.getElapsedTime());
 

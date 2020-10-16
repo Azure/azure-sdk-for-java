@@ -6,8 +6,9 @@
 - Added properties `modelName` and `customFormModelProperties` to types `CustomFormModel` and `CustomFormModelInfo`.
 - Added property `modelName` to `TrainingOptions` and new type `CreateComposedModelOptions`.
 - Added property `modelId` to `CustomFormSubmodel` and `TrainingDocumentInfo`.
-- Added properties `modelId` and `formTypeConfidence` to `RecognizedForm`. 
-`modelId` has a null value on `RecognizedForm` for prebuilt APIs.
+- Added properties `modelId` and `formTypeConfidence` to `RecognizedForm`.
+- Added support for providing locale info when recognizing receipts and business cards.
+Supported locales include support EN-US, EN-AU, EN-CA, EN-GB, EN-IN.
 - Added support for pre-built business card recognition.
 
 ### Breaking changes

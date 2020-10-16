@@ -356,6 +356,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeReceiptsOptions()
                 .setFieldElementsIncluded(includeFieldElements)
+                .setLocale("en-US")
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
@@ -499,6 +500,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             new RecognizeReceiptsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
+                .setLocale("en-US")
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
