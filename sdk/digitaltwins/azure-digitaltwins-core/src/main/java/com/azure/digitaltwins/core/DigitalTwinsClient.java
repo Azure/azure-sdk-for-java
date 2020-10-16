@@ -49,7 +49,8 @@ public final class DigitalTwinsClient {
     //region Digital twin APIs
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -74,7 +75,8 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -235,7 +237,8 @@ public final class DigitalTwinsClient {
     //region Relationship APIs
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -260,7 +263,8 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -791,7 +795,8 @@ public final class DigitalTwinsClient {
 
     //region Event Route APIs
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -806,7 +811,8 @@ public final class DigitalTwinsClient {
     }
 
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
