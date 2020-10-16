@@ -26,14 +26,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsAddOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsDeleteOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsGetByIdOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsUpdateOptions;
 import com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.PagedDigitalTwinsModelDataCollection;
-import com.azure.digitaltwins.core.models.DigitalTwinModelsAddOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinModelsDeleteOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinModelsGetByIdOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinModelsUpdateOptions;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

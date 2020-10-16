@@ -1,17 +1,14 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.EventRoute;
-import com.azure.digitaltwins.core.models.EventRoutesListOptions;
+import com.azure.digitaltwins.core.models.ListEventRoutesOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -108,8 +105,8 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
 
         // list event routes by page, make sure that all non-final pages have the expected page size
         AtomicInteger pageCount = new AtomicInteger(0);
-        EventRoutesListOptions eventRoutesListOptions = (new EventRoutesListOptions()).setMaxItemsPerPage(expectedPageSize);
-        StepVerifier.create(asyncClient.listEventRoutes(eventRoutesListOptions).byPage())
+        ListEventRoutesOptions listEventRoutesOptions = (new ListEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        StepVerifier.create(asyncClient.listEventRoutes(listEventRoutesOptions).byPage())
             .thenConsumeWhile(
                 (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,
                 (pagedResponseOfEventRoute) -> {

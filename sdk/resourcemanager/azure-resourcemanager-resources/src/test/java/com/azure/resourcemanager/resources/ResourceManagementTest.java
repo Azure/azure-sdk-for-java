@@ -45,9 +45,7 @@ class ResourceManagementTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceClient = ResourceManager
-            .authenticate(httpPipeline, profile)
-            .withDefaultSubscription();
+        resourceClient = buildManager(ResourceManager.class, httpPipeline, profile);
     }
 
     @Override

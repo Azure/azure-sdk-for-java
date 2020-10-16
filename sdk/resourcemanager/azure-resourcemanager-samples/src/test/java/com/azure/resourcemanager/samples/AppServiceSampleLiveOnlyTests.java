@@ -142,11 +142,11 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        azureResourceManager = AzureResourceManager.authenticate(
+        azureResourceManager = buildManager(
+            AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
             new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(), AzureEnvironment.AZURE)
-        )
-            .withDefaultSubscription();
+        );
         Assertions.assertTrue(ManageFunctionAppLogs.runSample(azureResourceManager));
     }
 
@@ -156,11 +156,11 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        azureResourceManager = AzureResourceManager.authenticate(
+        azureResourceManager = buildManager(
+            AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
             new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(), AzureEnvironment.AZURE)
-        )
-            .withDefaultSubscription();
+        );
         Assertions.assertTrue(ManageWebAppLogs.runSample(azureResourceManager));
     }
 

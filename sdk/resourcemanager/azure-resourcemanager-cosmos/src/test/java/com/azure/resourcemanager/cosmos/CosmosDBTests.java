@@ -64,9 +64,9 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rgcosmosdb", 20);
-        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        cosmosManager = buildManager(CosmosManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        resourceManager = cosmosManager.resourceManager();
     }
 
     @Override

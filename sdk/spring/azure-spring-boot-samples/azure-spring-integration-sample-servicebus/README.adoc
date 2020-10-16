@@ -1,3 +1,5 @@
+:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+
 = Spring Cloud Azure Service Bus Integration Code Sample shared library for Java
 
 == Key concepts
@@ -59,6 +61,7 @@ spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
 ....
 
 === How to run
+First, we need to ensure that this {instruction}[instruction] is completed before run.
 
 5. Update queue name in link:src/main/java/com/example/QueueReceiveController.java#L29[QueueReceiveController] and
 link:src/main/java/com/example/QueueSendController.java#L32[QueueSendController], and update topic name and subscription in

@@ -40,5 +40,4 @@ java:
     context-client-method-parameter: true
     custom-types-subpackage: models
     required-fields-as-ctor-args: true
-    custom-types: DigitalTwinModelsAddOptions,DigitalTwinModelsDeleteOptions,DigitalTwinModelsGetByIdOptions,DigitalTwinModelsUpdateOptions,DigitalTwinsAddOptions,DigitalTwinsAddRelationshipOptions,DigitalTwinsDeleteOptions,DigitalTwinsDeleteRelationshipOptions,DigitalTwinsGetByIdOptions,DigitalTwinsGetComponentOptions,DigitalTwinsGetRelationshipByIdOptions,DigitalTwinsListIncomingRelationshipsOptions,DigitalTwinsListRelationshipsOptions,DigitalTwinsUpdateComponentOptions,DigitalTwinsUpdateOptions,DigitalTwinsUpdateRelationshipOptions,EventRoutesAddOptions,EventRoutesDeleteOptions,EventRoutesGetByIdOptions,EventRoutesListOptions,QueryTwinsOptions
 ```

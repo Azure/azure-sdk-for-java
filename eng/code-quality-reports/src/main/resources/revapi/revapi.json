@@ -14,13 +14,13 @@
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
-            "com\\.microsoft\\.spring\\..+",
             "javax\\.jms(\\..+)?",
             "javax\\.servlet(\\..+)?",
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+",
+            "com\\.azure\\.spring\\.data\\.gremlin\\..+",
+            "com\\.azure\\.spring(\\..+)?",
             "org\\.apache\\.avro\\..+"
           ]
         }
