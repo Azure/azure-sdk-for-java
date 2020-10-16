@@ -4,6 +4,7 @@
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Added support for setting access tier on a share through ShareClient.create, ShareClient.setAccessTier.
 - Added support for getting access tier on a share through ShareClient.getProperties, ShareServiceClient.listShares
+- Renamed setAccessTier to setProperties and deprecated setQuotaInGb in favor of setProperties.
 - Renamed DeleteSnapshotsOptionType to ShareSnapshotsDeleteOptionType in ShareClient.delete
 
 ## 12.7.0-beta.1 (2020-10-01)

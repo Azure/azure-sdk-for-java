@@ -7,17 +7,7 @@ package com.azure.ai.formrecognizer.training.models;
  * The metadata properties for a custom model.
  */
 public final class CustomFormModelProperties {
-    private final boolean isComposed;
-
-    // TODO: remove this constructor
-    /**
-     * Create an instance of CustomFormModelProperties
-     *
-     * @param isComposed is composed model.
-     */
-    public CustomFormModelProperties(final boolean isComposed) {
-        this.isComposed = isComposed;
-    }
+    private boolean isComposed;
 
     /**
      * Is this model composed?

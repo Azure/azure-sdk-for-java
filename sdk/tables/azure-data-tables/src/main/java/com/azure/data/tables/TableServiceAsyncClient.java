@@ -96,7 +96,7 @@ public class TableServiceAsyncClient {
      * @return The REST API version used by this client.
      */
     public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.valueOf(implementation.getVersion());
+        return TablesServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
@@ -104,10 +104,15 @@ public class TableServiceAsyncClient {
      *
      * @param tableName The name of the table.
      * @return A {@link TableAsyncClient} instance for the provided table in the account.
-     * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws NullPointerException if {@code tableName} is {@code null} or empty.
      */
     public TableAsyncClient getTableClient(String tableName) {
-        return new TableAsyncClient(tableName, implementation);
+        return new TableClientBuilder()
+            .pipeline(this.implementation.getHttpPipeline())
+            .serviceVersion(this.getApiVersion())
+            .endpoint(this.getServiceUrl())
+            .tableName(tableName)
+            .buildAsyncClient();
     }
 
     /**

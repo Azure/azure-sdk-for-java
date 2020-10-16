@@ -60,7 +60,7 @@ public final class TableAsyncClient {
     private final String accountName;
     private final String tableUrl;
 
-    TableAsyncClient(String tableName, AzureTableImpl implementation) {
+    private TableAsyncClient(String tableName, AzureTableImpl implementation) {
         try {
             if (tableName == null || tableName.isEmpty()) {
                 throw new IllegalArgumentException("'tableName' must be provided to create a TableClient");
@@ -77,10 +77,10 @@ public final class TableAsyncClient {
         this.tableName = tableName;
     }
 
-    TableAsyncClient(String tableName, HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
+    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TablesServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
         this(tableName, new AzureTableImplBuilder()
-            .url(url)
+            .url(serviceUrl)
             .serializerAdapter(serializerAdapter)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
@@ -121,7 +121,7 @@ public final class TableAsyncClient {
      * @return The REST API version used by this client.
      */
     public TablesServiceVersion getApiVersion() {
-        return TablesServiceVersion.valueOf(implementation.getVersion());
+        return TablesServiceVersion.fromString(implementation.getVersion());
     }
 
     /**

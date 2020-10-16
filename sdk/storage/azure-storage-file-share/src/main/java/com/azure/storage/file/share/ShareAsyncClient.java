@@ -27,7 +27,6 @@ import com.azure.storage.file.share.implementation.models.SharesGetPropertiesRes
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
-import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -43,9 +42,8 @@ import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
-import com.azure.storage.file.share.options.ShareSetAccessTierOptions;
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
-import com.azure.storage.file.share.options.ShareSetQuotaOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -552,7 +550,9 @@ public class ShareAsyncClient {
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return The {@link ShareInfo information about the share}
      * @throws ShareStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @deprecated Use {@link ShareAsyncClient#setProperties(ShareSetPropertiesOptions)}
      */
+    @Deprecated
     public Mono<ShareInfo> setQuota(int quotaInGB) {
         try {
             return setQuotaWithResponse(quotaInGB).flatMap(FluxUtil::toMono);
@@ -577,93 +577,67 @@ public class ShareAsyncClient {
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status
      * code
      * @throws ShareStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @deprecated Use {@link ShareAsyncClient#setPropertiesWithResponse(ShareSetPropertiesOptions)}
      */
+    @Deprecated
     public Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB) {
         try {
-            return setQuotaWithResponse(new ShareSetQuotaOptions(quotaInGB));
+            return setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaInGB));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Sets the maximum size in GB that the share is allowed to grow.
+     * Sets the share's properties.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Set the quota to 1024 GB</p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#ShareSetQuotaOptions}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareSetQuotaOptions}
-     * @return A response containing the {@link ShareInfo information about the share} with headers and response status
-     * code
-     */
-    public Mono<Response<ShareInfo>> setQuotaWithResponse(ShareSetQuotaOptions options) {
-        try {
-            StorageImplUtils.assertNotNull("options", options);
-            return withContext(context -> setPropertiesWithResponse(options.getQuotaInGb(), null,
-                options.getRequestConditions(), context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Sets the share's access tier.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessTier#ShareAccessTier}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setProperties#ShareSetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-properties">Azure Docs</a>.</p>
      *
-     * @param accessTier {@link ShareAccessTier}
+     * @param options {@link ShareSetPropertiesOptions}
      * @return The {@link ShareInfo information about the share}
      */
-    public Mono<ShareInfo> setAccessTier(ShareAccessTier accessTier) {
+    public Mono<ShareInfo> setProperties(ShareSetPropertiesOptions options) {
         try {
-            return setAccessTierWithResponse(new ShareSetAccessTierOptions(accessTier))
-                .map(Response::getValue);
+            return setPropertiesWithResponse(options).map(Response::getValue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Sets the share's access tier.
+     * Sets the share's properties.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessTierWithResponse#ShareSetAccessTierOptions}
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setPropertiesWithResponse#ShareSetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-properties">Azure Docs</a>.</p>
      *
-     * @param options {@link ShareSetQuotaOptions}
+     * @param options {@link ShareSetPropertiesOptions}
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status
      * code
      */
-    public Mono<Response<ShareInfo>> setAccessTierWithResponse(ShareSetAccessTierOptions options) {
+    public Mono<Response<ShareInfo>> setPropertiesWithResponse(ShareSetPropertiesOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
-            return withContext(context -> setPropertiesWithResponse(null, options.getAccessTier(),
-                options.getRequestConditions(), context));
+            return withContext(context -> setPropertiesWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ShareInfo>> setPropertiesWithResponse(Integer quotaInGb, ShareAccessTier accessTier,
-        ShareRequestConditions requestConditions, Context context) {
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+    Mono<Response<ShareInfo>> setPropertiesWithResponse(ShareSetPropertiesOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares().setPropertiesWithRestResponseAsync(shareName, null,
-            quotaInGb, accessTier, requestConditions.getLeaseId(),
+            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }

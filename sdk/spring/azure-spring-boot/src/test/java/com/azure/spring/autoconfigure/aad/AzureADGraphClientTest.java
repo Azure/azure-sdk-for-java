@@ -3,16 +3,16 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -39,23 +39,21 @@ public class AzureADGraphClientTest {
 
     @Test
     public void testConvertGroupToGrantedAuthorities() {
-
-        final List<UserGroup> userGroups = Collections.singletonList(
-            new UserGroup("testId", Constants.OBJECT_TYPE_GROUP, "Test_Group"));
-
-        final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
-        assertThat(authorities).hasSize(1).extracting(GrantedAuthority::getAuthority)
+        final Set<String> groups = ImmutableSet.of("Test_Group");
+        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups);
+        assertThat(authorities)
+            .hasSize(1)
+            .extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_Test_Group");
     }
 
     @Test
     public void testConvertGroupToGrantedAuthoritiesUsingAllowedGroups() {
-        final List<UserGroup> userGroups = Arrays
-            .asList(new UserGroup("testId", Constants.OBJECT_TYPE_GROUP, "Test_Group"),
-                new UserGroup("testId", Constants.OBJECT_TYPE_GROUP, "Another_Group"));
-        aadAuthenticationProperties.getUserGroup().getAllowedGroups().add("Another_Group");
-        final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
-        assertThat(authorities).hasSize(2).extracting(GrantedAuthority::getAuthority)
-            .containsExactly("ROLE_Test_Group", "ROLE_Another_Group");
+        final Set<String> groups = ImmutableSet.of("Test_Group", "Another_Group");
+        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups);
+        assertThat(authorities)
+            .hasSize(1)
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactly("ROLE_Test_Group");
     }
 }

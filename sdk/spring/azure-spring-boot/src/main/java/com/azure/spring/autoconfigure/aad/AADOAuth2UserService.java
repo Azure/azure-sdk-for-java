@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -44,7 +45,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
-        final Set<GrantedAuthority> mappedAuthorities;
+        final Set<SimpleGrantedAuthority> mappedAuthorities;
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
