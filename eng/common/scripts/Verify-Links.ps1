@@ -262,7 +262,10 @@ function GetLinks([System.Uri]$pageUri)
 
   return $links;
 }
-
+Write-Host "There are $($urls.length) files."
+foreach ($url in $urls) {
+  Write-Host "Sima: $url."
+}
 if ($urls) {
   if ($urls.Count -eq 0) {
     Write-Host "Usage $($MyInvocation.MyCommand.Name) <urls>";
