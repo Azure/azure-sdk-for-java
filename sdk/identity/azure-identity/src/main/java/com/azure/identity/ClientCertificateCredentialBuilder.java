@@ -49,7 +49,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     ClientCertificateCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.allowUnencryptedCache();
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 
