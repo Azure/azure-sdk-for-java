@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The ConnectionStateSnapshot model. */
+/** Connection state snapshot. */
 @Fluent
 public final class ConnectionStateSnapshot {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionStateSnapshot.class);

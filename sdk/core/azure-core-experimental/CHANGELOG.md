@@ -1,7 +1,21 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.7 (2020-10-08)
 
+- Added APIs to `JsonPatchDocument` which accept pre-serialized JSON.
+- Updated `azure-core` dependency to released version. 
+
+## 1.0.0-beta.6 (2020-10-06)
+
+- Added `BinaryData` abstraction to represent binary data and supports serialization through `ObjectSerializer`.
+
+## 1.0.0-beta.5 (2020-10-01)
+
+- Added `JsonPatchDocument` to support JSON Patch functionality.
+
+## 1.0.0-beta.4 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
 
 ## 1.0.0-beta.3 (2020-09-03)
 

@@ -15,51 +15,53 @@ import com.azure.resourcemanager.resources.samples.ManageResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class ResourceSampleTests extends SamplesTestBase {
     @Test
-    public void testDeployUsingARMTemplate() {
+    public void testDeployUsingARMTemplate() throws IOException, IllegalAccessException {
         if (isPlaybackMode()) {
             return;
         }
-        Assertions.assertTrue(DeployUsingARMTemplate.runSample(azure));
+        Assertions.assertTrue(DeployUsingARMTemplate.runSample(azureResourceManager));
     }
 
     @Test
-    public void testDeployUsingARMTemplateWithProgress() {
-        Assertions.assertTrue(DeployUsingARMTemplateWithProgress.runSample(azure));
+    public void testDeployUsingARMTemplateWithProgress() throws IOException, IllegalAccessException {
+        Assertions.assertTrue(DeployUsingARMTemplateWithProgress.runSample(azureResourceManager));
     }
 
     @Test
-    public void testDeployUsingARMTemplateAsync() {
-        Assertions.assertTrue(DeployUsingARMTemplateAsync.runSample(azure));
+    public void testDeployUsingARMTemplateAsync() throws InterruptedException {
+        Assertions.assertTrue(DeployUsingARMTemplateAsync.runSample(azureResourceManager));
     }
 
     @Test()
-    public void testDeployUsingARMTemplateWithDeploymentOperations() {
+    public void testDeployUsingARMTemplateWithDeploymentOperations() throws InterruptedException {
         if (isPlaybackMode()) {
-            Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azure, 0));
+            Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azureResourceManager, 0));
         } else {
-            Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azure, -1));
+            Assertions.assertTrue(DeployUsingARMTemplateWithDeploymentOperations.runSample(azureResourceManager, -1));
         }
     }
 
     @Test
-    public void testDeployUsingARMTemplateWithTags() {
-        Assertions.assertTrue(DeployUsingARMTemplateWithTags.runSample(azure));
+    public void testDeployUsingARMTemplateWithTags() throws IOException, IllegalAccessException {
+        Assertions.assertTrue(DeployUsingARMTemplateWithTags.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageResource() {
-        Assertions.assertTrue(ManageResource.runSample(azure));
+        Assertions.assertTrue(ManageResource.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageResourceGroup() {
-        Assertions.assertTrue(ManageResourceGroup.runSample(azure));
+        Assertions.assertTrue(ManageResourceGroup.runSample(azureResourceManager));
     }
 
     @Test
-    public void testDeployVirtualMachineUsingARMTemplate() {
-        Assertions.assertTrue(DeployVirtualMachineUsingARMTemplate.runSample(azure));
+    public void testDeployVirtualMachineUsingARMTemplate() throws IOException, IllegalAccessException {
+        Assertions.assertTrue(DeployVirtualMachineUsingARMTemplate.runSample(azureResourceManager));
     }
 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricSpecification model. */
+/** Specifications of the Metrics for Azure Monitoring. */
 @Fluent
 public final class MetricSpecification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);

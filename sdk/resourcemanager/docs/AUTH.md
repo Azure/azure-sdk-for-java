@@ -17,9 +17,9 @@ To use the APIs in the Azure Management Libraries for Java, as the first step yo
 
 ## Prerequisites
 
-* An [Azure tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant) for Graph RBAC.
-* An [Azure subscription](https://azure.microsoft.com/en-us/free/) for resource management.
-* An Azure Active Directory service principal. You can create a service principal via [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal), [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) or [Azure Powershell](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
+* An [Azure tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-create-new-tenant) for Graph RBAC.
+* An [Azure subscription](https://azure.microsoft.com/free/) for resource management.
+* An Azure Active Directory service principal. You can create a service principal via [Azure Portal](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal), [Azure CLI](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli) or [Azure Powershell](https://docs.microsoft.com/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
 
 ## Simple Authentication
 
@@ -75,15 +75,15 @@ EnvironmentCredential credential = new EnvironmentCredentialBuilder()
 Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
 
 ```java
-Azure azure = Azure.authenticate(credential, profile).withDefaultSubscription();
+AzureResourceManager azure = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
 ```
 
-The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/Azure.java#L200). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/Azure.java#L207).
+The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/AzureResourceManager.java#L200). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/AzureResourceManager.java#L207).
 
 ```java
-Azure.Authenticated authenticated = Azure.authenticate(credential, profile);
+AzureResourceManager.Authenticated authenticated = AzureResourceManager.authenticate(credential, profile);
 String subscriptionId = authenticated.subscriptions().list().iterator().next().subscriptionId();
-Azure azure = authenticated.withSubscription(subscriptionId);
+AzureResourceManager azure = authenticated.withSubscription(subscriptionId);
 ```
 
 ## Advanced Authentication
@@ -117,13 +117,13 @@ HttpPipeline httpPipeline = new HttpPipelineBuilder()
 Once your custom configurations are ready, you can move forward with below authenticating code. It would execute the settings you apply in the custom HttpPipeline.
 
 ```java
-Azure azure = Azure.authenticate(httpPipeline, profile).withDefaultSubscription();
+AzureResourceManager azure = AzureResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 ```
 
-If you want to configure part of http pipeline instead of building new one, you may set via `Azure::configure`.
+If you want to configure part of http pipeline instead of building new one, you may set via `AzureResourceManager::configure`.
 
 ```java
-Azure azure = Azure.configure()
+AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(customPolicy)
     .withRetryPolicy(customRetryPolicy)
     .withHttpClient(httpClient)

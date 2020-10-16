@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The UaxUrlEmailTokenizer model. */
+/** Tokenizes urls and emails as one token. This tokenizer is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.UaxUrlEmailTokenizer")
 @JsonFlatten
@@ -27,9 +27,13 @@ public class UaxUrlEmailTokenizer extends LexicalTokenizer {
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /** Creates an instance of UaxUrlEmailTokenizer class. */
+    /**
+     * Creates an instance of UaxUrlEmailTokenizer class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public UaxUrlEmailTokenizer(@JsonProperty(value = "name") String name) {
+    public UaxUrlEmailTokenizer(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -53,15 +57,5 @@ public class UaxUrlEmailTokenizer extends LexicalTokenizer {
     public UaxUrlEmailTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

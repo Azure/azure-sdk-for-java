@@ -33,6 +33,13 @@ jobs:
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
+        Java LTS Linux (AzureCloud Canary):
+          ProfileFlag: '-Pjava-lts'
+          JavaTestVersion: '1.11'
+          OSVmImage: ubuntu-18.04
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          Location: 'eastus2euap'
         Java 8 MacOS (AzureCloud):
           ProfileFlag: ''
           JavaTestVersion: '1.8'

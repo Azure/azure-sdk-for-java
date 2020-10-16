@@ -7,8 +7,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.azure.resourcemanager.servicebus.fluent.inner.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.Policykey;
@@ -84,30 +84,30 @@ abstract class AuthorizationRuleBaseImpl<
     }
 
     public List<AccessRights> rights() {
-        if (this.inner().rights() == null) {
+        if (this.innerModel().rights() == null) {
             return Collections.unmodifiableList(new ArrayList<AccessRights>());
         }
-        return Collections.unmodifiableList(this.inner().rights());
+        return Collections.unmodifiableList(this.innerModel().rights());
     }
 
     @SuppressWarnings("unchecked")
     public FluentModelImplT withListeningEnabled() {
-        if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<AccessRights>());
+        if (this.innerModel().rights() == null) {
+            this.innerModel().withRights(new ArrayList<AccessRights>());
         }
-        if (!this.inner().rights().contains(AccessRights.LISTEN)) {
-            this.inner().rights().add(AccessRights.LISTEN);
+        if (!this.innerModel().rights().contains(AccessRights.LISTEN)) {
+            this.innerModel().rights().add(AccessRights.LISTEN);
         }
         return (FluentModelImplT) this;
     }
 
     @SuppressWarnings("unchecked")
     public FluentModelImplT withSendingEnabled() {
-        if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<AccessRights>());
+        if (this.innerModel().rights() == null) {
+            this.innerModel().withRights(new ArrayList<AccessRights>());
         }
-        if (!this.inner().rights().contains(AccessRights.SEND)) {
-            this.inner().rights().add(AccessRights.SEND);
+        if (!this.innerModel().rights().contains(AccessRights.SEND)) {
+            this.innerModel().rights().add(AccessRights.SEND);
         }
         return (FluentModelImplT) this;
     }
@@ -116,8 +116,8 @@ abstract class AuthorizationRuleBaseImpl<
     public FluentModelImplT withManagementEnabled() {
         withListeningEnabled();
         withSendingEnabled();
-        if (!this.inner().rights().contains(AccessRights.MANAGE)) {
-            this.inner().rights().add(AccessRights.MANAGE);
+        if (!this.innerModel().rights().contains(AccessRights.MANAGE)) {
+            this.innerModel().rights().add(AccessRights.MANAGE);
         }
         return (FluentModelImplT) this;
     }

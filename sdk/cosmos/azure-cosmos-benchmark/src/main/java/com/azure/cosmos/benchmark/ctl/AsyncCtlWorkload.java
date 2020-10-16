@@ -36,10 +36,12 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
@@ -166,7 +168,7 @@ public class AsyncCtlWorkload {
             String sqlQuery = "Select top 100 * from c order by c._ts";
             obs = container.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else {
-            int index = random.nextInt(1000);
+            int index = random.nextInt(docsToRead.get(container.getId()).size());
             RequestOptions options = new RequestOptions();
             String partitionKeyValue = docsToRead.get(container.getId()).get(index).getId();
             options.setPartitionKey(new PartitionKey(partitionKeyValue));
@@ -188,9 +190,9 @@ public class AsyncCtlWorkload {
         writeFailureMeter = metricsRegistry.meter("#Write Unsuccessful Operations");
         querySuccessMeter = metricsRegistry.meter("#Query Successful Operations");
         queryFailureMeter = metricsRegistry.meter("#Query Unsuccessful Operations");
-        readLatency = metricsRegistry.timer("Read Latency");
-        writeLatency = metricsRegistry.timer("Write Latency");
-        queryLatency = metricsRegistry.timer("Query Latency");
+        readLatency = metricsRegistry.register("Read Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+        writeLatency = metricsRegistry.register("Write Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
+        queryLatency = metricsRegistry.register("Query Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
 
         reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         long startTime = System.currentTimeMillis();
@@ -204,14 +206,16 @@ public class AsyncCtlWorkload {
                 BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
                     readFailureMeter,
                     concurrencyControlSemaphore,
-                    count);
+                    count,
+                    configuration.getDiagnosticsThresholdDuration());
                 readSubscriber.context = readLatency.time();
                 performWorkload(readSubscriber, OperationType.Read, i);
             } else if (index < writeRange) {
                 BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(writeSuccessMeter,
                     writeFailureMeter,
                     concurrencyControlSemaphore,
-                    count);
+                    count,
+                    configuration.getDiagnosticsThresholdDuration());
                 writeSubscriber.context = writeLatency.time();
                 performWorkload(writeSubscriber, OperationType.Create, i);
 
@@ -219,7 +223,8 @@ public class AsyncCtlWorkload {
                 BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(querySuccessMeter,
                     queryFailureMeter,
                     concurrencyControlSemaphore,
-                    count);
+                    count,
+                    configuration.getDiagnosticsThresholdDuration());
                 querySubscriber.context = queryLatency.time();
                 performWorkload(querySubscriber, OperationType.Query, i);
             }
@@ -260,6 +265,8 @@ public class AsyncCtlWorkload {
 
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
+            AtomicLong successCount = new AtomicLong(0);
+            AtomicLong failureCount = new AtomicLong(0);
             ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
             for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
                 String uId = UUID.randomUUID().toString();
@@ -272,13 +279,23 @@ public class AsyncCtlWorkload {
                     PojoizedJson x =
                         resp.getItem();
                     return x;
+                }).onErrorResume(throwable -> {
+                    failureCount.incrementAndGet();
+                    logger.error("Error during pre populating item ", throwable.getMessage());
+                    return Mono.empty();
+                }).doOnSuccess(pojoizedJson -> {
+                    successCount.incrementAndGet();
                 }).flux();
                 createDocumentObservables.add(obs);
             }
-            logger.info("Finished pre-populating {} documents for container {}",
-                numberOfPreCreatedDocuments, container.getId());
             docsToRead.put(container.getId(),
                 Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block());
+            logger.info("Finished pre-populating {} documents for container {}",
+                successCount.get() - failureCount.get(), container.getId());
+            if (failureCount.get() > 0) {
+                logger.info("Failed pre-populating {} documents for container {}",
+                    failureCount.get(), container.getId());
+            }
         }
     }
 
@@ -288,7 +305,7 @@ public class AsyncCtlWorkload {
             cosmosAsyncDatabase.read().block();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosClient.createDatabase(cfg.getDatabaseId()).block();
+                cosmosClient.createDatabase(cfg.getDatabaseId(), ThroughputProperties.createManualThroughput(this.configuration.getThroughput())).block();
                 cosmosAsyncDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
                 databaseCreated = true;
@@ -314,8 +331,7 @@ public class AsyncCtlWorkload {
                 if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     cosmosAsyncDatabase.createContainer(
                         this.configuration.getCollectionId() + "_" + i,
-                        Configuration.DEFAULT_PARTITION_KEY_PATH,
-                        ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+                        Configuration.DEFAULT_PARTITION_KEY_PATH
                     ).block();
 
                     CosmosAsyncContainer cosmosAsyncContainer =

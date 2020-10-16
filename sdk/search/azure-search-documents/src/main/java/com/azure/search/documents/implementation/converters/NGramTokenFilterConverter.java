@@ -62,19 +62,13 @@ public final class NGramTokenFilterConverter {
         }
         String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         if (V1_ODATA_TYPE.equals(identifier)) {
-            com.azure.search.documents.indexes.implementation.models.NGramTokenFilter nGramTokenFilter =
-                new com.azure.search.documents.indexes.implementation.models.NGramTokenFilter(obj.getName())
-                    .setMaxGram(obj.getMaxGram())
-                    .setMinGram(obj.getMinGram());
-            nGramTokenFilter.validate();
-            return nGramTokenFilter;
+            return new com.azure.search.documents.indexes.implementation.models.NGramTokenFilter(obj.getName())
+                .setMaxGram(obj.getMaxGram())
+                .setMinGram(obj.getMinGram());
         } else {
-            com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2 nGramTokenFilter =
-                new com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2(obj.getName())
-                    .setMaxGram(obj.getMaxGram())
-                    .setMinGram(obj.getMinGram());
-            nGramTokenFilter.validate();
-            return nGramTokenFilter;
+            return new com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2(obj.getName())
+                .setMaxGram(obj.getMaxGram())
+                .setMinGram(obj.getMinGram());
         }
     }
 

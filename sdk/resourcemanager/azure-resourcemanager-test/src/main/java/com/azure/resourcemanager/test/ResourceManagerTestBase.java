@@ -28,12 +28,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,7 +206,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             policies.add(new CookiePolicy());
-            if (!interceptorManager.isLiveMode()) {
+            if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }
             httpPipeline = buildHttpPipeline(
@@ -209,7 +214,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
-                generateHttpClientWithProxy(null));
+                generateHttpClientWithProxy(null, null));
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
@@ -220,8 +225,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         initializeClients(httpPipeline, testProfile);
     }
 
-    private HttpClient generateHttpClientWithProxy(ProxyOptions proxyOptions) {
-        NettyAsyncHttpClientBuilder clientBuilder = new NettyAsyncHttpClientBuilder();
+    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions) {
+        if (clientBuilder == null) {
+            clientBuilder = new NettyAsyncHttpClientBuilder();
+        }
         if (proxyOptions != null) {
             clientBuilder.proxy(proxyOptions);
         } else {
@@ -270,6 +277,76 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private void addTextReplacementRules(Map<String, String> rules) {
         for (Map.Entry<String, String> entry : rules.entrySet()) {
             interceptorManager.addTextReplacementRule(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * Sets sdk context when running the tests
+     *
+     * @param internalContext the internal runtime context
+     * @param objects the manager classes to change internal context
+     * @param <T> the type of internal context
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <T> void setInternalContext(T internalContext, Object... objects) {
+        try {
+            for (Object obj : objects) {
+                for (final Field field : obj.getClass().getSuperclass().getDeclaredFields()) {
+                    if (field.getName().equals("resourceManager")) {
+                        setAccessible(field);
+                        Field context = field.get(obj).getClass().getDeclaredField("internalContext");
+                        setAccessible(context);
+                        context.set(field.get(obj), internalContext);
+                    }
+                }
+                for (Field field : obj.getClass().getDeclaredFields()) {
+                    if (field.getName().equals("internalContext")) {
+                        setAccessible(field);
+                        field.set(obj, internalContext);
+                    } else if (field.getName().contains("Manager")) {
+                        setAccessible(field);
+                        setInternalContext(internalContext, field.get(obj));
+                    }
+                }
+            }
+        } catch (IllegalAccessException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (NoSuchFieldException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
+    }
+
+    private void setAccessible(final Field field) {
+        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            field.setAccessible(true);
+            return null;
+        });
+    }
+
+    /**
+     * Builds the manager with provided http pipeline and profile in general manner.
+     *
+     * @param manager the class of the manager
+     * @param httpPipeline the http pipeline
+     * @param profile the azure profile
+     * @param <T> the type of the manager
+     * @return the manager instance
+     * @throws RuntimeException when field cannot be found or set.
+     */
+    protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
+        try {
+            Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                constructor.setAccessible(true);
+                return null;
+            });
+            return constructor.newInstance(httpPipeline, profile);
+
+        } catch (NoSuchMethodException
+            | IllegalAccessException
+            | InstantiationException
+            | InvocationTargetException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
         }
     }
 

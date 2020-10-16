@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualWanSecurityProvider model. */
+/** Collection of SecurityProviders. */
 @Fluent
 public final class VirtualWanSecurityProvider {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvider.class);

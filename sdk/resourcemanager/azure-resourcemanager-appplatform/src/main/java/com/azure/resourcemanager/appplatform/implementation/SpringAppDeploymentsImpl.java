@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployments;
@@ -100,8 +100,7 @@ public class SpringAppDeploymentsImpl
         return inner == null ? null : new SpringAppDeploymentImpl(inner.name(), parent(), inner);
     }
 
-    @Override
     public DeploymentsClient inner() {
-        return manager().inner().getDeployments();
+        return manager().serviceClient().getDeployments();
     }
 }

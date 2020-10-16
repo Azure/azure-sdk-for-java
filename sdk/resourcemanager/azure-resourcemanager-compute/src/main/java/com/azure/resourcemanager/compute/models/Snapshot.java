@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
+import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -18,13 +18,6 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface Snapshot
     extends GroupableResource<ComputeManager, SnapshotInner>, Refreshable<Snapshot>, Updatable<Snapshot.Update> {
-    /**
-     * @return the snapshot SKU type.
-     * @deprecated use {@link Snapshot#skuType()} instead.
-     */
-    @Deprecated
-    DiskSkuTypes sku();
-
     /** @return the snapshot SKU type. */
     SnapshotSkuType skuType();
 
@@ -133,8 +126,7 @@ public interface Snapshot
             WithCreate withWindowsFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Windows OS VHD
-             * when it belongs to the same subscription.
+             * Specifies the source specialized or generalized Windows OS VHD when it belongs to the same subscription.
              *
              * @param vhdUrl the source VHD URL
              * @return the next stage of the definition
@@ -142,8 +134,7 @@ public interface Snapshot
             WithCreate withWindowsFromVhd(String vhdUrl);
 
             /**
-             * Specifies the source specialized or generalized Windows OS VHD
-             * and the storage account ID.
+             * Specifies the source specialized or generalized Windows OS VHD and the storage account ID.
              *
              * @param vhdUrl the source VHD URL
              * @param storageAccountId the storage account ID
@@ -187,8 +178,7 @@ public interface Snapshot
             WithCreate withLinuxFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Linux OS VHD
-             * when it belongs to the same subscription.
+             * Specifies the source specialized or generalized Linux OS VHD when it belongs to the same subscription.
              *
              * @param vhdUrl the source VHD URL
              * @return the next stage of the definition
@@ -196,8 +186,7 @@ public interface Snapshot
             WithCreate withLinuxFromVhd(String vhdUrl);
 
             /**
-             * Specifies the source specialized or generalized Linux OS VHD
-             * and the storage account ID.
+             * Specifies the source specialized or generalized Linux OS VHD and the storage account ID.
              *
              * @param vhdUrl the source VHD URL
              * @param storageAccountId the storage account ID
@@ -353,16 +342,6 @@ public interface Snapshot
             /**
              * Specifies the SKU type.
              *
-             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
-             * @param sku SKU type
-             * @return the next stage of the definition
-             */
-            @Deprecated
-            WithCreate withSku(DiskSkuTypes sku);
-
-            /**
-             * Specifies the SKU type.
-             *
              * @param sku SKU type
              * @return the next stage of the definition
              */
@@ -386,16 +365,6 @@ public interface Snapshot
     interface UpdateStages {
         /** The stage of the managed snapshot update allowing to choose account type. */
         interface WithSku {
-            /**
-             * Specifies the SKU type.
-             *
-             * @deprecated use {@link WithSku#withSku(SnapshotSkuType)} instead.
-             * @param sku SKU type
-             * @return the next stage of the update
-             */
-            @Deprecated
-            Update withSku(DiskSkuTypes sku);
-
             /**
              * Specifies the SKU type.
              *

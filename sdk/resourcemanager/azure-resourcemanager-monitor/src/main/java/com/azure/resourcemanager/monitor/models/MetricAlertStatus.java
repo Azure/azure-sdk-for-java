@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MetricAlertStatus model. */
+/** An alert status. */
 @Fluent
 public final class MetricAlertStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatus.class);

@@ -40,13 +40,16 @@ import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
+import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
@@ -66,15 +69,15 @@ import static org.junit.Assert.fail;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosTemplateIT {
     private static final Person TEST_PERSON = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES,
-        ADDRESSES);
+        ADDRESSES, AGE);
 
     private static final Person TEST_PERSON_2 = new Person(ID_2,
         NEW_FIRST_NAME,
-        NEW_LAST_NAME, HOBBIES, ADDRESSES);
+        NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
 
     private static final Person TEST_PERSON_3 = new Person(ID_3,
         NEW_FIRST_NAME,
-        NEW_LAST_NAME, HOBBIES, ADDRESSES);
+        NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
 
@@ -139,7 +142,7 @@ public class CosmosTemplateIT {
 
     @Test(expected = CosmosAccessException.class)
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
-        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
+        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE);
         cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));
     }
 
@@ -205,7 +208,7 @@ public class CosmosTemplateIT {
             + "_"
             + UUID.randomUUID().toString();
         final Person newPerson = new Person(TEST_PERSON.getId(), firstName,
-            NEW_FIRST_NAME, null, null);
+            NEW_FIRST_NAME, null, null, AGE);
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
 
@@ -218,7 +221,7 @@ public class CosmosTemplateIT {
     @Test
     public void testUpdateWithReturnEntity() {
         final Person updated = new Person(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
-            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
+            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses(), AGE);
         updated.set_etag(insertedPerson.get_etag());
 
         final Person updatedPerson = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), updated);
@@ -233,7 +236,7 @@ public class CosmosTemplateIT {
     @Test
     public void testUpdate() {
         final Person updated = new Person(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
-            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
+            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses(), AGE);
         updated.set_etag(insertedPerson.get_etag());
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), updated);
@@ -247,7 +250,7 @@ public class CosmosTemplateIT {
     @Test
     public void testOptimisticLockWhenUpdatingWithWrongEtag() {
         final Person updated = new Person(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
-            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
+            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses(), AGE);
         updated.set_etag(WRONG_ETAG);
 
         try {
@@ -446,8 +449,8 @@ public class CosmosTemplateIT {
 
     @Test
     public void testFindAllWithTwoPagesAndVerifySortOrder() {
-        final Person testPerson4 = new Person("id_4", "barney", NEW_LAST_NAME, HOBBIES, ADDRESSES);
-        final Person testPerson5 = new Person("id_5", "fred", NEW_LAST_NAME, HOBBIES, ADDRESSES);
+        final Person testPerson4 = new Person("id_4", "barney", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+        final Person testPerson5 = new Person("id_5", "fred", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
 
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
@@ -501,5 +504,24 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testArrayContainsCriteria() {
+        Criteria hasHobby = Criteria.getInstance(CriteriaType.ARRAY_CONTAINS, "hobbies",
+            Collections.singletonList(HOBBY1), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(hasHobby), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testBetweenCriteria() {
+        Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
+            Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(ageBetween), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON);
     }
 }

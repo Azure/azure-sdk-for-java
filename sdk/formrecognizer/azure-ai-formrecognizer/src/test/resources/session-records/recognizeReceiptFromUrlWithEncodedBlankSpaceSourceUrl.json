@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//prebuilt/receipt/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a6aeec61-960f-411e-8aea-ed3baf7867e6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dda8e32f-0ef9-4d39-a89a-6d62bec2faf2",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "4265",
+      "x-envoy-upstream-service-time" : "657",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "29ad6911-3e05-4f95-9138-4f16f0b347eb",
+      "apim-request-id" : "c7b167f4-db55-4db5-a732-9964e4393fcf",
       "retry-after" : "0",
+      "Content-Length" : "170",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"29ad6911-3e05-4f95-9138-4f16f0b347eb\"},\"message\":\"Failed to download image from input URL.\"}}",
-      "Date" : "Thu, 06 Aug 2020 22:36:15 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidImage\",\"innerError\":{\"requestId\":\"c7b167f4-db55-4db5-a732-9964e4393fcf\"},\"message\":\"The input data is not a valid image or password protected.\"}}",
+      "Date" : "Wed, 14 Oct 2020 23:07:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

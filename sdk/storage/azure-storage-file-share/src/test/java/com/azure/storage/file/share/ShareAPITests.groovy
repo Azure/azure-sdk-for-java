@@ -7,15 +7,31 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareAccessPolicy
+import com.azure.storage.file.share.models.ShareAccessTier
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
+import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareSnapshotInfo
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareDeleteOptions
+import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions
+import com.azure.storage.file.share.options.ShareGetPropertiesOptions
+import com.azure.storage.file.share.options.ShareGetStatisticsOptions
+import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions
+import com.azure.storage.file.share.options.ShareSetMetadataOptions
+
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 class ShareAPITests extends APISpec {
     ShareClient primaryShareClient
@@ -51,7 +67,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         when:
         ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot()
-        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
         ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
                 .buildClient()
         def shareURL = newShareClient.getShareUrl()
@@ -112,11 +128,12 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(metadata, quota, null, null), 201)
 
         where:
-        metadata     | quota
-        null         | null
-        null         | 1
-        testMetadata | null
-        testMetadata | 1
+        metadata     | quota | accessTier
+        null         | null  | null
+        null         | 1     | null
+        testMetadata | null  | null
+        null         | null  | ShareAccessTier.HOT
+        testMetadata | 1     | ShareAccessTier.HOT
     }
 
     @Unroll
@@ -192,6 +209,54 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202)
     }
 
+    def "Delete share delete snapshot options"() {
+        setup:
+        primaryShareClient.create()
+        def snap1 = primaryShareClient.createSnapshot().getSnapshot()
+        def snap2 = primaryShareClient.createSnapshot().getSnapshot()
+
+        when:
+        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE),null, null)
+
+        then:
+        !primaryShareClient.getSnapshotClient(snap1).exists()
+        !primaryShareClient.getSnapshotClient(snap2).exists()
+    }
+
+    def "Delete share delete snapshot options error"() {
+        setup:
+        primaryShareClient.create()
+        primaryShareClient.createSnapshot().getSnapshot()
+        primaryShareClient.createSnapshot().getSnapshot()
+
+        when:
+        primaryShareClient.deleteWithResponse(new ShareDeleteOptions(),null, null)
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    def "Delete share lease"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 202)
+    }
+
+    def "Delete share lease error"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        primaryShareClient.deleteWithResponse(new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
+    }
+
     def "Delete share error"() {
         when:
         primaryShareClient.delete()
@@ -212,6 +277,27 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
         testMetadata == getPropertiesResponse.getValue().getMetadata()
         getPropertiesResponse.getValue().getQuota() == 1
+    }
+
+    def "Get properties lease"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),null, null), 200)
+    }
+
+    def "Get properties lease error"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
     }
 
     def "Get properties error"() {
@@ -241,7 +327,147 @@ class ShareAPITests extends APISpec {
         shareProperties.getProvisionedIops()
     }
 
-    def "Set quota"() {
+    def "Set access policy"() {
+        setup:
+        primaryShareClient.create()
+        def identifier = new ShareSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .setPermissions("r"))
+
+        def ids = [identifier] as List
+
+        when:
+        primaryShareClient.setAccessPolicy(ids)
+
+        then:
+        primaryShareClient.getAccessPolicy().iterator().next().getId() == "0000"
+    }
+
+    def "Set access policy ids"() {
+        setup:
+        primaryShareClient.create()
+        def identifier = new ShareSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(1))
+                .setPermissions("r"))
+        def identifier2 = new ShareSignedIdentifier()
+            .setId("0001")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(getUTCNow())
+                .setExpiresOn(getUTCNow().plusDays(2))
+                .setPermissions("w"))
+        def ids = [identifier, identifier2] as List
+
+        when:
+        def response = primaryShareClient.setAccessPolicyWithResponse(ids, null, null)
+        def receivedIdentifiers = primaryShareClient.getAccessPolicy().iterator()
+
+        then:
+        response.getStatusCode() == 200
+        validateBasicHeaders(response.getHeaders())
+        def id0 = receivedIdentifiers.next()
+        id0.getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn()
+        id0.getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn()
+        id0.getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+        def id1 = receivedIdentifiers.next()
+        id1.getAccessPolicy().getExpiresOn() == identifier2.getAccessPolicy().getExpiresOn()
+        id1.getAccessPolicy().getStartsOn() == identifier2.getAccessPolicy().getStartsOn()
+        id1.getAccessPolicy().getPermissions() == identifier2.getAccessPolicy().getPermissions()
+    }
+
+    def "Set access policy lease"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        expect:
+        primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null).getStatusCode() == 200
+    }
+
+    def "Set access policy lease error"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        primaryShareClient.setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    def "Set access policy error"() {
+        when:
+        primaryShareClient.setAccessPolicy(null)
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    def "Get access policy"() {
+        setup:
+        primaryShareClient.create()
+        def identifier = new ShareSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(getUTCNow().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .setPermissions("r"))
+
+        def ids = [identifier] as List
+        primaryShareClient.setAccessPolicy(ids)
+
+        when:
+        def id = primaryShareClient.getAccessPolicy().iterator().next()
+
+        then:
+        id.getId() == identifier.getId()
+        id.getAccessPolicy().getStartsOn() == identifier.getAccessPolicy().getStartsOn()
+        id.getAccessPolicy().getExpiresOn() == identifier.getAccessPolicy().getExpiresOn()
+        id.getAccessPolicy().getPermissions() == identifier.getAccessPolicy().getPermissions()
+    }
+
+    def "Get access policy lease"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        when:
+        def response = primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)))
+
+        then:
+        !response.iterator().hasNext()
+    }
+
+    def "Get access policy lease error"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID))).iterator().hasNext()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    def "Get access policy error"() {
+        when:
+        primaryShareClient.getAccessPolicy().iterator().hasNext()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
+    def "Set properties quota"() {
         given:
         primaryShareClient.createWithResponse(null, 1, null, null)
 
@@ -256,9 +482,54 @@ class ShareAPITests extends APISpec {
         getQuotaAfterResponse.getQuota() == 2
     }
 
-    def "Set quota error"() {
+    def "Set properties access tier"() {
+        given:
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+        def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
+
         when:
-        primaryShareClient.setQuota(2)
+        def getAccessTierBeforeResponse = primaryShareClient.getProperties()
+        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null)
+        def getAccessTierAfterResponse = primaryShareClient.getProperties()
+
+        then:
+        getAccessTierBeforeResponse.getAccessTier() == ShareAccessTier.HOT.toString()
+        FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
+        getAccessTierAfterResponse.getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
+        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
+        getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
+        getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
+    }
+
+    def "Set properties lease"() {
+        given:
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        when:
+        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
+    }
+
+    def "Set properties lease error"() {
+        given:
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    def "Set properties error"() {
+        when:
+        primaryShareClient.setProperties(new ShareSetPropertiesOptions())
         then:
         def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
@@ -278,6 +549,31 @@ class ShareAPITests extends APISpec {
         testMetadata == getMetadataBeforeResponse.getMetadata()
         FileTestHelper.assertResponseStatusCode(setMetadataResponse, 200)
         metadataAfterSet == getMetadataAfterResponse.getMetadata()
+    }
+
+    def "Set metadata lease"() {
+        given:
+        primaryShareClient.createWithResponse(null, 1, null, null)
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        when:
+        def resp = primaryShareClient.setMetadataWithResponse(new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+    }
+
+    def "Set metadata lease error"() {
+        given:
+        primaryShareClient.createWithResponse(null, 1, null, null)
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        primaryShareClient.setMetadataWithResponse(
+            new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
     }
 
     def "Set metadata error"() {
@@ -309,6 +605,30 @@ class ShareAPITests extends APISpec {
         Constants.KB            || 1
         Constants.GB            || 1
         (long) 3 * Constants.GB || 3
+    }
+
+    def "Get statistics lease"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, receivedLeaseID)
+
+        when:
+        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 200)
+    }
+
+    def "Get statistics lease error"() {
+        setup:
+        primaryShareClient.create()
+        def leaseID = setupShareLeaseCondition(primaryShareClient, garbageLeaseID)
+
+        when:
+        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
+
+        then:
+        thrown(ShareStorageException)
     }
 
     def "Get statistics error"() {
@@ -558,6 +878,20 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE)
     }
 
+    def "getSnapshot"() {
+        setup:
+        primaryShareClient.create()
+        def snapshotId = primaryShareClient.createSnapshot().getSnapshot()
+
+        when:
+        def snapClient = primaryShareClient.getSnapshotClient(snapshotId)
+
+        then:
+        snapClient.getSnapshotId() == snapshotId
+        snapClient.getShareUrl().contains("sharesnapshot=")
+        primaryShareClient.getSnapshotId() == null
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -573,5 +907,21 @@ class ShareAPITests extends APISpec {
     def "Get Share Name"() {
         expect:
         shareName == primaryShareClient.getShareName()
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        primaryShareClient.create()
+
+        def shareClient = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = shareClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

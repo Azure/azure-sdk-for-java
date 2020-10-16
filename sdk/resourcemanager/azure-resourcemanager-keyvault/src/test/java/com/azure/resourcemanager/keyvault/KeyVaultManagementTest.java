@@ -13,7 +13,7 @@ import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
@@ -51,11 +51,10 @@ public class KeyVaultManagementTest extends ResourceManagerTestBase {
         rgName = generateRandomResourceName("javacsmrg", 15);
         vaultName = generateRandomResourceName("java-keyvault-", 20);
 
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        resourceManager = keyVaultManager.resourceManager();
     }
 
     @Override

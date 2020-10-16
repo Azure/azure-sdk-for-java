@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicy;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyState;
-import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl
@@ -50,7 +50,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -64,13 +64,13 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
                 this.accountName,
                 this.containerName,
-                this.eTagState.ifMatchValueOnUpdate(this.inner().etag()),
+                this.eTagState.ifMatchValueOnUpdate(this.innerModel().etag()),
                 this.uImmutabilityPeriodSinceCreationInDays,
                 null)
             .map(innerToFluentMap(this))
@@ -83,43 +83,43 @@ class ImmutabilityPolicyImpl
 
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
-        BlobContainersClient client = this.manager().inner().getBlobContainers();
+        BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public String etag() {
-        return this.inner().etag();
+        return this.innerModel().etag();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public int immutabilityPeriodSinceCreationInDays() {
-        return this.inner().immutabilityPeriodSinceCreationInDays();
+        return this.innerModel().immutabilityPeriodSinceCreationInDays();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public ImmutabilityPolicyState state() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override

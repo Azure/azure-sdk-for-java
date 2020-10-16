@@ -19,6 +19,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -31,18 +32,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class BuilderHelper {
+final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-data-tables.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
     static HttpPipeline buildPipeline(TablesSharedKeyCredential tablesSharedKeyCredential,
-        TokenCredential tokenCredential, SasTokenCredential sasTokenCredential,
-        String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
-        HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
-        Configuration configuration, ClientLogger logger) {
-
+                                      TokenCredential tokenCredential, SasTokenCredential sasTokenCredential,
+                                      String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
+                                      HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
+                                      Configuration configuration, ClientLogger logger) {
         //1
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(getUserAgentPolicy(configuration));
@@ -62,9 +62,12 @@ class BuilderHelper {
         if (tablesSharedKeyCredential != null) {
             credentialPolicy = new TablesSharedKeyCredentialPolicy(tablesSharedKeyCredential);
         } else if (tokenCredential != null) {
-            httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", getPrimaryEndpointForTokenAuth(endpoint)));
+            UrlBuilder endpointParts = UrlBuilder.parse(endpoint);
+            if (!endpointParts.getScheme().equals(Constants.HTTPS)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "HTTPS is required when using a %s credential.", tokenCredential.getClass().getName())));
+            }
+            credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getBearerTokenScope(endpointParts));
         } else if (sasTokenCredential != null) {
             credentialPolicy = new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
@@ -113,14 +116,16 @@ class BuilderHelper {
 
     /**
      * @param endpoint The endpoint passed by the customer.
-     * @return The primary endpoint for the account. It may be the same endpoint passed if it is already a primary or it
-     * may have had "-secondary" stripped from the end of the account name.
+     * @return The bearer token scope for the primary endpoint for the account. It may be the same endpoint passed if it
+     * is already a primary or it may have had "-secondary" stripped from the end of the account name.
      */
-    private static String getPrimaryEndpointForTokenAuth(String endpoint) {
-        String[] parts = endpoint.split("\\.");
-        parts[0] = parts[0].endsWith("-secondary") ? parts[0].substring(0, parts[0].length() - "-secondary".length())
-            : parts[0];
-        return String.join(".", parts);
+    private static String getBearerTokenScope(UrlBuilder endpoint) {
+        String[] hostParts = endpoint.getHost().split("\\.");
+        if (hostParts[0].endsWith("-secondary")) {
+            hostParts[0] = hostParts[0].substring(0, hostParts[0].length() - 10); // Strip off the '-secondary' suffix
+            endpoint.setHost(String.join(".", hostParts));
+        }
+        return String.format("%s/.default", endpoint.toString());
     }
 
     /**
@@ -130,6 +135,7 @@ class BuilderHelper {
      */
     private static HttpLogOptions getDefaultHttpLogOptions() {
         HttpLogOptions defaultOptions = new HttpLogOptions();
+        // TODO
         //BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
         //BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
@@ -147,20 +153,4 @@ class BuilderHelper {
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build();
     }
-
-    /**
-     * Validates that the client is properly configured to use https.
-     *
-     * @param objectToCheck The object to check for.
-     * @param objectName The name of the object.
-     * @param endpoint The endpoint for the client.
-     * @param logger the logger
-     */
-    private static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
-//        if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
-//            throw logger.logExceptionAsError(new IllegalArgumentException(
-//                "Using a(n) " + objectName + " requires https"));
-//        }
-    }
-
 }

@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ErrorResponse model. */
+/** Error response. */
 @Fluent
 public final class ErrorResponse {
     /*
@@ -34,5 +34,16 @@ public final class ErrorResponse {
     public ErrorResponse setError(Error error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getError() != null) {
+            getError().validate();
+        }
     }
 }
