@@ -58,7 +58,7 @@ public final class Option<T> {
      * Return {@code true} if this instance is initialized with a null-value or non-null-value,
      * otherwise {@code false}.
      *
-     * @return {@code true} if there is a value present, otherwise {@code false}
+     * @return {@code true} if a value has been initialized, otherwise {@code false}
      */
     public boolean isInitialized() {
         return this.isInitialized;
@@ -67,12 +67,13 @@ public final class Option<T> {
     /**
      * Gets the value in the {@link Option}.
      *
-     * @return The value.
-     * @throws NoSuchElementException thrown if the {@link Option} has no value.
+     * @return The {@code null} (null-value) or non-null-value that the {@link Option}
+     *     is initialized with.
+     * @throws NoSuchElementException thrown if the {@link Option} is in no-value state.
      */
     public T getValue() {
         if (!this.isInitialized) {
-            throw new NoSuchElementException("No value present");
+            throw new NoSuchElementException("No value initialized");
         }
         return this.value;
     }
