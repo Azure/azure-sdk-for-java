@@ -31,8 +31,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
     private final StopWatch durationTimer = new StopWatch();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
-        this.goneRetryPolicy = new GoneRetryPolicy(request, waitTimeInSeconds);
-        this.retryWithRetryPolicy = new RetryWithRetryPolicy(request, waitTimeInSeconds);
+        this.goneRetryPolicy = new GoneRetryPolicy(request, waitTimeInSeconds, durationTimer);
+        this.retryWithRetryPolicy = new RetryWithRetryPolicy(request, waitTimeInSeconds, this.durationTimer);
         startStopWatch(this.durationTimer);
     }
 
@@ -42,13 +42,13 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         return this.retryWithRetryPolicy.shouldRetry(exception)
                                         .flatMap((retryWithResult) -> {
 
-            if (retryWithResult.exception != null || retryWithResult.shouldRetry) {
+            if (retryWithResult.shouldRetry) {
                 return Mono.just(retryWithResult);
             }
 
             return this.goneRetryPolicy.shouldRetry(exception)
                 .flatMap((goneRetryResult) -> {
-                    if (!retryWithResult.shouldRetry) {
+                    if (!goneRetryResult.shouldRetry) {
                         logger.warn("Operation will NOT be retried. Exception:",
                             exception);
                         stopStopWatch(this.durationTimer);
@@ -81,16 +81,20 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         private volatile int attemptCount = 1;
         private volatile int attemptCountInvalidPartition = 1;
         private volatile int currentBackoffSeconds = GoneRetryPolicy.INITIAL_BACKOFF_TIME;
-        private final StopWatch durationTimer = new StopWatch();
+        private final StopWatch durationTimer;
         private final int waitTimeInSeconds;
         //TODO once this is moved to IRetryPolicy, remove from here.
         public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
             Duration.ofSeconds(60), 0);
 
-        public GoneRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
+        public GoneRetryPolicy(
+            RxDocumentServiceRequest request,
+            Integer waitTimeInSeconds,
+            StopWatch durationTimer) {
+
             checkNotNull(request, "request must not be null.");
             this.request = request;
-
+            this.durationTimer = durationTimer;
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
         }
 
@@ -103,10 +107,9 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                 return true;
             }
 
-
             if (exception instanceof InvalidPartitionException) {
-                return this.request.getPartitionKeyRangeIdentity() != null &&
-                    this.request.getPartitionKeyRangeIdentity().getCollectionRid() != null;
+                return this.request.getPartitionKeyRangeIdentity() == null ||
+                    this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null;
             }
 
             return false;
@@ -172,7 +175,6 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         "to the service because they aren't idempotent. Current attempt {}, Exception: ",
                     this.attemptCount,
                     exception);
-                stopStopWatch(this.durationTimer);
 
                 return Mono.just(ShouldRetryResult.noRetry(
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount)));
@@ -183,8 +185,6 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             if (this.attemptCount++ > 1) {
                 if (remainingSeconds <= 0) {
                     exceptionToThrow = logAndWrapExceptionWithLastRetryWithException(exception);
-                    stopStopWatch(this.durationTimer);
-
                     return Mono.just(ShouldRetryResult.error(exceptionToThrow));
                 }
 
@@ -227,12 +227,12 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleGoneException(GoneException exception) {
-            logger.debug("Received gone exception, will retry, {}", exception.toString());
+            logger.info("Received gone exception, will retry, {}", exception.toString());
             return Pair.of(null, true); // indicate we are in retry.
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionIsMigratingException(PartitionIsMigratingException exception) {
-            logger.warn("Received PartitionIsMigratingException, will retry, {}", exception.toString());
+            logger.info("Received PartitionIsMigratingException, will retry, {}", exception.toString());
             this.request.forceCollectionRoutingMapRefresh = true;
             return Pair.of(null, true);
         }
@@ -260,13 +260,11 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                     false);
             }
 
-            logger.warn("Received invalid collection exception, will retry, {}", exception.toString());
+            logger.info("Received invalid collection exception, will retry, {}", exception.toString());
             this.request.forceNameCacheRefresh = true;
 
             return Pair.of(null, false);
         }
-
-
     }
 
     static class RetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
@@ -280,13 +278,17 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         private volatile int currentBackoffMilliseconds = RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS;
 
         private final int waitTimeInSeconds;
+        private final StopWatch durationTimer;
         //TODO once this is moved to IRetryPolicy, remove from here.
         public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
             Duration.ofSeconds(60), 0);
 
-        public RetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
+        public RetryWithRetryPolicy(RxDocumentServiceRequest request,
+                                    Integer waitTimeInSeconds,
+                                    StopWatch durationTimer) {
             this.request = request;
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
+            this.durationTimer = durationTimer;
         }
 
         @Override
@@ -307,10 +309,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             int currentRetryAttemptCount = this.attemptCount++;
 
             if (remainingMilliseconds <= 0) {
-                logger.warn("Received retrywith exception after backoff/retry. Will fail the request.",
+                logger.debug("Received retrywith exception after backoff/retry. Will fail the request.",
                     lastRetryWithException);
-
-                stopStopWatch(this.durationTimer);
                 return Mono.just(ShouldRetryResult.error(lastRetryWithException));
             }
 
@@ -327,7 +327,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofMillis(RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS);
 
-            logger.warn("Received retrywith exception, will retry, ", exception);
+            logger.info("Received RetryWithException, will retry, ", exception);
 
             // For RetryWithException, prevent the caller
             // from refreshing any caches.
