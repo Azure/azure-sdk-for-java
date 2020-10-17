@@ -25,12 +25,15 @@ import java.time.Duration;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
+    private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final GoneRetryPolicy goneRetryPolicy;
     private final RetryWithRetryPolicy retryWithRetryPolicy;
+    private final StopWatch durationTimer = new StopWatch();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.goneRetryPolicy = new GoneRetryPolicy(request, waitTimeInSeconds);
         this.retryWithRetryPolicy = new RetryWithRetryPolicy(request, waitTimeInSeconds);
+        startStopWatch(this.durationTimer);
     }
 
     @Override
@@ -43,12 +46,32 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                 return Mono.just(retryWithResult);
             }
 
-            return this.goneRetryPolicy.shouldRetry(exception);
+            return this.goneRetryPolicy.shouldRetry(exception)
+                .flatMap((goneRetryResult) -> {
+                    if (!retryWithResult.shouldRetry) {
+                        logger.warn("Operation will NOT be retried. Exception:",
+                            exception);
+                        stopStopWatch(this.durationTimer);
+                    }
+
+                    return Mono.just(goneRetryResult);
+                });
         });
     }
 
+    private void stopStopWatch(StopWatch stopwatch) {
+        synchronized (stopwatch) {
+            stopwatch.stop();
+        }
+    }
+
+    private void startStopWatch(StopWatch stopwatch) {
+        synchronized (stopwatch) {
+            stopwatch.start();
+        }
+    }
+
     static class GoneRetryPolicy extends RetryPolicyWithDiagnostics {
-        private final static Logger logger = LoggerFactory.getLogger(GoneRetryPolicy.class);
         private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
         private final static int MAXIMUM_BACKOFF_TIME_IN_SECONDS = 15;
         private final static int INITIAL_BACKOFF_TIME = 1;
@@ -67,7 +90,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         public GoneRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
             checkNotNull(request, "request must not be null.");
             this.request = request;
-            startStopWatch(this.durationTimer);
+
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
         }
 
@@ -137,9 +160,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             boolean forceRefreshAddressCache;
             if (!isRetryableException(exception)) {
 
-                logger.warn("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
+                logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
-                stopStopWatch(this.durationTimer);
                 return Mono.just(ShouldRetryResult.noRetry());
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
@@ -244,21 +266,10 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             return Pair.of(null, false);
         }
 
-        private void stopStopWatch(StopWatch stopwatch) {
-            synchronized (stopwatch) {
-                stopwatch.stop();
-            }
-        }
 
-        private void startStopWatch(StopWatch stopwatch) {
-            synchronized (stopwatch) {
-                stopwatch.start();
-            }
-        }
     }
 
     static class RetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
-        private final static Logger logger = LoggerFactory.getLogger(RetryWithRetryPolicy.class);
         private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
         private final static int MAXIMUM_BACKOFF_TIME_IN_MS = 15000;
         private final static int INITIAL_BACKOFF_TIME_MS = 10;
@@ -267,7 +278,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         private final RxDocumentServiceRequest request;
         private volatile int attemptCount = 1;
         private volatile int currentBackoffMilliseconds = RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS;
-        private final StopWatch durationTimer = new StopWatch();
+
         private final int waitTimeInSeconds;
         //TODO once this is moved to IRetryPolicy, remove from here.
         public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
@@ -275,7 +286,6 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
 
         public RetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
             this.request = request;
-            startStopWatch(this.durationTimer);
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
         }
 
@@ -287,7 +297,6 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             if (!(exception instanceof RetryWithException)) {
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
-                stopStopWatch(this.durationTimer);
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
@@ -324,18 +333,6 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             // from refreshing any caches.
             return Mono.just(ShouldRetryResult.retryAfter(backoffTime,
                 Quadruple.with(false, true, timeout, currentRetryAttemptCount)));
-        }
-
-        private void stopStopWatch(StopWatch stopwatch) {
-            synchronized (stopwatch) {
-                stopwatch.stop();
-            }
-        }
-
-        private void startStopWatch(StopWatch stopwatch) {
-            synchronized (stopwatch) {
-                stopwatch.start();
-            }
         }
     }
 }
