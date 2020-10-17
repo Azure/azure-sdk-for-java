@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -123,12 +122,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param tracerProvider Tracer for telemetry.
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
-     * @param maxAutoRenewLockDuration for which lock should be renewed.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-        Duration maxAutoRenewLockDuration) {
+        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -138,7 +135,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
-        this.maxAutoRenewLockDuration = maxAutoRenewLockDuration;
+        this.maxAutoRenewLockDuration = receiverOptions.getMaxLockRenewDuration();
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
@@ -153,7 +150,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-        Duration maxAutoRenewLockDuration, ServiceBusSessionManager sessionManager) {
+        ServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -164,7 +161,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
-        this.maxAutoRenewLockDuration = maxAutoRenewLockDuration;
+        this.maxAutoRenewLockDuration = receiverOptions.getMaxLockRenewDuration();
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
@@ -1083,18 +1080,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             })
             .repeat();
 
-        final LinkErrorContext errorContext = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName, null);
-
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy,
-                receiverOptions.getReceiveMode(), errorContext));
-
-        final boolean isAutoLockRenewal = maxAutoRenewLockDuration != null && !maxAutoRenewLockDuration.isZero();
+                receiverOptions.getReceiveMode()));
 
         ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, receiverOptions.getPrefetchCount(), isAutoLockRenewal, maxAutoRenewLockDuration,
-            renewalContainer, this::renewMessageLock);
+            messageSerializer, receiverOptions, renewalContainer, this::renewMessageLock);
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.

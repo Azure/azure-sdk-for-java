@@ -9,12 +9,10 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Operators;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 
 /**
@@ -31,11 +29,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
     private final Duration maxAutoLockRenewal;
     private final LockContainer<LockRenewalOperation> messageLockContainer;
     private final CoreSubscriber<? super ServiceBusReceivedMessage> actual;
-
-    private volatile Subscription subscription;
-    private static final AtomicReferenceFieldUpdater<LockRenewSubscriber, Subscription> UPSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(LockRenewSubscriber.class, Subscription.class,
-            "subscription");
 
     LockRenewSubscriber(CoreSubscriber<? super ServiceBusReceivedMessage> actual, Duration maxAutoLockRenewDuration,
         LockContainer<LockRenewalOperation> messageLockContainer,
@@ -56,12 +49,7 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null.");
-        if (Operators.setOnce(UPSTREAM, this, subscription)) {
-            this.subscription = subscription;
-            actual.onSubscribe(subscription);
-        } else {
-            logger.error("Already subscribed once.");
-        }
+        actual.onSubscribe(subscription);
     }
 
     /**
@@ -81,12 +69,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
     }
 
     @Override
-    protected void hookOnCancel() {
-        logger.error("Upstream cancelled.");
-        subscription.cancel();
-    }
-
-    @Override
     protected void hookOnNext(ServiceBusReceivedMessage message) {
         final String lockToken = message.getLockToken();
         final OffsetDateTime lockedUntil = message.getLockedUntil();
@@ -95,14 +77,19 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         if (!Objects.isNull(lockedUntil) && !Objects.isNull(lockToken)) {
 
             renewOperation = new LockRenewalOperation(lockToken, maxAutoLockRenewal, false, onRenewLock,
-                lockedUntil);
+                lockedUntil, message::setLockedUntil);
+
             try {
-                messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal), renewOperation);
+                messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),
+                    renewOperation);
             } catch (Exception e) {
-                logger.error("Exception occurred while updating lockContainer.", e);
+                logger.error("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
+                System.out.println(getClass().getName() + " !!!! Exception occurred while updating lockContainer. ");
+                onError(e);
             }
         } else {
-
+            logger.warning("Unexpected, LockToken [{}] or lockedUntil [{}] is not present for message [{}].",
+                lockToken, lockedUntil, message.getSequenceNumber());
             renewOperation = COMPLETED_ONE;
         }
 

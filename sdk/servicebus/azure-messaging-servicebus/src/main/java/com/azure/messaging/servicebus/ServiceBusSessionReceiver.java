@@ -183,7 +183,6 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-
         return receiveLink.updateDisposition(lockToken, deliveryState);
     }
 

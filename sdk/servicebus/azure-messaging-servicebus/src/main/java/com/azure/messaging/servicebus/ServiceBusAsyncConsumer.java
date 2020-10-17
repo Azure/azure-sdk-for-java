@@ -33,19 +33,23 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final Flux<ServiceBusReceivedMessage> messageSource;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
-        MessageSerializer messageSerializer, int prefetch, boolean autoLockRenewal,
-        Duration maxAutoLockRenewDuration, LockContainer<LockRenewalOperation> messageLockContainer,
-        Function<String, Mono<OffsetDateTime>> onRenewLock) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions,
+        LockContainer<LockRenewalOperation> messageLockContainer, Function<String, Mono<OffsetDateTime>> onRenewLock) {
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
 
         Flux<ServiceBusReceivedMessage> source = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .publish(prefetch)
+            .publish(receiverOptions.getPrefetchCount())
             .autoConnect(1);
 
-        if (autoLockRenewal) {
+        final Duration maxAutoLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
+
+        final boolean isAutoLockRenewal = maxAutoLockRenewDuration != null
+            && !maxAutoLockRenewDuration.isZero() && !maxAutoLockRenewDuration.isNegative();
+
+        if (isAutoLockRenewal) {
             this.messageSource = new ServiceBusMessageRenewOperator(source, maxAutoLockRenewDuration,
                 messageLockContainer, onRenewLock);
         } else {

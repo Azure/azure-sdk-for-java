@@ -18,9 +18,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -89,7 +88,7 @@ class ServiceBusAsyncConsumerTest {
         when(link.getEndpointStates()).thenReturn(endpointStateFlux);
         when(link.receive()).thenReturn(messageFlux);
         linkProcessor = linkFlux.subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy,
-            ReceiveMode.RECEIVE_AND_DELETE, null));
+            ReceiveMode.RECEIVE_AND_DELETE));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -110,16 +109,16 @@ class ServiceBusAsyncConsumerTest {
     /**
      * Verifies that we can receive messages from the processor and it does not auto complete them.
      */
-    @ValueSource(booleans = {true, false})
-    @ParameterizedTest
-    void receiveNoAutoComplete(boolean autoLockRenewal) {
+    @Test
+    void receiveNoAutoComplete() {
         // Arrange
         final int prefetch = 10;
-        Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
-        OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
+        final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
+        final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+            receiverOptions, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -155,16 +154,17 @@ class ServiceBusAsyncConsumerTest {
     /**
      * Verifies that if we dispose the consumer, it also completes.
      */
-    @ValueSource(booleans = {true, false})
-    @ParameterizedTest
-    void canDispose(boolean autoLockRenewal) {
+    @Test
+    void canDispose() {
         // Arrange
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+            receiverOptions, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -193,16 +193,17 @@ class ServiceBusAsyncConsumerTest {
     /**
      * Verifies that if publisher errors out, it also complete with error.
      */
-    @ValueSource(booleans = {true, false})
-    @ParameterizedTest
-    void onError(boolean autoLockRenewal) {
+    @Test
+    void onError() {
         // Arrange
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, prefetch, "sessionId", false, 1, maxAutoLockRenewDuration);
+
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-            prefetch, autoLockRenewal, maxAutoLockRenewDuration, messageLockContainer, onRenewLock);
+            receiverOptions, messageLockContainer, onRenewLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);

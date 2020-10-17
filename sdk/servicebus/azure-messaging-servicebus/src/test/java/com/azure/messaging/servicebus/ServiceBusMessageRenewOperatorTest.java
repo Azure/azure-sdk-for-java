@@ -17,6 +17,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -81,15 +82,17 @@ public class ServiceBusMessageRenewOperatorTest {
 
         when(renewalFunction.apply(LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> renewLockedUntil));
+        final TestPublisher<ServiceBusReceivedMessage> messages = TestPublisher.create();
+        final Flux<? extends ServiceBusReceivedMessage> messageSource = messages.flux();
 
-        final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message});
-
-        ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
+        final ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act & Assert
-
         StepVerifier.create(renewOperator.take(1))
+            .then(() -> {
+                messages.next(message);
+            })
             .expectNextMatches(actual -> {
                 try {
                     // Assuming the processing time for the message
@@ -127,9 +130,10 @@ public class ServiceBusMessageRenewOperatorTest {
         when(renewalFunction.apply(LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> renewLockedUntil));
 
-        final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message, message});
+        final TestPublisher<ServiceBusReceivedMessage> messages = TestPublisher.create();
+        final Flux<? extends ServiceBusReceivedMessage> messageSource = messages.flux();
 
-        ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
+        final ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
             MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
 
         // Act
@@ -139,6 +143,8 @@ public class ServiceBusMessageRenewOperatorTest {
             },
                 throwable -> onErrorCalled.set(true),
                 () -> onCompleteCalled.set(true));
+
+        messages.next(message);
         TimeUnit.SECONDS.sleep(waitForSubscriberSeconds);
 
         // Assert
@@ -163,7 +169,8 @@ public class ServiceBusMessageRenewOperatorTest {
         when(renewalFunction.apply(LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> renewLockedUntil));
 
-        final Flux<? extends ServiceBusReceivedMessage> messageSource = Flux.fromArray(new ServiceBusReceivedMessage[]{message});
+        final TestPublisher<ServiceBusReceivedMessage> messages = TestPublisher.create();
+        final Flux<? extends ServiceBusReceivedMessage> messageSource = messages.flux();
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> new ServiceBusMessageRenewOperator(null,

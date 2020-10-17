@@ -54,6 +54,7 @@ final class ServiceBusMessageRenewOperator extends FluxOperator<ServiceBusReceiv
         if (!lockRenewSubscriber.compareAndSet(null, newLockRenewSubscriber)) {
             newLockRenewSubscriber.dispose();
             logger.error("Already subscribed once.");
+            return;
         }
         source.subscribe(lockRenewSubscriber.get());
     }
