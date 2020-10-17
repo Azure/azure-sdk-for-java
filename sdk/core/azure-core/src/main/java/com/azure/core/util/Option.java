@@ -9,6 +9,9 @@ import java.util.NoSuchElementException;
  * The Option type to describe tri-state. Every Option instance is in one of
  * the three states: a state representing a non-null-value, null-value, or no-value.
  *
+ * <p><strong>Code sample</strong></p>
+ * {@codesnippet com.azure.core.util.Option}
+ *
  * @param <T> The value type.
  */
 public final class Option<T> {

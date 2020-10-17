@@ -18,11 +18,11 @@ public class OptionSerializerTests {
     public void canSerializeExplicitNull() throws IOException {
         PatchModel model = new PatchModel();
 
-        model.sku = Option.of(null);
+        model.setSku(Option.of(null));
         String serialized = new JacksonAdapter().serialize(model, SerializerEncoding.JSON);
         Assertions.assertEquals("{\"sku\":null}", serialized);
 
-        model.sku = Option.empty();
+        model.setSku(Option.empty());
         serialized = new JacksonAdapter().serialize(model, SerializerEncoding.JSON);
         Assertions.assertEquals("{\"sku\":null}", serialized);
     }
@@ -37,7 +37,7 @@ public class OptionSerializerTests {
     @Test
     public void shouldIgnoreUninitialized() throws IOException {
         PatchModel model = new PatchModel();
-        model.sku = Option.uninitialized();
+        model.setSku(Option.uninitialized());
         String serialized = new JacksonAdapter().serialize(model, SerializerEncoding.JSON);
         Assertions.assertEquals("{}", serialized);
     }
@@ -45,13 +45,18 @@ public class OptionSerializerTests {
     @Test
     public void canSerializeNonNullValue() throws IOException {
         PatchModel model = new PatchModel();
-        model.sku = Option.of("basic");
+        model.setSku(Option.of("basic"));
         String serialized = new JacksonAdapter().serialize(model, SerializerEncoding.JSON);
         Assertions.assertEquals("{\"sku\":\"basic\"}", serialized);
     }
 
     private static class PatchModel {
         @JsonProperty("sku")
-        public Option<String> sku;
+        private Option<String> sku;
+
+        PatchModel setSku(Option<String> sku) {
+            this.sku = sku;
+            return this;
+        }
     }
 }
