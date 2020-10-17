@@ -3,18 +3,27 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.ConnectException;
+import java.net.HttpRetryException;
 import java.net.NoRouteToHostException;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.net.UnknownServiceException;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.InterruptedByTimeoutException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -100,6 +109,33 @@ public class WebExceptionUtilityTest {
                 },
                 {
                         new ChannelException(), true
+                },
+                {
+                        new IOException(), false
+                },
+                {
+                        new ClosedChannelException(), true
+                },
+                {
+                        new SocketException(), true
+                },
+                {
+                        new SSLException("dummy"), true
+                },
+                {
+                        new UnknownServiceException(), true
+                },
+                {
+                        new HttpRetryException("dummy", 500), true
+                },
+                {
+                        new InterruptedByTimeoutException(), true
+                },
+                {
+                        new InterruptedIOException(), true
+                },
+                {
+                        new JsonMappingException(null, "dummy"), false
                 }
         };
     }
