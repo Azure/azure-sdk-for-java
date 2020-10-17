@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -69,8 +68,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             checkNotNull(request, "request must not be null.");
             this.request = request;
             startStopWatch(this.durationTimer);
-            this.waitTimeInSeconds = Objects.requireNonNullElse(waitTimeInSeconds,
-                DEFAULT_WAIT_TIME_IN_SECONDS);
+            this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
         }
 
         private boolean isRetryableException(Exception exception) {
@@ -278,8 +276,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         public RetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
             this.request = request;
             startStopWatch(this.durationTimer);
-            this.waitTimeInSeconds = Objects.requireNonNullElse(waitTimeInSeconds,
-                DEFAULT_WAIT_TIME_IN_SECONDS);
+            this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
         }
 
         @Override
