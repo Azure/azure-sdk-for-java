@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
@@ -11,11 +10,9 @@ import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 
 public class ServiceBusTopicSubscriptionManager extends AzureManager<ServiceBusSubscription, Tuple<Topic, String>> {
 
-    private final Azure azure;
 
-    public ServiceBusTopicSubscriptionManager(Azure azure, AzureProperties azureProperties) {
+    public ServiceBusTopicSubscriptionManager(AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
     }
 
     @Override

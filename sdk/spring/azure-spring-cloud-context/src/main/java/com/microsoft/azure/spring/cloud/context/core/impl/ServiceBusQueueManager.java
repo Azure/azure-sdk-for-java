@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
@@ -11,11 +10,9 @@ import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 
 public class ServiceBusQueueManager extends AzureManager<Queue, Tuple<ServiceBusNamespace, String>> {
 
-    private final Azure azure;
     
-    public ServiceBusQueueManager(Azure azure, AzureProperties azureProperties) {
+    public ServiceBusQueueManager(AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
     }
 
     @Override

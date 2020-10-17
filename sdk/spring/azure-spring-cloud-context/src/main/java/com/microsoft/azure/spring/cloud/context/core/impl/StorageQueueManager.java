@@ -3,22 +3,19 @@
 
 package com.microsoft.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
+import java.net.URISyntaxException;
+
 import com.microsoft.azure.spring.cloud.context.core.config.AzureProperties;
 import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
-import java.net.URISyntaxException;
 
 public class StorageQueueManager extends AzureManager<CloudQueue, Tuple<CloudStorageAccount, String>> {
 
-    private final Azure azure;
-
-    public StorageQueueManager(Azure azure, AzureProperties azureProperties) {
+    public StorageQueueManager(AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
     }
 
     @Override
