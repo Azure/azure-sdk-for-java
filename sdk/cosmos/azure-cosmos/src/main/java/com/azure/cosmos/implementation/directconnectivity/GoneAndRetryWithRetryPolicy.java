@@ -26,7 +26,6 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
-    private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final GoneRetryPolicy goneRetryPolicy;
     private final RetryWithRetryPolicy retryWithRetryPolicy;
 
