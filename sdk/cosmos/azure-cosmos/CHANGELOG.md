@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.8.0-beta.1 (Unreleased)
+
+
 ### 4.7.0 (2020-10-17)
 #### New Features
 * Added Beta for transactional batches.
