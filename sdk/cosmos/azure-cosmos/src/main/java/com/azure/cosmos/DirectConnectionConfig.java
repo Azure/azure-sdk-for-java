@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.util.Beta;
 import io.netty.channel.ChannelOption;
 
 import java.time.Duration;
@@ -52,6 +53,7 @@ public final class DirectConnectionConfig {
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public boolean isConnectionEndpointRediscoveryEnabled() {
         return this.connectionEndpointRediscoveryEnabled;
     }
@@ -68,6 +70,7 @@ public final class DirectConnectionConfig {
      *
      * @return the {@linkplain DirectConnectionConfig}.
      */
+    @Beta(Beta.SinceVersion.V4_8_0)
     public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
         this.connectionEndpointRediscoveryEnabled = connectionEndpointRediscoveryEnabled;
         return this;
