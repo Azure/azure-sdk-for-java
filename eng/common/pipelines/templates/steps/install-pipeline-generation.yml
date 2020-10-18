@@ -1,0 +1,8 @@
+steps:
+  - script: >
+      dotnet tool install
+      Azure.Sdk.Tools.PipelineGenerator
+      --version 1.0.2-dev.20200502.1
+      --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk/nuget/v3/index.json
+      --global
+    displayName: 'Install pipeline generator tool'
