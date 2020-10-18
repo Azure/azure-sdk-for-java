@@ -7,7 +7,7 @@ pr:
       - feature/*
 
 extends:
-  template: /eng/common/pipelines/steps/prepare-pipelines.yml
+  template: /eng/common/pipelines/templates/steps/prepare-pipelines.yml
   parameters:
     Repository: $(Build.Repository.Name)
     Prefix: java
