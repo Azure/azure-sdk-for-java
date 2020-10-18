@@ -66,9 +66,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Authenticated azureAuthed =
-            AzureResourceManager.authenticate(httpPipeline, profile);
-        azureResourceManager = azureAuthed.withDefaultSubscription();
+        azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
         setInternalContext(internalContext, azureResourceManager);
     }
 

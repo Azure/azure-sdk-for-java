@@ -3,48 +3,60 @@
 
 package com.azure.core.experimental.jsonpatch;
 
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
+
 /**
  * Represents the JSON Patch operation kind.
  */
-public enum JsonPatchOperationKind {
+public final class JsonPatchOperationKind extends ExpandableStringEnum<JsonPatchOperationKind> {
     /**
      * Add operation.
      */
-    ADD("add"),
+    public static final JsonPatchOperationKind ADD = JsonPatchOperationKind.fromString("add");
 
     /**
      * Remove operation.
      */
-    REMOVE("remove"),
+    public static final JsonPatchOperationKind REMOVE = JsonPatchOperationKind.fromString("remove");
 
     /**
      * Replace operation.
      */
-    REPLACE("replace"),
+    public static final JsonPatchOperationKind REPLACE = JsonPatchOperationKind.fromString("replace");
 
     /**
      * Move operation.
      */
-    MOVE("move"),
+    public static final JsonPatchOperationKind MOVE = JsonPatchOperationKind.fromString("move");
 
     /**
      * Copy operation.
      */
-    COPY("copy"),
+    public static final JsonPatchOperationKind COPY = JsonPatchOperationKind.fromString("copy");
 
     /**
      * Test operation.
      */
-    TEST("test");
+    public static final JsonPatchOperationKind TEST = JsonPatchOperationKind.fromString("test");
 
-    private final String operation;
-
-    JsonPatchOperationKind(String operation) {
-        this.operation = operation;
+    /**
+     * Creates or finds a JsonPatchOperationKind from its string representation.
+     *
+     * @param name The JsonPatchOperationKind name.
+     * @return The corresponding JsonPatchOperationKind.
+     */
+    @JsonCreator
+    public static JsonPatchOperationKind fromString(String name) {
+        return fromString(name, JsonPatchOperationKind.class);
     }
 
-    @Override
-    public String toString() {
-        return operation;
+    /**
+     * @return The known JsonPatchOperationKind values.
+     */
+    public static Collection<JsonPatchOperationKind> values() {
+        return values(JsonPatchOperationKind.class);
     }
 }

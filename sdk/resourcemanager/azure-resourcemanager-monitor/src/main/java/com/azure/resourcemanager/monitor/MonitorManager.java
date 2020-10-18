@@ -61,7 +61,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
      * @param profile the profile to use
      * @return the MonitorManager
      */
-    public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new MonitorManager(httpPipeline, profile);
     }
 

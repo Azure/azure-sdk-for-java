@@ -7,17 +7,15 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.azure.digitaltwins.core.models.BasicRelationship;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestAssetDefaults.*;
@@ -305,7 +303,7 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             }
 
             AtomicInteger outgoingRelationshipsPageCount = new AtomicInteger();
-            // List models in multiple pages and verify more than one page was retrieved.
+            // List relationships in multiple pages and verify more than one page was retrieved.
             StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
                 .thenConsumeWhile(
                     page -> {
@@ -326,14 +324,14 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             assertThat(outgoingRelationshipsPageCount.get()).isGreaterThan(1);
 
             AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
-            // List models in multiple pages and verify more than one page was retrieved.
-            StepVerifier.create(asyncClient.listRelationships(floorTwinId, BasicRelationship.class).byPage())
+            // List relationships in multiple pages and verify more than one page was retrieved.
+            StepVerifier.create(asyncClient.listIncomingRelationships(floorTwinId, null).byPage())
                 .thenConsumeWhile(
                     page -> {
                         incomingRelationshipsPageCount.getAndIncrement();
                         logger.info("content for this page " + incomingRelationshipsPageCount);
-                        for (BasicRelationship relationship : page.getValue()) {
-                            logger.info(relationship.getId());
+                        for (IncomingRelationship relationship : page.getValue()) {
+                            logger.info(relationship.getSourceId());
                         }
 
                         if (page.getContinuationToken() != null) {

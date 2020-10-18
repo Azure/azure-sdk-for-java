@@ -10,9 +10,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-servicebus-queue-stream-binder</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-servicebus-queue-stream-binder;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-queue-stream-binder;current} -->
 
   <name>Azure Spring Cloud Stream Service Bus Queue Binder</name>
   <description>Azure Service Bus Queue binder for Spring Cloud Stream</description>
@@ -25,9 +25,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-servicebus-stream-binder-core</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-servicebus-stream-binder-core;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-servicebus-stream-binder-core;current} -->
     </dependency>
 
     <dependency>
@@ -38,9 +38,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-stream-binder-test;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.

@@ -71,7 +71,7 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * @param profile the profile to use
      * @return the StorageManager
      */
-    public static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AppServiceManager(httpPipeline, profile);
     }
 
@@ -103,10 +103,15 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        storageManager = StorageManager.authenticate(httpPipeline, profile);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
+        keyVaultManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, KeyVaultManager.configure())
+            .authenticate(null, profile);
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+        dnsZoneManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, DnsZoneManager.configure())
+            .authenticate(null, profile);
     }
 
     /** @return the authorization manager instance. */
