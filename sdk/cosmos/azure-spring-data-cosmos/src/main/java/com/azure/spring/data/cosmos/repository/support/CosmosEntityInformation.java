@@ -32,7 +32,7 @@ import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpr
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
-    private static final Function<Class<?>, CosmosEntityInformation<?, ?>> entityInformationCreator =
+    private static final Function<Class<?>, CosmosEntityInformation<?, ?>> ENTITY_INFORMATION_CREATOR =
         Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
 
     private static CosmosEntityInformation<?, ?> getCosmosEntityInformation(Class<?> domainClass) {
@@ -46,7 +46,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return new CosmosEntityInformation
      */
     public static CosmosEntityInformation<?, ?> getInstance(Class<?> domainClass) {
-        return entityInformationCreator.apply(domainClass);
+        return ENTITY_INFORMATION_CREATOR.apply(domainClass);
     }
 
     private final Field id;

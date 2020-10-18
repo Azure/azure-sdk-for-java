@@ -19,6 +19,7 @@ import com.azure.storage.file.share.models.ShareSmbSettings
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.SmbMultichannel
 import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -197,7 +198,7 @@ class FileServiceAPITests extends APISpec {
         def share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue()
 
         def time = getUTCNow().truncatedTo(ChronoUnit.SECONDS)
-        share.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED)
+        share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED))
 
         when:
         def shares = primaryFileServiceClient.listShares(null, null, null).iterator()

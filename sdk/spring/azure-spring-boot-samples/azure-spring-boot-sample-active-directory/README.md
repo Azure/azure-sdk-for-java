@@ -135,6 +135,7 @@ msalProvider.init(
 
 ### Step 6: Give it a run
 
+First, we need to ensure that this [instruction] is completed before run.
    - Use Maven 
 
      ```
@@ -150,3 +151,6 @@ msalProvider.init(
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

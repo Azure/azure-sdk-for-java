@@ -4,7 +4,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.models.BasicDigitalTwin;
-import com.azure.digitaltwins.core.models.QueryTwinsOptions;
+import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -73,7 +73,7 @@ public class QueryAsyncTests extends QueryTestBase{
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             AtomicInteger pageCount = new AtomicInteger(0);
-            StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, new QueryTwinsOptions().setMaxItemsPerPage(pageSize)).byPage())
+            StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize)).byPage())
                 .thenConsumeWhile(digitalTwinsPage ->  {
                     pageCount.incrementAndGet();
                     if (digitalTwinsPage.getContinuationToken() != null) {

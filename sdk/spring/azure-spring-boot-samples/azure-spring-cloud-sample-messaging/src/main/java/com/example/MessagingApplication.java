@@ -3,7 +3,7 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.annotation.EnableAzureMessaging;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

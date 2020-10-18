@@ -3,14 +3,11 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.time.OffsetDateTime;
 
 /**
  * The CustomFormModelInfo model.
  */
-@Immutable
 public final class CustomFormModelInfo {
 
     /*
@@ -32,6 +29,10 @@ public final class CustomFormModelInfo {
      * Date and time (UTC) when the model training was completed.
      */
     private final OffsetDateTime trainingCompletedOn;
+
+    private String modelName;
+
+    private CustomFormModelProperties customFormModelProperties;
 
     /**
      * Constructs a {@link CustomFormModelInfo} object.
@@ -85,4 +86,21 @@ public final class CustomFormModelInfo {
         return this.trainingCompletedOn;
     }
 
+    /**
+     * Get model metadata properties.
+     *
+     * @return the custom model metadata properties.
+     */
+    public CustomFormModelProperties getCustomModelProperties() {
+        return customFormModelProperties;
+    }
+
+    /**
+     * Get the user defined model display name.
+     *
+     * @return the modelName value.
+     */
+    public String getModelName() {
+        return modelName;
+    }
 }

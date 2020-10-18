@@ -10,16 +10,16 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-starter-storage</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-starter-storage;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-starter-storage;current} -->
 
   <name>Azure Spring Cloud Starter Storage</name>
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-storage</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-cloud-storage;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

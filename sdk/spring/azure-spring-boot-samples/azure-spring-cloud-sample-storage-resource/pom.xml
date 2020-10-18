@@ -10,8 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>azure-spring-cloud-sample-storage-resource</artifactId>
-  <groupId>com.azure</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-spring-cloud-sample-storage-resource;current} -->
+  <groupId>com.azure.spring</groupId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-storage-resource;current} -->
   <name>Azure Spring Cloud Storage Sample</name>
 
   <dependencyManagement>
@@ -28,9 +28,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-starter-storage</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-starter-storage;current} -->
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-starter-storage;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

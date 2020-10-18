@@ -1758,6 +1758,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions options,
         Class<T> klass) {
 
+        String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             OperationType.Query,
             ResourceType.Document,
@@ -1829,7 +1830,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         // create the executable query
                         return createReadManyQuery(
-                            collectionLink,
+                            resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
                             Document.class,
@@ -3567,7 +3568,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else {
             if ((request.getOperationType() == OperationType.Query || request.getOperationType() == OperationType.SqlQuery) &&
                     Utils.isCollectionChild(request.getResourceType())) {
-                if (request.getPartitionKeyRangeIdentity() == null) {
+                // Go to gateway only when partition key range and partition key are not set. This should be very rare
+                if (request.getPartitionKeyRangeIdentity() == null &&
+                        request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) == null) {
                     return this.gatewayProxy;
                 }
             }

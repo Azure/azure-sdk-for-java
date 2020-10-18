@@ -3,8 +3,8 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.core.AzureHeaders;
-import com.microsoft.azure.spring.integration.core.api.reactor.Checkpointer;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.integration.annotation.ServiceActivator;

@@ -109,7 +109,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
 
             // LIST incoming relationships
             List<String> incomingRelationshipsSourceIds = new ArrayList<>();
-            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new DigitalTwinsListIncomingRelationshipsOptions(), Context.NONE);
+            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId, new ListIncomingRelationshipsOptions(), Context.NONE);
             listIncomingRelationships.forEach(incomingRelationship -> incomingRelationshipsSourceIds.add(incomingRelationship.getSourceId()));
             assertThat(incomingRelationshipsSourceIds)
                 .as("Floor has incoming relationships from room and hvac")
@@ -252,14 +252,14 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             assertThat(outgoingRelationshipsPageCount.get()).isGreaterThan(1);
 
             // LIST incoming relationships
-            PagedIterable<BasicRelationship> listIncomingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
+            PagedIterable<IncomingRelationship> listIncomingRelationships = client.listIncomingRelationships(floorTwinId);
 
             AtomicInteger incomingRelationshipsPageCount = new AtomicInteger();
             listIncomingRelationships.iterableByPage().forEach(relationshipsPagedResponse -> {
                 incomingRelationshipsPageCount.getAndIncrement();
                 logger.info("content for this page " + incomingRelationshipsPageCount);
-                for (BasicRelationship data: relationshipsPagedResponse.getValue()) {
-                    logger.info(data.getId());
+                for (IncomingRelationship data: relationshipsPagedResponse.getValue()) {
+                    logger.info(data.getRelationshipId());
                 }
 
                 if (relationshipsPagedResponse.getContinuationToken() != null) {
