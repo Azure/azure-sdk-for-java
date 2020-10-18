@@ -6,8 +6,6 @@ parameters:
   UPConventionOptions:
   TestsConventionOptions: 
 
-trigger: none
-
 steps:
   - template: templates/steps/install-pipeline-generation.yml
   - script: |

@@ -1,5 +1,11 @@
 trigger: none
 
+pr:
+  branches:
+    include:
+      - master
+      - feature/*
+
 extends:
   template: /eng/common/pipelines/steps/prepare-pipelines.yml
   Repository: $(Build.Repository.Name)
