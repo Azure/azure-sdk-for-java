@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.administration;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.CreateSearchOptions;
@@ -29,7 +27,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
 
 public class ReadmeSamples {
-
+    
     /**
      * Sample code for creating a sync Communication Identity Client.
      *

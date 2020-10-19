@@ -264,16 +264,16 @@ The Phone Number Client supports a variety of long running operations that allow
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L370-L380 -->
 ```java
-PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        res.waitForCompletion();
+        PhoneNumberSearch result = res.getFinalResult();
 
-SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
-    phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
-res.waitForCompletion();
-PhoneNumberSearch result = res.getFinalResult();
-
-System.out.println("Search Id: " + result.getSearchId());
-for (String phoneNumber: result.getPhoneNumbers()) {
-    System.out.println("Phone Number: " + phoneNumber);
+        System.out.println("Search Id: " + result.getSearchId());
+        for (String phoneNumber: result.getPhoneNumbers()) {
+            System.out.println("Phone Number: " + phoneNumber);
+        }
+    }
 }
 ```
 
