@@ -123,7 +123,7 @@ com.azure.resourcemanager:azure-resourcemanager-keyvault;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-msi;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-network;2.0.0;2.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-privatedns;2.0.0-beta.4;2.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-privatedns;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-resources;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-redis;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
