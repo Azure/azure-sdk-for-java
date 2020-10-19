@@ -88,6 +88,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean isClientTelemetryEnabled(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.isClientTelemetryEnabled();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.fromObject(document, mapper);
     }

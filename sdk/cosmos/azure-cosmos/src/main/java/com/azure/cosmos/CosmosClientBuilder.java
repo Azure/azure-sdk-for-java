@@ -682,7 +682,7 @@ public class CosmosClientBuilder {
      *
      * @return flag to enable client telemetry.
      */
-    boolean isclientTelemetryEnabled() {
+    boolean isClientTelemetryEnabled() {
         return clientTelemetryEnabled;
     }
 

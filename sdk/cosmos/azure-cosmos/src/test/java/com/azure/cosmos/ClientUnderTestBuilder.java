@@ -35,7 +35,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled());
         this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
         this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
-        this.clientTelemetryEnabled(builder.isclientTelemetryEnabled());
+        this.clientTelemetryEnabled(builder.isClientTelemetryEnabled());
     }
 
     @Override
