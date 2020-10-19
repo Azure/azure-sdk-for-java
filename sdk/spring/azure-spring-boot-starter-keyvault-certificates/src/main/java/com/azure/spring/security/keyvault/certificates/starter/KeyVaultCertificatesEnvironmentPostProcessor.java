@@ -16,7 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
-import org.springframework.core.env.PropertySource;
 
 import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 
@@ -66,7 +65,8 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                 } catch (ClassNotFoundException ex) {
                 }
 
-                PropertySource propertySource = new PropertiesPropertySource("KeyStorePropertySource", properties);
+                PropertiesPropertySource propertySource =
+                        new PropertiesPropertySource("KeyStorePropertySource", properties);
                 sources.addFirst(propertySource);
             }
 
@@ -83,7 +83,8 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                 } catch (ClassNotFoundException ex) {
                 }
 
-                PropertySource propertySource = new PropertiesPropertySource("TrustStorePropertySource", properties);
+                PropertiesPropertySource propertySource = 
+                        new PropertiesPropertySource("TrustStorePropertySource", properties);
                 sources.addFirst(propertySource);
             }
 
