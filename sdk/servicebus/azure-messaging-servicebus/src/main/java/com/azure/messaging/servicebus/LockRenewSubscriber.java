@@ -9,6 +9,8 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -37,10 +39,8 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         this.actual = actual;
         this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
             "'messageLockContainer' cannot be null.");
-
-        this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
-            "'maxAutoLockRenewDuration' cannot be null.");
-
+        Objects.requireNonNull(maxAutoLockRenewDuration, "'maxAutoLockRenewDuration' cannot be null.");
+        this.maxAutoLockRenewal = maxAutoLockRenewDuration;
     }
     /**
      * On an initial subscription, will take the first work item, and request that amount of work for it.
@@ -84,7 +84,6 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
                     renewOperation);
             } catch (Exception e) {
                 logger.error("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
-                System.out.println(getClass().getName() + " !!!! Exception occurred while updating lockContainer. ");
                 onError(e);
             }
         } else {
@@ -103,4 +102,8 @@ final class LockRenewSubscriber extends BaseSubscriber<ServiceBusReceivedMessage
         }
     }
 
+    @Override
+    public Context currentContext() {
+        return actual.currentContext();
+    }
 }

@@ -431,6 +431,7 @@ class ServiceBusReceiverAsyncClientTest {
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyComplete();
+
         verify(amqpReceiveLink).updateDisposition(eq(lockToken1), isA(Rejected.class));
     }
 

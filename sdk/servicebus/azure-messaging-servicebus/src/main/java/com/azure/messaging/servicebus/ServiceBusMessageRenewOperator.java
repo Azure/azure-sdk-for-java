@@ -32,6 +32,11 @@ final class ServiceBusMessageRenewOperator extends FluxOperator<ServiceBusReceiv
     /**
      * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
      * @param source the {@link Publisher} to decorate
+     *
+     * @throws NullPointerException If {@code onRenewLock}, {@code messageLockContainer},
+     * {@code maxAutoLockRenewDuration} is null.
+     *
+     * @throws IllegalArgumentException If maxLockRenewalDuration is zero or negative.
      */
     ServiceBusMessageRenewOperator(
         Flux<? extends ServiceBusReceivedMessage> source, Duration maxAutoLockRenewDuration,
@@ -42,8 +47,12 @@ final class ServiceBusMessageRenewOperator extends FluxOperator<ServiceBusReceiv
         this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
             "'messageLockContainer' cannot be null.");
 
-        this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
-            "'maxAutoLockRenewDuration' cannot be null.");
+        Objects.requireNonNull(maxAutoLockRenewDuration, "'maxAutoLockRenewDuration' cannot be null.");
+        if (maxAutoLockRenewDuration.isNegative() || maxAutoLockRenewDuration.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'maxLockRenewalDuration' should not be zero or negative."));
+        }
+        this.maxAutoLockRenewal = maxAutoLockRenewDuration;
 
     }
 
