@@ -305,11 +305,11 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
             RetryWithException lastRetryWithException = (RetryWithException)exception;
             this.request.setLastRetryWithException(lastRetryWithException);
 
-            long remainingMilliseconds = (this.waitTimeInSeconds * 1000) - this.durationTimer.getTime();
+            long remainingMilliseconds = (this.waitTimeInSeconds * 1_000L) - this.durationTimer.getTime();
             int currentRetryAttemptCount = this.attemptCount++;
 
             if (remainingMilliseconds <= 0) {
-                logger.debug("Received retrywith exception after backoff/retry. Will fail the request.",
+                logger.warn("Received RetryWithException after backoff/retry. Will fail the request.",
                     lastRetryWithException);
                 return Mono.just(ShouldRetryResult.error(lastRetryWithException));
             }

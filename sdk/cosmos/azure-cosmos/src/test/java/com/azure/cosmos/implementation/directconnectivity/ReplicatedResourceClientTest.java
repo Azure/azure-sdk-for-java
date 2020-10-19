@@ -10,7 +10,10 @@ import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.StoreResponseBuilder;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
 import org.mockito.Matchers;
@@ -20,6 +23,8 @@ import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 import static com.azure.cosmos.implementation.TestUtils.*;
 
