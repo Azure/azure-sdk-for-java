@@ -3,11 +3,10 @@
 
 package com.azure.spring.sample.aad.controller;
 
-import com.azure.aad.model.TodoItem;
+import com.azure.spring.sample.aad.model.TodoItem;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.MemberShip;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
-import com.azure.spring.sample.aad.model.TodoItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
