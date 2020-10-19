@@ -31,7 +31,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class CpuMemoryMonitor {
     private final static int DEFAULT_REFRESH_INTERVAL_IN_SECONDS = 5;
     private final static int HISTORY_LENGTH = 6;
-    private final static int CLIENT_TELEMETRY_HISTORY_LENGTH = ClientTelemetry.TELEMETRY_SCHEDULING_IN_SEC/DEFAULT_REFRESH_INTERVAL_IN_SECONDS;// Last 10 min with 5 sec duration
     private static Duration refreshInterval = Duration.ofSeconds(DEFAULT_REFRESH_INTERVAL_IN_SECONDS);
 
     private static final Logger logger = LoggerFactory.getLogger(CpuMemoryMonitor.class);

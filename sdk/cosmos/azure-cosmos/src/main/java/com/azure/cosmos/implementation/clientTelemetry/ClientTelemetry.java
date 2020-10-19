@@ -18,6 +18,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -116,7 +117,7 @@ public class ClientTelemetry {
     }
 
     private Mono<Void> sendClientTelemetry() {
-        return Mono.delay(Duration.ofSeconds(10))
+        return Mono.delay(Duration.ofSeconds(TELEMETRY_SCHEDULING_IN_SEC))
             .flatMap(t -> {
                 if (this.isClosed) {
                     logger.warn("client already closed");
@@ -153,6 +154,7 @@ public class ClientTelemetry {
     }
 
     private void readHistogram() {
+        this.clientTelemetryInfo.setTimeStamp(Instant.now().toString());
         for (Map.Entry<ReportPayload, DoubleHistogram> entry : this.clientTelemetryInfo.getSystemInfoMap().entrySet()) {
             fillMetricsInfo(entry.getKey(), entry.getValue());
         }
