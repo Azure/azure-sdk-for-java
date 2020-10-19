@@ -75,8 +75,8 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [service_bus_queue_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-queue-stream-binder
 [service_bus_topic_binder]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-topic-stream-binder
-[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-multibinders-sample
-[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample
-[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample
+[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-multibinders-sample
+[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-queue-binder-sample
+[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-stream-binder-core

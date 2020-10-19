@@ -295,9 +295,9 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Link -->
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-appconfiguration-config
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-starter-azure-appconfiguration-config
-[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-sample
-[app_configuration_conversation_complete_sample]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-complete
-[app_configuration_conversation_initail_sample]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-initial
+[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-sample
+[app_configuration_conversation_complete_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-complete
+[app_configuration_conversation_initail_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-appconfiguration-conversion-sample-initial
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
