@@ -75,7 +75,7 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @param keyVaultUri the KeyVault URI.
      */
-    public KeyVaultClient(String keyVaultUri) {
+    KeyVaultClient(String keyVaultUri) {
         super(RestClientFactory.createClient());
         LOGGER.log(INFO, "Using KeyVault: {0}", keyVaultUri);
         if (!keyVaultUri.endsWith("/")) {
@@ -92,7 +92,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
+    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
         this(keyVaultUri);
         this.tenantId = tenantId;
         this.clientId = clientId;

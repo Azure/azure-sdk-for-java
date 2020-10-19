@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License./
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.OAuthToken;
@@ -64,7 +65,7 @@ class AuthClient extends DelegateRestClient {
      * The constructor creates a default RestClient.
      * </p>
      */
-    public AuthClient() {
+    AuthClient() {
         super(RestClientFactory.createClient());
     }
 
