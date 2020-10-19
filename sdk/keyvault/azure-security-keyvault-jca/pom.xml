@@ -171,7 +171,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skip>false</skip>
+              <skip>true</skip>
               <systemPropertyVariables>
                 <azure.keyvault.uri>${azure.keyvault.uri}</azure.keyvault.uri>
                 <azure.tenant.id>${azure.tenant.id}</azure.tenant.id>
