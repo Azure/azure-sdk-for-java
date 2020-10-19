@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
     @Override
     public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
-        final String newPipName = pips.manager().sdkContext().randomResourceName("pip", 10);
+        final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
 
         PublicIpAddress pip =
             pips

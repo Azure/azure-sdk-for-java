@@ -45,10 +45,10 @@ public final class ManageRedisCache {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String redisCacheName1 = azureResourceManager.sdkContext().randomResourceName("rc1", 20);
-        final String redisCacheName2 = azureResourceManager.sdkContext().randomResourceName("rc2", 20);
-        final String redisCacheName3 = azureResourceManager.sdkContext().randomResourceName("rc3", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRCMC", 20);
+        final String redisCacheName1 = Utils.randomResourceName(azureResourceManager, "rc1", 20);
+        final String redisCacheName2 = Utils.randomResourceName(azureResourceManager, "rc2", 20);
+        final String redisCacheName3 = Utils.randomResourceName(azureResourceManager, "rc3", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRCMC", 20);
         try {
             // ============================================================
             // Define a redis cache

@@ -44,8 +44,8 @@ public class ManageCdnProfileWithWebApp {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String resourceGroupName = azureResourceManager.sdkContext().randomResourceName("rg", 20);
-        final String cdnProfileName = azureResourceManager.sdkContext().randomResourceName("cdnStandardProfile", 20);
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 20);
+        final String cdnProfileName = Utils.randomResourceName(azureResourceManager, "cdnStandardProfile", 20);
         String[] appNames = new String[8];
 
         try {
@@ -58,7 +58,7 @@ public class ManageCdnProfileWithWebApp {
             // ============================================================
             // Create 8 websites
             for (int i = 0; i < 8; i++) {
-                appNames[i] = azureResourceManager.sdkContext().randomResourceName("webapp" + (i + 1) + "-", 20);
+                appNames[i] = Utils.randomResourceName(azureResourceManager, "webapp" + (i + 1) + "-", 20);
             }
 
             // 2 in US
@@ -178,7 +178,7 @@ public class ManageCdnProfileWithWebApp {
         Utils.print(app);
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
         return app;
     }
 }

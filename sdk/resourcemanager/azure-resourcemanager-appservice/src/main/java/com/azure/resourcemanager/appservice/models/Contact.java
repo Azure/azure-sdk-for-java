@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Contact model. */
+/**
+ * Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information
+ * is made publicly available through the Whois directories as per ICANN requirements.
+ */
 @Fluent
 public final class Contact {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Contact.class);

@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRules;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -50,7 +50,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     @Override
     public Mono<EventHubNamespaceAuthorizationRule> getByNameAsync(
         String resourceGroupName, String namespaceName, String name) {
-        return this.inner().getAuthorizationRuleAsync(resourceGroupName,
+        return this.innerModel().getAuthorizationRuleAsync(resourceGroupName,
             namespaceName,
             name)
             .map(this::wrapModel);
@@ -59,7 +59,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     @Override
     public PagedIterable<EventHubNamespaceAuthorizationRule> listByNamespace(
         final String resourceGroupName, final String namespaceName) {
-        return inner()
+        return innerModel()
             .listAuthorizationRules(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -67,7 +67,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
     @Override
     public PagedFlux<EventHubNamespaceAuthorizationRule> listByNamespaceAsync(
         String resourceGroupName, String namespaceName) {
-        return this.inner()
+        return this.innerModel()
             .listAuthorizationRulesAsync(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -84,7 +84,7 @@ public final class EventHubNamespaceAuthorizationRulesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.inner().deleteAuthorizationRuleAsync(resourceGroupName,
+        return this.innerModel().deleteAuthorizationRuleAsync(resourceGroupName,
                 namespaceName,
                 name);
     }

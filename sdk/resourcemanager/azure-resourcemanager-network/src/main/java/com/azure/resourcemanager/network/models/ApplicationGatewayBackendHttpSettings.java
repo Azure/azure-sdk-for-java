@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayBackendHttpSettings model. */
+/** Backend address pool settings of an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayBackendHttpSettings extends SubResource {

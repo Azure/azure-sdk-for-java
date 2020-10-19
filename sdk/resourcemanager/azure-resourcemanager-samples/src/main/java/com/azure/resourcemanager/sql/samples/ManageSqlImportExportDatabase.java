@@ -33,9 +33,9 @@ public final class ManageSqlImportExportDatabase {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
-        String storageName = azureResourceManager.sdkContext().randomResourceName(sqlServerName, 23);
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "sqlserver", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgsql", 20);
+        String storageName = Utils.randomResourceName(azureResourceManager, sqlServerName, 23);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         final String dbFromSampleName = "db-from-sample";

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.sql.fluent.SqlManagementClient;
-import com.azure.resourcemanager.sql.fluent.SqlManagementClientBuilder;
+import com.azure.resourcemanager.sql.implementation.SqlManagementClientBuilder;
 import com.azure.resourcemanager.sql.implementation.SqlServersImpl;
 import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -24,7 +23,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
 
     private final StorageManager storageManager;
 
-    protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -32,8 +31,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
         this.storageManager = StorageManager.authenticate(httpPipeline, profile);
         this.tenantId = profile.getTenantId();
     }
@@ -71,20 +69,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of SqlServer that exposes Compute resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the SqlServer
-     */
-    public static SqlServerManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new SqlServerManager(httpPipeline, profile, sdkContext);
+        return new SqlServerManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */

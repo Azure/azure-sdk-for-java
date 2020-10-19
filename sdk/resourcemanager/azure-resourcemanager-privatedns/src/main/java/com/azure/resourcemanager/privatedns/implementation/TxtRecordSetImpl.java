@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 import com.azure.resourcemanager.privatedns.models.TxtRecord;
 import com.azure.resourcemanager.privatedns.models.TxtRecordSet;
@@ -23,20 +23,20 @@ class TxtRecordSetImpl extends PrivateDnsRecordSetImpl implements TxtRecordSet {
 
     @Override
     public List<TxtRecord> records() {
-        if (inner().txtRecords() != null) {
-            return Collections.unmodifiableList(inner().txtRecords());
+        if (innerModel().txtRecords() != null) {
+            return Collections.unmodifiableList(innerModel().txtRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (inner().txtRecords() != null && inner().txtRecords().size() > 0) {
+        if (innerModel().txtRecords() != null && innerModel().txtRecords().size() > 0) {
             if (resource.txtRecords() == null) {
                 resource.withTxtRecords(new ArrayList<>());
             }
-            resource.txtRecords().addAll(inner().txtRecords());
-            inner().txtRecords().clear();
+            resource.txtRecords().addAll(innerModel().txtRecords());
+            innerModel().txtRecords().clear();
         }
         if (recordSetRemoveInfo.txtRecords().size() > 0) {
             if (resource.txtRecords() != null) {

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.AaaaRecord;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +24,8 @@ class AaaaRecordSetImpl extends DnsRecordSetImpl implements AaaaRecordSet {
     @Override
     public List<String> ipv6Addresses() {
         List<String> ipv6Addresses = new ArrayList<>();
-        if (this.inner().aaaaRecords() != null) {
-            for (AaaaRecord aaaaRecord : this.inner().aaaaRecords()) {
+        if (this.innerModel().aaaaRecords() != null) {
+            for (AaaaRecord aaaaRecord : this.innerModel().aaaaRecords()) {
                 ipv6Addresses.add(aaaaRecord.ipv6Address());
             }
         }
@@ -34,13 +34,13 @@ class AaaaRecordSetImpl extends DnsRecordSetImpl implements AaaaRecordSet {
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().aaaaRecords() != null && this.inner().aaaaRecords().size() > 0) {
+        if (this.innerModel().aaaaRecords() != null && this.innerModel().aaaaRecords().size() > 0) {
             if (resource.aaaaRecords() == null) {
                 resource.withAaaaRecords(new ArrayList<>());
             }
 
-            resource.aaaaRecords().addAll(this.inner().aaaaRecords());
-            this.inner().aaaaRecords().clear();
+            resource.aaaaRecords().addAll(this.innerModel().aaaaRecords());
+            this.innerModel().aaaaRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.aaaaRecords().size() > 0) {

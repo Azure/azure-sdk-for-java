@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.models.ServiceObjective;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Azure SQL Server's Service Objective. */
@@ -20,12 +20,12 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -40,17 +40,17 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
 
     @Override
     public String serviceObjectiveName() {
-        return this.inner().serviceObjectiveName();
+        return this.innerModel().serviceObjectiveName();
     }
 
     @Override
     public boolean isDefault() {
-        return this.inner().isDefault();
+        return this.innerModel().isDefault();
     }
 
     @Override
     public boolean isSystem() {
-        return this.inner().isSystem();
+        return this.innerModel().isSystem();
     }
 
     @Override
@@ -60,7 +60,7 @@ class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner,
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override

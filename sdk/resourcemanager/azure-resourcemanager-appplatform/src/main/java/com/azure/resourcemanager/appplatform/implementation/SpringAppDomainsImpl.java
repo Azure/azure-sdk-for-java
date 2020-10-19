@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CustomDomainResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.SpringApp;

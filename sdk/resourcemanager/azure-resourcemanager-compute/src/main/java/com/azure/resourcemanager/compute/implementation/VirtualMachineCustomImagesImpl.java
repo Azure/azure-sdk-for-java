@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImages;
-import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
+import com.azure.resourcemanager.compute.fluent.models.ImageInner;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 

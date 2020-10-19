@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.MetricInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Response containing the Azure SQL Database metric. */
 @Fluent
-public interface SqlDatabaseMetric extends HasInner<MetricInner> {
+public interface SqlDatabaseMetric extends HasInnerModel<MetricInner> {
 
     /** @return the metric name */
     String name();

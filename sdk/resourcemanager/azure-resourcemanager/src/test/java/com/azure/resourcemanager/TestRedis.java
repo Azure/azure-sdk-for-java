@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
     @Override
     public RedisCache createResource(RedisCaches resources) throws Exception {
-        final String redisName = resources.manager().sdkContext().randomResourceName("redis", 10);
+        final String redisName = resources.manager().resourceManager().internalContext().randomResourceName("redis", 10);
         final RedisCache[] redisCaches = new RedisCache[1];
         final SettableFuture<RedisCache> future = SettableFuture.create();
 

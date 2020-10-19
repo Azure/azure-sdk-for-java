@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InformationalUrl model. */
+/**
+ * Represents a group of URIs that provide terms of service, marketing, support and privacy policy information about an
+ * application. The default value for each string is null.
+ */
 @Fluent
 public final class InformationalUrl {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InformationalUrl.class);

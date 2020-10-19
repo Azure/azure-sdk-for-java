@@ -6,7 +6,7 @@ package com.azure.resourcemanager.containerservice;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClientBuilder;
+import com.azure.resourcemanager.containerservice.implementation.ContainerServiceManagementClientBuilder;
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Container Service management. */
 public final class ContainerServiceManager
@@ -51,20 +50,7 @@ public final class ContainerServiceManager
      * @return the ContainerServiceManager
      */
     public static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of ContainerServiceManager that exposes Service resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the ContainerServiceManager
-     */
-    public static ContainerServiceManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new ContainerServiceManager(httpPipeline, profile, sdkContext);
+        return new ContainerServiceManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -87,7 +73,7 @@ public final class ContainerServiceManager
         }
     }
 
-    private ContainerServiceManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private ContainerServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -95,8 +81,7 @@ public final class ContainerServiceManager
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return the Azure Kubernetes cluster resource management API entry point */

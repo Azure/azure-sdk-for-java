@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
@@ -32,12 +32,12 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public List<AccessRights> rights() {
-        return this.inner().rights();
+        return this.innerModel().rights();
     }
 
     @Override

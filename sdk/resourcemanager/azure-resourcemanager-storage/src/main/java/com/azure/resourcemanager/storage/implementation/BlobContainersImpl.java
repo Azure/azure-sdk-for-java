@@ -11,9 +11,9 @@ import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicy;
 import com.azure.resourcemanager.storage.models.LegalHold;
-import com.azure.resourcemanager.storage.fluent.inner.BlobContainerInner;
-import com.azure.resourcemanager.storage.fluent.inner.ImmutabilityPolicyInner;
-import com.azure.resourcemanager.storage.fluent.inner.ListContainerItemInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
+import com.azure.resourcemanager.storage.fluent.models.ListContainerItemInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -57,13 +57,13 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
 
     @Override
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client.listAsync(resourceGroupName, accountName);
     }
 
     @Override
     public Mono<BlobContainer> getAsync(String resourceGroupName, String accountName, String containerName) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client
             .getAsync(resourceGroupName, accountName, containerName)
             .map(this::wrapBlobContainerModel);
@@ -71,14 +71,14 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
 
     @Override
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String containerName) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client.deleteAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override
     public Mono<LegalHold> setLegalHoldAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client
             .setLegalHoldAsync(resourceGroupName, accountName, containerName, tags)
             .map(legalHoldInner -> new LegalHoldImpl(legalHoldInner, manager()));
@@ -87,7 +87,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<LegalHold> clearLegalHoldAsync(
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client
             .clearLegalHoldAsync(resourceGroupName, accountName, containerName, tags)
             .map(legalHoldInner -> new LegalHoldImpl(legalHoldInner, manager()));
@@ -102,7 +102,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client
             .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
             .map(this::wrapImmutabilityPolicyModel);
@@ -117,7 +117,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).then();
+        return innerModel().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).then();
     }
 
     @Override
@@ -129,7 +129,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client
             .lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
             .map(inner -> new ImmutabilityPolicyImpl(inner, manager()));
@@ -159,7 +159,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
         int immutabilityPeriodSinceCreationInDays,
         Boolean allowProtectedAppendWrites,
         String eTagValue) {
-        BlobContainersClient client = this.inner();
+        BlobContainersClient client = this.innerModel();
         return client
             .extendImmutabilityPolicyAsync(
                 resourceGroupName,

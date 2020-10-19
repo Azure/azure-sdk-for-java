@@ -15,7 +15,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.servicebus.implementation.TimeSpan;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
@@ -67,7 +67,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javasb", 20);
 
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         serviceBusManager = ServiceBusManager.authenticate(httpPipeline, profile);
     }
@@ -97,7 +97,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .getByResourceGroup(rgName, namespaceDNSLabel);
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
 
         PagedIterable<ServiceBusNamespace> namespaces = serviceBusManager.namespaces().listByResourceGroup(rgName);
         Assertions.assertNotNull(namespaces);
@@ -158,7 +158,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .withSku(NamespaceSku.STANDARD)
                 .create();
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
 
         String queueName = generateRandomResourceName("queue1-", 15);
         Queue queue = namespace.queues()
@@ -166,12 +166,12 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .create();
 
         Assertions.assertNotNull(queue);
-        Assertions.assertNotNull(queue.inner());
+        Assertions.assertNotNull(queue.innerModel());
         Assertions.assertNotNull(queue.name());
         Assertions.assertTrue(queue.name().equalsIgnoreCase(queueName));
         // Default lock duration is 1 minute, assert TimeSpan("00:01:00") parsing
         //
-        Assertions.assertEquals("00:01:00", queue.inner().lockDuration());
+        Assertions.assertEquals("00:01:00", queue.innerModel().lockDuration());
         Assertions.assertEquals(60, queue.lockDurationInSeconds());
 
         Duration dupDetectionDuration = queue.duplicateMessageDetectionHistoryDuration();
@@ -179,7 +179,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(10, TimeSpan.fromDuration(dupDetectionDuration).minutes());
         // Default message TTL is TimeSpan.Max, assert parsing
         //
-        Assertions.assertEquals("10675199.02:48:05.4775807", queue.inner().defaultMessageTimeToLive());
+        Assertions.assertEquals("10675199.02:48:05.4775807", queue.innerModel().defaultMessageTimeToLive());
         Duration msgTtlDuration = queue.defaultMessageTtlDuration();
         Assertions.assertNotNull(msgTtlDuration);
         // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
@@ -237,7 +237,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .withNewQueue(queueName, 1024)
                 .create();
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
         // Lookup queue
         //
         PagedIterable<Queue> queuesInNamespace = namespace.queues().list();
@@ -276,7 +276,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .withSku(NamespaceSku.STANDARD)
                 .create();
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
 
         String topicName = generateRandomResourceName("topic1-", 15);
         Topic topic = namespace.topics()
@@ -284,7 +284,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .create();
 
         Assertions.assertNotNull(topic);
-        Assertions.assertNotNull(topic.inner());
+        Assertions.assertNotNull(topic.innerModel());
         Assertions.assertNotNull(topic.name());
         Assertions.assertTrue(topic.name().equalsIgnoreCase(topicName));
 
@@ -293,7 +293,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(10, TimeSpan.fromDuration(dupDetectionDuration).minutes());
         // Default message TTL is TimeSpan.Max, assert parsing
         //
-        Assertions.assertEquals("10675199.02:48:05.4775807", topic.inner().defaultMessageTimeToLive());
+        Assertions.assertEquals("10675199.02:48:05.4775807", topic.innerModel().defaultMessageTimeToLive());
         Duration msgTtlDuration = topic.defaultMessageTtlDuration();
         Assertions.assertNotNull(msgTtlDuration);
         // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
@@ -352,7 +352,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .withNewTopic(topicName, 1024)
                 .create();
         Assertions.assertNotNull(namespace);
-        Assertions.assertNotNull(namespace.inner());
+        Assertions.assertNotNull(namespace.innerModel());
         // Lookup topic
         //
         PagedIterable<Topic> topicsInNamespace = namespace.topics().list();
@@ -414,7 +414,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(foundNsRule);
         AuthorizationKeys nsRuleKeys = foundNsRule.getKeys();
         Assertions.assertNotNull(nsRuleKeys);
-        Assertions.assertNotNull(nsRuleKeys.inner());
+        Assertions.assertNotNull(nsRuleKeys.innerModel());
         String primaryKey = nsRuleKeys.primaryKey();
         Assertions.assertNotNull(primaryKey);
         Assertions.assertNotNull(nsRuleKeys.secondaryKey());
@@ -431,7 +431,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(1, TestUtilities.getSize(queuesInNamespace));
         Queue queue = queuesInNamespace.iterator().next();
         Assertions.assertNotNull(queue);
-        Assertions.assertNotNull(queue.inner());
+        Assertions.assertNotNull(queue.innerModel());
 
         QueueAuthorizationRule qRule = queue.authorizationRules()
                 .define("rule1")
@@ -461,7 +461,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertEquals(1, TestUtilities.getSize(topicsInNamespace));
         Topic topic = topicsInNamespace.iterator().next();
         Assertions.assertNotNull(topic);
-        Assertions.assertNotNull(topic.inner());
+        Assertions.assertNotNull(topic.innerModel());
         TopicAuthorizationRule tRule = topic.authorizationRules()
                 .define("rule2")
                 .withSendingEnabled()
@@ -525,11 +525,11 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .withDefaultMessageTTL(Duration.ofMinutes(20))
                 .create();
         Assertions.assertNotNull(subscription);
-        Assertions.assertNotNull(subscription.inner());
+        Assertions.assertNotNull(subscription.innerModel());
         Assertions.assertEquals(20, TimeSpan.fromDuration(subscription.defaultMessageTtlDuration()).minutes());
         subscription = topic.subscriptions().getByName(subscriptionName);
         Assertions.assertNotNull(subscription);
-        Assertions.assertNotNull(subscription.inner());
+        Assertions.assertNotNull(subscription.innerModel());
         PagedIterable<ServiceBusSubscription> subscriptionsInTopic = topic.subscriptions().list();
         Assertions.assertTrue(TestUtilities.getSize(subscriptionsInTopic) > 0);
         boolean foundSubscription = false;

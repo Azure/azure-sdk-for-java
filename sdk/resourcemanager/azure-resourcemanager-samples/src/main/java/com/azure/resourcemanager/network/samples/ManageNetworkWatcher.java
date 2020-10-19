@@ -26,7 +26,7 @@ import com.azure.resourcemanager.network.models.VerificationIPFlow;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.blob.BlobClient;
@@ -34,6 +34,8 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
+
+import java.time.Duration;
 
 /**
  * Azure Network sample for managing network watcher.
@@ -70,17 +72,17 @@ public final class ManageNetworkWatcher {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_NORTH_CENTRAL;
-        final String nwName = azureResourceManager.sdkContext().randomResourceName("nw", 8);
+        final String nwName = Utils.randomResourceName(azureResourceManager, "nw", 8);
 
         final String userName = "tirekicker";
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 20);
-        final String dnsLabel = azureResourceManager.sdkContext().randomResourceName("pipdns", 20);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 20);
+        final String dnsLabel = Utils.randomResourceName(azureResourceManager, "pipdns", 20);
         final String subnetName = "subnet1";
-        final String nsgName = azureResourceManager.sdkContext().randomResourceName("nsg", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String saName = azureResourceManager.sdkContext().randomResourceName("sa", 24);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 24);
-        final String packetCaptureName = azureResourceManager.sdkContext().randomResourceName("pc", 8);
+        final String nsgName = Utils.randomResourceName(azureResourceManager, "nsg", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String saName = Utils.randomResourceName(azureResourceManager, "sa", 24);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 24);
+        final String packetCaptureName = Utils.randomResourceName(azureResourceManager, "pc", 8);
         final String packetCaptureStorageContainer = "packetcapture";
         // file name to save packet capture log locally
         final String packetCaptureFile = "packetcapture.cap";
@@ -242,7 +244,7 @@ public final class ManageNetworkWatcher {
 
             // wait for flow log to log an event
             System.out.println("Waiting for flow log to log an event...");
-            SdkContext.sleep(250000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(250));
 
             // Disable NSG flow log
             System.out.println("Disabling flow log...");

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsClient;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -14,8 +14,8 @@ public class ExpressRouteCircuitsImpl
         ExpressRouteCircuit,
         ExpressRouteCircuitImpl,
         ExpressRouteCircuitInner,
-    ExpressRouteCircuitsClient,
-    NetworkManager>
+        ExpressRouteCircuitsClient,
+        NetworkManager>
     implements ExpressRouteCircuits {
 
     public ExpressRouteCircuitsImpl(NetworkManager manager) {

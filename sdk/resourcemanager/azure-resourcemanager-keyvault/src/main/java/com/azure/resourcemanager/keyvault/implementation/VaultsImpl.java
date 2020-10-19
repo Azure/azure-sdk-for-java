@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
-import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
-import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
+import com.azure.resourcemanager.keyvault.fluent.models.DeletedVaultInner;
+import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.keyvault.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.keyvault.models.CreateMode;
 import com.azure.resourcemanager.keyvault.models.DeletedVault;
@@ -141,7 +141,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
                 deletedVault -> {
                     VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
                     parameters.withLocation(deletedVault.location());
-                    parameters.withTags(deletedVault.inner().properties().tags());
+                    parameters.withTags(deletedVault.innerModel().properties().tags());
                     parameters
                         .withProperties(
                             new VaultProperties()

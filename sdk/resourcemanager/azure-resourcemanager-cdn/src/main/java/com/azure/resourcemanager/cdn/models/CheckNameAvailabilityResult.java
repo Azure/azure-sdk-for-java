@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.fluent.inner.CheckNameAvailabilityOutputInner;
+import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 
 /**
  * Result of the custom domain validation.

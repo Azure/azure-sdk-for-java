@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The VaultPatchProperties model. */
+/** Properties of the vault. */
 @Fluent
 public final class VaultPatchProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultPatchProperties.class);

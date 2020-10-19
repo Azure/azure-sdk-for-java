@@ -17,7 +17,9 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
+import java.time.Duration;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -77,7 +79,7 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            SdkContext.sleep(30000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
@@ -161,7 +163,7 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            SdkContext.sleep(30000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());

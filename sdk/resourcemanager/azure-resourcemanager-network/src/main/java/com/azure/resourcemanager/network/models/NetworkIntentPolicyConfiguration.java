@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NetworkIntentPolicyConfiguration model. */
+/** Details of NetworkIntentPolicyConfiguration for PrepareNetworkPoliciesRequest. */
 @Fluent
 public final class NetworkIntentPolicyConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkIntentPolicyConfiguration.class);

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The ServerUpdate model. */
+/** An update request for an Azure SQL Database server. */
 @JsonFlatten
 @Fluent
 public class ServerUpdate {

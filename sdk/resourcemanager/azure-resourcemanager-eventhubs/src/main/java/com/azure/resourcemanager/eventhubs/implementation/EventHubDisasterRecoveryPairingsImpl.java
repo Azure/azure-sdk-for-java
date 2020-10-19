@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ArmDisasterRecoveryInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ArmDisasterRecoveryInner;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRules;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairing;
 import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairings;
@@ -62,7 +62,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public Mono<EventHubDisasterRecoveryPairing> getByNameAsync(
         String resourceGroupName, String namespaceName, String name) {
-        return this.inner().getAsync(resourceGroupName,
+        return this.innerModel().getAsync(resourceGroupName,
             namespaceName,
             name)
             .map(this::wrapModel);
@@ -77,7 +77,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public PagedIterable<EventHubDisasterRecoveryPairing> listByNamespace(
         String resourceGroupName, String namespaceName) {
-        return inner()
+        return innerModel()
             .list(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -85,7 +85,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
     @Override
     public PagedFlux<EventHubDisasterRecoveryPairing> listByNamespaceAsync(
         String resourceGroupName, String namespaceName) {
-        return this.inner().listAsync(resourceGroupName, namespaceName)
+        return this.innerModel().listAsync(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
 
@@ -105,7 +105,7 @@ public final class EventHubDisasterRecoveryPairingsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.inner().deleteAsync(resourceGroupName,
+        return this.innerModel().deleteAsync(resourceGroupName,
                 namespaceName,
                 name);
     }

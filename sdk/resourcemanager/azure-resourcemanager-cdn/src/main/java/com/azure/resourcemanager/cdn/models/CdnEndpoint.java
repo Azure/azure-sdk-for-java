@@ -5,10 +5,10 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +21,7 @@ import java.util.Set;
 @Fluent
 public interface CdnEndpoint extends
     ExternalChildResource<CdnEndpoint, CdnProfile>,
-    HasInner<EndpointInner> {
+        HasInnerModel<EndpointInner> {
 
     /**
      * @return origin host header

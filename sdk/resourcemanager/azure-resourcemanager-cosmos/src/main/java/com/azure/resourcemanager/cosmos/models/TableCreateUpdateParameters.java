@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TableCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB Table. */
 @JsonFlatten
 @Fluent
 public class TableCreateUpdateParameters extends ArmResourceProperties {

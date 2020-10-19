@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /**
  * Base interface for resources in resource groups.
@@ -20,7 +20,7 @@ public interface GroupableResource<TManager, InnerT> extends
         Resource,
         HasResourceGroup,
         HasManager<TManager>,
-        HasInner<InnerT> {
+        HasInnerModel<InnerT> {
 
     /**
      * Grouping of all the definition stages.

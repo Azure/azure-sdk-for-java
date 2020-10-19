@@ -4,7 +4,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
-import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.WebhookInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 /** Represents a webhook collection associated with a container registry. */

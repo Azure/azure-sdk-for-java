@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The SignInName model. */
+/** Contains information about a sign-in name of a local account user in an Azure Active Directory B2C tenant. */
 @Fluent
 public final class SignInName {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SignInName.class);

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.privatedns.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.privatedns.fluent.VirtualNetworkLinksClient;
-import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;

@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -66,7 +66,7 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
 
     @Override
     public Mono<EventHub> getByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.inner().getAsync(resourceGroupName,
+        return this.innerModel().getAsync(resourceGroupName,
             namespaceName,
             name)
             .map(this::wrapModel);
@@ -79,14 +79,14 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
 
     @Override
     public PagedIterable<EventHub> listByNamespace(String resourceGroupName, String namespaceName) {
-        return inner()
+        return innerModel()
             .listByNamespace(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
 
     @Override
     public PagedFlux<EventHub> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
-        return inner()
+        return innerModel()
             .listByNamespaceAsync(resourceGroupName, namespaceName)
             .mapPage(this::wrapModel);
     }
@@ -107,7 +107,7 @@ public final class EventHubsImpl extends WrapperImpl<EventHubsClient> implements
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.inner().deleteAsync(resourceGroupName,
+        return this.innerModel().deleteAsync(resourceGroupName,
             namespaceName,
             name);
     }

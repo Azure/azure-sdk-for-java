@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourceInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -58,7 +58,7 @@ public class VirtualMachinePublishersImpl
     @Override
     public PagedFlux<VirtualMachinePublisher> listByRegionAsync(String regionName) {
         return PagedConverter
-            .convertListToPagedFlux(imagesClientCollection.listPublishersAsync(regionName))
+            .convertListToPagedFlux(imagesClientCollection.listPublishersWithResponseAsync(regionName))
             .mapPage(this::wrapModel);
     }
 }

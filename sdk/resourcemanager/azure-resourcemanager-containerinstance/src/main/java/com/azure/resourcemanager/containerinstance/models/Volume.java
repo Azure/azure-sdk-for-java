@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The Volume model. */
+/** The properties of the volume. */
 @Fluent
 public final class Volume {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Volume.class);

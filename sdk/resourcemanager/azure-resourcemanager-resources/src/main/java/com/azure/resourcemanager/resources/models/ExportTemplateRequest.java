@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ExportTemplateRequest model. */
+/** Export resource group template request parameters. */
 @Fluent
 public final class ExportTemplateRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportTemplateRequest.class);

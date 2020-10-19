@@ -30,11 +30,9 @@ import java.util.List;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FAILED_TO_DOWNLOAD_IMAGE_CODE;
-import static com.azure.ai.formrecognizer.TestUtils.FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
-import static com.azure.ai.formrecognizer.TestUtils.IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_IMAGE_URL_ERROR_CODE;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_6_PDF_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_1_JPG;
@@ -202,8 +200,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) httpResponseException.getValue();
-            assertEquals(EXPECTED_BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE, errorInformation.getMessage());
+            assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -239,7 +236,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             validateExceptionSource(errorResponseException);
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -256,7 +252,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -403,8 +398,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(EXPECTED_INVALID_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
+            assertEquals(INVALID_IMAGE_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -441,7 +435,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             validateExceptionSource(errorResponseException);
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -474,7 +467,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
 
@@ -635,7 +627,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 null, toFluxByteBuffer(data), dataLength,
                 new RecognizeCustomFormsOptions().setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller());
-            assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         }, INVOICE_6_PDF);
     }
 
@@ -652,7 +644,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 "", toFluxByteBuffer(data), dataLength, new RecognizeCustomFormsOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller());
-            assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }, INVOICE_6_PDF);
     }
 
@@ -673,7 +665,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                             .setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                assertEquals(EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
+                assertEquals(URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
             }));
     }
 
@@ -952,7 +944,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
             StepVerifier.create(client.beginRecognizeCustomFormsFromUrl(createdModel.getModelId(), INVALID_URL))
-                .verifyErrorSatisfies(throwable -> assertEquals(throwable.getMessage(), INVALID_SOURCE_URL_ERROR));
+                .verifyErrorSatisfies(throwable -> {
+                    final HttpResponseException httpResponseException = (HttpResponseException) throwable;
+                    final FormRecognizerErrorInformation errorInformation =
+                        (FormRecognizerErrorInformation) httpResponseException.getValue();
+                    assertEquals(INVALID_SOURCE_URL_ERROR_CODE, errorInformation.getErrorCode());
+                });
         });
     }
 
@@ -968,7 +965,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             Exception ex = assertThrows(RuntimeException.class, () ->
                 client.beginRecognizeCustomFormsFromUrl(null, fileUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller());
-            assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         }, MULTIPAGE_INVOICE_PDF);
     }
 
@@ -981,10 +978,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> {
-            Exception ex = assertThrows(RuntimeException.class, () ->
+            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
                 client.beginRecognizeCustomFormsFromUrl("", fileUrl, new RecognizeCustomFormsOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller());
-            assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }, MULTIPAGE_INVOICE_PDF);
     }
 
@@ -1090,8 +1087,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl,
                     new RecognizeCustomFormsOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE, errorInformation.getMessage());
+            assertEquals(INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
         }, FORM_JPG);
     }
 
@@ -1116,7 +1112,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                         toFluxByteBuffer(data), dataLength, new RecognizeCustomFormsOptions()
                             .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
-                assertEquals(EXPECTED_UNABLE_TO_READ_FILE, errorResponseException.getMessage());
+                assertEquals(UNABLE_TO_READ_FILE_ERROR_CODE, errorResponseException.getErrorInformation().get(0).getErrorCode());
             }));
     }
 }

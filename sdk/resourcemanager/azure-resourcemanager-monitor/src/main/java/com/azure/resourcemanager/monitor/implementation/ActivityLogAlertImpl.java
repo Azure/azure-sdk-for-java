@@ -9,7 +9,7 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
-import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;
@@ -43,12 +43,12 @@ class ActivityLogAlertImpl
 
     @Override
     public Collection<String> scopes() {
-        return Collections.unmodifiableCollection(this.inner().scopes());
+        return Collections.unmodifiableCollection(this.innerModel().scopes());
     }
 
     @Override
     public Boolean enabled() {
-        return this.inner().enabled();
+        return this.innerModel().enabled();
     }
 
     @Override
@@ -58,9 +58,9 @@ class ActivityLogAlertImpl
 
     @Override
     public Collection<String> actionGroupIds() {
-        if (this.inner().actions() != null && this.inner().actions().actionGroups() != null) {
+        if (this.innerModel().actions() != null && this.innerModel().actions().actionGroups() != null) {
             List<String> ids = new ArrayList<>();
-            for (ActivityLogAlertActionGroup alaag : this.inner().actions().actionGroups()) {
+            for (ActivityLogAlertActionGroup alaag : this.innerModel().actions().actionGroups()) {
                 ids.add(alaag.actionGroupId());
             }
             return Collections.unmodifiableCollection(ids);
@@ -70,12 +70,12 @@ class ActivityLogAlertImpl
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override
     public Mono<ActivityLogAlert> createResourceAsync() {
-        this.inner().withLocation("global");
+        this.innerModel().withLocation("global");
         ActivityLogAlertAllOfCondition condition = new ActivityLogAlertAllOfCondition();
         condition.withAllOf(new ArrayList<ActivityLogAlertLeafCondition>());
         for (Map.Entry<String, String> cds : conditions.entrySet()) {
@@ -84,12 +84,12 @@ class ActivityLogAlertImpl
             alalc.withEquals(cds.getValue());
             condition.allOf().add(alalc);
         }
-        this.inner().withCondition(condition);
+        this.innerModel().withCondition(condition);
         return this
             .manager()
             .serviceClient()
             .getActivityLogAlerts()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -104,8 +104,8 @@ class ActivityLogAlertImpl
 
     @Override
     public ActivityLogAlert.DefinitionStages.WithDescription withTargetResource(String resourceId) {
-        this.inner().withScopes(new ArrayList<String>());
-        this.inner().scopes().add(resourceId);
+        this.innerModel().withScopes(new ArrayList<String>());
+        this.innerModel().scopes().add(resourceId);
         return this;
     }
 
@@ -121,48 +121,48 @@ class ActivityLogAlertImpl
 
     @Override
     public ActivityLogAlertImpl withDescription(String description) {
-        this.inner().withDescription(description);
+        this.innerModel().withDescription(description);
         return this;
     }
 
     @Override
     public ActivityLogAlertImpl withRuleEnabled() {
-        this.inner().withEnabled(true);
+        this.innerModel().withEnabled(true);
         return this;
     }
 
     @Override
     public ActivityLogAlertImpl withRuleDisabled() {
-        this.inner().withEnabled(false);
+        this.innerModel().withEnabled(false);
         return this;
     }
 
     @Override
     public ActivityLogAlertImpl withActionGroups(String... actionGroupId) {
-        if (this.inner().actions() == null) {
-            this.inner().withActions(new ActivityLogAlertActionList());
-            this.inner().actions().withActionGroups(new ArrayList<ActivityLogAlertActionGroup>());
+        if (this.innerModel().actions() == null) {
+            this.innerModel().withActions(new ActivityLogAlertActionList());
+            this.innerModel().actions().withActionGroups(new ArrayList<ActivityLogAlertActionGroup>());
         }
-        this.inner().actions().actionGroups().clear();
+        this.innerModel().actions().actionGroups().clear();
 
         for (String agid : actionGroupId) {
             ActivityLogAlertActionGroup aaa = new ActivityLogAlertActionGroup();
             aaa.withActionGroupId(agid);
-            this.inner().actions().actionGroups().add(aaa);
+            this.innerModel().actions().actionGroups().add(aaa);
         }
         return this;
     }
 
     @Override
     public ActivityLogAlertImpl withoutActionGroup(String actionGroupId) {
-        if (this.inner().actions() != null && this.inner().actions().actionGroups() != null) {
+        if (this.innerModel().actions() != null && this.innerModel().actions().actionGroups() != null) {
             List<ActivityLogAlertActionGroup> toDelete = new ArrayList<>();
-            for (ActivityLogAlertActionGroup aaa : this.inner().actions().actionGroups()) {
+            for (ActivityLogAlertActionGroup aaa : this.innerModel().actions().actionGroups()) {
                 if (aaa.actionGroupId().equalsIgnoreCase(actionGroupId)) {
                     toDelete.add(aaa);
                 }
             }
-            this.inner().actions().actionGroups().removeAll(toDelete);
+            this.innerModel().actions().actionGroups().removeAll(toDelete);
         }
         return this;
     }

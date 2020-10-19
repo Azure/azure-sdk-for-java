@@ -569,6 +569,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
+            record.pendingRequestQueueSize(pendingRequests.size());
 
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 

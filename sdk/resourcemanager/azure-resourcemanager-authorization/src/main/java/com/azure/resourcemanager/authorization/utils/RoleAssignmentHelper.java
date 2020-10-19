@@ -80,7 +80,7 @@ public class RoleAssignmentHelper {
                 if (principalId == null) {
                     return cxt.voidMono();
                 }
-                final String roleAssignmentName = authorizationManager.sdkContext().randomUuid();
+                final String roleAssignmentName = authorizationManager.internalContext().randomUuid();
                 final String resourceScope;
                 if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
                     resourceScope = resourceGroupId(idProvider.resourceId());
@@ -103,7 +103,7 @@ public class RoleAssignmentHelper {
                             return Mono.error(throwable);
                         });
             };
-        this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.sdkContext());
+        this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.internalContext());
         return this;
     }
 
@@ -133,7 +133,7 @@ public class RoleAssignmentHelper {
                 if (principalId == null) {
                     return cxt.voidMono();
                 }
-                final String roleAssignmentName = authorizationManager.sdkContext().randomUuid();
+                final String roleAssignmentName = authorizationManager.internalContext().randomUuid();
                 final String resourceScope;
                 if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
                     resourceScope = resourceGroupId(idProvider.resourceId());
@@ -156,7 +156,7 @@ public class RoleAssignmentHelper {
                             return Mono.error(throwable);
                         });
             };
-        this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.sdkContext());
+        this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.internalContext());
         return this;
     }
 

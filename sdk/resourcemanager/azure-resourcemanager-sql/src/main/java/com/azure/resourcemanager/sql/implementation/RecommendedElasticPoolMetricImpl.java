@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPoolMetric;
-import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolMetricInner;
+import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolMetricInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for RecommendedElasticPoolMetric interface. */
@@ -18,16 +18,16 @@ class RecommendedElasticPoolMetricImpl extends WrapperImpl<RecommendedElasticPoo
 
     @Override
     public OffsetDateTime dateTime() {
-        return this.inner().dateTime();
+        return this.innerModel().dateTime();
     }
 
     @Override
     public double dtu() {
-        return this.inner().dtu();
+        return this.innerModel().dtu();
     }
 
     @Override
     public double sizeGB() {
-        return this.inner().sizeGB();
+        return this.innerModel().sizeGB();
     }
 }

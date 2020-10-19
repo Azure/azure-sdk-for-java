@@ -24,7 +24,6 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * Azure App Service sample for managing web apps.
@@ -50,23 +49,23 @@ public final class ManageWebAppWithTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMV_", 24);
+        rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV_", 24);
 
         if (ManageWebAppWithTrafficManager.azureResourceManager == null) {
             ManageWebAppWithTrafficManager.azureResourceManager = azureResourceManager;
         }
 
         // New resources
-        final String app1Name = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String app4Name = azureResourceManager.sdkContext().randomResourceName("webapp4-", 20);
-        final String app5Name = azureResourceManager.sdkContext().randomResourceName("webapp5-", 20);
-        final String plan1Name = azureResourceManager.sdkContext().randomResourceName("jplan1_", 15);
-        final String plan2Name = azureResourceManager.sdkContext().randomResourceName("jplan2_", 15);
-        final String plan3Name = azureResourceManager.sdkContext().randomResourceName("jplan3_", 15);
-        final String domainName = azureResourceManager.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        final String tmName = azureResourceManager.sdkContext().randomResourceName("jsdktm-", 20);
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String app4Name = Utils.randomResourceName(azureResourceManager, "webapp4-", 20);
+        final String app5Name = Utils.randomResourceName(azureResourceManager, "webapp5-", 20);
+        final String plan1Name = Utils.randomResourceName(azureResourceManager, "jplan1_", 15);
+        final String plan2Name = Utils.randomResourceName(azureResourceManager, "jplan2_", 15);
+        final String plan3Name = Utils.randomResourceName(azureResourceManager, "jplan3_", 15);
+        final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
+        final String tmName = Utils.randomResourceName(azureResourceManager, "jsdktm-", 20);
 
         try {
 
@@ -102,8 +101,8 @@ public final class ManageWebAppWithTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            pfxPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
-            String cerPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithTrafficManager.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
+            pfxPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
+            String cerPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

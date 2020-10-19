@@ -5,11 +5,12 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourceInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -32,7 +33,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
         Region region, String publisherName, String offerName, String skuName, String version) {
         if (version.equalsIgnoreCase("latest")) {
             List<VirtualMachineImageResourceInner> innerImages =
-                this.client.list(region.name(), publisherName, offerName, skuName, null, 1, "name desc");
+                this.client.listWithResponse(region.name(), publisherName, offerName, skuName,
+                    null, 1, "name desc", Context.NONE).getValue();
             if (innerImages != null && !innerImages.isEmpty()) {
                 VirtualMachineImageResourceInner innerImageResource = innerImages.get(0);
                 version = innerImageResource.name();
@@ -50,7 +52,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
         String region, String publisherName, String offerName, String skuName, String version) {
         if (version.equalsIgnoreCase("latest")) {
             List<VirtualMachineImageResourceInner> innerImages =
-                this.client.list(region, publisherName, offerName, skuName, null, 1, "name desc");
+                this.client.listWithResponse(region, publisherName, offerName, skuName,
+                    null, 1, "name desc", Context.NONE).getValue();
             if (innerImages != null && !innerImages.isEmpty()) {
                 VirtualMachineImageResourceInner innerImageResource = innerImages.get(0);
                 version = innerImageResource.name();
@@ -87,7 +90,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
                     virtualMachinePublisher
                         .offers()
                         .listAsync()
-                        .onErrorResume(ManagementException.class,
+                        .onErrorResume(
+                            ManagementException.class,
                             e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
                         .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
                         .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));

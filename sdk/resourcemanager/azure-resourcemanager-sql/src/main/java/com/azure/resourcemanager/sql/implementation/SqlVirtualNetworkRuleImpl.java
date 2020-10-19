@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.VirtualNetworkRuleInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -86,7 +86,7 @@ public class SqlVirtualNetworkRuleImpl
             .sqlServerManager
             .serviceClient()
             .getVirtualNetworkRules()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.innerModel())
             .map(
                 inner -> {
                     self.setInner(inner);
@@ -126,7 +126,7 @@ public class SqlVirtualNetworkRuleImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -141,12 +141,12 @@ public class SqlVirtualNetworkRuleImpl
 
     @Override
     public String subnetId() {
-        return this.inner().virtualNetworkSubnetId();
+        return this.innerModel().virtualNetworkSubnetId();
     }
 
     @Override
     public String state() {
-        return this.inner().state().toString();
+        return this.innerModel().state().toString();
     }
 
     @Override
@@ -189,14 +189,14 @@ public class SqlVirtualNetworkRuleImpl
 
     @Override
     public SqlVirtualNetworkRuleImpl withSubnet(String networkId, String subnetName) {
-        this.inner().withVirtualNetworkSubnetId(networkId + "/subnets/" + subnetName);
-        this.inner().withIgnoreMissingVnetServiceEndpoint(false);
+        this.innerModel().withVirtualNetworkSubnetId(networkId + "/subnets/" + subnetName);
+        this.innerModel().withIgnoreMissingVnetServiceEndpoint(false);
         return this;
     }
 
     @Override
     public SqlVirtualNetworkRuleImpl ignoreMissingSqlServiceEndpoint() {
-        this.inner().withIgnoreMissingVnetServiceEndpoint(true);
+        this.innerModel().withIgnoreMissingVnetServiceEndpoint(true);
         return this;
     }
 

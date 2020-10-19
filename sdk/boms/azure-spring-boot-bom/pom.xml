@@ -49,9 +49,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>spring-data-cosmosdb</artifactId>
-        <version>2.3.0</version>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-spring-data-cosmos</artifactId>
+        <version>3.0.0-beta.1</version>
       </dependency>
 
 

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.servicebus.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.inner.NamespaceResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.NamespaceResourceInner;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceCreateOrUpdateParameters;
 import com.azure.resourcemanager.servicebus.models.NamespaceSku;
@@ -48,27 +48,27 @@ class ServiceBusNamespaceImpl
 
     @Override
     public String dnsLabel() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String fqdn() {
-        return this.inner().serviceBusEndpoint();
+        return this.innerModel().serviceBusEndpoint();
     }
 
     @Override
     public NamespaceSku sku() {
-        return new NamespaceSku(this.inner().sku());
+        return new NamespaceSku(this.innerModel().sku());
     }
 
     @Override
     public OffsetDateTime createdAt() {
-        return this.inner().createdAt();
+        return this.innerModel().createdAt();
     }
 
     @Override
     public OffsetDateTime updatedAt() {
-        return this.inner().updatedAt();
+        return this.innerModel().updatedAt();
     }
 
     @Override
@@ -97,7 +97,7 @@ class ServiceBusNamespaceImpl
 
     @Override
     public ServiceBusNamespaceImpl withSku(NamespaceSku namespaceSku) {
-        this.inner().withSku(new Sku()
+        this.innerModel().withSku(new Sku()
                 .withName(namespaceSku.name())
                 .withTier(namespaceSku.tier())
                 .withCapacity(namespaceSku.capacity()));
@@ -163,7 +163,7 @@ class ServiceBusNamespaceImpl
         Mono<NamespaceResourceInner> createTask = this.manager().serviceClient().getNamespaces()
             .createOrUpdateAsync(this.resourceGroupName(),
                     this.name(),
-                    prepareForCreate(this.inner()))
+                    prepareForCreate(this.innerModel()))
             .map(inner -> {
                 setInner(inner);
                 return inner;

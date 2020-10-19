@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -43,16 +43,18 @@ public interface DeploymentSlot
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      */
-    void warDeploy(InputStream warFile);
+    void warDeploy(InputStream warFile, long length);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @return a completable of the operation
      */
-    Mono<Void> warDeployAsync(InputStream warFile);
+    Mono<Void> warDeployAsync(InputStream warFile, long length);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
@@ -75,18 +77,20 @@ public interface DeploymentSlot
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @param appName the name of the app, default to "ROOT" when not provided
      */
-    void warDeploy(InputStream warFile, String appName);
+    void warDeploy(InputStream warFile, long length, String appName);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      *
      * @param warFile the WAR file to upload
+     * @param length the length of the file
      * @param appName the name of the app, default to "ROOT" when not provided
      * @return a completable of the operation
      */
-    Mono<Void> warDeployAsync(InputStream warFile, String appName);
+    Mono<Void> warDeployAsync(InputStream warFile, long length, String appName);
 
     /**************************************************************
      * Fluent interfaces to provision a deployment slot

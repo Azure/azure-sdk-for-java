@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthServerInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** A client-side representation of the health information of an application gateway backend server. */
 @Fluent
 public interface ApplicationGatewayBackendServerHealth
-    extends HasInner<ApplicationGatewayBackendHealthServerInner>,
+    extends HasInnerModel<ApplicationGatewayBackendHealthServerInner>,
         HasParent<ApplicationGatewayBackendHttpConfigurationHealth> {
 
     /** @return IP address of the server this health information pertains to */

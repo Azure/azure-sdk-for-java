@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.resourcemanager.containerregistry.models.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryNameStatusInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryNameStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** Implementation for CheckNameAvailabilityResult. */
@@ -20,16 +20,16 @@ public class CheckNameAvailabilityResultImpl extends WrapperImpl<RegistryNameSta
 
     @Override
     public boolean isAvailable() {
-        return inner().nameAvailable();
+        return innerModel().nameAvailable();
     }
 
     @Override
     public String unavailabilityReason() {
-        return inner().reason();
+        return innerModel().reason();
     }
 
     @Override
     public String unavailabilityMessage() {
-        return inner().message();
+        return innerModel().message();
     }
 }

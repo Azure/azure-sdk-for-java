@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EndpointProperties model. */
+/** The JSON object that contains the properties required to create an endpoint. */
 @Fluent
 public final class EndpointProperties extends EndpointPropertiesUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointProperties.class);

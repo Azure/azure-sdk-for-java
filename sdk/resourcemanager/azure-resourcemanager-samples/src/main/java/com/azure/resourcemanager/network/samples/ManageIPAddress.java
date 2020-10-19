@@ -36,12 +36,12 @@ public final class ManageIPAddress {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String publicIPAddressName1 = azureResourceManager.sdkContext().randomResourceName("pip1", 20);
-        final String publicIPAddressName2 = azureResourceManager.sdkContext().randomResourceName("pip2", 20);
-        final String publicIPAddressLeafDNS1 = azureResourceManager.sdkContext().randomResourceName("pip1", 20);
-        final String publicIPAddressLeafDNS2 = azureResourceManager.sdkContext().randomResourceName("pip2", 20);
-        final String vmName = azureResourceManager.sdkContext().randomResourceName("vm", 8);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgNEMP", 24);
+        final String publicIPAddressName1 = Utils.randomResourceName(azureResourceManager, "pip1", 20);
+        final String publicIPAddressName2 = Utils.randomResourceName(azureResourceManager, "pip2", 20);
+        final String publicIPAddressLeafDNS1 = Utils.randomResourceName(azureResourceManager, "pip1", 20);
+        final String publicIPAddressLeafDNS2 = Utils.randomResourceName(azureResourceManager, "pip2", 20);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 8);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMP", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
 

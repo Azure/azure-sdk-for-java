@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ServiceLevelObjectiveUsageMetric;
 import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
 import com.azure.resourcemanager.sql.models.SloUsageMetric;
-import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +34,17 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -64,44 +64,44 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
 
     @Override
     public OffsetDateTime observationPeriodStart() {
-        return this.inner().observationPeriodStart();
+        return this.innerModel().observationPeriodStart();
     }
 
     @Override
     public OffsetDateTime observationPeriodEnd() {
-        return this.inner().observationPeriodEnd();
+        return this.innerModel().observationPeriodEnd();
     }
 
     @Override
     public double activeTimeRatio() {
-        return this.inner().activeTimeRatio();
+        return this.innerModel().activeTimeRatio();
     }
 
     @Override
     public double minDtu() {
-        return this.inner().minDtu();
+        return this.innerModel().minDtu();
     }
 
     @Override
     public double avgDtu() {
-        return this.inner().avgDtu();
+        return this.innerModel().avgDtu();
     }
 
     @Override
     public double maxDtu() {
-        return this.inner().maxDtu();
+        return this.innerModel().maxDtu();
     }
 
     @Override
     public double maxSizeInGB() {
-        return this.inner().maxSizeInGB();
+        return this.innerModel().maxSizeInGB();
     }
 
     @Override
     public List<ServiceLevelObjectiveUsageMetric> serviceLevelObjectiveUsageMetric() {
         if (this.serviceLevelObjectiveUsageMetrics == null) {
             this.serviceLevelObjectiveUsageMetrics = new ArrayList<>();
-            for (SloUsageMetric sloUsageMetricInner : this.inner().serviceLevelObjectiveUsageMetrics()) {
+            for (SloUsageMetric sloUsageMetricInner : this.innerModel().serviceLevelObjectiveUsageMetrics()) {
                 this
                     .serviceLevelObjectiveUsageMetrics
                     .add(new ServiceLevelObjectiveUsageMetricImpl(sloUsageMetricInner));
@@ -112,57 +112,57 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
 
     @Override
     public String currentServiceLevelObjective() {
-        return this.inner().currentServiceLevelObjective();
+        return this.innerModel().currentServiceLevelObjective();
     }
 
     @Override
     public UUID currentServiceLevelObjectiveId() {
-        return this.inner().currentServiceLevelObjectiveId();
+        return this.innerModel().currentServiceLevelObjectiveId();
     }
 
     @Override
     public String usageBasedRecommendationServiceLevelObjective() {
-        return this.inner().usageBasedRecommendationServiceLevelObjective();
+        return this.innerModel().usageBasedRecommendationServiceLevelObjective();
     }
 
     @Override
     public UUID usageBasedRecommendationServiceLevelObjectiveId() {
-        return this.inner().currentServiceLevelObjectiveId();
+        return this.innerModel().currentServiceLevelObjectiveId();
     }
 
     @Override
     public String databaseSizeBasedRecommendationServiceLevelObjective() {
-        return this.inner().databaseSizeBasedRecommendationServiceLevelObjective();
+        return this.innerModel().databaseSizeBasedRecommendationServiceLevelObjective();
     }
 
     @Override
     public UUID databaseSizeBasedRecommendationServiceLevelObjectiveId() {
-        return this.inner().databaseSizeBasedRecommendationServiceLevelObjectiveId();
+        return this.innerModel().databaseSizeBasedRecommendationServiceLevelObjectiveId();
     }
 
     @Override
     public String disasterPlanBasedRecommendationServiceLevelObjective() {
-        return this.inner().disasterPlanBasedRecommendationServiceLevelObjective();
+        return this.innerModel().disasterPlanBasedRecommendationServiceLevelObjective();
     }
 
     @Override
     public UUID disasterPlanBasedRecommendationServiceLevelObjectiveId() {
-        return this.inner().disasterPlanBasedRecommendationServiceLevelObjectiveId();
+        return this.innerModel().disasterPlanBasedRecommendationServiceLevelObjectiveId();
     }
 
     @Override
     public String overallRecommendationServiceLevelObjective() {
-        return this.inner().overallRecommendationServiceLevelObjective();
+        return this.innerModel().overallRecommendationServiceLevelObjective();
     }
 
     @Override
     public UUID overallRecommendationServiceLevelObjectiveId() {
-        return this.inner().overallRecommendationServiceLevelObjectiveId();
+        return this.innerModel().overallRecommendationServiceLevelObjectiveId();
     }
 
     @Override
     public double confidence() {
-        return this.inner().confidence();
+        return this.innerModel().confidence();
     }
 
     @Override

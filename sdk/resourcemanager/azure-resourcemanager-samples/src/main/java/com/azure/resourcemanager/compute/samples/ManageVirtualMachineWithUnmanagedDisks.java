@@ -44,9 +44,9 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVMName = azureResourceManager.sdkContext().randomResourceName("wVM", 15);
-        final String linuxVMName = azureResourceManager.sdkContext().randomResourceName("lVM", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
+        final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 15);
+        final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
         final String dataDiskName = "disk2";

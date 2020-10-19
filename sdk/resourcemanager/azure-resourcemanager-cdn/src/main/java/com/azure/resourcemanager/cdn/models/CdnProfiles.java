@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.CdnManager;
-import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -36,8 +34,7 @@ public interface CdnProfiles extends
     SupportsDeletingByResourceGroup,
     SupportsBatchCreation<CdnProfile>,
     SupportsBatchDeletion,
-    HasManager<CdnManager>,
-    HasInner<ProfilesClient> {
+    HasManager<CdnManager> {
 
     /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal.

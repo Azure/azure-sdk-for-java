@@ -36,7 +36,7 @@ public final class WebAppPerformanceMonitoringAlerts {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgMonitor", 20);
 
         try {
             // ============================================================

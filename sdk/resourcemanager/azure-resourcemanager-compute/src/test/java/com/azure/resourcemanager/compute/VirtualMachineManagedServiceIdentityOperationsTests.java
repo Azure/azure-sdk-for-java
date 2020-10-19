@@ -57,7 +57,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -85,7 +85,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         virtualMachine = virtualMachine.update().withSystemAssignedManagedServiceIdentity().apply();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -129,7 +129,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
@@ -263,7 +263,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertNotNull(virtualMachine.inner());
+        Assertions.assertNotNull(virtualMachine.innerModel());
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());

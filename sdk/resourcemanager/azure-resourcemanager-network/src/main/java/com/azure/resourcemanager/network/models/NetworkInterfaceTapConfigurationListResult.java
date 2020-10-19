@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceTapConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkInterfaceTapConfigurationListResult model. */
+/** Response for list tap configurations API service call. */
 @Fluent
 public final class NetworkInterfaceTapConfigurationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceTapConfigurationListResult.class);

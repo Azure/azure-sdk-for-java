@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.AvailableServiceAliasInner;
+import com.azure.resourcemanager.network.fluent.models.AvailableServiceAliasInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailableServiceAliasesResult model. */
+/** An array of available service aliases. */
 @Fluent
 public final class AvailableServiceAliasesResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableServiceAliasesResult.class);

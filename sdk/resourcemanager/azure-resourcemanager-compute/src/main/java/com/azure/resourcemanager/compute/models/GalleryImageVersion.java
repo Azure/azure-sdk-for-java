@@ -5,12 +5,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryImageVersionInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
@@ -21,7 +21,7 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure gallery image version. */
 @Fluent
 public interface GalleryImageVersion
-    extends HasInner<GalleryImageVersionInner>,
+    extends HasInnerModel<GalleryImageVersionInner>,
         Indexable,
         Refreshable<GalleryImageVersion>,
         Updatable<GalleryImageVersion.Update>,

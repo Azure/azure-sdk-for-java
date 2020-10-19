@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UrlFileExtensionConditionParameters model. */
+/** Defines the parameters for the URL file extension condition. */
 @Fluent
 public final class UrlFileExtensionConditionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlFileExtensionConditionParameters.class);

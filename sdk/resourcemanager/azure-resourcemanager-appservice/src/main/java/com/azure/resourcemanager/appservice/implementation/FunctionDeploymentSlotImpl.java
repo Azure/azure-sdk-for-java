@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,13 +51,13 @@ class FunctionDeploymentSlotImpl
     }
 
     @Override
-    public void zipDeploy(InputStream zipFile) {
-        zipDeployAsync(zipFile).block();
+    public void zipDeploy(InputStream zipFile, long length) {
+        zipDeployAsync(zipFile, length).block();
     }
 
     @Override
-    public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile);
+    public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        return kuduClient.zipDeployAsync(zipFile, length);
     }
 
     @Override
@@ -77,6 +77,6 @@ class FunctionDeploymentSlotImpl
     @Override
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // PATCH does not work for function app slot
-        return submitSiteWithoutSiteConfig(this.inner());
+        return submitSiteWithoutSiteConfig(this.innerModel());
     }
 }

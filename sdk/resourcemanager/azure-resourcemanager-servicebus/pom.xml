@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -85,7 +85,7 @@
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
           <artifactId>azure-resourcemanager-test</artifactId>
-          <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -115,6 +115,8 @@
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
             <exclude>com/azure/resourcemanager/**/models/**/*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
         </configuration>
       </plugin>

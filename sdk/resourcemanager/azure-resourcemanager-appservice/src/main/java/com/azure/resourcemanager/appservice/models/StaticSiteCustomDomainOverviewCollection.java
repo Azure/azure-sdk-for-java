@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteCustomDomainOverviewArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewArmResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StaticSiteCustomDomainOverviewCollection model. */
+/** Collection of static site custom domains. */
 @Fluent
 public final class StaticSiteCustomDomainOverviewCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteCustomDomainOverviewCollection.class);

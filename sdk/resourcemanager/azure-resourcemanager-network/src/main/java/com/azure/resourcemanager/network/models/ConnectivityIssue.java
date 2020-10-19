@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The ConnectivityIssue model. */
+/** Information about an issue encountered in the process of checking for connectivity. */
 @Immutable
 public final class ConnectivityIssue {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityIssue.class);

@@ -5,12 +5,12 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.WebhookInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public interface Webhook
     extends ExternalChildResource<Webhook, Registry>,
         Resource,
-        HasInner<WebhookInner>,
+        HasInnerModel<WebhookInner>,
         Refreshable<Webhook>,
         Updatable<Webhook.Update> {
 

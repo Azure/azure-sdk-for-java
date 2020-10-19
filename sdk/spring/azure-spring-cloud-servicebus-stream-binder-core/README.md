@@ -8,7 +8,7 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus][azure_se
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
@@ -80,3 +80,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-topic-binder-sample
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-servicebus-stream-binder-core
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

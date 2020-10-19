@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TemporaryDisk model. */
+/** Temporary disk payload. */
 @Fluent
 public final class TemporaryDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TemporaryDisk.class);

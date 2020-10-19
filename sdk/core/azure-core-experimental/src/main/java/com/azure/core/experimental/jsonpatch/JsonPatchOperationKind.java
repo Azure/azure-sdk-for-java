@@ -4,14 +4,37 @@
 package com.azure.core.experimental.jsonpatch;
 
 /**
- * Represents a JSON Patch operation kind.
+ * Represents the JSON Patch operation kind.
  */
-enum JsonPatchOperationKind {
+public enum JsonPatchOperationKind {
+    /**
+     * Add operation.
+     */
     ADD("add"),
+
+    /**
+     * Remove operation.
+     */
     REMOVE("remove"),
+
+    /**
+     * Replace operation.
+     */
     REPLACE("replace"),
+
+    /**
+     * Move operation.
+     */
     MOVE("move"),
+
+    /**
+     * Copy operation.
+     */
     COPY("copy"),
+
+    /**
+     * Test operation.
+     */
     TEST("test");
 
     private final String operation;

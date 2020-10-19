@@ -15,7 +15,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
     @Override
     public Registry createResource(Registries registries) throws Exception {
-        final String testId = registries.manager().sdkContext().randomResourceName("", 8);
+        final String testId = registries.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String newName = "acr" + testId;
         final String rgName = "rgacr" + testId;
         Registry registry =

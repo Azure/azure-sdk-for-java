@@ -9,7 +9,7 @@
 //package com.azure.management.resources;
 //
 //import com.azure.core.management.Region;
-//import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+//import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 //import com.microsoft.rest.RestClient;
 //import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@
 //
 //    @Override
 //    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-//        testId = SdkContext.randomResourceName("", 9);
+//        testId = ResourceManagerUtils.InternalRuntimeContext.randomResourceName("", 9);
 //        rgName = "rg429" + testId;
 //
 //        super.initializeClients(restClient, defaultSubscription, domain);

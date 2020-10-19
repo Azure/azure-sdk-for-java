@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
 import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.chat.implementation.ChatOptionsMocker;
+import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -56,7 +56,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canCreateThread() {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
         ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
@@ -66,7 +66,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canCreateThreadWithResponse() {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
 
         ChatThreadClient chatThreadClient = client.createChatThreadWithResponse(threadRequest, Context.NONE).getValue();
@@ -85,7 +85,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canGetExistingChatThread() {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
 
@@ -95,7 +95,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canGetExistingChatThreadWithResponse() {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
 
@@ -117,7 +117,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canDeleteChatThread() {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
 
@@ -126,7 +126,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canDeleteChatThreadWithResponse() {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
 
@@ -135,7 +135,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canListChatThreads() throws InterruptedException {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         client.createChatThread(threadRequest);
         client.createChatThread(threadRequest);
@@ -156,7 +156,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @Test
     public void canListChatThreadsWithMaxPageSize() throws InterruptedException {
-        CreateChatThreadOptions threadRequest = ChatOptionsMocker.createThreadOptions(
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         client.createChatThread(threadRequest);
         client.createChatThread(threadRequest);

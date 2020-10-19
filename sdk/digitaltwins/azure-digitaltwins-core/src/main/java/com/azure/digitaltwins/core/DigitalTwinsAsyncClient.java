@@ -460,7 +460,7 @@ public final class DigitalTwinsAsyncClient {
     public <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz) {
         return new PagedFlux<>(
             () -> withContext(context -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context)),
-            nextLink -> withContext(context -> listRelationshipsNextPage(nextLink, clazz, context)));
+            nextLink -> withContext(context -> listRelationshipsNextPage(this.protocolLayer.getHost() + nextLink, clazz, context)));
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
@@ -485,7 +485,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getStatusCode(),
                         objectPagedResponse.getHeaders(),
                         list,
-                        SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                        objectPagedResponse.getContinuationToken(),
                         ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
                 }
             );
@@ -512,7 +512,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(),
                     stringList,
-                    SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                    objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
     }
@@ -520,7 +520,7 @@ public final class DigitalTwinsAsyncClient {
     <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
         return new PagedFlux<>(
             () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context),
-            nextLink -> listRelationshipsNextPage(nextLink, clazz, context));
+            nextLink -> listRelationshipsNextPage(this.protocolLayer.getHost() + nextLink, clazz, context));
     }
 
     /**
@@ -533,13 +533,13 @@ public final class DigitalTwinsAsyncClient {
     public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
         return new PagedFlux<>(
             () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context)),
-            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context)));
+            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context)));
     }
 
     PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) {
         return new PagedFlux<>(
             () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context),
-            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
+            nextLink -> listIncomingRelationshipsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context));
     }
 
     Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context){
@@ -562,7 +562,7 @@ public final class DigitalTwinsAsyncClient {
             pagedIncomingRelationshipResponse.getStatusCode(),
             pagedIncomingRelationshipResponse.getHeaders(),
             convertedList,
-            SerializationHelpers.serializeContinuationToken(pagedIncomingRelationshipResponse.getContinuationToken()),
+            pagedIncomingRelationshipResponse.getContinuationToken(),
             ((PagedResponseBase)pagedIncomingRelationshipResponse).getDeserializedHeaders());
     };
 
@@ -656,38 +656,32 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DigitalTwinsModelData> listModels() {
-        return listModels(new ListModelOptions());
+        return listModels(new ModelsListOptions());
     }
 
     /**
      * List the models in this digital twins instance based on some options.
-     * @param listModelOptions The options to follow when listing the models.
+     * @param modelsListOptions The options to follow when listing the models.
      * @return A {@link PagedFlux} containing the retrieved {@link DigitalTwinsModelData} instances.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions) {
+    public PagedFlux<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions) {
         return new PagedFlux<>(
-            () -> withContext(context -> listModelsSinglePageAsync(listModelOptions, context)),
-            nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, context)));
+            () -> withContext(context -> listModelsSinglePageAsync(modelsListOptions, context)),
+            nextLink -> withContext(context -> listModelsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context)));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ModelsListOptions modelsListOptions, Context context){
         return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(new ListModelOptions(), context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
+            () -> listModelsSinglePageAsync(modelsListOptions, context),
+            nextLink -> listModelsNextSinglePageAsync(this.protocolLayer.getHost() + nextLink, context));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(ListModelOptions listModelOptions, Context context){
-        return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(listModelOptions, context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
-    }
-
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelOptions listModelOptions, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ModelsListOptions modelsListOptions, Context context){
         return protocolLayer.getDigitalTwinModels().listSinglePageAsync(
-            listModelOptions.getDependenciesFor(),
-            listModelOptions.getIncludeModelDefinition(),
-            new DigitalTwinModelsListOptions().setMaxItemCount(listModelOptions.getMaxItemCount()),
+            modelsListOptions.getDependenciesFor(),
+            modelsListOptions.getIncludeModelDefinition(),
+            new DigitalTwinModelsListOptions().setMaxItemCount(modelsListOptions.getMaxItemCount()),
             context)
             .map(
                 objectPagedResponse -> {
@@ -718,7 +712,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(),
                 objectPagedResponse.getHeaders(),
                 convertedList,
-                SerializationHelpers.serializeContinuationToken(objectPagedResponse.getContinuationToken()),
+                objectPagedResponse.getContinuationToken(),
                 ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
         });
     }
@@ -1054,14 +1048,14 @@ public final class DigitalTwinsAsyncClient {
     {
         return new PagedFlux<>(
             () -> withContext(context -> listEventRoutesFirstPage(options, context)),
-            nextLink -> withContext(context -> listEventRoutesNextPage(nextLink, context)));
+            nextLink -> withContext(context -> listEventRoutesNextPage(this.protocolLayer.getHost() + nextLink, context)));
     }
 
     PagedFlux<EventRoute> listEventRoutes(EventRoutesListOptions options, Context context)
     {
         return new PagedFlux<>(
             () -> listEventRoutesFirstPage(options, context),
-            nextLink -> listEventRoutesNextPage(nextLink, context));
+            nextLink -> listEventRoutesNextPage(this.protocolLayer.getHost() + nextLink, context));
     }
 
     Mono<PagedResponse<EventRoute>> listEventRoutesFirstPage(EventRoutesListOptions options, Context context) {
@@ -1089,7 +1083,7 @@ public final class DigitalTwinsAsyncClient {
             pagedEventRouteResponse.getStatusCode(),
             pagedEventRouteResponse.getHeaders(),
             convertedList,
-            SerializationHelpers.serializeContinuationToken(pagedEventRouteResponse.getContinuationToken()),
+            pagedEventRouteResponse.getContinuationToken(),
             ((PagedResponseBase) pagedEventRouteResponse).getDeserializedHeaders());
     };
 

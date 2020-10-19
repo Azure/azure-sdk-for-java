@@ -8,7 +8,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /**
  * Generic base class for Azure resource managers.
@@ -20,21 +19,17 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     private final String subscriptionId;
     private final AzureEnvironment environment;
     private final HttpPipeline httpPipeline;
-    private final SdkContext sdkContext;
 
-    protected final InnerT innerManagementClient;
+    private final InnerT innerManagementClient;
 
-    protected Manager(HttpPipeline httpPipeline, AzureProfile profile,
-                      InnerT innerManagementClient, SdkContext sdkContext) {
+    protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
             this.resourceManager = ResourceManager.authenticate(httpPipeline, profile)
-                .withSdkContext(sdkContext)
                 .withDefaultSubscription();
         }
         this.subscriptionId = profile.getSubscriptionId();
         this.environment = profile.getEnvironment();
-        this.sdkContext = sdkContext;
         this.innerManagementClient = innerManagementClient;
     }
 
@@ -73,12 +68,5 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
      */
     public HttpPipeline httpPipeline() {
         return this.httpPipeline;
-    }
-
-    /**
-     * @return the {@link SdkContext} associated with this manager
-     */
-    public SdkContext sdkContext() {
-        return this.sdkContext;
     }
 }

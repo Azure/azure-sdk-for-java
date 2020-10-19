@@ -12,12 +12,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public interface Deployment extends
         Indexable,
         Refreshable<Deployment>,
         Updatable<Deployment.Update>,
-        HasInner<DeploymentExtendedInner>,
+        HasInnerModel<DeploymentExtendedInner>,
         HasManager<ResourceManager>,
         HasName,
         HasId {

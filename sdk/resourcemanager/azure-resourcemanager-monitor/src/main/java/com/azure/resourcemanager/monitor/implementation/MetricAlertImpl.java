@@ -15,7 +15,7 @@ import com.azure.resourcemanager.monitor.models.MetricAlertSingleResourceMultipl
 import com.azure.resourcemanager.monitor.models.MetricCriteria;
 import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
 import com.azure.resourcemanager.monitor.models.MultiMetricCriteria;
-import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -102,39 +102,39 @@ class MetricAlertImpl
                 new IllegalArgumentException("Static condition and dynamic condition cannot co-exist"));
         }
 
-        this.inner().withLocation("global");
+        this.innerModel().withLocation("global");
         if (!this.conditions.isEmpty()) {
             if (!multipleResource) {
                 MetricAlertSingleResourceMultipleMetricCriteria crit =
                     new MetricAlertSingleResourceMultipleMetricCriteria();
                 crit.withAllOf(new ArrayList<>());
                 for (MetricAlertCondition mc : conditions.values()) {
-                    crit.allOf().add(mc.inner());
+                    crit.allOf().add(mc.innerModel());
                 }
-                this.inner().withCriteria(crit);
+                this.innerModel().withCriteria(crit);
             } else {
                 MetricAlertMultipleResourceMultipleMetricCriteria crit =
                     new MetricAlertMultipleResourceMultipleMetricCriteria();
                 crit.withAllOf(new ArrayList<>());
                 for (MetricAlertCondition mc : conditions.values()) {
-                    crit.allOf().add(mc.inner());
+                    crit.allOf().add(mc.innerModel());
                 }
-                this.inner().withCriteria(crit);
+                this.innerModel().withCriteria(crit);
             }
         } else if (!this.dynamicConditions.isEmpty()) {
             MetricAlertMultipleResourceMultipleMetricCriteria crit =
                 new MetricAlertMultipleResourceMultipleMetricCriteria();
             crit.withAllOf(new ArrayList<>());
             for (MetricDynamicAlertCondition mc : dynamicConditions.values()) {
-                crit.allOf().add(mc.inner());
+                crit.allOf().add(mc.innerModel());
             }
-            this.inner().withCriteria(crit);
+            this.innerModel().withCriteria(crit);
         }
         return this
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -148,8 +148,8 @@ class MetricAlertImpl
     public MetricAlertImpl withTargetResource(String resourceId) {
         multipleResource = false;
 
-        this.inner().withScopes(new ArrayList<>());
-        this.inner().scopes().add(resourceId);
+        this.innerModel().withScopes(new ArrayList<>());
+        this.innerModel().scopes().add(resourceId);
         return this;
     }
 
@@ -162,19 +162,19 @@ class MetricAlertImpl
 
     @Override
     public MetricAlertImpl withPeriod(Duration size) {
-        this.inner().withWindowSize(size);
+        this.innerModel().withWindowSize(size);
         return this;
     }
 
     @Override
     public MetricAlertImpl withFrequency(Duration frequency) {
-        this.inner().withEvaluationFrequency(frequency);
+        this.innerModel().withEvaluationFrequency(frequency);
         return this;
     }
 
     @Override
     public MetricAlertImpl withSeverity(int severity) {
-        this.inner().withSeverity(severity);
+        this.innerModel().withSeverity(severity);
         return this;
     }
 
@@ -186,58 +186,58 @@ class MetricAlertImpl
 
     @Override
     public MetricAlertImpl withDescription(String description) {
-        this.inner().withDescription(description);
+        this.innerModel().withDescription(description);
         return this;
     }
 
     @Override
     public MetricAlertImpl withRuleEnabled() {
-        this.inner().withEnabled(true);
+        this.innerModel().withEnabled(true);
         return this;
     }
 
     @Override
     public MetricAlertImpl withRuleDisabled() {
-        this.inner().withEnabled(false);
+        this.innerModel().withEnabled(false);
         return this;
     }
 
     @Override
     public MetricAlertImpl withAutoMitigation() {
-        this.inner().withAutoMitigate(true);
+        this.innerModel().withAutoMitigate(true);
         return this;
     }
 
     @Override
     public MetricAlertImpl withoutAutoMitigation() {
-        this.inner().withAutoMitigate(false);
+        this.innerModel().withAutoMitigate(false);
         return this;
     }
 
     @Override
     public MetricAlertImpl withActionGroups(String... actionGroupId) {
-        if (this.inner().actions() == null) {
-            this.inner().withActions(new ArrayList<MetricAlertAction>());
+        if (this.innerModel().actions() == null) {
+            this.innerModel().withActions(new ArrayList<MetricAlertAction>());
         }
-        this.inner().actions().clear();
+        this.innerModel().actions().clear();
         for (String agid : actionGroupId) {
             MetricAlertAction maa = new MetricAlertAction();
             maa.withActionGroupId(agid);
-            this.inner().actions().add(maa);
+            this.innerModel().actions().add(maa);
         }
         return this;
     }
 
     @Override
     public MetricAlertImpl withoutActionGroup(String actionGroupId) {
-        if (this.inner().actions() != null) {
+        if (this.innerModel().actions() != null) {
             List<MetricAlertAction> toDelete = new ArrayList<>();
-            for (MetricAlertAction maa : this.inner().actions()) {
+            for (MetricAlertAction maa : this.innerModel().actions()) {
                 if (maa.actionGroupId().equalsIgnoreCase(actionGroupId)) {
                     toDelete.add(maa);
                 }
             }
-            this.inner().actions().removeAll(toDelete);
+            this.innerModel().actions().removeAll(toDelete);
         }
         return this;
     }
@@ -293,9 +293,9 @@ class MetricAlertImpl
 
         multipleResource = true;
 
-        this.inner().withScopes(new ArrayList<>(resourceIds));
-        this.inner().withTargetResourceType(type);
-        this.inner().withTargetResourceRegion(region);
+        this.innerModel().withScopes(new ArrayList<>(resourceIds));
+        this.innerModel().withTargetResourceType(type);
+        this.innerModel().withTargetResourceRegion(region);
         return this;
     }
 
@@ -323,49 +323,49 @@ class MetricAlertImpl
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override
     public int severity() {
-        return this.inner().severity();
+        return this.innerModel().severity();
     }
 
     @Override
     public boolean enabled() {
-        return this.inner().enabled();
+        return this.innerModel().enabled();
     }
 
     @Override
     public Duration evaluationFrequency() {
-        return this.inner().evaluationFrequency();
+        return this.innerModel().evaluationFrequency();
     }
 
     @Override
     public Duration windowSize() {
-        return this.inner().windowSize();
+        return this.innerModel().windowSize();
     }
 
     @Override
     public boolean autoMitigate() {
-        return this.inner().autoMitigate();
+        return this.innerModel().autoMitigate();
     }
 
     @Override
     public OffsetDateTime lastUpdatedTime() {
-        return this.inner().lastUpdatedTime();
+        return this.innerModel().lastUpdatedTime();
     }
 
     @Override
     public Collection<String> scopes() {
-        return Collections.unmodifiableCollection(this.inner().scopes());
+        return Collections.unmodifiableCollection(this.innerModel().scopes());
     }
 
     @Override
     public Collection<String> actionGroupIds() {
-        if (this.inner().actions() != null && this.inner().actions() != null) {
+        if (this.innerModel().actions() != null && this.innerModel().actions() != null) {
             List<String> ids = new ArrayList<>();
-            for (MetricAlertAction maag : this.inner().actions()) {
+            for (MetricAlertAction maag : this.innerModel().actions()) {
                 ids.add(maag.actionGroupId());
             }
             return Collections.unmodifiableCollection(ids);

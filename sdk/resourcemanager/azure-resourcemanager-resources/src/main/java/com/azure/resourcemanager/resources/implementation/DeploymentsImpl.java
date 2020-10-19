@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import reactor.core.publisher.Mono;
 
@@ -117,7 +117,7 @@ public final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listAsync() {
-        return PagedConverter.flatMapPage(this.manager().resourceGroups().listAsync(),
+        return PagedConverter.mergePagedFlux(this.manager().resourceGroups().listAsync(),
             resourceGroup -> listByResourceGroupAsync(resourceGroup.name()));
     }
 

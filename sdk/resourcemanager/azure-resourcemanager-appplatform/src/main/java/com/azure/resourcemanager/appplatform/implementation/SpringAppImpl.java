@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.AppResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
@@ -39,71 +39,71 @@ public class SpringAppImpl
 
     @Override
     public boolean isPublic() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return false;
         }
-        return inner().properties().publicProperty();
+        return innerModel().properties().publicProperty();
     }
 
     @Override
     public boolean isHttpsOnly() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return false;
         }
-        return inner().properties().httpsOnly();
+        return innerModel().properties().httpsOnly();
     }
 
     @Override
     public String url() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().url();
+        return innerModel().properties().url();
     }
 
     @Override
     public String fqdn() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().fqdn();
+        return innerModel().properties().fqdn();
     }
 
     @Override
     public TemporaryDisk temporaryDisk() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().temporaryDisk();
+        return innerModel().properties().temporaryDisk();
     }
 
     @Override
     public PersistentDisk persistentDisk() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().persistentDisk();
+        return innerModel().properties().persistentDisk();
     }
 
     @Override
     public ManagedIdentityProperties identity() {
-        return inner().identity();
+        return innerModel().identity();
     }
 
     @Override
     public OffsetDateTime createdTime() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().createdTime();
+        return innerModel().properties().createdTime();
     }
 
     @Override
     public String activeDeploymentName() {
-        if (inner().properties() == null) {
+        if (innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().activeDeploymentName();
+        return innerModel().properties().activeDeploymentName();
     }
 
     @Override
@@ -148,22 +148,22 @@ public class SpringAppImpl
     }
 
     private void ensureProperty() {
-        if (inner().properties() == null) {
-            inner().withProperties(new AppResourceProperties());
+        if (innerModel().properties() == null) {
+            innerModel().withProperties(new AppResourceProperties());
         }
     }
 
     @Override
     public SpringAppImpl withDefaultPublicEndpoint() {
         ensureProperty();
-        inner().properties().withPublicProperty(true);
+        innerModel().properties().withPublicProperty(true);
         return this;
     }
 
     @Override
     public SpringAppImpl withoutDefaultPublicEndpoint() {
         ensureProperty();
-        inner().properties().withPublicProperty(false);
+        innerModel().properties().withPublicProperty(false);
         return this;
     }
 
@@ -188,35 +188,37 @@ public class SpringAppImpl
     @Override
     public SpringAppImpl withHttpsOnly() {
         ensureProperty();
-        inner().properties().withHttpsOnly(true);
+        innerModel().properties().withHttpsOnly(true);
         return this;
     }
 
     @Override
     public SpringAppImpl withoutHttpsOnly() {
         ensureProperty();
-        inner().properties().withHttpsOnly(false);
+        innerModel().properties().withHttpsOnly(false);
         return this;
     }
 
     @Override
     public SpringAppImpl withTemporaryDisk(int sizeInGB, String mountPath) {
         ensureProperty();
-        inner().properties().withTemporaryDisk(new TemporaryDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
+        innerModel().properties().withTemporaryDisk(
+            new TemporaryDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
         return this;
     }
 
     @Override
     public SpringAppImpl withPersistentDisk(int sizeInGB, String mountPath) {
         ensureProperty();
-        inner().properties().withPersistentDisk(new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
+        innerModel().properties().withPersistentDisk(
+            new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
         return this;
     }
 
     @Override
     public SpringAppImpl withActiveDeployment(String name) {
         ensureProperty();
-        inner().properties().withActiveDeploymentName(name);
+        innerModel().properties().withActiveDeploymentName(name);
         return this;
     }
 
@@ -234,7 +236,7 @@ public class SpringAppImpl
     @Override
     public Mono<SpringApp> updateResourceAsync() {
         return manager().serviceClient().getApps().updateAsync(
-            parent().resourceGroupName(), parent().name(), name(), inner())
+            parent().resourceGroupName(), parent().name(), name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -253,7 +255,7 @@ public class SpringAppImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override

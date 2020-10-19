@@ -6,12 +6,12 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RedisPatchScheduleListResult model. */
+/** The response of list patch schedules Redis operation. */
 @Fluent
 public final class RedisPatchScheduleListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisPatchScheduleListResult.class);

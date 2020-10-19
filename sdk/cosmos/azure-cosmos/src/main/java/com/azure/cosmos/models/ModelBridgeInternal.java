@@ -719,4 +719,9 @@ public final class ModelBridgeInternal {
     public static CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
         return new CosmosItemRequestOptions(options);
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
+    }
 }

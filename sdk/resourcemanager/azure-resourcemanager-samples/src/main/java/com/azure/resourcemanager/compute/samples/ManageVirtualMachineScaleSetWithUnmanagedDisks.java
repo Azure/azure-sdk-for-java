@@ -49,9 +49,9 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOVS", 15);
-        final String vnetName = azureResourceManager.sdkContext().randomResourceName("vnet", 24);
-        final String loadBalancerName1 = azureResourceManager.sdkContext().randomResourceName("intlb" + "-", 18);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOVS", 15);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
+        final String loadBalancerName1 = Utils.randomResourceName(azureResourceManager, "intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -64,10 +64,10 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
 
-        final String vmssName =  azureResourceManager.sdkContext().randomResourceName("vmss", 24);
-        final String storageAccountName1 = azureResourceManager.sdkContext().randomResourceName("stg1", 24);
-        final String storageAccountName2 = azureResourceManager.sdkContext().randomResourceName("stg2", 24);
-        final String storageAccountName3 = azureResourceManager.sdkContext().randomResourceName("stg3", 24);
+        final String vmssName =  Utils.randomResourceName(azureResourceManager, "vmss", 24);
+        final String storageAccountName1 = Utils.randomResourceName(azureResourceManager, "stg1", 24);
+        final String storageAccountName2 = Utils.randomResourceName(azureResourceManager, "stg2", 24);
+        final String storageAccountName3 = Utils.randomResourceName(azureResourceManager, "stg3", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -240,7 +240,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             System.out.println();
 
             // Print virtual machine scale set details
-            // Utils.print(virtualMachineScaleSet);
+            // ResourceManagerUtils.print(virtualMachineScaleSet);
 
             //=============================================================
             // List virtual machine scale set network interfaces

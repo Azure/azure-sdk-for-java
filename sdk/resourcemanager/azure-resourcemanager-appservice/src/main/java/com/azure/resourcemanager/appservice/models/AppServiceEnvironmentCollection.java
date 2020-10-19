@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceEnvironmentResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironmentResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AppServiceEnvironmentCollection model. */
+/** Collection of App Service Environments. */
 @Fluent
 public final class AppServiceEnvironmentCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceEnvironmentCollection.class);

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.fluent.inner.NetworkRuleSetInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.NetworkRuleSetInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkRuleSetListResult model. */
+/** The response of the List NetworkRuleSet operation. */
 @Fluent
 public final class NetworkRuleSetListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetListResult.class);

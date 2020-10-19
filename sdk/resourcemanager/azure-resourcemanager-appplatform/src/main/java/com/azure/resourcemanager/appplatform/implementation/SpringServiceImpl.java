@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
-import com.azure.resourcemanager.appplatform.fluent.inner.ConfigServerResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.MonitoringSettingResourceInner;
-import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ConfigServerResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.MonitoringSettingResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
@@ -38,7 +38,7 @@ public class SpringServiceImpl
 
     @Override
     public Sku sku() {
-        return inner().sku();
+        return innerModel().sku();
     }
 
     @Override
@@ -131,7 +131,7 @@ public class SpringServiceImpl
     @Override
     public SpringServiceImpl withSku(Sku sku) {
         needUpdate = true;
-        inner().withSku(sku);
+        innerModel().withSku(sku);
         return this;
     }
 
@@ -219,10 +219,11 @@ public class SpringServiceImpl
         Mono<ServiceResourceInner> createOrUpdate;
         if (isInCreateMode()) {
             createOrUpdate = manager().serviceClient().getServices()
-                .createOrUpdateAsync(resourceGroupName(), name(), inner());
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
         } else if (needUpdate) {
             needUpdate = false;
-            createOrUpdate = manager().serviceClient().getServices().updateAsync(resourceGroupName(), name(), inner());
+            createOrUpdate = manager().serviceClient().getServices().updateAsync(
+                resourceGroupName(), name(), innerModel());
         } else {
             return Mono.just(this);
         }

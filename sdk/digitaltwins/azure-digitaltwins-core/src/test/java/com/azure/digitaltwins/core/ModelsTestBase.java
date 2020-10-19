@@ -22,9 +22,11 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
 
     @Test
     public abstract void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
-
     @Test
     public abstract void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listModelsMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test
     public abstract void getModelThrowsIfModelIdInvalid(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);

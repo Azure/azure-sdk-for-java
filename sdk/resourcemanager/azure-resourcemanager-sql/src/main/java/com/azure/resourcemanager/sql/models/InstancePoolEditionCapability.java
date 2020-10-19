@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The InstancePoolEditionCapability model. */
+/** The instance pool capability. */
 @Fluent
 public final class InstancePoolEditionCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolEditionCapability.class);

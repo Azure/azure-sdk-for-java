@@ -9,11 +9,12 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,53 +50,53 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public boolean isIPForwardingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableIpForwarding());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableIpForwarding());
     }
 
     @Override
     public String macAddress() {
-        return this.inner().macAddress();
+        return this.innerModel().macAddress();
     }
 
     @Override
     public String internalDnsNameLabel() {
-        if (this.inner().dnsSettings() == null) {
+        if (this.innerModel().dnsSettings() == null) {
             return null;
         }
-        return this.inner().dnsSettings().internalDnsNameLabel();
+        return this.innerModel().dnsSettings().internalDnsNameLabel();
     }
 
     @Override
     public String internalFqdn() {
-        if (this.inner().dnsSettings() == null) {
+        if (this.innerModel().dnsSettings() == null) {
             return null;
         }
-        return this.inner().dnsSettings().internalFqdn();
+        return this.innerModel().dnsSettings().internalFqdn();
     }
 
     @Override
     public String internalDomainNameSuffix() {
-        if (this.inner().dnsSettings() == null) {
+        if (this.innerModel().dnsSettings() == null) {
             return null;
         }
-        return this.inner().dnsSettings().internalDomainNameSuffix();
+        return this.innerModel().dnsSettings().internalDomainNameSuffix();
     }
 
     @Override
     public List<String> dnsServers() {
-        if (this.inner().dnsSettings() == null || this.inner().dnsSettings().dnsServers() == null) {
+        if (this.innerModel().dnsSettings() == null || this.innerModel().dnsSettings().dnsServers() == null) {
             return Collections.unmodifiableList(new ArrayList<String>());
         }
-        return Collections.unmodifiableList(this.inner().dnsSettings().dnsServers());
+        return Collections.unmodifiableList(this.innerModel().dnsSettings().dnsServers());
     }
 
     @Override
     public List<String> appliedDnsServers() {
         List<String> dnsServers = new ArrayList<>();
-        if (this.inner().dnsSettings() == null || this.inner().dnsSettings().appliedDnsServers() == null) {
+        if (this.innerModel().dnsSettings() == null || this.innerModel().dnsSettings().appliedDnsServers() == null) {
             return Collections.unmodifiableList(dnsServers);
         }
-        return Collections.unmodifiableList(this.inner().dnsSettings().appliedDnsServers());
+        return Collections.unmodifiableList(this.innerModel().dnsSettings().appliedDnsServers());
     }
 
     @Override
@@ -118,7 +119,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations() {
-        List<NetworkInterfaceIpConfigurationInner> inners = this.inner().ipConfigurations();
+        List<NetworkInterfaceIpConfigurationInner> inners = this.innerModel().ipConfigurations();
         if (inners == null || inners.size() == 0) {
             return Collections.unmodifiableMap(new TreeMap<String, VirtualMachineScaleSetNicIpConfiguration>());
         }
@@ -143,10 +144,10 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public String networkSecurityGroupId() {
-        if (this.inner().networkSecurityGroup() == null) {
+        if (this.innerModel().networkSecurityGroup() == null) {
             return null;
         }
-        return this.inner().networkSecurityGroup().id();
+        return this.innerModel().networkSecurityGroup().id();
     }
 
     @Override
@@ -163,10 +164,10 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public String virtualMachineId() {
-        if (this.inner().virtualMachine() == null) {
+        if (this.innerModel().virtualMachine() == null) {
             return null;
         }
-        return this.inner().virtualMachine().id();
+        return this.innerModel().virtualMachine().id();
     }
 
     @Override
@@ -195,6 +196,6 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public boolean isAcceleratedNetworkingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableAcceleratedNetworking());
     }
 }

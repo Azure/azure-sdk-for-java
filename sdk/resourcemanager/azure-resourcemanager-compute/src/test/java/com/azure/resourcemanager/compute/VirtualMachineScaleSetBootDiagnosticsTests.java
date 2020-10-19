@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
@@ -303,7 +303,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         Assertions.assertTrue(virtualMachineScaleSet.isBootDiagnosticsEnabled());
         Assertions.assertNotNull(virtualMachineScaleSet.bootDiagnosticsStorageUri());
 
-        VirtualMachineScaleSetInner inner = virtualMachineScaleSet.inner();
+        VirtualMachineScaleSetInner inner = virtualMachineScaleSet.innerModel();
         Assertions.assertNotNull(inner);
         Assertions.assertNotNull(inner.virtualMachineProfile());
         Assertions.assertNotNull(inner.virtualMachineProfile().storageProfile());
@@ -384,7 +384,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         Assertions.assertNotNull(virtualMachineScaleSet.bootDiagnosticsStorageUri());
         Assertions.assertTrue(virtualMachineScaleSet.bootDiagnosticsStorageUri().contains(storageName));
 
-        VirtualMachineScaleSetInner inner = virtualMachineScaleSet.inner();
+        VirtualMachineScaleSetInner inner = virtualMachineScaleSet.innerModel();
         Assertions.assertNotNull(inner);
         Assertions.assertNotNull(inner.virtualMachineProfile());
         Assertions.assertNotNull(inner.virtualMachineProfile().storageProfile());
@@ -450,7 +450,7 @@ public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagemen
         Assertions.assertTrue(virtualMachineScaleSet.bootDiagnosticsStorageUri().contains(storageName));
         // There should be a different storage account created for VMSS OS Disk
 
-        VirtualMachineScaleSetInner inner = virtualMachineScaleSet.inner();
+        VirtualMachineScaleSetInner inner = virtualMachineScaleSet.innerModel();
         Assertions.assertNotNull(inner);
         Assertions.assertNotNull(inner.virtualMachineProfile());
         Assertions.assertNotNull(inner.virtualMachineProfile().storageProfile());

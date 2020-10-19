@@ -10,9 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.trafficmanager.fluent.TrafficManagerManagementClient;
-import com.azure.resourcemanager.trafficmanager.fluent.TrafficManagerManagementClientBuilder;
+import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerManagementClientBuilder;
 import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerProfilesImpl;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
@@ -49,19 +48,7 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
      * @return the TrafficManager
      */
     public static TrafficManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of TrafficManager that exposes traffic manager resource management API entry points.
-     *
-     * @param httpPipeline the RestClient to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the TrafficManager
-     */
-    public static TrafficManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new TrafficManager(httpPipeline, profile, sdkContext);
+        return new TrafficManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -83,7 +70,7 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
         }
     }
 
-    private TrafficManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private TrafficManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -91,8 +78,7 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return entry point to traffic manager profile management */

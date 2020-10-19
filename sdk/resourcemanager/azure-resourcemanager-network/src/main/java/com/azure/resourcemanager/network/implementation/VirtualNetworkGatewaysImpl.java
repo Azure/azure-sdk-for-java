@@ -4,18 +4,14 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
-import java.util.function.Function;
 
 /** Implementation for VirtualNetworkGateways. */
 public class VirtualNetworkGatewaysImpl
@@ -23,8 +19,8 @@ public class VirtualNetworkGatewaysImpl
         VirtualNetworkGateway,
         VirtualNetworkGatewayImpl,
         VirtualNetworkGatewayInner,
-    VirtualNetworkGatewaysClient,
-    NetworkManager>
+        VirtualNetworkGatewaysClient,
+        NetworkManager>
     implements VirtualNetworkGateways {
 
     public VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {
@@ -44,25 +40,8 @@ public class VirtualNetworkGatewaysImpl
     // TODO: Test this
     @Override
     public PagedFlux<VirtualNetworkGateway> listAsync() {
-        PagedIterable<ResourceGroup> resources =
-            new PagedIterable<>(this.manager().resourceManager().resourceGroups().listAsync());
-        Iterator<ResourceGroup> iterator = resources.iterator();
-
-        Function<String, Mono<PagedResponse<VirtualNetworkGatewayInner>>> fetcher =
-            (continuation) -> {
-                if (continuation == null) {
-                    if (iterator.hasNext()) {
-                        return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
-                    } else {
-                        return Mono.empty();
-                    }
-                } else {
-                    return inner().listByResourceGroupSinglePageAsync(continuation);
-                }
-            };
-
-        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation))
-            .mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
+            rg -> inner().listByResourceGroupAsync(rg.name())).mapPage(this::wrapModel);
     }
 
     @Override

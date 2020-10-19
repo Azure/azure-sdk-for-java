@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpPrefixInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
@@ -34,14 +34,16 @@ class PublicIpPrefixImpl
     @Override
     public Mono<PublicIpPrefix> createResourceAsync() {
         PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<PublicIpPrefix> updateResourceAsync() {
         PublicIpPrefixesClient client = this.manager().serviceClient().getPublicIpPrefixes();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -63,70 +65,75 @@ class PublicIpPrefixImpl
 
     @Override
     public Mono<PublicIpPrefix> applyTagsAsync() {
-        return this.manager().serviceClient().getPublicIpPrefixes()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
-            .map(inner -> {
-                setInner(inner);
-                return PublicIpPrefixImpl.this;
-            });
+        return this
+            .manager()
+            .serviceClient()
+            .getPublicIpPrefixes()
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
+            .map(
+                inner -> {
+                    setInner(inner);
+                    return PublicIpPrefixImpl.this;
+                });
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
     public String ipPrefix() {
-        return this.inner().ipPrefix();
+        return this.innerModel().ipPrefix();
     }
 
     @Override
     public List<IpTag> ipTags() {
-        return Collections.unmodifiableList(inner().ipTags() == null ? new ArrayList<>() : inner().ipTags());
+        return Collections.unmodifiableList(innerModel().ipTags() == null ? new ArrayList<>() : innerModel().ipTags());
     }
 
     @Override
     public SubResource loadBalancerFrontendIpConfiguration() {
-        return this.inner().loadBalancerFrontendIpConfiguration();
+        return this.innerModel().loadBalancerFrontendIpConfiguration();
     }
 
     @Override
     public Integer prefixLength() {
-        return this.inner().prefixLength();
+        return this.innerModel().prefixLength();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public List<ReferencedPublicIpAddress> publicIpAddresses() {
-        return Collections.unmodifiableList(
-            inner().publicIpAddresses() == null ? new ArrayList<>() : this.inner().publicIpAddresses());
+        return Collections
+            .unmodifiableList(
+                innerModel().publicIpAddresses() == null ? new ArrayList<>() : this.innerModel().publicIpAddresses());
     }
 
     @Override
     public IpVersion publicIpAddressVersion() {
-        return this.inner().publicIpAddressVersion();
+        return this.innerModel().publicIpAddressVersion();
     }
 
     @Override
     public String resourceGuid() {
-        return this.inner().resourceGuid();
+        return this.innerModel().resourceGuid();
     }
 
     @Override
     public PublicIpPrefixSku sku() {
-        return this.inner().sku();
+        return this.innerModel().sku();
     }
 
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
         Set<AvailabilityZoneId> zones = new HashSet<>();
-        if (this.inner().zones() != null) {
-            for (String zone : this.inner().zones()) {
+        if (this.innerModel().zones() != null) {
+            for (String zone : this.innerModel().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
@@ -135,25 +142,25 @@ class PublicIpPrefixImpl
 
     @Override
     public PublicIpPrefixImpl withIpTags(List<IpTag> ipTags) {
-        this.inner().withIpTags(ipTags);
+        this.innerModel().withIpTags(ipTags);
         return this;
     }
 
     @Override
     public PublicIpPrefixImpl withPrefixLength(Integer prefixLength) {
-        this.inner().withPrefixLength(prefixLength);
+        this.innerModel().withPrefixLength(prefixLength);
         return this;
     }
 
     @Override
     public PublicIpPrefixImpl withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
-        this.inner().withPublicIpAddressVersion(publicIpAddressVersion);
+        this.innerModel().withPublicIpAddressVersion(publicIpAddressVersion);
         return this;
     }
 
     @Override
     public PublicIpPrefixImpl withSku(PublicIpPrefixSku sku) {
-        this.inner().withSku(sku);
+        this.innerModel().withSku(sku);
         return this;
     }
 
@@ -164,10 +171,10 @@ class PublicIpPrefixImpl
         // zone or remove one. Trying to remove the last one means attempt to change resource from
         // zonal to regional, which is not supported.
         //
-        if (this.inner().zones() == null) {
-            this.inner().withZones(new ArrayList<>());
+        if (this.innerModel().zones() == null) {
+            this.innerModel().withZones(new ArrayList<>());
         }
-        this.inner().zones().add(zoneId.toString());
+        this.innerModel().zones().add(zoneId.toString());
         return this;
     }
 }

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPrefixes> {
     @Override
     public PublicIpPrefix createResource(PublicIpPrefixes pips) throws Exception {
-        final String newPipName = pips.manager().sdkContext().randomResourceName("pip", 10);
+        final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
 
         PublicIpPrefix pip = pips.define(newPipName)
             .withRegion(Region.US_WEST)

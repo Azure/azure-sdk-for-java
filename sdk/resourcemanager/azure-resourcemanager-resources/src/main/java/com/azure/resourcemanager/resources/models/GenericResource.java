@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 
 /**
  * An immutable client-side representation of an Azure generic resource.

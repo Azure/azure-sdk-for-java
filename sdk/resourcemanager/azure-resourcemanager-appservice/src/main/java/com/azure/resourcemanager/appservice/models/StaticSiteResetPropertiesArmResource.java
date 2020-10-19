@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StaticSiteResetPropertiesArmResource model. */
+/** Static Site Reset Properties ARM resource. */
 @JsonFlatten
 @Fluent
 public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {

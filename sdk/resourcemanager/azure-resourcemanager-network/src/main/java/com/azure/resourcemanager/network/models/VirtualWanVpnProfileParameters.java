@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualWanVpnProfileParameters model. */
+/** Virtual Wan Vpn profile parameters Vpn profile generation. */
 @Fluent
 public final class VirtualWanVpnProfileParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanVpnProfileParameters.class);

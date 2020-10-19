@@ -11,10 +11,10 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.io.File;
@@ -170,13 +170,13 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     }
 
     @Override
-    public Mono<Void> warDeployAsync(InputStream warFile) {
-        return warDeployAsync(warFile, null);
+    public Mono<Void> warDeployAsync(InputStream warFile, long length) {
+        return warDeployAsync(warFile, length, null);
     }
 
     @Override
-    public void warDeploy(InputStream warFile) {
-        warDeployAsync(warFile).block();
+    public void warDeploy(InputStream warFile, long length) {
+        warDeployAsync(warFile, length).block();
     }
 
     @Override
@@ -194,13 +194,13 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     }
 
     @Override
-    public void warDeploy(InputStream warFile, String appName) {
-        warDeployAsync(warFile, appName).block();
+    public void warDeploy(InputStream warFile, long length, String appName) {
+        warDeployAsync(warFile, length, appName).block();
     }
 
     @Override
-    public Mono<Void> warDeployAsync(InputStream warFile, String appName) {
-        return kuduClient.warDeployAsync(warFile, appName);
+    public Mono<Void> warDeployAsync(InputStream warFile, long length, String appName) {
+        return kuduClient.warDeployAsync(warFile, length, appName);
     }
 
     @Override
@@ -218,13 +218,15 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     }
 
     @Override
-    public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile).then(WebAppImpl.this.stopAsync()).then(WebAppImpl.this.startAsync());
+    public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        return kuduClient.zipDeployAsync(zipFile, length)
+            .then(WebAppImpl.this.stopAsync())
+            .then(WebAppImpl.this.startAsync());
     }
 
     @Override
-    public void zipDeploy(InputStream zipFile) {
-        zipDeployAsync(zipFile).block();
+    public void zipDeploy(InputStream zipFile, long length) {
+        zipDeployAsync(zipFile, length).block();
     }
 
     @Override

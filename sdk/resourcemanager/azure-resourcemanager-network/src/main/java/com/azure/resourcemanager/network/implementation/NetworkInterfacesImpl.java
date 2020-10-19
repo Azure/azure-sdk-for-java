@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
@@ -100,11 +100,14 @@ public class NetworkInterfacesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            manager().serviceClient(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 }

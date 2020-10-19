@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
-import com.azure.resourcemanager.containerregistry.fluent.inner.SourceUploadDefinitionInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.SourceUploadDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** Implementation for SourceUploadDefinition. */
@@ -21,11 +21,11 @@ public class SourceUploadDefinitionImpl extends WrapperImpl<SourceUploadDefiniti
 
     @Override
     public String uploadUrl() {
-        return this.inner().uploadUrl();
+        return this.innerModel().uploadUrl();
     }
 
     @Override
     public String relativePath() {
-        return this.inner().relativePath();
+        return this.innerModel().relativePath();
     }
 }

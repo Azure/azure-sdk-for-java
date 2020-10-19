@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConnectionMonitorParameters model. */
+/** Parameters that define the operation to create a connection monitor. */
 @Fluent
 public class ConnectionMonitorParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorParameters.class);

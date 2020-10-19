@@ -28,7 +28,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
@@ -37,14 +37,16 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
@@ -53,13 +55,14 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /** The base for app service tests. */
 public class AppServiceTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AppServiceManager appServiceManager;
-    protected MSIManager msiManager;
+    protected MsiManager msiManager;
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
@@ -86,14 +89,15 @@ public class AppServiceTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 20);
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
-        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
+        msiManager = MsiManager.authenticate(httpPipeline, profile);
+        setInternalContext(internalContext, appServiceManager, msiManager);
 
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();
@@ -192,7 +196,12 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected Response<String> curl(String urlString) throws IOException {
         try {
-            return stringResponse(httpClient.getString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString))).block();
+            Mono<Response<Flux<ByteBuffer>>> response =
+                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
+                    .retryWhen(Retry
+                        .fixedDelay(3, Duration.ofSeconds(30))
+                        .filter(t -> t instanceof TimeoutException));
+            return stringResponse(response).block();
         } catch (MalformedURLException e) {
             Assertions.fail();
             return null;
@@ -201,7 +210,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(Utils.getHost(urlString), Utils.getPathAndQuery(urlString), body))
+            return stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
                 .block()
                 .getValue();
         } catch (Exception e) {
@@ -209,7 +218,24 @@ public class AppServiceTest extends ResourceManagerTestBase {
         }
     }
 
-    private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
+    private String getHost(String urlString) throws MalformedURLException {
+        URL url = new URL(urlString);
+        String protocol = url.getProtocol();
+        String host = url.getAuthority();
+        return protocol + "://" + host;
+    }
+
+    private String getPathAndQuery(String urlString) throws MalformedURLException {
+        URL url = new URL(urlString);
+        String path = url.getPath();
+        String query = url.getQuery();
+        if (query != null && !query.isEmpty()) {
+            path = path + "?" + query;
+        }
+        return path;
+    }
+
+    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
         return responseMono
             .flatMap(
                 response ->
@@ -222,7 +248,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
                                     response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
-    protected WebAppTestClient httpClient =
+    private static final WebAppTestClient HTTP_CLIENT =
         RestProxy
             .create(
                 WebAppTestClient.class,
@@ -237,12 +263,12 @@ public class AppServiceTest extends ResourceManagerTestBase {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(
+        Mono<Response<Flux<ByteBuffer>>> getString(
             @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(
+        Mono<Response<Flux<ByteBuffer>>> postString(
             @HostParam("$host") String host,
             @PathParam(value = "path", encoded = true) String path,
             @BodyParam("text/plain") String body);

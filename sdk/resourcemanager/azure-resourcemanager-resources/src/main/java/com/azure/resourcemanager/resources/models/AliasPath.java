@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AliasPath model. */
+/** The type of the paths for alias. */
 @Fluent
 public final class AliasPath {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AliasPath.class);

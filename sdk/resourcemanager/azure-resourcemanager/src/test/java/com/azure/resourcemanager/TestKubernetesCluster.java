@@ -30,7 +30,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
     public KubernetesCluster createResource(KubernetesClusters kubernetesClusters) throws Exception {
         final String sshKeyData = this.getSshKey();
 
-        final String newName = "aks" + kubernetesClusters.manager().sdkContext().randomResourceName("", 8);
+        final String newName = "aks" + kubernetesClusters.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;
         final String agentPoolName = "ap" + newName;
         String clientId = "clientId";

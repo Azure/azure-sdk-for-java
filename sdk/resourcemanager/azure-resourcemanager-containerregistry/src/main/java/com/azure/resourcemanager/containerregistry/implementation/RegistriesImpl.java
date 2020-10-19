@@ -5,10 +5,11 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryUsageListResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryUsageListResultInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.containerregistry.models.PasswordName;
@@ -124,7 +125,7 @@ public class RegistriesImpl
             .inner()
             .regenerateCredentialAsync(
                 resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString()))
-            .map(registryListCredentialsResultInner -> new RegistryCredentialsImpl(registryListCredentialsResultInner));
+            .map(RegistryCredentialsImpl::new);
     }
 
     @Override
@@ -135,7 +136,7 @@ public class RegistriesImpl
             .unmodifiableList(
                 resultInner != null && resultInner.value() != null
                     ? resultInner.value()
-                    : new ArrayList<RegistryUsage>());
+                    : new ArrayList<>());
     }
 
     @Override
@@ -144,14 +145,10 @@ public class RegistriesImpl
             .convertListToPagedFlux(
                 this
                     .inner()
-                    .listUsagesAsync(resourceGroupName, registryName)
-                    .flatMap(
-                        registryUsageListResultInner -> {
-                            if (registryUsageListResultInner.value() == null) {
-                                return Mono.empty();
-                            }
-                            return Mono.just(registryUsageListResultInner.value());
-                        }));
+                    .listUsagesWithResponseAsync(resourceGroupName, registryName)
+                    .map(r -> new SimpleResponse<>(
+                        r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())));
     }
 
     @Override
@@ -183,6 +180,6 @@ public class RegistriesImpl
     }
 
     public WebhooksClient webhooks() {
-        return new WebhooksClientImpl(this.manager(), null);
+        return new RegistriesWebhooksClientImpl(this.manager(), null);
     }
 }

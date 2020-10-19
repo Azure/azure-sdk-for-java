@@ -5,7 +5,7 @@ package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.models.AccessTier;
@@ -27,7 +27,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.StorageService;
-import com.azure.resourcemanager.storage.fluent.inner.StorageAccountInner;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -57,7 +57,7 @@ class StorageAccountImpl
     @Override
     public AccountStatuses accountStatuses() {
         if (accountStatuses == null) {
-            accountStatuses = new AccountStatuses(this.inner().statusOfPrimary(), this.inner().statusOfSecondary());
+            accountStatuses = new AccountStatuses(this.innerModel().statusOfPrimary(), this.innerModel().statusOfSecondary());
         }
         return accountStatuses;
     }
@@ -67,125 +67,125 @@ class StorageAccountImpl
         // We deprecated the sku() getter. When we remove it we wanted to rename this
         // 'beta' getter skuType() to sku().
         //
-        return StorageAccountSkuType.fromSkuName(this.inner().sku().name());
+        return StorageAccountSkuType.fromSkuName(this.innerModel().sku().name());
     }
 
     @Override
     public Kind kind() {
-        return inner().kind();
+        return innerModel().kind();
     }
 
     @Override
     public OffsetDateTime creationTime() {
-        return this.inner().creationTime();
+        return this.innerModel().creationTime();
     }
 
     @Override
     public CustomDomain customDomain() {
-        return this.inner().customDomain();
+        return this.innerModel().customDomain();
     }
 
     @Override
     public OffsetDateTime lastGeoFailoverTime() {
-        return this.inner().lastGeoFailoverTime();
+        return this.innerModel().lastGeoFailoverTime();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public PublicEndpoints endPoints() {
         if (publicEndpoints == null) {
-            publicEndpoints = new PublicEndpoints(this.inner().primaryEndpoints(), this.inner().secondaryEndpoints());
+            publicEndpoints = new PublicEndpoints(this.innerModel().primaryEndpoints(), this.innerModel().secondaryEndpoints());
         }
         return publicEndpoints;
     }
 
     @Override
     public StorageAccountEncryptionKeySource encryptionKeySource() {
-        return StorageEncryptionHelper.encryptionKeySource(this.inner());
+        return StorageEncryptionHelper.encryptionKeySource(this.innerModel());
     }
 
     @Override
     public Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses() {
-        return StorageEncryptionHelper.encryptionStatuses(this.inner());
+        return StorageEncryptionHelper.encryptionStatuses(this.innerModel());
     }
 
     @Override
     public AccessTier accessTier() {
-        return inner().accessTier();
+        return innerModel().accessTier();
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityTenantId() {
-        if (this.inner().identity() == null) {
+        if (this.innerModel().identity() == null) {
             return null;
         } else {
-            return this.inner().identity().tenantId();
+            return this.innerModel().identity().tenantId();
         }
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
-        if (this.inner().identity() == null) {
+        if (this.innerModel().identity() == null) {
             return null;
         } else {
-            return this.inner().identity().principalId();
+            return this.innerModel().identity().principalId();
         }
     }
 
     @Override
     public boolean isAccessAllowedFromAllNetworks() {
-        return StorageNetworkRulesHelper.isAccessAllowedFromAllNetworks(this.inner());
+        return StorageNetworkRulesHelper.isAccessAllowedFromAllNetworks(this.innerModel());
     }
 
     @Override
     public List<String> networkSubnetsWithAccess() {
-        return StorageNetworkRulesHelper.networkSubnetsWithAccess(this.inner());
+        return StorageNetworkRulesHelper.networkSubnetsWithAccess(this.innerModel());
     }
 
     @Override
     public List<String> ipAddressesWithAccess() {
-        return StorageNetworkRulesHelper.ipAddressesWithAccess(this.inner());
+        return StorageNetworkRulesHelper.ipAddressesWithAccess(this.innerModel());
     }
 
     @Override
     public List<String> ipAddressRangesWithAccess() {
-        return StorageNetworkRulesHelper.ipAddressRangesWithAccess(this.inner());
+        return StorageNetworkRulesHelper.ipAddressRangesWithAccess(this.innerModel());
     }
 
     @Override
     public boolean canReadLogEntriesFromAnyNetwork() {
-        return StorageNetworkRulesHelper.canReadLogEntriesFromAnyNetwork(this.inner());
+        return StorageNetworkRulesHelper.canReadLogEntriesFromAnyNetwork(this.innerModel());
     }
 
     @Override
     public boolean canReadMetricsFromAnyNetwork() {
-        return StorageNetworkRulesHelper.canReadMetricsFromAnyNetwork(this.inner());
+        return StorageNetworkRulesHelper.canReadMetricsFromAnyNetwork(this.innerModel());
     }
 
     @Override
     public boolean canAccessFromAzureServices() {
-        return StorageNetworkRulesHelper.canAccessFromAzureServices(this.inner());
+        return StorageNetworkRulesHelper.canAccessFromAzureServices(this.innerModel());
     }
 
     @Override
     public boolean isAzureFilesAadIntegrationEnabled() {
-        return this.inner().azureFilesIdentityBasedAuthentication() != null
-            && this.inner().azureFilesIdentityBasedAuthentication().directoryServiceOptions()
+        return this.innerModel().azureFilesIdentityBasedAuthentication() != null
+            && this.innerModel().azureFilesIdentityBasedAuthentication().directoryServiceOptions()
                 == DirectoryServiceOptions.AADDS;
     }
 
     @Override
     public boolean isHnsEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().isHnsEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().isHnsEnabled());
     }
 
     @Override
     public boolean isLargeFileSharesEnabled() {
-        return this.inner().largeFileSharesState() == LargeFileSharesState.ENABLED;
+        return this.innerModel().largeFileSharesState() == LargeFileSharesState.ENABLED;
     }
 
     @Override
@@ -314,8 +314,8 @@ class StorageAccountImpl
     public StorageAccountImpl update() {
         createParameters = null;
         updateParameters = new StorageAccountUpdateParameters();
-        this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.inner());
-        this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.inner());
+        this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.innerModel());
+        this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.innerModel());
         return super.update();
     }
 
@@ -344,7 +344,7 @@ class StorageAccountImpl
         if (isInCreateMode()) {
             createParameters.withAccessTier(accessTier);
         } else {
-            if (this.inner().kind() != Kind.BLOB_STORAGE) {
+            if (this.innerModel().kind() != Kind.BLOB_STORAGE) {
                 throw logger.logExceptionAsError(new UnsupportedOperationException(
                     "Access tier can not be changed for general purpose storage accounts."));
             }
@@ -355,7 +355,7 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withSystemAssignedManagedServiceIdentity() {
-        if (this.inner().identity() == null) {
+        if (this.innerModel().identity() == null) {
             if (isInCreateMode()) {
                 createParameters.withIdentity(new Identity().withType("SystemAssigned"));
             } else {
@@ -476,7 +476,7 @@ class StorageAccountImpl
     public Mono<StorageAccount> createResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
         createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().tags());
+        createParameters.withTags(this.innerModel().tags());
         final StorageAccountsClient client = this.manager().serviceClient().getStorageAccounts();
         return this
             .manager()
@@ -494,7 +494,7 @@ class StorageAccountImpl
     @Override
     public Mono<StorageAccount> updateResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
-        updateParameters.withTags(this.inner().tags());
+        updateParameters.withTags(this.innerModel().tags());
         return this
             .manager()
             .serviceClient()

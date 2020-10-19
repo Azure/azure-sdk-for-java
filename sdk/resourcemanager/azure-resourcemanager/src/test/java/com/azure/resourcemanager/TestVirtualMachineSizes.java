@@ -19,7 +19,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         Assertions.assertTrue(TestUtilities.getSize(availableSizes) > 0);
         VirtualMachineSize availableSize = availableSizes.iterator().next();
         System.out.println("VM Sizes: " + availableSizes);
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         VirtualMachine vm =
             virtualMachines
                 .define(vmName)

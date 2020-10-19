@@ -7,12 +7,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.GalleryImageInner;
+import com.azure.resourcemanager.compute.fluent.models.GalleryImageInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
  */
 @Fluent
 public interface GalleryImage
-    extends HasInner<GalleryImageInner>,
+    extends HasInnerModel<GalleryImageInner>,
         Indexable,
         Refreshable<GalleryImage>,
         Updatable<GalleryImage.Update>,

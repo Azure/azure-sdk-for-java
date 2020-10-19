@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebDeploymentSlotBasic;
@@ -32,7 +32,7 @@ class WebDeploymentSlotBasicImpl extends WebSiteBaseImpl implements WebDeploymen
     @Override
     public Mono<DeploymentSlot> refreshAsync() {
         return this.parent().deploymentSlots().getByIdAsync(this.id())
-            .doOnNext(site -> this.setInner(site.inner()));
+            .doOnNext(site -> this.setInner(site.innerModel()));
     }
 
     @Override

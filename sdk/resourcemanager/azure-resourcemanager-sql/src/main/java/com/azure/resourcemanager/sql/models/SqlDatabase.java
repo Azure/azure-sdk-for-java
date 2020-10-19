@@ -11,10 +11,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SqlDatabase
     extends ExternalChildResource<SqlDatabase, SqlServer>,
-        HasInner<DatabaseInner>,
+        HasInnerModel<DatabaseInner>,
         HasResourceGroup,
         Refreshable<SqlDatabase>,
         Updatable<SqlDatabase.Update> {

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Map;
 /** A client-side representation of an application gateway's backend HTTP configuration. */
 @Fluent()
 public interface ApplicationGatewayBackendHttpConfiguration
-    extends HasInner<ApplicationGatewayBackendHttpSettings>,
+    extends HasInnerModel<ApplicationGatewayBackendHttpSettings>,
         ChildResource<ApplicationGateway>,
         HasProtocol<ApplicationGatewayProtocol>,
         HasPort {

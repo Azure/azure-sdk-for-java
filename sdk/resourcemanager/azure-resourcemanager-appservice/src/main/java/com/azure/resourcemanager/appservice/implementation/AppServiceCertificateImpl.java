@@ -8,10 +8,10 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
-import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
+import com.azure.resourcemanager.appservice.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,77 +36,77 @@ class AppServiceCertificateImpl
 
     @Override
     public String friendlyName() {
-        return inner().friendlyName();
+        return innerModel().friendlyName();
     }
 
     @Override
     public String subjectName() {
-        return inner().subjectName();
+        return innerModel().subjectName();
     }
 
     @Override
     public List<String> hostNames() {
-        return Collections.unmodifiableList(inner().hostNames());
+        return Collections.unmodifiableList(innerModel().hostNames());
     }
 
     @Override
     public byte[] pfxBlob() {
-        return inner().pfxBlob();
+        return innerModel().pfxBlob();
     }
 
     @Override
     public String siteName() {
-        return inner().siteName();
+        return innerModel().siteName();
     }
 
     @Override
     public String selfLink() {
-        return inner().selfLink();
+        return innerModel().selfLink();
     }
 
     @Override
     public String issuer() {
-        return inner().issuer();
+        return innerModel().issuer();
     }
 
     @Override
     public OffsetDateTime issueDate() {
-        return inner().issueDate();
+        return innerModel().issueDate();
     }
 
     @Override
     public OffsetDateTime expirationDate() {
-        return inner().expirationDate();
+        return innerModel().expirationDate();
     }
 
     @Override
     public String password() {
-        return inner().password();
+        return innerModel().password();
     }
 
     @Override
     public String thumbprint() {
-        return inner().thumbprint();
+        return innerModel().thumbprint();
     }
 
     @Override
     public Boolean valid() {
-        return inner().valid();
+        return innerModel().valid();
     }
 
     @Override
     public byte[] certificateBlob() {
-        return inner().cerBlob();
+        return innerModel().cerBlob();
     }
 
     @Override
     public String publicKeyHash() {
-        return inner().publicKeyHash();
+        return innerModel().publicKeyHash();
     }
 
     @Override
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return inner().hostingEnvironmentProfile();
+        return innerModel().hostingEnvironmentProfile();
     }
 
     @Override
@@ -123,7 +123,7 @@ class AppServiceCertificateImpl
                     .downloadFileAsync(pfxFileUrl, this.manager().httpPipeline())
                     .map(
                         bytes -> {
-                            inner().withPfxBlob(bytes);
+                            innerModel().withPfxBlob(bytes);
                             return null;
                         });
         }
@@ -134,7 +134,7 @@ class AppServiceCertificateImpl
                     .getKeyVaultBindingAsync()
                     .map(
                         keyVaultBinding1 -> {
-                            inner()
+                            innerModel()
                                 .withKeyVaultId(keyVaultBinding1.keyVaultId())
                                 .withKeyVaultSecretName(keyVaultBinding1.keyVaultSecretName());
                             return null;
@@ -143,7 +143,7 @@ class AppServiceCertificateImpl
         final CertificatesClient client = this.manager().serviceClient().getCertificates();
         return pfxBytes
             .then(keyVaultBinding)
-            .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner()))
+            .then(client.createOrUpdateAsync(resourceGroupName(), name(), innerModel()))
             .map(innerToFluentMap(this));
     }
 
@@ -159,7 +159,7 @@ class AppServiceCertificateImpl
 
     @Override
     public AppServiceCertificateImpl withPfxByteArray(byte[] pfxByteArray) {
-        inner().withPfxBlob(pfxByteArray);
+        innerModel().withPfxBlob(pfxByteArray);
         return this;
     }
 
@@ -177,7 +177,7 @@ class AppServiceCertificateImpl
 
     @Override
     public AppServiceCertificateImpl withPfxPassword(String password) {
-        inner().withPassword(password);
+        innerModel().withPassword(password);
         return this;
     }
 }

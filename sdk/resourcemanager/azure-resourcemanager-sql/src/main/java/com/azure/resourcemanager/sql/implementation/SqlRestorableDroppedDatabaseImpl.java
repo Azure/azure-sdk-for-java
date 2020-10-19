@@ -6,7 +6,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
-import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
@@ -32,47 +32,47 @@ public class SqlRestorableDroppedDatabaseImpl
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.fromName(this.innerModel().location());
     }
 
     @Override
     public String databaseName() {
-        return this.inner().databaseName();
+        return this.innerModel().databaseName();
     }
 
     @Override
     public String edition() {
-        return this.inner().edition();
+        return this.innerModel().edition();
     }
 
     @Override
     public String maxSizeBytes() {
-        return this.inner().maxSizeBytes();
+        return this.innerModel().maxSizeBytes();
     }
 
     @Override
     public String serviceLevelObjective() {
-        return this.inner().serviceLevelObjective();
+        return this.innerModel().serviceLevelObjective();
     }
 
     @Override
     public String elasticPoolName() {
-        return this.inner().elasticPoolName();
+        return this.innerModel().elasticPoolName();
     }
 
     @Override
     public OffsetDateTime creationDate() {
-        return this.inner().creationDate();
+        return this.innerModel().creationDate();
     }
 
     @Override
     public OffsetDateTime deletionDate() {
-        return this.inner().deletionDate();
+        return this.innerModel().deletionDate();
     }
 
     @Override
     public OffsetDateTime earliestRestoreDate() {
-        return this.inner().earliestRestoreDate();
+        return this.innerModel().earliestRestoreDate();
     }
 
     @Override
@@ -81,17 +81,17 @@ public class SqlRestorableDroppedDatabaseImpl
             .sqlServerManager
             .serviceClient()
             .getRestorableDroppedDatabases()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.inner().id());
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override

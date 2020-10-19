@@ -274,6 +274,11 @@
   <suppress checks="MethodName|MemberName|VisibilityModifier|TypeName"
             files="com.azure.identity.implementation.WindowsCredentialApi.java"/>
 
+  <!-- Need to write to stdout as the default SDK behavior here.-->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.identity.DeviceCodeCredentialBuilder.java"/>
+
+            
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization" />
@@ -578,4 +583,8 @@
 
   <!-- Suppress Event Grid checks for now -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-messaging-eventgrid[/\\]src[/\\]"/>
+
+  <!-- Suppress checks in azure-core-experimental -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
 </suppressions>

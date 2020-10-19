@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EventhubInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.Destination;
 import com.azure.resourcemanager.eventhubs.models.EncodingCaptureDescription;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -48,14 +48,14 @@ class EventHubImpl
     EventHubImpl(String name, EventhubInner inner, EventHubsManager manager, StorageManager storageManager) {
         super(name, inner, manager);
         this.ancestor = new Ancestors().new OneAncestor(inner.id());
-        this.captureSettings = new CaptureSettings(this.inner());
+        this.captureSettings = new CaptureSettings(this.innerModel());
         this.storageManager = storageManager;
     }
 
     EventHubImpl(String name, EventHubsManager manager, StorageManager storageManager) {
         super(name, new EventhubInner(), manager);
         this.storageManager = storageManager;
-        this.captureSettings = new CaptureSettings(this.inner());
+        this.captureSettings = new CaptureSettings(this.innerModel());
     }
 
     @Override
@@ -70,26 +70,26 @@ class EventHubImpl
 
     @Override
     public boolean isDataCaptureEnabled() {
-        if (this.inner().captureDescription() == null) {
+        if (this.innerModel().captureDescription() == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(this.inner().captureDescription().enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().captureDescription().enabled());
     }
 
     @Override
     public int dataCaptureWindowSizeInSeconds() {
-        if (this.inner().captureDescription() == null) {
+        if (this.innerModel().captureDescription() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner().captureDescription().intervalInSeconds());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().captureDescription().intervalInSeconds());
     }
 
     @Override
     public int dataCaptureWindowSizeInMB() {
-        if (this.inner().captureDescription() == null) {
+        if (this.innerModel().captureDescription() == null) {
             return 0;
         }
-        int inBytes = Utils.toPrimitiveInt(this.inner().captureDescription().sizeLimitInBytes());
+        int inBytes = ResourceManagerUtils.toPrimitiveInt(this.innerModel().captureDescription().sizeLimitInBytes());
         if (inBytes != 0) {
             return inBytes / (1024 * 1024);
         } else {
@@ -99,44 +99,44 @@ class EventHubImpl
 
     @Override
     public boolean dataCaptureSkipEmptyArchives() {
-        if (this.inner().captureDescription() == null) {
+        if (this.innerModel().captureDescription() == null) {
             return false;
         }
-        return this.inner().captureDescription().skipEmptyArchives();
+        return this.innerModel().captureDescription().skipEmptyArchives();
     }
 
     @Override
     public String dataCaptureFileNameFormat() {
-        if (this.inner().captureDescription() == null) {
+        if (this.innerModel().captureDescription() == null) {
             return null;
-        } else if (this.inner().captureDescription().destination() == null) {
+        } else if (this.innerModel().captureDescription().destination() == null) {
             return null;
         } else {
-            return this.inner().captureDescription().destination().archiveNameFormat();
+            return this.innerModel().captureDescription().destination().archiveNameFormat();
         }
     }
 
     @Override
     public Destination captureDestination() {
-        if (this.inner().captureDescription() == null) {
+        if (this.innerModel().captureDescription() == null) {
             return null;
         } else {
-            return this.inner().captureDescription().destination();
+            return this.innerModel().captureDescription().destination();
         }
     }
 
     @Override
     public Set<String> partitionIds() {
-        if (this.inner().partitionIds() == null) {
+        if (this.innerModel().partitionIds() == null) {
             return Collections.unmodifiableSet(new HashSet<String>());
         } else {
-            return Collections.unmodifiableSet(new HashSet<String>(this.inner().partitionIds()));
+            return Collections.unmodifiableSet(new HashSet<String>(this.innerModel().partitionIds()));
         }
     }
 
     @Override
     public int messageRetentionPeriodInDays() {
-        return Utils.toPrimitiveInt(this.inner().messageRetentionInDays());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().messageRetentionInDays());
     }
 
     @Override
@@ -309,19 +309,19 @@ class EventHubImpl
 
     @Override
     public EventHubImpl withPartitionCount(long count) {
-        this.inner().withPartitionCount(count);
+        this.innerModel().withPartitionCount(count);
         return this;
     }
 
     @Override
     public EventHubImpl withRetentionPeriodInDays(long period) {
-        this.inner().withMessageRetentionInDays(period);
+        this.innerModel().withMessageRetentionInDays(period);
         return this;
     }
 
     @Override
     public EventHubImpl update() {
-        this.captureSettings = new CaptureSettings(this.inner());
+        this.captureSettings = new CaptureSettings(this.innerModel());
         return super.update();
     }
 
@@ -330,13 +330,14 @@ class EventHubImpl
         if (postRunTasks != null) {
             addPostRunDependent(context -> postRunTasks.last());
         }
-        this.inner().withCaptureDescription(this.captureSettings.validateAndGetSettings());
+        this.innerModel().withCaptureDescription(this.captureSettings.validateAndGetSettings());
     }
 
     @Override
     public Mono<EventHub> createResourceAsync() {
         return this.manager.serviceClient().getEventHubs()
-                .createOrUpdateAsync(ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.inner())
+                .createOrUpdateAsync(
+                    ancestor().resourceGroupName(), ancestor().ancestor1Name(), name(), this.innerModel())
                 .map(innerToFluentMap(this));
     }
 

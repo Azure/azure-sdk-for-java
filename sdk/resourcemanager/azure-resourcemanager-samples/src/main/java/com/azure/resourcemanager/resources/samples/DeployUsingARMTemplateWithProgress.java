@@ -12,7 +12,8 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.samples.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 
 /**
  * Azure Resource sample for deploying resources using an ARM template and
@@ -35,8 +37,8 @@ public final class DeployUsingARMTemplateWithProgress {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSAP", 24);
-        final String deploymentName = azureResourceManager.sdkContext().randomResourceName("dpRSAP", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSAP", 24);
+        final String deploymentName = Utils.randomResourceName(azureResourceManager, "dpRSAP", 24);
         try {
             String templateJson = DeployUsingARMTemplateWithProgress.getTemplate(azureResourceManager);
 
@@ -73,7 +75,7 @@ public final class DeployUsingARMTemplateWithProgress {
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
-                SdkContext.sleep(10000);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 deployment = azureResourceManager.deployments().getByResourceGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
@@ -122,8 +124,8 @@ public final class DeployUsingARMTemplateWithProgress {
     }
 
     private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = azureResourceManager.sdkContext().randomResourceName("hpRSAT", 24);
-        final String webappName = azureResourceManager.sdkContext().randomResourceName("wnRSAT", 24);
+        final String hostingPlanName = Utils.randomResourceName(azureResourceManager, "hpRSAT", 24);
+        final String webappName = Utils.randomResourceName(azureResourceManager, "wnRSAT", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json")) {
 

@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The AlertRuleResourcePatch model. */
+/** The alert rule object for patch operations. */
 @JsonFlatten
 @Fluent
 public class AlertRuleResourcePatch {

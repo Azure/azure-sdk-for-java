@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_HTTPS_EXCEPTION_MESSAGE;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -108,7 +108,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
             Exception exception = assertThrows(RuntimeException.class,
                 () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST).buildClient()
                         .beginRecognizeContentFromUrl(input).getFinalResult());
-            assertEquals(EXPECTED_HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
+            assertEquals(HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
         });
     }
 

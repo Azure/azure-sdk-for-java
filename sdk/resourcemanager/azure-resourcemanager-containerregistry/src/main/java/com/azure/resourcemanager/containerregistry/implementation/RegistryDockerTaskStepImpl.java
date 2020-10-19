@@ -9,8 +9,8 @@ import com.azure.resourcemanager.containerregistry.models.OverridingArgument;
 import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep;
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,16 +20,16 @@ class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
     implements RegistryDockerTaskStep,
         RegistryDockerTaskStep.Definition,
         RegistryDockerTaskStep.Update,
-        HasInner<DockerTaskStep> {
+        HasInnerModel<DockerTaskStep> {
 
     private DockerTaskStep inner;
     private DockerBuildStepUpdateParameters dockerTaskStepUpdateParameters;
     private RegistryTaskImpl taskImpl;
 
     RegistryDockerTaskStepImpl(RegistryTaskImpl taskImpl) {
-        super(taskImpl.inner().step());
+        super(taskImpl.innerModel().step());
         this.inner = new DockerTaskStep();
-        if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof DockerTaskStep)) {
+        if (taskImpl.innerModel().step() != null && !(taskImpl.innerModel().step() instanceof DockerTaskStep)) {
             throw new IllegalArgumentException(
                 "Constructor for RegistryDockerTaskStepImpl invoked for class that is not DockerTaskStep");
         }
@@ -49,13 +49,13 @@ class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
     @Override
     public boolean isPushEnabled() {
         DockerTaskStep dockerTaskStep = dockerTaskStep();
-        return Utils.toPrimitiveBoolean(dockerTaskStep.isPushEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(dockerTaskStep.isPushEnabled());
     }
 
     @Override
     public boolean noCache() {
         DockerTaskStep dockerTaskStep = dockerTaskStep();
-        return Utils.toPrimitiveBoolean(dockerTaskStep.noCache());
+        return ResourceManagerUtils.toPrimitiveBoolean(dockerTaskStep.noCache());
     }
 
     @Override
@@ -74,7 +74,7 @@ class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
     }
 
     private DockerTaskStep dockerTaskStep() {
-        TaskStepProperties step = this.taskImpl.inner().step();
+        TaskStepProperties step = this.taskImpl.innerModel().step();
         if (step instanceof DockerTaskStep) {
             return (DockerTaskStep) step;
         } else {
@@ -173,12 +173,12 @@ class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
     }
 
     @Override
-    public DockerTaskStep inner() {
+    public DockerTaskStep innerModel() {
         return this.inner;
     }
 
     private boolean isInCreateMode() {
-        if (this.taskImpl.inner().id() == null) {
+        if (this.taskImpl.innerModel().id() == null) {
             return true;
         }
         return false;

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.ARecord;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,8 +23,8 @@ class ARecordSetImpl extends DnsRecordSetImpl implements ARecordSet {
     @Override
     public List<String> ipv4Addresses() {
         List<String> ipv4Addresses = new ArrayList<>();
-        if (this.inner().aRecords() != null) {
-            for (ARecord aRecord : this.inner().aRecords()) {
+        if (this.innerModel().aRecords() != null) {
+            for (ARecord aRecord : this.innerModel().aRecords()) {
                 ipv4Addresses.add(aRecord.ipv4Address());
             }
         }
@@ -33,13 +33,13 @@ class ARecordSetImpl extends DnsRecordSetImpl implements ARecordSet {
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().aRecords() != null && this.inner().aRecords().size() > 0) {
+        if (this.innerModel().aRecords() != null && this.innerModel().aRecords().size() > 0) {
             if (resource.aRecords() == null) {
                 resource.withARecords(new ArrayList<>());
             }
 
-            resource.aRecords().addAll(this.inner().aRecords());
-            this.inner().aRecords().clear();
+            resource.aRecords().addAll(this.innerModel().aRecords());
+            this.innerModel().aRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.aRecords().size() > 0) {

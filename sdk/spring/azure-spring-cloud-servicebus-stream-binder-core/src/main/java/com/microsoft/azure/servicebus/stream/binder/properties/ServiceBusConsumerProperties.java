@@ -13,6 +13,7 @@ public class ServiceBusConsumerProperties {
     private int prefetchCount = 1;
     private int concurrency = 1;
     private boolean sessionsEnabled = false;
+    private boolean requeueRejected = false;
 
     private CheckpointMode checkpointMode = CheckpointMode.RECORD;
 
@@ -68,5 +69,18 @@ public class ServiceBusConsumerProperties {
         this.sessionsEnabled = sessionsEnabled;
     }
 
+    /**
+     * Controls if the failed messages are routed to the DLQ
+     *
+     * <p>
+     * @return boolean, default : false
+     */
+    public boolean isRequeueRejected() {
+        return requeueRejected;
+    }
+
+    public void setRequeueRejected(boolean requeueRejected) {
+        this.requeueRejected = requeueRejected;
+    }
 
 }

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.storage.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateEndpointConnectionListResult model. */
+/** List of private endpoint connection associated with the specified storage account. */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);

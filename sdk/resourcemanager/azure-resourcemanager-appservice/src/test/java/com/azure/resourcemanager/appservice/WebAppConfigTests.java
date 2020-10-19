@@ -104,11 +104,11 @@ public class WebAppConfigTests extends AppServiceTest {
 
         // Logs
         webApp = webApp.update().withContainerLoggingEnabled().apply();
-        Assertions.assertTrue(webApp.diagnosticLogsConfig().inner().httpLogs().fileSystem().enabled());
+        Assertions.assertTrue(webApp.diagnosticLogsConfig().innerModel().httpLogs().fileSystem().enabled());
         // verify on new instance
         // https://github.com/Azure/azure-libraries-for-java/issues/759
         webApp = appServiceManager.webApps().getById(webApp.id());
-        Assertions.assertTrue(webApp.diagnosticLogsConfig().inner().httpLogs().fileSystem().enabled());
+        Assertions.assertTrue(webApp.diagnosticLogsConfig().innerModel().httpLogs().fileSystem().enabled());
     }
 
     @Test

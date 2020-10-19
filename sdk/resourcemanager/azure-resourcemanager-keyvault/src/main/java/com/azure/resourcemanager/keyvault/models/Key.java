@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Key Vault key. */
 @Fluent
-public interface Key extends Indexable, HasInner<KeyVaultKey>, HasId, HasName, Updatable<Key.Update> {
+public interface Key extends Indexable, HasInnerModel<KeyVaultKey>, HasId, HasName, Updatable<Key.Update> {
     /** @return the Json web key. */
     JsonWebKey getJsonWebKey();
 

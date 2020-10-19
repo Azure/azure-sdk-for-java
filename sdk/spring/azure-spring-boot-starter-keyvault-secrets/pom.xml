@@ -51,7 +51,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:azure-security-keyvault-secrets:[4.2.1]</include> <!-- {x-include-update;com.azure:azure-security-keyvault-secrets;dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>

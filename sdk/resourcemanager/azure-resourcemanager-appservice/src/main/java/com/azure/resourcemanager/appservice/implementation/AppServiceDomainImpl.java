@@ -5,9 +5,9 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
+import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.TldLegalAgreementInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.Inet4Address;
@@ -41,10 +41,10 @@ class AppServiceDomainImpl
 
     AppServiceDomainImpl(String name, DomainInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        inner().withLocation("global");
-        if (inner().managedHostNames() != null) {
+        innerModel().withLocation("global");
+        if (innerModel().managedHostNames() != null) {
             this.hostNameMap =
-                inner().managedHostNames().stream().collect(Collectors.toMap(Hostname::name, Function.identity()));
+                innerModel().managedHostNames().stream().collect(Collectors.toMap(Hostname::name, Function.identity()));
         }
     }
 
@@ -52,7 +52,7 @@ class AppServiceDomainImpl
     public Mono<AppServiceDomain> createAsync() {
         if (this.isInCreateMode()) {
             // create a default DNS zone, if not specified
-            if (this.inner().dnsZoneId() == null && dnsZoneCreatable == null) {
+            if (this.innerModel().dnsZoneId() == null && dnsZoneCreatable == null) {
                 this.withNewDnsZone(name());
             }
         }
@@ -62,7 +62,7 @@ class AppServiceDomainImpl
     public Mono<AppServiceDomain> createResourceAsync() {
         if (this.dnsZoneCreatable != null) {
             DnsZone dnsZone = this.taskResult(dnsZoneCreatable.key());
-            inner().withDnsZoneId(dnsZone.id());
+            innerModel().withDnsZoneId(dnsZone.id());
         }
 
         String[] domainParts = this.name().split("\\.");
@@ -80,7 +80,7 @@ class AppServiceDomainImpl
             .flatMap(
                 keys -> {
                     try {
-                        inner()
+                        innerModel()
                             .withConsent(
                                 new DomainPurchaseConsent()
                                     .withAgreedAt(OffsetDateTime.now())
@@ -89,7 +89,7 @@ class AppServiceDomainImpl
                     } catch (UnknownHostException e) {
                         return Mono.error(e);
                     }
-                    return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
+                    return client.createOrUpdateAsync(resourceGroupName(), name(), innerModel());
                 })
             .map(innerToFluentMap(this))
             .doOnSuccess(ignored -> dnsZoneCreatable = null);
@@ -102,62 +102,62 @@ class AppServiceDomainImpl
 
     @Override
     public Contact adminContact() {
-        return inner().contactAdmin();
+        return innerModel().contactAdmin();
     }
 
     @Override
     public Contact billingContact() {
-        return inner().contactBilling();
+        return innerModel().contactBilling();
     }
 
     @Override
     public Contact registrantContact() {
-        return inner().contactRegistrant();
+        return innerModel().contactRegistrant();
     }
 
     @Override
     public Contact techContact() {
-        return inner().contactTech();
+        return innerModel().contactTech();
     }
 
     @Override
     public DomainStatus registrationStatus() {
-        return inner().registrationStatus();
+        return innerModel().registrationStatus();
     }
 
     @Override
     public List<String> nameServers() {
-        return Collections.unmodifiableList(inner().nameServers());
+        return Collections.unmodifiableList(innerModel().nameServers());
     }
 
     @Override
     public boolean privacy() {
-        return Utils.toPrimitiveBoolean(inner().privacy());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().privacy());
     }
 
     @Override
     public OffsetDateTime createdTime() {
-        return inner().createdTime();
+        return innerModel().createdTime();
     }
 
     @Override
     public OffsetDateTime expirationTime() {
-        return inner().expirationTime();
+        return innerModel().expirationTime();
     }
 
     @Override
     public OffsetDateTime lastRenewedTime() {
-        return inner().lastRenewedTime();
+        return innerModel().lastRenewedTime();
     }
 
     @Override
     public boolean autoRenew() {
-        return Utils.toPrimitiveBoolean(inner().autoRenew());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().autoRenew());
     }
 
     @Override
     public boolean readyForDnsRecordManagement() {
-        return Utils.toPrimitiveBoolean(inner().readyForDnsRecordManagement());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().readyForDnsRecordManagement());
     }
 
     @Override
@@ -170,17 +170,17 @@ class AppServiceDomainImpl
 
     @Override
     public DomainPurchaseConsent consent() {
-        return inner().consent();
+        return innerModel().consent();
     }
 
     @Override
     public DnsType dnsType() {
-        return inner().dnsType();
+        return innerModel().dnsType();
     }
 
     @Override
     public String dnsZoneId() {
-        return inner().dnsZoneId();
+        return innerModel().dnsZoneId();
     }
 
     @Override
@@ -202,22 +202,22 @@ class AppServiceDomainImpl
 
     @Override
     public AppServiceDomainImpl withAdminContact(Contact contact) {
-        inner().withContactAdmin(contact);
+        innerModel().withContactAdmin(contact);
         return this;
     }
 
     @Override
     public AppServiceDomainImpl withBillingContact(Contact contact) {
-        inner().withContactBilling(contact);
+        innerModel().withContactBilling(contact);
         return this;
     }
 
     @Override
     public AppServiceDomainImpl withRegistrantContact(Contact contact) {
-        inner().withContactAdmin(contact);
-        inner().withContactBilling(contact);
-        inner().withContactRegistrant(contact);
-        inner().withContactTech(contact);
+        innerModel().withContactAdmin(contact);
+        innerModel().withContactBilling(contact);
+        innerModel().withContactRegistrant(contact);
+        innerModel().withContactTech(contact);
         return this;
     }
 
@@ -228,19 +228,19 @@ class AppServiceDomainImpl
 
     @Override
     public AppServiceDomainImpl withTechContact(Contact contact) {
-        inner().withContactTech(contact);
+        innerModel().withContactTech(contact);
         return this;
     }
 
     @Override
     public AppServiceDomainImpl withDomainPrivacyEnabled(boolean domainPrivacy) {
-        inner().withPrivacy(domainPrivacy);
+        innerModel().withPrivacy(domainPrivacy);
         return this;
     }
 
     @Override
     public AppServiceDomainImpl withAutoRenewEnabled(boolean autoRenew) {
-        inner().withAutoRenew(autoRenew);
+        innerModel().withAutoRenew(autoRenew);
         return this;
     }
 
@@ -263,7 +263,7 @@ class AppServiceDomainImpl
 
     @Override
     public AppServiceDomainImpl withNewDnsZone(Creatable<DnsZone> dnsZone) {
-        inner().withDnsType(DnsType.AZURE_DNS);
+        innerModel().withDnsType(DnsType.AZURE_DNS);
         dnsZoneCreatable = dnsZone;
         this.addDependency(dnsZoneCreatable);
         return this;
@@ -271,8 +271,8 @@ class AppServiceDomainImpl
 
     @Override
     public AppServiceDomainImpl withExistingDnsZone(String dnsZoneId) {
-        inner().withDnsType(DnsType.AZURE_DNS);
-        inner().withDnsZoneId(dnsZoneId);
+        innerModel().withDnsType(DnsType.AZURE_DNS);
+        innerModel().withDnsZoneId(dnsZoneId);
         return this;
     }
 

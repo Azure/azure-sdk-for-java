@@ -7,7 +7,7 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 ## Getting started
 
 ### Prerequisites
-- Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Maven][maven] 3.0 and above
 
@@ -68,4 +68,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample
-
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

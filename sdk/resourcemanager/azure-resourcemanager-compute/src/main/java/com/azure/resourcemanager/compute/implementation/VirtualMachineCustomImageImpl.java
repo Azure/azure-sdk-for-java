@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
-import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
+import com.azure.resourcemanager.compute.fluent.models.ImageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -34,7 +34,7 @@ class VirtualMachineCustomImageImpl
     VirtualMachineCustomImageImpl(final String name, ImageInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
         // set the default value for the hyper-v generation
-        this.inner().withHyperVGeneration(HyperVGenerationTypes.V1);
+        this.innerModel().withHyperVGeneration(HyperVGenerationTypes.V1);
     }
 
     @Override
@@ -44,32 +44,32 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public HyperVGenerationTypes hyperVGeneration() {
-        return this.inner().hyperVGeneration();
+        return this.innerModel().hyperVGeneration();
     }
 
     @Override
     public String sourceVirtualMachineId() {
-        if (this.inner().sourceVirtualMachine() == null) {
+        if (this.innerModel().sourceVirtualMachine() == null) {
             return null;
         }
-        return this.inner().sourceVirtualMachine().id();
+        return this.innerModel().sourceVirtualMachine().id();
     }
 
     @Override
     public ImageOSDisk osDiskImage() {
-        if (this.inner().storageProfile() == null) {
+        if (this.innerModel().storageProfile() == null) {
             return null;
         }
-        return this.inner().storageProfile().osDisk();
+        return this.innerModel().storageProfile().osDisk();
     }
 
     @Override
     public Map<Integer, ImageDataDisk> dataDiskImages() {
-        if (this.inner().storageProfile() == null || this.inner().storageProfile().dataDisks() == null) {
+        if (this.innerModel().storageProfile() == null || this.innerModel().storageProfile().dataDisks() == null) {
             return Collections.unmodifiableMap(new HashMap<>());
         }
         HashMap<Integer, ImageDataDisk> diskImages = new HashMap<>();
-        for (ImageDataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
+        for (ImageDataDisk dataDisk : this.innerModel().storageProfile().dataDisks()) {
             diskImages.put(dataDisk.lun(), dataDisk);
         }
         return Collections.unmodifiableMap(diskImages);
@@ -77,7 +77,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public VirtualMachineCustomImageImpl fromVirtualMachine(String virtualMachineId) {
-        this.inner().withSourceVirtualMachine(new SubResource().withId(virtualMachineId));
+        this.innerModel().withSourceVirtualMachine(new SubResource().withId(virtualMachineId));
         return this;
     }
 
@@ -218,34 +218,37 @@ class VirtualMachineCustomImageImpl
             .manager()
             .serviceClient()
             .getImages()
-            .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ImageInner> getInnerAsync() {
-        return this.manager().serviceClient().getImages()
+        return this
+            .manager()
+            .serviceClient()
+            .getImages()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private ImageOSDisk ensureOsDiskImage() {
         this.ensureStorageProfile();
-        if (this.inner().storageProfile().osDisk() == null) {
-            this.inner().storageProfile().withOsDisk(new ImageOSDisk());
+        if (this.innerModel().storageProfile().osDisk() == null) {
+            this.innerModel().storageProfile().withOsDisk(new ImageOSDisk());
         }
-        return this.inner().storageProfile().osDisk();
+        return this.innerModel().storageProfile().osDisk();
     }
 
     private ImageStorageProfile ensureStorageProfile() {
-        if (this.inner().storageProfile() == null) {
-            this.inner().withStorageProfile(new ImageStorageProfile());
+        if (this.innerModel().storageProfile() == null) {
+            this.innerModel().withStorageProfile(new ImageStorageProfile());
         }
-        return this.inner().storageProfile();
+        return this.innerModel().storageProfile();
     }
 
     private void ensureDefaultLuns() {
-        if (this.inner().storageProfile() != null && this.inner().storageProfile().dataDisks() != null) {
-            List<ImageDataDisk> imageDisks = this.inner().storageProfile().dataDisks();
+        if (this.innerModel().storageProfile() != null && this.innerModel().storageProfile().dataDisks() != null) {
+            List<ImageDataDisk> imageDisks = this.innerModel().storageProfile().dataDisks();
             List<Integer> usedLuns = new ArrayList<>();
             for (ImageDataDisk imageDisk : imageDisks) {
                 if (imageDisk.lun() != -1) {
@@ -270,20 +273,20 @@ class VirtualMachineCustomImageImpl
     }
 
     VirtualMachineCustomImageImpl withCustomImageDataDisk(CustomImageDataDiskImpl customImageDataDisk) {
-        if (this.inner().storageProfile() == null) {
-            this.inner().withStorageProfile(new ImageStorageProfile());
+        if (this.innerModel().storageProfile() == null) {
+            this.innerModel().withStorageProfile(new ImageStorageProfile());
         }
-        if (this.inner().storageProfile().dataDisks() == null) {
-            this.inner().storageProfile().withDataDisks(new ArrayList<ImageDataDisk>());
+        if (this.innerModel().storageProfile().dataDisks() == null) {
+            this.innerModel().storageProfile().withDataDisks(new ArrayList<ImageDataDisk>());
         }
-        this.inner().storageProfile().dataDisks().add(customImageDataDisk.inner());
+        this.innerModel().storageProfile().dataDisks().add(customImageDataDisk.innerModel());
         return this;
     }
 
     @Override
     public VirtualMachineCustomImage.DefinitionStages.WithOSDiskImageSourceAltVirtualMachineSource withHyperVGeneration(
         HyperVGenerationTypes hyperVGeneration) {
-        this.inner().withHyperVGeneration(hyperVGeneration);
+        this.innerModel().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 }

@@ -20,11 +20,11 @@ import java.util.List;
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
-        String postFix = nsgs.manager().sdkContext().randomResourceName("", 8);
+        String postFix = nsgs.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String newName = "nsg" + postFix;
         final String resourceGroupName = "rg" + postFix;
         final String nicName = "nic" + postFix;
-        final String asgName = nsgs.manager().sdkContext().randomResourceName("asg", 8);
+        final String asgName = nsgs.manager().resourceManager().internalContext().randomResourceName("asg", 8);
         final Region region = Region.US_WEST;
         final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
 

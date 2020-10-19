@@ -7,7 +7,9 @@ import com.microsoft.azure.servicebus.stream.binder.ServiceBusQueueMessageChanne
 import com.microsoft.azure.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
 import com.microsoft.azure.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.microsoft.azure.servicebus.stream.binder.provisioning.ServiceBusQueueChannelResourceManagerProvisioner;
+import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
+import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration;
 import com.microsoft.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils;
@@ -30,7 +32,8 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
-@Import({AzureServiceBusQueueAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class})
+@Import({AzureServiceBusQueueAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class,
+    AzureContextAutoConfiguration.class, AzureServiceBusAutoConfiguration.class})
 @EnableConfigurationProperties({AzureServiceBusProperties.class, ServiceBusQueueExtendedBindingProperties.class})
 public class ServiceBusQueueBinderConfiguration {
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GalleryApplicationVersionPublishingProfile model. */
+/** The publishing profile of a gallery Image Version. */
 @Fluent
 public final class GalleryApplicationVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appplatform.fluent.inner.BindingResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BindingResourceCollection model. */
+/** Object that includes an array of Binding resources and a possible link for next set. */
 @Fluent
 public final class BindingResourceCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BindingResourceCollection.class);

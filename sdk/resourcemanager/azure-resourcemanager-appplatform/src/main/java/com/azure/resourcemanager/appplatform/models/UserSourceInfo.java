@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserSourceInfo model. */
+/** Source information for a deployment. */
 @Fluent
 public final class UserSourceInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSourceInfo.class);

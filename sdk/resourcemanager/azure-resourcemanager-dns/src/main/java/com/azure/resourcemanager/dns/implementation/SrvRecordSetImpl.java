@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.SrvRecordSet;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,21 +22,21 @@ class SrvRecordSetImpl extends DnsRecordSetImpl implements SrvRecordSet {
 
     @Override
     public List<SrvRecord> records() {
-        if (this.inner().srvRecords() != null) {
-            return Collections.unmodifiableList(this.inner().srvRecords());
+        if (this.innerModel().srvRecords() != null) {
+            return Collections.unmodifiableList(this.innerModel().srvRecords());
         }
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
-        if (this.inner().srvRecords() != null && this.inner().srvRecords().size() > 0) {
+        if (this.innerModel().srvRecords() != null && this.innerModel().srvRecords().size() > 0) {
             if (resource.srvRecords() == null) {
                 resource.withSrvRecords(new ArrayList<>());
             }
 
-            resource.srvRecords().addAll(this.inner().srvRecords());
-            this.inner().srvRecords().clear();
+            resource.srvRecords().addAll(this.innerModel().srvRecords());
+            this.innerModel().srvRecords().clear();
         }
 
         if (this.recordSetRemoveInfo.srvRecords().size() > 0) {

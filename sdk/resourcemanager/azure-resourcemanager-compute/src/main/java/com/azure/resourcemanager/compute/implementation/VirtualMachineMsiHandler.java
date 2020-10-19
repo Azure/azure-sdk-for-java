@@ -7,8 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
@@ -66,20 +66,20 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
      * @return VirtualMachineMsiHandler
      */
     VirtualMachineMsiHandler withoutLocalManagedServiceIdentity() {
-        if (this.virtualMachine.inner().identity() == null
-            || this.virtualMachine.inner().identity().type() == null
-            || this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.NONE)
-            || this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
+        if (this.virtualMachine.innerModel().identity() == null
+            || this.virtualMachine.innerModel().identity().type() == null
+            || this.virtualMachine.innerModel().identity().type().equals(ResourceIdentityType.NONE)
+            || this.virtualMachine.innerModel().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
             return this;
-        } else if (this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
-            this.virtualMachine.inner().identity().withType(ResourceIdentityType.NONE);
+        } else if (this.virtualMachine.innerModel().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
+            this.virtualMachine.innerModel().identity().withType(ResourceIdentityType.NONE);
         } else if (this
             .virtualMachine
-            .inner()
+            .innerModel()
             .identity()
             .type()
             .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
-            this.virtualMachine.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
+            this.virtualMachine.innerModel().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
     }
@@ -139,7 +139,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
 
     void handleExternalIdentities() {
         if (!this.userAssignedIdentities.isEmpty()) {
-            this.virtualMachine.inner().identity().withUserAssignedIdentities(this.userAssignedIdentities);
+            this.virtualMachine.innerModel().identity().withUserAssignedIdentities(this.userAssignedIdentities);
         }
     }
 
@@ -160,7 +160,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             // 4. User want to add and remove (all or subset) some identities in 'VM.Identity.userAssignedIdentities'
             //      [this.userAssignedIdentities.empty() == false and this.virtualMachine.inner().identity() != null]
             //
-            VirtualMachineIdentity currentIdentity = this.virtualMachine.inner().identity();
+            VirtualMachineIdentity currentIdentity = this.virtualMachine.innerModel().identity();
             vmUpdate.withIdentity(currentIdentity);
             if (!this.userAssignedIdentities.isEmpty()) {
                 // At this point its guaranteed that 'currentIdentity' is not null so vmUpdate.identity() is.
@@ -202,7 +202,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             // Check if user request contains only request for removal of identities.
             if (containsRemoveOnly) {
                 Set<String> currentIds = new HashSet<>();
-                VirtualMachineIdentity currentIdentity = this.virtualMachine.inner().identity();
+                VirtualMachineIdentity currentIdentity = this.virtualMachine.innerModel().identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
                         currentIds.add(id.toLowerCase(Locale.ROOT));
@@ -259,7 +259,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
-        VirtualMachineInner virtualMachineInner = this.virtualMachine.inner();
+        VirtualMachineInner virtualMachineInner = this.virtualMachine.innerModel();
         if (virtualMachineInner.identity() == null) {
             virtualMachineInner.withIdentity(new VirtualMachineIdentity());
         }

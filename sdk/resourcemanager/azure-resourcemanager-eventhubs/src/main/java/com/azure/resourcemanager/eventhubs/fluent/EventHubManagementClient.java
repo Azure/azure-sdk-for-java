@@ -4,194 +4,86 @@
 
 package com.azure.resourcemanager.eventhubs.fluent;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the EventHubManagementClient type. */
-@ServiceClient(builder = EventHubManagementClientBuilder.class)
-public final class EventHubManagementClient extends AzureServiceClient {
-    private final ClientLogger logger = new ClientLogger(EventHubManagementClient.class);
-
-    /**
-     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
-    private final String subscriptionId;
-
+/** The interface for EventHubManagementClient class. */
+public interface EventHubManagementClient {
     /**
      * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /** server parameter. */
-    private final String endpoint;
+    String getSubscriptionId();
 
     /**
      * Gets server parameter.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
+    String getEndpoint();
 
     /**
      * Gets Api Version.
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /** The HTTP pipeline to send requests through. */
-    private final HttpPipeline httpPipeline;
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     *
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /** The default poll interval for long-running operation. */
-    private final Duration defaultPollInterval;
+    HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
      *
      * @return the defaultPollInterval value.
      */
-    public Duration getDefaultPollInterval() {
-        return this.defaultPollInterval;
-    }
-
-    /** The NamespacesClient object to access its operations. */
-    private final NamespacesClient namespaces;
+    Duration getDefaultPollInterval();
 
     /**
      * Gets the NamespacesClient object to access its operations.
      *
      * @return the NamespacesClient object.
      */
-    public NamespacesClient getNamespaces() {
-        return this.namespaces;
-    }
-
-    /** The DisasterRecoveryConfigsClient object to access its operations. */
-    private final DisasterRecoveryConfigsClient disasterRecoveryConfigs;
+    NamespacesClient getNamespaces();
 
     /**
      * Gets the DisasterRecoveryConfigsClient object to access its operations.
      *
      * @return the DisasterRecoveryConfigsClient object.
      */
-    public DisasterRecoveryConfigsClient getDisasterRecoveryConfigs() {
-        return this.disasterRecoveryConfigs;
-    }
-
-    /** The EventHubsClient object to access its operations. */
-    private final EventHubsClient eventHubs;
+    DisasterRecoveryConfigsClient getDisasterRecoveryConfigs();
 
     /**
      * Gets the EventHubsClient object to access its operations.
      *
      * @return the EventHubsClient object.
      */
-    public EventHubsClient getEventHubs() {
-        return this.eventHubs;
-    }
-
-    /** The ConsumerGroupsClient object to access its operations. */
-    private final ConsumerGroupsClient consumerGroups;
+    EventHubsClient getEventHubs();
 
     /**
      * Gets the ConsumerGroupsClient object to access its operations.
      *
      * @return the ConsumerGroupsClient object.
      */
-    public ConsumerGroupsClient getConsumerGroups() {
-        return this.consumerGroups;
-    }
-
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    ConsumerGroupsClient getConsumerGroups();
 
     /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The RegionsClient object to access its operations. */
-    private final RegionsClient regions;
+    OperationsClient getOperations();
 
     /**
      * Gets the RegionsClient object to access its operations.
      *
      * @return the RegionsClient object.
      */
-    public RegionsClient getRegions() {
-        return this.regions;
-    }
-
-    /**
-     * Initializes an instance of EventHubManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param defaultPollInterval The default poll interval for long-running operation.
-     * @param environment The Azure environment.
-     */
-    EventHubManagementClient(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
-        super(httpPipeline, serializerAdapter, environment);
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
-        this.endpoint = endpoint;
-        this.apiVersion = "2017-04-01";
-        this.namespaces = new NamespacesClient(this);
-        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClient(this);
-        this.eventHubs = new EventHubsClient(this);
-        this.consumerGroups = new ConsumerGroupsClient(this);
-        this.operations = new OperationsClient(this);
-        this.regions = new RegionsClient(this);
-    }
+    RegionsClient getRegions();
 }

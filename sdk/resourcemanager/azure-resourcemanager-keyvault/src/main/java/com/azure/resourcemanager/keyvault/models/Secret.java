@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Flux;
 
 /** An immutable client-side representation of an Azure Key Vault secret. */
 @Fluent
-public interface Secret extends Indexable, HasInner<KeyVaultSecret>, HasId, HasName, Updatable<Secret.Update> {
+public interface Secret extends Indexable, HasInnerModel<KeyVaultSecret>, HasId, HasName, Updatable<Secret.Update> {
     /** @return the secret value when the secret is enabled */
     String value();
 

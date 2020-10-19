@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EncryptionSettingsCollection model. */
+/** Encryption settings for disk or snapshot. */
 @Fluent
 public final class EncryptionSettingsCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSettingsCollection.class);

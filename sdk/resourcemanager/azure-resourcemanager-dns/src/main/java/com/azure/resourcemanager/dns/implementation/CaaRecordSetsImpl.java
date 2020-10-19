@@ -4,10 +4,11 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.CaaRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of CaaRecordSets. */
@@ -47,7 +48,8 @@ class CaaRecordSetsImpl extends DnsRecordSetsBaseImpl<CaaRecordSet, CaaRecordSet
                         this.dnsZone.name(),
                         this.recordType,
                         pageSize,
-                        recordSetNameSuffix));
+                        recordSetNameSuffix,
+                        Context.NONE));
     }
 
     @Override

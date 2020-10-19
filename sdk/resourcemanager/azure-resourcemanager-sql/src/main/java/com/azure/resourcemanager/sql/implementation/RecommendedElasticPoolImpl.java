@@ -12,9 +12,9 @@ import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPoolMetric;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.TrackedResource;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolMetricInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolMetricInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,52 +53,52 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
 
     @Override
     public ElasticPoolEdition databaseEdition() {
-        return this.inner().databaseEdition();
+        return this.innerModel().databaseEdition();
     }
 
     @Override
     public double dtu() {
-        return this.inner().dtu();
+        return this.innerModel().dtu();
     }
 
     @Override
     public double databaseDtuMin() {
-        return this.inner().databaseDtuMin();
+        return this.innerModel().databaseDtuMin();
     }
 
     @Override
     public double databaseDtuMax() {
-        return this.inner().databaseDtuMax();
+        return this.innerModel().databaseDtuMax();
     }
 
     @Override
     public double storageMB() {
-        return this.inner().storageMB();
+        return this.innerModel().storageMB();
     }
 
     @Override
     public OffsetDateTime observationPeriodStart() {
-        return this.inner().observationPeriodStart();
+        return this.innerModel().observationPeriodStart();
     }
 
     @Override
     public OffsetDateTime observationPeriodEnd() {
-        return this.inner().observationPeriodEnd();
+        return this.innerModel().observationPeriodEnd();
     }
 
     @Override
     public double maxObservedDtu() {
-        return this.inner().maxObservedDtu();
+        return this.innerModel().maxObservedDtu();
     }
 
     @Override
     public double maxObservedStorageMB() {
-        return this.inner().maxObservedStorageMB();
+        return this.innerModel().maxObservedStorageMB();
     }
 
     @Override
     public List<TrackedResource> databases() {
-        return this.inner().databases();
+        return this.innerModel().databases();
     }
 
     @Override
@@ -176,12 +176,12 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override

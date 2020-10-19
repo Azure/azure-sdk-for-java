@@ -6,7 +6,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
-import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTrigger;
@@ -40,7 +40,7 @@ import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameter
 import com.azure.resourcemanager.containerregistry.models.Variant;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -64,22 +64,22 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -89,7 +89,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().tags();
+        return this.innerModel().tags();
     }
 
     @Override
@@ -118,7 +118,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     @Override
-    public TaskInner inner() {
+    public TaskInner innerModel() {
         return this.inner;
     }
 
@@ -144,7 +144,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public int timeout() {
-        return Utils.toPrimitiveInt(this.inner.timeout());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.timeout());
     }
 
     @Override
@@ -157,7 +157,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
         if (this.inner.agentConfiguration() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
     }
 
     @Override
@@ -541,7 +541,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     private boolean isInCreateMode() {
-        if (this.inner().id() == null) {
+        if (this.innerModel().id() == null) {
             return true;
         }
         return false;

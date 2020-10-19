@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerKey;
 import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
-import com.azure.resourcemanager.sql.fluent.inner.ServerKeyInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerKeyInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
@@ -97,7 +97,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -131,8 +131,8 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public SqlServerKeyImpl withAzureKeyVaultKey(String uri) {
-        this.inner().withServerKeyType(ServerKeyType.AZURE_KEY_VAULT);
-        this.inner().withUri(uri);
+        this.innerModel().withServerKeyType(ServerKeyType.AZURE_KEY_VAULT);
+        this.innerModel().withUri(uri);
         // If the key URI is "https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901",
         // then the Server Key Name should be formatted as: "YourVaultName_YourKeyName_01234567890123456789012345678901"
         String[] items = uri.split("\\/");
@@ -142,13 +142,13 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public SqlServerKeyImpl withThumbprint(String thumbprint) {
-        this.inner().withThumbprint(thumbprint);
+        this.innerModel().withThumbprint(thumbprint);
         return this;
     }
 
     @Override
     public SqlServerKeyImpl withCreationDate(OffsetDateTime creationDate) {
-        this.inner().withCreationDate(creationDate);
+        this.innerModel().withCreationDate(creationDate);
         return this;
     }
 
@@ -159,7 +159,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
             .sqlServerManager
             .serviceClient()
             .getServerKeys()
-            .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.serverKeyName, self.inner())
+            .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.serverKeyName, self.innerModel())
             .map(
                 serverKeyInner -> {
                     self.setInner(serverKeyInner);
@@ -202,37 +202,37 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public String kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.fromName(this.innerModel().location());
     }
 
     @Override
     public ServerKeyType serverKeyType() {
-        return this.inner().serverKeyType();
+        return this.innerModel().serverKeyType();
     }
 
     @Override
     public String uri() {
-        return this.inner().uri();
+        return this.innerModel().uri();
     }
 
     @Override
     public String thumbprint() {
-        return this.inner().thumbprint();
+        return this.innerModel().thumbprint();
     }
 
     @Override
     public OffsetDateTime creationDate() {
-        return this.inner().creationDate();
+        return this.innerModel().creationDate();
     }
 
     @Override

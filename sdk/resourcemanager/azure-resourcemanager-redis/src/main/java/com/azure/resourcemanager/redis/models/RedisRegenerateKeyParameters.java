@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisRegenerateKeyParameters model. */
+/** Specifies which Redis access keys to reset. */
 @Fluent
 public final class RedisRegenerateKeyParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisRegenerateKeyParameters.class);

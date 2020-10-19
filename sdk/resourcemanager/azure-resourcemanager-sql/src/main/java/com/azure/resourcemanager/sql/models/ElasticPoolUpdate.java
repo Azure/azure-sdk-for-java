@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ElasticPoolUpdate model. */
+/** An elastic pool update. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolUpdate {

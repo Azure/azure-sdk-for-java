@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GrantAccessData model. */
+/** Data used for requesting a SAS. */
 @Fluent
 public final class GrantAccessData {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GrantAccessData.class);

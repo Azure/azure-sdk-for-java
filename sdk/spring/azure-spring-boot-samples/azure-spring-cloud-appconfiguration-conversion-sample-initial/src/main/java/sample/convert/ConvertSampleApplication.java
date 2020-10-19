@@ -33,7 +33,7 @@ public class ConvertSampleApplication implements CommandLineRunner {
         final User testUser = new User("testId", "testFirstName", "testLastName",
             "test address line one");
 
-        // Save the User class to Azure CosmosDB database.
+        // Save the User class to Azure Cosmos database.
         final Mono<User> saveUserMono = repository.save(testUser);
 
         final Flux<User> firstNameUserFlux = repository.findByFirstName("testFirstName");

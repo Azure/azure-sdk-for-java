@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IpAddressGroup model. */
+/** CDN Ip address group. */
 @Fluent
 public final class IpAddressGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddressGroup.class);

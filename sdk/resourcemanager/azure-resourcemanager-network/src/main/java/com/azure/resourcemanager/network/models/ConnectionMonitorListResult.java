@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConnectionMonitorListResult model. */
+/** List of connection monitors. */
 @Fluent
 public final class ConnectionMonitorListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorListResult.class);

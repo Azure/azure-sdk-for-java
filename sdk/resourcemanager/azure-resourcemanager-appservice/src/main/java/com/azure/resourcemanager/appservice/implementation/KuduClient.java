@@ -28,10 +28,8 @@ import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthentica
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.fasterxml.jackson.core.JsonParseException;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -46,6 +44,7 @@ import java.util.Locale;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /** A client which interacts with Kudu service. */
 class KuduClient {
@@ -123,16 +122,16 @@ class KuduClient {
         @Get("api/logstream")
         Mono<StreamResponse> streamAllLogs(@HostParam("$host") String host);
 
-        @Headers({
-            "Content-Type: application/octet-stream",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
-            "x-ms-body-logging: false"
-        })
-        @Post("api/wardeploy")
-        Mono<Void> warDeploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") byte[] warFile,
-            @QueryParam("name") String appName);
+//        @Headers({
+//            "Content-Type: application/octet-stream",
+//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
+//            "x-ms-body-logging: false"
+//        })
+//        @Post("api/wardeploy")
+//        Mono<Void> warDeploy(
+//            @HostParam("$host") String host,
+//            @BodyParam("application/octet-stream") byte[] warFile,
+//            @QueryParam("name") String appName);
 
         @Headers({
             "Content-Type: application/octet-stream",
@@ -146,15 +145,15 @@ class KuduClient {
             @HeaderParam("content-length") long size,
             @QueryParam("name") String appName);
 
-        @Headers({
-            "Content-Type: application/octet-stream",
-            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
-            "x-ms-body-logging: false"
-        })
-        @Post("api/zipdeploy")
-        Mono<Void> zipDeploy(
-            @HostParam("$host") String host,
-            @BodyParam("application/octet-stream") byte[] zipFile);
+//        @Headers({
+//            "Content-Type: application/octet-stream",
+//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
+//            "x-ms-body-logging: false"
+//        })
+//        @Post("api/zipdeploy")
+//        Mono<Void> zipDeploy(
+//            @HostParam("$host") String host,
+//            @BodyParam("application/octet-stream") byte[] zipFile);
 
         @Headers({
             "Content-Type: application/octet-stream",
@@ -256,13 +255,18 @@ class KuduClient {
         return index;
     }
 
-    Mono<Void> warDeployAsync(InputStream warFile, String appName) {
-        InputStreamFlux flux = fluxFromInputStream(warFile);
-        if (flux.flux != null) {
-            return withRetry(service.warDeploy(host, flux.flux, flux.size, appName));
-        } else {
-            return withRetry(service.warDeploy(host, flux.bytes, appName));
-        }
+//    Mono<Void> warDeployAsync(InputStream warFile, String appName) {
+//        InputStreamFlux flux = fluxFromInputStream(warFile);
+//        if (flux.flux != null) {
+//            return withRetry(service.warDeploy(host, flux.flux, flux.size, appName));
+//        } else {
+//            return withRetry(service.warDeploy(host, flux.bytes, appName));
+//        }
+//    }
+
+    Mono<Void> warDeployAsync(InputStream warFile, long length, String appName) {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(warFile);
+        return withRetry(service.warDeploy(host, flux, length, appName));
     }
 
     Mono<Void> warDeployAsync(File warFile, String appName) throws IOException {
@@ -277,13 +281,18 @@ class KuduClient {
                 }));
     }
 
-    Mono<Void> zipDeployAsync(InputStream zipFile) {
-        InputStreamFlux flux = fluxFromInputStream(zipFile);
-        if (flux.flux != null) {
-            return withRetry(service.zipDeploy(host, flux.flux, flux.size));
-        } else {
-            return withRetry(service.zipDeploy(host, flux.bytes));
-        }
+//    Mono<Void> zipDeployAsync(InputStream zipFile) {
+//        InputStreamFlux flux = fluxFromInputStream(zipFile);
+//        if (flux.flux != null) {
+//            return withRetry(service.zipDeploy(host, flux.flux, flux.size));
+//        } else {
+//            return withRetry(service.zipDeploy(host, flux.bytes));
+//        }
+//    }
+
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
+        return withRetry(service.zipDeploy(host, flux, length));
     }
 
     Mono<Void> zipDeployAsync(File zipFile) throws IOException {
@@ -298,40 +307,40 @@ class KuduClient {
             }));
     }
 
-    private InputStreamFlux fluxFromInputStream(InputStream inputStream) {
-        try {
-            InputStreamFlux inputStreamFlux = new InputStreamFlux();
-            if (inputStream instanceof FileInputStream) {
-                inputStreamFlux.size = ((FileInputStream) inputStream).getChannel().size();
-                inputStreamFlux.flux = FluxUtil.toFluxByteBuffer(inputStream);
-            } else if (inputStream instanceof ByteArrayInputStream) {
-                inputStreamFlux.size = inputStream.available();
-                inputStreamFlux.flux = FluxUtil.toFluxByteBuffer(inputStream);
-            } else {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                int nRead;
-                byte[] data = new byte[16384];
-                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-                inputStreamFlux.bytes = buffer.toByteArray();
-                inputStreamFlux.size = inputStreamFlux.bytes.length;
-            }
-            return inputStreamFlux;
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new IllegalStateException(e));
-        }
-    }
-
-    private static class InputStreamFlux {
-        private Flux<ByteBuffer> flux;
-        private byte[] bytes;
-        private long size;
-    }
+//    private InputStreamFlux fluxFromInputStream(InputStream inputStream) {
+//        try {
+//            InputStreamFlux inputStreamFlux = new InputStreamFlux();
+//            if (inputStream instanceof FileInputStream) {
+//                inputStreamFlux.size = ((FileInputStream) inputStream).getChannel().size();
+//                inputStreamFlux.flux = FluxUtil.toFluxByteBuffer(inputStream);
+//            } else if (inputStream instanceof ByteArrayInputStream) {
+//                inputStreamFlux.size = inputStream.available();
+//                inputStreamFlux.flux = FluxUtil.toFluxByteBuffer(inputStream);
+//            } else {
+//                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//                int nRead;
+//                byte[] data = new byte[16384];
+//                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+//                    buffer.write(data, 0, nRead);
+//                }
+//                inputStreamFlux.bytes = buffer.toByteArray();
+//                inputStreamFlux.size = inputStreamFlux.bytes.length;
+//            }
+//            return inputStreamFlux;
+//        } catch (IOException e) {
+//            throw logger.logExceptionAsError(new IllegalStateException(e));
+//        }
+//    }
+//
+//    private static class InputStreamFlux {
+//        private Flux<ByteBuffer> flux;
+//        private byte[] bytes;
+//        private long size;
+//    }
 
     private Mono<Void> withRetry(Mono<Void> observable) {
         return observable
-            .retryWhen(
+            .retryWhen(Retry.withThrowable(
                 flux ->
                     flux
                         .zipWith(
@@ -348,7 +357,7 @@ class KuduClient {
                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                 }
                             })
-                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10))));
+                        .flatMap(i -> Mono.delay(Duration.ofSeconds(((long) i) * 10)))));
     }
 
 }

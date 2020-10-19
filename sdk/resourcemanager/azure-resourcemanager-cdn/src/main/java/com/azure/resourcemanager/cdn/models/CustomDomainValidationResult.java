@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.resourcemanager.cdn.fluent.inner.ValidateCustomDomainOutputInner;
+import com.azure.resourcemanager.cdn.fluent.models.ValidateCustomDomainOutputInner;
 
 /**
  * The {@link CdnProfile#validateEndpointCustomDomain(String, String)} action result.

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.cosmos;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClient;
-import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClientBuilder;
+import com.azure.resourcemanager.cosmos.implementation.CosmosDBManagementClientBuilder;
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBAccountsImpl;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure compute resource management. */
 public final class CosmosManager extends Manager<CosmosDBManagementClient> {
@@ -47,19 +46,7 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
      * @return the ComputeManager
      */
     public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the ComputeManager
-     */
-    public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new CosmosManager(httpPipeline, profile, sdkContext);
+        return new CosmosManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -82,7 +69,7 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
         }
     }
 
-    private CosmosManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private CosmosManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -90,8 +77,7 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return the cosmos db database account resource management API entry point */

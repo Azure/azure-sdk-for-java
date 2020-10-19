@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServiceEndpointPropertiesFormat model. */
+/** The service endpoint properties. */
 @Fluent
 public final class ServiceEndpointPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPropertiesFormat.class);

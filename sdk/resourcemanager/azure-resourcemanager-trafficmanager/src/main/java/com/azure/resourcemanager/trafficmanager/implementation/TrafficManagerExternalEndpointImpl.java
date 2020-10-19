@@ -5,7 +5,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 
 /** Implementation for {@link TrafficManagerExternalEndpoint}. */
@@ -17,11 +17,11 @@ class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl impl
 
     @Override
     public String fqdn() {
-        return inner().target();
+        return innerModel().target();
     }
 
     @Override
     public Region sourceTrafficLocation() {
-        return Region.fromName((inner().endpointLocation()));
+        return Region.fromName((innerModel().endpointLocation()));
     }
 }

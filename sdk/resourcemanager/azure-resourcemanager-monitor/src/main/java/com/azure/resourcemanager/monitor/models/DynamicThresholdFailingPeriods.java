@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DynamicThresholdFailingPeriods model. */
+/** The minimum number of violations required within the selected lookback time window required to raise an alert. */
 @Fluent
 public final class DynamicThresholdFailingPeriods {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicThresholdFailingPeriods.class);

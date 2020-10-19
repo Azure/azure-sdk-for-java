@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import reactor.core.publisher.Mono;
 
 /**
@@ -42,7 +42,7 @@ public abstract class IndependentChildrenImpl<
         SupportsListingByParent<T, ParentT, ManagerT>,
         SupportsDeletingByParent,
         HasManager<ManagerT>,
-        HasInner<InnerCollectionT> {
+        HasInnerModel<InnerCollectionT> {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 
@@ -52,7 +52,7 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
-    public InnerCollectionT inner() {
+    public InnerCollectionT innerModel() {
         return this.innerCollection;
     }
 

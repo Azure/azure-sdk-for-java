@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TrafficFlow model. */
+/** Class representing a Traffic Manager HeatMap traffic flow properties. */
 @Fluent
 public final class TrafficFlow {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficFlow.class);

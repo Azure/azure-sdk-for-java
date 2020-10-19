@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInstanceViewInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInstanceViewInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 
@@ -27,7 +27,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public int platformUpdateDomain() {
-        return inner().platformUpdateDomain() == null ? 0 : inner().platformUpdateDomain();
+        return innerModel().platformUpdateDomain() == null ? 0 : innerModel().platformUpdateDomain();
     }
 
     /**
@@ -37,7 +37,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public int platformFaultDomain() {
-        return inner().platformFaultDomain() == null ? 0 : inner().platformFaultDomain();
+        return innerModel().platformFaultDomain() == null ? 0 : innerModel().platformFaultDomain();
     }
 
     /**
@@ -47,7 +47,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public String computerName() {
-        return inner().computerName();
+        return innerModel().computerName();
     }
 
     /**
@@ -57,7 +57,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public String osName() {
-        return inner().osName();
+        return innerModel().osName();
     }
 
     /**
@@ -67,7 +67,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public String osVersion() {
-        return inner().osVersion();
+        return innerModel().osVersion();
     }
 
     /**
@@ -77,7 +77,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public String rdpThumbPrint() {
-        return inner().rdpThumbPrint();
+        return innerModel().rdpThumbPrint();
     }
 
     /**
@@ -87,7 +87,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public VirtualMachineAgentInstanceView vmAgent() {
-        return inner().vmAgent();
+        return innerModel().vmAgent();
     }
 
     /**
@@ -97,7 +97,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public MaintenanceRedeployStatus maintenanceRedeployStatus() {
-        return inner().maintenanceRedeployStatus();
+        return innerModel().maintenanceRedeployStatus();
     }
 
     /**
@@ -107,7 +107,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public List<DiskInstanceView> disks() {
-        return inner().disks();
+        return innerModel().disks();
     }
 
     /**
@@ -117,7 +117,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public List<VirtualMachineExtensionInstanceView> extensions() {
-        return inner().extensions();
+        return innerModel().extensions();
     }
 
     /**
@@ -129,7 +129,7 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public BootDiagnosticsInstanceView bootDiagnostics() {
-        return inner().bootDiagnostics();
+        return innerModel().bootDiagnostics();
     }
 
     /**
@@ -139,6 +139,6 @@ class VirtualMachineInstanceViewImpl extends WrapperImpl<VirtualMachineInstanceV
      */
     @Override
     public List<InstanceViewStatus> statuses() {
-        return inner().statuses();
+        return innerModel().statuses();
     }
 }

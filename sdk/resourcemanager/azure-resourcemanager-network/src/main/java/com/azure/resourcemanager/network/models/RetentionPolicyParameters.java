@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RetentionPolicyParameters model. */
+/** Parameters that define the retention policy for flow log. */
 @Fluent
 public final class RetentionPolicyParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicyParameters.class);

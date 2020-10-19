@@ -13,9 +13,10 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collection;
 import java.util.Collections;
 import reactor.core.publisher.Mono;
@@ -26,7 +27,7 @@ public class VirtualNetworkGatewayConnectionImpl
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionInner,
         VirtualNetworkGatewayConnectionImpl,
-    NetworkManager>
+        NetworkManager>
     implements VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnection.Definition,
         VirtualNetworkGatewayConnection.Update,
@@ -46,109 +47,109 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public String authorizationKey() {
-        return inner().authorizationKey();
+        return innerModel().authorizationKey();
     }
 
     @Override
     public String virtualNetworkGateway1Id() {
-        if (inner().virtualNetworkGateway1() == null) {
+        if (innerModel().virtualNetworkGateway1() == null) {
             return null;
         }
-        return inner().virtualNetworkGateway1().id();
+        return innerModel().virtualNetworkGateway1().id();
     }
 
     @Override
     public String virtualNetworkGateway2Id() {
-        if (inner().virtualNetworkGateway2() == null) {
+        if (innerModel().virtualNetworkGateway2() == null) {
             return null;
         }
-        return inner().virtualNetworkGateway2().id();
+        return innerModel().virtualNetworkGateway2().id();
     }
 
     @Override
     public String localNetworkGateway2Id() {
-        if (inner().localNetworkGateway2() == null) {
+        if (innerModel().localNetworkGateway2() == null) {
             return null;
         }
-        return inner().localNetworkGateway2().id();
+        return innerModel().localNetworkGateway2().id();
     }
 
     @Override
     public VirtualNetworkGatewayConnectionType connectionType() {
-        return inner().connectionType();
+        return innerModel().connectionType();
     }
 
     @Override
     public int routingWeight() {
-        return Utils.toPrimitiveInt(inner().routingWeight());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().routingWeight());
     }
 
     @Override
     public String sharedKey() {
-        return inner().sharedKey();
+        return innerModel().sharedKey();
     }
 
     @Override
     public VirtualNetworkGatewayConnectionStatus connectionStatus() {
-        return inner().connectionStatus();
+        return innerModel().connectionStatus();
     }
 
     @Override
     public Collection<TunnelConnectionHealth> tunnelConnectionStatus() {
-        return Collections.unmodifiableCollection(inner().tunnelConnectionStatus());
+        return Collections.unmodifiableCollection(innerModel().tunnelConnectionStatus());
     }
 
     @Override
     public long egressBytesTransferred() {
-        return Utils.toPrimitiveLong(inner().egressBytesTransferred());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().egressBytesTransferred());
     }
 
     @Override
     public long ingressBytesTransferred() {
-        return Utils.toPrimitiveLong(inner().ingressBytesTransferred());
+        return ResourceManagerUtils.toPrimitiveLong(innerModel().ingressBytesTransferred());
     }
 
     @Override
     public String peerId() {
-        return inner().peer() == null ? null : inner().peer().id();
+        return innerModel().peer() == null ? null : innerModel().peer().id();
     }
 
     @Override
     public boolean isBgpEnabled() {
-        return Utils.toPrimitiveBoolean(inner().enableBgp());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableBgp());
     }
 
     @Override
     public boolean usePolicyBasedTrafficSelectors() {
-        return Utils.toPrimitiveBoolean(inner().usePolicyBasedTrafficSelectors());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().usePolicyBasedTrafficSelectors());
     }
 
     @Override
     public Collection<IpsecPolicy> ipsecPolicies() {
-        return Collections.unmodifiableCollection(inner().ipsecPolicies());
+        return Collections.unmodifiableCollection(innerModel().ipsecPolicies());
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withSiteToSite() {
-        inner().withConnectionType(VirtualNetworkGatewayConnectionType.IPSEC);
+        innerModel().withConnectionType(VirtualNetworkGatewayConnectionType.IPSEC);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withVNetToVNet() {
-        inner().withConnectionType(VirtualNetworkGatewayConnectionType.VNET2VNET);
+        innerModel().withConnectionType(VirtualNetworkGatewayConnectionType.VNET2VNET);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withExpressRoute(String circuitId) {
-        inner().withConnectionType(VirtualNetworkGatewayConnectionType.EXPRESS_ROUTE);
-        inner().withPeer(new SubResource().withId(circuitId));
+        innerModel().withConnectionType(VirtualNetworkGatewayConnectionType.EXPRESS_ROUTE);
+        innerModel().withPeer(new SubResource().withId(circuitId));
         return this;
     }
 
@@ -159,38 +160,38 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withLocalNetworkGateway(LocalNetworkGateway localNetworkGateway) {
-        inner().withLocalNetworkGateway2(localNetworkGateway.inner());
+        innerModel().withLocalNetworkGateway2(localNetworkGateway.innerModel());
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withSecondVirtualNetworkGateway(
         VirtualNetworkGateway virtualNetworkGateway2) {
-        inner().withVirtualNetworkGateway2(virtualNetworkGateway2.inner());
+        innerModel().withVirtualNetworkGateway2(virtualNetworkGateway2.innerModel());
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withSharedKey(String sharedKey) {
-        inner().withSharedKey(sharedKey);
+        innerModel().withSharedKey(sharedKey);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withBgp() {
-        inner().withEnableBgp(true);
+        innerModel().withEnableBgp(true);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withoutBgp() {
-        inner().withEnableBgp(false);
+        innerModel().withEnableBgp(false);
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withAuthorization(String authorizationKey) {
-        inner().withAuthorizationKey(authorizationKey);
+        innerModel().withAuthorizationKey(authorizationKey);
         return this;
     }
 
@@ -208,12 +209,12 @@ public class VirtualNetworkGatewayConnectionImpl
         return myManager
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     private void beforeCreating() {
-        inner().withVirtualNetworkGateway1(parent.inner());
+        innerModel().withVirtualNetworkGateway1(parent.innerModel());
     }
 
     @Override
@@ -232,7 +233,7 @@ public class VirtualNetworkGatewayConnectionImpl
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
             .flatMap(inner -> refreshAsync());
     }
 }

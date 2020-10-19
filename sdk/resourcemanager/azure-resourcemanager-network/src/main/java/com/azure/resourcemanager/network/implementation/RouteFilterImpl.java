@@ -8,9 +8,9 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.RouteFilter;
 import com.azure.resourcemanager.network.models.RouteFilterRule;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
-import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -36,26 +36,39 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> createInner() {
-        return this.manager().serviceClient().getRouteFilters()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner());
+        return this
+            .manager()
+            .serviceClient()
+            .getRouteFilters()
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
     }
 
     @Override
     protected void initializeChildrenFromInner() {
         this.rules = new TreeMap<>();
-        List<RouteFilterRuleInner> inners = this.inner().rules();
+        List<RouteFilterRuleInner> inners = this.innerModel().rules();
         if (inners != null) {
             for (RouteFilterRuleInner inner : inners) {
                 this.rules.put(inner.name(), new RouteFilterRuleImpl(inner, this));
             }
         }
 
-        if (this.inner().peerings() != null) {
-            this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
-                ExpressRouteCircuitPeeringInner::name,
-                peering -> new ExpressRouteCircuitPeeringImpl<>(this, peering,
-                    manager().serviceClient().getExpressRouteCircuitPeerings(), peering.peeringType())
-            ));
+        if (this.innerModel().peerings() != null) {
+            this.peerings =
+                this
+                    .innerModel()
+                    .peerings()
+                    .stream()
+                    .collect(
+                        Collectors
+                            .toMap(
+                                ExpressRouteCircuitPeeringInner::name,
+                                peering ->
+                                    new ExpressRouteCircuitPeeringImpl<>(
+                                        this,
+                                        peering,
+                                        manager().serviceClient().getExpressRouteCircuitPeerings(),
+                                        peering.peeringType())));
         } else {
             this.peerings = new HashMap<>();
         }
@@ -63,7 +76,7 @@ class RouteFilterImpl
 
     @Override
     protected void beforeCreating() {
-        this.inner().withRules(innersFromWrappers(this.rules.values()));
+        this.innerModel().withRules(innersFromWrappers(this.rules.values()));
     }
 
     @Override
@@ -89,7 +102,7 @@ class RouteFilterImpl
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override

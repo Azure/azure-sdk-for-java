@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The MongoDBDatabaseCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB MongoDB database. */
 @JsonFlatten
 @Fluent
 public class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties {

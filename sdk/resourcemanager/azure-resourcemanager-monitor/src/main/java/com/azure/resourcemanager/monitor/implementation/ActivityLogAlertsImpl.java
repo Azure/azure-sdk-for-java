@@ -6,7 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlerts;
-import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 

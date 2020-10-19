@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServiceSpecification model. */
+/** Resource metrics service provided by Microsoft.Insights resource provider. */
 @Fluent
 public final class ServiceSpecification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSpecification.class);

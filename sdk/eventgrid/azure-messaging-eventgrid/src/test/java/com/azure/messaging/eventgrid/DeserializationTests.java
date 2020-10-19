@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.models.ContosoItemReceivedEventData;
-import com.azure.messaging.eventgrid.models.ContosoItemSentEventData;
-import com.azure.messaging.eventgrid.models.DroneShippingInfo;
-import com.azure.messaging.eventgrid.models.RocketShippingInfo;
+import com.azure.messaging.eventgrid.implementation.models.ContosoItemReceivedEventData;
+import com.azure.messaging.eventgrid.implementation.models.ContosoItemSentEventData;
+import com.azure.messaging.eventgrid.implementation.models.DroneShippingInfo;
+import com.azure.messaging.eventgrid.implementation.models.RocketShippingInfo;
 import com.azure.messaging.eventgrid.systemevents.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

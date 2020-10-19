@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MetricNamespaceName model. */
+/** The fully qualified metric namespace name. */
 @Fluent
 public final class MetricNamespaceName {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricNamespaceName.class);

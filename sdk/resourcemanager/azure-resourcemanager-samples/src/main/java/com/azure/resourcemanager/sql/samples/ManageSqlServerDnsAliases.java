@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
@@ -20,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 
 /**
  * Azure SQL sample for managing SQL Server DNS Aliases.
@@ -39,11 +40,11 @@ public class ManageSqlServerDnsAliases {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws ClassNotFoundException, SQLException {
-        final String sqlServerForTestName = azureResourceManager.sdkContext().randomResourceName("sqltest", 20);
-        final String sqlServerForProdName = azureResourceManager.sdkContext().randomResourceName("sqlprod", 20);
-        final String sqlServerDnsAlias = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
+        final String sqlServerForTestName = Utils.randomResourceName(azureResourceManager, "sqltest", 20);
+        final String sqlServerForProdName = Utils.randomResourceName(azureResourceManager, "sqlprod", 20);
+        final String sqlServerDnsAlias = Utils.randomResourceName(azureResourceManager, "sqlserver", 20);
         final String dbName = "dbSample";
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSSDFW", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSSDFW", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         try {
@@ -149,7 +150,7 @@ public class ManageSqlServerDnsAliases {
             SqlServerDnsAlias dnsAlias = sqlServerForTest.dnsAliases()
                 .define(sqlServerDnsAlias)
                 .create();
-            SdkContext.sleep(5 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
             String connectionUrl = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;",
                 dnsAlias.azureDnsRecord(),
@@ -179,7 +180,7 @@ public class ManageSqlServerDnsAliases {
             sqlServerForProd.dnsAliases().acquire(sqlServerDnsAlias, sqlServerForTest.id());
 
             // It takes some time for the DNS alias to reflect the new Server connection
-            SdkContext.sleep(10 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(10));
 
             // Re-establish the connection.
             try (Connection conDnsAlias = DriverManager.getConnection(connectionUrl);

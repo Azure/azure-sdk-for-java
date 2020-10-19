@@ -117,7 +117,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .create();
 
         Assertions.assertNotNull(galleryImage);
-        Assertions.assertNotNull(galleryImage.inner());
+        Assertions.assertNotNull(galleryImage.innerModel());
         Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(region.toString()));
         Assertions.assertTrue(galleryImage.osType().equals(OperatingSystemTypes.WINDOWS));
         Assertions.assertTrue(galleryImage.osState().equals(OperatingSystemStateTypes.GENERALIZED));
@@ -167,7 +167,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         galleryImage = this.computeManager.galleryImages().getByGallery(rgName, galleryName, galleryImageName);
 
         Assertions.assertNotNull(galleryImage);
-        Assertions.assertNotNull(galleryImage.inner());
+        Assertions.assertNotNull(galleryImage.innerModel());
         //
         // Delete an image from gallery
         //
@@ -243,7 +243,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .create();
 
         Assertions.assertNotNull(imageVersion);
-        Assertions.assertNotNull(imageVersion.inner());
+        Assertions.assertNotNull(imageVersion.innerModel());
         Assertions.assertNotNull(imageVersion.availableRegions());
         Assertions.assertEquals(2, imageVersion.availableRegions().size());
         boolean found = false;

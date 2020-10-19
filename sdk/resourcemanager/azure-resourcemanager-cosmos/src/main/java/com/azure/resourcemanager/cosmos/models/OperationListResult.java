@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.OperationInner;
+import com.azure.resourcemanager.cosmos.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OperationListResult model. */
+/**
+ * Result of the request to list Resource Provider operations. It contains a list of operations and a URL link to get
+ * the next set of results.
+ */
 @Fluent
 public final class OperationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);

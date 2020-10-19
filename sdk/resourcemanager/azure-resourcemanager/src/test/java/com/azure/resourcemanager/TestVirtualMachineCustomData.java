@@ -29,8 +29,8 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
-        final String publicIpDnsLabel = virtualMachines.manager().sdkContext().randomResourceName("abc", 16);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String publicIpDnsLabel = virtualMachines.manager().resourceManager().internalContext().randomResourceName("abc", 16);
 
         // Prepare the custom data
         //

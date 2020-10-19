@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -33,9 +34,9 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
-import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -81,43 +82,43 @@ public final class DeploymentImpl extends
 
     @Override
     public String provisioningState() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().provisioningState().toString();
+        return this.innerModel().properties().provisioningState().toString();
     }
 
     @Override
     public String correlationId() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().correlationId();
+        return this.innerModel().properties().correlationId();
     }
 
     @Override
     public OffsetDateTime timestamp() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().timestamp();
+        return this.innerModel().properties().timestamp();
     }
 
     @Override
     public Object outputs() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().outputs();
+        return this.innerModel().properties().outputs();
     }
 
     @Override
     public List<Provider> providers() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
         List<Provider> providers = new ArrayList<>();
-        for (ProviderInner providerInner : this.inner().properties().providers()) {
+        for (ProviderInner providerInner : this.innerModel().properties().providers()) {
             providers.add(new ProviderImpl(providerInner));
         }
         return providers;
@@ -125,58 +126,58 @@ public final class DeploymentImpl extends
 
     @Override
     public List<Dependency> dependencies() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().dependencies();
+        return this.innerModel().properties().dependencies();
     }
 
     @Override
     public String templateHash() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().templateHash();
+        return this.innerModel().properties().templateHash();
     }
 
     @Override
     public TemplateLink templateLink() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().templateLink();
+        return this.innerModel().properties().templateLink();
     }
 
     @Override
     public Object parameters() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().parameters();
+        return this.innerModel().properties().parameters();
     }
 
     @Override
     public ParametersLink parametersLink() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return this.inner().properties().parametersLink();
+        return this.innerModel().properties().parametersLink();
     }
 
     @Override
     public DeploymentMode mode() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().mode();
+        return innerModel().properties().mode();
     }
 
     @Override
     public List<ResourceReference> outputResources() {
-        if (this.inner().properties() == null) {
+        if (this.innerModel().properties() == null) {
             return null;
         }
-        return inner().properties().outputResources();
+        return innerModel().properties().outputResources();
     }
 
     @Override
@@ -307,7 +308,8 @@ public final class DeploymentImpl extends
     @Override
     public Accepted<Deployment> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getDeployments()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block(),
             inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
@@ -338,7 +340,7 @@ public final class DeploymentImpl extends
                 .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
                 .map(response -> {
                     try {
-                        return (DeploymentExtendedInner) this.manager().serviceClient().getSerializerAdapter()
+                        return (DeploymentExtendedInner) SerializerFactory.createDefaultManagementSerializerAdapter()
                             .deserialize(new String(response, StandardCharsets.UTF_8),
                                 DeploymentExtendedInner.class, SerializerEncoding.JSON);
                     } catch (IOException ioe) {
@@ -398,7 +400,7 @@ public final class DeploymentImpl extends
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 
     @Override
@@ -408,7 +410,7 @@ public final class DeploymentImpl extends
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override

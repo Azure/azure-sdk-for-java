@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DetectorInfo model. */
+/** Definition of Detector. */
 @Immutable
 public final class DetectorInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorInfo.class);

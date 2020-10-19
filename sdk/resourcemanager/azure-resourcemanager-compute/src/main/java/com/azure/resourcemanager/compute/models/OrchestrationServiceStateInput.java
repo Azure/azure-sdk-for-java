@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OrchestrationServiceStateInput model. */
+/** The input for OrchestrationServiceState. */
 @Fluent
 public final class OrchestrationServiceStateInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestrationServiceStateInput.class);

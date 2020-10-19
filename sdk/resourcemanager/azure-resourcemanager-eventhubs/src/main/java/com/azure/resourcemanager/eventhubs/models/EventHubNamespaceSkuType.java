@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Defines values for EventHubNamespaceSkuType.
  */
-public class EventHubNamespaceSkuType implements HasInner<Sku> {
+public class EventHubNamespaceSkuType implements HasInnerModel<Sku> {
     /** Static value NamespaceSku for BASIC. */
     public static final EventHubNamespaceSkuType BASIC =
         new EventHubNamespaceSkuType(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
@@ -39,7 +39,7 @@ public class EventHubNamespaceSkuType implements HasInner<Sku> {
     }
 
     @Override
-    public Sku inner() {
+    public Sku innerModel() {
         return this.sku;
     }
 
@@ -61,7 +61,7 @@ public class EventHubNamespaceSkuType implements HasInner<Sku> {
      * @return sku capacity
      */
     public int capacity() {
-        return Utils.toPrimitiveInt(this.sku.capacity());
+        return ResourceManagerUtils.toPrimitiveInt(this.sku.capacity());
     }
 
     @Override

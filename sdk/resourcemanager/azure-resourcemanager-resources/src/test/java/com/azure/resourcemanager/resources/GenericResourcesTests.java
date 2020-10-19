@@ -5,14 +5,15 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceExpandedInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -116,7 +118,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
             ? defaultDelayInMillis
             : acceptedResource.getActivationResponse().getRetryAfter().toMillis();
         while (!pollStatus.isComplete()) {
-            SdkContext.sleep(delayInMills);
+            ResourceManagerUtils.sleep(Duration.ofMillis(delayInMills));
 
             PollResponse<?> pollResponse = acceptedResource.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
@@ -131,7 +133,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
 
         PagedIterable<GenericResourceExpandedInner> resources =
             genericResources.manager().serviceClient().getResources()
-                .listByResourceGroup(rgName, null, "provisioningState", null);
+                .listByResourceGroup(rgName, null, "provisioningState", null, Context.NONE);
         Optional<GenericResourceExpandedInner> resourceOpt
             = resources.stream().filter(r -> resourceName.equals(r.name())).findFirst();
         Assertions.assertTrue(resourceOpt.isPresent());

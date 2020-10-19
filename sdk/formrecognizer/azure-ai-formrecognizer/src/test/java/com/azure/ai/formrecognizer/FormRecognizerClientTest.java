@@ -29,7 +29,7 @@ import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_6_PDF_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
@@ -181,8 +181,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) httpResponseException.getValue();
-            assertEquals(EXPECTED_BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE, errorInformation.getMessage());
+            assertEquals(BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -373,8 +372,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(EXPECTED_INVALID_IMAGE_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
+            assertEquals(INVALID_IMAGE_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -583,7 +581,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 null, data, dataLength, new RecognizeCustomFormsOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         }, INVOICE_6_PDF);
     }
 
@@ -601,7 +599,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 "", data, dataLength, new RecognizeCustomFormsOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }, INVOICE_6_PDF);
     }
 
@@ -621,7 +619,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                             new RecognizeCustomFormsOptions().setPollInterval(durationTestMode),
                         Context.NONE).getFinalResult());
                 FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                assertEquals(EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
+                assertEquals(URL_BADLY_FORMATTED_ERROR_CODE, errorInformation.getErrorCode());
             });
         });
     }
@@ -865,7 +863,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 HttpResponseException.class, () -> client.beginRecognizeCustomFormsFromUrl(
                             createdModel.getModelId(), INVALID_URL, new RecognizeCustomFormsOptions()
                         .setPollInterval(durationTestMode), Context.NONE).getFinalResult());
-            assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
+            final FormRecognizerErrorInformation errorInformation =
+                (FormRecognizerErrorInformation) httpResponseException.getValue();
+            assertEquals(INVALID_SOURCE_URL_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -880,7 +880,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
                     null, fileUrl, new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
+            assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         }, FORM_JPG);
     }
 
@@ -893,9 +893,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                    "", fileUrl, new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> client.beginRecognizeCustomFormsFromUrl("", fileUrl,
+                    new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
+            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }), FORM_JPG);
     }
 
@@ -997,8 +998,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl,
                     new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
             FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE, errorInformation.getMessage());
+            assertEquals(INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
         }, FORM_JPG);
     }
 
@@ -1022,7 +1022,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         dataLength, new RecognizeCustomFormsOptions()
                             .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode),
                         Context.NONE).getFinalResult());
-                assertEquals(EXPECTED_UNABLE_TO_READ_FILE, errorResponseException.getMessage());
+                assertEquals(UNABLE_TO_READ_FILE_ERROR_CODE,
+                    errorResponseException.getErrorInformation().get(0).getErrorCode());
             }));
     }
 }

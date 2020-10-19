@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CdnCertificateSourceParameters model. */
+/** Defines the parameters for using CDN managed certificate for securing custom domain. */
 @Fluent
 public final class CdnCertificateSourceParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnCertificateSourceParameters.class);

@@ -82,26 +82,23 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     static final String INVOICE_6_PDF = "Invoice_6.pdf";
     static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
-    static final String EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
-    static final String EXPECTED_URL_BADLY_FORMATTED_ERROR_CODE = "2001";
-    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
-    static final String EXPECTED_BAD_ARGUMENT_CODE = "BadArgument";
-    static final String EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE = "Bad or unrecognizable request JSON or binary file.";
-    static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
+    // Error code
+    static final String BAD_ARGUMENT_CODE = "BadArgument";
+    static final String INVALID_IMAGE_ERROR_CODE = "InvalidImage";
+    static final String INVALID_MODEL_ID_ERROR_CODE = "1001";
+    static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
+    static final String URL_BADLY_FORMATTED_ERROR_CODE = "2001";
+    static final String UNABLE_TO_READ_FILE_ERROR_CODE = "2005";
+    // Error Message
+    static final String HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
-    static final String EXPECTED_INVALID_IMAGE_CODE = "InvalidImage";
-    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password "
-        + "protected.";
-    static final String EXPECTED_INVALID_MODEL_ID_ERROR_CODE = "1001";
-    static final String EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE =
-        "Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000";
-    static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
-    static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
-    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable "
-        + "to read file.";
-    static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
+    static final String INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
+    static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
 
+    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
+    static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
+
     Duration durationTestMode;
 
     /**

@@ -27,13 +27,13 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
-        final String rgName = virtualMachines.manager().sdkContext().randomResourceName("rg", 10);
+        final String rgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
         Creatable<ResourceGroup> resourceGroupCreatable =
             virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
-        final String vnetName = virtualMachines.manager().sdkContext().randomResourceName("vnet", 10);
+        final String vnetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
 
         Creatable<Network> networkCreatable =
             this
@@ -45,7 +45,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withAddressSpace("10.0.0.0/28");
 
         // Prepare the secondary network interface definition
-        secondaryNicName = virtualMachines.manager().sdkContext().randomResourceName("nic", 10);
+        secondaryNicName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic", 10);
 
         Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable =
             this
@@ -60,7 +60,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         // [Secondary NIC cannot have PublicIP - Only primary network interface can reference a public IP address]
 
         // Prepare the secondary network interface definition
-        final String secondaryNicName2 = virtualMachines.manager().sdkContext().randomResourceName("nic2", 10);
+        final String secondaryNicName2 = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic2", 10);
 
         Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 =
             this
@@ -73,7 +73,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withPrimaryPrivateIPAddressStatic("10.0.0.6");
 
         // Create Virtual Machine
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final String primaryPipName = "pip" + vmName;
         VirtualMachine virtualMachine =

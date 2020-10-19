@@ -6,12 +6,12 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.fluent.inner.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SubscriptionListResult model. */
+/** The response to the List Subscriptions operation. */
 @Fluent
 public final class SubscriptionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionListResult.class);

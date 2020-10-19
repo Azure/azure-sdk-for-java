@@ -11,13 +11,14 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -50,18 +51,19 @@ public abstract class SqlServerTest extends ResourceManagerTestBase {
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("rgsql", 20);
         sqlServerName = generateRandomResourceName("javasqlserver", 20);
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        SdkContext sdkContext = new SdkContext();
-        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
+        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile);
         storageManager = StorageManager.authenticate(httpPipeline, profile);
+        setInternalContext(internalContext, sqlServerManager);
     }
 
     @Override
     protected void cleanUpResources() {
-        SdkContext.sleep(1000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(1));
         resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

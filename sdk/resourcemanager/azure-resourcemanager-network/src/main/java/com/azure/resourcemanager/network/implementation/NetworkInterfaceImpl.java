@@ -13,17 +13,18 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,7 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.nicName = name;
-        this.namer = this.manager().sdkContext().createIdentifierProvider(this.nicName);
+        this.namer = this.manager().resourceManager().internalContext().createIdentifierProvider(this.nicName);
         initializeChildrenFromInner();
     }
 
@@ -91,20 +92,20 @@ class NetworkInterfaceImpl
             .manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     // Setters (fluent)
 
     @Override
     public NetworkInterfaceImpl withAcceleratedNetworking() {
-        this.inner().withEnableAcceleratedNetworking(true);
+        this.innerModel().withEnableAcceleratedNetworking(true);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withoutAcceleratedNetworking() {
-        this.inner().withEnableAcceleratedNetworking(false);
+        this.innerModel().withEnableAcceleratedNetworking(false);
         return this;
     }
 
@@ -220,7 +221,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withoutNetworkSecurityGroup() {
-        this.inner().withNetworkSecurityGroup(null);
+        this.innerModel().withNetworkSecurityGroup(null);
         return this;
     }
 
@@ -236,7 +237,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withIPForwarding() {
-        this.inner().withEnableIpForwarding(true);
+        this.innerModel().withEnableIpForwarding(true);
         return this;
     }
 
@@ -248,7 +249,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withoutIPForwarding() {
-        this.inner().withEnableIpForwarding(false);
+        this.innerModel().withEnableIpForwarding(false);
         return this;
     }
 
@@ -278,7 +279,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withInternalDnsNameLabel(String dnsNameLabel) {
-        this.inner().dnsSettings().withInternalDnsNameLabel(dnsNameLabel);
+        this.innerModel().dnsSettings().withInternalDnsNameLabel(dnsNameLabel);
         return this;
     }
 
@@ -286,13 +287,13 @@ class NetworkInterfaceImpl
 
     @Override
     public boolean isAcceleratedNetworkingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableAcceleratedNetworking());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableAcceleratedNetworking());
     }
 
     @Override
     public String virtualMachineId() {
-        if (this.inner().virtualMachine() != null) {
-            return this.inner().virtualMachine().id();
+        if (this.innerModel().virtualMachine() != null) {
+            return this.innerModel().virtualMachine().id();
         } else {
             return null;
         }
@@ -300,39 +301,43 @@ class NetworkInterfaceImpl
 
     @Override
     public boolean isIPForwardingEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().enableIpForwarding());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableIpForwarding());
     }
 
     @Override
     public String macAddress() {
-        return this.inner().macAddress();
+        return this.innerModel().macAddress();
     }
 
     @Override
     public String internalDnsNameLabel() {
-        return (this.inner().dnsSettings() != null) ? this.inner().dnsSettings().internalDnsNameLabel() : null;
+        return (this.innerModel().dnsSettings() != null)
+            ? this.innerModel().dnsSettings().internalDnsNameLabel()
+            : null;
     }
 
     @Override
     public String internalDomainNameSuffix() {
-        return (this.inner().dnsSettings() != null) ? this.inner().dnsSettings().internalDomainNameSuffix() : null;
+        return (this.innerModel().dnsSettings() != null)
+            ? this.innerModel().dnsSettings().internalDomainNameSuffix()
+            : null;
     }
 
     @Override
     public List<String> appliedDnsServers() {
         List<String> dnsServers = new ArrayList<String>();
-        if (this.inner().dnsSettings() == null) {
+        if (this.innerModel().dnsSettings() == null) {
             return Collections.unmodifiableList(dnsServers);
-        } else if (this.inner().dnsSettings().appliedDnsServers() == null) {
+        } else if (this.innerModel().dnsSettings().appliedDnsServers() == null) {
             return Collections.unmodifiableList(dnsServers);
         } else {
-            return Collections.unmodifiableList(this.inner().dnsSettings().appliedDnsServers());
+            return Collections.unmodifiableList(this.innerModel().dnsSettings().appliedDnsServers());
         }
     }
 
     @Override
     public String internalFqdn() {
-        return (this.inner().dnsSettings() != null) ? this.inner().dnsSettings().internalFqdn() : null;
+        return (this.innerModel().dnsSettings() != null) ? this.innerModel().dnsSettings().internalFqdn() : null;
     }
 
     @Override
@@ -357,7 +362,9 @@ class NetworkInterfaceImpl
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
+        return (this.innerModel().networkSecurityGroup() != null)
+            ? this.innerModel().networkSecurityGroup().id()
+            : null;
     }
 
     @Override
@@ -380,7 +387,7 @@ class NetworkInterfaceImpl
         if (this.nicIPConfigurations.size() == 0) {
             // If no primary IP config found yet, then create one automatically, otherwise the NIC is in a bad state
             primaryIPConfig = prepareNewNicIPConfiguration("primary");
-            primaryIPConfig.inner().withPrimary(true);
+            primaryIPConfig.innerModel().withPrimary(true);
             withIPConfiguration(primaryIPConfig);
         } else if (this.nicIPConfigurations.size() == 1) {
             // If there is only one IP config, assume it is primary, regardless of the Primary flag
@@ -403,19 +410,19 @@ class NetworkInterfaceImpl
     /** @return the list of DNS server IPs from the DNS settings */
     private List<String> dnsServerIPs() {
         List<String> dnsServers = new ArrayList<String>();
-        if (this.inner().dnsSettings() == null) {
+        if (this.innerModel().dnsSettings() == null) {
             return dnsServers;
-        } else if (this.inner().dnsSettings().dnsServers() == null) {
+        } else if (this.innerModel().dnsSettings().dnsServers() == null) {
             return dnsServers;
         } else {
-            return this.inner().dnsSettings().dnsServers();
+            return this.innerModel().dnsSettings().dnsServers();
         }
     }
 
     @Override
     protected void initializeChildrenFromInner() {
         this.nicIPConfigurations = new TreeMap<>();
-        List<NetworkInterfaceIpConfigurationInner> inners = this.inner().ipConfigurations();
+        List<NetworkInterfaceIpConfigurationInner> inners = this.innerModel().ipConfigurations();
         if (inners != null) {
             for (NetworkInterfaceIpConfigurationInner inner : inners) {
                 NicIpConfigurationImpl nicIPConfiguration =
@@ -461,24 +468,32 @@ class NetworkInterfaceImpl
 
     @Override
     public Accepted<NetworkInterface> beginCreate() {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
-            () -> this.manager().serviceClient().getNetworkInterfaces()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
-            inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
-            NetworkInterfaceInner.class,
-            () -> {
-                Flux<Indexable> dependencyTasksAsync =
-                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                dependencyTasksAsync.blockLast();
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getNetworkInterfaces()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                        .block(),
+                inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
+                NetworkInterfaceInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
 
-                beforeCreating();
-            },
-            inner -> {
-                innerToFluentMap(this);
-                initializeChildrenFromInner();
-                afterCreating();
-            });
+                    beforeCreating();
+                },
+                inner -> {
+                    innerToFluentMap(this);
+                    initializeChildrenFromInner();
+                    afterCreating();
+                });
     }
 
     @Override
@@ -487,7 +502,7 @@ class NetworkInterfaceImpl
             .manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
     }
 
     @Override
@@ -506,12 +521,14 @@ class NetworkInterfaceImpl
 
         // Associate an NSG if needed
         if (networkSecurityGroup != null) {
-            this.inner().withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
+            this
+                .innerModel()
+                .withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
         }
 
         NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values());
 
         // Reset and update IP configs
-        this.inner().withIpConfigurations(innersFromWrappers(this.nicIPConfigurations.values()));
+        this.innerModel().withIpConfigurations(innersFromWrappers(this.nicIPConfigurations.values()));
     }
 }

@@ -32,15 +32,15 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkP
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInstanceViewInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInstanceViewInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInstanceViewInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInstanceViewInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ class VirtualMachineScaleSetVMImpl
         super(inner, parent);
         this.client = client;
         this.computeManager = computeManager;
-        VirtualMachineScaleSetVMInstanceViewInner instanceViewInner = this.inner().instanceView();
+        VirtualMachineScaleSetVMInstanceViewInner instanceViewInner = this.innerModel().instanceView();
         if (instanceViewInner != null) {
             this.virtualMachineInstanceView =
                 new VirtualMachineInstanceViewImpl(
@@ -92,17 +92,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -112,31 +112,31 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().tags() == null) {
+        if (this.innerModel().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<>());
         }
-        return Collections.unmodifiableMap(this.inner().tags());
+        return Collections.unmodifiableMap(this.innerModel().tags());
     }
 
     @Override
     public String instanceId() {
-        return this.inner().instanceId();
+        return this.innerModel().instanceId();
     }
 
     @Override
     public Sku sku() {
-        return this.inner().sku();
+        return this.innerModel().sku();
     }
 
     @Override
     public VirtualMachineSizeTypes size() {
-        if (this.inner().hardwareProfile() != null && this.inner().hardwareProfile().vmSize() != null) {
-            return this.inner().hardwareProfile().vmSize();
+        if (this.innerModel().hardwareProfile() != null && this.innerModel().hardwareProfile().vmSize() != null) {
+            return this.innerModel().hardwareProfile().vmSize();
         }
         if (this.sku() != null && this.sku().name() != null) {
             return VirtualMachineSizeTypes.fromString(this.sku().name());
@@ -146,12 +146,12 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean isLatestScaleSetUpdateApplied() {
-        return this.inner().latestModelApplied();
+        return this.innerModel().latestModelApplied();
     }
 
     @Override
     public boolean isOSBasedOnPlatformImage() {
-        ImageReference imageReference = this.inner().storageProfile().imageReference();
+        ImageReference imageReference = this.innerModel().storageProfile().imageReference();
         if (imageReference != null
             && imageReference.publisher() != null
             && imageReference.sku() != null
@@ -164,7 +164,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean isOSBasedOnCustomImage() {
-        ImageReference imageReference = this.inner().storageProfile().imageReference();
+        ImageReference imageReference = this.innerModel().storageProfile().imageReference();
         if (imageReference != null && imageReference.id() != null) {
             return true;
         }
@@ -173,8 +173,9 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean isOSBasedOnStoredImage() {
-        if (this.inner().storageProfile().osDisk() != null && this.inner().storageProfile().osDisk().image() != null) {
-            return this.inner().storageProfile().osDisk().image().uri() != null;
+        if (this.innerModel().storageProfile().osDisk() != null
+            && this.innerModel().storageProfile().osDisk().image() != null) {
+            return this.innerModel().storageProfile().osDisk().image().uri() != null;
         }
         return false;
     }
@@ -182,7 +183,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public ImageReference platformImageReference() {
         if (isOSBasedOnPlatformImage()) {
-            return this.inner().storageProfile().imageReference();
+            return this.innerModel().storageProfile().imageReference();
         }
         return null;
     }
@@ -207,7 +208,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public VirtualMachineCustomImage getOSCustomImage() {
         if (this.isOSBasedOnCustomImage()) {
-            ImageReference imageReference = this.inner().storageProfile().imageReference();
+            ImageReference imageReference = this.innerModel().storageProfile().imageReference();
             return this.computeManager.virtualMachineCustomImages().getById(imageReference.id());
         }
         return null;
@@ -215,21 +216,21 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String storedImageUnmanagedVhdUri() {
-        if (this.inner().storageProfile().osDisk().image() != null) {
-            return this.inner().storageProfile().osDisk().image().uri();
+        if (this.innerModel().storageProfile().osDisk().image() != null) {
+            return this.innerModel().storageProfile().osDisk().image().uri();
         }
         return null;
     }
 
     @Override
     public String osDiskName() {
-        return this.inner().storageProfile().osDisk().name();
+        return this.innerModel().storageProfile().osDisk().name();
     }
 
     @Override
     public String osUnmanagedDiskVhdUri() {
-        if (this.inner().storageProfile().osDisk().vhd() != null) {
-            return this.inner().storageProfile().osDisk().vhd().uri();
+        if (this.innerModel().storageProfile().osDisk().vhd() != null) {
+            return this.innerModel().storageProfile().osDisk().vhd().uri();
         }
         return null;
     }
@@ -246,7 +247,7 @@ class VirtualMachineScaleSetVMImpl
     public Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks() {
         Map<Integer, VirtualMachineUnmanagedDataDisk> dataDisks = new HashMap<>();
         if (!isManagedDiskEnabled()) {
-            List<DataDisk> innerDataDisks = this.inner().storageProfile().dataDisks();
+            List<DataDisk> innerDataDisks = this.innerModel().storageProfile().dataDisks();
             if (innerDataDisks != null) {
                 for (DataDisk innerDataDisk : innerDataDisks) {
                     dataDisks.put(innerDataDisk.lun(), new UnmanagedDataDiskImpl(innerDataDisk, null));
@@ -260,7 +261,7 @@ class VirtualMachineScaleSetVMImpl
     public Map<Integer, VirtualMachineDataDisk> dataDisks() {
         Map<Integer, VirtualMachineDataDisk> dataDisks = new HashMap<>();
         if (isManagedDiskEnabled()) {
-            List<DataDisk> innerDataDisks = this.inner().storageProfile().dataDisks();
+            List<DataDisk> innerDataDisks = this.innerModel().storageProfile().dataDisks();
             if (innerDataDisks != null) {
                 for (DataDisk innerDataDisk : innerDataDisks) {
                     dataDisks.put(innerDataDisk.lun(), new VirtualMachineDataDiskImpl(innerDataDisk));
@@ -272,82 +273,87 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public CachingTypes osDiskCachingType() {
-        return this.inner().storageProfile().osDisk().caching();
+        return this.innerModel().storageProfile().osDisk().caching();
     }
 
     @Override
     public int osDiskSizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().storageProfile().osDisk().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override
     public String computerName() {
-        return this.inner().osProfile().computerName();
+        return this.innerModel().osProfile().computerName();
     }
 
     @Override
     public String administratorUserName() {
-        return this.inner().osProfile().adminUsername();
+        return this.innerModel().osProfile().adminUsername();
     }
 
     @Override
     public OperatingSystemTypes osType() {
-        return this.inner().storageProfile().osDisk().osType();
+        return this.innerModel().storageProfile().osDisk().osType();
     }
 
     @Override
     public boolean isLinuxPasswordAuthenticationEnabled() {
-        if (this.inner().osProfile().linuxConfiguration() != null) {
-            return !Utils
-                .toPrimitiveBoolean(this.inner().osProfile().linuxConfiguration().disablePasswordAuthentication());
+        if (this.innerModel().osProfile().linuxConfiguration() != null) {
+            return !ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().osProfile().linuxConfiguration().disablePasswordAuthentication());
         }
         return false;
     }
 
     @Override
     public boolean isWindowsVMAgentProvisioned() {
-        if (this.inner().osProfile().windowsConfiguration() != null) {
-            return Utils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().provisionVMAgent());
+        if (this.innerModel().osProfile().windowsConfiguration() != null) {
+            return ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().osProfile().windowsConfiguration().provisionVMAgent());
         }
         return false;
     }
 
     @Override
     public boolean isWindowsAutoUpdateEnabled() {
-        if (this.inner().osProfile().windowsConfiguration() != null) {
-            return Utils.toPrimitiveBoolean(this.inner().osProfile().windowsConfiguration().enableAutomaticUpdates());
+        if (this.innerModel().osProfile().windowsConfiguration() != null) {
+            return ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().osProfile().windowsConfiguration().enableAutomaticUpdates());
         }
         return false;
     }
 
     @Override
     public String windowsTimeZone() {
-        if (this.inner().osProfile().windowsConfiguration() != null) {
-            return this.inner().osProfile().windowsConfiguration().timeZone();
+        if (this.innerModel().osProfile().windowsConfiguration() != null) {
+            return this.innerModel().osProfile().windowsConfiguration().timeZone();
         }
         return null;
     }
 
     @Override
     public boolean bootDiagnosticEnabled() {
-        if (this.inner().diagnosticsProfile() != null && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
-            return Utils.toPrimitiveBoolean(this.inner().diagnosticsProfile().bootDiagnostics().enabled());
+        if (this.innerModel().diagnosticsProfile() != null
+            && this.innerModel().diagnosticsProfile().bootDiagnostics() != null) {
+            return ResourceManagerUtils
+                .toPrimitiveBoolean(this.innerModel().diagnosticsProfile().bootDiagnostics().enabled());
         }
         return false;
     }
 
     @Override
     public String bootDiagnosticStorageAccountUri() {
-        if (this.inner().diagnosticsProfile() != null && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
-            return this.inner().diagnosticsProfile().bootDiagnostics().storageUri();
+        if (this.innerModel().diagnosticsProfile() != null
+            && this.innerModel().diagnosticsProfile().bootDiagnostics() != null) {
+            return this.innerModel().diagnosticsProfile().bootDiagnostics().storageUri();
         }
         return null;
     }
 
     @Override
     public String availabilitySetId() {
-        if (this.inner().availabilitySet() != null) {
-            return this.inner().availabilitySet().id();
+        if (this.innerModel().availabilitySet() != null) {
+            return this.innerModel().availabilitySet().id();
         }
         return null;
     }
@@ -355,7 +361,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public List<String> networkInterfaceIds() {
         List<String> resourceIds = new ArrayList<>();
-        for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
+        for (NetworkInterfaceReference reference : this.innerModel().networkProfile().networkInterfaces()) {
             resourceIds.add(reference.id());
         }
         return Collections.unmodifiableList(resourceIds);
@@ -363,7 +369,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String primaryNetworkInterfaceId() {
-        for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
+        for (NetworkInterfaceReference reference : this.innerModel().networkProfile().networkInterfaces()) {
             if (reference.primary() != null && reference.primary()) {
                 return reference.id();
             }
@@ -374,12 +380,11 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public Map<String, VirtualMachineScaleSetVMInstanceExtension> extensions() {
         Map<String, VirtualMachineScaleSetVMInstanceExtension> extensions = new LinkedHashMap<>();
-        if (this.inner().resources() != null) {
-            for (VirtualMachineExtensionInner extensionInner : this.inner().resources()) {
+        if (this.innerModel().resources() != null) {
+            for (VirtualMachineExtensionInner extensionInner : this.innerModel().resources()) {
                 extensions
                     .put(
-                        extensionInner.name(),
-                        new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
+                        extensionInner.name(), new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
             }
         }
         return Collections.unmodifiableMap(extensions);
@@ -387,17 +392,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public StorageProfile storageProfile() {
-        return this.inner().storageProfile();
+        return this.innerModel().storageProfile();
     }
 
     @Override
     public OSProfile osProfile() {
-        return this.inner().osProfile();
+        return this.innerModel().osProfile();
     }
 
     @Override
     public DiagnosticsProfile diagnosticsProfile() {
-        return this.inner().diagnosticsProfile();
+        return this.innerModel().diagnosticsProfile();
     }
 
     @Override
@@ -541,17 +546,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String modelDefinitionApplied() {
-        return this.inner().modelDefinitionApplied();
+        return this.innerModel().modelDefinitionApplied();
     }
 
     @Override
     public VirtualMachineScaleSetVMProtectionPolicy protectionPolicy() {
-        return this.inner().protectionPolicy();
+        return this.innerModel().protectionPolicy();
     }
 
     @Override
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
-        return this.inner().networkProfileConfiguration();
+        return this.innerModel().networkProfileConfiguration();
     }
 
     private void clearCachedRelatedResources() {
@@ -567,8 +572,8 @@ class VirtualMachineScaleSetVMImpl
             return false;
         }
         if (isOSBasedOnPlatformImage()) {
-            if (this.inner().storageProfile().osDisk() != null
-                && this.inner().storageProfile().osDisk().vhd() != null) {
+            if (this.innerModel().storageProfile().osDisk() != null
+                && this.innerModel().storageProfile().osDisk().vhd() != null) {
                 return false;
             }
         }
@@ -586,10 +591,12 @@ class VirtualMachineScaleSetVMImpl
     public Update withExistingDataDisk(
         Disk dataDisk, int lun, CachingTypes cachingTypes, StorageAccountTypes storageAccountTypes) {
         if (!this.isManagedDiskEnabled()) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(
+                        ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED));
         }
-        if (dataDisk.inner().diskState() != DiskState.UNATTACHED) {
+        if (dataDisk.innerModel().diskState() != DiskState.UNATTACHED) {
             throw logger.logExceptionAsError(new IllegalStateException("Disk need to be in unattached state"));
         }
 
@@ -607,12 +614,15 @@ class VirtualMachineScaleSetVMImpl
     }
 
     private Update withExistingDataDisk(DataDisk dataDisk, int lun) {
-        if (this.tryFindDataDisk(lun, this.inner().storageProfile().dataDisks()) != null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("A data disk with lun '%d' already attached", lun)));
+        if (this.tryFindDataDisk(lun, this.innerModel().storageProfile().dataDisks()) != null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(String.format("A data disk with lun '%d' already attached", lun)));
         } else if (this.tryFindDataDisk(lun, this.managedDataDisks.existingDisksToAttach) != null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("A data disk with lun '%d' already scheduled to be attached", lun)));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(
+                        String.format("A data disk with lun '%d' already scheduled to be attached", lun)));
         }
         this.managedDataDisks.existingDisksToAttach.add(dataDisk);
         return this;
@@ -620,18 +630,18 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Update withoutDataDisk(int lun) {
-        DataDisk dataDisk = this.tryFindDataDisk(lun, this.inner().storageProfile().dataDisks());
+        DataDisk dataDisk = this.tryFindDataDisk(lun, this.innerModel().storageProfile().dataDisks());
         if (dataDisk == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String.format("A data disk with lun '%d' not found", lun)));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalStateException(String.format("A data disk with lun '%d' not found", lun)));
         }
         if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                String
-                    .format(
-                        "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set"
-                            + " model",
-                        lun)));
+            String exceptionMessage = String.format(
+                "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set model",
+                lun
+            );
+            throw logger.logExceptionAsError(new IllegalStateException(exceptionMessage));
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;
@@ -645,13 +655,13 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public Mono<VirtualMachineScaleSetVM> applyAsync() {
         final VirtualMachineScaleSetVMImpl self = this;
-        this.managedDataDisks.syncToVMDataDisks(this.inner().storageProfile());
+        this.managedDataDisks.syncToVMDataDisks(this.innerModel().storageProfile());
         return this
             .parent()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
+            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.innerModel())
             .map(
                 vmInner -> {
                     self.setInner(vmInner);

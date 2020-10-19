@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualApplianceNicProperties model. */
+/** Network Virtual Appliance NIC properties. */
 @Immutable
 public final class VirtualApplianceNicProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplianceNicProperties.class);

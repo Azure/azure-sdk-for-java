@@ -4,12 +4,12 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
 import com.azure.resourcemanager.sql.models.ReplicationState;
-import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +31,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
@@ -55,57 +55,57 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
 
     @Override
     public String partnerServer() {
-        return this.inner().partnerServer();
+        return this.innerModel().partnerServer();
     }
 
     @Override
     public String partnerDatabase() {
-        return this.inner().partnerDatabase();
+        return this.innerModel().partnerDatabase();
     }
 
     @Override
     public String partnerLocation() {
-        return this.inner().partnerLocation();
+        return this.innerModel().partnerLocation();
     }
 
     @Override
     public ReplicationRole role() {
-        return this.inner().role();
+        return this.innerModel().role();
     }
 
     @Override
     public ReplicationRole partnerRole() {
-        return this.inner().partnerRole();
+        return this.innerModel().partnerRole();
     }
 
     @Override
     public OffsetDateTime startTime() {
-        return this.inner().startTime();
+        return this.innerModel().startTime();
     }
 
     @Override
     public int percentComplete() {
-        return Utils.toPrimitiveInt(this.inner().percentComplete());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().percentComplete());
     }
 
     @Override
     public ReplicationState replicationState() {
-        return this.inner().replicationState();
+        return this.innerModel().replicationState();
     }
 
     @Override
     public String location() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
     public boolean isTerminationAllowed() {
-        return this.inner().isTerminationAllowed();
+        return this.innerModel().isTerminationAllowed();
     }
 
     @Override
     public String replicationMode() {
-        return this.inner().replicationMode();
+        return this.innerModel().replicationMode();
     }
 
     @Override
@@ -155,12 +155,12 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override

@@ -13,13 +13,17 @@ import com.azure.core.management.Region;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.time.Duration;
 
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WarDeployTests extends AppServiceTest {
     private String webappName = "";
+
+    private final File warFile = new File(WarDeployTests.class.getResource("/helloworld.war").getPath());
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -48,9 +52,11 @@ public class WarDeployTests extends AppServiceTest {
                     .create();
             Assertions.assertNotNull(webApp);
 
-            webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
+            webApp.warDeploy(warFile);
 
             if (!isPlaybackMode()) {
+                ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+
                 Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
                 Assertions.assertEquals(200, response.getStatusCode());
                 String body = response.getValue();
@@ -76,10 +82,12 @@ public class WarDeployTests extends AppServiceTest {
         Assertions.assertNotNull(webApp);
 
         if (!isPlaybackMode()) {
-            webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
-            try (InputStream is = new FileInputStream(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()))) {
-                webApp.warDeploy(is, "app2");
+            webApp.warDeploy(warFile);
+            try (InputStream is = new FileInputStream(warFile)) {
+                webApp.warDeploy(is, warFile.length(), "app2");
             }
+
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
             Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());

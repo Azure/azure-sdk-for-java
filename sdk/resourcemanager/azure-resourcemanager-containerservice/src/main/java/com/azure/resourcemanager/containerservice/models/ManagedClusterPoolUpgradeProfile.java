@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedClusterPoolUpgradeProfile model. */
+/** The list of available upgrade versions. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);

@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -77,72 +77,72 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public String distinguishedName() {
-        return inner().distinguishedName();
+        return innerModel().distinguishedName();
     }
 
     @Override
     public String domainVerificationToken() {
-        return inner().domainVerificationToken();
+        return innerModel().domainVerificationToken();
     }
 
     @Override
     public int validityInYears() {
-        return Utils.toPrimitiveInt(inner().validityInYears());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().validityInYears());
     }
 
     @Override
     public int keySize() {
-        return Utils.toPrimitiveInt(inner().keySize());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().keySize());
     }
 
     @Override
     public CertificateProductType productType() {
-        return inner().productType();
+        return innerModel().productType();
     }
 
     @Override
     public boolean autoRenew() {
-        return Utils.toPrimitiveBoolean(inner().autoRenew());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().autoRenew());
     }
 
     @Override
     public CertificateOrderStatus status() {
-        return inner().status();
+        return innerModel().status();
     }
 
     @Override
     public CertificateDetails signedCertificate() {
-        return inner().signedCertificate();
+        return innerModel().signedCertificate();
     }
 
     @Override
     public String certificateSigningRequest() {
-        return inner().csr();
+        return innerModel().csr();
     }
 
     @Override
     public CertificateDetails intermediate() {
-        return inner().intermediate();
+        return innerModel().intermediate();
     }
 
     @Override
     public CertificateDetails root() {
-        return inner().root();
+        return innerModel().root();
     }
 
     @Override
     public String serialNumber() {
-        return inner().serialNumber();
+        return innerModel().serialNumber();
     }
 
     @Override
     public OffsetDateTime lastCertificateIssuanceTime() {
-        return inner().lastCertificateIssuanceTime();
+        return innerModel().lastCertificateIssuanceTime();
     }
 
     @Override
     public OffsetDateTime expirationTime() {
-        return inner().expirationTime();
+        return innerModel().expirationTime();
     }
 
     @Override
@@ -168,25 +168,25 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withHostName(String hostName) {
-        inner().withDistinguishedName("CN=" + hostName);
+        innerModel().withDistinguishedName("CN=" + hostName);
         return this;
     }
 
     @Override
     public AppServiceCertificateOrderImpl withStandardSku() {
-        inner().withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL);
+        innerModel().withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL);
         return this;
     }
 
     @Override
     public AppServiceCertificateOrderImpl withWildcardSku() {
-        inner().withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL);
+        innerModel().withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL);
         return this;
     }
 
     @Override
     public AppServiceCertificateOrderImpl withValidYears(int years) {
-        inner().withValidityInYears(years);
+        innerModel().withValidityInYears(years);
         return this;
     }
 
@@ -196,7 +196,7 @@ class AppServiceCertificateOrderImpl
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this))
             .then(
                 Mono
@@ -221,7 +221,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withAutoRenew(boolean enabled) {
-        inner().withAutoRenew(enabled);
+        innerModel().withAutoRenew(enabled);
         return this;
     }
 

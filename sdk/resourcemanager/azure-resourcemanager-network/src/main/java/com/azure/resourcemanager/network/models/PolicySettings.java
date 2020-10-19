@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PolicySettings model. */
+/** Defines contents of a web application firewall global configuration. */
 @Fluent
 public final class PolicySettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySettings.class);

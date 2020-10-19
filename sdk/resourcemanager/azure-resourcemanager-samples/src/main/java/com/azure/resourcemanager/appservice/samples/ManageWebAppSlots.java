@@ -37,10 +37,10 @@ public final class ManageWebAppSlots {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String resourceGroupName     = azureResourceManager.sdkContext().randomResourceName("rg", 24);
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
+        final String resourceGroupName     = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
         final String slotName       = "staging";
 
         try {
@@ -144,7 +144,7 @@ public final class ManageWebAppSlots {
         Utils.print(app);
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
         return app;
     }
 
@@ -177,10 +177,10 @@ public final class ManageWebAppSlots {
         System.out.println("Deployed staging branch to slot " + slot.name());
 
         System.out.println("CURLing " + slotUrl + "...");
-        System.out.println(Utils.curl("http://" + slotUrl));
+        System.out.println(Utils.sendGetRequest("http://" + slotUrl));
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
     }
 
     private static void swapProductionBacktoSlot(DeploymentSlot slot) {
@@ -192,6 +192,6 @@ public final class ManageWebAppSlots {
         System.out.println("Swapped production slot back to " + slot.name());
 
         System.out.println("CURLing " + appUrl + "...");
-        System.out.println(Utils.curl("http://" + appUrl));
+        System.out.println(Utils.sendGetRequest("http://" + appUrl));
     }
 }

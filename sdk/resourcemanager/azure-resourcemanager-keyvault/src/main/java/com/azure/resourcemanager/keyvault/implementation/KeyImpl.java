@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -64,12 +64,12 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
     private void init(boolean createNewCryptographyClient) {
         this.createKeyRequest = null;
         this.updateKeyRequest = new UpdateKeyOptions();
-        if (inner() != null) {
-            updateKeyRequest.keyProperties = inner().getProperties();
+        if (innerModel() != null) {
+            updateKeyRequest.keyProperties = innerModel().getProperties();
             if (createNewCryptographyClient) {
                 cryptographyClient =
                     new CryptographyClientBuilder()
-                        .keyIdentifier(inner().getKey().getId())
+                        .keyIdentifier(innerModel().getKey().getId())
                         .pipeline(vault.vaultHttpPipeline())
                         .buildAsyncClient();
             }
@@ -82,27 +82,27 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public String id() {
-        return this.inner() == null ? null : this.inner().getId();
+        return this.innerModel() == null ? null : this.innerModel().getId();
     }
 
     @Override
     public JsonWebKey getJsonWebKey() {
-        return inner().getKey();
+        return innerModel().getKey();
     }
 
     @Override
     public KeyProperties getAttributes() {
-        return inner().getProperties();
+        return innerModel().getProperties();
     }
 
     @Override
     public Map<String, String> getTags() {
-        return inner().getProperties().getTags();
+        return innerModel().getProperties().getTags();
     }
 
     @Override
     public boolean isManaged() {
-        return Utils.toPrimitiveBoolean(inner().getProperties().isManaged());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().getProperties().isManaged());
     }
 
     @Override
@@ -161,7 +161,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public boolean verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
-        return Utils.toPrimitiveBoolean(verifyAsync(algorithm, digest, signature).block());
+        return ResourceManagerUtils.toPrimitiveBoolean(verifyAsync(algorithm, digest, signature).block());
     }
 
     @Override

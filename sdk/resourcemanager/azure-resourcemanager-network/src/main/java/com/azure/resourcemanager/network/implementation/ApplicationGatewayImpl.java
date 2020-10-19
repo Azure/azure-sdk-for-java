@@ -5,14 +5,14 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
@@ -51,7 +51,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -124,7 +124,7 @@ class ApplicationGatewayImpl
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     // Helpers
@@ -149,7 +149,7 @@ class ApplicationGatewayImpl
 
     private void initializeAuthCertificatesFromInner() {
         this.authCertificates = new TreeMap<>();
-        List<ApplicationGatewayAuthenticationCertificateInner> inners = this.inner().authenticationCertificates();
+        List<ApplicationGatewayAuthenticationCertificateInner> inners = this.innerModel().authenticationCertificates();
         if (inners != null) {
             for (ApplicationGatewayAuthenticationCertificateInner inner : inners) {
                 ApplicationGatewayAuthenticationCertificateImpl cert =
@@ -161,7 +161,7 @@ class ApplicationGatewayImpl
 
     private void initializeSslCertificatesFromInner() {
         this.sslCerts = new TreeMap<>();
-        List<ApplicationGatewaySslCertificateInner> inners = this.inner().sslCertificates();
+        List<ApplicationGatewaySslCertificateInner> inners = this.innerModel().sslCertificates();
         if (inners != null) {
             for (ApplicationGatewaySslCertificateInner inner : inners) {
                 ApplicationGatewaySslCertificateImpl cert = new ApplicationGatewaySslCertificateImpl(inner, this);
@@ -172,7 +172,7 @@ class ApplicationGatewayImpl
 
     private void initializeFrontendsFromInner() {
         this.frontends = new TreeMap<>();
-        List<ApplicationGatewayFrontendIpConfiguration> inners = this.inner().frontendIpConfigurations();
+        List<ApplicationGatewayFrontendIpConfiguration> inners = this.innerModel().frontendIpConfigurations();
         if (inners != null) {
             for (ApplicationGatewayFrontendIpConfiguration inner : inners) {
                 ApplicationGatewayFrontendImpl frontend = new ApplicationGatewayFrontendImpl(inner, this);
@@ -183,7 +183,7 @@ class ApplicationGatewayImpl
 
     private void initializeProbesFromInner() {
         this.probes = new TreeMap<>();
-        List<ApplicationGatewayProbeInner> inners = this.inner().probes();
+        List<ApplicationGatewayProbeInner> inners = this.innerModel().probes();
         if (inners != null) {
             for (ApplicationGatewayProbeInner inner : inners) {
                 ApplicationGatewayProbeImpl probe = new ApplicationGatewayProbeImpl(inner, this);
@@ -194,7 +194,7 @@ class ApplicationGatewayImpl
 
     private void initializeBackendsFromInner() {
         this.backends = new TreeMap<>();
-        List<ApplicationGatewayBackendAddressPool> inners = this.inner().backendAddressPools();
+        List<ApplicationGatewayBackendAddressPool> inners = this.innerModel().backendAddressPools();
         if (inners != null) {
             for (ApplicationGatewayBackendAddressPool inner : inners) {
                 ApplicationGatewayBackendImpl backend = new ApplicationGatewayBackendImpl(inner, this);
@@ -205,7 +205,7 @@ class ApplicationGatewayImpl
 
     private void initializeBackendHttpConfigsFromInner() {
         this.backendConfigs = new TreeMap<>();
-        List<ApplicationGatewayBackendHttpSettings> inners = this.inner().backendHttpSettingsCollection();
+        List<ApplicationGatewayBackendHttpSettings> inners = this.innerModel().backendHttpSettingsCollection();
         if (inners != null) {
             for (ApplicationGatewayBackendHttpSettings inner : inners) {
                 ApplicationGatewayBackendHttpConfigurationImpl httpConfig =
@@ -217,7 +217,7 @@ class ApplicationGatewayImpl
 
     private void initializeHttpListenersFromInner() {
         this.listeners = new TreeMap<>();
-        List<ApplicationGatewayHttpListener> inners = this.inner().httpListeners();
+        List<ApplicationGatewayHttpListener> inners = this.innerModel().httpListeners();
         if (inners != null) {
             for (ApplicationGatewayHttpListener inner : inners) {
                 ApplicationGatewayListenerImpl httpListener = new ApplicationGatewayListenerImpl(inner, this);
@@ -228,7 +228,7 @@ class ApplicationGatewayImpl
 
     private void initializeRedirectConfigurationsFromInner() {
         this.redirectConfigs = new TreeMap<>();
-        List<ApplicationGatewayRedirectConfigurationInner> inners = this.inner().redirectConfigurations();
+        List<ApplicationGatewayRedirectConfigurationInner> inners = this.innerModel().redirectConfigurations();
         if (inners != null) {
             for (ApplicationGatewayRedirectConfigurationInner inner : inners) {
                 ApplicationGatewayRedirectConfigurationImpl redirectConfig =
@@ -240,7 +240,7 @@ class ApplicationGatewayImpl
 
     private void initializeUrlPathMapsFromInner() {
         this.urlPathMaps = new TreeMap<>();
-        List<ApplicationGatewayUrlPathMapInner> inners = this.inner().urlPathMaps();
+        List<ApplicationGatewayUrlPathMapInner> inners = this.innerModel().urlPathMaps();
         if (inners != null) {
             for (ApplicationGatewayUrlPathMapInner inner : inners) {
                 ApplicationGatewayUrlPathMapImpl wrapper = new ApplicationGatewayUrlPathMapImpl(inner, this);
@@ -251,7 +251,7 @@ class ApplicationGatewayImpl
 
     private void initializeRequestRoutingRulesFromInner() {
         this.rules = new TreeMap<>();
-        List<ApplicationGatewayRequestRoutingRuleInner> inners = this.inner().requestRoutingRules();
+        List<ApplicationGatewayRequestRoutingRuleInner> inners = this.innerModel().requestRoutingRules();
         if (inners != null) {
             for (ApplicationGatewayRequestRoutingRuleInner inner : inners) {
                 ApplicationGatewayRequestRoutingRuleImpl rule =
@@ -263,7 +263,7 @@ class ApplicationGatewayImpl
 
     private void initializeConfigsFromInner() {
         this.ipConfigs = new TreeMap<>();
-        List<ApplicationGatewayIpConfigurationInner> inners = this.inner().gatewayIpConfigurations();
+        List<ApplicationGatewayIpConfigurationInner> inners = this.innerModel().gatewayIpConfigurations();
         if (inners != null) {
             for (ApplicationGatewayIpConfigurationInner inner : inners) {
                 ApplicationGatewayIpConfigurationImpl config = new ApplicationGatewayIpConfigurationImpl(inner, this);
@@ -283,114 +283,114 @@ class ApplicationGatewayImpl
 
         // Reset and update IP configs
         ensureDefaultIPConfig();
-        this.inner().withGatewayIpConfigurations(innersFromWrappers(this.ipConfigs.values()));
+        this.innerModel().withGatewayIpConfigurations(innersFromWrappers(this.ipConfigs.values()));
 
         // Reset and update frontends
-        this.inner().withFrontendIpConfigurations(innersFromWrappers(this.frontends.values()));
+        this.innerModel().withFrontendIpConfigurations(innersFromWrappers(this.frontends.values()));
 
         // Reset and update probes
-        this.inner().withProbes(innersFromWrappers(this.probes.values()));
+        this.innerModel().withProbes(innersFromWrappers(this.probes.values()));
 
         // Reset and update auth certs
-        this.inner().withAuthenticationCertificates(innersFromWrappers(this.authCertificates.values()));
+        this.innerModel().withAuthenticationCertificates(innersFromWrappers(this.authCertificates.values()));
 
         // Reset and update backends
-        this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
+        this.innerModel().withBackendAddressPools(innersFromWrappers(this.backends.values()));
 
         // Reset and update SSL certs
-        this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
+        this.innerModel().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
 
         // Reset and update URL path maps
-        this.inner().withUrlPathMaps(innersFromWrappers(this.urlPathMaps.values()));
+        this.innerModel().withUrlPathMaps(innersFromWrappers(this.urlPathMaps.values()));
 
         // Reset and update backend HTTP settings configs
-        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendConfigs.values()));
+        this.innerModel().withBackendHttpSettingsCollection(innersFromWrappers(this.backendConfigs.values()));
         for (ApplicationGatewayBackendHttpConfiguration config : this.backendConfigs.values()) {
             SubResource ref;
 
             // Clear deleted probe references
-            ref = config.inner().probe();
+            ref = config.innerModel().probe();
             if (ref != null && !this.probes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                config.inner().withProbe(null);
+                config.innerModel().withProbe(null);
             }
 
             // Clear deleted auth cert references
-            List<SubResource> certRefs = config.inner().authenticationCertificates();
+            List<SubResource> certRefs = config.innerModel().authenticationCertificates();
             if (certRefs != null) {
                 // Make a copy of the cert refs, because we will be deleting in place
                 certRefs = new ArrayList<>(certRefs);
                 for (SubResource certRef : certRefs) {
                     if (certRef != null
                         && !this.authCertificates.containsKey(ResourceUtils.nameFromResourceId(certRef.id()))) {
-                        config.inner().authenticationCertificates().remove(certRef);
+                        config.innerModel().authenticationCertificates().remove(certRef);
                     }
                 }
             }
         }
 
         // Reset and update redirect configurations
-        this.inner().withRedirectConfigurations(innersFromWrappers(this.redirectConfigs.values()));
+        this.innerModel().withRedirectConfigurations(innersFromWrappers(this.redirectConfigs.values()));
         for (ApplicationGatewayRedirectConfiguration redirect : this.redirectConfigs.values()) {
             SubResource ref;
 
             // Clear deleted listener references
-            ref = redirect.inner().targetListener();
+            ref = redirect.innerModel().targetListener();
             if (ref != null && !this.listeners.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                redirect.inner().withTargetListener(null);
+                redirect.innerModel().withTargetListener(null);
             }
         }
 
         // Reset and update HTTP listeners
-        this.inner().withHttpListeners(innersFromWrappers(this.listeners.values()));
+        this.innerModel().withHttpListeners(innersFromWrappers(this.listeners.values()));
         for (ApplicationGatewayListener listener : this.listeners.values()) {
             SubResource ref;
 
             // Clear deleted frontend references
-            ref = listener.inner().frontendIpConfiguration();
+            ref = listener.innerModel().frontendIpConfiguration();
             if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                listener.inner().withFrontendIpConfiguration(null);
+                listener.innerModel().withFrontendIpConfiguration(null);
             }
 
             // Clear deleted frontend port references
-            ref = listener.inner().frontendPort();
+            ref = listener.innerModel().frontendPort();
             if (ref != null && !this.frontendPorts().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                listener.inner().withFrontendPort(null);
+                listener.innerModel().withFrontendPort(null);
             }
 
             // Clear deleted SSL certificate references
-            ref = listener.inner().sslCertificate();
+            ref = listener.innerModel().sslCertificate();
             if (ref != null && !this.sslCertificates().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                listener.inner().withSslCertificate(null);
+                listener.innerModel().withSslCertificate(null);
             }
         }
 
         // Reset and update request routing rules
-        this.inner().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
+        this.innerModel().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
         for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
             SubResource ref;
 
             // Clear deleted redirect configs
-            ref = rule.inner().redirectConfiguration();
+            ref = rule.innerModel().redirectConfiguration();
             if (ref != null && !this.redirectConfigs.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                rule.inner().withRedirectConfiguration(null);
+                rule.innerModel().withRedirectConfiguration(null);
             }
 
             // Clear deleted backends
-            ref = rule.inner().backendAddressPool();
+            ref = rule.innerModel().backendAddressPool();
             if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                rule.inner().withBackendAddressPool(null);
+                rule.innerModel().withBackendAddressPool(null);
             }
 
             // Clear deleted backend HTTP configs
-            ref = rule.inner().backendHttpSettings();
+            ref = rule.innerModel().backendHttpSettings();
             if (ref != null && !this.backendConfigs.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                rule.inner().withBackendHttpSettings(null);
+                rule.innerModel().withBackendHttpSettings(null);
             }
 
             // Clear deleted frontend HTTP listeners
-            ref = rule.inner().httpListener();
+            ref = rule.innerModel().httpListener();
             if (ref != null && !this.listeners().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                rule.inner().withHttpListener(null);
+                rule.innerModel().withHttpListener(null);
             }
         }
     }
@@ -410,7 +410,8 @@ class ApplicationGatewayImpl
     }
 
     protected ApplicationGatewayBackendImpl ensureUniqueBackend() {
-        String name = this.manager().sdkContext().randomResourceName("backend", 20);
+        String name = this.manager().resourceManager().internalContext()
+            .randomResourceName("backend", 20);
         ApplicationGatewayBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -420,7 +421,7 @@ class ApplicationGatewayImpl
         ApplicationGatewayIpConfigurationImpl ipConfig =
             (ApplicationGatewayIpConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
-            String name = this.manager().sdkContext().randomResourceName("ipcfg", 11);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("ipcfg", 11);
             ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
@@ -432,7 +433,7 @@ class ApplicationGatewayImpl
         if (frontend != null) {
             return frontend;
         } else {
-            String name = this.manager().sdkContext().randomResourceName("frontend", 14);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 14);
             frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPrivateFrontend = frontend;
@@ -445,7 +446,7 @@ class ApplicationGatewayImpl
         if (frontend != null) {
             return frontend;
         } else {
-            String name = this.manager().sdkContext().randomResourceName("frontend", 14);
+            String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 14);
             frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPublicFrontend = frontend;
@@ -457,7 +458,7 @@ class ApplicationGatewayImpl
 
     private Creatable<Network> ensureDefaultNetworkDefinition() {
         if (this.creatableNetwork == null) {
-            final String vnetName = this.manager().sdkContext().randomResourceName("vnet", 10);
+            final String vnetName = this.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
             this.creatableNetwork =
                 this
                     .manager()
@@ -477,7 +478,7 @@ class ApplicationGatewayImpl
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().sdkContext().randomResourceName("pip", 9);
+            final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
             this.creatablePip =
                 this
                     .manager()
@@ -512,7 +513,8 @@ class ApplicationGatewayImpl
         if (defaultPublicFrontend != null && defaultPublicFrontend.publicIpAddressId() == null) {
             // If public frontend requested but no PIP specified, then create a default PIP
             pipObservable =
-                ensureDefaultPipDefinition().createAsync()
+                ensureDefaultPipDefinition()
+                    .createAsync()
                     .map(
                         publicIPAddress -> {
                             defaultPublicFrontend.withExistingPublicIpAddress(publicIPAddress);
@@ -539,7 +541,8 @@ class ApplicationGatewayImpl
         } else {
             // But if default IP config does not have a subnet specified, then create a default VNet
             networkObservable =
-                ensureDefaultNetworkDefinition().createAsync()
+                ensureDefaultNetworkDefinition()
+                    .createAsync()
                     .map(
                         network -> {
                             // ... and assign the created VNet to the default IP config
@@ -567,7 +570,7 @@ class ApplicationGatewayImpl
         return Flux
             .merge(networkObservable, pipObservable)
             .last(Resource.DUMMY)
-            .flatMap(resource -> innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner()));
+            .flatMap(resource -> innerCollection.createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
     }
 
     /**
@@ -644,9 +647,9 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
-        if (this.inner().sslPolicy() != null && this.inner().sslPolicy().disabledSslProtocols() != null) {
-            this.inner().sslPolicy().disabledSslProtocols().remove(protocol);
-            if (this.inner().sslPolicy().disabledSslProtocols().isEmpty()) {
+        if (this.innerModel().sslPolicy() != null && this.innerModel().sslPolicy().disabledSslProtocols() != null) {
+            this.innerModel().sslPolicy().disabledSslProtocols().remove(protocol);
+            if (this.innerModel().sslPolicy().disabledSslProtocols().isEmpty()) {
                 this.withoutAnyDisabledSslProtocols();
             }
         }
@@ -665,25 +668,25 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutAnyDisabledSslProtocols() {
-        this.inner().withSslPolicy(null);
+        this.innerModel().withSslPolicy(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withInstanceCount(int capacity) {
-        if (this.inner().sku() == null) {
+        if (this.innerModel().sku() == null) {
             this.withSize(ApplicationGatewaySkuName.STANDARD_SMALL);
         }
 
-        this.inner().sku().withCapacity(capacity);
-        this.inner().withAutoscaleConfiguration(null);
+        this.innerModel().sku().withCapacity(capacity);
+        this.innerModel().withAutoscaleConfiguration(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withWebApplicationFirewall(boolean enabled, ApplicationGatewayFirewallMode mode) {
         this
-            .inner()
+            .innerModel()
             .withWebApplicationFirewallConfiguration(
                 new ApplicationGatewayWebApplicationFirewallConfiguration()
                     .withEnabled(enabled)
@@ -696,15 +699,15 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withWebApplicationFirewall(
         ApplicationGatewayWebApplicationFirewallConfiguration config) {
-        this.inner().withWebApplicationFirewallConfiguration(config);
+        this.innerModel().withWebApplicationFirewallConfiguration(config);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withAutoScale(int minCapacity, int maxCapacity) {
-        this.inner().sku().withCapacity(null);
+        this.innerModel().sku().withCapacity(null);
         this
-            .inner()
+            .innerModel()
             .withAutoscaleConfiguration(
                 new ApplicationGatewayAutoscaleConfiguration()
                     .withMinCapacity(minCapacity)
@@ -796,20 +799,20 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withTier(ApplicationGatewayTier skuTier) {
-        if (this.inner().sku() == null) {
-            this.inner().withSku(new ApplicationGatewaySku().withCapacity(1));
+        if (this.innerModel().sku() == null) {
+            this.innerModel().withSku(new ApplicationGatewaySku().withCapacity(1));
         }
-        this.inner().sku().withTier(skuTier);
+        this.innerModel().sku().withTier(skuTier);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withSize(ApplicationGatewaySkuName skuName) {
-        if (this.inner().sku() == null) {
+        if (this.innerModel().sku() == null) {
             // Create with default instance count
-            this.inner().withSku(new ApplicationGatewaySku().withCapacity(1));
+            this.innerModel().withSku(new ApplicationGatewaySku().withCapacity(1));
         }
-        this.inner().sku().withName(skuName);
+        this.innerModel().sku().withName(skuName);
         return this;
     }
 
@@ -833,7 +836,7 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withIdentity(ManagedServiceIdentity identity) {
-        this.inner().withIdentity(identity);
+        this.innerModel().withIdentity(identity);
         return this;
     }
 
@@ -942,7 +945,7 @@ class ApplicationGatewayImpl
                 this.backendConfigs,
                 ApplicationGatewayBackendHttpSettings.class,
                 ApplicationGatewayBackendHttpConfigurationImpl.class);
-        if (config.inner().id() == null) {
+        if (config.innerModel().id() == null) {
             return config.withPort(80); // Default port
         } else {
             return config;
@@ -1018,16 +1021,16 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withFrontendPort(int portNumber, String name) {
         // Ensure inner ports list initialized
-        List<ApplicationGatewayFrontendPort> frontendPorts = this.inner().frontendPorts();
+        List<ApplicationGatewayFrontendPort> frontendPorts = this.innerModel().frontendPorts();
         if (frontendPorts == null) {
             frontendPorts = new ArrayList<ApplicationGatewayFrontendPort>();
-            this.inner().withFrontendPorts(frontendPorts);
+            this.innerModel().withFrontendPorts(frontendPorts);
         }
 
         // Attempt to find inner port by name if provided, or port number otherwise
         ApplicationGatewayFrontendPort frontendPortByName = null;
         ApplicationGatewayFrontendPort frontendPortByNumber = null;
-        for (ApplicationGatewayFrontendPort inner : this.inner().frontendPorts()) {
+        for (ApplicationGatewayFrontendPort inner : this.innerModel().frontendPorts()) {
             if (name != null && name.equalsIgnoreCase(inner.name())) {
                 frontendPortByName = inner;
             }
@@ -1041,7 +1044,7 @@ class ApplicationGatewayImpl
             // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
-                name = this.manager().sdkContext().randomResourceName("port", 9);
+                name = this.manager().resourceManager().internalContext().randomResourceName("port", 9);
             }
 
             frontendPortByName = new ApplicationGatewayFrontendPort().withName(name).withPort(portNumber);
@@ -1137,14 +1140,14 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutFrontendPort(String name) {
-        if (this.inner().frontendPorts() == null) {
+        if (this.innerModel().frontendPorts() == null) {
             return this;
         }
 
-        for (int i = 0; i < this.inner().frontendPorts().size(); i++) {
-            ApplicationGatewayFrontendPort inner = this.inner().frontendPorts().get(i);
+        for (int i = 0; i < this.innerModel().frontendPorts().size(); i++) {
+            ApplicationGatewayFrontendPort inner = this.innerModel().frontendPorts().get(i);
             if (inner.name().equalsIgnoreCase(name)) {
-                this.inner().frontendPorts().remove(i);
+                this.innerModel().frontendPorts().remove(i);
                 break;
             }
         }
@@ -1154,10 +1157,10 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutFrontendPort(int portNumber) {
-        for (int i = 0; i < this.inner().frontendPorts().size(); i++) {
-            ApplicationGatewayFrontendPort inner = this.inner().frontendPorts().get(i);
+        for (int i = 0; i < this.innerModel().frontendPorts().size(); i++) {
+            ApplicationGatewayFrontendPort inner = this.innerModel().frontendPorts().get(i);
             if (inner.port().equals(portNumber)) {
-                this.inner().frontendPorts().remove(i);
+                this.innerModel().frontendPorts().remove(i);
                 break;
             }
         }
@@ -1222,23 +1225,23 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withHttp2() {
-        inner().withEnableHttp2(true);
+        innerModel().withEnableHttp2(true);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withoutHttp2() {
-        inner().withEnableHttp2(false);
+        innerModel().withEnableHttp2(false);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
-        if (this.inner().zones() == null) {
-            this.inner().withZones(new ArrayList<String>());
+        if (this.innerModel().zones() == null) {
+            this.innerModel().withZones(new ArrayList<String>());
         }
-        if (!this.inner().zones().contains(zoneId.toString())) {
-            this.inner().zones().add(zoneId.toString());
+        if (!this.innerModel().zones().contains(zoneId.toString())) {
+            this.innerModel().zones().add(zoneId.toString());
         }
         return this;
     }
@@ -1323,10 +1326,10 @@ class ApplicationGatewayImpl
 
     @Override
     public Collection<ApplicationGatewaySslProtocol> disabledSslProtocols() {
-        if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
+        if (this.innerModel().sslPolicy() == null || this.innerModel().sslPolicy().disabledSslProtocols() == null) {
             return new ArrayList<>();
         } else {
-            return Collections.unmodifiableCollection(this.inner().sslPolicy().disabledSslProtocols());
+            return Collections.unmodifiableCollection(this.innerModel().sslPolicy().disabledSslProtocols());
         }
     }
 
@@ -1385,7 +1388,7 @@ class ApplicationGatewayImpl
 
     @Override
     public boolean isHttp2Enabled() {
-        return Utils.toPrimitiveBoolean(inner().enableHttp2());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableHttp2());
     }
 
     @Override
@@ -1396,8 +1399,8 @@ class ApplicationGatewayImpl
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
         Set<AvailabilityZoneId> zones = new TreeSet<>();
-        if (this.inner().zones() != null) {
-            for (String zone : this.inner().zones()) {
+        if (this.innerModel().zones() != null) {
+            for (String zone : this.innerModel().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
@@ -1451,19 +1454,19 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewaySku sku() {
-        return this.inner().sku();
+        return this.innerModel().sku();
     }
 
     @Override
     public ApplicationGatewayOperationalState operationalState() {
-        return this.inner().operationalState();
+        return this.innerModel().operationalState();
     }
 
     @Override
     public Map<String, Integer> frontendPorts() {
         Map<String, Integer> ports = new TreeMap<>();
-        if (this.inner().frontendPorts() != null) {
-            for (ApplicationGatewayFrontendPort portInner : this.inner().frontendPorts()) {
+        if (this.innerModel().frontendPorts() != null) {
+            for (ApplicationGatewayFrontendPort portInner : this.innerModel().frontendPorts()) {
                 ports.put(portInner.name(), portInner.port());
             }
         }
@@ -1487,7 +1490,7 @@ class ApplicationGatewayImpl
         if (ipConfig == null) {
             return null;
         } else {
-            return ipConfig.inner().subnet();
+            return ipConfig.innerModel().subnet();
         }
     }
 
@@ -1604,12 +1607,12 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration() {
-        return this.inner().autoscaleConfiguration();
+        return this.innerModel().autoscaleConfiguration();
     }
 
     @Override
     public ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration() {
-        return this.inner().webApplicationFirewallConfiguration();
+        return this.innerModel().webApplicationFirewallConfiguration();
     }
 
     @Override
@@ -1650,10 +1653,10 @@ class ApplicationGatewayImpl
     }
 
     private ApplicationGatewaySslPolicy ensureSslPolicy() {
-        ApplicationGatewaySslPolicy policy = this.inner().sslPolicy();
+        ApplicationGatewaySslPolicy policy = this.innerModel().sslPolicy();
         if (policy == null) {
             policy = new ApplicationGatewaySslPolicy();
-            this.inner().withSslPolicy(policy);
+            this.innerModel().withSslPolicy(policy);
         }
 
         List<ApplicationGatewaySslProtocol> protocols = policy.disabledSslProtocols();

@@ -17,15 +17,15 @@ public final class ServiceBusClientConfig {
 
     private final boolean sessionsEnabled;
 
-    private ServiceBusClientConfig(int prefetchCount, int concurrency, boolean sessionsEnabled) {
+    private final boolean requeueRejected;
+
+    private ServiceBusClientConfig(int prefetchCount, int concurrency, boolean sessionsEnabled,
+                                   boolean requeueRejected) {
 
         this.prefetchCount = prefetchCount;
         this.concurrency = concurrency;
         this.sessionsEnabled = sessionsEnabled;
-    }
-
-    public static ServiceBusClientConfigBuilder builder() {
-        return new ServiceBusClientConfigBuilder();
+        this.requeueRejected = requeueRejected;
     }
 
     public int getPrefetchCount() {
@@ -40,10 +40,23 @@ public final class ServiceBusClientConfig {
         return sessionsEnabled;
     }
 
+    public boolean isRequeueRejected() {
+        return requeueRejected;
+    }
+
+    public static ServiceBusClientConfigBuilder builder() {
+        return new ServiceBusClientConfigBuilder();
+    }
+
     public static class ServiceBusClientConfigBuilder {
         private int prefetchCount = 1;
         private int concurrency = 1;
         private boolean sessionsEnabled = false;
+        private boolean requeueRejected = false;
+
+        public void setRequeueRejected(boolean requeueRejected) {
+            this.requeueRejected = requeueRejected;
+        }
 
         public ServiceBusClientConfigBuilder setPrefetchCount(int prefetchCount) {
             this.prefetchCount = prefetchCount;
@@ -61,7 +74,7 @@ public final class ServiceBusClientConfig {
         }
 
         public ServiceBusClientConfig build() {
-            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled);
+            return new ServiceBusClientConfig(prefetchCount, concurrency, sessionsEnabled, requeueRejected);
         }
     }
 }

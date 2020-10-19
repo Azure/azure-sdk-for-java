@@ -7,7 +7,7 @@ import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.Collections;
@@ -47,10 +47,10 @@ class VirtualMachineImageImpl extends IndexableWrapperImpl<VirtualMachineImageIn
 
     @Override
     public String id() {
-        if (this.inner() == null) {
+        if (this.innerModel() == null) {
             return null;
         }
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -85,21 +85,21 @@ class VirtualMachineImageImpl extends IndexableWrapperImpl<VirtualMachineImageIn
 
     @Override
     public PurchasePlan plan() {
-        return inner().plan();
+        return innerModel().plan();
     }
 
     @Override
     public OSDiskImage osDiskImage() {
-        return inner().osDiskImage();
+        return innerModel().osDiskImage();
     }
 
     @Override
     public Map<Integer, DataDiskImage> dataDiskImages() {
-        if (inner().dataDiskImages() == null) {
+        if (innerModel().dataDiskImages() == null) {
             return Collections.unmodifiableMap(new HashMap<>());
         }
         HashMap<Integer, DataDiskImage> diskImages = new HashMap<>();
-        for (DataDiskImage diskImage : inner().dataDiskImages()) {
+        for (DataDiskImage diskImage : innerModel().dataDiskImages()) {
             diskImages.put(diskImage.lun(), diskImage);
         }
         return Collections.unmodifiableMap(diskImages);

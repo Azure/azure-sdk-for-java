@@ -42,16 +42,16 @@ public final class ManageZonalVirtualMachineScaleSet {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String loadBalancerName = azureResourceManager.sdkContext().randomResourceName("extlb", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        final String loadBalancerName = Utils.randomResourceName(azureResourceManager, "extlb", 15);
         final String publicIPName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";
         final String backendPoolName1 = loadBalancerName + "-BAP1";
         final String backendPoolName2 = loadBalancerName + "-BAP2";
         final String natPoolName1 = loadBalancerName + "-INP1";
         final String natPoolName2 = loadBalancerName + "-INP2";
-        final String vmssName1 = azureResourceManager.sdkContext().randomResourceName("vmss1", 15);
-        final String vmssName2 = azureResourceManager.sdkContext().randomResourceName("vmss2", 15);
+        final String vmssName1 = Utils.randomResourceName(azureResourceManager, "vmss1", 15);
+        final String vmssName2 = Utils.randomResourceName(azureResourceManager, "vmss2", 15);
 
         final String userName = "tirekicker";
         final String password = Utils.password();

@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
-import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;

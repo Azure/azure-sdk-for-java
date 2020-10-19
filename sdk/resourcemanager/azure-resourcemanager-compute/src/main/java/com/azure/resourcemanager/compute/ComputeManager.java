@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.fluent.ComputeManagementClientBuilder;
+import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;
@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure compute resource management. */
@@ -109,19 +108,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      * @return the ComputeManager
      */
     public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the ComputeManager
-     */
-    public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new ComputeManager(httpPipeline, profile, sdkContext);
+        return new ComputeManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -144,18 +131,17 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         }
     }
 
-    private ComputeManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private ComputeManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new ComputeManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
-        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+                .buildClient());
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the availability set resource management API entry point */
@@ -180,9 +166,9 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
             virtualMachineImages =
                 new VirtualMachineImagesImpl(
                     new VirtualMachinePublishersImpl(
-                        super.innerManagementClient.getVirtualMachineImages(),
-                        super.innerManagementClient.getVirtualMachineExtensionImages()),
-                    super.innerManagementClient.getVirtualMachineImages());
+                        this.serviceClient().getVirtualMachineImages(),
+                        this.serviceClient().getVirtualMachineExtensionImages()),
+                    this.serviceClient().getVirtualMachineImages());
         }
         return virtualMachineImages;
     }
@@ -193,8 +179,8 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
             virtualMachineExtensionImages =
                 new VirtualMachineExtensionImagesImpl(
                     new VirtualMachinePublishersImpl(
-                        super.innerManagementClient.getVirtualMachineImages(),
-                        super.innerManagementClient.getVirtualMachineExtensionImages()));
+                        this.serviceClient().getVirtualMachineImages(),
+                        this.serviceClient().getVirtualMachineExtensionImages()));
         }
         return virtualMachineExtensionImages;
     }
@@ -211,7 +197,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     /** @return the compute resource usage management API entry point */
     public ComputeUsages usages() {
         if (computeUsages == null) {
-            computeUsages = new ComputeUsagesImpl(super.innerManagementClient);
+            computeUsages = new ComputeUsagesImpl(this.serviceClient());
         }
         return computeUsages;
     }

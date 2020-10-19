@@ -193,7 +193,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
         customImage = computeManager.virtualMachineCustomImages().getByResourceGroup(rgName, imageName);
         Assertions.assertNotNull(customImage);
-        Assertions.assertNotNull(customImage.inner());
+        Assertions.assertNotNull(customImage.innerModel());
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());
     }
 

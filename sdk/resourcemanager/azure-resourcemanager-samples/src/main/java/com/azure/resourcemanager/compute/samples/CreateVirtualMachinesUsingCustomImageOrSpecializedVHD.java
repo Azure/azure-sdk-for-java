@@ -43,15 +43,15 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String linuxVMName1 = azureResourceManager.sdkContext().randomResourceName("VM1", 15);
-        final String linuxVMName2 = azureResourceManager.sdkContext().randomResourceName("VM2", 15);
-        final String linuxVMName3 = azureResourceManager.sdkContext().randomResourceName("VM3", 15);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgCOMV", 15);
-        final String publicIPDnsLabel = azureResourceManager.sdkContext().randomResourceName("pip", 15);
+        final String linuxVMName1 = Utils.randomResourceName(azureResourceManager, "VM1", 15);
+        final String linuxVMName2 = Utils.randomResourceName(azureResourceManager, "VM2", 15);
+        final String linuxVMName3 = Utils.randomResourceName(azureResourceManager, "VM3", 15);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
+        final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);

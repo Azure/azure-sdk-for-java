@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
@@ -70,12 +70,12 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
 
     @Override
     public String applicationId() {
-        return inner().appId();
+        return innerModel().appId();
     }
 
     @Override
     public List<String> servicePrincipalNames() {
-        return inner().servicePrincipalNames();
+        return innerModel().servicePrincipalNames();
     }
 
     @Override
@@ -139,7 +139,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
             }
             List<KeyCredentialInner> updateKeyCredentials = new ArrayList<>();
             for (CertificateCredential certificateCredential : newCerts.values()) {
-                updateKeyCredentials.add(certificateCredential.inner());
+                updateKeyCredentials.add(certificateCredential.innerModel());
             }
             mono =
                 mono
@@ -161,7 +161,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
             }
             List<PasswordCredentialInner> updatePasswordCredentials = new ArrayList<>();
             for (PasswordCredential passwordCredential : newPasses.values()) {
-                updatePasswordCredentials.add(passwordCredential.inner());
+                updatePasswordCredentials.add(passwordCredential.innerModel());
             }
             mono =
                 mono
@@ -194,7 +194,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                         roleEntry ->
                             manager()
                                 .roleAssignments()
-                                .define(this.manager().sdkContext().randomUuid())
+                                .define(this.manager().internalContext().randomUuid())
                                 .forServicePrincipal(servicePrincipal)
                                 .withBuiltInRole(roleEntry.getValue())
                                 .withScope(roleEntry.getKey())
@@ -361,7 +361,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

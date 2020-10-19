@@ -135,7 +135,7 @@ You can create a virtual machine scale set instance by using a `define() … cre
 You can create a virtual network by using a `define() … create()` method chain.
 
 ```java
-Network network = networks.define("mynetwork")
+Network network = azure.networks().define("mynetwork")
 	.withRegion(Region.US_EAST)
 	.withNewResourceGroup()
 	.withAddressSpace("10.0.0.0/28")
@@ -362,7 +362,7 @@ SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
 Then, you can create a SQL database instance by using a `define() … create()` method chain.
 
 ```java
-SqlDatabase database = sqlServer.databases().define("myNewDatabase")
+SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
 	...
     .create();
 ```

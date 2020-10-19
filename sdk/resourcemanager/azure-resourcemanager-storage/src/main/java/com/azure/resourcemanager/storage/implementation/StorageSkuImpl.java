@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.SkuTier;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageResourceType;
 import com.azure.resourcemanager.storage.models.StorageSku;
-import com.azure.resourcemanager.storage.fluent.inner.SkuInformationInner;
+import com.azure.resourcemanager.storage.fluent.models.SkuInformationInner;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +86,7 @@ class StorageSkuImpl implements StorageSku {
     }
 
     @Override
-    public SkuInformationInner inner() {
+    public SkuInformationInner innerModel() {
         return this.inner;
     }
 }

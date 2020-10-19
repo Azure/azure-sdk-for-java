@@ -4,183 +4,38 @@
 
 package com.azure.resourcemanager.sql.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
-import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.FailoverGroupInner;
 import com.azure.resourcemanager.sql.models.FailoverGroupUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FailoverGroups. */
-public final class FailoverGroupsClient {
-    private final ClientLogger logger = new ClientLogger(FailoverGroupsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final FailoverGroupsService service;
-
-    /** The service client containing this operation class. */
-    private final SqlManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in FailoverGroupsClient. */
+public interface FailoverGroupsClient {
     /**
-     * Initializes an instance of FailoverGroupsClient.
+     * Gets a failover group.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
      */
-    public FailoverGroupsClient(SqlManagementClient client) {
-        this.service =
-            RestProxy.create(FailoverGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for SqlManagementClientFailoverGroups to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientF")
-    private interface FailoverGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FailoverGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("failoverGroupName") String failoverGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("failoverGroupName") String failoverGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") FailoverGroupInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("failoverGroupName") String failoverGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("failoverGroupName") String failoverGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") FailoverGroupUpdate parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FailoverGroupListResultInner>> listByServer(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}/failover")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> failover(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("failoverGroupName") String failoverGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/failoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLoss(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("failoverGroupName") String failoverGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FailoverGroupListResultInner>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<FailoverGroupInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Gets a failover group.
@@ -190,51 +45,27 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FailoverGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            failoverGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<FailoverGroupInner> getAsync(String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Gets a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FailoverGroupInner get(String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Gets a failover group.
@@ -245,136 +76,13 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FailoverGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                failoverGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Gets a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> getAsync(String resourceGroupName, String serverName, String failoverGroupName) {
-        return getWithResponseAsync(resourceGroupName, serverName, failoverGroupName)
-            .flatMap(
-                (Response<FailoverGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> getAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, failoverGroupName, context)
-            .flatMap(
-                (Response<FailoverGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner get(String resourceGroupName, String serverName, String failoverGroupName) {
-        return getAsync(resourceGroupName, serverName, failoverGroupName).block();
-    }
-
-    /**
-     * Gets a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner get(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return getAsync(resourceGroupName, serverName, failoverGroupName, context).block();
-    }
+    Response<FailoverGroupInner> getWithResponse(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context);
 
     /**
      * Creates or updates a failover group.
@@ -385,57 +93,47 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param parameters A failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            failoverGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+
+    /**
+     * Creates or updates a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @param parameters A failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+
+    /**
+     * Creates or updates a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @param parameters A failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
@@ -447,58 +145,17 @@ public final class FailoverGroupsClient {
      * @param parameters A failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         String failoverGroupName,
         FailoverGroupInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                failoverGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
+        Context context);
 
     /**
      * Creates or updates a failover group.
@@ -509,20 +166,30 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param parameters A failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, failoverGroupName, parameters);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
-    }
+    Mono<FailoverGroupInner> createOrUpdateAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+
+    /**
+     * Creates or updates a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @param parameters A failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FailoverGroupInner createOrUpdate(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
@@ -534,159 +201,17 @@ public final class FailoverGroupsClient {
      * @param parameters A failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdateAsync(
+    FailoverGroupInner createOrUpdate(
         String resourceGroupName,
         String serverName,
         String failoverGroupName,
         FailoverGroupInner parameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, failoverGroupName, parameters, context);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, context);
-    }
-
-    /**
-     * Creates or updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner createOrUpdate(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupInner parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context).block();
-    }
+        Context context);
 
     /**
      * Deletes a failover group.
@@ -696,51 +221,45 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            failoverGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Deletes a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Deletes a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Deletes a failover group.
@@ -751,48 +270,13 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                failoverGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context);
 
     /**
      * Deletes a failover group.
@@ -802,19 +286,26 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, failoverGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Deletes a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Deletes a failover group.
@@ -825,130 +316,11 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, failoverGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, failoverGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serverName, String failoverGroupName) {
-        deleteAsync(resourceGroupName, serverName, failoverGroupName).block();
-    }
-
-    /**
-     * Deletes a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        deleteAsync(resourceGroupName, serverName, failoverGroupName, context).block();
-    }
+    void delete(String resourceGroupName, String serverName, String failoverGroupName, Context context);
 
     /**
      * Updates a failover group.
@@ -959,57 +331,47 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param parameters A failover group update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            failoverGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+
+    /**
+     * Updates a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @param parameters A failover group update request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdateAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+
+    /**
+     * Updates a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @param parameters A failover group update request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
@@ -1021,58 +383,17 @@ public final class FailoverGroupsClient {
      * @param parameters A failover group update request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
         String resourceGroupName,
         String serverName,
         String failoverGroupName,
         FailoverGroupUpdate parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                failoverGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
+        Context context);
 
     /**
      * Updates a failover group.
@@ -1083,20 +404,30 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param parameters A failover group update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serverName, failoverGroupName, parameters);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
-    }
+    Mono<FailoverGroupInner> updateAsync(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+
+    /**
+     * Updates a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @param parameters A failover group update request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FailoverGroupInner update(
+        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
@@ -1108,158 +439,17 @@ public final class FailoverGroupsClient {
      * @param parameters A failover group update request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdateAsync(
+    FailoverGroupInner update(
         String resourceGroupName,
         String serverName,
         String failoverGroupName,
         FailoverGroupUpdate parameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serverName, failoverGroupName, parameters, context);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, context);
-    }
-
-    /**
-     * Updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group update request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group update request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupUpdate parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group update request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> updateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group update request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupUpdate parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group update request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner update(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters) {
-        return updateAsync(resourceGroupName, serverName, failoverGroupName, parameters).block();
-    }
-
-    /**
-     * Updates a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param parameters A failover group update request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner update(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupUpdate parameters,
-        Context context) {
-        return updateAsync(resourceGroupName, serverName, failoverGroupName, parameters, context).block();
-    }
+        Context context);
 
     /**
      * Lists the failover groups in a server.
@@ -1268,128 +458,26 @@ public final class FailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of failover groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FailoverGroupInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<FailoverGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Lists the failover groups in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of failover groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FailoverGroupInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listByServer(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists the failover groups in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of failover groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<FailoverGroupInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<FailoverGroupInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Lists the failover groups in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of failover groups.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<FailoverGroupInner> listByServer(String resourceGroupName, String serverName);
 
     /**
      * Lists the failover groups in a server.
@@ -1399,51 +487,12 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of failover groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<FailoverGroupInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists the failover groups in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of failover groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FailoverGroupInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
-    }
-
-    /**
-     * Lists the failover groups in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of failover groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FailoverGroupInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
-    }
+    PagedIterable<FailoverGroupInner> listByServer(String resourceGroupName, String serverName, Context context);
 
     /**
      * Fails over from the current primary server to this server.
@@ -1453,51 +502,45 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .failover(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            failoverGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Fails over from the current primary server to this server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Fails over from the current primary server to this server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
+        String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server.
@@ -1508,48 +551,13 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .failover(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                failoverGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context);
 
     /**
      * Fails over from the current primary server to this server.
@@ -1559,20 +567,27 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, serverName, failoverGroupName);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
-    }
+    Mono<FailoverGroupInner> failoverAsync(String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Fails over from the current primary server to this server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server.
@@ -1583,135 +598,12 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, serverName, failoverGroupName, context);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, context);
-    }
-
-    /**
-     * Fails over from the current primary server to this server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginFailoverAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
-    }
-
-    /**
-     * Fails over from the current primary server to this server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, failoverGroupName, context).getSyncPoller();
-    }
-
-    /**
-     * Fails over from the current primary server to this server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> failoverAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginFailoverAsync(resourceGroupName, serverName, failoverGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Fails over from the current primary server to this server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> failoverAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, failoverGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Fails over from the current primary server to this server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName) {
-        return failoverAsync(resourceGroupName, serverName, failoverGroupName).block();
-    }
-
-    /**
-     * Fails over from the current primary server to this server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner failover(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return failoverAsync(resourceGroupName, serverName, failoverGroupName, context).block();
-    }
+    FailoverGroupInner failover(String resourceGroupName, String serverName, String failoverGroupName, Context context);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
@@ -1721,51 +613,45 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .forceFailoverAllowDataLoss(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            failoverGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Fails over from the current primary server to this server. This operation might result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLossAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Fails over from the current primary server to this server. This operation might result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
+        String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
@@ -1776,48 +662,13 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (failoverGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter failoverGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2015-05-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .forceFailoverAllowDataLoss(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                failoverGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
@@ -1827,20 +678,29 @@ public final class FailoverGroupsClient {
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            forceFailoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, failoverGroupName);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, Context.NONE);
-    }
+    Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
+
+    /**
+     * Fails over from the current primary server to this server. This operation might result in data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server containing the failover group.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FailoverGroupInner forceFailoverAllowDataLoss(
+        String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
@@ -1851,192 +711,11 @@ public final class FailoverGroupsClient {
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            forceFailoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, failoverGroupName, context);
-        return this
-            .client
-            .<FailoverGroupInner, FailoverGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FailoverGroupInner.class, FailoverGroupInner.class, context);
-    }
-
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName).getSyncPoller();
-    }
-
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner forceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName) {
-        return forceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName).block();
-    }
-
-    /**
-     * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server containing the failover group.
-     * @param failoverGroupName The name of the failover group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FailoverGroupInner forceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context) {
-        return forceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of failover groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FailoverGroupInner>> listByServerNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, context))
-            .<PagedResponse<FailoverGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of failover groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<FailoverGroupInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    FailoverGroupInner forceFailoverAllowDataLoss(
+        String resourceGroupName, String serverName, String failoverGroupName, Context context);
 }

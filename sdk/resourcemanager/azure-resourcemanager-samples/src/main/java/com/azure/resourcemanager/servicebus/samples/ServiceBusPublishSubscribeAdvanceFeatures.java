@@ -46,13 +46,13 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgSB04_", 24);
-        final String namespaceName = azureResourceManager.sdkContext().randomResourceName("namespace", 20);
-        final String topic1Name = azureResourceManager.sdkContext().randomResourceName("topic1_", 24);
-        final String topic2Name = azureResourceManager.sdkContext().randomResourceName("topic2_", 24);
-        final String subscription1Name = azureResourceManager.sdkContext().randomResourceName("subs_", 24);
-        final String subscription2Name = azureResourceManager.sdkContext().randomResourceName("subs_", 24);
-        final String subscription3Name = azureResourceManager.sdkContext().randomResourceName("subs_", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgSB04_", 24);
+        final String namespaceName = Utils.randomResourceName(azureResourceManager, "namespace", 20);
+        final String topic1Name = Utils.randomResourceName(azureResourceManager, "topic1_", 24);
+        final String topic2Name = Utils.randomResourceName(azureResourceManager, "topic2_", 24);
+        final String subscription1Name = Utils.randomResourceName(azureResourceManager, "subs_", 24);
+        final String subscription2Name = Utils.randomResourceName(azureResourceManager, "subs_", 24);
+        final String subscription3Name = Utils.randomResourceName(azureResourceManager, "subs_", 24);
         final String sendRuleName = "SendRule";
         final String manageRuleName = "ManageRule";
 

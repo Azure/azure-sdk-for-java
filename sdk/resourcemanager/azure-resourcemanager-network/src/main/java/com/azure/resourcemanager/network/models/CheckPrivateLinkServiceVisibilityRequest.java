@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckPrivateLinkServiceVisibilityRequest model. */
+/** Request body of the CheckPrivateLinkServiceVisibility API service call. */
 @Fluent
 public final class CheckPrivateLinkServiceVisibilityRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckPrivateLinkServiceVisibilityRequest.class);

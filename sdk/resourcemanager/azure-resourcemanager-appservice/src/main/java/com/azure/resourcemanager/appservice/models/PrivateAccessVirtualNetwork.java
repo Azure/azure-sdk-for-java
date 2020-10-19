@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateAccessVirtualNetwork model. */
+/** Description of a Virtual Network that is useable for private site access. */
 @Fluent
 public final class PrivateAccessVirtualNetwork {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateAccessVirtualNetwork.class);

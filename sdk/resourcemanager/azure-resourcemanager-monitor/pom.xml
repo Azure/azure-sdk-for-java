@@ -10,7 +10,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-monitor</artifactId>
-  <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
+  <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Monitor Management</name>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -71,19 +71,19 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-compute</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -111,7 +111,7 @@
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
           <artifactId>azure-resourcemanager-test</artifactId>
-          <version>2.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-test;current} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -132,6 +132,9 @@
                 <!-- tests fail without these exports. -->
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
+
+                --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
+                --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
@@ -163,6 +166,8 @@
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
             <exclude>com/azure/resourcemanager/**/models/**/*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
+            <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
         </configuration>
       </plugin>

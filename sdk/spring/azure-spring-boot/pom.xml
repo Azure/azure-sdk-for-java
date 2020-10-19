@@ -114,9 +114,9 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-data-cosmosdb</artifactId>
-      <version>2.3.0</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-spring-data-cosmos</artifactId>
+      <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -265,7 +265,6 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>net.minidev:json-smart:[2.3]</include> <!-- {x-include-update;net.minidev:json-smart;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.6.2]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
                 <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.3.0]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[7.9]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.5.4]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->

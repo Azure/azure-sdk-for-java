@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConnectionMonitorTestGroup model. */
+/** Describes the connection monitor test group. */
 @Fluent
 public final class ConnectionMonitorTestGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorTestGroup.class);

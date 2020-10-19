@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.NameAvailability;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.appplatform.models.ResourceSku;

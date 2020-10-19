@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.resourcemanager.resources.fluent.inner.WhatIfOperationResultInner;
+import com.azure.resourcemanager.resources.fluent.models.WhatIfOperationResultInner;
 
 /** Contains all response data for the whatIfAtManagementGroupScope operation. */
 public final class DeploymentsWhatIfAtManagementGroupScopeResponse

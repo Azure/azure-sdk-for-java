@@ -28,8 +28,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE;
-import static com.azure.ai.formrecognizer.FormTrainingAsyncClientTest.EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
@@ -186,7 +185,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
-            assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
+            assertEquals(MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -206,7 +205,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
-            assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
+            assertEquals(MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -293,9 +292,12 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
 
             beginCopyInvalidRegionRunner((resourceId, resourceRegion) -> {
                 final CopyAuthorization target = client.getCopyAuthorization(resourceId, resourceRegion);
-                Exception thrown = assertThrows(HttpResponseException.class,
+                final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target));
-                assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
+                final FormRecognizerErrorInformation errorInformation =
+                    (FormRecognizerErrorInformation) httpResponseException.getValue();
+                assertEquals(COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION_ERROR_CODE,
+                    errorInformation.getErrorCode());
             });
         });
     }
@@ -352,10 +354,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                     new TrainingOptions().setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
             FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-            assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getErrorCode());
-            assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
-            assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
-            assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE));
+            assertEquals(INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -477,7 +476,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                             .setSubfoldersIncluded(true)
                             .setPrefix(INVALID_PREFIX_FILE_NAME)),
                     Context.NONE).getFinalResult());
-            assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
+            assertEquals(NO_VALID_BLOB_FOUND_ERROR_CODE, thrown.getErrorInformation().get(0).getErrorCode());
         });
     }
 
@@ -497,7 +496,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                         .setTrainingFileFilter(new TrainingFileFilter().setPrefix(INVALID_PREFIX_FILE_NAME))
                         .setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
-            assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
+            assertEquals(NO_VALID_BLOB_FOUND_ERROR_CODE, thrown.getErrorInformation().get(0).getErrorCode());
         });
     }
 }

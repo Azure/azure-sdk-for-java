@@ -41,7 +41,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public ExportRequest inner() {
+    public ExportRequest innerModel() {
         return this.inner;
     }
 
@@ -55,7 +55,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,
                 this.sqlDatabase.name(),
-                this.inner())
+                this.innerModel())
             .map(SqlDatabaseImportExportResponseImpl::new);
     }
 

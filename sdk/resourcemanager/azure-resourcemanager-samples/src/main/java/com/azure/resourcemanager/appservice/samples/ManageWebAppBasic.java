@@ -36,11 +36,11 @@ public final class ManageWebAppBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
-        final String rg1Name        = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
-        final String rg2Name        = azureResourceManager.sdkContext().randomResourceName("rg2NEMV_", 24);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String rg1Name        = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String rg2Name        = Utils.randomResourceName(azureResourceManager, "rg2NEMV_", 24);
 
         try {
 

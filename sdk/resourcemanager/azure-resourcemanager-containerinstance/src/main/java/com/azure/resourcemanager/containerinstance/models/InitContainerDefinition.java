@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The InitContainerDefinition model. */
+/** The init container definition. */
 @JsonFlatten
 @Fluent
 public class InitContainerDefinition {

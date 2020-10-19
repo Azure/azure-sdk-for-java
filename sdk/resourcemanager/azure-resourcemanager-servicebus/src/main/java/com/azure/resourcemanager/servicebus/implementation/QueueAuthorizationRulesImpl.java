@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
-import com.azure.resourcemanager.servicebus.fluent.inner.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRules;
@@ -53,7 +53,7 @@ class QueueAuthorizationRulesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
+        return this.innerModel().deleteAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.queueName,
                 name);
@@ -61,7 +61,7 @@ class QueueAuthorizationRulesImpl
 
     @Override
     protected Mono<SharedAccessAuthorizationRuleResourceInner> getInnerByNameAsync(String name) {
-        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName,
+        return this.innerModel().getAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
                 this.queueName,
                 name);
@@ -69,12 +69,13 @@ class QueueAuthorizationRulesImpl
 
     @Override
     protected PagedFlux<SharedAccessAuthorizationRuleResourceInner> listInnerAsync() {
-        return this.inner().listAuthorizationRulesAsync(this.resourceGroupName, this.namespaceName, this.queueName);
+        return this.innerModel().listAuthorizationRulesAsync(
+            this.resourceGroupName, this.namespaceName, this.queueName);
     }
 
     @Override
     protected PagedIterable<SharedAccessAuthorizationRuleResourceInner> listInner() {
-        return this.inner().listAuthorizationRules(this.resourceGroupName,
+        return this.innerModel().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
                 this.queueName);
     }

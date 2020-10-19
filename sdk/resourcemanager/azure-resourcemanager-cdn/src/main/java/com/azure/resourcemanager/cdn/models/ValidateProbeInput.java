@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ValidateProbeInput model. */
+/** Input of the validate probe API. */
 @Fluent
 public final class ValidateProbeInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateProbeInput.class);

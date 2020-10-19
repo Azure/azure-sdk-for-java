@@ -14,7 +14,7 @@ import com.azure.resourcemanager.dns.models.PtrRecord;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.TxtRecord;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import reactor.core.publisher.Mono;
@@ -54,7 +54,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -66,32 +66,32 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public long timeToLive() {
-        return this.inner().ttl();
+        return this.innerModel().ttl();
     }
 
     @Override
     public Map<String, String> metadata() {
-        if (this.inner().metadata() == null) {
+        if (this.innerModel().metadata() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
         }
-        return Collections.unmodifiableMap(this.inner().metadata());
+        return Collections.unmodifiableMap(this.innerModel().metadata());
     }
 
     @Override
     public String fqdn() {
-        return this.inner().fqdn();
+        return this.innerModel().fqdn();
     }
 
     @Override
     public String etag() {
-        return this.inner().etag();
+        return this.innerModel().etag();
     }
 
     // Setters
 
     @Override
     public DnsRecordSetImpl withIPv4Address(String ipv4Address) {
-        this.inner().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
+        this.innerModel().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
         return this;
     }
 
@@ -103,7 +103,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withIPv6Address(String ipv6Address) {
-        this.inner().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
+        this.innerModel().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
         return this;
     }
 
@@ -115,13 +115,13 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withAlias(String alias) {
-        this.inner().cnameRecord().withCname(alias);
+        this.innerModel().cnameRecord().withCname(alias);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withMailExchange(String mailExchangeHostName, int priority) {
-        this.inner().mxRecords().add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
+        this.innerModel().mxRecords().add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 
@@ -136,7 +136,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withNameServer(String nameServerHostName) {
-        this.inner().nsRecords().add(new NsRecord().withNsdname(nameServerHostName));
+        this.innerModel().nsRecords().add(new NsRecord().withNsdname(nameServerHostName));
         return this;
     }
 
@@ -148,7 +148,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withTargetDomainName(String targetDomainName) {
-        this.inner().ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
+        this.innerModel().ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
         return this;
     }
 
@@ -160,7 +160,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withRecord(int flags, String tag, String value) {
-        this.inner().caaRecords().add(new CaaRecord().withFlags(flags).withTag(tag).withValue(value));
+        this.innerModel().caaRecords().add(new CaaRecord().withFlags(flags).withTag(tag).withValue(value));
         return this;
     }
 
@@ -173,7 +173,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
     @Override
     public DnsRecordSetImpl withRecord(String target, int port, int priority, int weight) {
         this
-            .inner()
+            .innerModel()
             .srvRecords()
             .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
@@ -197,7 +197,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
         for (String chunk : text.split("(?<=\\G.{250})")) {
             chunks.add(chunk);
         }
-        this.inner().txtRecords().add(new TxtRecord().withValue(chunks));
+        this.innerModel().txtRecords().add(new TxtRecord().withValue(chunks));
         return this;
     }
 
@@ -219,52 +219,52 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withEmailServer(String emailServerHostName) {
-        this.inner().soaRecord().withEmail(emailServerHostName);
+        this.innerModel().soaRecord().withEmail(emailServerHostName);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withRefreshTimeInSeconds(long refreshTimeInSeconds) {
-        this.inner().soaRecord().withRefreshTime(refreshTimeInSeconds);
+        this.innerModel().soaRecord().withRefreshTime(refreshTimeInSeconds);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withRetryTimeInSeconds(long retryTimeInSeconds) {
-        this.inner().soaRecord().withRetryTime(retryTimeInSeconds);
+        this.innerModel().soaRecord().withRetryTime(retryTimeInSeconds);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withExpireTimeInSeconds(long expireTimeInSeconds) {
-        this.inner().soaRecord().withExpireTime(expireTimeInSeconds);
+        this.innerModel().soaRecord().withExpireTime(expireTimeInSeconds);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive) {
-        this.inner().soaRecord().withMinimumTtl(negativeCachingTimeToLive);
+        this.innerModel().soaRecord().withMinimumTtl(negativeCachingTimeToLive);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withSerialNumber(long serialNumber) {
-        this.inner().soaRecord().withSerialNumber(serialNumber);
+        this.innerModel().soaRecord().withSerialNumber(serialNumber);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withTimeToLive(long ttlInSeconds) {
-        this.inner().withTtl(ttlInSeconds);
+        this.innerModel().withTtl(ttlInSeconds);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withMetadata(String key, String value) {
-        if (this.inner().metadata() == null) {
-            this.inner().withMetadata(new LinkedHashMap<String, String>());
+        if (this.innerModel().metadata() == null) {
+            this.innerModel().withMetadata(new LinkedHashMap<String, String>());
         }
-        this.inner().metadata().put(key, value);
+        this.innerModel().metadata().put(key, value);
         return this;
     }
 
@@ -290,7 +290,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public Mono<DnsRecordSet> createResourceAsync() {
-        return createOrUpdateAsync(this.inner());
+        return createOrUpdateAsync(this.innerModel());
     }
 
     @Override
@@ -372,19 +372,19 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             }
             this.recordSetRemoveInfo.metadata().clear();
         }
-        if (this.inner().metadata() != null && this.inner().metadata().size() > 0) {
+        if (this.innerModel().metadata() != null && this.innerModel().metadata().size() > 0) {
             if (resource.metadata() == null) {
                 resource.withMetadata(new LinkedHashMap<>());
             }
-            for (Map.Entry<String, String> keyVal : this.inner().metadata().entrySet()) {
+            for (Map.Entry<String, String> keyVal : this.innerModel().metadata().entrySet()) {
                 resource.metadata().put(keyVal.getKey(), keyVal.getValue());
             }
-            this.inner().metadata().clear();
+            this.innerModel().metadata().clear();
         }
 
-        if (this.inner().ttl() != null) {
-            resource.withTtl(this.inner().ttl());
-            this.inner().withTtl(null);
+        if (this.innerModel().ttl() != null) {
+            resource.withTtl(this.innerModel().ttl());
+            this.innerModel().withTtl(null);
         }
 
         return prepareForUpdate(resource);
@@ -400,6 +400,6 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
     }
 
     private boolean isInCreateMode() {
-        return this.inner().id() == null;
+        return this.innerModel().id() == null;
     }
 }

@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -39,24 +40,29 @@ public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private final static String USER_AGENT = Utils.getUserAgent();
-
     private final int statusCode;
     private final Map<String, String> responseHeaders;
 
     private CosmosDiagnostics cosmosDiagnostics;
-    private final RequestTimeline requestTimeline;
+    private RequestTimeline requestTimeline;
     private CosmosError cosmosError;
+    private int rntbdChannelTaskQueueSize;
+
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     long lsn;
     String partitionKeyRangeId;
     Map<String, String> requestHeaders;
     Uri requestUri;
     String resourceAddress;
+    private int requestPayloadLength;
+    private int rntbdPendingRequestQueueSize;
+    private int rntbdRequestLength;
+    private int rntbdResponseLength;
 
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
-        this.requestTimeline = RequestTimeline.empty();
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
     }
 
@@ -299,7 +305,63 @@ public class CosmosException extends AzureException {
                              .collect(Collectors.toList());
     }
 
+    RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
+    }
+
+    void setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
+    }
+
     void setResourceAddress(String resourceAddress) {
         this.resourceAddress = resourceAddress;
+    }
+
+    void setRntbdServiceEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getRntbdServiceEndpointStatistics() {
+        return this.rntbdEndpointStatistics;
+    }
+
+    void setRntbdRequestLength(int rntbdRequestLength) {
+        this.rntbdRequestLength = rntbdRequestLength;
+    }
+
+    int getRntbdRequestLength() {
+        return this.rntbdRequestLength;
+    }
+
+    void setRntbdResponseLength(int rntbdResponseLength) {
+        this.rntbdResponseLength = rntbdResponseLength;
+    }
+
+    int getRntbdResponseLength() {
+        return this.rntbdResponseLength;
+    }
+
+    void setRequestPayloadLength(int requestBodyLength) {
+        this.requestPayloadLength = requestBodyLength;
+    }
+
+    int getRequestPayloadLength() {
+        return this.requestPayloadLength;
+    }
+
+    int getRntbdChannelTaskQueueSize() {
+        return this.rntbdChannelTaskQueueSize;
+    }
+
+    void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
+        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    }
+
+    int getRntbdPendingRequestQueueSize() {
+        return this.rntbdChannelTaskQueueSize;
+    }
+
+    void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
+        this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
 }

@@ -7,13 +7,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
-import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import reactor.core.publisher.Mono;
 
@@ -77,12 +76,12 @@ final class GenericResourceImpl
 
     @Override
     public Plan plan() {
-        return inner().plan();
+        return innerModel().plan();
     }
 
     @Override
     public Object properties() {
-        return inner().properties();
+        return innerModel().properties();
     }
 
     @Override
@@ -97,7 +96,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withProperties(Object properties) {
-        inner().withProperties(properties);
+        innerModel().withProperties(properties);
         return this;
     }
 
@@ -113,7 +112,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().withPlan(
+        innerModel().withPlan(
             new Plan()
                 .withName(name)
                 .withPublisher(publisher)
@@ -124,7 +123,7 @@ final class GenericResourceImpl
 
     @Override
     public GenericResourceImpl withoutPlan() {
-        inner().withPlan(null);
+        innerModel().withPlan(null);
         return this;
     }
 
@@ -149,10 +148,11 @@ final class GenericResourceImpl
     @Override
     public Accepted<GenericResource> beginCreate() {
         String apiVersion = this.getApiVersionAsync().block();
-        String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(inner().id());
+        String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(innerModel().id());
 
         return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient(),
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getResources()
                 .createOrUpdateWithResponseAsync(
                     resourceGroupName(),
@@ -161,7 +161,7 @@ final class GenericResourceImpl
                     resourceType,
                     name,
                     apiVersion,
-                    inner()).block(),
+                    innerModel()).block(),
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
             GenericResourceInner.class,
             null,
@@ -177,7 +177,7 @@ final class GenericResourceImpl
                 .flatMap(api -> {
                     String name = this.name();
                     if (!isInCreateMode()) {
-                        name = ResourceUtils.nameFromResourceId(inner().id());
+                        name = ResourceUtils.nameFromResourceId(innerModel().id());
                     }
                     return resourceClient.createOrUpdateAsync(
                             resourceGroupName(),
@@ -186,8 +186,8 @@ final class GenericResourceImpl
                             resourceType,
                             name,
                             api,
-                            inner())
-                            .subscribeOn(SdkContext.getReactorScheduler())
+                            innerModel())
+                            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                             .map(innerToFluentMap(this));
                 });
     }
@@ -197,15 +197,14 @@ final class GenericResourceImpl
         if (this.apiVersion != null) {
             apiVersion = Mono.just(this.apiVersion);
         } else {
-            final ResourceManagementClient serviceClient = this.manager().serviceClient();
             apiVersion = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                 .flatMap(provider -> {
                     String id;
                     if (!isInCreateMode()) {
-                        id = inner().id();
+                        id = innerModel().id();
                     } else {
                         id = ResourceUtils.constructResourceId(
-                            serviceClient.getSubscriptionId(),
+                            this.manager().subscriptionId(),
                             resourceGroupName(),
                             resourceProviderNamespace(),
                             resourceType(),

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.IdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IdentifierCollection model. */
+/** Collection of identifiers. */
 @Fluent
 public final class IdentifierCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentifierCollection.class);

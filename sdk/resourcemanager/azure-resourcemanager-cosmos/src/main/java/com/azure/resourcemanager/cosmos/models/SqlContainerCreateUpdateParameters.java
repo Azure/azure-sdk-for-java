@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The SqlContainerCreateUpdateParameters model. */
+/** Parameters to create and update Cosmos DB container. */
 @JsonFlatten
 @Fluent
 public class SqlContainerCreateUpdateParameters extends ArmResourceProperties {

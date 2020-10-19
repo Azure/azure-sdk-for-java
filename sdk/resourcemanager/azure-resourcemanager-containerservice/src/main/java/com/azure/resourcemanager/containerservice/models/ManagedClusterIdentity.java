@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ManagedClusterIdentity model. */
+/** Identity for the managed cluster. */
 @Fluent
 public class ManagedClusterIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterIdentity.class);

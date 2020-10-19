@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
-        final String newRgName = virtualMachines.manager().sdkContext().randomResourceName("rgVmInAvail", 10);
-        final String newAvailSetName = virtualMachines.manager().sdkContext().randomResourceName("avai", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String newRgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rgVmInAvail", 10);
+        final String newAvailSetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("avai", 10);
 
         VirtualMachine vm =
             virtualMachines

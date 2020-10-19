@@ -491,11 +491,6 @@
             This rule is used to enforce that all modules depend on the same version of particular dependencies or
             plugins.
             -->
-            <requireSameVersions>
-              <dependencies>
-                <dependency>com.azure.*</dependency>
-              </dependencies>
-            </requireSameVersions>
           </rules>
           <fail>true</fail>
         </configuration>
@@ -599,6 +594,10 @@
               <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Digital Twins</title>
+                <packages>com.azure.digitaltwins.core*</packages>
               </group>
               <group>
                 <title>Azure Form Recognizer</title>
@@ -842,6 +841,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-digitaltwins-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java

@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClient;
-import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClientBuilder;
+import com.azure.resourcemanager.containerinstance.implementation.ContainerInstanceManagementClientBuilder;
 import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsImpl;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -16,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure container instance management. */
@@ -57,20 +56,7 @@ public final class ContainerInstanceManager
      * @return the ContainerInstanceManager
      */
     public static ContainerInstanceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of ContainerInstanceManager that exposes resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the ContainerInstanceManager
-     */
-    public static ContainerInstanceManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new ContainerInstanceManager(httpPipeline, profile, sdkContext);
+        return new ContainerInstanceManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -93,7 +79,7 @@ public final class ContainerInstanceManager
         }
     }
 
-    private ContainerInstanceManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private ContainerInstanceManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -101,12 +87,11 @@ public final class ContainerInstanceManager
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
 
-        this.storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
-        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
+        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
+        this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        this.networkManager = NetworkManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the storage manager in container instance manager */

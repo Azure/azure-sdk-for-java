@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.ComputeUsage;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.fluent.inner.UsageInner;
+import com.azure.resourcemanager.compute.fluent.models.UsageInner;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 

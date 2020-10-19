@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LogicAppReceiver model. */
+/** A logic app receiver. */
 @Fluent
 public final class LogicAppReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogicAppReceiver.class);

@@ -16,10 +16,10 @@ import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.MetricValue;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
-import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -60,8 +60,8 @@ public final class QueryMetricsAndActivityLogs {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String storageAccountName = azureResourceManager.sdkContext().randomResourceName("saMonitor", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgMonitor", 20);
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "saMonitor", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgMonitor", 20);
 
         try {
             // ============================================================
@@ -253,7 +253,7 @@ public final class QueryMetricsAndActivityLogs {
             blockBlobClient.upload(scriptFileStream, fileSize);
 
             // give sometime for the infrastructure to process the records and fit into time grain.
-            SdkContext.sleep(6 * 60000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(6));
         }
     }
 }

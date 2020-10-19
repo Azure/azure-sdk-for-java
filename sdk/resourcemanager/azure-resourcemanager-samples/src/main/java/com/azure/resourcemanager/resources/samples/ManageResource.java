@@ -10,6 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 
@@ -31,9 +32,9 @@ public final class ManageResource {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgRSMR", 24);
-        final String resourceName1 = azureResourceManager.sdkContext().randomResourceName("rn1", 24);
-        final String resourceName2 = azureResourceManager.sdkContext().randomResourceName("rn2", 24);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSMR", 24);
+        final String resourceName1 = Utils.randomResourceName(azureResourceManager, "rn1", 24);
+        final String resourceName2 = Utils.randomResourceName(azureResourceManager, "rn2", 24);
         try {
 
 

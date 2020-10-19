@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.cdn.fluent.inner.CustomDomainInner;
-import com.azure.resourcemanager.cdn.fluent.inner.EndpointInner;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
@@ -64,7 +64,7 @@ class CdnEndpointImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -73,7 +73,7 @@ class CdnEndpointImpl
         return this.parent().manager().serviceClient().getEndpoints().createAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
-                this.inner())
+                this.innerModel())
             .flatMap(inner -> {
                 self.setInner(inner);
                 return Flux.fromIterable(self.customDomainList)
@@ -82,7 +82,8 @@ class CdnEndpointImpl
                             self.parent().resourceGroupName(),
                             self.parent().name(),
                             self.name(),
-                            self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                            self.parent().manager().resourceManager().internalContext()
+                                .randomResourceName("CustomDomain", 50),
                             customDomainInner.hostname()), 32, 32)
                     .then(self.parent().manager().serviceClient()
                         .getCustomDomains().listByEndpointAsync(
@@ -101,18 +102,18 @@ class CdnEndpointImpl
     public Mono<CdnEndpoint> updateResourceAsync() {
         final CdnEndpointImpl self = this;
         EndpointUpdateParameters endpointUpdateParameters = new EndpointUpdateParameters();
-        endpointUpdateParameters.withIsHttpAllowed(this.inner().isHttpAllowed())
-                .withIsHttpsAllowed(this.inner().isHttpsAllowed())
-                .withOriginPath(this.inner().originPath())
-                .withOriginHostHeader(this.inner().originHostHeader())
-                .withIsCompressionEnabled(this.inner().isCompressionEnabled())
-                .withContentTypesToCompress(this.inner().contentTypesToCompress())
-                .withGeoFilters(this.inner().geoFilters())
-                .withOptimizationType(this.inner().optimizationType())
-                .withQueryStringCachingBehavior(this.inner().queryStringCachingBehavior())
-                .withTags(this.inner().tags());
+        endpointUpdateParameters.withIsHttpAllowed(this.innerModel().isHttpAllowed())
+                .withIsHttpsAllowed(this.innerModel().isHttpsAllowed())
+                .withOriginPath(this.innerModel().originPath())
+                .withOriginHostHeader(this.innerModel().originHostHeader())
+                .withIsCompressionEnabled(this.innerModel().isCompressionEnabled())
+                .withContentTypesToCompress(this.innerModel().contentTypesToCompress())
+                .withGeoFilters(this.innerModel().geoFilters())
+                .withOptimizationType(this.innerModel().optimizationType())
+                .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
+                .withTags(this.innerModel().tags());
 
-        DeepCreatedOrigin originInner = this.inner().origins().get(0);
+        DeepCreatedOrigin originInner = this.innerModel().origins().get(0);
         OriginUpdateParameters originUpdateParameters = new OriginUpdateParameters()
                 .withHostname(originInner.hostname())
                 .withHttpPort(originInner.httpPort())
@@ -137,7 +138,8 @@ class CdnEndpointImpl
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
-                self.parent().manager().sdkContext().randomResourceName("CustomDomain", 50),
+                self.parent().manager().resourceManager().internalContext()
+                    .randomResourceName("CustomDomain", 50),
                 itemToCreate.hostname()
             ), 32, 32);
 
@@ -212,17 +214,17 @@ class CdnEndpointImpl
 
     @Override
     public String originHostHeader() {
-        return this.inner().originHostHeader();
+        return this.innerModel().originHostHeader();
     }
 
     @Override
     public String originPath() {
-        return this.inner().originPath();
+        return this.innerModel().originPath();
     }
 
     @Override
     public Set<String> contentTypesToCompress() {
-        List<String> contentTypes = this.inner().contentTypesToCompress();
+        List<String> contentTypes = this.innerModel().contentTypesToCompress();
         Set<String> set = new HashSet<>();
         if (contentTypes != null) {
             set.addAll(contentTypes);
@@ -232,64 +234,64 @@ class CdnEndpointImpl
 
     @Override
     public boolean isCompressionEnabled() {
-        return this.inner().isCompressionEnabled();
+        return this.innerModel().isCompressionEnabled();
     }
 
     @Override
     public boolean isHttpAllowed() {
-        return this.inner().isHttpAllowed();
+        return this.innerModel().isHttpAllowed();
     }
 
     @Override
     public boolean isHttpsAllowed() {
-        return this.inner().isHttpsAllowed();
+        return this.innerModel().isHttpsAllowed();
     }
 
     @Override
     public QueryStringCachingBehavior queryStringCachingBehavior() {
-        return this.inner().queryStringCachingBehavior();
+        return this.innerModel().queryStringCachingBehavior();
     }
 
     @Override
     public String optimizationType() {
-        if (this.inner().optimizationType() == null) {
+        if (this.innerModel().optimizationType() == null) {
             return null;
         }
-        return this.inner().optimizationType().toString();
+        return this.innerModel().optimizationType().toString();
     }
 
     @Override
     public List<GeoFilter> geoFilters() {
-        return this.inner().geoFilters();
+        return this.innerModel().geoFilters();
     }
 
     @Override
     public String hostname() {
-        return this.inner().hostname();
+        return this.innerModel().hostname();
     }
 
     @Override
     public EndpointResourceState resourceState() {
-        return this.inner().resourceState();
+        return this.innerModel().resourceState();
     }
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public String originHostName() {
-        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            return this.inner().origins().get(0).hostname();
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            return this.innerModel().origins().get(0).hostname();
         }
         return null;
     }
 
     @Override
     public int httpPort() {
-        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            Integer httpPort = this.inner().origins().get(0).httpPort();
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            Integer httpPort = this.innerModel().origins().get(0).httpPort();
             return (httpPort != null) ? httpPort : 0;
         }
         return 0;
@@ -297,8 +299,8 @@ class CdnEndpointImpl
 
     @Override
     public int httpsPort() {
-        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            Integer httpsPort = this.inner().origins().get(0).httpsPort();
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            Integer httpsPort = this.innerModel().origins().get(0).httpsPort();
             return (httpsPort != null) ? httpsPort : 0;
         }
         return 0;
@@ -368,7 +370,7 @@ class CdnEndpointImpl
 
     @Override
     public CdnEndpointImpl withOrigin(String originName, String hostname) {
-        this.inner().origins().add(
+        this.innerModel().origins().add(
                 new DeepCreatedOrigin()
                         .withName(originName)
                         .withHostname(hostname));
@@ -392,41 +394,41 @@ class CdnEndpointImpl
 
     @Override
     public CdnEndpointImpl withOriginPath(String originPath) {
-        this.inner().withOriginPath(originPath);
+        this.innerModel().withOriginPath(originPath);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpAllowed(boolean httpAllowed) {
-        this.inner().withIsHttpAllowed(httpAllowed);
+        this.innerModel().withIsHttpAllowed(httpAllowed);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpsAllowed(boolean httpsAllowed) {
-        this.inner().withIsHttpsAllowed(httpsAllowed);
+        this.innerModel().withIsHttpsAllowed(httpsAllowed);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpPort(int httpPort) {
-        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            this.inner().origins().get(0).withHttpPort(httpPort);
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            this.innerModel().origins().get(0).withHttpPort(httpPort);
         }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpsPort(int httpsPort) {
-        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
-            this.inner().origins().get(0).withHttpsPort(httpsPort);
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            this.innerModel().origins().get(0).withHttpsPort(httpsPort);
         }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHostHeader(String hostHeader) {
-        this.inner().withOriginHostHeader(hostHeader);
+        this.innerModel().withOriginHostHeader(hostHeader);
         return this;
     }
 
@@ -436,44 +438,44 @@ class CdnEndpointImpl
         if (contentTypesToCompress != null) {
             list = new ArrayList<>(contentTypesToCompress);
         }
-        this.inner().withContentTypesToCompress(list);
+        this.innerModel().withContentTypesToCompress(list);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withoutContentTypesToCompress() {
-        if (this.inner().contentTypesToCompress() != null) {
-            this.inner().contentTypesToCompress().clear();
+        if (this.innerModel().contentTypesToCompress() != null) {
+            this.innerModel().contentTypesToCompress().clear();
         }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withContentTypeToCompress(String contentTypeToCompress) {
-        if (this.inner().contentTypesToCompress() == null) {
-            this.inner().withContentTypesToCompress(new ArrayList<>());
+        if (this.innerModel().contentTypesToCompress() == null) {
+            this.innerModel().withContentTypesToCompress(new ArrayList<>());
         }
-        this.inner().contentTypesToCompress().add(contentTypeToCompress);
+        this.innerModel().contentTypesToCompress().add(contentTypeToCompress);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withoutContentTypeToCompress(String contentTypeToCompress) {
-        if (this.inner().contentTypesToCompress() != null) {
-            this.inner().contentTypesToCompress().remove(contentTypeToCompress);
+        if (this.innerModel().contentTypesToCompress() != null) {
+            this.innerModel().contentTypesToCompress().remove(contentTypeToCompress);
         }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withCompressionEnabled(boolean compressionEnabled) {
-        this.inner().withIsCompressionEnabled(compressionEnabled);
+        this.innerModel().withIsCompressionEnabled(compressionEnabled);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior) {
-        this.inner().withQueryStringCachingBehavior(cachingBehavior);
+        this.innerModel().withQueryStringCachingBehavior(cachingBehavior);
         return this;
     }
 
@@ -484,14 +486,14 @@ class CdnEndpointImpl
             list = new ArrayList<>(geoFilters);
         }
 
-        this.inner().withGeoFilters(list);
+        this.innerModel().withGeoFilters(list);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withoutGeoFilters() {
-        if (this.inner().geoFilters() != null) {
-            this.inner().geoFilters().clear();
+        if (this.innerModel().geoFilters() != null) {
+            this.innerModel().geoFilters().clear();
         }
         return this;
     }
@@ -505,7 +507,7 @@ class CdnEndpointImpl
         }
         geoFilter.countryCodes().add(countryCode.toString());
 
-        this.inner().geoFilters().add(geoFilter);
+        this.innerModel().geoFilters().add(geoFilter);
         return this;
     }
 
@@ -524,13 +526,13 @@ class CdnEndpointImpl
             geoFilter.countryCodes().add(countryCode.toString());
         }
 
-        this.inner().geoFilters().add(geoFilter);
+        this.innerModel().geoFilters().add(geoFilter);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withoutGeoFilter(String relativePath) {
-        this.inner().geoFilters().removeIf(geoFilter -> geoFilter.relativePath().equals(relativePath));
+        this.innerModel().geoFilters().removeIf(geoFilter -> geoFilter.relativePath().equals(relativePath));
         return this;
     }
 
@@ -547,11 +549,11 @@ class CdnEndpointImpl
     }
 
     private GeoFilter createGeoFiltersObject(String relativePath, GeoFilterActions action) {
-        if (this.inner().geoFilters() == null) {
-            this.inner().withGeoFilters(new ArrayList<>());
+        if (this.innerModel().geoFilters() == null) {
+            this.innerModel().withGeoFilters(new ArrayList<>());
         }
         GeoFilter geoFilter = null;
-        for (GeoFilter filter : this.inner().geoFilters()) {
+        for (GeoFilter filter : this.innerModel().geoFilters()) {
             if (filter.relativePath().equals(relativePath)) {
                 geoFilter = filter;
                 break;
@@ -560,7 +562,7 @@ class CdnEndpointImpl
         if (geoFilter == null) {
             geoFilter = new GeoFilter();
         } else {
-            this.inner().geoFilters().remove(geoFilter);
+            this.innerModel().geoFilters().remove(geoFilter);
         }
         geoFilter.withRelativePath(relativePath)
                 .withAction(action);

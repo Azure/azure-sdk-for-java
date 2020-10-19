@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The TaskUpdateParameters model. */
+/** The parameters for updating a task. */
 @JsonFlatten
 @Fluent
 public class TaskUpdateParameters {

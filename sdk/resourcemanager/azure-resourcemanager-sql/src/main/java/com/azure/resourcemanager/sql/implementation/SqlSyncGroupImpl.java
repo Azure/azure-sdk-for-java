@@ -18,7 +18,7 @@ import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
 import com.azure.resourcemanager.sql.models.SyncGroupsType;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
@@ -109,7 +109,7 @@ public class SqlSyncGroupImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -124,42 +124,42 @@ public class SqlSyncGroupImpl
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public int interval() {
-        return this.inner().interval();
+        return this.innerModel().interval();
     }
 
     @Override
     public OffsetDateTime lastSyncTime() {
-        return this.inner().lastSyncTime();
+        return this.innerModel().lastSyncTime();
     }
 
     @Override
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
-        return this.inner().conflictResolutionPolicy();
+        return this.innerModel().conflictResolutionPolicy();
     }
 
     @Override
     public String syncDatabaseId() {
-        return this.inner().syncDatabaseId();
+        return this.innerModel().syncDatabaseId();
     }
 
     @Override
     public String databaseUserName() {
-        return this.inner().hubDatabaseUsername();
+        return this.innerModel().hubDatabaseUsername();
     }
 
     @Override
     public SyncGroupState syncState() {
-        return this.inner().syncState();
+        return this.innerModel().syncState();
     }
 
     @Override
     public SyncGroupSchema schema() {
-        return this.inner().schema();
+        return this.innerModel().schema();
     }
 
     @Override
@@ -293,43 +293,43 @@ public class SqlSyncGroupImpl
 
     @Override
     public SqlSyncGroupImpl withSyncDatabaseId(String syncDatabaseId) {
-        this.inner().withSyncDatabaseId(syncDatabaseId);
+        this.innerModel().withSyncDatabaseId(syncDatabaseId);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withDatabaseUserName(String userName) {
-        this.inner().withHubDatabaseUsername(userName);
+        this.innerModel().withHubDatabaseUsername(userName);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withDatabasePassword(String password) {
-        this.inner().withHubDatabasePassword(password);
+        this.innerModel().withHubDatabasePassword(password);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withConflictResolutionPolicyHubWins() {
-        this.inner().withConflictResolutionPolicy(SyncConflictResolutionPolicy.HUB_WIN);
+        this.innerModel().withConflictResolutionPolicy(SyncConflictResolutionPolicy.HUB_WIN);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withConflictResolutionPolicyMemberWins() {
-        this.inner().withConflictResolutionPolicy(SyncConflictResolutionPolicy.MEMBER_WIN);
+        this.innerModel().withConflictResolutionPolicy(SyncConflictResolutionPolicy.MEMBER_WIN);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withInterval(int interval) {
-        this.inner().withInterval(interval);
+        this.innerModel().withInterval(interval);
         return this;
     }
 
     @Override
     public SqlSyncGroupImpl withSchema(SyncGroupSchema schema) {
-        this.inner().withSchema(schema);
+        this.innerModel().withSchema(schema);
         return this;
     }
 
@@ -347,7 +347,7 @@ public class SqlSyncGroupImpl
             .serviceClient()
             .getSyncGroups()
             .createOrUpdateAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.inner())
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.innerModel())
             .map(
                 syncGroupInner -> {
                     self.setInner(syncGroupInner);

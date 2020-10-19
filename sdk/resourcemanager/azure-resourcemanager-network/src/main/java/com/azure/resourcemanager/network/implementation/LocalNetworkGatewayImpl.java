@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
-import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,55 +31,55 @@ class LocalNetworkGatewayImpl
 
     @Override
     public String ipAddress() {
-        return inner().gatewayIpAddress();
+        return innerModel().gatewayIpAddress();
     }
 
     @Override
     public BgpSettings bgpSettings() {
-        return inner().bgpSettings();
+        return innerModel().bgpSettings();
     }
 
     @Override
     public Set<String> addressSpaces() {
         Set<String> addressSpaces = new HashSet<>();
-        if (this.inner().localNetworkAddressSpace() != null
-            && this.inner().localNetworkAddressSpace().addressPrefixes() != null) {
-            addressSpaces.addAll(this.inner().localNetworkAddressSpace().addressPrefixes());
+        if (this.innerModel().localNetworkAddressSpace() != null
+            && this.innerModel().localNetworkAddressSpace().addressPrefixes() != null) {
+            addressSpaces.addAll(this.innerModel().localNetworkAddressSpace().addressPrefixes());
         }
         return Collections.unmodifiableSet(addressSpaces);
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public LocalNetworkGatewayImpl withIPAddress(String ipAddress) {
-        this.inner().withGatewayIpAddress(ipAddress);
+        this.innerModel().withGatewayIpAddress(ipAddress);
         return this;
     }
 
     @Override
     public LocalNetworkGatewayImpl withAddressSpace(String cidr) {
-        if (this.inner().localNetworkAddressSpace() == null) {
-            this.inner().withLocalNetworkAddressSpace(new AddressSpace());
+        if (this.innerModel().localNetworkAddressSpace() == null) {
+            this.innerModel().withLocalNetworkAddressSpace(new AddressSpace());
         }
-        if (this.inner().localNetworkAddressSpace().addressPrefixes() == null) {
-            this.inner().localNetworkAddressSpace().withAddressPrefixes(new ArrayList<String>());
+        if (this.innerModel().localNetworkAddressSpace().addressPrefixes() == null) {
+            this.innerModel().localNetworkAddressSpace().withAddressPrefixes(new ArrayList<String>());
         }
 
-        this.inner().localNetworkAddressSpace().addressPrefixes().add(cidr);
+        this.innerModel().localNetworkAddressSpace().addressPrefixes().add(cidr);
         return this;
     }
 
     @Override
     public LocalNetworkGatewayImpl withoutAddressSpace(String cidr) {
-        if (this.inner().localNetworkAddressSpace() == null
-            || this.inner().localNetworkAddressSpace().addressPrefixes() == null) {
+        if (this.innerModel().localNetworkAddressSpace() == null
+            || this.innerModel().localNetworkAddressSpace().addressPrefixes() == null) {
             return this;
         }
-        this.inner().localNetworkAddressSpace().addressPrefixes().remove(cidr);
+        this.innerModel().localNetworkAddressSpace().addressPrefixes().remove(cidr);
         return this;
     }
 
@@ -91,7 +91,7 @@ class LocalNetworkGatewayImpl
 
     @Override
     public LocalNetworkGatewayImpl withoutBgp() {
-        inner().withBgpSettings(null);
+        innerModel().withBgpSettings(null);
         return this;
     }
 
@@ -110,15 +110,15 @@ class LocalNetworkGatewayImpl
             .manager()
             .serviceClient()
             .getLocalNetworkGateways()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
     private BgpSettings ensureBgpSettings() {
-        if (inner().bgpSettings() == null) {
-            inner().withBgpSettings(new BgpSettings());
+        if (innerModel().bgpSettings() == null) {
+            innerModel().withBgpSettings(new BgpSettings());
         }
-        return inner().bgpSettings();
+        return innerModel().bgpSettings();
     }
 
     @Override
@@ -137,7 +137,7 @@ class LocalNetworkGatewayImpl
             .manager()
             .serviceClient()
             .getLocalNetworkGateways()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);

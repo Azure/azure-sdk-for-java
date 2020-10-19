@@ -18,7 +18,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
 
-        String postfix = networkInterfaces.manager().sdkContext().randomResourceName("", 8);
+        String postfix = networkInterfaces.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String nicName = "nic" + postfix;
         final String vnetName = "net" + postfix;
         final String pipName = "pip" + postfix;

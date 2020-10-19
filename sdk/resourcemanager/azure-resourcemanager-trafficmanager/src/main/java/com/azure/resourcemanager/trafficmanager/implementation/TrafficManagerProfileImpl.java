@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import com.azure.resourcemanager.trafficmanager.fluent.ProfilesClient;
-import com.azure.resourcemanager.trafficmanager.fluent.inner.ProfileInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
 import com.azure.resourcemanager.trafficmanager.models.ProfileMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
@@ -33,42 +33,42 @@ class TrafficManagerProfileImpl
 
     @Override
     public String dnsLabel() {
-        return this.inner().dnsConfig().relativeName();
+        return this.innerModel().dnsConfig().relativeName();
     }
 
     @Override
     public String fqdn() {
-        return this.inner().dnsConfig().fqdn();
+        return this.innerModel().dnsConfig().fqdn();
     }
 
     @Override
     public long timeToLive() {
-        return Utils.toPrimitiveLong(this.inner().dnsConfig().ttl());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().dnsConfig().ttl());
     }
 
     @Override
     public boolean isEnabled() {
-        return this.inner().profileStatus().equals(ProfileStatus.ENABLED);
+        return this.innerModel().profileStatus().equals(ProfileStatus.ENABLED);
     }
 
     @Override
     public TrafficRoutingMethod trafficRoutingMethod() {
-        return this.inner().trafficRoutingMethod();
+        return this.innerModel().trafficRoutingMethod();
     }
 
     @Override
     public ProfileMonitorStatus monitorStatus() {
-        return this.inner().monitorConfig().profileMonitorStatus();
+        return this.innerModel().monitorConfig().profileMonitorStatus();
     }
 
     @Override
     public long monitoringPort() {
-        return Utils.toPrimitiveLong(this.inner().monitorConfig().port());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().monitorConfig().port());
     }
 
     @Override
     public String monitoringPath() {
-        return this.inner().monitorConfig().path();
+        return this.innerModel().monitorConfig().path();
     }
 
     @Override
@@ -106,7 +106,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withLeafDomainLabel(String dnsLabel) {
-        this.inner().dnsConfig().withRelativeName(dnsLabel);
+        this.innerModel().dnsConfig().withRelativeName(dnsLabel);
         return this;
     }
 
@@ -132,7 +132,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withMultiValueBasedRouting(long maxResult) {
-        this.inner().withMaxReturn(maxResult);
+        this.innerModel().withMaxReturn(maxResult);
         return this.withTrafficRoutingMethod(TrafficRoutingMethod.MULTI_VALUE);
     }
 
@@ -143,7 +143,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withTrafficRoutingMethod(TrafficRoutingMethod routingMethod) {
-        this.inner().withTrafficRoutingMethod(routingMethod);
+        this.innerModel().withTrafficRoutingMethod(routingMethod);
         return this;
     }
 
@@ -195,31 +195,31 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withHttpMonitoring(int port, String path) {
-        this.inner().monitorConfig().withPort((long) port).withPath(path).withProtocol(MonitorProtocol.HTTP);
+        this.innerModel().monitorConfig().withPort((long) port).withPath(path).withProtocol(MonitorProtocol.HTTP);
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withHttpsMonitoring(int port, String path) {
-        this.inner().monitorConfig().withPort((long) port).withPath(path).withProtocol(MonitorProtocol.HTTPS);
+        this.innerModel().monitorConfig().withPort((long) port).withPath(path).withProtocol(MonitorProtocol.HTTPS);
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withProfileStatusDisabled() {
-        this.inner().withProfileStatus(ProfileStatus.DISABLED);
+        this.innerModel().withProfileStatus(ProfileStatus.DISABLED);
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withProfileStatusEnabled() {
-        this.inner().withProfileStatus(ProfileStatus.ENABLED);
+        this.innerModel().withProfileStatus(ProfileStatus.ENABLED);
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withTimeToLive(int ttlInSeconds) {
-        this.inner().dnsConfig().withTtl((long) ttlInSeconds);
+        this.innerModel().dnsConfig().withTtl((long) ttlInSeconds);
         return this;
     }
 
@@ -235,7 +235,7 @@ class TrafficManagerProfileImpl
             .manager()
             .serviceClient()
             .getProfiles()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -251,9 +251,9 @@ class TrafficManagerProfileImpl
             .commitAndGetAllAsync()
             .flatMap(
                 endpoints -> {
-                    inner().withEndpoints(this.endpoints.allEndpointsInners());
+                    innerModel().withEndpoints(this.endpoints.allEndpointsInners());
                     return innerCollection
-                        .createOrUpdateAsync(resourceGroupName(), name(), inner())
+                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
                         .map(
                             profileInner -> {
                                 this.setInner(profileInner);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedRuleGroupOverride model. */
+/** Defines a managed rule group override setting. */
 @Fluent
 public final class ManagedRuleGroupOverride {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleGroupOverride.class);

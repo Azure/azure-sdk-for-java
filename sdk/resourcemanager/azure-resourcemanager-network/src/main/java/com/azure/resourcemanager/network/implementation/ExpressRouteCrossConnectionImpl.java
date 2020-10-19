@@ -8,9 +8,9 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeerings;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,14 +35,14 @@ public class ExpressRouteCrossConnectionImpl
             .manager()
             .serviceClient()
             .getExpressRouteCrossConnections()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
     }
 
     @Override
     protected void initializeChildrenFromInner() {
         crossConnectionPeerings = new HashMap<>();
-        if (inner().peerings() != null) {
-            for (ExpressRouteCrossConnectionPeeringInner peering : inner().peerings()) {
+        if (innerModel().peerings() != null) {
+            for (ExpressRouteCrossConnectionPeeringInner peering : innerModel().peerings()) {
                 crossConnectionPeerings
                     .put(
                         peering.name(),
@@ -79,7 +79,7 @@ public class ExpressRouteCrossConnectionImpl
             .manager()
             .serviceClient()
             .getExpressRouteCrossConnections()
-            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     @Override
@@ -92,47 +92,47 @@ public class ExpressRouteCrossConnectionImpl
 
     @Override
     public String primaryAzurePort() {
-        return inner().primaryAzurePort();
+        return innerModel().primaryAzurePort();
     }
 
     @Override
     public String secondaryAzurePort() {
-        return inner().secondaryAzurePort();
+        return innerModel().secondaryAzurePort();
     }
 
     @Override
     public Integer stag() {
-        return inner().stag();
+        return innerModel().stag();
     }
 
     @Override
     public String peeringLocation() {
-        return inner().peeringLocation();
+        return innerModel().peeringLocation();
     }
 
     @Override
     public int bandwidthInMbps() {
-        return Utils.toPrimitiveInt(inner().bandwidthInMbps());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().bandwidthInMbps());
     }
 
     @Override
     public ExpressRouteCircuitReference expressRouteCircuit() {
-        return inner().expressRouteCircuit();
+        return innerModel().expressRouteCircuit();
     }
 
     @Override
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
-        return inner().serviceProviderProvisioningState();
+        return innerModel().serviceProviderProvisioningState();
     }
 
     @Override
     public String serviceProviderNotes() {
-        return inner().serviceProviderNotes();
+        return innerModel().serviceProviderNotes();
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
@@ -142,13 +142,13 @@ public class ExpressRouteCrossConnectionImpl
 
     @Override
     public Update withServiceProviderProvisioningState(ServiceProviderProvisioningState state) {
-        inner().withServiceProviderProvisioningState(state);
+        innerModel().withServiceProviderProvisioningState(state);
         return this;
     }
 
     @Override
     public Update withServiceProviderNotes(String notes) {
-        inner().withServiceProviderNotes(notes);
+        innerModel().withServiceProviderNotes(notes);
         return this;
     }
 }

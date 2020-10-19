@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.AvailablePrivateEndpointTypeInner;
+import com.azure.resourcemanager.network.fluent.models.AvailablePrivateEndpointTypeInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailablePrivateEndpointTypesResult model. */
+/** An array of available PrivateEndpoint types. */
 @Fluent
 public final class AvailablePrivateEndpointTypesResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailablePrivateEndpointTypesResult.class);

@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.RestorePoint;
 import com.azure.resourcemanager.sql.models.SampleName;
@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -36,8 +37,8 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String sqlServerName = azureResourceManager.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azureResourceManager.sdkContext().randomResourceName("rgsql", 20);
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "sqlserver", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgsql", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         final String dbToDeleteName = "db-to-delete";
@@ -64,7 +65,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             Utils.print(sqlServer);
 
             // Sleep for 5 minutes to allow for the service to be aware of the new server and databases
-            SdkContext.sleep(5 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
             SqlDatabase dbToBeDeleted = sqlServer.databases()
                 .get(dbToDeleteName);
@@ -81,7 +82,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             while (retries > 0 && dbToRestore.listRestorePoints().size() == 0) {
                 retries--;
                 // Sleep for about 3 minutes
-                SdkContext.sleep(3 * 60 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofMinutes(3));
             }
             if (retries == 0) {
                 return false;
@@ -94,7 +95,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
                     + 5 * 60 * 1000;
             System.out.printf("waitForRestoreToBeReady %d%n", waitForRestoreToBeReady);
             if (waitForRestoreToBeReady > 0) {
-                SdkContext.sleep((int) waitForRestoreToBeReady);
+                ResourceManagerUtils.sleep(Duration.ofMillis(waitForRestoreToBeReady));
             }
 
             SqlDatabase dbRestorePointInTime = sqlServer.databases()
@@ -122,7 +123,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             while (retries > 0 && sqlServer.listRestorableDroppedDatabases().size() == 0) {
                 retries--;
                 // Sleep for about 5 minutes
-                SdkContext.sleep(5 * 60 * 1000);
+                ResourceManagerUtils.sleep(Duration.ofMinutes(5));
             }
             SqlRestorableDroppedDatabase restorableDroppedDatabase = sqlServer.listRestorableDroppedDatabases().get(0);
             SqlDatabase dbRestoreDeleted = sqlServer.databases()

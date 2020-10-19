@@ -14,7 +14,7 @@ import com.azure.resourcemanager.monitor.models.LogicAppReceiver;
 import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
-import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.ActionGroupResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;
@@ -63,9 +63,9 @@ class ActionGroupImpl
         this.webhookReceivers = new TreeMap<>();
         this.itsmReceivers = new TreeMap<>();
         if (isInCreateMode()) {
-            this.inner().withEnabled(true);
+            this.innerModel().withEnabled(true);
             this
-                .inner()
+                .innerModel()
                 .withGroupShortName(this.name().substring(0, (this.name().length() > 12) ? 12 : this.name().length()));
         } else {
             this.withExistingResourceGroup(ResourceUtils.groupFromResourceId(this.id()));
@@ -74,52 +74,52 @@ class ActionGroupImpl
 
     @Override
     public String shortName() {
-        return this.inner().groupShortName();
+        return this.innerModel().groupShortName();
     }
 
     @Override
     public List<EmailReceiver> emailReceivers() {
-        return this.inner().emailReceivers();
+        return this.innerModel().emailReceivers();
     }
 
     @Override
     public List<SmsReceiver> smsReceivers() {
-        return this.inner().smsReceivers();
+        return this.innerModel().smsReceivers();
     }
 
     @Override
     public List<WebhookReceiver> webhookReceivers() {
-        return this.inner().webhookReceivers();
+        return this.innerModel().webhookReceivers();
     }
 
     @Override
     public List<ItsmReceiver> itsmReceivers() {
-        return this.inner().itsmReceivers();
+        return this.innerModel().itsmReceivers();
     }
 
     @Override
     public List<AzureAppPushReceiver> pushNotificationReceivers() {
-        return this.inner().azureAppPushReceivers();
+        return this.innerModel().azureAppPushReceivers();
     }
 
     @Override
     public List<AutomationRunbookReceiver> automationRunbookReceivers() {
-        return this.inner().automationRunbookReceivers();
+        return this.innerModel().automationRunbookReceivers();
     }
 
     @Override
     public List<VoiceReceiver> voiceReceivers() {
-        return this.inner().voiceReceivers();
+        return this.innerModel().voiceReceivers();
     }
 
     @Override
     public List<LogicAppReceiver> logicAppReceivers() {
-        return this.inner().logicAppReceivers();
+        return this.innerModel().logicAppReceivers();
     }
 
     @Override
     public List<AzureFunctionReceiver> azureFunctionReceivers() {
-        return this.inner().azureFunctionReceivers();
+        return this.innerModel().azureFunctionReceivers();
     }
 
     @Override
@@ -156,56 +156,56 @@ class ActionGroupImpl
         this.webhookReceivers.clear();
         this.itsmReceivers.clear();
 
-        if (this.inner().emailReceivers() != null) {
-            for (EmailReceiver er : this.inner().emailReceivers()) {
+        if (this.innerModel().emailReceivers() != null) {
+            for (EmailReceiver er : this.innerModel().emailReceivers()) {
                 this.emailReceivers.put(er.name(), er);
             }
         }
 
-        if (this.inner().smsReceivers() != null) {
-            for (SmsReceiver sr : this.inner().smsReceivers()) {
+        if (this.innerModel().smsReceivers() != null) {
+            for (SmsReceiver sr : this.innerModel().smsReceivers()) {
                 this.smsReceivers.put(sr.name(), sr);
             }
         }
 
-        if (this.inner().azureAppPushReceivers() != null) {
-            for (AzureAppPushReceiver ar : this.inner().azureAppPushReceivers()) {
+        if (this.innerModel().azureAppPushReceivers() != null) {
+            for (AzureAppPushReceiver ar : this.innerModel().azureAppPushReceivers()) {
                 this.appActionReceivers.put(ar.name(), ar);
             }
         }
 
-        if (this.inner().voiceReceivers() != null) {
-            for (VoiceReceiver vr : this.inner().voiceReceivers()) {
+        if (this.innerModel().voiceReceivers() != null) {
+            for (VoiceReceiver vr : this.innerModel().voiceReceivers()) {
                 this.voiceReceivers.put(vr.name(), vr);
             }
         }
 
-        if (this.inner().automationRunbookReceivers() != null) {
-            for (AutomationRunbookReceiver ar : this.inner().automationRunbookReceivers()) {
+        if (this.innerModel().automationRunbookReceivers() != null) {
+            for (AutomationRunbookReceiver ar : this.innerModel().automationRunbookReceivers()) {
                 this.runBookReceivers.put(ar.name(), ar);
             }
         }
 
-        if (this.inner().logicAppReceivers() != null) {
-            for (LogicAppReceiver lr : this.inner().logicAppReceivers()) {
+        if (this.innerModel().logicAppReceivers() != null) {
+            for (LogicAppReceiver lr : this.innerModel().logicAppReceivers()) {
                 this.logicReceivers.put(lr.name(), lr);
             }
         }
 
-        if (this.inner().azureFunctionReceivers() != null) {
-            for (AzureFunctionReceiver fr : this.inner().azureFunctionReceivers()) {
+        if (this.innerModel().azureFunctionReceivers() != null) {
+            for (AzureFunctionReceiver fr : this.innerModel().azureFunctionReceivers()) {
                 this.functionReceivers.put(fr.name(), fr);
             }
         }
 
-        if (this.inner().webhookReceivers() != null) {
-            for (WebhookReceiver wr : this.inner().webhookReceivers()) {
+        if (this.innerModel().webhookReceivers() != null) {
+            for (WebhookReceiver wr : this.innerModel().webhookReceivers()) {
                 this.webhookReceivers.put(wr.name(), wr);
             }
         }
 
-        if (this.inner().itsmReceivers() != null) {
-            for (ItsmReceiver ir : this.inner().itsmReceivers()) {
+        if (this.innerModel().itsmReceivers() != null) {
+            for (ItsmReceiver ir : this.innerModel().itsmReceivers()) {
                 this.itsmReceivers.put(ir.name(), ir);
             }
         }
@@ -214,18 +214,18 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withShortName(String shortName) {
-        this.inner().withGroupShortName(shortName);
+        this.innerModel().withGroupShortName(shortName);
         return this;
     }
 
     @Override
     public Mono<ActionGroup> createResourceAsync() {
-        this.inner().withLocation("global");
+        this.innerModel().withLocation("global");
         return this
             .manager()
             .serviceClient()
             .getActionGroups()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -498,102 +498,102 @@ class ActionGroupImpl
 
     private void populateReceivers() {
         if (this.emailReceivers.values().size() > 0) {
-            if (this.inner().emailReceivers() == null) {
-                this.inner().withEmailReceivers(new ArrayList<EmailReceiver>());
+            if (this.innerModel().emailReceivers() == null) {
+                this.innerModel().withEmailReceivers(new ArrayList<EmailReceiver>());
             } else {
-                this.inner().emailReceivers().clear();
+                this.innerModel().emailReceivers().clear();
             }
-            this.inner().emailReceivers().addAll(this.emailReceivers.values());
+            this.innerModel().emailReceivers().addAll(this.emailReceivers.values());
         } else {
-            this.inner().withEmailReceivers(null);
+            this.innerModel().withEmailReceivers(null);
         }
 
         if (this.smsReceivers.values().size() > 0) {
-            if (this.inner().smsReceivers() == null) {
-                this.inner().withSmsReceivers(new ArrayList<SmsReceiver>());
+            if (this.innerModel().smsReceivers() == null) {
+                this.innerModel().withSmsReceivers(new ArrayList<SmsReceiver>());
             } else {
-                this.inner().smsReceivers().clear();
+                this.innerModel().smsReceivers().clear();
             }
-            this.inner().smsReceivers().addAll(this.smsReceivers.values());
+            this.innerModel().smsReceivers().addAll(this.smsReceivers.values());
         } else {
-            this.inner().withSmsReceivers(null);
+            this.innerModel().withSmsReceivers(null);
         }
 
         if (this.appActionReceivers.values().size() > 0) {
-            if (this.inner().azureAppPushReceivers() == null) {
-                this.inner().withAzureAppPushReceivers(new ArrayList<AzureAppPushReceiver>());
+            if (this.innerModel().azureAppPushReceivers() == null) {
+                this.innerModel().withAzureAppPushReceivers(new ArrayList<AzureAppPushReceiver>());
             } else {
-                this.inner().azureAppPushReceivers().clear();
+                this.innerModel().azureAppPushReceivers().clear();
             }
-            this.inner().azureAppPushReceivers().addAll(this.appActionReceivers.values());
+            this.innerModel().azureAppPushReceivers().addAll(this.appActionReceivers.values());
         } else {
-            this.inner().withAzureAppPushReceivers(null);
+            this.innerModel().withAzureAppPushReceivers(null);
         }
 
         if (this.voiceReceivers.values().size() > 0) {
-            if (this.inner().voiceReceivers() == null) {
-                this.inner().withVoiceReceivers(new ArrayList<VoiceReceiver>());
+            if (this.innerModel().voiceReceivers() == null) {
+                this.innerModel().withVoiceReceivers(new ArrayList<VoiceReceiver>());
             } else {
-                this.inner().voiceReceivers().clear();
+                this.innerModel().voiceReceivers().clear();
             }
-            this.inner().voiceReceivers().addAll(this.voiceReceivers.values());
+            this.innerModel().voiceReceivers().addAll(this.voiceReceivers.values());
         } else {
-            this.inner().withVoiceReceivers(null);
+            this.innerModel().withVoiceReceivers(null);
         }
 
         if (this.runBookReceivers.values().size() > 0) {
-            if (this.inner().automationRunbookReceivers() == null) {
-                this.inner().withAutomationRunbookReceivers(new ArrayList<AutomationRunbookReceiver>());
+            if (this.innerModel().automationRunbookReceivers() == null) {
+                this.innerModel().withAutomationRunbookReceivers(new ArrayList<AutomationRunbookReceiver>());
             } else {
-                this.inner().automationRunbookReceivers().clear();
+                this.innerModel().automationRunbookReceivers().clear();
             }
-            this.inner().automationRunbookReceivers().addAll(this.runBookReceivers.values());
+            this.innerModel().automationRunbookReceivers().addAll(this.runBookReceivers.values());
         } else {
-            this.inner().withAutomationRunbookReceivers(null);
+            this.innerModel().withAutomationRunbookReceivers(null);
         }
 
         if (this.logicReceivers.values().size() > 0) {
-            if (this.inner().logicAppReceivers() == null) {
-                this.inner().withLogicAppReceivers(new ArrayList<LogicAppReceiver>());
+            if (this.innerModel().logicAppReceivers() == null) {
+                this.innerModel().withLogicAppReceivers(new ArrayList<LogicAppReceiver>());
             } else {
-                this.inner().logicAppReceivers().clear();
+                this.innerModel().logicAppReceivers().clear();
             }
-            this.inner().logicAppReceivers().addAll(this.logicReceivers.values());
+            this.innerModel().logicAppReceivers().addAll(this.logicReceivers.values());
         } else {
-            this.inner().withLogicAppReceivers(null);
+            this.innerModel().withLogicAppReceivers(null);
         }
 
         if (this.functionReceivers.values().size() > 0) {
-            if (this.inner().azureFunctionReceivers() == null) {
-                this.inner().withAzureFunctionReceivers(new ArrayList<AzureFunctionReceiver>());
+            if (this.innerModel().azureFunctionReceivers() == null) {
+                this.innerModel().withAzureFunctionReceivers(new ArrayList<AzureFunctionReceiver>());
             } else {
-                this.inner().azureFunctionReceivers().clear();
+                this.innerModel().azureFunctionReceivers().clear();
             }
-            this.inner().azureFunctionReceivers().addAll(this.functionReceivers.values());
+            this.innerModel().azureFunctionReceivers().addAll(this.functionReceivers.values());
         } else {
-            this.inner().withAzureFunctionReceivers(null);
+            this.innerModel().withAzureFunctionReceivers(null);
         }
 
         if (this.webhookReceivers.values().size() > 0) {
-            if (this.inner().webhookReceivers() == null) {
-                this.inner().withWebhookReceivers(new ArrayList<WebhookReceiver>());
+            if (this.innerModel().webhookReceivers() == null) {
+                this.innerModel().withWebhookReceivers(new ArrayList<WebhookReceiver>());
             } else {
-                this.inner().webhookReceivers().clear();
+                this.innerModel().webhookReceivers().clear();
             }
-            this.inner().webhookReceivers().addAll(this.webhookReceivers.values());
+            this.innerModel().webhookReceivers().addAll(this.webhookReceivers.values());
         } else {
-            this.inner().withWebhookReceivers(null);
+            this.innerModel().withWebhookReceivers(null);
         }
 
         if (this.itsmReceivers.values().size() > 0) {
-            if (this.inner().itsmReceivers() == null) {
-                this.inner().withItsmReceivers(new ArrayList<ItsmReceiver>());
+            if (this.innerModel().itsmReceivers() == null) {
+                this.innerModel().withItsmReceivers(new ArrayList<ItsmReceiver>());
             } else {
-                this.inner().itsmReceivers().clear();
+                this.innerModel().itsmReceivers().clear();
             }
-            this.inner().itsmReceivers().addAll(this.itsmReceivers.values());
+            this.innerModel().itsmReceivers().addAll(this.itsmReceivers.values());
         } else {
-            this.inner().withItsmReceivers(null);
+            this.innerModel().withItsmReceivers(null);
         }
     }
 }

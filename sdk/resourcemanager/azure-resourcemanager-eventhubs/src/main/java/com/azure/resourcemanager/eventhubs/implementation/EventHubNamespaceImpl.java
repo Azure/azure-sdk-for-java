@@ -6,11 +6,11 @@ package com.azure.resourcemanager.eventhubs.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.EHNamespaceInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
@@ -41,47 +41,47 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceSkuType sku() {
-        return new EventHubNamespaceSkuType(this.inner().sku());
+        return new EventHubNamespaceSkuType(this.innerModel().sku());
     }
 
     @Override
     public String azureInsightMetricId() {
-        return this.inner().metricId();
+        return this.innerModel().metricId();
     }
 
     @Override
     public String serviceBusEndpoint() {
-        return this.inner().serviceBusEndpoint();
+        return this.innerModel().serviceBusEndpoint();
     }
 
     @Override
     public OffsetDateTime createdAt() {
-        return this.inner().createdAt();
+        return this.innerModel().createdAt();
     }
 
     @Override
     public OffsetDateTime updatedAt() {
-        return this.inner().updatedAt();
+        return this.innerModel().updatedAt();
     }
 
     @Override
     public String provisioningState() {
-        return this.inner().provisioningState();
+        return this.innerModel().provisioningState();
     }
 
     @Override
     public boolean isAutoScaleEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner().isAutoInflateEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().isAutoInflateEnabled());
     }
 
     @Override
     public int currentThroughputUnits() {
-        return Utils.toPrimitiveInt(this.inner().sku().capacity());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().sku().capacity());
     }
 
     @Override
     public int throughputUnitsUpperLimit() {
-        return Utils.toPrimitiveInt(this.inner().maximumThroughputUnits());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().maximumThroughputUnits());
     }
 
     @Override
@@ -171,8 +171,8 @@ class EventHubNamespaceImpl
     public EventHubNamespaceImpl withAutoScaling() {
         // Auto-inflate requires a Sku > 'Basic' with capacity.
         this.setDefaultSkuIfNotSet();
-        this.inner().withIsAutoInflateEnabled(true);
-        if (this.inner().maximumThroughputUnits() == null) {
+        this.innerModel().withIsAutoInflateEnabled(true);
+        if (this.innerModel().maximumThroughputUnits() == null) {
             // Required when auto-inflate is set & use portal default.
             this.withThroughputUnitsUpperLimit(20);
         }
@@ -185,11 +185,11 @@ class EventHubNamespaceImpl
                 .withName(namespaceSku.name())
                 .withTier(namespaceSku.tier())
                 .withCapacity(null);
-        Sku currentSkuInner = this.inner().sku();
+        Sku currentSkuInner = this.innerModel().sku();
 
         boolean isDifferent = currentSkuInner == null || !currentSkuInner.name().equals(newSkuInner.name());
         if (isDifferent) {
-            this.inner().withSku(newSkuInner);
+            this.innerModel().withSku(newSkuInner);
             if (newSkuInner.name().equals(SkuName.STANDARD)) {
                 newSkuInner.withCapacity(1);
             }
@@ -200,13 +200,13 @@ class EventHubNamespaceImpl
     @Override
     public EventHubNamespaceImpl withCurrentThroughputUnits(int units) {
         this.setDefaultSkuIfNotSet();
-        this.inner().sku().withCapacity(units);
+        this.innerModel().sku().withCapacity(units);
         return this;
     }
 
     @Override
     public EventHubNamespaceImpl withThroughputUnitsUpperLimit(int units) {
-        this.inner().withMaximumThroughputUnits(units);
+        this.innerModel().withMaximumThroughputUnits(units);
         return this;
     }
 
@@ -220,7 +220,7 @@ class EventHubNamespaceImpl
     @Override
     public Mono<EventHubNamespace> createResourceAsync() {
         return this.manager().serviceClient().getNamespaces()
-                .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+                .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
                 .map(innerToFluentMap(this));
     }
 
@@ -259,7 +259,7 @@ class EventHubNamespaceImpl
     }
 
     private void setDefaultSkuIfNotSet() {
-        if (this.inner().sku() == null) {
+        if (this.innerModel().sku() == null) {
             this.withSku(EventHubNamespaceSkuType.STANDARD);
         }
     }

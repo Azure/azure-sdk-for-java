@@ -19,9 +19,10 @@ import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition
 import com.azure.resourcemanager.containerregistry.models.TokenType;
 import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Base64;
 import org.junit.jupiter.api.Assertions;
@@ -920,7 +921,7 @@ public class RegistryTaskTests extends RegistryTest {
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 stillQueued = false;
             }
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         }
 
         Assertions.assertEquals(registry.resourceGroupName(), registryTaskRun.resourceGroupName());
@@ -1009,7 +1010,7 @@ public class RegistryTaskTests extends RegistryTest {
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 stillQueued = false;
             }
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         }
         Assertions.assertEquals(registry.resourceGroupName(), registryTaskRun.resourceGroupName());
         Assertions.assertEquals(acrName, registryTaskRun.registryName());
@@ -1118,7 +1119,7 @@ public class RegistryTaskTests extends RegistryTest {
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 Assertions.fail("Registry registryTask run failed");
             }
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         }
 
         Assertions.assertTrue(registryManager.registryTaskRuns().listByRegistry(rgName, acrName).stream().count() == 1);
@@ -1138,7 +1139,7 @@ public class RegistryTaskTests extends RegistryTest {
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 Assertions.fail("Registry registryTask run failed");
             }
-            SdkContext.sleep(10000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         }
 
         PagedIterable<RegistryTaskRun> registryTaskRuns =

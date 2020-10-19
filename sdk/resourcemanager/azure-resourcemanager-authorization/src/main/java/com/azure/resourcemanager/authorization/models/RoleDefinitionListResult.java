@@ -6,12 +6,12 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
+import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RoleDefinitionListResult model. */
+/** Role definition list operation result. */
 @Fluent
 public final class RoleDefinitionListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionListResult.class);

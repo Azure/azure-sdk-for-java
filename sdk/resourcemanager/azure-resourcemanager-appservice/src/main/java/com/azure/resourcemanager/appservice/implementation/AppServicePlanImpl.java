@@ -8,9 +8,9 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServicePlan. */
@@ -30,7 +30,7 @@ class AppServicePlanImpl
             .manager()
             .serviceClient()
             .getAppServicePlans()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -41,32 +41,32 @@ class AppServicePlanImpl
 
     @Override
     public int maxInstances() {
-        return Utils.toPrimitiveInt(inner().maximumNumberOfWorkers());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().maximumNumberOfWorkers());
     }
 
     @Override
     public int capacity() {
-        return Utils.toPrimitiveInt(inner().sku().capacity());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().sku().capacity());
     }
 
     @Override
     public boolean perSiteScaling() {
-        return inner().perSiteScaling();
+        return innerModel().perSiteScaling();
     }
 
     @Override
     public int numberOfWebApps() {
-        return Utils.toPrimitiveInt(inner().numberOfSites());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().numberOfSites());
     }
 
     @Override
     public PricingTier pricingTier() {
-        return PricingTier.fromSkuDescription(inner().sku());
+        return PricingTier.fromSkuDescription(innerModel().sku());
     }
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (inner().reserved() == null || !inner().reserved())
+        return (innerModel().reserved() == null || !innerModel().reserved())
             ? OperatingSystem.WINDOWS
             : OperatingSystem.LINUX;
     }
@@ -86,13 +86,13 @@ class AppServicePlanImpl
         if (pricingTier == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("pricingTier == null"));
         }
-        inner().withSku(pricingTier.toSkuDescription());
+        innerModel().withSku(pricingTier.toSkuDescription());
         return this;
     }
 
     @Override
     public AppServicePlanImpl withPerSiteScaling(boolean perSiteScaling) {
-        inner().withPerSiteScaling(perSiteScaling);
+        innerModel().withPerSiteScaling(perSiteScaling);
         return this;
     }
 
@@ -101,17 +101,17 @@ class AppServicePlanImpl
         if (capacity < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Capacity is at least 1."));
         }
-        inner().sku().withCapacity(capacity);
+        innerModel().sku().withCapacity(capacity);
         return this;
     }
 
     @Override
     public AppServicePlanImpl withOperatingSystem(OperatingSystem operatingSystem) {
         if (OperatingSystem.LINUX.equals(operatingSystem)) {
-            inner().withReserved(true);
-            inner().withKind("linux");
+            innerModel().withReserved(true);
+            innerModel().withKind("linux");
         } else {
-            inner().withKind("app");
+            innerModel().withKind("app");
         }
         return this;
     }

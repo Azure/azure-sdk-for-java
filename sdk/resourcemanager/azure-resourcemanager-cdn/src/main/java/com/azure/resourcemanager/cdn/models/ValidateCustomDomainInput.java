@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ValidateCustomDomainInput model. */
+/** Input of the custom domain to be validated for DNS mapping. */
 @Fluent
 public final class ValidateCustomDomainInput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateCustomDomainInput.class);

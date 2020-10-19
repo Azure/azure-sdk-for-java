@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Sku model. */
+/** The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. */
 @Fluent
 public final class Sku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);

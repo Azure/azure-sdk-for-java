@@ -4,187 +4,57 @@
 
 package com.azure.resourcemanager.authorization.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.authorization.models.UserCreateParameters;
-import com.azure.resourcemanager.authorization.models.UserGetMemberGroupsParameters;
-import com.azure.resourcemanager.authorization.models.UserGetMemberGroupsResult;
-import com.azure.resourcemanager.authorization.models.UserListResult;
 import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Users. */
-public final class UsersClient {
-    private final ClientLogger logger = new ClientLogger(UsersClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final UsersService service;
-
-    /** The service client containing this operation class. */
-    private final GraphRbacManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in UsersClient. */
+public interface UsersClient {
     /**
-     * Initializes an instance of UsersClient.
+     * Create a new user.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param parameters Request parameters for creating a new work or school account user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory user information.
      */
-    UsersClient(GraphRbacManagementClient client) {
-        this.service = RestProxy.create(UsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for GraphRbacManagementClientUsers to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementC")
-    private interface UsersService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Post("/{tenantID}/users")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") UserCreateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/users")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/users/{upnOrObjectId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("upnOrObjectId") String upnOrObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Patch("/{tenantID}/users/{upnOrObjectId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("upnOrObjectId") String upnOrObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") UserUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/{tenantID}/users/{upnOrObjectId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("upnOrObjectId") String upnOrObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Post("/{tenantID}/users/{objectId}/getMemberGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserGetMemberGroupsResult>> getMemberGroups(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") UserGetMemberGroupsParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserListResult>> listNext(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<UserInner>> createWithResponseAsync(UserCreateParameters parameters);
 
     /**
      * Create a new user.
      *
      * @param parameters Request parameters for creating a new work or school account user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UserInner>> createWithResponseAsync(UserCreateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<UserInner> createAsync(UserCreateParameters parameters);
+
+    /**
+     * Create a new user.
+     *
+     * @param parameters Request parameters for creating a new work or school account user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory user information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UserInner create(UserCreateParameters parameters);
 
     /**
      * Create a new user.
@@ -192,108 +62,13 @@ public final class UsersClient {
      * @param parameters Request parameters for creating a new work or school account user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UserInner>> createWithResponseAsync(UserCreateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
-    }
-
-    /**
-     * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory user information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserInner> createAsync(UserCreateParameters parameters) {
-        return createWithResponseAsync(parameters)
-            .flatMap(
-                (Response<UserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory user information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserInner> createAsync(UserCreateParameters parameters, Context context) {
-        return createWithResponseAsync(parameters, context)
-            .flatMap(
-                (Response<UserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory user information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserInner create(UserCreateParameters parameters) {
-        return createAsync(parameters).block();
-    }
-
-    /**
-     * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory user information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserInner create(UserCreateParameters parameters, Context context) {
-        return createAsync(parameters, context).block();
-    }
+    Response<UserInner> createWithResponse(UserCreateParameters parameters, Context context);
 
     /**
      * Gets list of users for the current tenant.
@@ -301,46 +76,24 @@ public final class UsersClient {
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of users for the current tenant.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UserInner>> listSinglePageAsync(String filter, String expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            expand,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<UserInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<UserInner> listAsync(String filter, String expand);
+
+    /**
+     * Gets list of users for the current tenant.
+     *
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<UserInner> listAsync();
 
     /**
      * Gets list of users for the current tenant.
@@ -349,177 +102,63 @@ public final class UsersClient {
      * @param expand The expand value for the operation result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UserInner>> listSinglePageAsync(String filter, String expand, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                filter,
-                expand,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @param expand The expand value for the operation result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UserInner> listAsync(String filter, String expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand), nextLink -> listNextSinglePageAsync(nextLink));
-    }
+    PagedIterable<UserInner> list(String filter, String expand, Context context);
 
     /**
      * Gets list of users for the current tenant.
      *
-     * @param filter The filter to apply to the operation.
-     * @param expand The expand value for the operation result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UserInner> listAsync(String filter, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UserInner> listAsync() {
-        final String filter = null;
-        final String expand = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @param expand The expand value for the operation result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UserInner> list(String filter, String expand) {
-        return new PagedIterable<>(listAsync(filter, expand));
-    }
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @param expand The expand value for the operation result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UserInner> list(String filter, String expand, Context context) {
-        return new PagedIterable<>(listAsync(filter, expand, context));
-    }
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UserInner> list() {
-        final String filter = null;
-        final String expand = null;
-        final Context context = null;
-        return new PagedIterable<>(listAsync(filter, expand));
-    }
+    PagedIterable<UserInner> list();
 
     /**
      * Gets user information from the directory.
      *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (upnOrObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            upnOrObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId);
+
+    /**
+     * Gets user information from the directory.
+     *
+     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<UserInner> getAsync(String upnOrObjectId);
+
+    /**
+     * Gets user information from the directory.
+     *
+     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UserInner get(String upnOrObjectId);
 
     /**
      * Gets user information from the directory.
@@ -527,110 +166,13 @@ public final class UsersClient {
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (upnOrObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                upnOrObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context);
-    }
-
-    /**
-     * Gets user information from the directory.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserInner> getAsync(String upnOrObjectId) {
-        return getWithResponseAsync(upnOrObjectId)
-            .flatMap(
-                (Response<UserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets user information from the directory.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserInner> getAsync(String upnOrObjectId, Context context) {
-        return getWithResponseAsync(upnOrObjectId, context)
-            .flatMap(
-                (Response<UserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets user information from the directory.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserInner get(String upnOrObjectId) {
-        return getAsync(upnOrObjectId).block();
-    }
-
-    /**
-     * Gets user information from the directory.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user for which to get information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserInner get(String upnOrObjectId, Context context) {
-        return getAsync(upnOrObjectId, context).block();
-    }
+    Response<UserInner> getWithResponse(String upnOrObjectId, Context context);
 
     /**
      * Updates a user.
@@ -638,45 +180,40 @@ public final class UsersClient {
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param parameters Request parameters for updating an existing work or school account user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, UserUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (upnOrObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            upnOrObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, UserUpdateParameters parameters);
+
+    /**
+     * Updates a user.
+     *
+     * @param upnOrObjectId The object ID or principal name of the user to update.
+     * @param parameters Request parameters for updating an existing work or school account user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateAsync(String upnOrObjectId, UserUpdateParameters parameters);
+
+    /**
+     * Updates a user.
+     *
+     * @param upnOrObjectId The object ID or principal name of the user to update.
+     * @param parameters Request parameters for updating an existing work or school account user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(String upnOrObjectId, UserUpdateParameters parameters);
 
     /**
      * Updates a user.
@@ -685,143 +222,51 @@ public final class UsersClient {
      * @param parameters Request parameters for updating an existing work or school account user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(
-        String upnOrObjectId, UserUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (upnOrObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                upnOrObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String upnOrObjectId, UserUpdateParameters parameters) {
-        return updateWithResponseAsync(upnOrObjectId, parameters).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Updates a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String upnOrObjectId, UserUpdateParameters parameters, Context context) {
-        return updateWithResponseAsync(upnOrObjectId, parameters, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Updates a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String upnOrObjectId, UserUpdateParameters parameters) {
-        updateAsync(upnOrObjectId, parameters).block();
-    }
-
-    /**
-     * Updates a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String upnOrObjectId, UserUpdateParameters parameters, Context context) {
-        updateAsync(upnOrObjectId, parameters, context).block();
-    }
+    Response<Void> updateWithResponse(String upnOrObjectId, UserUpdateParameters parameters, Context context);
 
     /**
      * Delete a user.
      *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (upnOrObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            upnOrObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId);
+
+    /**
+     * Delete a user.
+     *
+     * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String upnOrObjectId);
+
+    /**
+     * Delete a user.
+     *
+     * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String upnOrObjectId);
 
     /**
      * Delete a user.
@@ -829,92 +274,13 @@ public final class UsersClient {
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (upnOrObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                upnOrObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context);
-    }
-
-    /**
-     * Delete a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String upnOrObjectId) {
-        return deleteWithResponseAsync(upnOrObjectId).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String upnOrObjectId, Context context) {
-        return deleteWithResponseAsync(upnOrObjectId, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String upnOrObjectId) {
-        deleteAsync(upnOrObjectId).block();
-    }
-
-    /**
-     * Delete a user.
-     *
-     * @param upnOrObjectId The object ID or principal name of the user to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String upnOrObjectId, Context context) {
-        deleteAsync(upnOrObjectId, context).block();
-    }
+    Response<Void> deleteWithResponse(String upnOrObjectId, Context context);
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
@@ -923,46 +289,28 @@ public final class UsersClient {
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
      *     membership in all groups should be checked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, boolean securityEnabledOnly) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
-        parameters.withSecurityEnabledOnly(securityEnabledOnly);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getMemberGroups(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly);
+
+    /**
+     * Gets a collection that contains the object IDs of the groups of which the user is a member.
+     *
+     * @param objectId The object ID of the user for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
+     *     membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection that contains the object IDs of the groups of which the user is a member.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly);
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
@@ -972,198 +320,11 @@ public final class UsersClient {
      *     membership in all groups should be checked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection that contains the object IDs of the groups of which the user is a member.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(
-        String objectId, boolean securityEnabledOnly, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
-        parameters.withSecurityEnabledOnly(securityEnabledOnly);
-        context = this.client.mergeContext(context);
-        return service
-            .getMemberGroups(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
-     * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
-        return new PagedFlux<>(() -> getMemberGroupsSinglePageAsync(objectId, securityEnabledOnly));
-    }
-
-    /**
-     * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
-     * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection that contains the object IDs of the groups of which the user is a member.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, Context context) {
-        return new PagedFlux<>(() -> getMemberGroupsSinglePageAsync(objectId, securityEnabledOnly, context));
-    }
-
-    /**
-     * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
-     * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection that contains the object IDs of the groups of which the user is a member.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
-        return new PagedIterable<>(getMemberGroupsAsync(objectId, securityEnabledOnly));
-    }
-
-    /**
-     * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
-     * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection that contains the object IDs of the groups of which the user is a member.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly, Context context) {
-        return new PagedIterable<>(getMemberGroupsAsync(objectId, securityEnabledOnly, context));
-    }
-
-    /**
-     * Gets a list of users for the current tenant.
-     *
-     * @param nextLink Next link for the list operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UserInner>> listNextSinglePageAsync(String nextLink) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listNext(
-                            this.client.getEndpoint(),
-                            nextLink,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<UserInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets a list of users for the current tenant.
-     *
-     * @param nextLink Next link for the list operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UserInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(
-                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
+    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly, Context context);
 }

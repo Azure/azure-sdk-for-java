@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImageDataDisk model. */
+/** Describes a data disk. */
 @Fluent
 public final class ImageDataDisk extends ImageDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDataDisk.class);

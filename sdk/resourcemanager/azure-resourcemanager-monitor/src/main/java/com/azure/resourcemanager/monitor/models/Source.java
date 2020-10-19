@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Source model. */
+/** Specifies the log search query. */
 @Fluent
 public final class Source {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Source.class);

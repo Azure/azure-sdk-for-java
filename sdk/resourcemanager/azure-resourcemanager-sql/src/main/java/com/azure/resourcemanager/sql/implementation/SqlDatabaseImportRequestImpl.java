@@ -39,7 +39,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public ImportExtensionRequest inner() {
+    public ImportExtensionRequest innerModel() {
         return this.inner;
     }
 
@@ -55,7 +55,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                 this.sqlDatabase.sqlServerName,
                 this.sqlDatabase.name(),
                 ExtensionName.IMPORT,
-                this.inner())
+                this.innerModel())
             .flatMap(
                 importExportResponseInner ->
                     self

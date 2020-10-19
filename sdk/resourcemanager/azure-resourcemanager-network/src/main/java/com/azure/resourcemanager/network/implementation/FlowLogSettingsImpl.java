@@ -4,9 +4,9 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.models.FlowLogSettings;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
-import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
+import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link FlowLogSettings} and its create and update interfaces. */
@@ -33,7 +33,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.inner())
+            .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.innerModel())
             .map(
                 flowLogInformationInner ->
                     new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner, nsgId));
@@ -41,56 +41,56 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public Update withLogging() {
-        this.inner().withEnabled(true);
+        this.innerModel().withEnabled(true);
         return this;
     }
 
     @Override
     public Update withoutLogging() {
-        this.inner().withEnabled(false);
+        this.innerModel().withEnabled(false);
         return this;
     }
 
     @Override
     public Update withStorageAccount(String storageId) {
-        this.inner().withStorageId(storageId);
+        this.innerModel().withStorageId(storageId);
         return this;
     }
 
     @Override
     public Update withRetentionPolicyEnabled() {
         ensureRetentionPolicy();
-        this.inner().retentionPolicy().withEnabled(true);
+        this.innerModel().retentionPolicy().withEnabled(true);
         return this;
     }
 
     @Override
     public Update withRetentionPolicyDisabled() {
         ensureRetentionPolicy();
-        this.inner().retentionPolicy().withEnabled(false);
+        this.innerModel().retentionPolicy().withEnabled(false);
         return this;
     }
 
     @Override
     public Update withRetentionPolicyDays(int days) {
         ensureRetentionPolicy();
-        this.inner().retentionPolicy().withDays(days);
+        this.innerModel().retentionPolicy().withDays(days);
         return this;
     }
 
     private void ensureRetentionPolicy() {
-        if (this.inner().retentionPolicy() == null) {
-            this.inner().withRetentionPolicy(new RetentionPolicyParameters());
+        if (this.innerModel().retentionPolicy() == null) {
+            this.innerModel().withRetentionPolicy(new RetentionPolicyParameters());
         }
     }
 
     @Override
     public Update update() {
-        if (this.inner().flowAnalyticsConfiguration() != null
-            && this.inner().flowAnalyticsConfiguration().networkWatcherFlowAnalyticsConfiguration() == null) {
+        if (this.innerModel().flowAnalyticsConfiguration() != null
+            && this.innerModel().flowAnalyticsConfiguration().networkWatcherFlowAnalyticsConfiguration() == null) {
             // Service response could have such case, which is not valid in swagger that
             // networkWatcherFlowAnalyticsConfiguration is a required field.
-            this.inner().withFlowAnalyticsConfiguration(null);
+            this.innerModel().withFlowAnalyticsConfiguration(null);
         }
         return this;
     }
@@ -102,7 +102,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), inner().targetResourceId());
+            .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), innerModel().targetResourceId());
     }
 
     @Override
@@ -117,31 +117,31 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public String targetResourceId() {
-        return inner().targetResourceId();
+        return innerModel().targetResourceId();
     }
 
     @Override
     public String storageId() {
-        return inner().storageId();
+        return innerModel().storageId();
     }
 
     @Override
     public boolean enabled() {
-        return Utils.toPrimitiveBoolean(inner().enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enabled());
     }
 
     @Override
     public boolean isRetentionEnabled() {
         // will return default values if server response for retention policy was empty
         ensureRetentionPolicy();
-        return Utils.toPrimitiveBoolean(inner().retentionPolicy().enabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().retentionPolicy().enabled());
     }
 
     @Override
     public int retentionDays() {
         // will return default values if server response for retention policy was empty
         ensureRetentionPolicy();
-        return Utils.toPrimitiveInt(inner().retentionPolicy().days());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().retentionPolicy().days());
     }
 
     @Override

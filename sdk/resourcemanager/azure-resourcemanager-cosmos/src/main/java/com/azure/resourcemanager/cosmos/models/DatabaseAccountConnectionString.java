@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DatabaseAccountConnectionString model. */
+/** Connection string for the Cosmos DB account. */
 @Immutable
 public final class DatabaseAccountConnectionString {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountConnectionString.class);

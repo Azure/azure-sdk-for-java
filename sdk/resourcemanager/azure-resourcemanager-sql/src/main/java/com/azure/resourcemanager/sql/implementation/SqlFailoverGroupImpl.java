@@ -16,7 +16,7 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroupOperations;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.FailoverGroupInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -114,7 +114,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -124,48 +124,55 @@ public class SqlFailoverGroupImpl
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
+        return ResourceUtils.parentResourceIdFromResourceId(this.innerModel().id());
     }
 
     @Override
     public ReadWriteEndpointFailoverPolicy readWriteEndpointPolicy() {
-        return this.inner().readWriteEndpoint() != null ? this.inner().readWriteEndpoint().failoverPolicy() : null;
+        return this.innerModel().readWriteEndpoint() != null
+            ? this.innerModel().readWriteEndpoint().failoverPolicy()
+            : null;
     }
 
     @Override
     public int readWriteEndpointDataLossGracePeriodMinutes() {
-        return this.inner().readWriteEndpoint() != null
-                && this.inner().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes() != null
-            ? this.inner().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes()
+        return this.innerModel().readWriteEndpoint() != null
+                && this.innerModel().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes() != null
+            ? this.innerModel().readWriteEndpoint().failoverWithDataLossGracePeriodMinutes()
             : 0;
     }
 
     @Override
     public ReadOnlyEndpointFailoverPolicy readOnlyEndpointPolicy() {
-        return this.inner().readOnlyEndpoint() != null ? this.inner().readOnlyEndpoint().failoverPolicy() : null;
+        return this.innerModel().readOnlyEndpoint() != null
+            ? this.innerModel().readOnlyEndpoint().failoverPolicy()
+            : null;
     }
 
     @Override
     public FailoverGroupReplicationRole replicationRole() {
-        return this.inner().replicationRole();
+        return this.innerModel().replicationRole();
     }
 
     @Override
     public String replicationState() {
-        return this.inner().replicationState();
+        return this.innerModel().replicationState();
     }
 
     @Override
     public List<PartnerInfo> partnerServers() {
         return Collections
             .unmodifiableList(
-                this.inner().partnerServers() != null ? this.inner().partnerServers() : new ArrayList<PartnerInfo>());
+                this.innerModel().partnerServers() != null
+                    ? this.innerModel().partnerServers()
+                    : new ArrayList<PartnerInfo>());
     }
 
     @Override
     public List<String> databases() {
         return Collections
-            .unmodifiableList(this.inner().databases() != null ? this.inner().databases() : new ArrayList<String>());
+            .unmodifiableList(
+                this.innerModel().databases() != null ? this.innerModel().databases() : new ArrayList<String>());
     }
 
     @Override
@@ -213,7 +220,7 @@ public class SqlFailoverGroupImpl
             .sqlServerManager
             .serviceClient()
             .getFailoverGroups()
-            .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name(), self.inner())
+            .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name(), self.innerModel())
             .map(
                 failoverGroupInner -> {
                     self.setInner(failoverGroupInner);
@@ -246,98 +253,98 @@ public class SqlFailoverGroupImpl
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.innerModel().type();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.fromName(this.innerModel().location());
     }
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().tags();
+        return this.innerModel().tags();
     }
 
     @Override
     public SqlFailoverGroupImpl withTags(Map<String, String> tags) {
-        this.inner().withTags(new HashMap<>(tags));
+        this.innerModel().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withTag(String key, String value) {
-        if (this.inner().tags() == null) {
-            this.inner().withTags(new HashMap<String, String>());
+        if (this.innerModel().tags() == null) {
+            this.innerModel().withTags(new HashMap<String, String>());
         }
-        this.inner().tags().put(key, value);
+        this.innerModel().tags().put(key, value);
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withoutTag(String key) {
-        if (this.inner().tags() != null) {
-            this.inner().tags().remove(key);
+        if (this.innerModel().tags() != null) {
+            this.innerModel().tags().remove(key);
         }
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(int gracePeriodInMinutes) {
-        if (this.inner().readWriteEndpoint() == null) {
-            this.inner().withReadWriteEndpoint(new FailoverGroupReadWriteEndpoint());
+        if (this.innerModel().readWriteEndpoint() == null) {
+            this.innerModel().withReadWriteEndpoint(new FailoverGroupReadWriteEndpoint());
         }
-        this.inner().readWriteEndpoint().withFailoverPolicy(ReadWriteEndpointFailoverPolicy.AUTOMATIC);
-        this.inner().readWriteEndpoint().withFailoverWithDataLossGracePeriodMinutes(gracePeriodInMinutes);
+        this.innerModel().readWriteEndpoint().withFailoverPolicy(ReadWriteEndpointFailoverPolicy.AUTOMATIC);
+        this.innerModel().readWriteEndpoint().withFailoverWithDataLossGracePeriodMinutes(gracePeriodInMinutes);
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withManualReadWriteEndpointPolicy() {
-        if (this.inner().readWriteEndpoint() == null) {
-            this.inner().withReadWriteEndpoint(new FailoverGroupReadWriteEndpoint());
+        if (this.innerModel().readWriteEndpoint() == null) {
+            this.innerModel().withReadWriteEndpoint(new FailoverGroupReadWriteEndpoint());
         }
-        this.inner().readWriteEndpoint().withFailoverPolicy(ReadWriteEndpointFailoverPolicy.MANUAL);
-        this.inner().readWriteEndpoint().withFailoverWithDataLossGracePeriodMinutes(null);
+        this.innerModel().readWriteEndpoint().withFailoverPolicy(ReadWriteEndpointFailoverPolicy.MANUAL);
+        this.innerModel().readWriteEndpoint().withFailoverWithDataLossGracePeriodMinutes(null);
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withReadOnlyEndpointPolicyEnabled() {
-        if (this.inner().readOnlyEndpoint() == null) {
-            this.inner().withReadOnlyEndpoint(new FailoverGroupReadOnlyEndpoint());
+        if (this.innerModel().readOnlyEndpoint() == null) {
+            this.innerModel().withReadOnlyEndpoint(new FailoverGroupReadOnlyEndpoint());
         }
-        this.inner().readOnlyEndpoint().withFailoverPolicy(ReadOnlyEndpointFailoverPolicy.ENABLED);
+        this.innerModel().readOnlyEndpoint().withFailoverPolicy(ReadOnlyEndpointFailoverPolicy.ENABLED);
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withReadOnlyEndpointPolicyDisabled() {
-        if (this.inner().readOnlyEndpoint() == null) {
-            this.inner().withReadOnlyEndpoint(new FailoverGroupReadOnlyEndpoint());
+        if (this.innerModel().readOnlyEndpoint() == null) {
+            this.innerModel().withReadOnlyEndpoint(new FailoverGroupReadOnlyEndpoint());
         }
-        this.inner().readOnlyEndpoint().withFailoverPolicy(ReadOnlyEndpointFailoverPolicy.DISABLED);
+        this.innerModel().readOnlyEndpoint().withFailoverPolicy(ReadOnlyEndpointFailoverPolicy.DISABLED);
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withPartnerServerId(String id) {
-        this.inner().withPartnerServers(new ArrayList<PartnerInfo>());
-        this.inner().partnerServers().add(new PartnerInfo().withId(id));
+        this.innerModel().withPartnerServers(new ArrayList<PartnerInfo>());
+        this.innerModel().partnerServers().add(new PartnerInfo().withId(id));
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withDatabaseId(String id) {
-        if (this.inner().databases() == null) {
-            this.inner().withDatabases(new ArrayList<String>());
+        if (this.innerModel().databases() == null) {
+            this.innerModel().withDatabases(new ArrayList<String>());
         }
-        this.inner().databases().add(id);
+        this.innerModel().databases().add(id);
         return this;
     }
 
@@ -348,17 +355,17 @@ public class SqlFailoverGroupImpl
 
     @Override
     public SqlFailoverGroupImpl withDatabaseIds(String... ids) {
-        this.inner().withDatabases(new ArrayList<String>());
+        this.innerModel().withDatabases(new ArrayList<String>());
         for (String id : ids) {
-            this.inner().databases().add(id);
+            this.innerModel().databases().add(id);
         }
         return this;
     }
 
     @Override
     public SqlFailoverGroupImpl withoutDatabaseId(String id) {
-        if (this.inner().databases() != null) {
-            this.inner().databases().remove(key);
+        if (this.innerModel().databases() != null) {
+            this.innerModel().databases().remove(key);
         }
         return this;
     }

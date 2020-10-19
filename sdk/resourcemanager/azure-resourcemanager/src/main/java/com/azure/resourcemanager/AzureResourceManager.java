@@ -62,7 +62,7 @@ import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
-import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
@@ -91,8 +91,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
@@ -140,7 +139,7 @@ public final class AzureResourceManager {
     //    private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
-    private final MSIManager msiManager;
+    private final MsiManager msiManager;
     private final MonitorManager monitorManager;
     private final EventHubsManager eventHubsManager;
     private final AppPlatformManager appPlatformManager;
@@ -148,7 +147,6 @@ public final class AzureResourceManager {
     private final Authenticated authenticated;
     private final String subscriptionId;
     private final String tenantId;
-    private final SdkContext sdkContext;
 
     /**
      * Authenticate to Azure using an Azure credential object.
@@ -208,9 +206,6 @@ public final class AzureResourceManager {
         /** @return the currently selected tenant ID this client is authenticated to work with */
         String tenantId();
 
-        /** @return the sdk context in authenticated */
-        SdkContext sdkContext();
-
         /**
          * Entry point to subscription management APIs.
          *
@@ -224,14 +219,6 @@ public final class AzureResourceManager {
          * @return Tenants interface providing access to tenant management
          */
         Tenants tenants();
-
-        /**
-         * Specifies sdk context for azure.
-         *
-         * @param sdkContext the sdk context
-         * @return the authenticated itself for chaining
-         */
-        Authenticated withSdkContext(SdkContext sdkContext);
 
         /**
          * Specifies a specific tenant for azure.
@@ -271,7 +258,6 @@ public final class AzureResourceManager {
         private final HttpPipeline httpPipeline;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
         private AuthorizationManager authorizationManager;
-        private SdkContext sdkContext;
         private String tenantId;
         private String subscriptionId;
         private final AzureEnvironment environment;
@@ -283,7 +269,6 @@ public final class AzureResourceManager {
             this.tenantId = profile.getTenantId();
             this.subscriptionId = profile.getSubscriptionId();
             this.environment = profile.getEnvironment();
-            this.sdkContext = new SdkContext();
         }
 
         @Override
@@ -332,24 +317,11 @@ public final class AzureResourceManager {
         }
 
         @Override
-        public Authenticated withSdkContext(SdkContext sdkContext) {
-            this.sdkContext = sdkContext;
-            this.authorizationManager = AuthorizationManager.authenticate(
-                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), sdkContext);
-            return this;
-        }
-
-        @Override
-        public SdkContext sdkContext() {
-            return this.sdkContext;
-        }
-
-        @Override
         public Authenticated withTenantId(String tenantId) {
             Objects.requireNonNull(tenantId);
             this.tenantId = tenantId;
             this.authorizationManager = AuthorizationManager.authenticate(
-                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), sdkContext);
+                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment));
             return this;
         }
 
@@ -362,7 +334,7 @@ public final class AzureResourceManager {
         @Override
         public AzureResourceManager withDefaultSubscription() {
             if (subscriptionId == null) {
-                subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
             }
             return new AzureResourceManager(
                 httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
@@ -370,40 +342,36 @@ public final class AzureResourceManager {
     }
 
     private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile, Authenticated authenticated) {
-        this.sdkContext = authenticated.sdkContext();
         this.resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-        this.storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        this.computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
-        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-        this.keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
-        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.trafficManager = TrafficManager.authenticate(httpPipeline, profile, sdkContext);
-        this.redisManager = RedisManager.authenticate(httpPipeline, profile, sdkContext);
-        this.cdnManager = CdnManager.authenticate(httpPipeline, profile, sdkContext);
-        this.dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
-        this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        this.sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
-        this.serviceBusManager = ServiceBusManager.authenticate(httpPipeline, profile, sdkContext);
-        this.containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile, sdkContext);
-        this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
-        this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile, sdkContext);
-        //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
-        //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
-        this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
-        this.eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile, sdkContext);
-        this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
-        this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
+        this.computeManager = ComputeManager.authenticate(httpPipeline, profile);
+        this.networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        this.keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, internalContext);
+        this.trafficManager = TrafficManager.authenticate(httpPipeline, profile);
+        this.redisManager = RedisManager.authenticate(httpPipeline, profile);
+        this.cdnManager = CdnManager.authenticate(httpPipeline, profile);
+        this.dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
+        this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile);
+        this.sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile);
+        this.serviceBusManager = ServiceBusManager.authenticate(httpPipeline, profile);
+        this.containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile);
+        this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile);
+        this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile);
+        this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
+        //        this.searchServiceManager = SearchServiceManager
+        //        .authenticate(restClient, subscriptionId, internalContext);
+        //        this.authorizationManager = AuthorizationManager
+        //        .authenticate(restClient, subscriptionId, internalContext);
+        this.msiManager = MsiManager.authenticate(httpPipeline, profile);
+        this.monitorManager = MonitorManager.authenticate(httpPipeline, profile);
+        this.eventHubsManager = EventHubsManager.authenticate(httpPipeline, profile);
+        this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile);
+        this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile);
         this.authenticated = authenticated;
         this.subscriptionId = profile.getSubscriptionId();
         this.tenantId = profile.getTenantId();
-    }
-
-    /** @return the currently selected subscription ID this client is authenticated to work with */
-    public SdkContext sdkContext() {
-        return this.sdkContext;
     }
 
     /** @return the currently selected subscription ID this client is authenticated to work with */

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVault
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +32,7 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
@@ -42,7 +42,7 @@ class AppServiceCertificateKeyVaultBindingImpl
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), inner())
+            .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), innerModel())
             .map(
                 appServiceCertificateInner -> {
                     setInner(appServiceCertificateInner);
@@ -52,17 +52,17 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     @Override
     public String keyVaultId() {
-        return inner().keyVaultId();
+        return innerModel().keyVaultId();
     }
 
     @Override
     public String keyVaultSecretName() {
-        return inner().keyVaultSecretName();
+        return innerModel().keyVaultSecretName();
     }
 
     @Override
     public KeyVaultSecretStatus provisioningState() {
-        return inner().provisioningState();
+        return innerModel().provisioningState();
     }
 
     @Override

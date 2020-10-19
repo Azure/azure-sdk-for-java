@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyUseServerDefault;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -39,12 +39,12 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         this.resourceGroupName = parent.resourceGroupName();
         this.sqlServerName = parent.sqlServerName();
 
-        this.inner().withLocation(parent.regionName());
+        this.innerModel().withLocation(parent.regionName());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
@@ -54,57 +54,57 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.fromName(this.innerModel().location());
     }
 
     @Override
     public String kind() {
-        return this.inner().kind();
+        return this.innerModel().kind();
     }
 
     @Override
     public SecurityAlertPolicyState currentState() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public String disabledAlerts() {
-        return this.inner().disabledAlerts();
+        return this.innerModel().disabledAlerts();
     }
 
     @Override
     public String emailAddresses() {
-        return this.inner().emailAddresses();
+        return this.innerModel().emailAddresses();
     }
 
     @Override
     public boolean emailAccountAdmins() {
-        return this.inner().emailAccountAdmins() == SecurityAlertPolicyEmailAccountAdmins.ENABLED;
+        return this.innerModel().emailAccountAdmins() == SecurityAlertPolicyEmailAccountAdmins.ENABLED;
     }
 
     @Override
     public String storageEndpoint() {
-        return this.inner().storageEndpoint();
+        return this.innerModel().storageEndpoint();
     }
 
     @Override
     public String storageAccountAccessKey() {
-        return this.inner().storageAccountAccessKey();
+        return this.innerModel().storageAccountAccessKey();
     }
 
     @Override
     public int retentionDays() {
-        return this.inner().retentionDays();
+        return this.innerModel().retentionDays();
     }
 
     @Override
     public boolean isDefaultSecurityAlertPolicy() {
-        return this.inner().useServerDefault() == SecurityAlertPolicyUseServerDefault.ENABLED;
+        return this.innerModel().useServerDefault() == SecurityAlertPolicyUseServerDefault.ENABLED;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
                 this.sqlServerName,
                 this.parent().name(),
                 SecurityAlertPolicyName.DEFAULT,
-                this.inner())
+                this.innerModel())
             .map(
                 databaseSecurityAlertPolicyInner -> {
                     self.setInner(databaseSecurityAlertPolicyInner);
@@ -155,70 +155,70 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyEnabled() {
-        this.inner().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
-        this.inner().withState(SecurityAlertPolicyState.ENABLED);
+        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
+        this.innerModel().withState(SecurityAlertPolicyState.ENABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyDisabled() {
-        this.inner().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
-        this.inner().withState(SecurityAlertPolicyState.DISABLED);
+        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
+        this.innerModel().withState(SecurityAlertPolicyState.DISABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyNew() {
-        this.inner().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
-        this.inner().withState(SecurityAlertPolicyState.NEW);
+        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
+        this.innerModel().withState(SecurityAlertPolicyState.NEW);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withDefaultSecurityAlertPolicy() {
-        this.inner().withUseServerDefault(SecurityAlertPolicyUseServerDefault.ENABLED);
+        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.ENABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withStorageEndpoint(String storageEndpoint) {
-        this.inner().withStorageEndpoint(storageEndpoint);
+        this.innerModel().withStorageEndpoint(storageEndpoint);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withStorageAccountAccessKey(String storageAccountAccessKey) {
-        this.inner().withStorageAccountAccessKey(storageAccountAccessKey);
+        this.innerModel().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withAlertsFilter(String alertsFilter) {
-        this.inner().withDisabledAlerts(alertsFilter);
+        this.innerModel().withDisabledAlerts(alertsFilter);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withEmailAddresses(String addresses) {
-        this.inner().withEmailAddresses(addresses);
+        this.innerModel().withEmailAddresses(addresses);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withRetentionDays(int retentionDays) {
-        this.inner().withRetentionDays(retentionDays);
+        this.innerModel().withRetentionDays(retentionDays);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withEmailToAccountAdmins() {
-        this.inner().withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins.ENABLED);
+        this.innerModel().withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins.ENABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withoutEmailToAccountAdmins() {
-        this.inner().withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins.DISABLED);
+        this.innerModel().withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins.DISABLED);
         return this;
     }
 }

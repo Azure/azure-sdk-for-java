@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
@@ -23,6 +23,7 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
+import java.time.Duration;
 
 
 /**
@@ -47,13 +48,13 @@ public final class ManageFunctionAppWithAuthentication {
     public static boolean runSample(AzureResourceManager azureResourceManager) throws GitAPIException {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
-        final String app2Name       = azureResourceManager.sdkContext().randomResourceName("webapp2-", 20);
-        final String app3Name       = azureResourceManager.sdkContext().randomResourceName("webapp3-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
         final String app1Url        = app1Name + suffix;
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -125,10 +126,10 @@ public final class ManageFunctionAppWithAuthentication {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/api/square...");
-            Utils.post("http://" + app1Url + "/api/square", "625");
-            SdkContext.sleep(5000);
+            Utils.sendPostRequest("http://" + app1Url + "/api/square", "625");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/api/square...");
-            System.out.println("Square of 625 is " + Utils.post("http://" + app1Url + "/api/square?code=" + app1.getMasterKey(), "625"));
+            System.out.println("Square of 625 is " + Utils.sendPostRequest("http://" + app1Url + "/api/square?code=" + app1.getMasterKey(), "625"));
 
             //============================================================
             // Deploy to app 2 through Git
@@ -157,17 +158,17 @@ public final class ManageFunctionAppWithAuthentication {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/api/square...");
-            Utils.post("http://" + app2Url + "/api/square", "725");
-            SdkContext.sleep(5000);
+            Utils.sendPostRequest("http://" + app2Url + "/api/square", "725");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app2Url + "/api/square...");
-            System.out.println("Square of 725 is " + Utils.post("http://" + app2Url + "/api/square?code=" + functionKey, "725"));
+            System.out.println("Square of 725 is " + Utils.sendPostRequest("http://" + app2Url + "/api/square?code=" + functionKey, "725"));
 
             System.out.println("Adding a new key to function app " + app2.name() + "...");
 
             NameValuePair newKey = app2.addFunctionKey("square", "newkey", null);
 
             System.out.println("CURLing " + app2Url + "/api/square...");
-            System.out.println("Square of 825 is " + Utils.post("http://" + app2Url + "/api/square?code=" + newKey.value(), "825"));
+            System.out.println("Square of 825 is " + Utils.sendPostRequest("http://" + app2Url + "/api/square?code=" + newKey.value(), "825"));
 
             //============================================================
             // Deploy to app 3 through Git
@@ -175,7 +176,7 @@ public final class ManageFunctionAppWithAuthentication {
             System.out.println("Deploying a local function app to " + app3Name + " through web deploy...");
 
             app3.deploy()
-                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/square-function-app-function-auth.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/square-function-app-function-auth.zip")
                     .withExistingDeploymentsDeleted(false)
                     .execute();
 
@@ -188,10 +189,10 @@ public final class ManageFunctionAppWithAuthentication {
 
             // warm up
             System.out.println("Warming up " + app3Url + "/api/square...");
-            Utils.post("http://" + app3Url + "/api/square", "925");
-            SdkContext.sleep(5000);
+            Utils.sendPostRequest("http://" + app3Url + "/api/square", "925");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app3Url + "/api/square...");
-            System.out.println("Square of 925 is " + Utils.post("http://" + app3Url + "/api/square?code=mysecretkey", "925"));
+            System.out.println("Square of 925 is " + Utils.sendPostRequest("http://" + app3Url + "/api/square?code=mysecretkey", "925"));
 
             return true;
         } finally {

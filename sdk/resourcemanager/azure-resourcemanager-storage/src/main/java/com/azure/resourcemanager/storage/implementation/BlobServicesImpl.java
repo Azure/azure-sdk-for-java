@@ -8,7 +8,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
 import com.azure.resourcemanager.storage.models.BlobServiceProperties;
 import com.azure.resourcemanager.storage.models.BlobServices;
-import com.azure.resourcemanager.storage.fluent.inner.BlobServicePropertiesInner;
+import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 import reactor.core.publisher.Mono;
 
 public class BlobServicesImpl extends WrapperImpl<BlobServicesClient> implements BlobServices {
@@ -38,6 +38,6 @@ public class BlobServicesImpl extends WrapperImpl<BlobServicesClient> implements
 
     @Override
     public Mono<BlobServiceProperties> getServicePropertiesAsync(String resourceGroupName, String accountName) {
-        return inner().getServicePropertiesAsync(resourceGroupName, accountName).map(inner -> wrapModel(inner));
+        return innerModel().getServicePropertiesAsync(resourceGroupName, accountName).map(inner -> wrapModel(inner));
     }
 }

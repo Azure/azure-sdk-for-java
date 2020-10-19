@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
-import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
+import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.GroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.serviceClient().getGroups().list(null));
+        return wrapList(this.manager.serviceClient().getGroups().list());
     }
 
     @Override

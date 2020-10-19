@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
+import com.azure.resourcemanager.appservice.fluent.models.CsmOperationDescriptionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CsmOperationCollection model. */
+/** Collection of Azure resource manager operation metadata. */
 @Fluent
 public final class CsmOperationCollection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmOperationCollection.class);

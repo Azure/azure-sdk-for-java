@@ -8,7 +8,7 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.PasswordProfile;
 import com.azure.resourcemanager.authorization.models.UserCreateParameters;
 import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
-import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -31,13 +31,13 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public String userPrincipalName() {
-        return inner().userPrincipalName();
+        return innerModel().userPrincipalName();
     }
 
     @Override
     public String signInName() {
-        if (inner().signInNames() != null && !inner().signInNames().isEmpty()) {
-            return inner().signInNames().get(0).value();
+        if (innerModel().signInNames() != null && !innerModel().signInNames().isEmpty()) {
+            return innerModel().signInNames().get(0).value();
         } else {
             return null;
         }
@@ -45,17 +45,17 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public String mail() {
-        return inner().mail();
+        return innerModel().mail();
     }
 
     @Override
     public String mailNickname() {
-        return inner().mailNickname();
+        return innerModel().mailNickname();
     }
 
     @Override
     public CountryIsoCode usageLocation() {
-        return CountryIsoCode.fromString(inner().usageLocation());
+        return CountryIsoCode.fromString(innerModel().usageLocation());
     }
 
     @Override
@@ -159,7 +159,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     public String id() {
-        return inner().objectId();
+        return innerModel().objectId();
     }
 
     @Override

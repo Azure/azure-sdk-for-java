@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.BastionShareableLinkInner;
+import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BastionShareableLinkListRequest model. */
+/** Post request for all the Bastion Shareable Link endpoints. */
 @Fluent
 public final class BastionShareableLinkListRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionShareableLinkListRequest.class);

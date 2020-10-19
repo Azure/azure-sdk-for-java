@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;
@@ -21,7 +21,7 @@ import com.azure.resourcemanager.containerregistry.models.RunType;
 import com.azure.resourcemanager.containerregistry.models.SetValue;
 import com.azure.resourcemanager.containerregistry.models.TaskRunRequest;
 import com.azure.resourcemanager.containerregistry.models.Variant;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -82,7 +82,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
 
     @Override
     public boolean isArchiveEnabled() {
-        return Utils.toPrimitiveBoolean(this.inner.isArchiveEnabled());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.inner.isArchiveEnabled());
     }
 
     @Override
@@ -95,7 +95,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         if (this.inner.agentConfiguration() == null) {
             return 0;
         }
-        return Utils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
+        return ResourceManagerUtils.toPrimitiveInt(this.inner.agentConfiguration().cpu());
     }
 
     @Override
@@ -325,7 +325,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     }
 
     @Override
-    public RunInner inner() {
+    public RunInner innerModel() {
         return this.inner;
     }
 

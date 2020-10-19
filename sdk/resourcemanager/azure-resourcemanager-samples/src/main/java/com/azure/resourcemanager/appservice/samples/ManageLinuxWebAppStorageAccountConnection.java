@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -25,10 +25,12 @@ import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.PublicAccessType;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -50,11 +52,11 @@ public final class ManageLinuxWebAppStorageAccountConnection {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
         final String suffix         = ".azurewebsites.net";
-        final String app1Name       = azureResourceManager.sdkContext().randomResourceName("webapp1-", 20);
+        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
         final String app1Url        = app1Name + suffix;
-        final String storageName    = azureResourceManager.sdkContext().randomResourceName("jsdkstore", 20);
-        final String containerName  = azureResourceManager.sdkContext().randomResourceName("jcontainer", 20);
-        final String rgName         = azureResourceManager.sdkContext().randomResourceName("rg1NEMV_", 24);
+        final String storageName    = Utils.randomResourceName(azureResourceManager, "jsdkstore", 20);
+        final String containerName  = Utils.randomResourceName(azureResourceManager, "jcontainer", 20);
+        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -117,10 +119,10 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             // warm up
             System.out.println("Warming up " + app1Url + "/azure-samples-blob-traverser...");
-            Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/");
-            SdkContext.sleep(5000);
+            Utils.sendGetRequest("http://" + app1Url + "/azure-samples-blob-traverser/");
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             System.out.println("CURLing " + app1Url + "/azure-samples-blob-traverser...");
-            System.out.println(Utils.curl("http://" + app1Url + "/azure-samples-blob-traverser/"));
+            System.out.println(Utils.sendGetRequest("http://" + app1Url + "/azure-samples-blob-traverser/"));
 
             return true;
         } finally {
@@ -191,7 +193,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
     private static void uploadFileToContainer(BlobContainerClient blobContainerClient, String fileName, String filePath) {
         BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
         File file = new File(filePath);
-        try (InputStream is = new FileInputStream(file)) {
+        try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
             blobClient.upload(is, file.length());
         } catch (IOException e) {
             System.out.println(e.getMessage());

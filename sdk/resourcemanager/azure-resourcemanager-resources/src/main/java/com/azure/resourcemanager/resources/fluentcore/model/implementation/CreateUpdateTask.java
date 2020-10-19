@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskItem;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -49,12 +49,12 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
     public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
         if (this.resourceCreatorUpdater.isInCreateMode()) {
             return this.resourceCreatorUpdater.createResourceAsync()
-                    .subscribeOn(SdkContext.getReactorScheduler())
+                    .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                     .doOnNext(resourceT -> resource = resourceT)
                     .map(resourceT -> resourceT);
         } else {
             return this.resourceCreatorUpdater.updateResourceAsync()
-                    .subscribeOn(SdkContext.getReactorScheduler())
+                    .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                     .doOnNext(resourceT -> resource = resourceT)
                     .map(resourceT -> resourceT);
         }

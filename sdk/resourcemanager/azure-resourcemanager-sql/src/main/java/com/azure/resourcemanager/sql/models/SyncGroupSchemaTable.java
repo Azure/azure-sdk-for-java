@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SyncGroupSchemaTable model. */
+/** Properties of table in sync group schema. */
 @Fluent
 public final class SyncGroupSchemaTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupSchemaTable.class);

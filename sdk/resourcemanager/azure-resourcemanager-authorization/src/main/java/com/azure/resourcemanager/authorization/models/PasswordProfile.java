@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The PasswordProfile model. */
+/** The password profile associated with a user. */
 @Fluent
 public final class PasswordProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PasswordProfile.class);

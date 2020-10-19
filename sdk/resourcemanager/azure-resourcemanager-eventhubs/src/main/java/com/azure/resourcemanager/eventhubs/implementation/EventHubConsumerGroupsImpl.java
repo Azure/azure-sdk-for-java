@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -58,7 +58,7 @@ public final class EventHubConsumerGroupsImpl
     @Override
     public Mono<EventHubConsumerGroup> getByNameAsync(
         String resourceGroupName, String namespaceName, String eventHubName, String name) {
-        return this.inner().getAsync(resourceGroupName, namespaceName, eventHubName, name).map(this::wrapModel);
+        return this.innerModel().getAsync(resourceGroupName, namespaceName, eventHubName, name).map(this::wrapModel);
     }
 
     @Override
@@ -70,7 +70,7 @@ public final class EventHubConsumerGroupsImpl
     @Override
     public PagedIterable<EventHubConsumerGroup> listByEventHub(
         String resourceGroupName, String namespaceName, String eventHubName) {
-        return inner()
+        return innerModel()
             .listByEventHub(resourceGroupName, namespaceName, eventHubName)
             .mapPage(this::wrapModel);
     }
@@ -78,7 +78,7 @@ public final class EventHubConsumerGroupsImpl
     @Override
     public PagedFlux<EventHubConsumerGroup> listByEventHubAsync(
         String resourceGroupName, String namespaceName, String eventHubName) {
-        return inner()
+        return innerModel()
             .listByEventHubAsync(resourceGroupName, namespaceName, eventHubName)
             .mapPage(this::wrapModel);
     }
@@ -102,7 +102,7 @@ public final class EventHubConsumerGroupsImpl
     @Override
     public Mono<Void> deleteByNameAsync(
         String resourceGroupName, String namespaceName, String eventHubName, String name) {
-        return this.inner().deleteAsync(resourceGroupName,
+        return this.innerModel().deleteAsync(resourceGroupName,
                 namespaceName,
                 eventHubName,
                 name);

@@ -8,24 +8,24 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.ARecordSets;
 import com.azure.resourcemanager.dns.models.AaaaRecordSets;
-import com.azure.resourcemanager.dns.models.CNameRecordSets;
+import com.azure.resourcemanager.dns.models.CnameRecordSets;
 import com.azure.resourcemanager.dns.models.CaaRecordSets;
 import com.azure.resourcemanager.dns.models.DnsRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MXRecordSets;
-import com.azure.resourcemanager.dns.models.NSRecordSets;
+import com.azure.resourcemanager.dns.models.MxRecordSets;
+import com.azure.resourcemanager.dns.models.NsRecordSets;
 import com.azure.resourcemanager.dns.models.PtrRecordSets;
 import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.models.SoaRecordSet;
 import com.azure.resourcemanager.dns.models.SrvRecordSets;
 import com.azure.resourcemanager.dns.models.TxtRecordSets;
 import com.azure.resourcemanager.dns.models.ZoneType;
-import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -38,9 +38,9 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     private ARecordSets aRecordSets;
     private AaaaRecordSets aaaaRecordSets;
     private CaaRecordSets caaRecordSets;
-    private CNameRecordSets cnameRecordSets;
-    private MXRecordSets mxRecordSets;
-    private NSRecordSets nsRecordSets;
+    private CnameRecordSets cnameRecordSets;
+    private MxRecordSets mxRecordSets;
+    private NsRecordSets nsRecordSets;
     private PtrRecordSets ptrRecordSets;
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
@@ -53,35 +53,35 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         initRecordSets();
         if (isInCreateMode()) {
             // Set the zone type to Public by default
-            this.inner().withZoneType(ZoneType.PUBLIC);
+            this.innerModel().withZoneType(ZoneType.PUBLIC);
         }
     }
 
     @Override
     public long maxNumberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().maxNumberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().maxNumberOfRecordSets());
     }
 
     @Override
     public long numberOfRecordSets() {
-        return Utils.toPrimitiveLong(this.inner().numberOfRecordSets());
+        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().numberOfRecordSets());
     }
 
     @Override
     public String etag() {
-        return this.inner().etag();
+        return this.innerModel().etag();
     }
 
     @Override
     public ZoneType accessType() {
-        return this.inner().zoneType();
+        return this.innerModel().zoneType();
     }
 
     @Override
     public List<String> registrationVirtualNetworkIds() {
         List<String> list = new ArrayList<>();
-        if (this.inner().registrationVirtualNetworks() != null) {
-            for (SubResource sb : this.inner().registrationVirtualNetworks()) {
+        if (this.innerModel().registrationVirtualNetworks() != null) {
+            for (SubResource sb : this.innerModel().registrationVirtualNetworks()) {
                 list.add(sb.id());
             }
         }
@@ -91,8 +91,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     @Override
     public List<String> resolutionVirtualNetworkIds() {
         List<String> list = new ArrayList<>();
-        if (this.inner().resolutionVirtualNetworks() != null) {
-            for (SubResource sb : this.inner().resolutionVirtualNetworks()) {
+        if (this.innerModel().resolutionVirtualNetworks() != null) {
+            for (SubResource sb : this.innerModel().resolutionVirtualNetworks()) {
                 list.add(sb.id());
             }
         }
@@ -121,10 +121,10 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     public List<String> nameServers() {
-        if (this.inner() == null) {
+        if (this.innerModel() == null) {
             return new ArrayList<>();
         }
-        return this.inner().nameServers();
+        return this.innerModel().nameServers();
     }
 
     @Override
@@ -143,17 +143,17 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public CNameRecordSets cNameRecordSets() {
+    public CnameRecordSets cNameRecordSets() {
         return this.cnameRecordSets;
     }
 
     @Override
-    public MXRecordSets mxRecordSets() {
+    public MxRecordSets mxRecordSets() {
         return this.mxRecordSets;
     }
 
     @Override
-    public NSRecordSets nsRecordSets() {
+    public NsRecordSets nsRecordSets() {
         return this.nsRecordSets;
     }
 
@@ -409,8 +409,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                         .createOrUpdateAsync(
                             self.resourceGroupName(),
                             self.name(),
-                            self.inner(),
-                            etagState.ifMatchValueOnUpdate(self.inner().etag()),
+                            self.innerModel(),
+                            etagState.ifMatchValueOnUpdate(self.innerModel().etag()),
                             etagState.ifNonMatchValueOnCreate()))
             .map(innerToFluentMap(this))
             .map(
@@ -453,9 +453,9 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         this.aRecordSets = new ARecordSetsImpl(this);
         this.aaaaRecordSets = new AaaaRecordSetsImpl(this);
         this.caaRecordSets = new CaaRecordSetsImpl(this);
-        this.cnameRecordSets = new CNameRecordSetsImpl(this);
-        this.mxRecordSets = new MXRecordSetsImpl(this);
-        this.nsRecordSets = new NSRecordSetsImpl(this);
+        this.cnameRecordSets = new CnameRecordSetsImpl(this);
+        this.mxRecordSets = new MxRecordSetsImpl(this);
+        this.nsRecordSets = new NsRecordSetsImpl(this);
         this.ptrRecordSets = new PtrRecordSetsImpl(this);
         this.srvRecordSets = new SrvRecordSetsImpl(this);
         this.txtRecordSets = new TxtRecordSetsImpl(this);
@@ -482,11 +482,11 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                             case CAA:
                                 return Mono.just(new CaaRecordSetImpl(inner.name(), self, inner));
                             case CNAME:
-                                return Mono.just(new CNameRecordSetImpl(inner.name(), self, inner));
+                                return Mono.just(new CnameRecordSetImpl(inner.name(), self, inner));
                             case MX:
-                                return Mono.just(new MXRecordSetImpl(inner.name(), self, inner));
+                                return Mono.just(new MxRecordSetImpl(inner.name(), self, inner));
                             case NS:
-                                return Mono.just(new NSRecordSetImpl(inner.name(), self, inner));
+                                return Mono.just(new NsRecordSetImpl(inner.name(), self, inner));
                             case PTR:
                                 return Mono.just(new PtrRecordSetImpl(inner.name(), self, inner));
                             case SOA:

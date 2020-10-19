@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appplatform;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClient;
-import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClientBuilder;
+import com.azure.resourcemanager.appplatform.implementation.AppPlatformManagementClientBuilder;
 import com.azure.resourcemanager.appplatform.implementation.SpringServicesImpl;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure App Platform management. */
 public final class AppPlatformManager extends Manager<AppPlatformManagementClient> {
@@ -48,20 +47,7 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
      * @return the AppPlatformManager
      */
     public static AppPlatformManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of AppPlatformManager that exposes app platform resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the AppPlatformManager
-     */
-    public static AppPlatformManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new AppPlatformManager(httpPipeline, profile, sdkContext);
+        return new AppPlatformManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -83,7 +69,7 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
         }
     }
 
-    private AppPlatformManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private AppPlatformManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
@@ -91,8 +77,7 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient(),
-            sdkContext);
+                .buildClient());
     }
 
     /** @return Entry point for Spring Service management API. */

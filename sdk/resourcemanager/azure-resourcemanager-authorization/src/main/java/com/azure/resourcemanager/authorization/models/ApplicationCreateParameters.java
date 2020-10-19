@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationCreateParameters model. */
+/** Request parameters for creating a new application. */
 @Fluent
 public final class ApplicationCreateParameters extends ApplicationBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationCreateParameters.class);

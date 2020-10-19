@@ -10,8 +10,8 @@ import com.azure.resourcemanager.monitor.models.AutoscaleProfile;
 import com.azure.resourcemanager.monitor.models.AutoscaleSetting;
 import com.azure.resourcemanager.monitor.models.EmailNotification;
 import com.azure.resourcemanager.monitor.models.WebhookNotification;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.AutoscaleProfileInner;
+import com.azure.resourcemanager.monitor.fluent.models.AutoscaleSettingResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,26 +30,26 @@ class AutoscaleSettingImpl
         String name, final AutoscaleSettingResourceInner innerModel, final MonitorManager monitorManager) {
         super(name, innerModel, monitorManager);
         if (isInCreateMode()) {
-            this.inner().withEnabled(true);
+            this.innerModel().withEnabled(true);
         }
-        if (this.inner().notifications() == null) {
-            this.inner().withNotifications(new ArrayList<AutoscaleNotification>());
-            this.inner().notifications().add(new AutoscaleNotification());
+        if (this.innerModel().notifications() == null) {
+            this.innerModel().withNotifications(new ArrayList<AutoscaleNotification>());
+            this.innerModel().notifications().add(new AutoscaleNotification());
         }
-        if (this.inner().profiles() == null) {
-            this.inner().withProfiles(new ArrayList<AutoscaleProfileInner>());
+        if (this.innerModel().profiles() == null) {
+            this.innerModel().withProfiles(new ArrayList<AutoscaleProfileInner>());
         }
     }
 
     @Override
     public String targetResourceId() {
-        return this.inner().targetResourceUri();
+        return this.innerModel().targetResourceUri();
     }
 
     @Override
     public Map<String, AutoscaleProfile> profiles() {
         Map<String, AutoscaleProfile> result = new HashMap<>();
-        for (AutoscaleProfileInner profileInner : this.inner().profiles()) {
+        for (AutoscaleProfileInner profileInner : this.innerModel().profiles()) {
             AutoscaleProfile profileImpl = new AutoscaleProfileImpl(profileInner.name(), profileInner, this);
             result.put(profileImpl.name(), profileImpl);
         }
@@ -58,48 +58,48 @@ class AutoscaleSettingImpl
 
     @Override
     public boolean autoscaleEnabled() {
-        return this.inner().enabled();
+        return this.innerModel().enabled();
     }
 
     @Override
     public boolean adminEmailNotificationEnabled() {
-        if (this.inner().notifications() != null
-            && this.inner().notifications().get(0) != null
-            && this.inner().notifications().get(0).email() != null) {
-            return this.inner().notifications().get(0).email().sendToSubscriptionAdministrator();
+        if (this.innerModel().notifications() != null
+            && this.innerModel().notifications().get(0) != null
+            && this.innerModel().notifications().get(0).email() != null) {
+            return this.innerModel().notifications().get(0).email().sendToSubscriptionAdministrator();
         }
         return false;
     }
 
     @Override
     public boolean coAdminEmailNotificationEnabled() {
-        if (this.inner().notifications() != null
-            && this.inner().notifications().get(0) != null
-            && this.inner().notifications().get(0).email() != null) {
-            return this.inner().notifications().get(0).email().sendToSubscriptionCoAdministrators();
+        if (this.innerModel().notifications() != null
+            && this.innerModel().notifications().get(0) != null
+            && this.innerModel().notifications().get(0).email() != null) {
+            return this.innerModel().notifications().get(0).email().sendToSubscriptionCoAdministrators();
         }
         return false;
     }
 
     @Override
     public List<String> customEmailsNotification() {
-        if (this.inner().notifications() != null
-            && this.inner().notifications().get(0) != null
-            && this.inner().notifications().get(0).email() != null
-            && this.inner().notifications().get(0).email().customEmails() != null) {
-            return this.inner().notifications().get(0).email().customEmails();
+        if (this.innerModel().notifications() != null
+            && this.innerModel().notifications().get(0) != null
+            && this.innerModel().notifications().get(0).email() != null
+            && this.innerModel().notifications().get(0).email().customEmails() != null) {
+            return this.innerModel().notifications().get(0).email().customEmails();
         }
         return new ArrayList<>();
     }
 
     @Override
     public String webhookNotification() {
-        if (this.inner().notifications() != null
-            && this.inner().notifications().get(0) != null
-            && this.inner().notifications().get(0).email() != null
-            && this.inner().notifications().get(0).webhooks() != null
-            && this.inner().notifications().get(0).webhooks().size() > 0) {
-            return this.inner().notifications().get(0).webhooks().get(0).serviceUri();
+        if (this.innerModel().notifications() != null
+            && this.innerModel().notifications().get(0) != null
+            && this.innerModel().notifications().get(0).email() != null
+            && this.innerModel().notifications().get(0).webhooks() != null
+            && this.innerModel().notifications().get(0).webhooks().size() > 0) {
+            return this.innerModel().notifications().get(0).webhooks().get(0).serviceUri();
         }
         return null;
     }
@@ -116,7 +116,7 @@ class AutoscaleSettingImpl
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Cannot find autoscale profile with the name '" + name + "'"));
         }
-        AutoscaleProfileInner innerProfile = this.inner().profiles().get(idx);
+        AutoscaleProfileInner innerProfile = this.innerModel().profiles().get(idx);
 
         return new AutoscaleProfileImpl(innerProfile.name(), innerProfile, this);
     }
@@ -125,14 +125,14 @@ class AutoscaleSettingImpl
     public AutoscaleSettingImpl withoutAutoscaleProfile(String name) {
         int idx = getProfileIndexByName(name);
         if (idx != -1) {
-            this.inner().profiles().remove(idx);
+            this.innerModel().profiles().remove(idx);
         }
         return this;
     }
 
     @Override
     public AutoscaleSettingImpl withTargetResource(String targetResourceId) {
-        this.inner().withTargetResourceUri(targetResourceId);
+        this.innerModel().withTargetResourceUri(targetResourceId);
         return this;
     }
 
@@ -203,13 +203,13 @@ class AutoscaleSettingImpl
 
     @Override
     public AutoscaleSettingImpl withAutoscaleEnabled() {
-        this.inner().withEnabled(true);
+        this.innerModel().withEnabled(true);
         return this;
     }
 
     @Override
     public AutoscaleSettingImpl withAutoscaleDisabled() {
-        this.inner().withEnabled(false);
+        this.innerModel().withEnabled(false);
         return this;
     }
 
@@ -219,7 +219,7 @@ class AutoscaleSettingImpl
             .manager()
             .serviceClient()
             .getAutoscaleSettings()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -233,14 +233,14 @@ class AutoscaleSettingImpl
     }
 
     public AutoscaleSettingImpl addNewAutoscaleProfile(AutoscaleProfileImpl profile) {
-        this.inner().profiles().add(profile.inner());
+        this.innerModel().profiles().add(profile.innerModel());
         return this;
     }
 
     private int getProfileIndexByName(String name) {
         int idxResult = -1;
-        for (int idx = 0; idx < this.inner().profiles().size(); idx++) {
-            if (this.inner().profiles().get(idx).name().equalsIgnoreCase(name)) {
+        for (int idx = 0; idx < this.innerModel().profiles().size(); idx++) {
+            if (this.innerModel().profiles().get(idx).name().equalsIgnoreCase(name)) {
                 idxResult = idx;
                 break;
             }
@@ -249,7 +249,7 @@ class AutoscaleSettingImpl
     }
 
     private AutoscaleNotification getNotificationInner() {
-        AutoscaleNotification notificationInner = this.inner().notifications().get(0);
+        AutoscaleNotification notificationInner = this.innerModel().notifications().get(0);
         if (notificationInner.email() == null) {
             notificationInner.withEmail(new EmailNotification());
         }

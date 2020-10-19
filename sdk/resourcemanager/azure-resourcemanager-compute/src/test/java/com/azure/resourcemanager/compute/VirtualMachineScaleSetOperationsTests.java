@@ -44,8 +44,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -53,9 +52,12 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
+
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +116,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         if (isPlaybackMode()) {
             fileUri = new URI("http://nonexisting.blob.core.windows.net/scripts/install_apache.sh");
         } else {
-            final String storageConnectionString = Utils.getStorageConnectionString(
+            final String storageConnectionString = ResourceManagerUtils.getStorageConnectionString(
                 storageAccount.name(), storageAccountKey, storageManager.environment());
             // Get the script to upload
             //
@@ -122,6 +124,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             File file = new File(filePath);
             InputStream inputStream = VirtualMachineScaleSetOperationsTests.class
                 .getResourceAsStream("/install_apache.sh");
+            inputStream = new BufferedInputStream(inputStream);
+            inputStream.mark((int) file.length());
 
             BlobServiceClient storageClient = new BlobServiceClientBuilder()
                 .connectionString(storageConnectionString)
@@ -222,7 +226,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String uname = "jvuser";
         final String password = password();
         final String apacheInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/compute/mgmt/src/test/resources/install_apache.sh";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-compute/src/test/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -1243,7 +1247,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             vmss.virtualMachines().simulateEviction(instance.instanceId());
         }
 
-        SdkContext.sleep(30 * 60 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
 
         for (VirtualMachineScaleSetVM instance: vmInstances) {
             instance.refresh();

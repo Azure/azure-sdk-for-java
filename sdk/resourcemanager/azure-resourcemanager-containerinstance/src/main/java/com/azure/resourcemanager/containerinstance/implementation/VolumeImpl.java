@@ -24,10 +24,10 @@ class VolumeImpl
 
     @Override
     public ContainerGroupImpl attach() {
-        if (parent.inner().volumes() == null) {
-            parent.inner().withVolumes(new ArrayList<Volume>());
+        if (parent.innerModel().volumes() == null) {
+            parent.innerModel().withVolumes(new ArrayList<Volume>());
         }
-        parent.inner().volumes().add(innerVolume);
+        parent.innerModel().volumes().add(innerVolume);
 
         return parent;
     }
