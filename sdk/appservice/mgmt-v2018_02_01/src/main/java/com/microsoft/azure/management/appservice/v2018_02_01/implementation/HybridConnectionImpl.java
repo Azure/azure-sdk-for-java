@@ -13,15 +13,15 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class HybridConnectionImpl extends WrapperImpl<HybridConnectionInner> implements HybridConnection {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    HybridConnectionImpl(HybridConnectionInner inner,  AppServiceManager manager) {
+    HybridConnectionImpl(HybridConnectionInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
