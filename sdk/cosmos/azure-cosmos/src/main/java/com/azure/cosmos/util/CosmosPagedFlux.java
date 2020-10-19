@@ -11,6 +11,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -19,13 +20,13 @@ import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
 import com.azure.cosmos.models.FeedResponse;
+import org.HdrHistogram.ConcurrentDoubleHistogram;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -120,14 +121,14 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
-        AtomicLong startTime = new AtomicLong();
+        AtomicReference<Instant> startTime = new AtomicReference<>();
         return this.optionsFluxFunction.apply(pagedFluxOptions).doOnSubscribe(ignoredValue -> {
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
                     pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
                     context));
             }
-            startTime.set(System.currentTimeMillis());
+            startTime.set(Instant.now());
         }).doOnComplete(() -> {
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
@@ -138,29 +139,33 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
                     TracerProvider.ERROR_CODE);
             }
-            if (pagedFluxOptions.getCosmosAsyncClient() != null) {
-                if (throwable instanceof CosmosException) {
-                    CosmosException cosmosException = (CosmosException) throwable;
-                    fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
-                        pagedFluxOptions.getDatabaseId(),
-                        pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
-                        BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
-                        (float) cosmosException.getRequestCharge(), System.currentTimeMillis() - startTime.get());
-                }
-                startTime.set(System.currentTimeMillis());
-            }
-        }).doOnNext(feedResponse -> {
-            if (pagedFluxOptions.getCosmosAsyncClient() != null) {
+
+            if (pagedFluxOptions.getCosmosAsyncClient() != null &&
+                Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) &&
+                throwable instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) throwable;
                 fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
                     pagedFluxOptions.getDatabaseId(),
                     pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
                     BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
-                    (float) feedResponse.getRequestCharge(), System.currentTimeMillis() - startTime.get());
-                startTime.set(System.currentTimeMillis());
+                    (float) cosmosException.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
             }
+            startTime.set(Instant.now());
+        }).doOnNext(feedResponse -> {
             //  If the user has passed feedResponseConsumer, then call it with each feedResponse
             if (feedResponseConsumer != null) {
                 feedResponseConsumer.accept(feedResponse);
+            }
+
+            if (pagedFluxOptions.getCosmosAsyncClient() != null &&
+                Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()))) {
+                fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), HttpConstants.StatusCodes.OK,
+                    pagedFluxOptions.getContainerId(),
+                    pagedFluxOptions.getDatabaseId(),
+                    pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
+                    BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
+                    (float) feedResponse.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
+                startTime.set(Instant.now());
             }
         });
     }
@@ -173,28 +178,40 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                     ResourceType resourceType,
                                     ConsistencyLevel consistencyLevel,
                                     float requestCharge,
-                                    long latency) {
+                                    Duration latency) {
         ClientTelemetry telemetry = BridgeInternal.getContextClient(cosmosAsyncClient).getClientTelemetry();
         ReportPayload reportPayloadLatency = createReportPayload(cosmosAsyncClient,
             statusCode, containerId, databaseId
-            , operationType, resourceType, consistencyLevel, "RequestLatency", "Ms");
-        if (telemetry.getClientLevelInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
-            telemetry.getClientLevelInfo().getOperationInfoMap().get(reportPayloadLatency).add((float) latency);
+            , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
+            ClientTelemetry.REQUEST_LATENCY_UNIT);
+        if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
+            ClientTelemetry.RecordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), latency.toNanos() / 1000);
         } else {
-            List<Float> latencyList = new ArrayList<>();
-            latencyList.add((float) latency);
-            telemetry.getClientLevelInfo().getOperationInfoMap().put(reportPayloadLatency, latencyList);
+            ConcurrentDoubleHistogram latencyHistogram = null;
+            if (statusCode == HttpConstants.StatusCodes.OK) {
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
+                    ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
+            } else {
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
+                    ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
+            }
+            latencyHistogram.setAutoResize(true);
+            ClientTelemetry.RecordValue(latencyHistogram, latency.toNanos() / 1000);
+            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
         }
 
         ReportPayload reportPayloadRequestCharge = createReportPayload(cosmosAsyncClient,
             statusCode, containerId, databaseId
-            , operationType, resourceType, consistencyLevel, "RequestCharge", "RU");
-        if (telemetry.getClientLevelInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
-            telemetry.getClientLevelInfo().getOperationInfoMap().get(reportPayloadRequestCharge).add(requestCharge);
+            , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME,
+            ClientTelemetry.REQUEST_CHARGE_UNIT);
+        if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
+            ClientTelemetry.RecordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
         } else {
-            List<Float> requestChargeList = new ArrayList<>();
-            requestChargeList.add(requestCharge);
-            telemetry.getClientLevelInfo().getOperationInfoMap().put(reportPayloadRequestCharge, requestChargeList);
+            ConcurrentDoubleHistogram requestChargeHistogram = new ConcurrentDoubleHistogram(10000, 2);
+            requestChargeHistogram.setAutoResize(true);
+            ClientTelemetry.RecordValue(requestChargeHistogram, requestCharge);
+            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
+                requestChargeHistogram);
         }
     }
 

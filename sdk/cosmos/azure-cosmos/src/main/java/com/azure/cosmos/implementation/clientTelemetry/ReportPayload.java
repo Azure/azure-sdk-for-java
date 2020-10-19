@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation.clientTelemetry;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import static com.azure.cosmos.implementation.Utils.as;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReportPayload {
     private String regionsContacted;
     private Boolean greaterThan1Kb;

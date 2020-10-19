@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.cpu;
 
 
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
+import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,8 +52,10 @@ public class CpuMemoryMonitor {
 
     private static CpuLoadHistory currentReading = DEFAULT_READING; // Guarded by rwLock.
     private static final CpuLoad[] buffer = new CpuLoad[CpuMemoryMonitor.HISTORY_LENGTH];
-    private static final List<Float> clientTelemetryCpuValues = new ArrayList<>();
-    private static final List<Float> clientTelemetryMemoryValues = new ArrayList<>();
+    private static final DoubleHistogram clientTelemetryCpuHistogram = new DoubleHistogram(ClientTelemetry.CPU_MAX,
+        ClientTelemetry.CPU_PRECISION);
+    private static final DoubleHistogram clientTelemetryMemoryHistogram =
+        new DoubleHistogram(ClientTelemetry.MEMORY_MAX, ClientTelemetry.MEMORY_PRECISION);
 
     private static ScheduledFuture<?> future;
 
@@ -122,20 +125,20 @@ public class CpuMemoryMonitor {
         }
     }
 
-    // Returns a clientTelemetryCpuValues for creating aggregation
-    public static List<Float> getCpuLoadForClientTelemetry() {
+    // Returns a clientTelemetryCpuHistogram for percentile creation
+    public static DoubleHistogram getCpuLoadForClientTelemetry() {
         rwLock.readLock().lock();
         try {
-            return clientTelemetryCpuValues;
+            return clientTelemetryCpuHistogram;
         } finally {
             rwLock.readLock().unlock();
         }
     }
-    // Returns a clientTelemetryMemoryValues for creating aggregation
-    public static List<Float> getRemainingForClientTelemetry() {
+    // Returns a clientTelemetryMemoryHistogram for percentile creation
+    public static DoubleHistogram getRemainingForClientTelemetry() {
         rwLock.readLock().lock();
         try {
-            return clientTelemetryMemoryValues;
+            return clientTelemetryMemoryHistogram;
         } finally {
             rwLock.readLock().unlock();
         }
@@ -172,15 +175,8 @@ public class CpuMemoryMonitor {
                 buffer[clockHand] = new CpuLoad(now, currentCpuUtilization);
                 clockHand = (clockHand + 1) % buffer.length;
 
-                if(clientTelemetryCpuValues.size() >=  CLIENT_TELEMETRY_HISTORY_LENGTH) {
-                    clientTelemetryCpuValues.remove(0);
-                }
-                clientTelemetryCpuValues.add(currentCpuUtilization);
-
-                if(clientTelemetryMemoryValues.size() >=  CLIENT_TELEMETRY_HISTORY_LENGTH) {
-                    clientTelemetryMemoryValues.remove(0);
-                }
-                clientTelemetryMemoryValues.add(currentMemoryUtilization);
+                ClientTelemetry.RecordValue(clientTelemetryCpuHistogram, currentCpuUtilization);
+                ClientTelemetry.RecordValue(clientTelemetryMemoryHistogram, currentMemoryUtilization);
 
                 for (int i = 0; i < buffer.length; i++) {
                     int index = (clockHand + i) % buffer.length;

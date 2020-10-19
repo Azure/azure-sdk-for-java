@@ -99,6 +99,7 @@ public class CosmosClientBuilder {
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+    private boolean clientTelemetryEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -579,6 +580,11 @@ public class CosmosClientBuilder {
         return this;
     }
 
+    public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        return this;
+    }
+
     /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
@@ -672,6 +678,15 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Gets the flag to enabled client telemetry.
+     *
+     * @return flag to enable client telemetry.
+     */
+    boolean isclientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -733,6 +748,7 @@ public class CosmosClientBuilder {
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {

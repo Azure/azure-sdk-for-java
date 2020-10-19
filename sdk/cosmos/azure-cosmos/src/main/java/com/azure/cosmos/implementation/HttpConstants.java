@@ -266,6 +266,7 @@ public class HttpConstants {
 
     public static class StatusCodes {
         public static final int OK = 200;
+        public static final int CREATED = 201;
         public static final int NOT_MODIFIED = 304;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;

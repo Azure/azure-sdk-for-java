@@ -3,15 +3,15 @@
 package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.HdrHistogram.DoubleHistogram;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-
-public class ClientLevelInfo {
+@JsonSerialize(using = ClientTelemetrySerializer.class)
+public class ClientTelemetryInfo {
     private String timeStamp;//strict contract
     private String clientId;//strict contract
     private String processId;//strict contract
@@ -21,21 +21,21 @@ public class ClientLevelInfo {
     private String applicationRegion;//strict contract
     private String hostEnvInfo;//strict contract
     private Boolean acceleratedNetworking;//strict contract
-    private List<ReportPayload> systemInfo;//strict contract
-    private List<ReportPayload> cacheRefreshInfo;//strict contract
-    private List<ReportPayload> operationInfo;//strict contract
-    private Map<ReportPayload, List<Float>> systemInfoMap;//strict contract
-    private Map<ReportPayload, List<Float>> cacheRefreshInfoMap;//strict contract
-    private Map<ReportPayload, List<Float>> operationInfoMap;//strict contract
+    private Set<ReportPayload> systemInfo;//strict contract
+    private Set<ReportPayload> cacheRefreshInfo;//strict contract
+    private Set<ReportPayload> operationInfo;//strict contract
+    private Map<ReportPayload, DoubleHistogram> systemInfoMap;//strict contract
+    private Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap;//strict contract
+    private Map<ReportPayload, DoubleHistogram> operationInfoMap;//strict contract
 
-    public ClientLevelInfo(String clientId,
-                           String processId,
-                           String userAgent,
-                           ConnectionMode connectionMode,
-                           String globalDatabaseAccountName,
-                           String applicationRegion,
-                           String hostEnvInfo,
-                           Boolean acceleratedNetworking) {
+    public ClientTelemetryInfo(String clientId,
+                               String processId,
+                               String userAgent,
+                               ConnectionMode connectionMode,
+                               String globalDatabaseAccountName,
+                               String applicationRegion,
+                               String hostEnvInfo,
+                               Boolean acceleratedNetworking) {
         this.clientId = clientId;
         this.processId = processId;
         this.userAgent = userAgent;
@@ -121,51 +121,51 @@ public class ClientLevelInfo {
         this.acceleratedNetworking = acceleratedNetworking;
     }
 
-    public List<ReportPayload> getSystemInfo() {
+    public Set<ReportPayload> getSystemInfo() {
         return systemInfo;
     }
 
-    public void setSystemInfo(List<ReportPayload> systemInfo) {
+    public void setSystemInfo(Set<ReportPayload> systemInfo) {
         this.systemInfo = systemInfo;
     }
 
-    public List<ReportPayload> getCacheRefreshInfo() {
+    public Set<ReportPayload> getCacheRefreshInfo() {
         return cacheRefreshInfo;
     }
 
-    public void setCacheRefreshInfo(List<ReportPayload> cacheRefreshInfo) {
+    public void setCacheRefreshInfo(Set<ReportPayload> cacheRefreshInfo) {
         this.cacheRefreshInfo = cacheRefreshInfo;
     }
 
-    public List<ReportPayload> getOperationInfo() {
+    public Set<ReportPayload> getOperationInfo() {
         return operationInfo;
     }
 
-    public void setOperationInfo(List<ReportPayload> operationInfo) {
+    public void setOperationInfo(Set<ReportPayload> operationInfo) {
         this.operationInfo = operationInfo;
     }
 
-    public Map<ReportPayload, List<Float>> getSystemInfoMap() {
+    public Map<ReportPayload, DoubleHistogram> getSystemInfoMap() {
         return systemInfoMap;
     }
 
-    public void setSystemInfoMap(Map<ReportPayload, List<Float>> systemInfoMap) {
+    public void setSystemInfoMap(Map<ReportPayload, DoubleHistogram> systemInfoMap) {
         this.systemInfoMap = systemInfoMap;
     }
 
-    public Map<ReportPayload, List<Float>> getCacheRefreshInfoMap() {
+    public Map<ReportPayload, DoubleHistogram> getCacheRefreshInfoMap() {
         return cacheRefreshInfoMap;
     }
 
-    public void setCacheRefreshInfoMap(Map<ReportPayload, List<Float>> cacheRefreshInfoMap) {
+    public void setCacheRefreshInfoMap(Map<ReportPayload, DoubleHistogram> cacheRefreshInfoMap) {
         this.cacheRefreshInfoMap = cacheRefreshInfoMap;
     }
 
-    public Map<ReportPayload, List<Float>> getOperationInfoMap() {
+    public Map<ReportPayload, DoubleHistogram> getOperationInfoMap() {
         return operationInfoMap;
     }
 
-    public void setOperationInfoMap(Map<ReportPayload, List<Float>> operationInfoMap) {
+    public void setOperationInfoMap(Map<ReportPayload, DoubleHistogram> operationInfoMap) {
         this.operationInfoMap = operationInfoMap;
     }
 }

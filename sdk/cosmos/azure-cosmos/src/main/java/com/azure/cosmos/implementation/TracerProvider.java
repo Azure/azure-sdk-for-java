@@ -14,11 +14,10 @@ import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import org.HdrHistogram.ConcurrentDoubleHistogram;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -127,7 +126,7 @@ public class TracerProvider {
                                                                                    OperationType operationType,
                                                                                    ResourceType resourceType) {
 
-        return traceEnabledPublisherWithTelemetry(resultPublisher, context, spanName, containerId, databaseId,
+        return publisherWithClientTelemetry(resultPublisher, context, spanName, containerId, databaseId,
             BridgeInternal.getServiceEndpoint(client),
             client,
             consistencyLevel,
@@ -162,31 +161,21 @@ public class TracerProvider {
             });
     }
 
-    private <T> Mono<T> traceEnabledPublisherWithTelemetry(Mono<T> resultPublisher,
-                                                           Context context,
-                                                           String spanName,
-                                                           String containerId,
-                                                           String databaseId,
-                                                           String endpoint,
-                                                           CosmosAsyncClient client,
-                                                           ConsistencyLevel consistencyLevel,
-                                                           OperationType operationType,
-                                                           ResourceType resourceType,
-                                                           Function<T, Integer> statusCodeFunc) {
-        final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
-        Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
-        final boolean isNestedCall = callDepth.isPresent();
-        return resultPublisher
-            .doOnSubscribe(ignoredValue -> {
-                if (isEnabled() && !isNestedCall) {
-                    parentContext.set(this.startSpan(spanName, databaseId, endpoint,
-                        context));
-                }
-            }).doOnSuccess(response -> {
-                if (isEnabled() && !isNestedCall) {
-                    this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
-                }
-                if (response instanceof CosmosItemResponse) {
+    private <T> Mono<T> publisherWithClientTelemetry(Mono<T> resultPublisher,
+                                                     Context context,
+                                                     String spanName,
+                                                     String containerId,
+                                                     String databaseId,
+                                                     String endpoint,
+                                                     CosmosAsyncClient client,
+                                                     ConsistencyLevel consistencyLevel,
+                                                     OperationType operationType,
+                                                     ResourceType resourceType,
+                                                     Function<T, Integer> statusCodeFunc) {
+        Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc);
+        return tracerMono
+            .doOnSuccess(response -> {
+                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {
                     CosmosItemResponse itemResponse = (CosmosItemResponse) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
@@ -194,10 +183,7 @@ public class TracerProvider {
                         (float) itemResponse.getRequestCharge());
                 }
             }).doOnError(throwable -> {
-                if (isEnabled() && !isNestedCall) {
-                    this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
-                }
-                if (throwable instanceof CosmosException) {
+                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && throwable instanceof CosmosException) {
                     CosmosException cosmosException = (CosmosException) throwable;
                     fillClientTelemetry(client, cosmosException.getDiagnostics(), cosmosException.getStatusCode(),
                         null, containerId,
@@ -228,24 +214,35 @@ public class TracerProvider {
         ClientTelemetry telemetry = BridgeInternal.getContextClient(cosmosAsyncClient).getClientTelemetry();
         ReportPayload reportPayloadLatency = createReportPayload(cosmosAsyncClient, cosmosDiagnostics,
             statusCode, objectSize, containerId, databaseId
-            , operationType, resourceType, consistencyLevel, "RequestLatency", "Ms");
-        if (telemetry.getClientLevelInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
-            telemetry.getClientLevelInfo().getOperationInfoMap().get(reportPayloadLatency).add((float) cosmosDiagnostics.getDuration().toMillis());
+            , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
+            ClientTelemetry.REQUEST_LATENCY_UNIT);
+        if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadLatency)) {
+            ClientTelemetry.RecordValue(telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency), cosmosDiagnostics.getDuration().toNanos()/1000);
         } else {
-            List<Float> latencyList = new ArrayList<>();
-            latencyList.add((float) cosmosDiagnostics.getDuration().toMillis());
-            telemetry.getClientLevelInfo().getOperationInfoMap().put(reportPayloadLatency, latencyList);
+            ConcurrentDoubleHistogram latencyHistogram = null;
+            if (statusCode == HttpConstants.StatusCodes.OK || statusCode == HttpConstants.StatusCodes.CREATED) {
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
+                    ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
+            } else {
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX,
+                    ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
+            }
+            latencyHistogram.setAutoResize(true);
+            ClientTelemetry.RecordValue(latencyHistogram, cosmosDiagnostics.getDuration().toNanos()/1000);
+            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
         }
 
         ReportPayload reportPayloadRequestCharge = createReportPayload(cosmosAsyncClient, cosmosDiagnostics,
             statusCode, objectSize, containerId, databaseId
-            , operationType, resourceType, consistencyLevel, "RequestCharge", "RU");
-        if (telemetry.getClientLevelInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
-            telemetry.getClientLevelInfo().getOperationInfoMap().get(reportPayloadRequestCharge).add(requestCharge);
+            , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME, ClientTelemetry.REQUEST_CHARGE_UNIT);
+        if (telemetry.getClientTelemetryInfo().getOperationInfoMap().containsKey(reportPayloadRequestCharge)) {
+            ClientTelemetry.RecordValue( telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge), requestCharge);
         } else {
-            List<Float> requestChargeList = new ArrayList<>();
-            requestChargeList.add(requestCharge);
-            telemetry.getClientLevelInfo().getOperationInfoMap().put(reportPayloadRequestCharge, requestChargeList);
+            ConcurrentDoubleHistogram requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
+            requestChargeHistogram.setAutoResize(true);
+            ClientTelemetry.RecordValue(requestChargeHistogram, requestCharge);
+            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
+                requestChargeHistogram);
         }
     }
 

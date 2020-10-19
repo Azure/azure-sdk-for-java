@@ -8,11 +8,11 @@ import java.util.Map;
 public class MetricInfo {
     private String metricsName;
     private String unitName;
-    private double sum;
+    private double mean;
     private long count;
     private double min;
     private double max;
-    private Map<Float, Float> percentiles = new HashMap<>();//strict contract, ,  validation on key required
+    private Map<Double, Double> percentiles = new HashMap<>();//strict contract, ,  validation on key required
 
     public MetricInfo(String metricsName, String unitName) {
         this.metricsName = metricsName;
@@ -35,12 +35,12 @@ public class MetricInfo {
         this.unitName = unitName;
     }
 
-    public double getSum() {
-        return sum;
+    public double getMean() {
+        return mean;
     }
 
-    public void setSum(double sum) {
-        this.sum = sum;
+    public void setMean(double mean) {
+        this.mean = mean;
     }
 
     public long getCount() {
@@ -67,11 +67,11 @@ public class MetricInfo {
         this.max = max;
     }
 
-    public Map<Float, Float> getPercentiles() {
+    public Map<Double, Double> getPercentiles() {
         return percentiles;
     }
 
-    public void setPercentiles(Map<Float, Float> percentiles) {
+    public void setPercentiles(Map<Double, Double> percentiles) {
         this.percentiles = percentiles;
     }
 }

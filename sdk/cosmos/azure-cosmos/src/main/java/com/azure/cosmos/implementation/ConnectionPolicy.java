@@ -43,6 +43,9 @@ public final class ConnectionPolicy {
     private int maxRequestsPerConnection;
     private Duration idleTcpConnectionTimeout;
 
+
+    private boolean clientTelemetryEnabled;
+
     /**
      * Constructor.
      */
@@ -471,6 +474,14 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setMaxRequestsPerConnection(int maxRequestsPerConnection) {
         this.maxRequestsPerConnection = maxRequestsPerConnection;
         return this;
+    }
+
+    public boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
     }
 
     @Override
