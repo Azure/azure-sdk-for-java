@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.data.sample.gremlin.domain;
+package com.azure.spring.sample.data.gremlin.domain;
 
 import com.azure.spring.data.gremlin.annotation.Vertex;
 import org.springframework.data.annotation.Id;

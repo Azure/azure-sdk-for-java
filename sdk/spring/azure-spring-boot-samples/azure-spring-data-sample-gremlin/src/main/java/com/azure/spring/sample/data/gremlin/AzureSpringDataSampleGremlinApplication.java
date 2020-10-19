@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.sample.data.sample.gremlin;
+package com.azure.spring.sample.data.gremlin;
 
-import com.azure.spring.sample.data.sample.gremlin.domain.Network;
-import com.azure.spring.sample.data.sample.gremlin.domain.Person;
-import com.azure.spring.sample.data.sample.gremlin.domain.Relation;
-import com.azure.spring.sample.data.sample.gremlin.repository.NetworkRepository;
-import com.azure.spring.sample.data.sample.gremlin.repository.PersonRepository;
-import com.azure.spring.sample.data.sample.gremlin.repository.RelationRepository;
+import com.azure.spring.sample.data.gremlin.domain.Network;
+import com.azure.spring.sample.data.gremlin.domain.Person;
+import com.azure.spring.sample.data.gremlin.domain.Relation;
+import com.azure.spring.sample.data.gremlin.repository.NetworkRepository;
+import com.azure.spring.sample.data.gremlin.repository.PersonRepository;
+import com.azure.spring.sample.data.gremlin.repository.RelationRepository;
 import com.azure.spring.data.gremlin.common.GremlinFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
