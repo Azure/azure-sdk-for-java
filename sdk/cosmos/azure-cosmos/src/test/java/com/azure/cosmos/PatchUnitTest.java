@@ -3,9 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.patch.PatchOperation;
-import com.azure.cosmos.patch.PatchOperationCore;
-import com.azure.cosmos.patch.implementation.PatchOperationType;
+import com.azure.cosmos.implementation.patch.PatchOperationCore;
+import com.azure.cosmos.implementation.patch.PatchOperationType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -23,14 +22,14 @@ public class PatchUnitTest {
     public void throwsOnNullArguement() {
 
         try {
-            PatchOperation.createAddOperation(null, "1");
+            PatchOperation.add(null, "1");
             Assert.fail();
         } catch(IllegalArgumentException ex) {
             assertTrue(ex.getMessage().contains("path empty"));
         }
 
         try {
-            PatchOperation.createRemoveOperation(null);
+            PatchOperation.remove(null);
             Assert.fail();
         } catch (IllegalArgumentException ex) {
             assertTrue(ex.getMessage().contains("path empty"));
@@ -39,30 +38,30 @@ public class PatchUnitTest {
 
     @Test(groups = { "unit" })
     public void constructPatchOperationTest() {
-        PatchOperation<?> operation = PatchOperation.createAddOperation(path, "string");
+        PatchOperation operation = PatchOperation.add(path, "string");
         PatchUnitTest.validateOperations(operation, PatchOperationType.ADD, "string");
 
         Instant current = Instant.now();
-        operation = PatchOperation.createAddOperation(path, current);
+        operation = PatchOperation.add(path, current);
         PatchUnitTest.validateOperations(operation, PatchOperationType.ADD, current);
 
         Object object = new  Object();
-        operation = PatchOperation.createAddOperation(path, object);
+        operation = PatchOperation.add(path, object);
         PatchUnitTest.validateOperations(operation, PatchOperationType.ADD, object);
 
-        operation = PatchOperation.createRemoveOperation(path);
+        operation = PatchOperation.remove(path);
         PatchUnitTest.validateOperations(operation, PatchOperationType.REMOVE, "value not required");
 
         int[] arrayObject = { 1, 2, 3 };
-        operation = PatchOperation.createReplaceOperation(path, arrayObject);
+        operation = PatchOperation.replace(path, arrayObject);
         PatchUnitTest.validateOperations(operation, PatchOperationType.REPLACE, arrayObject);
 
         UUID uuid = UUID.randomUUID();
-        operation = PatchOperation.createSetOperation(path, uuid);
+        operation = PatchOperation.set(path, uuid);
         PatchUnitTest.validateOperations(operation, PatchOperationType.SET, uuid);
     }
 
-    private static <T> void validateOperations(PatchOperation<?> patchOperation, PatchOperationType operationType, T value) {
+    private static <T> void validateOperations(PatchOperation patchOperation, PatchOperationType operationType, T value) {
         assertEquals(operationType, patchOperation.getOperationType());
 
         if(patchOperation instanceof PatchOperationCore) {

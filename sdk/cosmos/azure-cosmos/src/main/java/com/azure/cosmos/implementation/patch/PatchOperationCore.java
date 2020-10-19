@@ -1,32 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.patch;
+package com.azure.cosmos.implementation.patch;
 
+import com.azure.cosmos.PatchOperation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.patch.implementation.PatchOperationType;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
-public class PatchOperationCore<TResource>  extends PatchOperation<TResource> {
+/**
+ * @param <T> The type of item to be created.
+ */
+public class PatchOperationCore<T> extends PatchOperation {
 
     private String path;
+    private T resource;
 
     /**
      * Initializes a new instance of the {@link PatchOperationCore} class.
      *
-     * @param operationType Specifies the type of Patch operation
+     *
+     * @param operationType Specifies the type of Update operation
      * @param path          Specifies the path to target location.
      * @param value         Specifies the value to be used
      */
-    PatchOperationCore(PatchOperationType operationType, String path, TResource value) {
-        super(operationType, value);
+    public PatchOperationCore(PatchOperationType operationType, String path, T value) {
+        super(operationType);
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
         this.path = path;
+        this.resource = value;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public T getResource() {
+        return resource;
     }
 }

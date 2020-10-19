@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.patch.PatchOperation;
+import com.azure.cosmos.PatchOperation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -549,7 +549,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
 
     /**
-     * Patch a document.
+     * Update a document.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the patched document.
@@ -560,7 +560,7 @@ public interface AsyncDocumentClient {
      * @param options the request options.
      * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
-    Mono<ResourceResponse<Document>> patchDocument(String documentLink, List<PatchOperation<?>> patchOperations, RequestOptions options);
+    Mono<ResourceResponse<Document>> patchDocument(String documentLink, List<PatchOperation> patchOperations, RequestOptions options);
 
     /**
      * Replaces a document with the passed in document.

@@ -15,7 +15,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
-import com.azure.cosmos.patch.PatchOperation;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -24,8 +23,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -437,12 +434,13 @@ public class CosmosContainer {
      * @param partitionKey the partition key.
      * @param patchOperations patchOperations.
      * @param itemType the item type.
+     *
      * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation<?>> patchOperations,
+        List<PatchOperation> patchOperations,
         Class<T> itemType) {
 
         return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, patchOperations, itemType));
@@ -457,12 +455,13 @@ public class CosmosContainer {
      * @param patchOperations patchOperations.
      * @param options the request options.
      * @param itemType the item type.
+     *
      * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation<?>> patchOperations,
+        List<PatchOperation> patchOperations,
         CosmosItemRequestOptions options,
         Class<T> itemType) {
 

@@ -3,7 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.patch.PatchOperation;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
@@ -44,6 +43,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides methods for reading, deleting, and replacing existing Containers.
@@ -690,7 +690,7 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation<?>> patchOperations,
+        List<PatchOperation> patchOperations,
         Class<T> itemType) {
         return patchItem(itemId, partitionKey, patchOperations, new CosmosItemRequestOptions(), itemType);
     }
@@ -712,9 +712,11 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        List<PatchOperation<?>> patchOperations,
+        List<PatchOperation> patchOperations,
         CosmosItemRequestOptions options,
         Class<T> itemType) {
+
+        checkNotNull(partitionKey, "expected non-null partitionKey for patch operations");
 
         if (options == null) {
             options = new CosmosItemRequestOptions();
@@ -943,7 +945,7 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
         String itemId,
-        List<PatchOperation<?>> patchOperations,
+        List<PatchOperation> patchOperations,
         CosmosItemRequestOptions options,
         Context context,
         Class<T> itemType) {

@@ -11,8 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.patch.PatchOperation;
-import com.azure.cosmos.patch.implementation.PatchUtil;
+import com.azure.cosmos.PatchOperation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -28,6 +27,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -1594,20 +1594,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
-                                                          List<PatchOperation<?>> patchOperations,
+                                                          List<PatchOperation> patchOperations,
                                                           RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        if (options == null || options.getPartitionKey() == null) {
-            String collectionLink = Utils.getCollectionName(documentLink);
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
-        }
-
-        DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, patchOperations, options, finalRetryPolicyInstance), requestRetryPolicy);
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, patchOperations, options, documentClientRetryPolicy), documentClientRetryPolicy);
     }
 
     private Mono<ResourceResponse<Document>> patchDocumentInternal(String documentLink,
-                                                                   List<PatchOperation<?>> patchOperations,
+                                                                   List<PatchOperation> patchOperations,
                                                                    RequestOptions options,
                                                                    DocumentClientRetryPolicy retryPolicyInstance) {
         if (patchOperations == null) {
@@ -1630,7 +1624,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationEndTime,
             SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
-        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Update,
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this, OperationType.Update,
             ResourceType.Document, path, requestHeaders, options, content);
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);

@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.patch.PatchOperation;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -59,10 +58,10 @@ public class PatchTest extends TestSuiteBase {
 
         Assert.assertNull(testItem.children[1].status);
 
-        List<PatchOperation<?>> patchOperations = new ArrayList<>();
-        patchOperations.add(PatchOperation.createAddOperation("/children/1/CamelCase", "patched"));
-        patchOperations.add(PatchOperation.createRemoveOperation("/description"));
-        patchOperations.add(PatchOperation.createReplaceOperation("/taskNum", newTaskNum));
+        List<PatchOperation> patchOperations = new ArrayList<>();
+        patchOperations.add(PatchOperation.add("/children/1/CamelCase", "patched"));
+        patchOperations.add(PatchOperation.remove("/description"));
+        patchOperations.add(PatchOperation.replace("/taskNum", newTaskNum));
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
@@ -95,9 +94,9 @@ public class PatchTest extends TestSuiteBase {
     public void itemPatchFailureTest() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        List<PatchOperation<?>> patchOperations = new ArrayList<>();
-        patchOperations.add(PatchOperation.createAddOperation("/nonExistentParent/child", "bar"));
-        patchOperations.add(PatchOperation.createRemoveOperation("/cost"));
+        List<PatchOperation> patchOperations = new ArrayList<>();
+        patchOperations.add(PatchOperation.add("/nonExistentParent/child", "bar"));
+        patchOperations.add(PatchOperation.remove("/cost"));
 
         // item does not exist - 404 Resource Not Found error
         try {
@@ -106,7 +105,7 @@ public class PatchTest extends TestSuiteBase {
                 new PartitionKey(testItem.status),
                 patchOperations,
                 ToDoActivity.class);
-            Assert.fail("Patch operation should fail if the item doesn't exist.");
+            Assert.fail("Update operation should fail if the item doesn't exist.");
         }
         catch (CosmosException ex) {
             assertEquals(HttpResponseStatus.NOT_FOUND.code(), ex.getStatusCode());
@@ -121,7 +120,7 @@ public class PatchTest extends TestSuiteBase {
                 patchOperations,
                 ToDoActivity.class);
 
-            Assert.fail("Patch operation should fail for malformed PatchSpecification.");
+            Assert.fail("Update operation should fail for malformed PatchSpecification.");
         }
         catch (CosmosException ex) {
             assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ex.getStatusCode());
@@ -141,7 +140,7 @@ public class PatchTest extends TestSuiteBase {
                 requestOptions,
                 ToDoActivity.class);
 
-            Assert.fail("Patch operation should fail in case of pre-condition failure.");
+            Assert.fail("Update operation should fail in case of pre-condition failure.");
         } catch (CosmosException ex) {
             assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ex.getStatusCode());
             assertTrue(ex.getMessage().contains("One of the specified pre-condition is not met"), ex.getMessage());

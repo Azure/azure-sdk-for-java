@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.patch.implementation;
+package com.azure.cosmos.implementation.patch;
 
 class PatchConstants {
 
@@ -15,4 +15,5 @@ class PatchConstants {
     static final String OperationTypeNames_Remove = "remove";
     static final String OperationTypeNames_Replace = "replace";
     static final String OperationTypeNames_Set = "set";
+    static final String OperationTypeNames_Increment = "inc";
 }
