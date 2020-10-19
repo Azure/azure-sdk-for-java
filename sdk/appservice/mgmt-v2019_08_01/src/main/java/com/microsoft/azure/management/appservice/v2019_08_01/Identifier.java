@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing Identifier.
  */
-public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refreshable<Identifier>, Updatable<Identifier.Update>, HasManager<AppServiceManager> {
+public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refreshable<Identifier>, Updatable<Identifier.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */

@@ -16,8 +16,6 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.appservice.v2019_08_01.Sites;
 import com.microsoft.azure.Page;
 import rx.Completable;
-
-import java.io.InputStream;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.CustomHostnameAnalysisResult;
 import com.microsoft.azure.management.appservice.v2019_08_01.BackupItem;
@@ -90,14 +88,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.SiteVnetGateway;
 import com.microsoft.azure.management.appservice.v2019_08_01.WebJob;
 
 class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    WebAppsImpl(AppServiceManager manager) {
+    WebAppsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().webApps());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

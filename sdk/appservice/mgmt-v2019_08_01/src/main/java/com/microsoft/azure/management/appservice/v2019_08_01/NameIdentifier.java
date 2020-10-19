@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.NameIdentifierInner;
 
 /**
  * Type representing NameIdentifier.
  */
-public interface NameIdentifier extends HasInner<NameIdentifierInner>, HasManager<AppServiceManager> {
+public interface NameIdentifier extends HasInner<NameIdentifierInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the name value.
      */

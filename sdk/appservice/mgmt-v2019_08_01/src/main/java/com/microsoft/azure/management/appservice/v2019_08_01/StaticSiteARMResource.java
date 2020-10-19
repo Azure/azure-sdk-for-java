@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.StaticSiteARMResourceInner;
 
 /**
  * Type representing StaticSiteARMResource.
  */
-public interface StaticSiteARMResource extends HasInner<StaticSiteARMResourceInner>, Resource, GroupableResourceCore<AppServiceManager, StaticSiteARMResourceInner>, HasResourceGroup, Refreshable<StaticSiteARMResource>, Updatable<StaticSiteARMResource.Update>, HasManager<AppServiceManager> {
+public interface StaticSiteARMResource extends HasInner<StaticSiteARMResourceInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, StaticSiteARMResourceInner>, HasResourceGroup, Refreshable<StaticSiteARMResource>, Updatable<StaticSiteARMResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the branch value.
      */

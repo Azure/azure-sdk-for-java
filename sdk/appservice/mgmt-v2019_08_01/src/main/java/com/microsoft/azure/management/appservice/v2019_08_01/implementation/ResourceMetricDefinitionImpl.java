@@ -10,21 +10,21 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.ResourceMetricDefinition;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-
+import rx.Observable;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.ResourceMetricAvailability;
 import java.util.Map;
 
 class ResourceMetricDefinitionImpl extends WrapperImpl<ResourceMetricDefinitionInner> implements ResourceMetricDefinition {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    ResourceMetricDefinitionImpl(ResourceMetricDefinitionInner inner,  AppServiceManager manager) {
+    ResourceMetricDefinitionImpl(ResourceMetricDefinitionInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

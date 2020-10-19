@@ -22,9 +22,9 @@ import com.microsoft.azure.management.appservice.v2019_08_01.CertificateOrderSta
 import com.microsoft.azure.management.appservice.v2019_08_01.CertificateDetails;
 import rx.functions.Func1;
 
-class AppServiceCertificateOrderImpl extends GroupableResourceCoreImpl<AppServiceCertificateOrder, AppServiceCertificateOrderInner, AppServiceCertificateOrderImpl, AppServiceManager> implements AppServiceCertificateOrder, AppServiceCertificateOrder.Definition, AppServiceCertificateOrder.Update {
+class AppServiceCertificateOrderImpl extends GroupableResourceCoreImpl<AppServiceCertificateOrder, AppServiceCertificateOrderInner, AppServiceCertificateOrderImpl, CertificateRegistrationManager> implements AppServiceCertificateOrder, AppServiceCertificateOrder.Definition, AppServiceCertificateOrder.Update {
     private AppServiceCertificateOrderPatchResource updateParameter;
-    AppServiceCertificateOrderImpl(String name, AppServiceCertificateOrderInner inner, AppServiceManager manager) {
+    AppServiceCertificateOrderImpl(String name, AppServiceCertificateOrderInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AppServiceCertificateOrderPatchResource();
     }

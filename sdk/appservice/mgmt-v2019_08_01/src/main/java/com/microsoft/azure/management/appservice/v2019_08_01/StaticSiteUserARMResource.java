@@ -14,12 +14,12 @@ import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing StaticSiteUserARMResource.
  */
-public interface StaticSiteUserARMResource extends HasInner<StaticSiteUserARMResourceInner>, Indexable, Updatable<StaticSiteUserARMResource.Update>, HasManager<AppServiceManager> {
+public interface StaticSiteUserARMResource extends HasInner<StaticSiteUserARMResourceInner>, Indexable, Updatable<StaticSiteUserARMResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the displayName value.
      */

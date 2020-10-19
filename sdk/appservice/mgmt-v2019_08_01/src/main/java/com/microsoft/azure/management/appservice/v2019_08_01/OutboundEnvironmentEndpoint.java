@@ -11,13 +11,13 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.OutboundEnvironmentEndpointInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 
 /**
  * Type representing OutboundEnvironmentEndpoint.
  */
-public interface OutboundEnvironmentEndpoint extends HasInner<OutboundEnvironmentEndpointInner>, HasManager<AppServiceManager> {
+public interface OutboundEnvironmentEndpoint extends HasInner<OutboundEnvironmentEndpointInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the category value.
      */

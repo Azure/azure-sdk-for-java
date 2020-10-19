@@ -10,20 +10,21 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.MultiRolePools;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.ComputeModeOptions;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2019_08_01.SkuDescription;
 
 class MultiRolePoolsImpl extends WrapperImpl<WorkerPoolResourceInner> implements MultiRolePools {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    MultiRolePoolsImpl(WorkerPoolResourceInner inner,  AppServiceManager manager) {
+    MultiRolePoolsImpl(WorkerPoolResourceInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
