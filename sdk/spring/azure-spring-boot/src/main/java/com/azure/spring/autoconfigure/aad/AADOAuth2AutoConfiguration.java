@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
@@ -76,6 +77,10 @@ public class AADOAuth2AutoConfiguration {
         Assert.doesNotContain(tenantId, " ", "azure.activedirectory.tenant-id should not contain ' '.");
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
 
+        String redirectUriTemplate = Optional.of(aadAuthenticationProperties)
+                                             .map(AADAuthenticationProperties::getRedirectUriTemplate)
+                                             .orElse("{baseUrl}/login/oauth2/code/{registrationId}");
+
         List<String> scope = aadAuthenticationProperties.getScope();
         if (aadAuthenticationProperties.allowedGroupsConfigured()
             && !scope.contains("https://graph.microsoft.com/user.read")
@@ -97,7 +102,7 @@ public class AADOAuth2AutoConfiguration {
                                  .clientSecret(aadAuthenticationProperties.getClientSecret())
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                 .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+                                 .redirectUriTemplate(redirectUriTemplate)
                                  .scope(scope)
                                  .authorizationUri(
                                      String.format(
