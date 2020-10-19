@@ -86,7 +86,7 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 ## Troubleshooting
 
 ### If registered application is not multi-tenanted, how to run this sample?
-In this auto-configuration, by [default](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
+In this auto-configuration, by [default](https://github.com/Azure/azure-sdk-for-java/blob/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
 
 Configure endpoints with specific tenant-id by replacing `common` in your application.properties file:
 ```properties
