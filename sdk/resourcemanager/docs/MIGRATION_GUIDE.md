@@ -76,7 +76,7 @@ For detailed information on the benefits of using the new authentication classes
 
 ## AzureResourceManager Class
 
-The `Azure` class is renamed to `AzureResourceManager`.
+The `Azure` class has been renamed to `AzureResourceManager`.
 
 ## Customized Policy
 
