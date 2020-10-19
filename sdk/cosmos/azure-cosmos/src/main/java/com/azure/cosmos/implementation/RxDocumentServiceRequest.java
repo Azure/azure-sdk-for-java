@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
@@ -55,8 +53,6 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
-
-    private volatile RetryWithException lastRetryWithException;
 
     private byte[] contentAsByteArray;
 
@@ -278,15 +274,6 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setByteBuffer(ByteBuffer byteBuffer) {
         this.contentAsByteArray = toByteArray(byteBuffer);
-    }
-
-    public RetryWithException getLastRetryWithException() {
-        return this.lastRetryWithException;
-    }
-
-    public void setLastRetryWithException(RetryWithException exception) {
-        checkNotNull(exception, "exception must not be null.");
-        this.lastRetryWithException = exception;
     }
 
     /** Creates a DocumentServiceRequest with a stream.
