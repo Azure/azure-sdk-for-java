@@ -61,18 +61,15 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class FormRecognizerAsyncClient {
     private final ClientLogger logger = new ClientLogger(FormRecognizerAsyncClient.class);
     private final FormRecognizerClientImpl service;
-    private final FormRecognizerServiceVersion serviceVersion;
 
     /**
      * Create a {@link FormRecognizerAsyncClient} that sends requests to the Form Recognizer service's endpoint. Each
      * service call goes through the {@link FormRecognizerClientBuilder#pipeline(HttpPipeline)} http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    FormRecognizerAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
+    FormRecognizerAsyncClient(FormRecognizerClientImpl service) {
         this.service = service;
-        this.serviceVersion = serviceVersion;
     }
 
     /**

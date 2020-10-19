@@ -3,42 +3,29 @@
 
 package com.azure.ai.formrecognizer.training;
 
-import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.getFormRecognizerRestClient;
 
 /**
  * This class provides a fluent builder API to help instantiation of {@link FormTrainingClient FormTrainingClient}
@@ -74,23 +61,12 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {FormTrainingAsyncClient.class, FormTrainingClient.class})
 public final class FormTrainingClientBuilder {
-
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
-    private static final String ACCEPT_HEADER = "Accept";
-    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-
     private final ClientLogger logger = new ClientLogger(FormTrainingClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies;
-    private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private String endpoint;
-    private AzureKeyCredential credential;
+    private AzureKeyCredential apiKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -99,26 +75,12 @@ public final class FormTrainingClientBuilder {
     private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
     private ClientOptions clientOptions;
-    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
-    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
-
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
     /**
-     * The constructor with defaults.
+     * Creates a builder instance to configure and construct {@link FormTrainingClient
+     * FormTrainingClients} and {@link FormTrainingAsyncClient FormTrainingAsyncClients}.
      */
     public FormTrainingClientBuilder() {
-        policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions();
-
-        Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-
-        headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true")
-            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -156,73 +118,20 @@ public final class FormTrainingClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormTrainingAsyncClient buildAsyncClient() {
-        // Endpoint cannot be null, which is required in request authentication
-        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+        FormRecognizerClientImpl restClient = getFormRecognizerRestClient(endpoint,
+            version,
+            httpPipeline,
+            configuration,
+            retryPolicy,
+            tokenCredential,
+            apiKeyCredential,
+            clientOptions,
+            httpLogOptions,
+            perCallPolicies,
+            perRetryPolicies,
+            httpClient);
 
-        // Service Version
-        final FormRecognizerServiceVersion serviceVersion =
-            version != null ? version : FormRecognizerServiceVersion.getLatest();
-
-        HttpPipeline pipeline = httpPipeline;
-        // Create a default Pipeline if it is not given
-        if (pipeline == null) {
-            pipeline = getDefaultHttpPipeline();
-        }
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new FormTrainingAsyncClient(formRecognizerAPI, serviceVersion);
-
-    }
-
-    private HttpPipeline getDefaultHttpPipeline() {
-        // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
-        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
-        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
-
-        String applicationId = null;
-        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
-            applicationId = buildClientOptions.getApplicationId();
-        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
-            applicationId = buildLogOptions.getApplicationId();
-        }
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersPolicy(headers));
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
-        policies.addAll(perCallPolicies);
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-        policies.add(new AddDatePolicy());
-
-        // Authentications
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-        } else if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
-        }
-        policies.addAll(perRetryPolicies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
+        return new FormTrainingAsyncClient(restClient);
     }
 
     /**
@@ -262,7 +171,7 @@ public final class FormTrainingClientBuilder {
      * @throws NullPointerException If {@code apiKeyCredential} is null.
      */
     public FormTrainingClientBuilder credential(AzureKeyCredential apiKeyCredential) {
-        this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
+        this.apiKeyCredential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
         return this;
     }
 
@@ -315,7 +224,13 @@ public final class FormTrainingClientBuilder {
      * @throws NullPointerException If {@code policy} is null.
      */
     public FormTrainingClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
         return this;
     }
 

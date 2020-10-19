@@ -3,11 +3,32 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
@@ -18,10 +39,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.core.http.ContentType.APPLICATION_JSON;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -33,6 +60,21 @@ public final class Utility {
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
     // default time interval for polling
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+    private static final HttpHeaders HTTP_HEADERS = new HttpHeaders()
+            .put("x-ms-return-client-request-id", "true")
+            .put("Accept", APPLICATION_JSON);
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     private Utility() {
     }
@@ -83,6 +125,91 @@ public final class Utility {
                         + "Should use other overload API that takes content type."));
                 }
             }));
+    }
+
+    public static FormRecognizerClientImpl getFormRecognizerRestClient(String endpoint,
+        FormRecognizerServiceVersion version, HttpPipeline httpPipeline, Configuration configuration,
+        RetryPolicy retryPolicy, TokenCredential tokenCredential, AzureKeyCredential apiKeyCredential,
+        ClientOptions clientOptions, HttpLogOptions httpLogOptions,  List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+
+        // Service Version
+        final FormRecognizerServiceVersion serviceVersion =
+            version != null ? version : FormRecognizerServiceVersion.getLatest();
+
+        HttpPipeline pipeline = httpPipeline;
+
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(configuration,
+                retryPolicy,
+                tokenCredential,
+                apiKeyCredential,
+                clientOptions,
+                httpLogOptions,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
+        }
+
+        return new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            // .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+    }
+
+    private static HttpPipeline getDefaultHttpPipeline(Configuration configuration, RetryPolicy retryPolicy,
+        TokenCredential tokenCredential, AzureKeyCredential apiKeyCredential, ClientOptions clientOptions,
+        HttpLogOptions httpLogOptions,  List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
+        // Global Env configuration store
+        final Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
+        HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        String applicationId = null;
+        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
+            applicationId = buildClientOptions.getApplicationId();
+        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
+            applicationId = buildLogOptions.getApplicationId();
+        }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new RequestIdPolicy());
+        policies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+        policies.addAll(perCallPolicies);
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+        policies.add(new AddDatePolicy());
+        buildClientOptions.getHeaders().forEach(header -> HTTP_HEADERS.put(header.getName(), header.getValue()));
+        policies.add(new AddHeadersFromContextPolicy());
+        policies.add(new AddHeadersPolicy(HTTP_HEADERS));
+
+        // Authentications
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (apiKeyCredential != null) {
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, apiKeyCredential));
+        }
+
+        policies.addAll(perRetryPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     private static boolean isJpeg(byte[] header) {

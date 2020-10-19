@@ -63,13 +63,13 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
-import static com.azure.ai.formrecognizer.TestUtils.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -120,7 +120,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             durationTestMode = ONE_NANO_DURATION;
         } else {
-            durationTestMode = DEFAULT_DURATION;
+            durationTestMode = DEFAULT_POLL_INTERVAL;
         }
     }
 

@@ -57,7 +57,6 @@ final class TestUtils {
     static final String VALID_URL = "https://resources/contoso-allinone.jpg";
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final Duration ONE_NANO_DURATION = Duration.ofNanos(1);
-    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private TestUtils() {
     }

@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.training;
 
 import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
@@ -79,18 +78,15 @@ public final class FormTrainingAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
     private final FormRecognizerClientImpl service;
-    private final FormRecognizerServiceVersion serviceVersion;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link FormTrainingClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
+    FormTrainingAsyncClient(FormRecognizerClientImpl service) {
         this.service = service;
-        this.serviceVersion = serviceVersion;
     }
 
     /**
