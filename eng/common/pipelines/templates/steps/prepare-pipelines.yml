@@ -7,7 +7,7 @@ parameters:
   TestsConventionOptions: '' 
 
 steps:
-  - template: templates/steps/install-pipeline-generation.yml
+  - template: install-pipeline-generation.yml
   - script: |
       echo pipeline-generator --organization https://dev.azure.com/azure-sdk --project public --prefix ${{parameters.Prefix}} --path $(System.DefaultWorkingDirectory)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention ci --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.CIConventionOptions}}
     displayName: 'Generate public pipelines for: $(RepositoryName)'
