@@ -1,7 +1,18 @@
 ## Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
+
+### 4.7.0 (2020-10-17)
+#### New Features
+* Added Beta for transactional batches.
+
+#### Key Bug Fixes
+* Fixed an error parsing query metrics on locales with ',' as floating-point delimiter.
+* Stopped excessive regional fail-overs when retrieving responses with invalid json from Gateway.
+* Fixed an error resulting in certain queries unnecessarily being expected in the Gateway even when using Direct transport.
+* Reduced logging noise level by handling SSLException on channel closure.
+* Improved efficiency of retry logic for "404 - ReadSession not available" errors.
 
 ### 4.6.0 (2020-09-30)
 #### New Features

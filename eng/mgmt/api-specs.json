@@ -102,6 +102,10 @@
     "source": "specification/databox/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "databoxedge/resource-manager": {
+    "source": "specification/databoxedge/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "datafactory/resource-manager": {
     "source": "specification/datafactory/resource-manager/readme.md",
     "args": "--multiapi --fluent"

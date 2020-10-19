@@ -19,7 +19,7 @@ import java.util.Objects;
 public class SqlFirewallRuleImpl
     extends ExternalChildResourceImpl<SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer>
     implements SqlFirewallRule,
-        SqlFirewallRule.SqlFirewallRuleDefinition<SqlServer.DefinitionStages.WithCreate>,
+        SqlFirewallRule.SqlFirewallRuleDefinition<SqlServerImpl>,
         SqlFirewallRule.Update,
         SqlFirewallRuleOperations.SqlFirewallRuleOperationsDefinition {
 
