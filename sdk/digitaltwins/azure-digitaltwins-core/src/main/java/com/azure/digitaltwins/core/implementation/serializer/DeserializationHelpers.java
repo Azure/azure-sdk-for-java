@@ -12,6 +12,9 @@ import java.io.ByteArrayOutputStream;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 
+/**
+ * Helper class for deserializing user-defined types using either a default object mapper or using a user-provided custom json deserializer
+ */
 public final class DeserializationHelpers {
 
     /**
