@@ -10,7 +10,7 @@ import com.azure.digitaltwins.core.models.*;
  * Helper class used internally to convert convenience layer options objects into protocol layer options objects.
  * This class must be manually updated each time a new option is added to a service API.
  */
-public class OptionsConverter {
+public final class OptionsConverter {
     public static DigitalTwinsAddOptions toProtocolLayerOptions(CreateDigitalTwinOptions options) {
         if (options == null) {
             return null;
