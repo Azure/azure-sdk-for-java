@@ -1,5 +1,8 @@
 # Release History
 
+## 2.1.0-beta.1 (Unreleased)
+
+
 ## 2.0.0 (2020-10-19)
 
 - Removed `Region`, as it is replaced by `com.azure.core.management.Region`.
