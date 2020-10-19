@@ -18,7 +18,7 @@ jobs:
         - name: azure-cosmos-benchmark
           groupId: com.azure
       TimeoutInMinutes: 120
-      MaxParallel: 8
+      MaxParallel: 4
       Matrix:
         # 59m 59s, expect passed
         Session_Http_E2E:
