@@ -20,17 +20,14 @@ parameters:
 steps:
   - template: install-pipeline-generation.yml
   - script: |
-      pipeline-generator --organization https://dev.azure.com/azure-sdk --project public --prefix ${{parameters.Prefix}} --path $(System.DefaultWorkingDirectory)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention ci --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.CIConventionOptions}}
-    displayName: 'Generate public pipelines for: $(RepositoryName)'
+      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project public --prefix ${{parameters.Prefix}} --path $(System.DefaultWorkingDirectory)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention ci --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.CIConventionOptions}}
     env:
       PATVAR: $(azuresdk-azure-sdk-devops-pipeline-generation-pat)
   - script: |
-      pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(Pipeline.Workspace)/$(RepositoryName)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention up --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.UPConventionOptions}}
-    displayName: 'Generate internal pipelines for: $(RepositoryName)'
+      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(Pipeline.Workspace)/$(RepositoryName)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention up --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.UPConventionOptions}}
     env:
       PATVAR: $(azuresdk-azure-sdk-devops-pipeline-generation-pat)
   - script: |
-      pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(Pipeline.Workspace)/$(RepositoryName)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention tests --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.TestsConventionOptions}}
-    displayName: 'Generate test pipelines for: $(RepositoryName)'
+      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(Pipeline.Workspace)/$(RepositoryName)/sdk --endpoint Azure --repository ${{parameters.Owner}}/${{parameters.Repository}} --convention tests --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.TestsConventionOptions}}
     env:
       PATVAR: $(azuresdk-azure-sdk-devops-pipeline-generation-pat)
