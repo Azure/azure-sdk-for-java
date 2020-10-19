@@ -48,15 +48,18 @@ import java.util.Objects;
  */
 public final class  BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
+    private static byte[] EMPTY_DATA = new byte[0];
     private final byte[] data;
 
     /**
-     * Create instance of {@link BinaryData} given the data.
+     * Create instance of {@link BinaryData} given the data. If {@code null} value is provided , it will be converted
+     * into empty byte array.
      * @param data to represent as bytes.
-     * @throws NullPointerException If {@code data} is null.
      */
     BinaryData(byte[] data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
+        if (Objects.isNull(data)) {
+            data = EMPTY_DATA;
+        }
         this.data = Arrays.copyOf(data, data.length);
     }
 
@@ -138,20 +141,24 @@ public final class  BinaryData {
 
     /**
      * Create {@link BinaryData} instance with given data. The {@link String} is converted into bytes  using
-     * {@link StandardCharsets#UTF_8} character set.
+     * {@link StandardCharsets#UTF_8} character set. If {@code null} data is provided , it will be converted into
+     * empty byte array.
      *
      * @param data to use.
-     * @throws NullPointerException if {@code inputStream} is null.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromString(String data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
+        if (Objects.isNull(data)) {
+            return new BinaryData(EMPTY_DATA);
+        } else {
+            return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
+        }
 
-        return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
-     * Create {@link BinaryData} instance with given byte array data.
+     * Create {@link BinaryData} instance with given byte array data. If {@code null} value is provided , it will be
+     * converted into empty byte array.
      *
      * @param data to use.
      * @return {@link BinaryData} representing the binary data.
@@ -162,18 +169,19 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available in classpath.
-     * The serializer must implement {@link JsonSerializer} interface.
+     * The serializer must implement {@link JsonSerializer} interface. If {@code null} data is provided , it will be
+     * converted into empty byte array.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
-     * @throws NullPointerException if {@code data} is null.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
      * @return {@link BinaryData} representing binary data.
      *
      * @see JsonSerializer
      */
     public static BinaryData fromObject(Object data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-
+        if (Objects.isNull(data)) {
+            return new BinaryData(EMPTY_DATA);
+        }
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         JsonSerializerProviders.createInstance().serialize(outputStream, data);
         return new BinaryData(outputStream.toByteArray());
@@ -181,14 +189,18 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using the provided {@link ObjectSerializer}.
+     * If {@code null} data is provided , it will be converted into empty byte array.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
-     * @throws NullPointerException if {@code inputStream} or {@code serializer} is null.
+     * @throws NullPointerException if {@code serializer} is null.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
+        if (Objects.isNull(data)) {
+            return new BinaryData(EMPTY_DATA);
+        }
+
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -198,16 +210,14 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link Mono} {@link BinaryData} using the provided
-     * {@link ObjectSerializer}.
+     * {@link ObjectSerializer}. If {@code null} data is provided , it will be converted into empty byte array.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
-     * @throws NullPointerException if {@code inputStream} or {@code serializer} is null.
+     * @throws NullPointerException if {@code serializer} is null.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
         return Mono.fromCallable(() -> fromObject(data, serializer));
     }
