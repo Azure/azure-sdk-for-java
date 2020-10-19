@@ -264,10 +264,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     public void createRelationship() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationship#String-String-Object-Class#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
-            "myRelationshipId",
-            "mySourceDigitalTwinId",
-            "myTargetDigitalTwinId",
-            "contains")
+                "myRelationshipId",
+                "mySourceDigitalTwinId",
+                "myTargetDigitalTwinId",
+                "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
@@ -305,10 +305,10 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
     public void createRelationshipWithResponse() {
         // BEGIN: com.azure.digitaltwins.core.syncClient.createRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship
         BasicRelationship buildingToFloorBasicRelationship = new BasicRelationship(
-            "myRelationshipId",
-            "mySourceDigitalTwinId",
-            "myTargetDigitalTwinId",
-            "contains")
+                "myRelationshipId",
+                "mySourceDigitalTwinId",
+                "myTargetDigitalTwinId",
+                "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 
