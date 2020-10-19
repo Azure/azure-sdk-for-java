@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.jca.rest;
 
 import java.io.Serializable;
@@ -15,15 +14,15 @@ public class OAuthToken implements Serializable {
     /**
      * Stores the access token.
      */
-    private String accessToken;
+    private String access_token;
 
     /**
      * Get the access token.
      *
      * @return the access token.
      */
-    public String getAccessToken() {
-        return accessToken;
+    public String getAccess_token() {
+        return access_token;
     }
 
     /**
@@ -31,7 +30,7 @@ public class OAuthToken implements Serializable {
      *
      * @param accessToken the access token.
      */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccess_token(String accessToken) {
+        this.access_token = accessToken;
     }
 }

@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.jca;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -36,9 +35,21 @@ class LegacyRestClient implements RestClient {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet(url);
             if (headers != null) {
-                headers.forEach(httpGet::addHeader);
+                headers.entrySet().forEach(entry -> {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    httpGet.addHeader(key, value);
+                });
             }
-            HttpClientResponseHandler<String> responseHandler = createHttpClientResponseHandler();
+            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+                int status = response.getCode();
+                String result1 = null;
+                if (status >= 200 && status < 300) {
+                    HttpEntity entity = response.getEntity();
+                    result1 = entity != null ? EntityUtils.toString(entity) : null;
+                }
+                return result1;
+            };
             result = client.execute(httpGet, responseHandler);
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -52,23 +63,19 @@ class LegacyRestClient implements RestClient {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(HttpEntities.create(body, ContentType.create(contentType)));
-            HttpClientResponseHandler<String> responseHandler = createHttpClientResponseHandler();
+            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+                int status = response.getCode();
+                String result1 = null;
+                if (status >= 200 && status < 300) {
+                    HttpEntity entity = response.getEntity();
+                    result1 = entity != null ? EntityUtils.toString(entity) : null;
+                }
+                return result1;
+            };
             result = client.execute(httpPost, responseHandler);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         return result;
-    }
-
-    private HttpClientResponseHandler<String> createHttpClientResponseHandler() {
-        return (ClassicHttpResponse response) -> {
-            int status = response.getCode();
-            String result = null;
-            if (status >= 200 && status < 300) {
-                HttpEntity entity = response.getEntity();
-                result = entity != null ? EntityUtils.toString(entity) : null;
-            }
-            return result;
-        };
     }
 }
