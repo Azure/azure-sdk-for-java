@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.5 (2020-09-27)
+## 2.0.0-beta.5 (2020-10-19)
 
 - Renamed `Azure` to `AzureResourceManager`
 
