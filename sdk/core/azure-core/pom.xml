@@ -190,7 +190,6 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
-          <!-- Enable this plugin when issues documented are fixed -->
           <plugins>
             <plugin>
               <groupId>com.h3xstream.findsecbugs</groupId>
