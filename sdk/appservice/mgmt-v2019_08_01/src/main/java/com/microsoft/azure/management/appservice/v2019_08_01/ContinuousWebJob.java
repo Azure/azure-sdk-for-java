@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Cont
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 
 /**
  * Type representing ContinuousWebJob.
  */
-public interface ContinuousWebJob extends HasInner<ContinuousWebJobInner>, Indexable, Refreshable<ContinuousWebJob>, HasManager<AppServiceManager> {
+public interface ContinuousWebJob extends HasInner<ContinuousWebJobInner>, Indexable, Refreshable<ContinuousWebJob>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the detailedStatus value.
      */

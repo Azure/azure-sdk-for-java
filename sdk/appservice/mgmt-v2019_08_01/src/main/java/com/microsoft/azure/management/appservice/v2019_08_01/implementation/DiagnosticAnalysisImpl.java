@@ -16,14 +16,14 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2019_08_01.AnalysisData;
 
 class DiagnosticAnalysisImpl extends WrapperImpl<DiagnosticAnalysisInner> implements DiagnosticAnalysis {
-    private final AppServiceManager manager;
-    DiagnosticAnalysisImpl(DiagnosticAnalysisInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    DiagnosticAnalysisImpl(DiagnosticAnalysisInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

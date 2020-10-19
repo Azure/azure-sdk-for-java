@@ -35,14 +35,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.HostingEnvironmentS
 import com.microsoft.azure.management.appservice.v2019_08_01.WorkerPools;
 
 class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner> implements AppServiceEnvironments {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServiceEnvironmentsImpl(AppServiceManager manager) {
+    AppServiceEnvironmentsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServiceEnvironments());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

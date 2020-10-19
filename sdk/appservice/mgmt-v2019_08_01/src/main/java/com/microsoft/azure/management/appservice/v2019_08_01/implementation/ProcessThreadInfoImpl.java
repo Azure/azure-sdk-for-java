@@ -10,18 +10,19 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.ProcessThreadInfo;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import org.joda.time.DateTime;
 
 class ProcessThreadInfoImpl extends WrapperImpl<ProcessThreadInfoInner> implements ProcessThreadInfo {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    ProcessThreadInfoImpl(ProcessThreadInfoInner inner,  AppServiceManager manager) {
+    ProcessThreadInfoImpl(ProcessThreadInfoInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

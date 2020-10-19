@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2019_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2019_08_01.implementation.MigrateMySqlStatusInner;
 
 /**
  * Type representing MigrateMySqlStatus.
  */
-public interface MigrateMySqlStatus extends HasInner<MigrateMySqlStatusInner>, HasManager<AppServiceManager> {
+public interface MigrateMySqlStatus extends HasInner<MigrateMySqlStatusInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */

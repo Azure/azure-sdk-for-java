@@ -28,8 +28,8 @@ import com.microsoft.azure.management.appservice.v2019_08_01.NameIdentifier;
 import com.microsoft.azure.management.appservice.v2019_08_01.DomainRecommendationSearchParameters;
 import com.microsoft.azure.management.appservice.v2019_08_01.DomainOwnershipIdentifier;
 
-class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainInner, DomainsInner, AppServiceManager>  implements Domains {
-    protected DomainsImpl(AppServiceManager manager) {
+class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainInner, DomainsInner, CertificateRegistrationManager>  implements Domains {
+    protected DomainsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().domains(), manager);
     }
 

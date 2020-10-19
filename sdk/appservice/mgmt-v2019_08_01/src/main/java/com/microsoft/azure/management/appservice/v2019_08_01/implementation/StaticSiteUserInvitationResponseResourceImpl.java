@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import org.joda.time.DateTime;
 
 class StaticSiteUserInvitationResponseResourceImpl extends WrapperImpl<StaticSiteUserInvitationResponseResourceInner> implements StaticSiteUserInvitationResponseResource {
-    private final AppServiceManager manager;
-    StaticSiteUserInvitationResponseResourceImpl(StaticSiteUserInvitationResponseResourceInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    StaticSiteUserInvitationResponseResourceImpl(StaticSiteUserInvitationResponseResourceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

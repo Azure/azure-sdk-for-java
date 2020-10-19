@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.SlotDifference;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class SlotDifferenceImpl extends WrapperImpl<SlotDifferenceInner> implements SlotDifference {
-    private final AppServiceManager manager;
-    SlotDifferenceImpl(SlotDifferenceInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    SlotDifferenceImpl(SlotDifferenceInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

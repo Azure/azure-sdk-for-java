@@ -17,9 +17,9 @@ import com.microsoft.azure.management.appservice.v2019_08_01.StaticSiteBuildProp
 import com.microsoft.azure.management.appservice.v2019_08_01.SkuDescription;
 import rx.functions.Func1;
 
-class StaticSiteARMResourceImpl extends GroupableResourceCoreImpl<StaticSiteARMResource, StaticSiteARMResourceInner, StaticSiteARMResourceImpl, AppServiceManager> implements StaticSiteARMResource, StaticSiteARMResource.Definition, StaticSiteARMResource.Update {
+class StaticSiteARMResourceImpl extends GroupableResourceCoreImpl<StaticSiteARMResource, StaticSiteARMResourceInner, StaticSiteARMResourceImpl, CertificateRegistrationManager> implements StaticSiteARMResource, StaticSiteARMResource.Definition, StaticSiteARMResource.Update {
     private StaticSitePatchResource updateParameter;
-    StaticSiteARMResourceImpl(String name, StaticSiteARMResourceInner inner, AppServiceManager manager) {
+    StaticSiteARMResourceImpl(String name, StaticSiteARMResourceInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new StaticSitePatchResource();
     }

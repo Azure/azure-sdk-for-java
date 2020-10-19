@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2019_08_01.implementation.Vnet
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2019_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2019_08_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 
 /**
  * Type representing ServerfarmVnetInfo.
  */
-public interface ServerfarmVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshable<ServerfarmVnetInfo>, HasManager<AppServiceManager> {
+public interface ServerfarmVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refreshable<ServerfarmVnetInfo>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the certBlob value.
      */

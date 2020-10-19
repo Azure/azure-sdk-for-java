@@ -14,14 +14,14 @@ import com.microsoft.azure.management.appservice.v2019_08_01.CertificateOrderAct
 import org.joda.time.DateTime;
 
 class CertificateOrderActionImpl extends WrapperImpl<CertificateOrderActionInner> implements CertificateOrderAction {
-    private final AppServiceManager manager;
-    CertificateOrderActionImpl(CertificateOrderActionInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    CertificateOrderActionImpl(CertificateOrderActionInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

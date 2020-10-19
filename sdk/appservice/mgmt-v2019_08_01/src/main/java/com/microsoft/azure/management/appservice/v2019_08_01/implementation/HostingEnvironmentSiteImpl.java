@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2019_08_01.HostingEnvironmentSite;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.appservice.v2019_08_01.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.v2019_08_01.CloningInfo;
 import java.util.List;
@@ -25,15 +26,15 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.v2019_08_01.UsageState;
 
 class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements HostingEnvironmentSite {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    HostingEnvironmentSiteImpl(SiteInner inner,  AppServiceManager manager) {
+    HostingEnvironmentSiteImpl(SiteInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

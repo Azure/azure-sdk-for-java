@@ -14,12 +14,12 @@ import rx.Observable;
 import org.joda.time.DateTime;
 
 class StaticSiteCustomDomainOverviewARMResourceImpl extends CreatableUpdatableImpl<StaticSiteCustomDomainOverviewARMResource, StaticSiteCustomDomainOverviewARMResourceInner, StaticSiteCustomDomainOverviewARMResourceImpl> implements StaticSiteCustomDomainOverviewARMResource, StaticSiteCustomDomainOverviewARMResource.Definition, StaticSiteCustomDomainOverviewARMResource.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String domainName;
 
-    StaticSiteCustomDomainOverviewARMResourceImpl(String name, AppServiceManager manager) {
+    StaticSiteCustomDomainOverviewARMResourceImpl(String name, CertificateRegistrationManager manager) {
         super(name, new StaticSiteCustomDomainOverviewARMResourceInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class StaticSiteCustomDomainOverviewARMResourceImpl extends CreatableUpdatableIm
         //
     }
 
-    StaticSiteCustomDomainOverviewARMResourceImpl(StaticSiteCustomDomainOverviewARMResourceInner inner, AppServiceManager manager) {
+    StaticSiteCustomDomainOverviewARMResourceImpl(StaticSiteCustomDomainOverviewARMResourceInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class StaticSiteCustomDomainOverviewARMResourceImpl extends CreatableUpdatableIm
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
