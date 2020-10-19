@@ -195,15 +195,16 @@ In this section, you clone a containerized Spring Boot application and test it l
     ```
 
 1. Update the pom.xml file to now include.
-
+    [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current})
     ```xml
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
-        <version>1.2.8</version>
+        <version>1.2.8-beta.1</version>
     </dependency>
     ```
-
+    [//]: # ({x-version-update-end})
+    
 1. Create a new file called *AzureCredentials.java* and add the code below.
 
     ```java

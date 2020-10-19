@@ -14,7 +14,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-test-appconfiguration-config</artifactId>
-  <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-appconfiguration-config;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-appconfiguration-config;current} -->
 
   <dependencies>
     <dependency>
