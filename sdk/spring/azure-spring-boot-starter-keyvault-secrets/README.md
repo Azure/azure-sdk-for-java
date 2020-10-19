@@ -193,6 +193,6 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-keyvault-secrets-spring-boot-starter
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/2ebeb95e4e3ad3c3fc351d7dbe395c99f7c79423/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
