@@ -1,7 +1,7 @@
 parameters:
-  Owner: Azure
+  Owner: 'Azure'
   Repository: '$(Build.Repository.Name)'
-  Prefix: error
+  Prefix: 'error'
   CIConventionOptions: ''
   UPConventionOptions: ''
   TestsConventionOptions: '' 
