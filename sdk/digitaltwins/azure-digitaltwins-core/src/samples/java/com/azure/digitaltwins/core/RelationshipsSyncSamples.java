@@ -83,8 +83,7 @@ public class RelationshipsSyncSamples {
         }
 
         // Create a building digital twin
-        BasicDigitalTwin buildingDigitalTwin = new BasicDigitalTwin()
-            .setId(buildingTwinId)
+        BasicDigitalTwin buildingDigitalTwin = new BasicDigitalTwin(buildingTwinId)
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleBuildingModelId));
 
@@ -92,8 +91,7 @@ public class RelationshipsSyncSamples {
 
         ConsoleLogger.print("Created twin" + buildingDigitalTwin.getId());
 
-        BasicDigitalTwin floorDigitalTwin = new BasicDigitalTwin()
-            .setId(floorTwinId)
+        BasicDigitalTwin floorDigitalTwin = new BasicDigitalTwin(floorTwinId)
             .setMetadata(new DigitalTwinMetadata()
                 .setModelId(sampleFloorModelId));
 
@@ -103,11 +101,7 @@ public class RelationshipsSyncSamples {
 
         ConsoleLogger.printHeader("Create relationships");
 
-        BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship()
-            .setId(buildingFloorRelationshipId)
-            .setSourceId(buildingTwinId)
-            .setTargetId(floorTwinId)
-            .setName("contains")
+        BasicRelationship buildingFloorRelationshipPayload = new BasicRelationship(buildingFloorRelationshipId, buildingTwinId, floorTwinId, "contains")
             .addCustomProperty("Prop1", "Prop1 value")
             .addCustomProperty("Prop2", 6);
 

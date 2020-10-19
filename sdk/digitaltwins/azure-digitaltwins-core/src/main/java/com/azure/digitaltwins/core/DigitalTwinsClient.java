@@ -62,7 +62,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -88,7 +88,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
      * @param clazz The model class to serialize the request with and deserialize the response with.
      * @param <T> The generic type to serialize the request with and deserialize the response with.
@@ -167,7 +167,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwin#String-List}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      */
@@ -186,7 +186,7 @@ public final class DigitalTwinsClient {
      *
      * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwinWithResponse#String-List-Options-Context}
      *
-     * @param digitalTwinId The Id of the digital twin.
+     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link UpdateOperationUtility}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
