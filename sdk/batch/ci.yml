@@ -22,8 +22,9 @@ pr:
       - sdk/batch/
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: batch
     Artifacts:
       - name: azure-batch
