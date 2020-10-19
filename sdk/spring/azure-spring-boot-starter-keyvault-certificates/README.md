@@ -21,7 +21,7 @@ Add then add the following Maven dependency to your POM file.
 
 ```xml
     <dependency>
-        <groupId>com.azure.spring</groupId>
+        <groupId>com.azure</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
     </dependency>
 ```
@@ -48,7 +48,7 @@ Add then add the following Maven dependency to your POM file.
 
 ```xml
     <dependency>
-        <groupId>com.azure.spring</groupId>
+        <groupId>com.azure</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
     </dependency>
 ```
@@ -71,7 +71,7 @@ Add then add the following Maven dependency to your POM file.
 
 ```xml
     <dependency>
-        <groupId>com.azure.spring</groupId>
+        <groupId>com.azure</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
     </dependency>
 ```
@@ -121,7 +121,7 @@ Add then add the following Maven dependency to your POM file.
 
 ```xml
     <dependency>
-        <groupId>com.azure.spring</groupId>
+        <groupId>com.azure</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
     </dependency>
 ```
