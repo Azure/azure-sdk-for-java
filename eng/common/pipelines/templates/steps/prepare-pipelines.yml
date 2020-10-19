@@ -1,10 +1,10 @@
 parameters:
   Owner: Azure
   Repository: $(Build.Repository.Name)
-  Prefix:
-  CIConventionOptions:
-  UPConventionOptions:
-  TestsConventionOptions: 
+  Prefix: error
+  CIConventionOptions: ''
+  UPConventionOptions: ''
+  TestsConventionOptions: '' 
 
 steps:
   - template: templates/steps/install-pipeline-generation.yml
