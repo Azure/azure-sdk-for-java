@@ -155,6 +155,58 @@ public class BinaryDataTest {
             .verifyComplete();
     }
 
+
+    @Test
+    public void createFromEmptyString() {
+        // Arrange
+        final String expected = "";
+
+        // Act
+        final BinaryData data = BinaryData.fromString(expected);
+
+        // Assert
+        assertArrayEquals(expected.getBytes(), data.toBytes());
+        assertEquals(expected, data.toString());
+    }
+
+    @Test
+    public void createFromEmptyByteArray() {
+        // Arrange
+        final byte[] expected = new byte[0];
+
+        // Act
+        final BinaryData data = BinaryData.fromBytes(expected);
+
+        // Assert
+        assertArrayEquals(expected, data.toBytes());
+    }
+
+    @Test
+    public void createFromNullString() {
+        // Arrange
+        final String expected = null;
+
+        // Arrange & Act
+        final BinaryData data = BinaryData.fromString(expected);
+
+        // Assert
+        assertArrayEquals(new byte[0], data.toBytes());
+        assertEquals("", data.toString());
+    }
+
+    @Test
+    public void createFromNullByte() {
+        // Arrange
+        final byte[] expected = null;
+
+        // Arrange & Act
+        final BinaryData data = BinaryData.fromBytes(expected);
+
+        // Assert
+        assertArrayEquals(new byte[0], data.toBytes());
+        assertEquals("", data.toString());
+    }
+
     public static class MyJsonSerializer implements JsonSerializer {
         private final ClientLogger logger = new ClientLogger(MyJsonSerializer.class);
         private final ObjectMapper mapper;

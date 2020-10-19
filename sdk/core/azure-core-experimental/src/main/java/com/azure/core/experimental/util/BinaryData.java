@@ -48,9 +48,9 @@ import java.util.Objects;
  */
 public final class  BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
+    private static final byte[] EMPTY_DATA = new byte[0];
 
     private static JsonSerializer defaultJsonSerializer;
-    private static byte[] EMPTY_DATA = new byte[0];
     private final byte[] data;
 
     /**
@@ -59,7 +59,7 @@ public final class  BinaryData {
      * @param data to represent as bytes.
      */
     BinaryData(byte[] data) {
-        if (Objects.isNull(data)) {
+        if (Objects.isNull(data) || data.length == 0) {
             data = EMPTY_DATA;
         }
         this.data = Arrays.copyOf(data, data.length);
@@ -86,7 +86,7 @@ public final class  BinaryData {
      *
      * @param inputStream to read bytes from.
      * @throws UncheckedIOException If any error in reading from {@link InputStream}.
-     * @throws NullPointerException if {@code inputStream} is null.
+     * @throws NullPointerException If {@code inputStream} is null.
      * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromStream(InputStream inputStream) {
@@ -112,7 +112,7 @@ public final class  BinaryData {
      * {@link InputStream} is not closed by this function.
      *
      * @param inputStream to read bytes from.
-     * @throws NullPointerException if {@code inputStream} is null.
+     * @throws NullPointerException If {@code inputStream} is null.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
@@ -129,7 +129,7 @@ public final class  BinaryData {
      * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Flux}
      *
      * @param data to use.
-     * @throws NullPointerException if {@code inputStream} is null.
+     * @throws NullPointerException If {@code inputStream} is null.
      * @return {@link Mono} of {@link BinaryData} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
@@ -150,7 +150,7 @@ public final class  BinaryData {
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromString(String data) {
-        if (Objects.isNull(data)) {
+        if (Objects.isNull(data) || data.length() == 0) {
             return new BinaryData(EMPTY_DATA);
         } else {
             return new BinaryData(data.getBytes(StandardCharsets.UTF_8));
@@ -185,8 +185,7 @@ public final class  BinaryData {
             return new BinaryData(EMPTY_DATA);
         }
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        loadDefaultSerializer();
-        defaultJsonSerializer.serialize(outputStream, data);
+        getDefaultSerializer().serialize(outputStream, data);
 
         return new BinaryData(outputStream.toByteArray());
     }
@@ -197,7 +196,7 @@ public final class  BinaryData {
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
-     * @throws NullPointerException if {@code serializer} is null.
+     * @throws NullPointerException If {@code serializer} is null.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
@@ -218,7 +217,7 @@ public final class  BinaryData {
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @param serializer to use for serializing the object.
-     * @throws NullPointerException if {@code serializer} is null.
+     * @throws NullPointerException If {@code serializer} is null.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromObjectAsync(Object data, ObjectSerializer serializer) {
@@ -273,7 +272,7 @@ public final class  BinaryData {
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException if {@code clazz} or {@code serializer} is null.
+     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
@@ -281,8 +280,9 @@ public final class  BinaryData {
     }
 
     /**
-     * Deserialize the bytes into the {@link Object} of given type by applying the provided {@link ObjectSerializer} on
-     * the data. The serializer must implement {@link JsonSerializer} interface.
+     * Deserialize the bytes into the {@link Object} of given type by using json serializer which is available in
+     * classpath. The serializer must implement {@link JsonSerializer} interface. A singleton instance of
+     * {@link JsonSerializer} is kept for this class to use.
      *
      * @param clazz representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
@@ -293,8 +293,7 @@ public final class  BinaryData {
 
         TypeReference<T>  ref = TypeReference.createInstance(clazz);
         InputStream jsonStream = new ByteArrayInputStream(this.data);
-        loadDefaultSerializer();
-        return defaultJsonSerializer.deserialize(jsonStream, ref);
+        return getDefaultSerializer().deserialize(jsonStream, ref);
     }
 
     /**
@@ -306,16 +305,17 @@ public final class  BinaryData {
      *
      * @param clazz representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException if {@code clazz} or {@code serializer} is null.
+     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz) {
         return Mono.fromCallable(() -> toObject(clazz));
     }
 
-    private static void loadDefaultSerializer() {
+    private static JsonSerializer getDefaultSerializer() {
         if (defaultJsonSerializer ==  null) {
             defaultJsonSerializer = JsonSerializerProviders.createInstance();
         }
+        return defaultJsonSerializer;
     }
 }
