@@ -24,6 +24,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
  * Provides methods for interacting with child resources (Items, Scripts, Conflicts)
