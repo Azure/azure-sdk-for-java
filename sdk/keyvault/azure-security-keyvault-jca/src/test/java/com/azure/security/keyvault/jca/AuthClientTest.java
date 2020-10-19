@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,11 @@ public class AuthClientTest {
         String clientSecret = "72-~tZ9~cG~rimDI0EkQSMQ1D9DYmGmI_I";
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
-            "https://management.azure.com/", tenantId, clientId,
-            URLEncoder.encode(clientSecret, "UTF-8"));
+            "https://management.azure.com/",
+            tenantId,
+            clientId,
+            URLEncoder.encode(clientSecret, "UTF-8")
+        );
         assertNotNull(result);
     }
 }
