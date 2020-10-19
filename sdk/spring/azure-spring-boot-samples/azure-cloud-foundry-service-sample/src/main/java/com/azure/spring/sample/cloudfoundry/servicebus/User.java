@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.spring.azure.sample.cloudfoundry.servicebus;
+package com.azure.spring.sample.cloudfoundry.servicebus;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.spring.azure.sample.cloudfoundry.cosmos;
+package com.azure.spring.sample.cloudfoundry.cosmos;
 
 public class User {
     private String id;

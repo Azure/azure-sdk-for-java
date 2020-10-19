@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.spring.azure.sample.cloudfoundry.cosmos;
+package com.azure.spring.sample.cloudfoundry.cosmos;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
