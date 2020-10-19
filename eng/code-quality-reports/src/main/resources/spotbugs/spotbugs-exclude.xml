@@ -2433,4 +2433,18 @@
     <Field name="detectionConfiguration" />
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
+  
+  <!-- Disabling false positives in azure-core -->
+  <Match>
+      <Class name="com.azure.core.util.logging.ClientLogger" />
+      <Bug pattern="CRLF_INJECTION_LOGS" />
+  </Match>
+  <Match>
+      <Class name="com.azure.core.http.policy.ExponentialBackoff" />
+      <Bug pattern="PREDICTABLE_RANDOM" />
+  </Match>
+  <Match>
+      <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+      <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
+  </Match>
 </FindBugsFilter>
