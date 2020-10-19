@@ -11,7 +11,7 @@ This package helps Spring Application to load properties from Azure Configuratio
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#Configuration-refresh) section.
+There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
 
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
 ```xml
