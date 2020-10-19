@@ -17,8 +17,10 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -362,5 +364,36 @@ public class ServiceBusMessageRenewOperatorTest {
             .assertNext(actualEnqueuedSequenceNumber -> assertEquals(expectedEnqueuedSequenceNumber, actualEnqueuedSequenceNumber))
             .thenCancel()
             .verify();
+    }
+
+    @Test
+    public void contextTest() {
+        // Arrange
+        final Long expectedEnqueuedSequenceNumber = 2L;
+        final ServiceBusReceivedMessage message2 = new ServiceBusReceivedMessage("data".getBytes());
+        message2.setEnqueuedSequenceNumber(1);
+
+        final ServiceBusReceivedMessage message3 = new ServiceBusReceivedMessage("data".getBytes());
+        message2.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
+
+        final ServiceBusMessageRenewOperator renewOperator = new ServiceBusMessageRenewOperator(messageSource,
+            MAX_AUTO_LOCK_RENEW_DURATION, messageLockContainer, renewalFunction);
+
+        // Act & Assert
+        StepVerifier.create(renewOperator
+            .subscriberContext(context -> {
+                return context.put("A", "B");
+            }))
+            .thenRequest(1)
+            .expectAccessibleContext()
+            .hasSize(2)
+            .then()
+            .then(() -> {
+                messagesPublisher.next(message2);
+            })
+            .expectNext(message2)
+            .thenCancel()
+            .verify();
+
     }
 }
