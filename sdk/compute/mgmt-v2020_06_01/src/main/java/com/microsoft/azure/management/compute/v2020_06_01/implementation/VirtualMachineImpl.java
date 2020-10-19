@@ -264,7 +264,7 @@ class VirtualMachineImpl extends CreatableUpdatableImpl<VirtualMachine, VirtualM
     }
 
     @Override
-    public VirtualMachineImpl withExistingResourceGroup(String resourceGroupName) {
+    public VirtualMachineImpl withExistingLocation(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
