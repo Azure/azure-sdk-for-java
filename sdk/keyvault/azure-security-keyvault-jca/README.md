@@ -1,7 +1,7 @@
 # JCA Provider for Azure Key Vault
 
 The JCA Provider for Azure Key Vault is a JCA provider for certificates in 
-Azure Key Vault. It is built on four core principles:
+Azure Key Vault. It is built on four principles:
  
 1. Must be extremely thin to run within a JVM
 1. Must not introduce any library version conflicts with Java app code dependencies
@@ -45,8 +45,8 @@ see the example below.
     SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
 ```
 
-Note if you want to use a Azure managed identity you would only pass the value
-of the `azure.keyvault.uri` and the rest of the parameters would be `null`.
+Note if you want to use Azure managed identity, you should set the value
+of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
 ## Client side SSL
 
@@ -101,8 +101,8 @@ connections, see the Apache HTTP client example below.
     }
 ```
 
-Note if you want to use an Azure managed identity you only need to pass the value
-of the `azure.keyvault.uri` and let the remaining parameters be `null`.
+Note if you want to use Azure managed identity, you should set the value
+of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
 ## Spring Boot
 
