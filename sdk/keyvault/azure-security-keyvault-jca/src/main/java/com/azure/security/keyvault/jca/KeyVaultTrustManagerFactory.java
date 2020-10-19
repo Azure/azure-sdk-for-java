@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import javax.net.ssl.ManagerFactoryParameters;
@@ -27,16 +28,16 @@ public class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
     /**
      * Stores the key managers.
      */
-    private List<TrustManager> trustManagers = new ArrayList<>();
+    private final List<TrustManager> trustManagers = new ArrayList<>();
 
     @Override
-    protected void engineInit(KeyStore keystore) throws KeyStoreException {
+    protected void engineInit(KeyStore keystore) {
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", keystore);
         trustManagers.add(new KeyVaultTrustManager(keystore));
     }
 
     @Override
-    protected void engineInit(ManagerFactoryParameters spec) throws InvalidAlgorithmParameterException {
+    protected void engineInit(ManagerFactoryParameters spec) {
         LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", spec);
     }
 

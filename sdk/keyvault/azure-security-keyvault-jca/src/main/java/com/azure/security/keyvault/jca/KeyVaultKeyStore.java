@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import java.io.BufferedReader;
@@ -15,7 +16,6 @@ import java.security.KeyStoreException;
 import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -102,7 +102,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineDeleteEntry(String alias) throws KeyStoreException {
+    public void engineDeleteEntry(String alias) {
     }
 
     @Override
@@ -167,7 +167,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public Key engineGetKey(String alias, char[] password) throws NoSuchAlgorithmException, UnrecoverableKeyException {
+    public Key engineGetKey(String alias, char[] password) {
         Key key;
         if (certificateKeys.containsKey(alias)) {
             key = certificateKeys.get(alias);
@@ -197,8 +197,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineLoad(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException,
-        CertificateException {
+    public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             keyVault = new KeyVaultClient(
@@ -211,13 +210,12 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineLoad(InputStream stream, char[] password) throws IOException, NoSuchAlgorithmException,
-        CertificateException {
+    public void engineLoad(InputStream stream, char[] password) {
         sideLoad();
     }
 
     @Override
-    public void engineSetCertificateEntry(String alias, Certificate certificate) throws KeyStoreException {
+    public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (aliases == null) {
             aliases = keyVault.getAliases();
         }
@@ -233,11 +231,11 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineSetKeyEntry(String alias, Key key, char[] password, Certificate[] chain) throws KeyStoreException {
+    public void engineSetKeyEntry(String alias, Key key, char[] password, Certificate[] chain) {
     }
 
     @Override
-    public void engineSetKeyEntry(String alias, byte[] key, Certificate[] chain) throws KeyStoreException {
+    public void engineSetKeyEntry(String alias, byte[] key, Certificate[] chain) {
     }
 
     @Override
@@ -246,13 +244,11 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineStore(OutputStream stream, char[] password) throws IOException, NoSuchAlgorithmException,
-        CertificateException {
+    public void engineStore(OutputStream stream, char[] password) {
     }
 
     @Override
-    public void engineStore(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException,
-        CertificateException {
+    public void engineStore(KeyStore.LoadStoreParameter param) {
     }
 
     /**
@@ -317,7 +313,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
                                 engineSetCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
                                     new Object[] { alias, filename });
-                            } catch (KeyStoreException | CertificateException e) {
+                            } catch (CertificateException e) {
                                 LOGGER.log(WARNING, "Unable to side-load certificate", e);
                             }
                         }

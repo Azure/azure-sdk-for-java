@@ -91,7 +91,7 @@ class AuthClient extends DelegateRestClient {
         if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
             OAuthToken token = (OAuthToken) converter.fromJson(response, OAuthToken.class);
-            result = token.getAccess_token();
+            result = token.getAccessToken();
         }
         LOGGER.log(FINER, "Access token: {0}", result);
         return result;
@@ -115,7 +115,7 @@ class AuthClient extends DelegateRestClient {
         if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
             OAuthToken token = (OAuthToken) converter.fromJson(response, OAuthToken.class);
-            result = token.getAccess_token();
+            result = token.getAccessToken();
         }
         LOGGER.exiting("AuthClient", "getAccessTokenOnAppService", result);
         return result;
@@ -141,7 +141,7 @@ class AuthClient extends DelegateRestClient {
         if (body != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
             OAuthToken token = (OAuthToken) converter.fromJson(body, OAuthToken.class);
-            result = token.getAccess_token();
+            result = token.getAccessToken();
         }
         LOGGER.exiting("AuthClient", "getAccessTokenOnOthers", result);
         return result;

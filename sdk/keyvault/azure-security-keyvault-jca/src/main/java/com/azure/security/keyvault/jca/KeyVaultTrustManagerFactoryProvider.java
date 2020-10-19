@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import java.security.AccessController;
@@ -46,9 +47,16 @@ public class KeyVaultTrustManagerFactoryProvider extends Provider {
      */
     private void initialize() {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            putService(new Provider.Service(this, "TrustManagerFactory", "PKIX",
-                KeyVaultTrustManagerFactory.class.getName(),
-                null, null));
+            putService(
+                new Provider.Service(
+                    this,
+                    "TrustManagerFactory",
+                    "PKIX",
+                    KeyVaultTrustManagerFactory.class.getName(),
+                    null,
+                    null
+                )
+            );
             return null;
         });
     }
