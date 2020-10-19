@@ -171,7 +171,7 @@
             <plugin>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-maven-plugin</artifactId>
-                <version>0.12.1</version>
+                <version>0.12.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
                 <configuration>
                     <skip>true</skip>
                 </configuration>
