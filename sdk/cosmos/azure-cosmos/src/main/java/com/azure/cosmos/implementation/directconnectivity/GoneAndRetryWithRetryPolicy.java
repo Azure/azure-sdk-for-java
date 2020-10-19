@@ -21,13 +21,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class GoneAndRetryWithRetryPolicy
-    extends RetryPolicyWithDiagnostics
-    implements LastRetryWithExceptionHolder, LastRetryWithExceptionProvider {
+public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
 
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final GoneRetryPolicy goneRetryPolicy;
@@ -35,29 +32,15 @@ public class GoneAndRetryWithRetryPolicy
     private final Instant start;
     private volatile Instant end;
 
-    private RetryWithException lastRetryWithException;
+    private volatile RetryWithException lastRetryWithException;
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.goneRetryPolicy = new GoneRetryPolicy(
             request,
-            waitTimeInSeconds,
-            this::getElapsedTime,
-            this);
+            waitTimeInSeconds);
         this.retryWithRetryPolicy = new RetryWithRetryPolicy(
-            waitTimeInSeconds,
-            this::getElapsedTime,
-            this);
+            waitTimeInSeconds);
         this.start = Instant.now();
-    }
-
-    @Override
-    public void setLastRetryWithException(RetryWithException lastRetryWithException) {
-        this.lastRetryWithException = lastRetryWithException;
-    }
-
-    @Override
-    public RetryWithException getLastRetryWithException() {
-        return this.lastRetryWithException;
     }
 
     @Override
@@ -89,7 +72,7 @@ public class GoneAndRetryWithRetryPolicy
         return Duration.between(this.start, endSnapshot);
     }
 
-    static class GoneRetryPolicy extends RetryPolicyWithDiagnostics {
+    class GoneRetryPolicy extends RetryPolicyWithDiagnostics {
         private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
         private final static int MAXIMUM_BACKOFF_TIME_IN_SECONDS = 15;
         private final static int INITIAL_BACKOFF_TIME = 1;
@@ -99,41 +82,32 @@ public class GoneAndRetryWithRetryPolicy
         private volatile int attemptCount = 1;
         private volatile int attemptCountInvalidPartition = 1;
         private volatile int currentBackoffSeconds = GoneRetryPolicy.INITIAL_BACKOFF_TIME;
-        private final Supplier<Duration> getElapsedTimeSupplier;
         private final int waitTimeInSeconds;
-        private final LastRetryWithExceptionProvider lastRetryWithExceptionProvider;
-        //TODO once this is moved to IRetryPolicy, remove from here.
-        public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
-            Duration.ofSeconds(60), 0);
 
         public GoneRetryPolicy(
             RxDocumentServiceRequest request,
-            Integer waitTimeInSeconds,
-            Supplier<Duration> getElapsedTimeSupplier,
-            LastRetryWithExceptionProvider lastRetryWithExceptionProvider) {
+            Integer waitTimeInSeconds) {
 
             checkNotNull(request, "request must not be null.");
             this.request = request;
-            this.getElapsedTimeSupplier = getElapsedTimeSupplier;
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
-            this.lastRetryWithExceptionProvider = lastRetryWithExceptionProvider;
         }
 
-        private boolean isRetryableException(Exception exception) {
+        private boolean isNonRetryableException(Exception exception) {
             if (exception instanceof GoneException ||
                 exception instanceof RetryWithException ||
                 exception instanceof PartitionIsMigratingException ||
                 exception instanceof PartitionKeyRangeIsSplittingException) {
 
-                return true;
+                return false;
             }
 
             if (exception instanceof InvalidPartitionException) {
-                return this.request.getPartitionKeyRangeIdentity() == null ||
-                    this.request.getPartitionKeyRangeIdentity().getCollectionRid() == null;
+                return this.request.getPartitionKeyRangeIdentity() != null &&
+                    this.request.getPartitionKeyRangeIdentity().getCollectionRid() != null;
             }
 
-            return false;
+            return true;
         }
 
         private CosmosException logAndWrapExceptionWithLastRetryWithException(Exception exception) {
@@ -156,7 +130,7 @@ public class GoneAndRetryWithRetryPolicy
             }
 
             RetryWithException lastRetryWithExceptionSnapshot =
-                lastRetryWithExceptionProvider.getLastRetryWithException();
+                GoneAndRetryWithRetryPolicy.this.lastRetryWithException;
             if (lastRetryWithExceptionSnapshot != null) {
                 logger.warn(
                     "Received {} after backoff/retry including at least one RetryWithException. "
@@ -182,7 +156,7 @@ public class GoneAndRetryWithRetryPolicy
             Duration backoffTime = Duration.ofSeconds(0);
             Duration timeout;
             boolean forceRefreshAddressCache;
-            if (!isRetryableException(exception)) {
+            if (isNonRetryableException(exception)) {
 
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
@@ -201,7 +175,8 @@ public class GoneAndRetryWithRetryPolicy
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount)));
             }
 
-            long remainingSeconds = this.waitTimeInSeconds - this.getElapsedTimeSupplier.get().toSeconds();
+            long remainingSeconds = this.waitTimeInSeconds -
+                GoneAndRetryWithRetryPolicy.this.getElapsedTime().toMillis() / 1_000L;
             int currentRetryAttemptCount = this.attemptCount;
             if (this.attemptCount++ > 1) {
                 if (remainingSeconds <= 0) {
@@ -288,7 +263,7 @@ public class GoneAndRetryWithRetryPolicy
         }
     }
 
-    static class RetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
+    class RetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
         private final static int MAXIMUM_BACKOFF_TIME_IN_MS = 15000;
         private final static int INITIAL_BACKOFF_TIME_MS = 10;
@@ -298,18 +273,10 @@ public class GoneAndRetryWithRetryPolicy
         private volatile int currentBackoffMilliseconds = RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS;
 
         private final int waitTimeInSeconds;
-        private final Supplier<Duration> getElapsedTimeSupplier;
-        private final LastRetryWithExceptionHolder lastRetryWithExceptionHolder;
-        //TODO once this is moved to IRetryPolicy, remove from here.
-        public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
-            Duration.ofSeconds(60), 0);
 
-        public RetryWithRetryPolicy(Integer waitTimeInSeconds,
-                                    Supplier<Duration> getElapsedTimeSupplier,
-                                    LastRetryWithExceptionHolder lastRetryWithExceptionHolder) {
+
+        public RetryWithRetryPolicy(Integer waitTimeInSeconds) {
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
-            this.getElapsedTimeSupplier = getElapsedTimeSupplier;
-            this.lastRetryWithExceptionHolder = lastRetryWithExceptionHolder;
         }
 
         @Override
@@ -324,10 +291,11 @@ public class GoneAndRetryWithRetryPolicy
             }
 
             RetryWithException lastRetryWithException = (RetryWithException)exception;
-            this.lastRetryWithExceptionHolder.setLastRetryWithException(lastRetryWithException);
+            GoneAndRetryWithRetryPolicy.this.lastRetryWithException = lastRetryWithException;
 
             long remainingMilliseconds =
-                (this.waitTimeInSeconds * 1_000L) - this.getElapsedTimeSupplier.get().toMillis();
+                (this.waitTimeInSeconds * 1_000L) -
+                    GoneAndRetryWithRetryPolicy.this.getElapsedTime().toMillis();
             int currentRetryAttemptCount = this.attemptCount++;
 
             if (remainingMilliseconds <= 0) {
