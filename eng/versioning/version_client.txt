@@ -127,7 +127,7 @@ com.azure.resourcemanager:azure-resourcemanager-privatedns;2.0.0-beta.5;2.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-resources;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-redis;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-servicebus;2.0.0-beta.5;2.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-servicebus;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-sql;2.0.0-beta.4;2.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0-beta.4;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.0.0-beta.5;2.0.0-beta.6
