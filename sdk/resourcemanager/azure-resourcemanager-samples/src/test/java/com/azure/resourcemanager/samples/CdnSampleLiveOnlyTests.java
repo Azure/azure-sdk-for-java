@@ -3,20 +3,15 @@
 
 package com.azure.resourcemanager.samples;
 
-import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.resourcemanager.cdn.samples.ManageCdnProfileWithWebApp;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 public class CdnSampleLiveOnlyTests extends SamplesTestBase {
 
-    @Test
-    @DoNotRecord
-    public void testManageCdnProfileWithWebApp() {
-        if (skipInPlayback()) {
-            return;
-        }
-
-        Assertions.assertTrue(ManageCdnProfileWithWebApp.runSample(azureResourceManager));
-    }
+//    @Test
+//    @DoNotRecord
+//    public void testManageCdnProfileWithWebApp() {
+//        if (skipInPlayback()) {
+//            return;
+//        }
+//
+//        Assertions.assertTrue(ManageCdn.runSample(azureResourceManager));
+//    }
 }

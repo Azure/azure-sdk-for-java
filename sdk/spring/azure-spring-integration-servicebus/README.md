@@ -14,12 +14,12 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-integration-servicebus;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-integration-servicebus;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-integration-servicebus</artifactId>
-    <version>1.2.8</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-integration-servicebus</artifactId>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -66,9 +66,9 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [maven]: http://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-integration-servicebus
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
-[spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-servicebus-integration-sample
+[spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-servicebus
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

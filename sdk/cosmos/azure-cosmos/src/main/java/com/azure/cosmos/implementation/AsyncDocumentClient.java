@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -812,6 +814,24 @@ public interface AsyncDocumentClient {
      */
     Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
                                                                List<Object> procedureParams);
+
+    /**
+     * Executes a batch request
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a batch response which will have individual responses.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param collectionLink               the link to the parent document collection.
+     * @param serverBatchRequest           the batch request with the content and flags.
+     * @param options                      the request options.
+     * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
+     * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
+     */
+    Mono<TransactionalBatchResponse> executeBatchRequest(String collectionLink,
+                                                         ServerBatchRequest serverBatchRequest,
+                                                         RequestOptions options,
+                                                         boolean disableAutomaticIdGeneration);
 
     /**
      * Creates a trigger.

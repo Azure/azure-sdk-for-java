@@ -3,7 +3,7 @@
 
 package com.azure.aad.security;
 
-import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

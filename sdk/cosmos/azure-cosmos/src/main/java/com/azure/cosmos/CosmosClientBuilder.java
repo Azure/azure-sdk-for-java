@@ -121,7 +121,7 @@ public class CosmosClientBuilder {
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
-    CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
         this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }

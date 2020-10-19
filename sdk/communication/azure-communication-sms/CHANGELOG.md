@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+### Added
+- Support directly passing connection string to the SmsClientBuilder using connectionString().
+
+### Breaking Change
+- Removed credential(CommunicationClientCredential credential) and replaced with 
+accessKey(String accessKey) within CommunicationIdentityClientBuilder.
+
 ## 1.0.0-beta.2 (2020-10-06)
 Updated `azure-communication-sms` version
 

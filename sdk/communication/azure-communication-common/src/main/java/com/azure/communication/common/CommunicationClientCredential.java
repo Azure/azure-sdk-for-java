@@ -53,14 +53,20 @@ public final class CommunicationClientCredential {
     /**
      * Requires resource access key to create the credential
      * @param accessKey resource access key as provided by Azure in Base64 format
-     * @throws NoSuchAlgorithmException if HmacSHA256 is not available
-     * @throws InvalidKeyException if accessKey provided is not valid
      */
-    public CommunicationClientCredential(String accessKey) throws NoSuchAlgorithmException, InvalidKeyException {
+    public CommunicationClientCredential(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null");
         byte[] key = Base64.getDecoder().decode(accessKey);
-        sha256HMAC = Mac.getInstance("HmacSHA256");
-        sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
+        Mac sha256HMAC = null;
+        try {
+            sha256HMAC = Mac.getInstance("HmacSHA256");
+            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        } catch (InvalidKeyException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+        this.sha256HMAC = sha256HMAC;
     }
 
     Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {

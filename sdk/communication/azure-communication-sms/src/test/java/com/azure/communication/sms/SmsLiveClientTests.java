@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
@@ -12,9 +11,7 @@ import com.azure.core.util.Context;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,15 +73,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
 
         try {
             SmsClientBuilder builder = getSmsClientBuilder();
-
-            try {
-                builder.credential(new CommunicationClientCredential(DEFAULT_ACCESS_KEY));
-            } catch (InvalidKeyException e) {
-                fail(e.getMessage());
-            } catch (NoSuchAlgorithmException e) {
-                fail(e.getMessage());
-            }
-            
+            builder.accessKey(DEFAULT_ACCESS_KEY);
             builder.buildClient().sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(401, ex.getResponse().getStatusCode());

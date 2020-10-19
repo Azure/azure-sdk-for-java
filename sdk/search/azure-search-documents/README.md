@@ -38,7 +38,7 @@ Use the Azure Cognitive Search client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.2.0-beta.1</version>
+    <version>11.2.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -322,7 +322,7 @@ SearchPagedIterable searchResultsIterable = searchClient.search("luxury", option
 
 ### Creating an index
 
-You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a search index. Indexes can also define
+You can use the [`SearchIndexClient`](#create-a-searchindexclient) to create a search index. Indexes can also define
 suggesters, lexical analyzers, and more.
 
 There are multiple ways of preparing search fields for a search index. For basic needs, we provide a static helper method
@@ -425,7 +425,7 @@ to `false` to get a successful response with an `IndexDocumentsResult` for inspe
 ### Async APIs
 
 The examples so far have been using synchronous APIs, but we provide full support for async APIs as well. You'll need
-to use [SearchAsyncClient](#Create-a-SearchClient).
+to use [SearchAsyncClient](#create-a-searchclient).
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L205 -->
 ```java

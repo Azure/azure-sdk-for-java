@@ -28,15 +28,17 @@ All of these samples need the endpoint to your Metrics Advisor resource ([instru
 |----------------|-------------|
 |[DataFeedSample][data_feed_sample]
 & [DataFeedAsyncSample][data_feed_async_sample] | Create, list, get, update, and delete data feeds|
-|[AnomalyDetectionConfigurationSample][anomaly_detection_sample]
+|[AnomalyDetectionConfigurationSample][anomaly_detection_sample] 
 & [AnomalyDetectionConfigurationAsyncSample][anomaly_detection_async_sample] | Create, list, get, update, and delete anomaly detection configurations|
-|[DatafeedIngestionSample][data_feed_ingestion_sample]
+|[DatafeedIngestionSample][data_feed_ingestion_sample] 
 & [DatafeedIngestionSampleAsyncSample][data_feed_ingestion_async_sample] | List, get progress, and refresh data feed ingestion|
 |[HookSample][hook_sample]
 & [HookAsyncSample][hook_async_sample] | Create, list, get, update, and delete hooks||[MetricFeedbackSample][metric_feedback_sample]
+|[MetricFeedbackSample][metric_feedback_sample]
 & [MetricFeedbackAsyncSample][metric_feedback_async_sample] | Create, get and list feedbacks|
 
 Querying API's
+
 |**File Name**|**Description**|
 |----------------|-------------|
 |[ListAlertsSample][list_alerts_sample]
@@ -83,16 +85,16 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#include-the-package
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/metricsadvisor/azure-ai-metricsadvisor#next-steps
 [java_ma_ref_docs]: https://aka.ms/azsdk-java-metricsadvisor-ref-docs
-[data_feed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/70706988e48f0f1fcfa5fc8910958924d9d29b87/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedSample.java
-[data_feed_async_sample]:https://github.com/Azure/azure-sdk-for-java/blob/70706988e48f0f1fcfa5fc8910958924d9d29b87/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedAsyncSample.java
+[data_feed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedSample.java
+[data_feed_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedAsyncSample.java
 [anomaly_detection_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/AnomalyDetectionConfigurationSample.java
 [anomaly_detection_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/AnomalyDetectionConfigurationAsyncSample.java
 [data_feed_ingestion_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DataFeedIngestionSample.java
 [data_feed_ingestion_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DataFeedIngestionAsyncSample.java
 [hook_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/HookSample.java
 [hook_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/HookAsyncSample.java
-[metric_feedback_sample]: https://github.com/Azure/azure-sdk-for-java/blob/54a13ef59f823ed4201b1a130d230f9b149025a0/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/MetricFeedbackSample.java
-[metric_feedback_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/54a13ef59f823ed4201b1a130d230f9b149025a0/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/MetricFeedbackAsyncSample.java
+[metric_feedback_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/MetricFeedbackSample.java
+[metric_feedback_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/MetricFeedbackAsyncSample.java
 [list_alerts_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListAlertsSample.java
 [list_alerts_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListAlertsAsyncSample.java
 [list_dimension_values_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListEnrichedSeriesAsyncSample.java

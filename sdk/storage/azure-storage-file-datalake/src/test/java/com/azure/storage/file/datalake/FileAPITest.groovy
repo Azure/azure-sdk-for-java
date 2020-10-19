@@ -3695,4 +3695,24 @@ class FileAPITest extends APISpec {
         then:
         thrown(IllegalStateException)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def fileClient = getFileClient(primaryCredential, fc.getFileUrl(), getPerCallVersionPolicy())
+
+        when: "blob endpoint"
+        def response = fileClient.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = fileClient.getAccessControlWithResponse(false, null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
 }

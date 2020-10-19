@@ -81,10 +81,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         StepVerifier.create(client.listMetricSeriesData(METRIC_ID,
-            Collections.singletonList(new DimensionKey(new HashMap<String, String>() {{
-                    put("city", "Mumbai");
-                    put("category", "Shoes Handbags & Sunglasses");
-                }})),
+            Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
             new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
                 TIME_SERIES_END_TIME)))
             .assertNext(metricSeriesData -> {

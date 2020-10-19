@@ -14,13 +14,13 @@
             "io\\.netty\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
-            "com\\.microsoft\\.spring\\..+",
             "javax\\.jms(\\..+)?",
             "javax\\.servlet(\\..+)?",
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
             "com\\.azure\\.spring\\.data\\.cosmos\\..+",
-            "org\\.springframework\\.data\\..+",
+            "com\\.azure\\.spring\\.data\\.gremlin\\..+",
+            "com\\.azure\\.spring(\\..+)?",
             "org\\.apache\\.avro\\..+"
           ]
         }
@@ -207,6 +207,34 @@
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.models.SerializationType",
         "justification": "This is a preview release"
+      },
+      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method com.azure.core.http.HttpPipelinePosition com.azure.core.http.policy.HttpPipelinePolicy::getPipelinePosition()",
+        "justification": "Default interface method"
+      },
+      {
+        "code": "java.method.parameterTypeParameterChanged",
+        "old": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<com.azure.core.amqp.models.BinaryData>===)",
+        "new": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<byte[]>===)",
+        "justification": "Remove BinaryData to perform GA release."
+      },
+      {
+        "code": "java.method.returnTypeTypeParametersChanged",
+        "old": "method com.azure.core.util.IterableStream<com.azure.core.amqp.models.BinaryData> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "new": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "justification": "Remove BinaryData to perform GA release."
+      },
+      {
+        "code": "java.class.removed",
+        "old": "class com.azure.core.amqp.models.BinaryData",
+        "justification": "Remove BinaryData to perform GA release."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) io\\.opentelemetry.*",
+        "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
       }
     ]
   }

@@ -98,8 +98,8 @@ Open application.properties in your project to configure:
 
 2. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
 ```properties
-azure.activedirectory.client-id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-azure.activedirectory.client-secret=ABCDEFGHIJKLMNOOPQRSTUVWXYZABCDEFGHIJKLMNOPQ
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 ```
 
 3. List all the AAD groups `ActiveDirectoryGroups` that you want to have a Spring Security role object mapping to it. The role objects can then be used to manage access to resources that is behind Spring Security. e.g.
@@ -107,6 +107,12 @@ azure.activedirectory.client-secret=ABCDEFGHIJKLMNOOPQRSTUVWXYZABCDEFGHIJKLMNOPQ
 # groups that you created in your Azure AD tenant
 azure.activedirectory.user-group.allowed-groups=group1,group2
 ```
+
+4. (Optional) If you want to configure oauth2 redirect uri, please configure by :
+```properties
+azure.activedirectory.redirect-uri-template=xxxxxx-your-redirect-uri-xxxxxx
+```
+
  ---
  ### Step 4: Change Role_group1 to your group
 1. You can use `@PreAuthorize` annotation or `UserPrincipal` to manage access to web API based on user's group membership. You will need to change `ROLE_group1` to groups you want to allow to access the API in `TodoListController.java` or you will get "Access is denied".
@@ -135,6 +141,7 @@ msalProvider.init(
 
 ### Step 6: Give it a run
 
+First, we need to ensure that this [instruction] is completed before run.
    - Use Maven 
 
      ```
@@ -150,3 +157,6 @@ msalProvider.init(
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

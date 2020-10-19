@@ -91,9 +91,11 @@ public class ReadmeSamples {
             new SQLServerDataFeedSource("sql_server_connection_string", "query"),
             new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY),
             new DataFeedSchema(Arrays.asList(
-                new Metric().setName("cost"), new Metric().setName("revenue")))
+                new Metric().setName("cost"),
+                new Metric().setName("revenue")))
                 .setDimensions(Arrays.asList(
-                    new Dimension().setName("category"), new Dimension().setName("city"))),
+                    new Dimension().setName("category"),
+                    new Dimension().setName("city"))),
             new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")),
             new DataFeedOptions()
                 .setDescription("My data feed description")
@@ -116,6 +118,7 @@ public class ReadmeSamples {
         System.out.println("Data feed related metric Ids:");
         createdSqlDataFeed.getMetricIds().forEach(metricId -> System.out.println(metricId));
         System.out.printf("Data feed source type: %s%n", createdSqlDataFeed.getSourceType());
+
         if (SQL_SERVER_DB.equals(createdSqlDataFeed.getSourceType())) {
             System.out.printf("Data feed sql server query: %s%n",
                 ((SQLServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
@@ -130,8 +133,10 @@ public class ReadmeSamples {
         String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         metricsAdvisorAdministrationClient.listDataFeedIngestionStatus(
-            dataFeedId, new ListDataFeedIngestionOptions(
-                OffsetDateTime.parse("2020-01-01T00:00:00Z"), OffsetDateTime.parse("2020-09-09T00:00:00Z"))
+            dataFeedId,
+            new ListDataFeedIngestionOptions(
+                OffsetDateTime.parse("2020-01-01T00:00:00Z"),
+                OffsetDateTime.parse("2020-09-09T00:00:00Z"))
         ).forEach(dataFeedIngestionStatus -> {
             System.out.printf("Message : %s%n", dataFeedIngestionStatus.getMessage());
             System.out.printf("Timestamp value : %s%n", dataFeedIngestionStatus.getTimestamp());
@@ -205,17 +210,20 @@ public class ReadmeSamples {
 
         final AnomalyAlertConfiguration anomalyAlertConfiguration
             = metricsAdvisorAdministrationClient.createAnomalyAlertConfiguration(
-            new AnomalyAlertConfiguration("My Alert config name")
-                .setDescription("alert config description")
-                .setMetricAlertConfigurations(Arrays.asList(
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
-                        MetricAnomalyAlertScope.forWholeSeries()),
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
-                        MetricAnomalyAlertScope.forWholeSeries())
-                        .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityCondition(new SeverityCondition().setMaxAlertSeverity(Severity.HIGH)))))
-                .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
+                new AnomalyAlertConfiguration("My Alert config name")
+                    .setDescription("alert config description")
+                    .setMetricAlertConfigurations(
+                        Arrays.asList(
+                            new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
+                                MetricAnomalyAlertScope.forWholeSeries()),
+                            new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
+                                MetricAnomalyAlertScope.forWholeSeries())
+                                .setAlertConditions(new MetricAnomalyAlertConditions()
+                                    .setSeverityCondition(new SeverityCondition()
+                                        .setMaxAlertSeverity(Severity.HIGH)))
+                        ))
+                    .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
+                    .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
     }
 
     /**
@@ -225,7 +233,8 @@ public class ReadmeSamples {
         String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         metricsAdvisorClient.listAlerts(
             alertConfigurationId,
-            new ListAlertOptions(OffsetDateTime.parse("2020-01-01T00:00:00Z"), OffsetDateTime.now(),
+            new ListAlertOptions(OffsetDateTime.parse("2020-01-01T00:00:00Z"),
+                OffsetDateTime.now(),
                 TimeMode.ANOMALY_TIME))
             .forEach(alert -> {
                 System.out.printf("Alert Id: %s%n", alert.getId());
@@ -260,7 +269,7 @@ public class ReadmeSamples {
      */
     public void useMetricsAdvisorKeyCredentialAsyncClient() {
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
-        MetricsAdvisorAsyncClient formRecognizerAsyncClient = new MetricsAdvisorClientBuilder()
+        MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()
             .credential(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();

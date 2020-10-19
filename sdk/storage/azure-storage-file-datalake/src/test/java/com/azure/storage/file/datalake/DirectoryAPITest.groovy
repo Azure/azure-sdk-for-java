@@ -2878,4 +2878,24 @@ class DirectoryAPITest extends APISpec {
         then:
         notThrown(DataLakeStorageException)
     }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def directoryClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), dc.getObjectPath(), getPerCallVersionPolicy())
+
+        when: "blob endpoint"
+        def response = directoryClient.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = directoryClient.getAccessControlWithResponse(false, null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
 }

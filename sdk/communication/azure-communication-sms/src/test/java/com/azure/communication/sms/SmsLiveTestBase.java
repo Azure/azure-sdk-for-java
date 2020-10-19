@@ -3,7 +3,6 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
@@ -17,10 +16,6 @@ import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidKeyException;
 
 public class SmsLiveTestBase extends TestBase {
 
@@ -33,27 +28,36 @@ public class SmsLiveTestBase extends TestBase {
         .get("SMS_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
 
     static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_ENDPOINT", "https://playback.sms.azurefd.net");
+        .get("SMS_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
-    CommunicationClientCredential credential;
-
-    public SmsLiveTestBase() {
-        try {
-            credential = new CommunicationClientCredential(ACCESSKEY);
-        } catch (InvalidKeyException e) {
-            credential = null;
-            fail(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            credential = null;
-            fail(e.getMessage());
-        }
-    }
+    static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
     protected SmsClientBuilder getSmsClientBuilder() {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
-               .credential(credential);
+               .accessKey(ACCESSKEY);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            return builder;
+        } else {
+            HttpClient client = new NettyAsyncHttpClientBuilder().build();
+            builder.httpClient(client);
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString() {
+        SmsClientBuilder builder = new SmsClientBuilder();
+
+        builder.connectionString(CONNECTION_STRING);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

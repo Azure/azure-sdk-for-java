@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 @EnableCosmosRepositories
 public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(AppConfigurationCodeSnippet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationCodeSnippet.class);
 
     // configuration code
     @Value("${azure.cosmos.uri}")
@@ -72,7 +72,7 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
 
         @Override
         public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
-            logger.info("Response Diagnostics {}", responseDiagnostics);
+            LOGGER.info("Response Diagnostics {}", responseDiagnostics);
         }
     }
 }

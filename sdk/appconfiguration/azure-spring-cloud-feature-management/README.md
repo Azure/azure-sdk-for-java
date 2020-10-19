@@ -235,9 +235,9 @@ The following steps demonstrate an example of a progressive rollout for a new 'B
 
 #### Targeting in an Application
 
-An example web application that uses the targeting feature filter is available in the [example project](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-feature-management-web-sample).
+An example web application that uses the targeting feature filter is available in the [example project][example_project].
 
-To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, [`ITargetingContextAccessor`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-feature-management-web-sample/src/main/java/com/example/TargetingContextAccessor.java). The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
+To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, [`ITargetingContextAccessor`][ITargetingContextAccessor]. The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
 
 ```java
 public class TargetingContextAccessor implements ITargetingContextAccessor {
@@ -272,3 +272,7 @@ Options are available to customize how targeting evaluation is performed across 
 ## Troubleshooting
 ## Next steps
 ## Contributing
+
+<!-- Links -->
+[example_project]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web
+[ITargetingContextAccessor]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web/src/main/java/com/example/TargetingContextAccessor.java

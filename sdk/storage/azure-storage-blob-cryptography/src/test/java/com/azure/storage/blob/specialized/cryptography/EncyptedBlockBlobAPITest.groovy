@@ -2,6 +2,11 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClientBuilder
@@ -30,6 +35,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Shared
@@ -1462,6 +1468,33 @@ class EncyptedBlockBlobAPITest extends APISpec {
         3 * Constants.MB| Constants.MB  || 4 // Encryption padding will add an extra block
     }
 
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
+            }
+        }
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def client = getEncryptedClientBuilder(fakeKey, fakeKeyResolver, primaryCredential, bec.getBlobUrl(), getPerCallVersionPolicy()).buildEncryptedBlobClient()
+
+        client.upload(new ByteArrayInputStream(new byte[0]), 0)
+
+        when:
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)

@@ -46,7 +46,7 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
      * @param profile the profile to use
      * @return the PrivateDnsZoneManager
      */
-    public static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new PrivateDnsZoneManager(httpPipeline, profile);
     }
 

@@ -95,7 +95,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
      * @param profile the profile to use
      * @return the NetworkManager
      */
-    public static NetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static NetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new NetworkManager(httpPipeline, profile);
     }
 

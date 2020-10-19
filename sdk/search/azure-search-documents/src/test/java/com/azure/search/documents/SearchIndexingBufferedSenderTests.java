@@ -205,10 +205,14 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             })
             .buildClient();
 
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger failedCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client
             .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
                 .setAutoFlushWindow(Duration.ofSeconds(5))
                 .setBatchSize(10)
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, error) -> failedCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
@@ -223,10 +227,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .collect(Collectors.toList()));
         }
 
-        sleepIfRunningAgainstService((long) (5000 * 1.5));
+        sleepIfRunningAgainstService((long) (15000 * 1.5));
 
-        assertEquals(1000, client.getDocumentCount());
+        assertEquals(1000, successCount.get());
+        assertEquals(0, failedCount.get());
         assertTrue(requestCount.get() >= 100);
+        assertEquals(1000, client.getDocumentCount());
         batchingClient.close();
     }
 
@@ -242,10 +248,14 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             })
             .buildClient();
 
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger failedCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.
             getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
                 .setAutoFlushWindow(Duration.ofSeconds(5))
                 .setBatchSize(10)
+                .setOnActionSucceeded(action -> successCount.incrementAndGet())
+                .setOnActionError((action, error) -> failedCount.incrementAndGet())
                 .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
@@ -262,10 +272,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(documentBatch);
 
-        sleepIfRunningAgainstService((long) (5000 * 1.5));
+        sleepIfRunningAgainstService((long) (15000 * 1.5));
 
-        assertEquals(1000, client.getDocumentCount());
+        assertEquals(1000, successCount.get());
+        assertEquals(0, failedCount.get());
         assertTrue(requestCount.get() >= 100);
+        assertEquals(1000, client.getDocumentCount());
         batchingClient.close();
     }
 

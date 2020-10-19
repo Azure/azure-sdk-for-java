@@ -25,6 +25,12 @@ public class OrcSink extends CopySink {
     private StoreWriteSettings storeSettings;
 
     /**
+     * ORC format settings.
+     */
+    @JsonProperty(value = "formatSettings")
+    private OrcWriteSettings formatSettings;
+
+    /**
      * Get oRC store settings.
      *
      * @return the storeSettings value
@@ -41,6 +47,26 @@ public class OrcSink extends CopySink {
      */
     public OrcSink withStoreSettings(StoreWriteSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get oRC format settings.
+     *
+     * @return the formatSettings value
+     */
+    public OrcWriteSettings formatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set oRC format settings.
+     *
+     * @param formatSettings the formatSettings value to set
+     * @return the OrcSink object itself.
+     */
+    public OrcSink withFormatSettings(OrcWriteSettings formatSettings) {
+        this.formatSettings = formatSettings;
         return this;
     }
 
