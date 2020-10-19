@@ -21,10 +21,10 @@ steps:
     env:
       PATVAR: $(azuresdk-azure-sdk-devops-pipeline-generation-pat)
   - script: |
-      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(Pipeline.Workspace)/sdk --endpoint Azure --repository ${{parameters.Repository}} --convention up --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.UPConventionOptions}}
+      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(System.DefaultWorkingDirectory)/sdk --endpoint Azure --repository ${{parameters.Repository}} --convention up --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.UPConventionOptions}}
     env:
       PATVAR: $(azuresdk-azure-sdk-devops-pipeline-generation-pat)
   - script: |
-      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(Pipeline.Workspace)/sdk --endpoint Azure --repository ${{parameters.Repository}} --convention tests --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.TestsConventionOptions}}
+      $(Pipeline.Workspace)/pipeline-generator/pipeline-generator --organization https://dev.azure.com/azure-sdk --project internal --prefix ${{parameters.Prefix}} --path $(System.DefaultWorkingDirectory)/sdk --endpoint Azure --repository ${{parameters.Repository}} --convention tests --agentpool Hosted --branch refs/heads/master --patvar PATVAR --debug ${{parameters.TestsConventionOptions}}
     env:
       PATVAR: $(azuresdk-azure-sdk-devops-pipeline-generation-pat)
