@@ -77,19 +77,21 @@ public class AADOAuth2AutoConfiguration {
         Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
 
         List<String> scope = aadAuthenticationProperties.getScope();
-        if (aadAuthenticationProperties.allowedGroupsConfigured()
-            && !scope.contains("https://graph.microsoft.com/user.read")
-        ) {
-            scope.add("https://graph.microsoft.com/user.read");
-            LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
-        }
-        if (!scope.contains("openid")) {
-            scope.add("openid");
-            LOGGER.warn("scope 'openid' has been added.");
-        }
-        if (!scope.contains("profile")) {
-            scope.add("profile");
-            LOGGER.warn("scope 'profile' has been added.");
+        if (!scope.toString().contains(".default")) {
+            if (aadAuthenticationProperties.allowedGroupsConfigured()
+                && !scope.contains("https://graph.microsoft.com/user.read")
+            ) {
+                scope.add("https://graph.microsoft.com/user.read");
+                LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
+            }
+            if (!scope.contains("openid")) {
+                scope.add("openid");
+                LOGGER.warn("scope 'openid' has been added.");
+            }
+            if (!scope.contains("profile")) {
+                scope.add("profile");
+                LOGGER.warn("scope 'profile' has been added.");
+            }
         }
 
         return ClientRegistration.withRegistrationId("azure")
