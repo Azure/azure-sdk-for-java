@@ -59,8 +59,9 @@ public final class ManageSqlFirewallRules {
                     .withNewResourceGroup(rgName)
                     .withAdministratorLogin(administratorLogin)
                     .withAdministratorPassword(administratorPassword)
-                    .withNewFirewallRule(firewallRuleIPAddress)
-                    .withNewFirewallRule(firewallRuleStartIPAddress, firewallRuleEndIPAddress)
+                    .defineFirewallRule("filewallRule1").withIpAddress(firewallRuleIPAddress).attach()
+                    .defineFirewallRule("filewallRule2")
+                        .withIpAddressRange(firewallRuleStartIPAddress, firewallRuleEndIPAddress).attach()
                     .create();
 
             Utils.print(sqlServer);
@@ -96,7 +97,9 @@ public final class ManageSqlFirewallRules {
             System.out.println("Deleting and adding new firewall rules as part of SQL Server update.");
             sqlServer.update()
                     .withoutFirewallRule(myFirewallName)
-                    .withNewFirewallRule(otherFirewallRuleStartIPAddress, otherFirewallRuleEndIPAddress)
+                    .defineFirewallRule("filewallRule2")
+                        .withIpAddressRange(otherFirewallRuleStartIPAddress, otherFirewallRuleEndIPAddress)
+                        .attach()
                     .apply();
 
             for (SqlFirewallRule sqlFirewallRule: sqlServer.firewallRules().list()) {

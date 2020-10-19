@@ -93,7 +93,8 @@ public final class DigitalTwinsAsyncClient {
     //region Digital twin APIs
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -119,7 +120,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Creates a digital twin.
+     * Creates a digital twin. If the provided digital twin Id is already in use, then this will attempt
+     * to replace the existing digital twin with the provided digital twin.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -332,7 +334,8 @@ public final class DigitalTwinsAsyncClient {
     //region Relationship APIs
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -358,7 +361,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Creates a relationship on a digital twin.
+     * Creates a relationship on a digital twin. If the provided relationship Id is already in use, then this will
+     * attempt to replace the existing relationship with the provided relationship.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -659,6 +663,23 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase)objectPagedResponse).getDeserializedHeaders());
             });
+    }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.listIncomingRelationships#String}
+     *
+     * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedFlux} of relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) {
+        return new PagedFlux<>(
+            () -> withContext(context -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, null, context)),
+            nextLink -> withContext(context -> listIncomingRelationshipsNextSinglePageAsync(nextLink, null, context)));
     }
 
     /**
@@ -1103,6 +1124,30 @@ public final class DigitalTwinsAsyncClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
      *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#BasicDigitalTwin}
+     *
+     * <p>Or alternatively String can be used as input and output deserialization type:</p>
+     *
+     * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String#String}
+     *
+     * @param query The query string, in SQL-like syntax.
+     * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
+     *              have the same model class, it is recommended to use a common denominator class such as {@link BasicDigitalTwin}.
+     * @param <T> The generic type to deserialize each queried digital twin into.
+     * @return A {@link PagedFlux} of deserialized digital twins.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public <T> PagedFlux<T> query(String query, Class<T> clazz) {
+        return query(query, clazz, null);
+    }
+
+    /**
+     * Query digital twins.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
+     *
      * {@codesnippet com.azure.digitaltwins.core.asyncClient.query#String-Options#BasicDigitalTwin}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
@@ -1184,7 +1229,8 @@ public final class DigitalTwinsAsyncClient {
     //region Event Route APIs
 
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1202,7 +1248,8 @@ public final class DigitalTwinsAsyncClient {
     }
 
     /**
-     * Create an event route.
+     * Create an event route. If the provided eventRouteId is already in use, then this will attempt to replace the
+     * existing event route with the provided event route.
      *
      * <p><strong>Code Samples</strong></p>
      *

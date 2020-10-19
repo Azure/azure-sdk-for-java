@@ -464,7 +464,7 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
   <!--tr>
     <td>Redis Cache</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-context/src/main/java/com/microsoft/azure/spring/cloud/context/core/impl/RedisCacheManager.java">Manage Redis Cache</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-context/src/main/java/com/azure/spring/cloud/context/core/impl/RedisCacheManager.java">Manage Redis Cache</a></li>
 </ul></td>
 </tr-->
 

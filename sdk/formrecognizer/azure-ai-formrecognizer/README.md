@@ -181,7 +181,7 @@ Methods that train models or recognize values from forms are modeled as long-run
 a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<MethodName>` method. Sample code snippets are provided to illustrate using long-running operations
-[below](#Examples).
+[below](#examples).
 
 ## Examples
 

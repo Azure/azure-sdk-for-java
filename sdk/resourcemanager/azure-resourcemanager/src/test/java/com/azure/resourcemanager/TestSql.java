@@ -4,7 +4,6 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServers;
 import com.google.common.util.concurrent.SettableFuture;
@@ -24,13 +23,14 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
                 .withNewResourceGroup()
                 .withAdministratorLogin("admin32")
                 .withAdministratorPassword("Password~1")
-                .withNewDatabase("database1")
-                .withNewElasticPool("elasticPool1", ElasticPoolEdition.STANDARD, "databaseInEP")
-                .withNewFirewallRule("10.10.10.10")
+                .defineDatabase("database1").attach()
+                .defineElasticPool("elasticPool1").withStandardPool().attach()
+                .defineDatabase("databaseInEP").withExistingElasticPool("elasticPool1").attach()
+                .defineFirewallRule("firewallRule1").withIpAddress("10.10.10.10").attach()
                 .withTag("mytag", "testtag")
                 .createAsync();
 
-        resourceStream.subscribe(sqlServer -> future.set(sqlServer));
+        resourceStream.subscribe(sqlServer -> future.set(sqlServer), error -> future.set(null));
 
         sqlServers[0] = future.get();
 

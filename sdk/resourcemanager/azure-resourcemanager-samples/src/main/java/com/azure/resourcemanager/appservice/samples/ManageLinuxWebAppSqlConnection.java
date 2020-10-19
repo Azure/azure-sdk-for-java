@@ -102,7 +102,7 @@ public final class ManageLinuxWebAppSqlConnection {
 
             SqlServer.Update update = server.update();
             for (String ip : app.outboundIPAddresses()) {
-                update = update.withNewFirewallRule(ip);
+                update = update.defineFirewallRule("filewallRule1").withIpAddress(ip).attach();
             }
             server = update.apply();
 
