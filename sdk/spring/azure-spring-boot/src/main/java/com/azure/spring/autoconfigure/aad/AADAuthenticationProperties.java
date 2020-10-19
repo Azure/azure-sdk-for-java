@@ -54,6 +54,12 @@ public class AADAuthenticationProperties {
     private String clientSecret;
 
     /**
+     * Redirection Endpoint: Used by the authorization server
+     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     */
+    private String redirectUriTemplate;
+
+    /**
      * Optional. scope doc:
      * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
      */
@@ -256,6 +262,14 @@ public class AADAuthenticationProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public String getRedirectUriTemplate() {
+        return redirectUriTemplate;
+    }
+
+    public void setRedirectUriTemplate(String redirectUriTemplate) {
+        this.redirectUriTemplate = redirectUriTemplate;
     }
 
     public void setScope(List<String> scope) {
