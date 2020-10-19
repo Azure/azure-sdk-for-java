@@ -39,5 +39,6 @@
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>
     <module>sdk/spring</module>
+    <module>sdk/resources</module>
   </modules>
 </project>
