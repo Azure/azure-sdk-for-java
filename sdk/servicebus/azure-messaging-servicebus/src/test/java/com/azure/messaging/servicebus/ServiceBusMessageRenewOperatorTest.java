@@ -16,11 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
-import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -225,9 +223,8 @@ public class ServiceBusMessageRenewOperatorTest {
         // Act
         Disposable disposable = renewOperator
             .subscribe(serviceBusReceivedMessage -> {
-                System.out.println("!!!! Test  throw runtime exception ");
-                    throw new RuntimeException("fake user generated exception.");
-                    },
+                throw new RuntimeException("fake user generated exception.");
+            },
                 throwable -> onErrorCalled.set(true),
                 () -> onCompleteCalled.set(true));
 
