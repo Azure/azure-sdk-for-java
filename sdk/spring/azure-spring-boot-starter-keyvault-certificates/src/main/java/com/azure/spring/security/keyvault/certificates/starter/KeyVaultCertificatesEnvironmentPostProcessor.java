@@ -4,18 +4,21 @@ package com.azure.spring.security.keyvault.certificates.starter;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
+
 import java.security.Security;
 import java.util.Properties;
 import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
-import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
+
+import static org.springframework.core.Ordered.LOWEST_PRECEDENCE;
 
 @Order(LOWEST_PRECEDENCE)
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
@@ -27,7 +30,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
-            SpringApplication application) {
+                                       SpringApplication application) {
 
         Properties systemProperties = System.getProperties();
 
@@ -87,14 +90,14 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
             KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
             Security.insertProviderAt(provider, 1);
-            
+
             String enabled = environment.getProperty("azure.keyvault.jca.overrideTrustManagerFactory");
             if (Boolean.valueOf(enabled)) {
                 KeyVaultTrustManagerFactoryProvider factoryProvider =
-                        new KeyVaultTrustManagerFactoryProvider();
+                    new KeyVaultTrustManagerFactoryProvider();
                 Security.insertProviderAt(factoryProvider, 1);
             }
-            
+
             enabled = environment.getProperty("azure.keyvault.jca.disableHostnameVerification");
             if (Boolean.valueOf(enabled)) {
                 HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
