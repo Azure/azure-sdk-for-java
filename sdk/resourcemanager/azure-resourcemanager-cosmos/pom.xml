@@ -120,6 +120,8 @@
                 <!-- tests fail without these exports. -->
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
+
+                --add-opens com.azure.resourcemanager.cosmos/com.azure.resourcemanager.cosmos=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

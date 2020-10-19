@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
+import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
 import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
@@ -16,15 +17,16 @@ import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -46,12 +48,14 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
+import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModelInfo;
@@ -183,14 +187,16 @@ public final class FormTrainingAsyncClient {
         return new PollerFlux<FormRecognizerOperationResult, CustomFormModel>(
             trainingOptions.getPollInterval(),
             getTrainingActivationOperation(trainingFilesUrl,
+                useTrainingLabels,
                 trainingOptions.getTrainingFileFilter() != null
                     ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded() : false,
                 trainingOptions.getTrainingFileFilter() != null
                     ? trainingOptions.getTrainingFileFilter().getPrefix() : null,
-                useTrainingLabels, context),
-            createTrainingPollOperation(context),
+                trainingOptions.getModelName(),
+                context),
+            createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchTrainingModelResultOperation(context));
+            fetchModelResultOperation(context));
     }
 
     /**
@@ -470,6 +476,91 @@ public final class FormTrainingAsyncClient {
         }
     }
 
+    /**
+     * Create a composed model from the provided list of existing models in the account.
+     *
+     * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate Ids.
+     * This operation is currently only supported for custom models trained using labels.
+     * </p>
+     *
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list}
+     *
+     * @param modelIds The list of models Ids to form the composed model.
+     *
+     * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns the created {@link CustomFormModel composed model}.
+     * @throws FormRecognizerException If create composed model operation fails and model with
+     * {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If the list of {@code modelIds} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds) {
+        return beginCreateComposedModel(modelIds, null, null);
+    }
+
+    /**
+     * Create a composed model from the provided list of existing models in the account.
+     *
+     * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate Ids.
+     * This operation is currently only supported for custom models trained using labels.
+     * </p>
+     *
+     *  <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions}
+     *
+     * @param modelIds The list of models Ids to form the composed model.
+     * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
+     * creating a composed model.
+     *
+     * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns the copied model {@link CustomFormModel}.
+     * @throws FormRecognizerException If create composed model operation fails and model with
+     * {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If the list of {@code modelIds} is null or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
+        CreateComposedModelOptions createComposedModelOptions) {
+        return beginCreateComposedModel(modelIds, createComposedModelOptions, Context.NONE);
+    }
+
+    PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
+        CreateComposedModelOptions creatComposeModelOptions, Context context) {
+        try {
+            if (CoreUtils.isNullOrEmpty(modelIds)) {
+                throw logger.logExceptionAsError(new NullPointerException("'modelIds' cannot be null or empty"));
+            }
+            creatComposeModelOptions = getCreateComposeModelOptions(creatComposeModelOptions);
+
+            final ComposeRequest composeRequest = new ComposeRequest()
+                .setModelIds(modelIds.stream()
+                    .map(UUID::fromString).collect(Collectors.toList()))
+                .setModelName(creatComposeModelOptions.getModelName());
+
+            return new PollerFlux<FormRecognizerOperationResult, CustomFormModel>(
+                creatComposeModelOptions.getPollInterval(),
+                urlActivationOperation(() -> service.composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
+                    .map(response -> {
+                        final String composeModelOperationId
+                            = parseModelId(response.getDeserializedHeaders().getLocation());
+                        return new FormRecognizerOperationResult(composeModelOperationId);
+                    }), logger),
+                createModelPollOperation(context),
+                (activationResponse, pollingContext)
+                    -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchModelResultOperation(context));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
     Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
         Context context) {
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
@@ -611,7 +702,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<CustomFormModel>>
-        fetchTrainingModelResultOperation(Context context) {
+        fetchModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
@@ -625,7 +716,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<PollResponse<FormRecognizerOperationResult>>>
-        createTrainingPollOperation(Context context) {
+        createModelPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
@@ -643,17 +734,22 @@ public final class FormTrainingAsyncClient {
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
         getTrainingActivationOperation(
-        String trainingFilesUrl, boolean includeSubfolders, String filePrefix, boolean useTrainingLabels,
-        Context context) {
+        String trainingFilesUrl, boolean useTrainingLabels, boolean includeSubfolders, String filePrefix,
+        String modelName, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
-                TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubfolders)
+                TrainSourceFilter trainSourceFilter = new TrainSourceFilter()
+                    .setIncludeSubFolders(includeSubfolders)
                     .setPrefix(filePrefix);
-                TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl).
-                    setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
+                TrainRequest serviceTrainRequest = new TrainRequest()
+                    .setSource(trainingFilesUrl)
+                    .setSourceFilter(trainSourceFilter)
+                    .setUseLabelFile(useTrainingLabels)
+                    .setModelName(modelName);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
-                    .map(response -> new FormRecognizerOperationResult(
+                    .map(response ->
+                        new FormRecognizerOperationResult(
                         parseModelId(response.getDeserializedHeaders().getLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
@@ -687,5 +783,10 @@ public final class FormTrainingAsyncClient {
                 break;
         }
         return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
+    }
+
+    private static CreateComposedModelOptions
+        getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new CreateComposedModelOptions() : userProvidedOptions;
     }
 }

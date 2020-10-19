@@ -17,10 +17,10 @@ Support": this will configure the project to make sure you can integrate easily 
 For instance, let's assume that you want to use Event Hubs starter, you can add the usual `spring-cloud-starter-azure-eventhubs`
 dependency to your project and the Spring Cloud auto-configuration will kick-in: 
 
-[//]: # ({x-version-update-start;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
   <version>2.0.0-beta.1</version>
 </dependency>

@@ -38,6 +38,7 @@ mvn package spring-boot:run
 Change the connection-string value with the Access Key value of the Configuration Store created above.
 
 #### Run the application
+First, we need to ensure that this [instruction] is completed before run.
 
 Start the application and access http://localhost:8080 to check the returned value. Different commands for different scenarios are listed below.
 
@@ -72,3 +73,4 @@ Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/m
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

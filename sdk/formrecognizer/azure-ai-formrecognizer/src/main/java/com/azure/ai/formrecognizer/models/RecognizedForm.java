@@ -3,8 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +10,6 @@ import java.util.Map;
 /**
  * The RecognizedForm model.
  */
-@Immutable
 public final class RecognizedForm {
 
     /*
@@ -36,6 +33,10 @@ public final class RecognizedForm {
      * List of extracted pages from the form.
      */
     private final List<FormPage> pages;
+
+    private Float formTypeConfidence;
+
+    private String modelId;
 
     /**
      * Constructs a RecognizedForm object.
@@ -89,5 +90,24 @@ public final class RecognizedForm {
      */
     public List<FormPage> getPages() {
         return this.pages;
+    }
+
+    /**
+     * Get the confidence of the form type identified by the model.
+     *
+     * @return the formTypeConfidence value.
+     */
+    public Float getFormTypeConfidence() {
+        return formTypeConfidence;
+    }
+
+    /**
+     * Get the identifier of the model that was used for recognition, if not using a prebuilt
+     * model.
+     *
+     * @return the modelId value.
+     */
+    public String getModelId() {
+        return modelId;
     }
 }

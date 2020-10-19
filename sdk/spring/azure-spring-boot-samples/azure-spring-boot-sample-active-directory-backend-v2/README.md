@@ -42,7 +42,7 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 ### Run with Maven
-
+First, we need to ensure that this [instruction] is completed before run.
 ```shell
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -70,3 +70,5 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 
 ## Next steps
 ## Contributing
+<!-- LINKS -->
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

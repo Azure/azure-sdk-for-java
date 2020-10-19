@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -392,12 +393,21 @@ public interface SqlDatabaseOperations
         /** The SQL Database definition to set the edition for database. */
         interface WithEdition {
             /**
-             * Sets the edition for the SQL Database.
+             * Sets the sku for the SQL Database.
              *
-             * @param edition edition to be set for database
+             * @param sku sku to be set for database.
              * @return The next stage of the definition
              */
-            SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withEdition(DatabaseEdition edition);
+            SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withSku(DatabaseSku sku);
+
+            /**
+             * Sets the sku for the SQL Database.
+             *
+             * @param sku sku/edition to be set for database, all possible capabilities could be found by
+             *     {@link SqlServers#getCapabilitiesByRegion(Region)}
+             * @return The next stage of the definition
+             */
+            SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withSku(Sku sku);
         }
 
         /** The SQL Database definition to set the edition for database with defaults. */
@@ -492,25 +502,12 @@ public interface SqlDatabaseOperations
             SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withMaxSizeBytes(long maxSizeBytes);
         }
 
-        /** The SQL Database definition to set the service level objective. */
-        interface WithServiceObjective {
-            /**
-             * Sets the service level objective for the SQL Database.
-             *
-             * @param serviceLevelObjective service level objected for the SQL Database
-             * @return The next stage of the definition.
-             */
-            SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withServiceObjective(
-                ServiceObjectiveName serviceLevelObjective);
-        }
-
         /**
          * A SQL Database definition with sufficient inputs to create a new SQL database in the cloud, but exposing
          * additional optional settings to specify.
          */
         interface WithCreateAllOptions
-            extends SqlDatabaseOperations.DefinitionStages.WithServiceObjective,
-                SqlDatabaseOperations.DefinitionStages.WithEdition,
+            extends SqlDatabaseOperations.DefinitionStages.WithEdition,
                 SqlDatabaseOperations.DefinitionStages.WithEditionDefaults,
                 SqlDatabaseOperations.DefinitionStages.WithCollation,
                 SqlDatabaseOperations.DefinitionStages.WithMaxSizeBytes,

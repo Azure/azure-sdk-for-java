@@ -25,6 +25,8 @@ This sample project demonstrates how to use Service Bus with Spring Boot.
 2. Fill in the `connection-string`, `queue-name`, `topic-name`, and `subscription-name`. 
 
 ### Run with Maven
+First, we need to ensure that this [instruction] is completed before run.
+
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -45,3 +47,4 @@ Type | Reference Link
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

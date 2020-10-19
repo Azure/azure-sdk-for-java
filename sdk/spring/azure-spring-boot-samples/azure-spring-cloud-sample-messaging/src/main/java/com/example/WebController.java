@@ -3,8 +3,8 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.microsoft.azure.spring.messaging.annotation.AzureMessageListener;
+import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.messaging.annotation.AzureMessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;

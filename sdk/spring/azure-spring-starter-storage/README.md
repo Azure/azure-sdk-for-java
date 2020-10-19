@@ -9,10 +9,10 @@ The project provides a Spring Boot Starter `spring-starter-azure-storage` to aut
 - [Maven][maven] 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-starter-storage;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-starter-storage;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-starter-storage</artifactId>
     <version>2.0.0-beta.1</version>
 </dependency>

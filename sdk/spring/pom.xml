@@ -4,7 +4,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
@@ -16,7 +16,6 @@
     <module>azure-spring-boot-starter-cosmos</module>
     <module>azure-spring-boot-starter-data-gremlin</module>
     <module>azure-spring-boot-starter-keyvault-secrets</module>
-    <module>azure-spring-boot-starter-metrics</module>
     <module>azure-spring-boot-starter-servicebus-jms</module>
     <module>azure-spring-boot-test-application</module>
     <module>azure-spring-boot-test-core</module>

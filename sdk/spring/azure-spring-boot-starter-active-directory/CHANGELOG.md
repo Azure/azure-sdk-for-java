@@ -11,7 +11,7 @@
     azure.activedirectory.scope = your-customized-scope1, your-customized-scope2
     ```
 - Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
-
+- Update `com.azure` group id to `com.azure.spring`.
 
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes
