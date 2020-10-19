@@ -32,23 +32,21 @@ import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
-@Import({AzureEventHubAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class})
-@EnableConfigurationProperties({AzureEventHubProperties.class, EventHubExtendedBindingProperties.class})
+@Import({ AzureEventHubAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class })
+@EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
 public class EventHubBinderConfiguration {
 
     private static final String EVENT_HUB_BINDER = "EventHubBinder";
     private static final String NAMESPACE = "Namespace";
 
-  
     @Autowired(required = false)
     private EventHubNamespaceManager eventHubNamespaceManager;
-    
-    @Autowired(required=false)
+
+    @Autowired(required = false)
     private EventHubManager eventHubManager;
-    
-    @Autowired(required=false)
+
+    @Autowired(required = false)
     private EventHubConsumerGroupManager eventHubConsumerGroupManager;
-    
 
     @PostConstruct
     public void collectTelemetry() {
@@ -58,9 +56,9 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubChannelProvisioner eventHubChannelProvisioner(AzureEventHubProperties eventHubProperties) {
-        if (eventHubNamespaceManager != null && eventHubManager != null && eventHubConsumerGroupManager!=null) {
-            return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager, eventHubConsumerGroupManager,
-                    eventHubProperties.getNamespace());
+        if (eventHubNamespaceManager != null && eventHubManager != null && eventHubConsumerGroupManager != null) {
+            return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager,
+                    eventHubConsumerGroupManager, eventHubProperties.getNamespace());
         } else {
             TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE,
                     EventHubUtils.getNamespace(eventHubProperties.getConnectionString()));
@@ -73,8 +71,8 @@ public class EventHubBinderConfiguration {
     @ConditionalOnMissingBean
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
             EventHubOperation eventHubOperation, EventHubExtendedBindingProperties bindingProperties) {
-        EventHubMessageChannelBinder binder =
-                new EventHubMessageChannelBinder(null, eventHubChannelProvisioner, eventHubOperation);
+        EventHubMessageChannelBinder binder = new EventHubMessageChannelBinder(null, eventHubChannelProvisioner,
+                eventHubOperation);
         binder.setBindingProperties(bindingProperties);
         return binder;
     }

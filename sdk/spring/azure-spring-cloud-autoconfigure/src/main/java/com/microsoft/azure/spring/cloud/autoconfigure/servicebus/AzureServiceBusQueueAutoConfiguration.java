@@ -86,7 +86,7 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusQueueManager serviceBusQueueManager(Azure azure, AzureProperties azureProperties) {
-        return new ServiceBusQueueManager(azure, azureProperties);
+    public ServiceBusQueueManager serviceBusQueueManager(AzureProperties azureProperties) {
+        return new ServiceBusQueueManager(azureProperties);
     }
 }

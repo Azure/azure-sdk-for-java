@@ -3,6 +3,10 @@
 
 package com.microsoft.azure.spring.integration.servicebus.factory;
 
+import java.util.function.Function;
+
+import org.springframework.util.StringUtils;
+
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.IQueueClient;
@@ -13,9 +17,6 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.spring.cloud.context.core.util.Memoizer;
 import com.microsoft.azure.spring.cloud.context.core.util.Tuple;
 import com.microsoft.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import org.springframework.util.StringUtils;
-
-import java.util.function.Function;
 
 /**
  * Default implementation of {@link ServiceBusQueueClientFactory}.

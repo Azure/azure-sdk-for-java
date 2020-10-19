@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.spring.integration.servicebus.factory;
 
+import javax.annotation.Nullable;
+
 import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
 import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
@@ -15,10 +17,16 @@ import com.microsoft.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscri
  */
 abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory {
     protected final String connectionString;
+
+    @Nullable
     protected ServiceBusNamespaceManager serviceBusNamespaceManager;
+    @Nullable
     protected ServiceBusQueueManager serviceBusQueueManager;
+    @Nullable
     protected ServiceBusTopicManager serviceBusTopicManager;
+    @Nullable
     protected ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
+    @Nullable
     protected String namespace;
 
     AbstractServiceBusSenderFactory(String connectionString) {
