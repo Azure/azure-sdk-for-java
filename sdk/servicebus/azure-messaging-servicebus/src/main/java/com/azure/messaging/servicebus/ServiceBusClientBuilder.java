@@ -54,6 +54,7 @@ import java.util.regex.Pattern;
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class})
 public final class ServiceBusClientBuilder {
+    private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -331,11 +332,19 @@ public final class ServiceBusClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
+        configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
+
         if (credentials == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
-                + "They can be set using: connectionString(String), connectionString(String, String), "
-                + "or credentials(String, String, TokenCredential)"
-            ));
+            final String connectionString = configuration.get(AZURE_SERVICE_BUS_CONNECTION_STRING);
+
+            if (CoreUtils.isNullOrEmpty(connectionString)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
+                    + "They can be set using: connectionString(String), connectionString(String, String), "
+                    + "credentials(String, String, TokenCredential), or setting the environment variable '"
+                    + AZURE_SERVICE_BUS_CONNECTION_STRING + "' with a connection string"));
+            }
+
+            connectionString(connectionString);
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
