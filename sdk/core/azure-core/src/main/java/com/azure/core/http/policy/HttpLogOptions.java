@@ -9,7 +9,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -17,8 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * The log configurations for HTTP messages.
@@ -31,10 +28,8 @@ public class HttpLogOptions {
     private boolean prettyPrintBody;
 
     private LogLevel defaultLogLevel;
-    private Function<HttpPipelineCallContext, LogLevel> requestLogLevelFunction;
-    private BiFunction<HttpResponse, Duration, LogLevel> responseLogLevelFunction;
-    private Function<HttpPipelineCallContext, Mono<String>> requestLoggingFunction;
-    private BiFunction<HttpResponse, Duration, Mono<String>> responseLoggingFunction;
+    private HttpRequestLogger requestLogger;
+    private HttpResponseLogger responseLogger;
 
     private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
 
@@ -227,10 +222,11 @@ public class HttpLogOptions {
     /**
      * Gets the {@link LogLevel} used by default when logging requests and responses.
      * <p>
-     * Using {@link #setRequestLogLevelFunction(Function)} and {@link #setResponseLogLevelFunction(BiFunction)} can be
-     * used to set the {@link LogLevel} for each request and response being logged.
+     * {@link HttpRequestLogger#getLogLevel(LogLevel, HttpPipelineCallContext)} and {@link
+     * HttpResponseLogger#getLogLevel(LogLevel, HttpResponse, Duration)} can be used to set the {@link LogLevel} for
+     * each request and response being logged.
      * <p>
-     * Byd default {@link LogLevel#INFORMATIONAL} is used.
+     * By default {@link LogLevel#INFORMATIONAL} is used.
      *
      * @return The {@link LogLevel} used by default when logging requests and responses.
      */
@@ -240,6 +236,12 @@ public class HttpLogOptions {
 
     /**
      * Sets the {@link LogLevel} used by default when logging requests and responses.
+     * <p>
+     * {@link HttpRequestLogger#getLogLevel(LogLevel, HttpPipelineCallContext)} and {@link
+     * HttpResponseLogger#getLogLevel(LogLevel, HttpResponse, Duration)} can be used to set the {@link LogLevel} for
+     * each request and response being logged.
+     * <p>
+     * By default {@link LogLevel#INFORMATIONAL} is used.
      *
      * @param defaultLogLevel The default log level.
      * @return The updated HttpLogOptions object.
@@ -250,137 +252,147 @@ public class HttpLogOptions {
     }
 
     /**
-     * Gets the {@link Function} used to determine which log level to log the outgoing request.
+     * Gets the {@link HttpRequestLogger} that will be used to log requests.
      * <p>
-     * The {@link HttpPipelineCallContext} will be passed to determine the log level.
-     * <p>
-     * By default {@link LogLevel#INFORMATIONAL} will be used.
+     * A default logger will be used if one isn't supplied.
      *
-     * @return The {@link Function} used to determine the log level to log the outgoing request.
+     * @return The {@link HttpRequestLogger} that will be used to log requests.
      */
-    public Function<HttpPipelineCallContext, LogLevel> getRequestLogLevelFunction() {
-        return requestLogLevelFunction;
+    public HttpRequestLogger getRequestLogger() {
+        return requestLogger;
     }
 
     /**
-     * Sets the {@link Function} used to determine which log level to log the outgoing request.
+     * Sets the {@link HttpRequestLogger} that will be used to log requests.
      * <p>
-     * The {@link HttpPipelineCallContext} will be passed to determine the log level.
-     * <p>
-     * By default {@link LogLevel#INFORMATIONAL} will be used.
+     * A default logger will be used if one isn't supplied.
      *
-     * @param requestLogLevelFunction The {@link Function} used to determine the log level to log the outgoing request.
+     * @param requestLogger The {@link HttpRequestLogger} that will be used to log requests.
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions setRequestLogLevelFunction(
-        Function<HttpPipelineCallContext, LogLevel> requestLogLevelFunction) {
-        this.requestLogLevelFunction = requestLogLevelFunction;
+    public HttpLogOptions setRequestLogger(HttpRequestLogger requestLogger) {
+        this.requestLogger = requestLogger;
         return this;
     }
 
     /**
-     * Gets the {@link BiFunction} used to determine which log level to log the incoming response.
+     * Gets the {@link HttpResponseLogger} that will be used to log responses.
      * <p>
-     * The {@link HttpResponse} and the duration taken for a response to be returned will be passed to determine the log
-     * level.
-     * <p>
-     * By default {@link LogLevel#INFORMATIONAL} will be used.
+     * A default logger will be used if one isn't supplied.
      *
-     * @return The {@link BiFunction} used to determine the log level to log the incoming response.
+     * @return The {@link HttpResponseLogger} that will be used to log responses.
      */
-    public BiFunction<HttpResponse, Duration, LogLevel> getResponseLogLevelFunction() {
-        return responseLogLevelFunction;
+    public HttpResponseLogger getResponseLogger() {
+        return responseLogger;
     }
 
     /**
-     * Sets the {@link BiFunction} used to determine which log level to log the incoming response.
+     * Sets the {@link HttpResponseLogger} that will be used to log responses.
      * <p>
-     * The {@link HttpResponse} and the duration for a response to be returned will be passed to determine the log
-     * level.
-     * <p>
-     * By default {@link LogLevel#INFORMATIONAL} will be used.
+     * A default logger will be sued if one isn't supplied.
      *
-     * @param responseLogLevelFunction The {@link BiFunction} used to determine the log level to log the incoming
-     * response.
+     * @param responseLogger The {@link HttpResponseLogger} that will be used to log responses.
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions setResponseLogLevelFunction(
-        BiFunction<HttpResponse, Duration, LogLevel> responseLogLevelFunction) {
-        this.responseLogLevelFunction = responseLogLevelFunction;
+    public HttpLogOptions setResponseLogger(HttpResponseLogger responseLogger) {
+        this.responseLogger = responseLogger;
         return this;
     }
 
     /**
-     * Gets the {@link Function} used to create a log message from a request.
-     * <p>
-     * The logger will validate that it can log at the level returned by either {@link #getDefaultLogLevel()} or
-     * {@link #getRequestLogLevelFunction()} before calling this function. This will prevent log messages being created
-     * when they won't be logged.
-     * <p>
-     * The {@link HttpPipelineCallContext} will be passed to generate the log message.
-     * <p>
-     * A default logging function will be used if one isn't supplied.
-     *
-     * @return The {@link Function} used to create a log message from a request.
+     * Options passed into HTTP request logging functions.
      */
-    public Function<HttpPipelineCallContext, Mono<String>> getRequestLoggingFunction() {
-        return requestLoggingFunction;
+    public static final class HttpRequestLoggingOptions {
+        private final ClientLogger logger;
+        private final LogLevel logLevel;
+        private final HttpPipelineCallContext httpPipelineCallContext;
+
+        HttpRequestLoggingOptions(ClientLogger logger, LogLevel logLevel,
+            HttpPipelineCallContext httpPipelineCallContext) {
+            this.logger = logger;
+            this.logLevel = logLevel;
+            this.httpPipelineCallContext = httpPipelineCallContext;
+        }
+
+        /**
+         * The {@link ClientLogger} used to log the request.
+         *
+         * @return The ClientLogger used to log the request.
+         */
+        public ClientLogger getLogger() {
+            return logger;
+        }
+
+        /**
+         * The {@link LogLevel} used when logging the request.
+         *
+         * @return The LogLevel used when logging the request.
+         */
+        public LogLevel getLogLevel() {
+            return logLevel;
+        }
+
+        /**
+         * The contextual information for the request such as headers, body, and metadata.
+         *
+         * @return The contextual information for the request.
+         */
+        public HttpPipelineCallContext getHttpPipelineCallContext() {
+            return httpPipelineCallContext;
+        }
     }
 
     /**
-     * Sets the {@link Function} used to create a log message from a request.
-     * <p>
-     * The logger will validate that it can log at the level returned by either {@link #getDefaultLogLevel()} or
-     * {@link #getRequestLogLevelFunction()} before calling this function. This will prevent log messages being created
-     * when they won't be logged.
-     * <p>
-     * The {@link HttpPipelineCallContext} will be passed to generate the log message.
-     * <p>
-     * A default logging function will be used if one isn't supplied.
-     *
-     * @param requestLoggingFunction The {@link Function} used to create a log message from a request.
-     * @return The updated HttpLoggingOptions object.
+     * Options passed into HTTP response logging functions.
      */
-    public HttpLogOptions setRequestLoggingFunction(
-        Function<HttpPipelineCallContext, Mono<String>> requestLoggingFunction) {
-        this.requestLoggingFunction = requestLoggingFunction;
-        return this;
-    }
+    public static final class HttpResponseLoggingOptions {
+        private final ClientLogger logger;
+        private final LogLevel logLevel;
+        private final HttpResponse httpResponse;
+        private final Duration httpResponseDuration;
 
-    /**
-     * Gets the {@link BiFunction} used to create a log message from a response.
-     * <p>
-     * The logger will validate that it can log at the level returned by either {@link #getDefaultLogLevel()} or
-     * {@link #getResponseLogLevelFunction()} before calling this function. This will prevent log messages being created
-     * when they won't be logged.
-     * <p>
-     * The {@link HttpResponse} and duration for a response will be passed to generate the log message.
-     * <p>
-     * A default logging function will be used if one isn't supplied.
-     *
-     * @return The {@link BiFunction} used to create a log message from a response.
-     */
-    public BiFunction<HttpResponse, Duration, Mono<String>> getResponseLoggingFunction() {
-        return responseLoggingFunction;
-    }
+        HttpResponseLoggingOptions(ClientLogger logger, LogLevel logLevel, HttpResponse httpResponse,
+            Duration httpResponseDuration) {
+            this.logger = logger;
+            this.logLevel = logLevel;
+            this.httpResponse = httpResponse;
+            this.httpResponseDuration = httpResponseDuration;
+        }
 
-    /**
-     * Sets the {@link BiFunction} used to create a log message from a response.
-     * <p>
-     * The logger will validate that it can log at the level returned by either {@link #getDefaultLogLevel()} or
-     * {@link #getResponseLogLevelFunction()} before calling this function. This will prevent log messages being created
-     * when they won't be logged.
-     * <p>
-     * The {@link HttpResponse} and duration for a response will be passed to generate the log message.
-     * <p>
-     * A default logging function will be used if one isn't supplied.
-     *
-     * @param responseLoggingFunction The {@link BiFunction} used to create a log message from a response.
-     * @return The updated HttpLoggingOptions object.
-     */
-    public HttpLogOptions setResponseLoggingFunction(
-        BiFunction<HttpResponse, Duration, Mono<String>> responseLoggingFunction) {
-        this.responseLoggingFunction = responseLoggingFunction;
-        return this;
+        /**
+         * The {@link ClientLogger} used to log the response.
+         *
+         * @return The ClientLogger used to log the response.
+         */
+        public ClientLogger getLogger() {
+            return logger;
+        }
+
+        /**
+         * The {@link LogLevel} used when logging the response.
+         *
+         * @return The LogLevel used when logging the response.
+         */
+        public LogLevel getLogLevel() {
+            return logLevel;
+        }
+
+        /**
+         * The HTTP response being logged.
+         *
+         * @return The HTTP response being logged.
+         */
+        public HttpResponse getHttpResponse() {
+            return httpResponse;
+        }
+
+        /**
+         * The duration of time between sending the request and receiving the response.
+         *
+         * @return The duration of time between sending the request and receiving the response.
+         */
+        public Duration getHttpResponseDuration() {
+            return httpResponseDuration;
+        }
     }
 }
