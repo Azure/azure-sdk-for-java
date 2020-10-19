@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/reosurces/
+      - sdk/resources/
 
 pr:
   branches:
