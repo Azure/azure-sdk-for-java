@@ -48,13 +48,8 @@ public class KeyVaultKeyStoreTest {
         + "U/aIAdQRfDaSE9jhtcVu5d5kCgBs7nz5AzeCisDPo5zIt4Mxej3iVaAJ79oEbHOE"
         + "p192KLXLV/pscA4Wgb+PJ8AAEa5B6xq8p9JO+Q==";
 
-    /**
-     * Test engineGetCertificate method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testEngineGetCertificate() throws Exception {
+    public void testEngineGetCertificate() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -65,13 +60,8 @@ public class KeyVaultKeyStoreTest {
         assertNull(keystore.engineGetCertificate("myalias"));
     }
 
-    /**
-     * Test engineGetCertificateAlias method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineGetCertificateAlias() throws Exception {
+    public void testEngineGetCertificateAlias() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -82,13 +72,8 @@ public class KeyVaultKeyStoreTest {
         assertNull(keystore.engineGetCertificateAlias(null));
     }
 
-    /**
-     * Test engineGetCertificateChain method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineGetCertificateChain() throws Exception {
+    public void testEngineGetCertificateChain() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -99,13 +84,8 @@ public class KeyVaultKeyStoreTest {
         assertNull(keystore.engineGetCertificateChain("myalias"));
     }
 
-    /**
-     * Test engineIsCertificateEntry method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineIsCertificateEntry() throws Exception {
+    public void testEngineIsCertificateEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -116,13 +96,8 @@ public class KeyVaultKeyStoreTest {
         assertFalse(keystore.engineIsCertificateEntry("myalias"));
     }
 
-    /**
-     * Test engineSetCertificateEntry method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testEngineSetCertificateEntry() throws Exception {
+    public void testEngineSetCertificateEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -145,13 +120,8 @@ public class KeyVaultKeyStoreTest {
         assertNotNull(keystore.engineGetCertificate("setcert"));
     }
 
-    /**
-     * Test engineGetKey method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineGetKey() throws Exception {
+    public void testEngineGetKey() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -162,13 +132,8 @@ public class KeyVaultKeyStoreTest {
         assertNull(keystore.engineGetKey("myalias", null));
     }
 
-    /**
-     * Test engineIsKeyEntry method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineIsKeyEntry() throws Exception {
+    public void testEngineIsKeyEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -179,35 +144,20 @@ public class KeyVaultKeyStoreTest {
         assertFalse(keystore.engineIsKeyEntry("myalias"));
     }
 
-    /**
-     * Test engineSetKeyEntry method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testEngineSetKeyEntry() throws Exception {
+    public void testEngineSetKeyEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineSetKeyEntry("myalias", null, null);
     }
 
-    /**
-     * Test engineSetKeyEntry method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineSetKeyEntry2() throws Exception {
+    public void testEngineSetKeyEntry2() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineSetKeyEntry("myalias", null, null, null);
     }
 
-    /**
-     * Test engineAliases method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testEngineAliases() throws Exception {
+    public void testEngineAliases() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -218,13 +168,8 @@ public class KeyVaultKeyStoreTest {
         assertTrue(keystore.engineAliases().hasMoreElements());
     }
 
-    /**
-     * Test engineContainsAlias method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineContainsAlias() throws Exception {
+    public void testEngineContainsAlias() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -235,42 +180,26 @@ public class KeyVaultKeyStoreTest {
         assertFalse(keystore.engineContainsAlias("myalias"));
     }
 
-    /**
-     * Test engineGetCretionDate method.
-     */
     @Test
     public void testEngineGetCreationDate() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         assertNotNull(keystore.engineGetCreationDate("myalias"));
     }
 
-    /**
-     * Test engineDeleteEntry method.
-     *
-     * @throws Exception when a serious error occurs.
-     */
     @Test
-    public void testEngineDeleteEntry() throws Exception {
+    public void testEngineDeleteEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineDeleteEntry("myalias");
     }
 
-    /**
-     * Test engineSize method.
-     */
     @Test
     public void testEngineSize() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         assertTrue(keystore.engineSize() >= 0);
     }
 
-    /**
-     * Test engineStore method.
-     *
-     * @throws Exception when an error occurs.
-     */
     @Test
-    public void testEngineStore() throws Exception {
+    public void testEngineStore() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineStore(null, null);
     }

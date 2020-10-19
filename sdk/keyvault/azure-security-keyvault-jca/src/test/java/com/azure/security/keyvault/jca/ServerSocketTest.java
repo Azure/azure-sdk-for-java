@@ -72,7 +72,7 @@ public class ServerSocketTest {
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(kmf.getKeyManagers(), null, null);
 
-        SSLServerSocketFactory factory = (SSLServerSocketFactory) context.getServerSocketFactory();
+        SSLServerSocketFactory factory = context.getServerSocketFactory();
         SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
 
         Thread server = new Thread(() -> {
@@ -101,17 +101,13 @@ public class ServerSocketTest {
 
         SSLContext sslContext = SSLContexts
             .custom()
-            .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> {
-                return true;
-            })
+            .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
             .build();
 
         SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
             .create()
             .setSslContext(sslContext)
-            .setHostnameVerifier((hostname, session) -> {
-                return true;
-            })
+            .setHostnameVerifier((hostname, session) -> true)
             .build();
 
         PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
@@ -181,7 +177,7 @@ public class ServerSocketTest {
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(kmf.getKeyManagers(), null, null);
 
-        SSLServerSocketFactory factory = (SSLServerSocketFactory) context.getServerSocketFactory();
+        SSLServerSocketFactory factory = context.getServerSocketFactory();
         SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8766);
 
         Thread server = new Thread(() -> {
@@ -216,9 +212,7 @@ public class ServerSocketTest {
         SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
             .create()
             .setSslContext(sslContext)
-            .setHostnameVerifier((hostname, session) -> {
-                return true;
-            })
+            .setHostnameVerifier((hostname, session) -> true)
             .build();
 
         PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder

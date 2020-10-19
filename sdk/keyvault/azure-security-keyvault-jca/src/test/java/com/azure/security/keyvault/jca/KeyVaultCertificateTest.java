@@ -20,6 +20,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -69,10 +70,9 @@ public class KeyVaultCertificateTest {
     /**
      * Setup before each test.
      *
-     * @throws Exception when an exception occurs.
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -102,11 +102,11 @@ public class KeyVaultCertificateTest {
     public void testCheckValidity2() {
         try {
             KeyVaultCertificate certificate = new KeyVaultCertificate(x509Certificate);
-            certificate.checkValidity(new Date(100, 1, 1));
+            certificate.checkValidity(new Date(100, Calendar.FEBRUARY, 1));
             fail();
         } catch (CertificateExpiredException ex) {
             fail();
-        } catch (CertificateNotYetValidException cnyve) {
+        } catch (CertificateNotYetValidException exception) {
             // expecting this as the TEST_CERTIFICATE is not valid against given date.
         }
     }
@@ -118,8 +118,8 @@ public class KeyVaultCertificateTest {
     public void testCheckValidity3() {
         try {
             KeyVaultCertificate certificate = new KeyVaultCertificate(x509Certificate);
-            certificate.checkValidity(new Date(200, 1, 1));
-        } catch (CertificateExpiredException | CertificateNotYetValidException cnyve) {
+            certificate.checkValidity(new Date(200, Calendar.FEBRUARY, 1));
+        } catch (CertificateExpiredException | CertificateNotYetValidException exception) {
             fail();
         }
     }

@@ -20,7 +20,11 @@ public class KeyVaultLoadStoreParameterTest {
     @Test
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"), null, null, null);
+            System.getProperty("azure.keyvault.uri"),
+            null,
+            null,
+            null
+        );
         assertNull(parameter.getProtectionParameter());
     }
 }
