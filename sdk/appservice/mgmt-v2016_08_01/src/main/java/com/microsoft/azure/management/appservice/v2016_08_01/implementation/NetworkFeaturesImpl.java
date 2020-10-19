@@ -18,12 +18,12 @@ import com.microsoft.azure.management.appservice.v2016_08_01.HybridConnection;
 import com.microsoft.azure.management.appservice.v2016_08_01.VnetInfo;
 
 class NetworkFeaturesImpl extends IndexableRefreshableWrapperImpl<NetworkFeatures, NetworkFeaturesInner> implements NetworkFeatures {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String view;
 
-    NetworkFeaturesImpl(NetworkFeaturesInner inner,  AppServiceManager manager) {
+    NetworkFeaturesImpl(NetworkFeaturesInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -33,7 +33,7 @@ class NetworkFeaturesImpl extends IndexableRefreshableWrapperImpl<NetworkFeature
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
