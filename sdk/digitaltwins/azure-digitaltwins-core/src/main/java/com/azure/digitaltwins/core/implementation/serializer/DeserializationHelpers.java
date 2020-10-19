@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import com.azure.core.util.serializer.JsonSerializer;
@@ -9,7 +12,7 @@ import java.io.ByteArrayOutputStream;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 
-public class DeserializationHelpers {
+public final class DeserializationHelpers {
 
     /**
      * Deserialize the payload object into a generic type.
