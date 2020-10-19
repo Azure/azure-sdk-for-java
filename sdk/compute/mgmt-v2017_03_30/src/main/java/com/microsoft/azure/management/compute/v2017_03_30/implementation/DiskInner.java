@@ -83,7 +83,7 @@ public class DiskInner extends Resource {
     private String provisioningState;
 
     /**
-     * Get the managedBy value.
+     * Get a relative URI containing the ID of the VM that has the disk attached.
      *
      * @return the managedBy value
      */
@@ -112,7 +112,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the zones value.
+     * Get the Logical zone list for Disk.
      *
      * @return the zones value
      */
@@ -121,7 +121,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the zones value.
+     * Set the Logical zone list for Disk.
      *
      * @param zones the zones value to set
      * @return the DiskInner object itself.
@@ -132,7 +132,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the timeCreated value.
+     * Get the time when the disk was created.
      *
      * @return the timeCreated value
      */
@@ -141,7 +141,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the osType value.
+     * Get the Operating System type. Possible values include: 'Windows', 'Linux'.
      *
      * @return the osType value
      */
@@ -150,7 +150,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the osType value.
+     * Set the Operating System type. Possible values include: 'Windows', 'Linux'.
      *
      * @param osType the osType value to set
      * @return the DiskInner object itself.
@@ -161,7 +161,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the creationData value.
+     * Get disk source information. CreationData information cannot be changed after the disk has been created.
      *
      * @return the creationData value
      */
@@ -170,7 +170,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the creationData value.
+     * Set disk source information. CreationData information cannot be changed after the disk has been created.
      *
      * @param creationData the creationData value to set
      * @return the DiskInner object itself.
@@ -181,7 +181,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the diskSizeGB value.
+     * Get if creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
      *
      * @return the diskSizeGB value
      */
@@ -190,7 +190,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the diskSizeGB value.
+     * Set if creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the DiskInner object itself.
@@ -201,7 +201,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the encryptionSettings value.
+     * Get encryption settings for disk or snapshot.
      *
      * @return the encryptionSettings value
      */
@@ -210,7 +210,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the encryptionSettings value.
+     * Set encryption settings for disk or snapshot.
      *
      * @param encryptionSettings the encryptionSettings value to set
      * @return the DiskInner object itself.
@@ -221,7 +221,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the disk provisioning state.
      *
      * @return the provisioningState value
      */
