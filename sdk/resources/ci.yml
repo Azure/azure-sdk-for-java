@@ -19,7 +19,7 @@ pr:
       - release/*
   paths:
     include:
-        - sdk/reosurces/
+        - sdk/resources/
 
 
 extends:
