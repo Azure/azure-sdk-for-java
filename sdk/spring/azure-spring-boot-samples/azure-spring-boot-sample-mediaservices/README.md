@@ -41,6 +41,8 @@ and `REST API ENDPOINT` respectively.
     ```
 
 ### Run with Maven
+First, we need to ensure that this [instruction] is completed before run.
+
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -58,3 +60,4 @@ The video file `video.mp4` under `src/main/resources` folder is from GitHub repo
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source

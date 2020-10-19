@@ -120,6 +120,7 @@ public class RelationshipsSyncSamples {
             buildingTwinId,
             buildingFloorRelationshipId,
             BasicRelationship.class,
+            null,
             Context.NONE);
 
         if (getRelationshipResponse.getStatusCode() == HttpURLConnection.HTTP_OK) {
@@ -140,7 +141,7 @@ public class RelationshipsSyncSamples {
         ConsoleLogger.printHeader("List incoming relationships");
         // Get all incoming relationships in the graph where floorTwinId is the target of the relationship.
 
-        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, Context.NONE);
+        PagedIterable<IncomingRelationship> incomingRelationships = client.listIncomingRelationships(floorTwinId, null, Context.NONE);
 
         for (IncomingRelationship incomingRelationship : incomingRelationships) {
             ConsoleLogger.printSuccess("Found an incoming relationship: " + incomingRelationship.getRelationshipId() + " from: " + incomingRelationship.getSourceId());

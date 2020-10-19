@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//prebuilt/businessCard/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "742569f0-7db4-491a-8586-6455e15329dd",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-envoy-upstream-service-time" : "912",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "9142a4e9-54ff-44da-b0a2-ce48fd56bc1c",
+      "retry-after" : "0",
+      "Content-Length" : "170",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidImage\",\"innerError\":{\"requestId\":\"9142a4e9-54ff-44da-b0a2-ce48fd56bc1c\"},\"message\":\"The input data is not a valid image or password protected.\"}}",
+      "Date" : "Thu, 15 Oct 2020 22:01:22 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

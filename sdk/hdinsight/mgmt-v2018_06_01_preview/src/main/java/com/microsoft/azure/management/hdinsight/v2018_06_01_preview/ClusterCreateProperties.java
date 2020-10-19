@@ -82,10 +82,10 @@ public class ClusterCreateProperties {
     private String minSupportedTlsVersion;
 
     /**
-     * The network settings.
+     * The network properties.
      */
-    @JsonProperty(value = "networkSettings")
-    private NetworkSettings networkSettings;
+    @JsonProperty(value = "networkProperties")
+    private NetworkProperties networkProperties;
 
     /**
      * Get the version of the cluster.
@@ -308,22 +308,22 @@ public class ClusterCreateProperties {
     }
 
     /**
-     * Get the network settings.
+     * Get the network properties.
      *
-     * @return the networkSettings value
+     * @return the networkProperties value
      */
-    public NetworkSettings networkSettings() {
-        return this.networkSettings;
+    public NetworkProperties networkProperties() {
+        return this.networkProperties;
     }
 
     /**
-     * Set the network settings.
+     * Set the network properties.
      *
-     * @param networkSettings the networkSettings value to set
+     * @param networkProperties the networkProperties value to set
      * @return the ClusterCreateProperties object itself.
      */
-    public ClusterCreateProperties withNetworkSettings(NetworkSettings networkSettings) {
-        this.networkSettings = networkSettings;
+    public ClusterCreateProperties withNetworkProperties(NetworkProperties networkProperties) {
+        this.networkProperties = networkProperties;
         return this;
     }
 

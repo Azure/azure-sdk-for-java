@@ -4,8 +4,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.PublishTelemetryRequestOptions;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -39,19 +37,16 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             createModelsAndTwins(client, wifiModelId, roomWithWifiModelId, roomWithWifiTwinId);
 
             // Act
-            PublishTelemetryRequestOptions telemetryRequestOptions = new PublishTelemetryRequestOptions().setMessageId(testResourceNamer.randomUuid());
-
             StepVerifier.create(client.publishTelemetryWithResponse(
-                    roomWithWifiTwinId,
-                    "{\"Telemetry1\": 5}",
-                    telemetryRequestOptions,
-                    Context.NONE))
+                roomWithWifiTwinId,
+                testResourceNamer.randomUuid(),
+                "{\"Telemetry1\": 5}",
+                null,
+                Context.NONE))
                 .assertNext(createResponse -> assertThat(createResponse.getStatusCode())
                     .as("Publish telemetry succeeds")
                     .isEqualTo(HttpURLConnection.HTTP_NO_CONTENT))
                 .verifyComplete();
-
-            PublishTelemetryRequestOptions componentTelemetryRequestOptions = new PublishTelemetryRequestOptions().setMessageId(testResourceNamer.randomUuid());
 
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
             telemetryPayload.put("ComponentTelemetry1", 9);
@@ -59,8 +54,9 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             StepVerifier.create(client.publishComponentTelemetryWithResponse(
                 roomWithWifiTwinId,
                 TestAssetDefaults.WIFI_COMPONENT_NAME,
+                testResourceNamer.randomUuid(),
                 telemetryPayload,
-                componentTelemetryRequestOptions,
+                null,
                 Context.NONE))
                 .assertNext(createResponse -> assertThat(createResponse.getStatusCode())
                     .as("Publish telemetry succeeds")
@@ -85,7 +81,6 @@ public class PublishTelemetryAsyncTests extends PublishTelemetryTestBase {
             catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
-
         }
     }
 

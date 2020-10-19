@@ -166,11 +166,15 @@
             <configuration>
               <argLine>
                 <!-- tests fail without these exports. -->
+                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
+                
                 --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.msi/com.azure.resourcemanager.msi=ALL-UNNAMED
+                --add-opens com.azure.resourcemanager.network/com.azure.resourcemanager.network=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.compute/com.azure.resourcemanager.compute=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
+                --add-opens com.azure.resourcemanager.storage/com.azure.resourcemanager.storage=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

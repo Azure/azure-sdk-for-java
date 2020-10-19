@@ -15,7 +15,6 @@ import java.util.function.Consumer;
 // this class setter require EncryptionItemRequestOptions
 public class EncryptionItemRequestOptions extends CosmosItemRequestOptions {
 
-    private Consumer<DecryptionResult> decryptionResultHandler;
     private EncryptionOptions encryptionOptions;
 
     /**
@@ -27,35 +26,12 @@ public class EncryptionItemRequestOptions extends CosmosItemRequestOptions {
     }
 
     /**
-     * Gets delegate method that will be invoked (if configured) in case of decryption failure.
-     * @return the configured handler of DecryptionResult
-     */
-    public Consumer<DecryptionResult> getDecryptionResultHandler() {
-        return decryptionResultHandler;
-    }
-
-    /**
      * Sets options to be provided for encryption of data.
      * @param encryptionOptions encryption options.
      * @return EncryptionItemRequestOptions the current request options.
      */
     public EncryptionItemRequestOptions setEncryptionOptions(EncryptionOptions encryptionOptions) {
         this.encryptionOptions = encryptionOptions;
-        return this;
-    }
-
-    /**
-     * Sets delegate method that will be invoked (if configured) in case of decryption failure.
-     *
-     * If DecryptionResultHandler is not configured, we throw exception.
-     * If DecryptionResultHandler is configured, we invoke the delegate method and return the encrypted document as
-     * is (without decryption) in case of failure.
-     *
-     * @param decryptionResultHandler failure handler for decryption.
-     * @return EncryptionItemRequestOptions the current request options.
-     */
-    public EncryptionItemRequestOptions setDecryptionResultHandler(Consumer<DecryptionResult> decryptionResultHandler) {
-        this.decryptionResultHandler = decryptionResultHandler;
         return this;
     }
 }

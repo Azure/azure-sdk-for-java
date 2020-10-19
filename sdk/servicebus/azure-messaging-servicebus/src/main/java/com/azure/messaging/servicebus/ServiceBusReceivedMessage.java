@@ -18,7 +18,6 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
-import com.azure.core.amqp.models.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
@@ -57,7 +56,7 @@ public final class ServiceBusReceivedMessage {
     ServiceBusReceivedMessage(byte[] body) {
         binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            new BinaryData(binaryData))));
+            binaryData)));
     }
 
     /**

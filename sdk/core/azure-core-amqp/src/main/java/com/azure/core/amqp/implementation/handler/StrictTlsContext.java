@@ -10,7 +10,7 @@ import java.security.Provider;
 /**
  * Context that removes SSLv2Hello protocol from every SSLEngine created.
  */
-public class StrictTlsContext extends SSLContext {
+class StrictTlsContext extends SSLContext {
     /**
      * Creates an SSLContext object.
      *

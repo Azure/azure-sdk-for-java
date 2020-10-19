@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Represents a JSON Patch document.
@@ -70,14 +71,39 @@ public class JsonPatchDocument {
      * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAdd#String-Object}
      *
      * @param path The path to apply the addition.
-     * @param value The value to add to the path.
+     * @param value The value that will be serialized and added to the path.
      * @return The updated JsonPatchDocument object.
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendAdd(String path, Object value) {
+        return appendAddInternal(path, () -> serializeValue(value));
+    }
+
+    /**
+     * Appends an "add" operation to this JSON Patch document.
+     * <p>
+     * If the {@code path} doesn't exist a new member is added to the object. If the {@code path} does exist the
+     * previous value is replaced. If the {@code path} specifies an array index the value is inserted at the specified.
+     * <p>
+     * See <a href="https://tools.ietf.org/html/rfc6902#section-4.1">JSON Patch Add</a> for more information.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAddRaw#String-String}
+     *
+     * @param path The path to apply the addition.
+     * @param rawJson The raw JSON value that will be added to the path.
+     * @return The updated JsonPatchDocument object.
+     * @throws NullPointerException If {@code path} is null.
+     */
+    public JsonPatchDocument appendAddRaw(String path, String rawJson) {
+        return appendAddInternal(path, () -> Optional.ofNullable(rawJson));
+    }
+
+    private JsonPatchDocument appendAddInternal(String path, Supplier<Optional<String>> jsonSupplier) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.ADD, null, path, serializeValue(value));
+        return appendOperation(JsonPatchOperationKind.ADD, null, path, jsonSupplier.get());
     }
 
     /**
@@ -90,14 +116,36 @@ public class JsonPatchDocument {
      * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplace#String-Object}
      *
      * @param path The path to replace.
-     * @param value The value to use as the replacement.
+     * @param value The value will be serialized and used as the replacement.
      * @return The updated JsonPatchDocument object.
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendReplace(String path, Object value) {
+        return appendReplaceInternal(path, () -> serializeValue(value));
+    }
+
+    /**
+     * Appends a "replace" operation to this JSON Patch document.
+     * <p>
+     * See <a href="https://tools.ietf.org/html/rfc6902#section-4.3">JSON Patch replace</a> for more information.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplaceRaw#String-String}
+     *
+     * @param path The path to replace.
+     * @param rawJson The raw JSON value that will be used as the replacement.
+     * @return The updated JsonPatchDocument object.
+     * @throws NullPointerException If {@code path} is null.
+     */
+    public JsonPatchDocument appendReplaceRaw(String path, String rawJson) {
+        return appendReplaceInternal(path, () -> Optional.ofNullable(rawJson));
+    }
+
+    private JsonPatchDocument appendReplaceInternal(String path, Supplier<Optional<String>> jsonSupplier) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, serializeValue(value));
+        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, jsonSupplier.get());
     }
 
     /**
@@ -173,14 +221,36 @@ public class JsonPatchDocument {
      * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTest#String-Object}
      *
      * @param path The path to test.
-     * @param value The value to test against.
+     * @param value The value that will be serialized and used to test against.
      * @return The updated JsonPatchDocument object.
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendTest(String path, Object value) {
+        return appendTestInternal(path, () -> serializeValue(value));
+    }
+
+    /**
+     * Appends a "test" operation to this JSON Patch document.
+     * <p>
+     * See <a href="https://tools.ietf.org/html/rfc6902#section-4.6">JSON Patch test</a> for more information.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTestRaw#String-String}
+     *
+     * @param path The path to test.
+     * @param rawJson The raw JSON value that will be used to test against.
+     * @return The updated JsonPatchDocument object.
+     * @throws NullPointerException If {@code path} is null.
+     */
+    public JsonPatchDocument appendTestRaw(String path, String rawJson) {
+        return appendTestInternal(path, () -> Optional.ofNullable(rawJson));
+    }
+
+    private JsonPatchDocument appendTestInternal(String path, Supplier<Optional<String>> jsonSupplier) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.TEST, null, path, serializeValue(value));
+        return appendOperation(JsonPatchOperationKind.TEST, null, path, jsonSupplier.get());
     }
 
     private Optional<String> serializeValue(Object value) {

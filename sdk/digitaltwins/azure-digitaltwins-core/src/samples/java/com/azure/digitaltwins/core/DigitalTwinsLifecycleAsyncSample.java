@@ -155,7 +155,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
-            client.listIncomingRelationships(twinId)
+            client.listIncomingRelationships(twinId, null)
                 .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
                 .doOnError(IgnoreNotFoundError)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
@@ -337,7 +337,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         ConsoleLogger.printHeader("Making a twin query and iterating over the results.");
 
         // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
-        client.query("SELECT * FROM digitaltwins", String.class)
+        client.query("SELECT * FROM digitaltwins", String.class, null)
             .doOnNext(queryResult -> ConsoleLogger.printHeader("Query result: " + queryResult))
             .doOnError(throwable -> ConsoleLogger.printFatal("Query error: " + throwable))
             .doOnTerminate(queryLatch::countDown)
@@ -351,7 +351,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         final CountDownLatch queryWithChargeLatch = new CountDownLatch(1);
 
         // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
-        client.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class)
+        client.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, null)
             .byPage()
             .doOnNext(page ->
             {

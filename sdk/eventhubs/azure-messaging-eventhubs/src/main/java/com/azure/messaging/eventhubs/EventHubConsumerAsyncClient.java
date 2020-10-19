@@ -367,4 +367,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             getEventHubName(), consumerGroup, partitionId, initialPosition,
             receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
     }
+
+    boolean isConnectionClosed() {
+        return this.connectionProcessor.isChannelClosed();
+    }
 }

@@ -89,11 +89,10 @@ public class PublishTelemetrySyncSamples {
         {
             ConsoleLogger.printHeader("Publish Telemetry");
             // construct your json telemetry payload by hand.
-            client.publishTelemetry(digitalTwinId, "{\"Telemetry1\": 5}");
+            client.publishTelemetry(digitalTwinId, null,"{\"Telemetry1\": 5}");
             ConsoleLogger.print("Published telemetry message to twin " + digitalTwinId);
 
             ConsoleLogger.printHeader("Publish Component Telemetry");
-            PublishTelemetryRequestOptions componentTelemetryRequestOptions = new PublishTelemetryRequestOptions();
 
             // construct your json telemetry payload using a hashtable.
             Dictionary<String, Integer> telemetryPayload = new Hashtable<>();
@@ -102,8 +101,9 @@ public class PublishTelemetrySyncSamples {
             Response<Void> publishComponentTelemetryResponse = client.publishComponentTelemetryWithResponse(
                 digitalTwinId,
                 "Component1",
+                null,
                 telemetryPayload,
-                componentTelemetryRequestOptions,
+                null,
                 Context.NONE);
 
             ConsoleLogger.printSuccess("Published component telemetry message to twin " + digitalTwinId);
