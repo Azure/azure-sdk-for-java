@@ -24,11 +24,15 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -449,6 +453,21 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertNotNull(item.getValue().getReleaseId());
             })
             .verifyComplete();
+    }
+
+    @Test()
+    public void beginPurchaseSearch() {
+
+
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumberAsyncClient client = this.getClient();
+        PollerFlux<Void, Void> poller =
+            client.beginPurchaseSearch(SEARCH_ID_TO_PURCHASE, duration);
+        AsyncPollResponse<Void, Void> asyncRes =
+            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+
     }
 
     private PhoneNumberAsyncClient getClient() {

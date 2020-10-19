@@ -768,18 +768,18 @@ public final class PhoneNumberAsyncClient {
      *
      * @param searchId ID of the search
      * @param pollInterval Time lapse of the poll request.
-     * @return A {@link PollerFlux} object with the search result
+     * @return A {@link PollerFlux} object.
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
-        Objects.requireNonNull(searchId, "'searchId'cannotbenull.");
-        Objects.requireNonNull(pollInterval, "'pollInterval'cannotbenull.");
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
 
         return new PollerFlux<Void, Void>(pollInterval,
             purchaseSearchActivationOperation(searchId),
             purchaseSearchCreatePollOperation(searchId),
-            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellationisnotsupported")),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             purchaseSearchFetchResultOperation(searchId));
     }
 
