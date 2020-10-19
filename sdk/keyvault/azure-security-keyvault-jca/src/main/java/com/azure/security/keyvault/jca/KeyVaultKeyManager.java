@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import javax.net.ssl.X509ExtendedKeyManager;
@@ -35,12 +36,12 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
     /**
      * Stores the keystore.
      */
-    private KeyStore keystore;
+    private final KeyStore keystore;
 
     /**
      * Stores the password.
      */
-    private char[] password;
+    private final char[] password;
 
     /**
      * Constructor.
@@ -56,8 +57,11 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-        LOGGER.entering("KeyVaultKeyManager", "chooseClientAlias",
-            new Object[] { keyType, issuers, socket });
+        LOGGER.entering(
+            "KeyVaultKeyManager",
+            "chooseClientAlias",
+            new Object[] { keyType, issuers, socket }
+        );
         String alias = null;
         try {
             /*
@@ -77,8 +81,11 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-        LOGGER.entering("KeyVaultKeyManager", "chooseServerAlias",
-            new Object[] { keyType, issuers, socket });
+        LOGGER.entering(
+            "KeyVaultKeyManager",
+            "chooseServerAlias",
+            new Object[] { keyType, issuers, socket }
+        );
         String alias = null;
         try {
             /*
@@ -117,9 +124,9 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
         try {
             Certificate[] keystoreChain = keystore.getCertificateChain(alias);
             if (keystoreChain.length > 0) {
-                for (int i = 0; i < keystoreChain.length; i++) {
-                    if (keystoreChain[i] instanceof X509Certificate) {
-                        chain.add((X509Certificate) keystoreChain[i]);
+                for (Certificate certificate : keystoreChain) {
+                    if (certificate instanceof X509Certificate) {
+                        chain.add((X509Certificate) certificate);
                     }
                 }
             }

@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.CertificateBundle;
 import com.azure.security.keyvault.jca.rest.CertificateItem;
 import com.azure.security.keyvault.jca.rest.CertificateListResult;
+import com.azure.security.keyvault.jca.rest.CertificatePolicy;
+import com.azure.security.keyvault.jca.rest.KeyProperties;
 import com.azure.security.keyvault.jca.rest.SecretBundle;
 
 import java.io.ByteArrayInputStream;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -49,7 +53,7 @@ class KeyVaultClient extends DelegateRestClient {
     /**
      * Stores the KeyVault URI.
      */
-    private String keyVaultUri;
+    private final String keyVaultUri;
 
     /**
      * Stores the tenant ID.
@@ -125,30 +129,22 @@ class KeyVaultClient extends DelegateRestClient {
      */
     public List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
-
-        StringBuilder url = new StringBuilder();
-        url.append(keyVaultUri)
-           .append("certificates")
-           .append(API_VERSION_POSTFIX);
-
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-
-        String body = get(url.toString(), headers);
-
+        String url = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
+        String response = get(url, headers);
         CertificateListResult certificateListResult = null;
-        if (body != null) {
+        if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            certificateListResult = (CertificateListResult) converter.fromJson(body, CertificateListResult.class);
+            certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
         }
         if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
             for (CertificateItem certificateItem : certificateListResult.getValue()) {
-                String alias = certificateItem.getId();
-                alias = alias.substring(alias.indexOf("certificates") + "certificates".length() + 1);
+                String id = certificateItem.getId();
+                String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
                 result.add(alias);
             }
         }
-
         return result;
     }
 
@@ -160,23 +156,14 @@ class KeyVaultClient extends DelegateRestClient {
      */
     private CertificateBundle getCertificateBundle(String alias) {
         CertificateBundle result = null;
-
-        StringBuilder url = new StringBuilder();
-        url.append(keyVaultUri)
-           .append("certificates/")
-           .append(alias)
-           .append(API_VERSION_POSTFIX);
-
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-
-        String body = get(url.toString(), headers);
-
-        if (body != null) {
+        String url = String.format("%scertificates/%s%s", keyVaultUri, alias, API_VERSION_POSTFIX);
+        String response = get(url, headers);
+        if (response != null) {
             JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            result = (CertificateBundle) converter.fromJson(body, CertificateBundle.class);
+            result = (CertificateBundle) converter.fromJson(response, CertificateBundle.class);
         }
-
         return result;
     }
 
@@ -197,8 +184,8 @@ class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                        new ByteArrayInputStream(Base64.getDecoder()
-                                                       .decode(certificateBundle.getCer())));
+                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateBundle.getCer()))
+                    );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
                 }
@@ -220,16 +207,15 @@ class KeyVaultClient extends DelegateRestClient {
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
-        if (certificateBundle != null
-            && certificateBundle.getPolicy() != null
-            && certificateBundle.getPolicy().getKey_props() != null
-            && certificateBundle.getPolicy().getKey_props().isExportable()) {
-
-            //
-            // Because the certificate is exportable the private key is 
+        boolean isExportable = Optional.ofNullable(certificateBundle)
+                                       .map(CertificateBundle::getPolicy)
+                                       .map(CertificatePolicy::getKey_props)
+                                       .map(KeyProperties::isExportable)
+                                       .orElse(false);
+        if (isExportable) {
+            // Because the certificate is exportable the private key is
             // available. So we'll use the KeyVault Secrets API to get the 
             // private key.
-            //
             String certificateSecretUri = certificateBundle.getSid();
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + getAccessToken());
@@ -237,11 +223,12 @@ class KeyVaultClient extends DelegateRestClient {
             if (body != null) {
                 JsonConverter converter = JsonConverterFactory.createJsonConverter();
                 SecretBundle secretBundle = (SecretBundle) converter.fromJson(body, SecretBundle.class);
-
                 try {
                     KeyStore keyStore = KeyStore.getInstance("PKCS12");
-                    keyStore.load(new ByteArrayInputStream(
-                        Base64.getDecoder().decode(secretBundle.getValue())), "".toCharArray());
+                    keyStore.load(
+                        new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                        "".toCharArray()
+                    );
                     alias = keyStore.aliases().nextElement();
                     key = keyStore.getKey(alias, "".toCharArray());
                 } catch (IOException | KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException ex) {
@@ -249,11 +236,9 @@ class KeyVaultClient extends DelegateRestClient {
                 }
             }
         } else {
-            //
             // The private key is not available so the certificate cannot be
             // used for server side certificates or mTLS. Since we do not know
             // the intent of the usage at this stage we skip this key.
-            //
         }
         LOGGER.exiting("KeyVaultClient", "getKey", key);
         return key;

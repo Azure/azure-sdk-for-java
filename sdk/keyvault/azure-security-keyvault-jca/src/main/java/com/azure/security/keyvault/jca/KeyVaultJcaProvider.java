@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * The Azure KeyVault security provider.
@@ -47,9 +49,16 @@ public class KeyVaultJcaProvider extends Provider {
      */
     private void initialize() {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            putService(new Provider.Service(this, "KeyManagerFactory", "SunX509",
-                KeyVaultKeyManagerFactory.class.getName(),
-                Arrays.asList("SunX509", "IbmX509"), null));
+            putService(
+                new Provider.Service(
+                    this,
+                    "KeyManagerFactory",
+                    "SunX509",
+                    KeyVaultKeyManagerFactory.class.getName(),
+                    Arrays.asList("SunX509", "IbmX509"),
+                    null
+                )
+            );
 
             /*
              * Note for Tomcat we needed to add "DKS" as an algorithm so it does
@@ -59,10 +68,26 @@ public class KeyVaultJcaProvider extends Provider {
              * See SSLUtilBase.getKeyManagers and look for the
              * "DKS".equalsIgnoreCase(certificate.getCertificateKeystoreType()
              */
-            putService(new Provider.Service(this, "KeyStore", "DKS",
-                KeyVaultKeyStore.class.getName(), Arrays.asList("DKS"), null));
-            putService(new Provider.Service(this, "KeyStore", "AzureKeyVault",
-                KeyVaultKeyStore.class.getName(), Arrays.asList("AzureKeyVault"), null));
+            putService(
+                new Provider.Service(
+                    this,
+                    "KeyStore",
+                    "DKS",
+                    KeyVaultKeyStore.class.getName(),
+                    Collections.singletonList("DKS"),
+                    null
+                )
+            );
+            putService(
+                new Provider.Service(
+                    this,
+                    "KeyStore",
+                    "AzureKeyVault",
+                    KeyVaultKeyStore.class.getName(),
+                    Collections.singletonList("AzureKeyVault"),
+                    null
+                )
+            );
             return null;
         });
     }
