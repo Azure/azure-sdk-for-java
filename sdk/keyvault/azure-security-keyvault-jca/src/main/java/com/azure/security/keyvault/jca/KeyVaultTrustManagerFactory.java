@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import javax.net.ssl.ManagerFactoryParameters;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactorySpi;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.net.ssl.ManagerFactoryParameters;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactorySpi;
 
 /**
  * The KeyVault variant of the TrustManagerFactory.

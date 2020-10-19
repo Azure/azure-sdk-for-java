@@ -5,9 +5,10 @@ package com.azure.security.keyvault.jca;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static java.util.logging.Level.FINEST;
-import static java.util.logging.Level.WARNING;
+
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * The Jackson JsonConverter.
@@ -20,7 +21,7 @@ class JacksonJsonConverter implements JsonConverter {
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(JacksonJsonConverter.class.getName());
-    
+
     /**
      * From JSON.
      *
@@ -30,7 +31,7 @@ class JacksonJsonConverter implements JsonConverter {
      */
     @Override
     public Object fromJson(String string, Class<?> resultClass) {
-        LOGGER.entering("JacksonJsonConverter", "fromJson", new Object[] {string, resultClass});
+        LOGGER.entering("JacksonJsonConverter", "fromJson", new Object[] { string, resultClass });
         Object result = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();

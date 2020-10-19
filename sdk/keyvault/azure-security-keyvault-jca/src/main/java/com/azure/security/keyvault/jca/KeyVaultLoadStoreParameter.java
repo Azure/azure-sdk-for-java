@@ -15,7 +15,7 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
      * Stores the URI.
      */
     private final String uri;
-    
+
     /**
      * Stores the tenant id.
      */

@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 /**
  * The CertificatePolicy REST model.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificatePolicy implements Serializable {
-    
+
     /**
      * Stores the key properties.
      */
@@ -18,7 +18,7 @@ public class CertificatePolicy implements Serializable {
 
     /**
      * Get the key properties.
-     * 
+     *
      * @return the key properties.
      */
     public KeyProperties getKey_props() {
@@ -27,7 +27,7 @@ public class CertificatePolicy implements Serializable {
 
     /**
      * Set the key properties.
-     * 
+     *
      * @param keyProperties the key properties.
      */
     public void setKey_props(KeyProperties keyProperties) {

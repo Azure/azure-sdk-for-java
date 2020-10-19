@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.Test;
+
 import java.security.KeyStore;
 import java.security.Security;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.Test;
 
 /**
  * The JUnit tests for the KeyVaultProvider class.
@@ -23,10 +25,10 @@ public class KeyVaultJcaProviderTest {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         assertNotNull(provider);
     }
-    
+
     /**
      * Test getting a certificate using the Provider.
-     * 
+     *
      * @throws Exception when an error occurs.
      */
     @Test
@@ -34,10 +36,10 @@ public class KeyVaultJcaProviderTest {
         Security.addProvider(new KeyVaultJcaProvider());
         KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"),
-                System.getProperty("azure.tenant.id"),
-                System.getProperty("azure.client.id"),
-                System.getProperty("azure.client.secret"));
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.tenant.id"),
+            System.getProperty("azure.client.id"),
+            System.getProperty("azure.client.secret"));
         keystore.load(parameter);
         assertNull(keystore.getCertificate("myalias"));
     }

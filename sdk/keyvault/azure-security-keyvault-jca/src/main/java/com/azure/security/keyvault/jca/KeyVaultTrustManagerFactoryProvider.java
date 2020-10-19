@@ -47,8 +47,8 @@ public class KeyVaultTrustManagerFactoryProvider extends Provider {
     private void initialize() {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(new Provider.Service(this, "TrustManagerFactory", "PKIX",
-                    KeyVaultTrustManagerFactory.class.getName(), 
-                    null, null));
+                KeyVaultTrustManagerFactory.class.getName(),
+                null, null));
             return null;
         });
     }

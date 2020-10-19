@@ -4,7 +4,7 @@ package com.azure.security.keyvault.jca;
 
 /**
  * The JsonConverterFactory.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class JsonConverterFactory {
@@ -14,10 +14,10 @@ class JsonConverterFactory {
      */
     private JsonConverterFactory() {
     }
-    
+
     /**
      * Static helper method to create a JsonConverter.
-     * 
+     *
      * @return the JsonConverter.
      */
     static JsonConverter createJsonConverter() {

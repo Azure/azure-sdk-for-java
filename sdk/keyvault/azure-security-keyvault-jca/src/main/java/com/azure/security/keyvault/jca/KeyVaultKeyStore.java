@@ -26,9 +26,10 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
+
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
-import java.util.logging.Logger;
 
 /**
  * The Azure KeyVault implementation of the KeyStoreSpi.
@@ -196,20 +197,22 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineLoad(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException, CertificateException {
+    public void engineLoad(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException,
+        CertificateException {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             keyVault = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getTenantId(),
-                    parameter.getClientId(),
-                    parameter.getClientSecret());
+                parameter.getUri(),
+                parameter.getTenantId(),
+                parameter.getClientId(),
+                parameter.getClientSecret());
         }
         sideLoad();
     }
 
     @Override
-    public void engineLoad(InputStream stream, char[] password) throws IOException, NoSuchAlgorithmException, CertificateException {
+    public void engineLoad(InputStream stream, char[] password) throws IOException, NoSuchAlgorithmException,
+        CertificateException {
         sideLoad();
     }
 
@@ -243,11 +246,13 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     @Override
-    public void engineStore(OutputStream stream, char[] password) throws IOException, NoSuchAlgorithmException, CertificateException {
+    public void engineStore(OutputStream stream, char[] password) throws IOException, NoSuchAlgorithmException,
+        CertificateException {
     }
 
     @Override
-    public void engineStore(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException, CertificateException {
+    public void engineStore(KeyStore.LoadStoreParameter param) throws IOException, NoSuchAlgorithmException,
+        CertificateException {
     }
 
     /**
@@ -308,10 +313,10 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
                             try {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                        new ByteArrayInputStream(bytes));
+                                    new ByteArrayInputStream(bytes));
                                 engineSetCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                        new Object[]{alias, filename});
+                                    new Object[] { alias, filename });
                             } catch (KeyStoreException | CertificateException e) {
                                 LOGGER.log(WARNING, "Unable to side-load certificate", e);
                             }

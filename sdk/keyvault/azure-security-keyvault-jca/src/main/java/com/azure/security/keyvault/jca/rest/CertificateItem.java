@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 /**
  * The CertificateItem REST model.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificateItem implements Serializable {
-    
+
     /**
      * Stores the id.
      */
@@ -18,7 +18,7 @@ public class CertificateItem implements Serializable {
 
     /**
      * Get the id.
-     * 
+     *
      * @return the id.
      */
     public String getId() {
@@ -27,7 +27,7 @@ public class CertificateItem implements Serializable {
 
     /**
      * Set the id.
-     * 
+     *
      * @param id the id.
      */
     public void setId(String id) {

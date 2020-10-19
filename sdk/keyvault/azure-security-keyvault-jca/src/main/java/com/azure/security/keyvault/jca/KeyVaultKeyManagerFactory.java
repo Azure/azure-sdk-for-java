@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactorySpi;
+import javax.net.ssl.ManagerFactoryParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -10,9 +13,6 @@ import java.security.UnrecoverableKeyException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactorySpi;
-import javax.net.ssl.ManagerFactoryParameters;
 
 /**
  * The KeyVault variant of the KeyManagerFactory.
@@ -30,11 +30,12 @@ public class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
      * Stores the key managers.
      */
     private List<KeyManager> keyManagers = new ArrayList<>();
-    
+
     @Override
-    protected void engineInit(KeyStore keystore, char[] password) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
-        LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit", 
-                new Object[] {keystore, new String(password)});
+    protected void engineInit(KeyStore keystore, char[] password) throws KeyStoreException, NoSuchAlgorithmException,
+        UnrecoverableKeyException {
+        LOGGER.entering("KeyVaultKeyManagerFactory", "engineInit",
+            new Object[] { keystore, new String(password) });
         KeyVaultKeyManager manager = new KeyVaultKeyManager(keystore, password);
         keyManagers.add(manager);
     }
@@ -45,7 +46,7 @@ public class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
 
     @Override
     protected KeyManager[] engineGetKeyManagers() {
-        LOGGER.exiting("KeyVaultKeyManagerFactory", "engineGetKeyManagers", keyManagers); 
+        LOGGER.exiting("KeyVaultKeyManagerFactory", "engineGetKeyManagers", keyManagers);
         return keyManagers.toArray(new KeyManager[0]);
     }
 }

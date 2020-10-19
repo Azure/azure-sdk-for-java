@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -9,8 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.X509TrustManager;
-import javax.net.ssl.TrustManagerFactory;
 
 /**
  * The KeyVault variant of the X509TrustManager.
@@ -64,7 +64,7 @@ public class KeyVaultTrustManager implements X509TrustManager {
 
     @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType)
-            throws CertificateException {
+        throws CertificateException {
 
         boolean pass = true;
 
@@ -95,7 +95,7 @@ public class KeyVaultTrustManager implements X509TrustManager {
 
     @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType)
-            throws CertificateException {
+        throws CertificateException {
 
         boolean pass = true;
 

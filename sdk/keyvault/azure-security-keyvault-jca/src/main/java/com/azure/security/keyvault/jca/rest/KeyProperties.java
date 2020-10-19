@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 /**
  * The KeyProperties REST model.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyProperties implements Serializable {
-    
+
     /**
      * Stores if the key is exportable.
      */
@@ -18,7 +18,7 @@ public class KeyProperties implements Serializable {
 
     /**
      * Is the key exportable.
-     * 
+     *
      * @return true if exportable, false otherwise.
      */
     public boolean isExportable() {
@@ -27,7 +27,7 @@ public class KeyProperties implements Serializable {
 
     /**
      * Set the key to be exportable.
-     * 
+     *
      * @param exportable the exportable flag.
      */
     public void setExportable(boolean exportable) {

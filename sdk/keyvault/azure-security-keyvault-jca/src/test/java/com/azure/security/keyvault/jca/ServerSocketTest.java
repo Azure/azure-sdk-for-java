@@ -2,16 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.security.KeyStore;
-import java.security.Security;
-import java.security.cert.X509Certificate;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLServerSocketFactory;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -23,12 +13,23 @@ import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.ssl.SSLContexts;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.security.KeyStore;
+import java.security.Security;
+import java.security.cert.X509Certificate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
- * The unit test validating the ServerSocket is created using a certificate from
- * Azure KeyVault.
+ * The unit test validating the ServerSocket is created using a certificate from Azure KeyVault.
  *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
@@ -41,7 +42,7 @@ public class ServerSocketTest {
      */
     @Test
     public void testServerSocket() throws Exception {
-        
+
         /*
          * Add JCA provider.
          */
@@ -58,10 +59,10 @@ public class ServerSocketTest {
          */
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"), 
-                System.getProperty("azure.tenant.id"), 
-                System.getProperty("azure.client.id"),
-                System.getProperty("azure.client.secret"));
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.tenant.id"),
+            System.getProperty("azure.client.id"),
+            System.getProperty("azure.client.secret"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -89,7 +90,7 @@ public class ServerSocketTest {
         server.start();
 
         /*
-         * Setup client side 
+         * Setup client side
          *
          * - Create an SSL context.
          * - Set SSL context to trust any certificate.
@@ -98,31 +99,31 @@ public class ServerSocketTest {
          */
 
         SSLContext sslContext = SSLContexts
-                .custom()
-                .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> { 
-                    return true; 
-                })
-                .build();
-        
+            .custom()
+            .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> {
+                return true;
+            })
+            .build();
+
         SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-                .create()
-                .setSslContext(sslContext)
-                .setHostnameVerifier((hostname, session) -> {
-                    return true;
-                })
-                .build();
-        
+            .create()
+            .setSslContext(sslContext)
+            .setHostnameVerifier((hostname, session) -> {
+                return true;
+            })
+            .build();
+
         PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-                .create()
-                .setSSLSocketFactory(sslSocketFactory)
-                .build();
+            .create()
+            .setSSLSocketFactory(sslSocketFactory)
+            .build();
 
         /*
          * And now execute the test.
          */
         String result = null;
-        
-        try ( CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+
+        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8765");
             HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
                 int status = response.getCode();
@@ -136,21 +137,21 @@ public class ServerSocketTest {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        
+
         /*
          * And verify all went well.
          */
         assertEquals("Success", result);
     }
-    
-     /**
+
+    /**
      * Test SSLServerSocket WITH self-signed client trust.
      *
      * @throws Exception when a serious error occurs.
      */
     @Test
     public void testServerSocketWithSelfSignedClientTrust() throws Exception {
-        
+
         /*
          * Add JCA provider.
          */
@@ -167,15 +168,15 @@ public class ServerSocketTest {
          */
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"), 
-                System.getProperty("azure.tenant.id"), 
-                System.getProperty("azure.client.id"),
-                System.getProperty("azure.client.secret"));
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.tenant.id"),
+            System.getProperty("azure.client.id"),
+            System.getProperty("azure.client.secret"));
         ks.load(parameter);
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
-        
+
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(kmf.getKeyManagers(), null, null);
 
@@ -198,7 +199,7 @@ public class ServerSocketTest {
         server.start();
 
         /*
-         * Setup client side 
+         * Setup client side
          *
          * - Create an SSL context.
          * - Set SSL context to trust any certificate.
@@ -207,29 +208,29 @@ public class ServerSocketTest {
          */
 
         SSLContext sslContext = SSLContexts
-                .custom()
-                .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-                .build();
-        
+            .custom()
+            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+            .build();
+
         SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-                .create()
-                .setSslContext(sslContext)
-                .setHostnameVerifier((hostname, session) -> {
-                    return true;
-                })
-                .build();
-        
+            .create()
+            .setSslContext(sslContext)
+            .setHostnameVerifier((hostname, session) -> {
+                return true;
+            })
+            .build();
+
         PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-                .create()
-                .setSSLSocketFactory(sslSocketFactory)
-                .build();
+            .create()
+            .setSSLSocketFactory(sslSocketFactory)
+            .build();
 
         /*
          * And now execute the test.
          */
         String result = null;
-        
-        try ( CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
+
+        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
             HttpGet httpGet = new HttpGet("https://localhost:8766");
             HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
                 int status = response.getCode();
@@ -243,7 +244,7 @@ public class ServerSocketTest {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        
+
         /*
          * And verify all went well.
          */

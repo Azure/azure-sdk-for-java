@@ -3,9 +3,11 @@
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.rest.OAuthToken;
+
 import java.util.HashMap;
-import static java.util.logging.Level.FINER;
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.FINER;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -48,13 +50,13 @@ class AuthClient extends DelegateRestClient {
      * Stores the OAuth2 managed identity URL.
      */
     private static final String OAUTH2_MANAGED_IDENTITY_TOKEN_URL
-            = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01";
+        = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01";
 
     /**
      * Stores our logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AuthClient.class.getName());
-    
+
     /**
      * Constructor.
      *
@@ -76,7 +78,7 @@ class AuthClient extends DelegateRestClient {
         String result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
-                && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+            && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource);
         } else {
             result = getAccessTokenOnOthers(resource);
@@ -94,22 +96,22 @@ class AuthClient extends DelegateRestClient {
      * @return the authorization token.
      */
     public String getAccessToken(String resource, String tenantId,
-            String clientId, String clientSecret) {
+                                 String clientId, String clientSecret) {
         LOGGER.entering("AuthClient", "getAccessToken", new Object[] {
-            resource, tenantId, clientId, clientSecret});
+            resource, tenantId, clientId, clientSecret });
         LOGGER.info("Getting access token using client ID / client secret");
         String result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
         oauth2Url.append(OAUTH2_TOKEN_BASE_URL)
-                .append(tenantId)
-                .append(OAUTH2_TOKEN_POSTFIX);
+                 .append(tenantId)
+                 .append(OAUTH2_TOKEN_POSTFIX);
 
         StringBuilder requestBody = new StringBuilder();
         requestBody.append(GRANT_TYPE_FRAGMENT)
-                .append(CLIENT_ID_FRAGMENT).append(clientId)
-                .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
-                .append(RESOURCE_FRAGMENT).append(resource);
+                   .append(CLIENT_ID_FRAGMENT).append(clientId)
+                   .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
+                   .append(RESOURCE_FRAGMENT).append(resource);
 
         String body = post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
         if (body != null) {
@@ -134,8 +136,8 @@ class AuthClient extends DelegateRestClient {
 
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
-                .append("?api-version=2017-09-01")
-                .append(RESOURCE_FRAGMENT).append(resource);
+           .append("?api-version=2017-09-01")
+           .append(RESOURCE_FRAGMENT).append(resource);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");
@@ -164,7 +166,7 @@ class AuthClient extends DelegateRestClient {
 
         StringBuilder url = new StringBuilder();
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
-                .append(RESOURCE_FRAGMENT).append(resource);
+           .append(RESOURCE_FRAGMENT).append(resource);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");

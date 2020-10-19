@@ -4,22 +4,22 @@ package com.azure.security.keyvault.jca;
 
 /**
  * The JSON converter API.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 interface JsonConverter {
-    
+
     /**
      * To JSON.
-     * 
+     *
      * @param object the object to transform.
      * @return the JSON string.
      */
     String toJson(Object object);
-    
+
     /**
      * From JSON.
-     * 
+     *
      * @param string the JSON string to transform.
      * @param resultClass the result class.
      * @return the object, or null if the conversion failed.

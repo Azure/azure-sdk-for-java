@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The JUnit tests for the LegacyRestClient class.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class LegacyRestClientTest {

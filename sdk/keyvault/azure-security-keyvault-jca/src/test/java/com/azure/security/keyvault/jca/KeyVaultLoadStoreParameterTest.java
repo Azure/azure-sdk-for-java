@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
@@ -18,7 +19,7 @@ public class KeyVaultLoadStoreParameterTest {
     @Test
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"), null, null, null);
+            System.getProperty("azure.keyvault.uri"), null, null, null);
         assertNull(parameter.getProtectionParameter());
     }
 }

@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 /**
  * The SecretBundle REST model.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class SecretBundle implements Serializable {
-    
+
     /**
      * Stores the value.
      */
@@ -18,16 +18,16 @@ public class SecretBundle implements Serializable {
 
     /**
      * Get the value.
-     * 
+     *
      * @return the value.
      */
     public String getValue() {
         return value;
     }
-    
+
     /**
      * Set the value.
-     * 
+     *
      * @param value the value.
      */
     public void setValue(String value) {

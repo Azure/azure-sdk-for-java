@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
+import javax.net.ssl.X509ExtendedKeyManager;
 import java.net.Socket;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -14,10 +15,10 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
+
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
-import java.util.logging.Logger;
-import javax.net.ssl.X509ExtendedKeyManager;
 
 /**
  * The KeyVault variant of the X509ExtendedKeyManager.
@@ -48,15 +49,15 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
      * @param password the password.
      */
     public KeyVaultKeyManager(KeyStore keystore, char[] password) {
-        LOGGER.entering("KeyVaultKeyManager", "<init>", new Object[] {keystore, password});
+        LOGGER.entering("KeyVaultKeyManager", "<init>", new Object[] { keystore, password });
         this.keystore = keystore;
         this.password = password;
     }
 
     @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-        LOGGER.entering("KeyVaultKeyManager", "chooseClientAlias", 
-                new Object[] {keyType, issuers, socket});
+        LOGGER.entering("KeyVaultKeyManager", "chooseClientAlias",
+            new Object[] { keyType, issuers, socket });
         String alias = null;
         try {
             /*
@@ -64,7 +65,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals("AzureKeyVault")
-                    && keystore.size() == 1) {
+                && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }
         } catch (KeyStoreException kse) {
@@ -76,8 +77,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-        LOGGER.entering("KeyVaultKeyManager", "chooseServerAlias", 
-                new Object[] {keyType, issuers, socket});
+        LOGGER.entering("KeyVaultKeyManager", "chooseServerAlias",
+            new Object[] { keyType, issuers, socket });
         String alias = null;
         try {
             /*
@@ -85,7 +86,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals("AzureKeyVault")
-                    && keystore.size() == 1) {
+                && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }
         } catch (KeyStoreException kse) {
@@ -97,8 +98,8 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String[] getClientAliases(String keyType, Principal[] issuers) {
-        LOGGER.log(INFO, "KeyVaultKeyManager.getClientAliases: {0}, {1}", 
-                new Object[] {keyType, issuers});
+        LOGGER.log(INFO, "KeyVaultKeyManager.getClientAliases: {0}, {1}",
+            new Object[] { keyType, issuers });
         String[] aliases = null;
         try {
             aliases = Collections.list(keystore.aliases()).toArray(new String[0]);
@@ -144,7 +145,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public String[] getServerAliases(String keyType, Principal[] issuers) {
-        LOGGER.entering("KeyVaultKeyManager", "getServerAliases", new Object[] {keyType, issuers});
+        LOGGER.entering("KeyVaultKeyManager", "getServerAliases", new Object[] { keyType, issuers });
         String[] serverAliases = new String[0];
         try {
             serverAliases = Collections.list(keystore.aliases()).toArray(new String[0]);

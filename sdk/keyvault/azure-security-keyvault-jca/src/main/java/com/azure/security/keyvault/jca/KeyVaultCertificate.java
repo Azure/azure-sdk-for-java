@@ -31,7 +31,7 @@ class KeyVaultCertificate extends X509Certificate {
 
     /**
      * Constructor.
-     * 
+     *
      * @param delegate the delegate.
      */
     KeyVaultCertificate(X509Certificate delegate) {
@@ -40,7 +40,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#checkValidity() 
+     * @see X509Certificate#checkValidity()
      */
     @Override
     public void checkValidity() throws CertificateExpiredException, CertificateNotYetValidException {
@@ -48,7 +48,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#checkValidity(java.util.Date) 
+     * @see X509Certificate#checkValidity(java.util.Date)
      */
     @Override
     public void checkValidity(Date date) throws CertificateExpiredException, CertificateNotYetValidException {
@@ -56,7 +56,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getBasicConstraints() 
+     * @see X509Certificate#getBasicConstraints()
      */
     @Override
     public int getBasicConstraints() {
@@ -64,7 +64,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getCriticalExtensionOIDs() 
+     * @see X509Certificate#getCriticalExtensionOIDs()
      */
     @Override
     public Set<String> getCriticalExtensionOIDs() {
@@ -72,7 +72,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getEncoded() 
+     * @see X509Certificate#getEncoded()
      */
     @Override
     public byte[] getEncoded() throws CertificateEncodingException {
@@ -80,7 +80,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getExtensionValue(java.lang.String) 
+     * @see X509Certificate#getExtensionValue(java.lang.String)
      */
     @Override
     public byte[] getExtensionValue(String oid) {
@@ -96,7 +96,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getIssuerUniqueID() 
+     * @see X509Certificate#getIssuerUniqueID()
      */
     @Override
     public boolean[] getIssuerUniqueID() {
@@ -104,7 +104,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getKeyUsage() 
+     * @see X509Certificate#getKeyUsage()
      */
     @Override
     public boolean[] getKeyUsage() {
@@ -112,7 +112,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getNonCriticalExtensionOIDs() 
+     * @see X509Certificate#getNonCriticalExtensionOIDs()
      */
     @Override
     public Set<String> getNonCriticalExtensionOIDs() {
@@ -120,7 +120,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getNotAfter() 
+     * @see X509Certificate#getNotAfter()
      */
     @Override
     public Date getNotAfter() {
@@ -128,7 +128,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getNotBefore() 
+     * @see X509Certificate#getNotBefore()
      */
     @Override
     public Date getNotBefore() {
@@ -136,7 +136,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getPublicKey() 
+     * @see X509Certificate#getPublicKey()
      */
     @Override
     public PublicKey getPublicKey() {
@@ -144,7 +144,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getSerialNumber()  
+     * @see X509Certificate#getSerialNumber()
      */
     @Override
     public BigInteger getSerialNumber() {
@@ -160,7 +160,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getSigAlgOID() 
+     * @see X509Certificate#getSigAlgOID()
      */
     @Override
     public String getSigAlgOID() {
@@ -168,7 +168,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getSigAlgParams()  
+     * @see X509Certificate#getSigAlgParams()
      */
     @Override
     public byte[] getSigAlgParams() {
@@ -176,7 +176,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getSignature() 
+     * @see X509Certificate#getSignature()
      */
     @Override
     public byte[] getSignature() {
@@ -184,7 +184,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getSubjectDN() 
+     * @see X509Certificate#getSubjectDN()
      */
     @Override
     public Principal getSubjectDN() {
@@ -192,7 +192,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getSubjectUniqueID() 
+     * @see X509Certificate#getSubjectUniqueID()
      */
     @Override
     public boolean[] getSubjectUniqueID() {
@@ -200,7 +200,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getTBSCertificate() 
+     * @see X509Certificate#getTBSCertificate()
      */
     @Override
     public byte[] getTBSCertificate() throws CertificateEncodingException {
@@ -208,7 +208,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#getVersion() 
+     * @see X509Certificate#getVersion()
      */
     @Override
     public int getVersion() {
@@ -216,7 +216,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#hasUnsupportedCriticalExtension() 
+     * @see X509Certificate#hasUnsupportedCriticalExtension()
      */
     @Override
     public boolean hasUnsupportedCriticalExtension() {
@@ -224,7 +224,7 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#toString()  
+     * @see X509Certificate#toString()
      */
     @Override
     public String toString() {
@@ -232,18 +232,20 @@ class KeyVaultCertificate extends X509Certificate {
     }
 
     /**
-     * @see X509Certificate#verify(java.security.PublicKey) 
+     * @see X509Certificate#verify(java.security.PublicKey)
      */
     @Override
-    public void verify(PublicKey key) throws CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException {
+    public void verify(PublicKey key) throws CertificateException, NoSuchAlgorithmException, InvalidKeyException,
+        NoSuchProviderException, SignatureException {
         delegate.verify(key);
     }
 
     /**
-     * @see X509Certificate#verify(java.security.PublicKey, java.security.Provider) 
+     * @see X509Certificate#verify(java.security.PublicKey, java.security.Provider)
      */
     @Override
-    public void verify(PublicKey key, String sigProvider) throws CertificateException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, SignatureException {
+    public void verify(PublicKey key, String sigProvider) throws CertificateException, NoSuchAlgorithmException,
+        InvalidKeyException, NoSuchProviderException, SignatureException {
         delegate.verify(key, sigProvider);
     }
 }

@@ -7,11 +7,11 @@ import java.util.List;
 
 /**
  * The CertificateItem REST model.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificateListResult implements Serializable {
-    
+
     /**
      * Stores the value.
      */
@@ -19,7 +19,7 @@ public class CertificateListResult implements Serializable {
 
     /**
      * Get the value.
-     * 
+     *
      * @return the id.
      */
     public List<CertificateItem> getValue() {
@@ -28,7 +28,7 @@ public class CertificateListResult implements Serializable {
 
     /**
      * Set the value.
-     * 
+     *
      * @param value the value.
      */
     public void setValue(List<CertificateItem> value) {

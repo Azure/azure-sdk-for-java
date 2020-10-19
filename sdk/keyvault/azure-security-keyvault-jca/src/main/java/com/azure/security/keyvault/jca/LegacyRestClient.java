@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import java.io.IOException;
-import java.util.Map;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -14,6 +12,9 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.HttpEntities;
+
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * The RestClient that uses the Apache HttpClient class.

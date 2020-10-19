@@ -3,15 +3,16 @@
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The JUnit tests for the DelegateRestClient class.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class DelegateRestClientTest {
-    
+
     /**
      * Test of getDelegate method, of class DelegateRestClient.
      */

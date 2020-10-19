@@ -48,21 +48,21 @@ public class KeyVaultJcaProvider extends Provider {
     private void initialize() {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(new Provider.Service(this, "KeyManagerFactory", "SunX509",
-                    KeyVaultKeyManagerFactory.class.getName(), 
-                    Arrays.asList("SunX509", "IbmX509"), null));
-            
+                KeyVaultKeyManagerFactory.class.getName(),
+                Arrays.asList("SunX509", "IbmX509"), null));
+
             /*
              * Note for Tomcat we needed to add "DKS" as an algorithm so it does
-             * not use an in-memory key store and later on can wrap the 
+             * not use an in-memory key store and later on can wrap the
              * KeyManager using its JSSEKeyManager so the key alias is known.
              *
-             * See SSLUtilBase.getKeyManagers and look for the 
+             * See SSLUtilBase.getKeyManagers and look for the
              * "DKS".equalsIgnoreCase(certificate.getCertificateKeystoreType()
              */
             putService(new Provider.Service(this, "KeyStore", "DKS",
-                    KeyVaultKeyStore.class.getName(), Arrays.asList("DKS"), null));
+                KeyVaultKeyStore.class.getName(), Arrays.asList("DKS"), null));
             putService(new Provider.Service(this, "KeyStore", "AzureKeyVault",
-                    KeyVaultKeyStore.class.getName(), Arrays.asList("AzureKeyVault"), null));
+                KeyVaultKeyStore.class.getName(), Arrays.asList("AzureKeyVault"), null));
             return null;
         });
     }

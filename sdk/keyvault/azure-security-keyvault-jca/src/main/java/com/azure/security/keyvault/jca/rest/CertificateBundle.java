@@ -6,26 +6,26 @@ import java.io.Serializable;
 
 /**
  * The CertificateBundle REST model.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class CertificateBundle implements Serializable {
-    
+
     /**
      * Stores the CER bytes.
      */
     private String cer;
-    
+
     /**
      * Stores the Key ID.
      */
     private String kid;
-    
+
     /**
      * Stores the policy.
      */
     private CertificatePolicy policy;
-    
+
     /**
      * Stores the Secret ID.
      */
@@ -33,7 +33,7 @@ public class CertificateBundle implements Serializable {
 
     /**
      * Get the CER string.
-     * 
+     *
      * @return the CER string.
      */
     public String getCer() {
@@ -42,7 +42,7 @@ public class CertificateBundle implements Serializable {
 
     /**
      * Get the Key ID.
-     * 
+     *
      * @return the Key ID.
      */
     public String getKid() {
@@ -51,7 +51,7 @@ public class CertificateBundle implements Serializable {
 
     /**
      * Get the policy.
-     * 
+     *
      * @return the policy.
      */
     public CertificatePolicy getPolicy() {
@@ -60,16 +60,16 @@ public class CertificateBundle implements Serializable {
 
     /**
      * Get the Secret ID.
-     * 
+     *
      * @return the Secret ID.
      */
     public String getSid() {
         return sid;
     }
-    
+
     /**
      * Set the CER string.
-     * 
+     *
      * @param cer the CER string.
      */
     public void setCer(String cer) {
@@ -78,16 +78,16 @@ public class CertificateBundle implements Serializable {
 
     /**
      * Set the Key ID.
-     * 
+     *
      * @param kid the Key ID.
      */
     public void setKid(String kid) {
         this.kid = kid;
     }
-    
+
     /**
      * Set the policy.
-     * 
+     *
      * @param policy the policy.
      */
     public void setPolicy(CertificatePolicy policy) {
@@ -96,7 +96,7 @@ public class CertificateBundle implements Serializable {
 
     /**
      * Set the Secret ID.
-     * 
+     *
      * @param sid the Secret ID.
      */
     public void setSid(String sid) {

@@ -10,19 +10,19 @@ import java.util.Map;
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 interface RestClient {
-    
+
     /**
      * Issue a GET request.
-     * 
+     *
      * @param url the URL.
      * @param headers the request headers map.
      * @return the response body as a string.
      */
     String get(String url, Map<String, String> headers);
-    
+
     /**
      * Issue a POST request.
-     * 
+     *
      * @param url the URL.
      * @param body the request body.
      * @return the response body as a string.

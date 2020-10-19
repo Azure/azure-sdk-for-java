@@ -6,16 +6,16 @@ import java.util.Map;
 
 /**
  * A RestClient that delegates to another RestClient.
- * 
+ *
  * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 class DelegateRestClient implements RestClient {
-    
+
     /**
      * Stores the delegate.
      */
     private RestClient delegate;
-    
+
     /**
      * Constructor.
      */
@@ -27,10 +27,10 @@ class DelegateRestClient implements RestClient {
     public String get(String url, Map<String, String> headers) {
         return delegate.get(url, headers);
     }
-    
+
     /**
      * Get the delegate.
-     * 
+     *
      * @return the delegate.
      */
     public RestClient getDelegate() {
@@ -41,10 +41,10 @@ class DelegateRestClient implements RestClient {
     public String post(String url, String body, String contentType) {
         return delegate.post(url, body, contentType);
     }
-    
+
     /**
      * Set the delegate.
-     * 
+     *
      * @param delegate the delegate.
      */
     public void setDelegate(RestClient delegate) {
