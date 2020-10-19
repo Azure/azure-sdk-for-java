@@ -13,7 +13,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-active-directory-spring-boot-starter</artifactId>
-  <version>2.3.5</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-spring-boot-starter;current} -->
+  <version>2.3.6-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-active-directory-spring-boot-starter;current} -->
 
   <name>Azure AD Spring Security Integration Spring Boot Starter</name>
   <description>Spring Boot Starter for Azure AD and Spring Security Integration</description>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>2.3.5</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+      <version>2.3.6-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -82,7 +82,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-spring-boot:[2.3.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} --> -->
+                <include>com.microsoft.azure:azure-spring-boot:[2.3.6-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} --> -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.6.2]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[7.9]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->

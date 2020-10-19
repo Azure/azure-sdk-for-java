@@ -1,5 +1,7 @@
 # Release History
 
+## 2.3.6-beta.1 (2020-10-14)
+
 ## 2.3.5 (2020-09-14)
 _Bug Fixes_ 
 - Exclude disabled secrets when getting Key Vault secrets

@@ -1,7 +1,10 @@
 # Release History
 
-## 2.3.5 (2020-09-14)
+## 2.3.6-beta.1 (2020-10-14)
 
+## 2.3.5 (2020-09-14)
+_Improved_
+- Unify spring-boot-starter version
 
 ## 2.3.4 (2020-08-20)
 _Key Bug Fixes_
