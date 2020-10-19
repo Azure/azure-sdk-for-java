@@ -1,6 +1,6 @@
 parameters:
   Owner: Azure
-  Repository: $(Build.Repository.Name)
+  Repository: '$(Build.Repository.Name)'
   Prefix: error
   CIConventionOptions: ''
   UPConventionOptions: ''
