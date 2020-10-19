@@ -50,12 +50,35 @@ public class OptionSerializerTests {
         Assertions.assertEquals("{\"sku\":\"basic\"}", serialized);
     }
 
+    @Test
+    public void canSerializeRawType() throws IOException {
+        @SuppressWarnings("rawtypes")
+        final Option rawOption = Option.of(new RawModel().setName("test"));
+        String serialized = new JacksonAdapter().serialize(rawOption, SerializerEncoding.JSON);
+        Assertions.assertEquals("{\"name\":\"test\"}", serialized);
+
+        @SuppressWarnings("rawtypes")
+        final Option rawOption1 = Option.of("test");
+        String serialized1 = new JacksonAdapter().serialize(rawOption1, SerializerEncoding.JSON);
+        Assertions.assertEquals("\"test\"", serialized1);
+    }
+
     private static class PatchModel {
         @JsonProperty("sku")
         private Option<String> sku;
 
         PatchModel setSku(Option<String> sku) {
             this.sku = sku;
+            return this;
+        }
+    }
+
+    private static class RawModel {
+        @JsonProperty("name")
+        private String name;
+
+        RawModel setName(String name) {
+            this.name = name;
             return this;
         }
     }

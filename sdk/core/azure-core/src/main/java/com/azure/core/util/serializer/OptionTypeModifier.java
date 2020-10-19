@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.type.TypeModifier;
 import java.lang.reflect.Type;
 
 /**
- * Modifier to fill in missing of occasional type information due to raw types.
+ * The modifier to inspect an {@link Option} type and upgrade the type to be serialized from Option&lt;T&gt; to T.
  */
 final class OptionTypeModifier extends TypeModifier implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,7 +42,8 @@ final class OptionTypeModifier extends TypeModifier implements java.io.Serializa
         if (type.isReferenceType() || type.isContainerType()) {
             return type;
         } else if (type.getRawClass() == Option.class) {
-            // perform the same upgrade applied for JDK Optional type in Jdk8Module.
+            // When serializing Option type, the actual type to serialize is the contained-type,
+            // do the type upgrade Option<T> to T.
             return ReferenceType.upgradeFrom(type, type.containedTypeOrUnknown(0));
         } else {
             return type;
