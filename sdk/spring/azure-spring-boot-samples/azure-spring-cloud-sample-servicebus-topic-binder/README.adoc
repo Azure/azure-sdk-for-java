@@ -1,3 +1,5 @@
+:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+
 = Spring Cloud Azure Stream Binder for Service Bus topic Code Sample shared library for Java
 
 == Key concepts
@@ -64,6 +66,7 @@ spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
 ....
 
 === How to run
+First, we need to ensure that this {instruction}[instruction] is completed before run.
 
 4. Update stream binding related property in link:src/main/resources/application.properties[application.properties] file
 +

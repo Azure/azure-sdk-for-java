@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.6.1</version>
+  <version>1.6.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -110,18 +110,31 @@ The key concepts of Azure Management Libraries includes:
 
 ### Service features
 
+- App Services
+- Authorization
 - Compute
-- Storage
-- Networking
-- SQL Database
-- Container and Kubernetes (AKS)
-- Web app and Function app
+- Container Services (AKS)
+- Cosmos DB
+- Insight (Monitor)
 - Key Vault
-- Cosmos
-- Monitor
-- Spring Cloud
+- Managed Identity
+- Network
+- Resources
+- Storage
+
+Services in preview
+
+- CDN
+- Container Instance
+- Container Registry
+- DNS
 - Event Hubs
-- Redis Cache
+- Private DNS
+- Redis
+- Service Bus
+- Spring Cloud
+- SQL
+- Traffic Manager
 
 ## Examples
 
@@ -291,6 +304,9 @@ or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/question
 An `HttpClient` implementation must exist on the classpath.
 See [Include optional packages](#include-optional-packages).
 
+Latest `azure-identity` package specifies dependency on `azure-core-http-netty` package for convenience.
+If you would like to use a different `HttpClient`, please exclude `azure-core-http-netty` from `azure-identity`.
+
 ### Enabling logging
 
 Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
@@ -305,6 +321,11 @@ AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
+
+### ARM throttling
+
+Azure Resource Manager applies throttling on the number of requests sent from client within certain span of time.
+For details, please refer to [Guidance on ARM throttling][throttling].
 
 ## Next steps
 
@@ -332,4 +353,5 @@ If you would like to become an active contributor to this project please follow 
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
 [design_preview]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN_PREVIEW.md
+[throttling]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/

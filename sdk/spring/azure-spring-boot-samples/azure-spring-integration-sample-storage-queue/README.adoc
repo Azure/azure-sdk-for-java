@@ -1,3 +1,5 @@
+:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+
 = Spring Cloud Azure Storage Queue Integration Code Sample shared library for Java
 
 == Key concepts
@@ -61,6 +63,7 @@ spring.cloud.azure.storage.account=[account-name]
 ....
 
 === How to run
+First, we need to ensure that this {instruction}[instruction] is completed before run.
 
 2. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
 

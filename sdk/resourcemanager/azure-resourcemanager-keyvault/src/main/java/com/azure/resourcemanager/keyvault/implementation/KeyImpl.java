@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
@@ -33,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Vault and its parent interfaces. */
@@ -126,16 +127,16 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
     }
 
     @Override
-    public Iterable<Key> listVersions() {
-        return listVersionsAsync().toIterable();
+    public PagedIterable<Key> listVersions() {
+        return new PagedIterable<>(listVersionsAsync());
     }
 
     @Override
-    public Flux<Key> listVersionsAsync() {
+    public PagedFlux<Key> listVersionsAsync() {
         return vault
             .keyClient()
             .listPropertiesOfKeyVersions(this.name())
-            .map(this::wrapModel);
+            .mapPage(this::wrapModel);
     }
 
     @Override

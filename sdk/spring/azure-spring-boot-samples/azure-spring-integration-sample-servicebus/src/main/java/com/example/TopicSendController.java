@@ -3,8 +3,8 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.core.DefaultMessageHandler;
-import com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
+import com.azure.spring.integration.core.DefaultMessageHandler;
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

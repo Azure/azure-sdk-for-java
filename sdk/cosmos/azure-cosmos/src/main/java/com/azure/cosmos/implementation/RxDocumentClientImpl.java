@@ -11,6 +11,10 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.batch.BatchResponseParser;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -78,6 +82,8 @@ import static com.azure.cosmos.BridgeInternal.getAltLink;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 
@@ -1255,6 +1261,84 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
+    private Mono<RxDocumentServiceRequest> getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+                                                                   String documentCollectionLink,
+                                                                   ServerBatchRequest serverBatchRequest,
+                                                                   RequestOptions options,
+                                                                   boolean disableAutomaticIdGeneration) {
+
+        checkArgument(StringUtils.isNotEmpty(documentCollectionLink), "expected non empty documentCollectionLink");
+        checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
+
+        Instant serializationStartTimeUTC = Instant.now();
+        ByteBuffer content = ByteBuffer.wrap(Utils.getUTF8Bytes(serverBatchRequest.getRequestBody()));
+        Instant serializationEndTimeUTC = Instant.now();
+
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTimeUTC,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
+
+        String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
+        Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Batch);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            this,
+            OperationType.Batch,
+            ResourceType.Document,
+            path,
+            requestHeaders,
+            options,
+            content);
+
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
+
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+
+        return collectionObs.map((Utils.ValueHolder<DocumentCollection> collectionValueHolder) -> {
+            addBatchHeaders(request, serverBatchRequest, collectionValueHolder.v);
+            return request;
+        });
+    }
+
+    private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
+                                                     ServerBatchRequest serverBatchRequest,
+                                                     DocumentCollection collection) {
+
+        if(serverBatchRequest instanceof SinglePartitionKeyServerBatchRequest) {
+
+            PartitionKey partitionKey = ((SinglePartitionKeyServerBatchRequest) serverBatchRequest).getPartitionKeyValue();
+            PartitionKeyInternal partitionKeyInternal;
+
+            if (partitionKey.equals(PartitionKey.NONE)) {
+                PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
+                partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+            } else {
+                // Partition key is always non-null
+                partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+            }
+
+            request.setPartitionKeyInternal(partitionKeyInternal);
+            request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
+        } else {
+            throw new UnsupportedOperationException("Unknown Server request.");
+        }
+
+        request.getHeaders().put(HttpConstants.HttpHeaders.IS_BATCH_REQUEST, Boolean.TRUE.toString());
+        request.getHeaders().put(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, String.valueOf(serverBatchRequest.isAtomicBatch()));
+        request.getHeaders().put(HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, String.valueOf(serverBatchRequest.isShouldContinueOnError()));
+
+        return request;
+    }
+
     private Mono<RxDocumentServiceRequest> populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
@@ -1673,11 +1757,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions options,
         Class<T> klass) {
 
+        String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             OperationType.Query,
             ResourceType.Document,
             collectionLink, null
-        ); 
+        );
 
         // This should not got to backend
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -1744,7 +1829,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         // create the executable query
                         return createReadManyQuery(
-                            collectionLink,
+                            resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
                             Document.class,
@@ -1879,7 +1964,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 
-    
+
 
     private String createPkSelector(PartitionKeyDefinition partitionKeyDefinition) {
         return partitionKeyDefinition.getPaths()
@@ -2342,6 +2427,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(storedProcedureLink, options, procedureParams, documentClientRetryPolicy), documentClientRetryPolicy);
     }
 
+    @Override
+    public Mono<TransactionalBatchResponse> executeBatchRequest(String collectionLink,
+                                                                ServerBatchRequest serverBatchRequest,
+                                                                RequestOptions options,
+                                                                boolean disableAutomaticIdGeneration) {
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> executeBatchRequestInternal(collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration), documentClientRetryPolicy);
+    }
+
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
                                                                                RequestOptions options, List<Object> procedureParams, DocumentClientRetryPolicy retryPolicy) {
 
@@ -2372,6 +2466,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             logger.debug("Failure in executing a StoredProcedure due to [{}]", e.getMessage(), e);
             return Mono.error(e);
+        }
+    }
+
+    private Mono<TransactionalBatchResponse> executeBatchRequestInternal(String collectionLink,
+                                                                         ServerBatchRequest serverBatchRequest,
+                                                                         RequestOptions options,
+                                                                         DocumentClientRetryPolicy requestRetryPolicy,
+                                                                         boolean disableAutomaticIdGeneration) {
+
+        try {
+            logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
+
+            Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
+            Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
+                return create(request, requestRetryPolicy);
+            });
+
+            return responseObservable
+                .map(serviceResponse -> BatchResponseParser.fromDocumentServiceResponse(serviceResponse, serverBatchRequest, true));
+
+        } catch (Exception ex) {
+            logger.debug("Failure in executing a batch due to [{}]", ex.getMessage(), ex);
+            return Mono.error(ex);
         }
     }
 
@@ -3450,7 +3567,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else {
             if ((request.getOperationType() == OperationType.Query || request.getOperationType() == OperationType.SqlQuery) &&
                     Utils.isCollectionChild(request.getResourceType())) {
-                if (request.getPartitionKeyRangeIdentity() == null) {
+                // Go to gateway only when partition key range and partition key are not set. This should be very rare
+                if (request.getPartitionKeyRangeIdentity() == null &&
+                        request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) == null) {
                     return this.gatewayProxy;
                 }
             }

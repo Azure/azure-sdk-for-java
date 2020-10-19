@@ -11,25 +11,25 @@ jobs:
 
         Artifacts:
           - name: azure-spring-boot-test-application
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringboottestapplication
           - name: azure-spring-boot-test-core
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringboottestcore
           - name: azure-spring-boot-test-cosmos
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringboottestcosmos
           - name: azure-spring-boot-test-aad
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringboottestaad
           - name: azure-spring-boot-test-keyvault
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringboottestkeyvault
           - name: azure-spring-boot-test-servicebus-jms
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringboottestservicebusjms
           - name: azure-spring-cloud-test-eventhubs
-            groupId: com.azure
+            groupId: com.azure.spring
             safeName: azurespringcloudtesteventhubs
 
         EnvVars:

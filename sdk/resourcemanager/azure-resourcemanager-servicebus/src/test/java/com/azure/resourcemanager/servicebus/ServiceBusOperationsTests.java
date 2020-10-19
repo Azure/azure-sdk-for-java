@@ -68,8 +68,8 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         rgName = generateRandomResourceName("javasb", 20);
 
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        serviceBusManager = ServiceBusManager.authenticate(httpPipeline, profile);
+        serviceBusManager = buildManager(ServiceBusManager.class, httpPipeline, profile);
+        resourceManager = serviceBusManager.resourceManager();
     }
 
     @Override

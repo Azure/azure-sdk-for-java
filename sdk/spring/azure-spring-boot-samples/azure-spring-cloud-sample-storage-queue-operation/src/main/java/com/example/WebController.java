@@ -3,10 +3,10 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.core.AzureHeaders;
-import com.microsoft.azure.spring.integration.core.api.CheckpointMode;
-import com.microsoft.azure.spring.integration.core.api.reactor.Checkpointer;
-import com.microsoft.azure.spring.integration.storage.queue.StorageQueueOperation;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.integration.core.api.reactor.Checkpointer;
+import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

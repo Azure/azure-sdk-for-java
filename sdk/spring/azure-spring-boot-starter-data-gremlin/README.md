@@ -10,10 +10,10 @@ The Spring Data Gremlin Starter provides Spring Data support for the Gremlin que
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-data-gremlin;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-data-gremlin;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>

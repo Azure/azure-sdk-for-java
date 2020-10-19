@@ -45,7 +45,7 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
      * @param profile the profile
      * @return the ComputeManager
      */
-    public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new CosmosManager(httpPipeline, profile);
     }
 

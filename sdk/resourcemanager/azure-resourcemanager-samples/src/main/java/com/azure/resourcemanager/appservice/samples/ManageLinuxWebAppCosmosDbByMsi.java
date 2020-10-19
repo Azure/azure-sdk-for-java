@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
@@ -18,14 +19,13 @@ import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.DockerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.BuildImageResultCallback;
+import com.github.dockerjava.api.command.PullImageResultCallback;
+import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -167,13 +167,18 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
                     azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
+            String imageName = "tomcat:7.0-slim";
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/todoapp";
-            dockerClient.buildImageCmd(new File(ManageLinuxWebAppCosmosDbByMsi.class.getResource("/todoapp-cosmosdb/Dockerfile").getFile()))
-                    .withTag(privateRepoUrl)
-                    .exec(new BuildImageResultCallback()).awaitCompletion();
+            dockerClient.pullImageCmd(imageName)
+                .withAuthConfig(new AuthConfig()) // anonymous
+                .exec(new PullImageResultCallback())
+                .awaitCompletion();
+
+            String imageId = dockerClient.inspectImageCmd(imageName).exec().getId();
+            dockerClient.tagImageCmd(imageId, privateRepoUrl, "latest").exec();
 
             dockerClient.pushImageCmd(privateRepoUrl)
-                    .exec(new PushImageResultCallback()).awaitSuccess();
+                    .exec(new PushImageResultCallback()).awaitCompletion();
 
             //============================================================
             // Create a web app with a new app service plan

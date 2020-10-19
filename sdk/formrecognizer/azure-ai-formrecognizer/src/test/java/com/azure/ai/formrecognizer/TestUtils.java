@@ -16,7 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -30,9 +29,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.ENCODED_EMPTY_SPACE;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVOICE_6_PDF;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.LOCAL_FILE_PATH;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.RECEIPT_CONTOSO_JPG;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,13 +54,6 @@ final class TestUtils {
     static final String BLANK_PDF = "blank.pdf";
     static final String FORM_JPG = "Form_1.jpg";
     static final String TEST_DATA_PNG = "testData.png";
-    static final String LAYOUT_1_JPG = "layout1.jpg";
-    static final String INVOICE_6_PDF_LOCAL_URL = LOCAL_FILE_PATH + INVOICE_6_PDF;
-    static final String LAYOUT_LOCAL_URL = LOCAL_FILE_PATH + LAYOUT_1_JPG;
-    static final String RECEIPT_JPG_LOCAL_URL = LOCAL_FILE_PATH + RECEIPT_CONTOSO_JPG;
-    static final long RECEIPT_FILE_LENGTH = new File(RECEIPT_JPG_LOCAL_URL).length();
-    static final long LAYOUT_FILE_LENGTH = new File(LAYOUT_LOCAL_URL).length();
-    static final long CUSTOM_FORM_FILE_LENGTH = new File(INVOICE_6_PDF_LOCAL_URL).length();
     static final String VALID_URL = "https://resources/contoso-allinone.jpg";
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final Duration ONE_NANO_DURATION = Duration.ofNanos(1);

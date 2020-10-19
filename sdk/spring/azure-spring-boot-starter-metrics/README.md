@@ -11,10 +11,10 @@ With this starter you could easily use Azure Metrics with Spring Boot.
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-metrics;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-metrics;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-metrics</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>

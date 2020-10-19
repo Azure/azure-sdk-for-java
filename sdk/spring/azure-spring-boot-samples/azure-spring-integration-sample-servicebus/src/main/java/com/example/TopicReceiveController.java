@@ -3,12 +3,12 @@
 
 package com.example;
 
-import com.microsoft.azure.spring.integration.core.AzureHeaders;
-import com.microsoft.azure.spring.integration.core.api.CheckpointConfig;
-import com.microsoft.azure.spring.integration.core.api.CheckpointMode;
-import com.microsoft.azure.spring.integration.core.api.Checkpointer;
-import com.microsoft.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
-import com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
+import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.api.CheckpointConfig;
+import com.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.integration.core.api.Checkpointer;
+import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
+import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
