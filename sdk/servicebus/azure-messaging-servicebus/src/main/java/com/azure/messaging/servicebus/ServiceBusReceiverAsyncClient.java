@@ -15,15 +15,15 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
-import com.azure.messaging.servicebus.models.AbandonOptions;
-import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.BaseSubscriber;
@@ -589,10 +589,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
-        if (unnamedSessionManager != null) {
-            return unnamedSessionManager.receive();
+        final Flux<ServiceBusReceivedMessageContext> messageFlux = unnamedSessionManager != null
+            ? unnamedSessionManager.receive()
+            : getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
+
+        if (receiverOptions.isEnableAutoComplete()) {
+            return new FluxAutoComplete<>(messageFlux,
+                context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
+                context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
         } else {
-            return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
+            return messageFlux;
         }
     }
 

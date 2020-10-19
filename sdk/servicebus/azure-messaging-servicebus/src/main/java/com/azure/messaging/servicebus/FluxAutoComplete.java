@@ -18,13 +18,13 @@ import java.util.function.Function;
 /**
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
-class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator<T, T> {
-    private final Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
-    private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+class FluxAutoComplete<T extends ServiceBusReceivedMessageContext> extends FluxOperator<T, T> {
+    private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
+    private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
     private final ClientLogger logger = new ClientLogger(FluxAutoComplete.class);
 
-    FluxAutoComplete(Flux<? extends T> upstream, Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
+    FluxAutoComplete(Flux<? extends T> upstream, Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
+        Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon) {
         super(upstream);
         this.onComplete = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
@@ -45,15 +45,15 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator
         source.subscribe(subscriber);
     }
 
-    static final class AutoCompleteSubscriber<T extends ServiceBusReceivedMessage> extends BaseSubscriber<T> {
+    static final class AutoCompleteSubscriber<T extends ServiceBusReceivedMessageContext> extends BaseSubscriber<T> {
         private final CoreSubscriber<? super T> downstream;
-        private final Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
-        private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+        private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete;
+        private final Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon;
         private final ClientLogger logger;
 
         AutoCompleteSubscriber(CoreSubscriber<? super T> downstream,
-            Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
-            Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon, ClientLogger logger) {
+            Function<ServiceBusReceivedMessageContext, Mono<Void>> onComplete,
+            Function<ServiceBusReceivedMessageContext, Mono<Void>> onAbandon, ClientLogger logger) {
             this.downstream = downstream;
             this.onComplete = onComplete;
             this.onAbandon = onAbandon;
@@ -69,13 +69,17 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator
 
         @Override
         protected void hookOnNext(T value) {
-            logger.verbose("Passing message downstream. sequenceNumber[{}]", value.getSequenceNumber());
+            final ServiceBusReceivedMessage message = value.getMessage();
+            final String sequenceNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
+
+            logger.verbose("Passing message downstream. sequenceNumber[{}]", sequenceNumber);
+
             try {
                 downstream.onNext(value);
                 applyWithCatch(onComplete, value, "complete");
             } catch (Exception e) {
                 logger.error("Error occurred processing message. Abandoning. sequenceNumber[{}]",
-                    value.getSequenceNumber(), e);
+                    sequenceNumber, e);
 
                 applyWithCatch(onAbandon, value, "abandon");
             }
@@ -113,7 +117,7 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator
          * @param message received message to apply function to.
          * @param operation The operation name.
          */
-        private void applyWithCatch(Function<ServiceBusReceivedMessage, Mono<Void>> function, T message,
+        private void applyWithCatch(Function<ServiceBusReceivedMessageContext, Mono<Void>> function, T message,
             String operation) {
             try {
                 function.apply(message).block();
