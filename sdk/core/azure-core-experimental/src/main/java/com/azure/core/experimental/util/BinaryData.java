@@ -185,10 +185,7 @@ public final class  BinaryData {
             return new BinaryData(EMPTY_DATA);
         }
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        if (defaultJsonSerializer ==  null) {
-            defaultJsonSerializer = JsonSerializerProviders.createInstance();
-        }
+        loadDefaultSerializer();
         defaultJsonSerializer.serialize(outputStream, data);
 
         return new BinaryData(outputStream.toByteArray());
@@ -296,7 +293,8 @@ public final class  BinaryData {
 
         TypeReference<T>  ref = TypeReference.createInstance(clazz);
         InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return JsonSerializerProviders.createInstance().deserialize(jsonStream, ref);
+        loadDefaultSerializer();
+        return defaultJsonSerializer.deserialize(jsonStream, ref);
     }
 
     /**
@@ -313,5 +311,11 @@ public final class  BinaryData {
      */
     public  <T> Mono<T> toObjectAsync(Class<T> clazz) {
         return Mono.fromCallable(() -> toObject(clazz));
+    }
+
+    private static void loadDefaultSerializer() {
+        if (defaultJsonSerializer ==  null) {
+            defaultJsonSerializer = JsonSerializerProviders.createInstance();
+        }
     }
 }
