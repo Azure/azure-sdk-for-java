@@ -48,6 +48,8 @@ import java.util.Objects;
  */
 public final class  BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
+
+    private static JsonSerializer defaultJsonSerializer;
     private static byte[] EMPTY_DATA = new byte[0];
     private final byte[] data;
 
@@ -169,8 +171,8 @@ public final class  BinaryData {
 
     /**
      * Serialize the given {@link Object} into {@link BinaryData} using json serializer which is available in classpath.
-     * The serializer must implement {@link JsonSerializer} interface. If {@code null} data is provided , it will be
-     * converted into empty byte array.
+     * The serializer must implement {@link JsonSerializer} interface. A singleton instance of {@link JsonSerializer}
+     * is kept for this class to use. If {@code null} data is provided , it will be converted into empty byte array.
      *
      * @param data The {@link Object} which needs to be serialized into bytes.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
@@ -183,7 +185,12 @@ public final class  BinaryData {
             return new BinaryData(EMPTY_DATA);
         }
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonSerializerProviders.createInstance().serialize(outputStream, data);
+
+        if (defaultJsonSerializer ==  null) {
+            defaultJsonSerializer = JsonSerializerProviders.createInstance();
+        }
+        defaultJsonSerializer.serialize(outputStream, data);
+
         return new BinaryData(outputStream.toByteArray());
     }
 
