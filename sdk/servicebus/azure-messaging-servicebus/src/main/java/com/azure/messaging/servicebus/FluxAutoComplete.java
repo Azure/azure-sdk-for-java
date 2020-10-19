@@ -10,6 +10,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -63,6 +64,7 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator
         protected void hookOnSubscribe(Subscription subscription) {
             logger.info("Subscription received. Subscribing downstream. {}", subscription);
             downstream.onSubscribe(this);
+            requestUnbounded();
         }
 
         @Override
@@ -70,11 +72,12 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator
             logger.verbose("Passing message downstream. sequenceNumber[{}]", value.getSequenceNumber());
             try {
                 downstream.onNext(value);
-                onComplete.apply(value).block();
+                applyWithCatch(onComplete, value, "complete");
             } catch (Exception e) {
                 logger.error("Error occurred processing message. Abandoning. sequenceNumber[{}]",
                     value.getSequenceNumber(), e);
-                onAbandon.apply(value).block();
+
+                applyWithCatch(onAbandon, value, "abandon");
             }
         }
 
@@ -96,6 +99,28 @@ class FluxAutoComplete<T extends ServiceBusReceivedMessage> extends FluxOperator
         protected void hookOnComplete() {
             logger.info("Completed. Passing downstream.");
             downstream.onComplete();
+        }
+
+        @Override
+        public Context currentContext() {
+            return downstream.currentContext();
+        }
+
+        /**
+         * Applies a function and catches then logs and closes any exceptions.
+         *
+         * @param function Function to apply.
+         * @param message received message to apply function to.
+         * @param operation The operation name.
+         */
+        private void applyWithCatch(Function<ServiceBusReceivedMessage, Mono<Void>> function, T message,
+            String operation) {
+            try {
+                function.apply(message).block();
+            } catch (Exception e) {
+                logger.warning("Unable to '{}' message.", operation, e);
+                onError(e);
+            }
         }
     }
 }
