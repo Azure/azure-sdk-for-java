@@ -1,8 +1,8 @@
-# Azure Resource Manager resources client library for Java
+# Azure Resource Manager Resource client library for Java
 
-Azure Resource Manager client library for Java
+Azure Resource Manager Resource client library for Java.
 
-For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Resource Management SDK. Provides operations for working with resources and resource groups. Package tag package-resources-2020-06.
 
 ## Getting started
 

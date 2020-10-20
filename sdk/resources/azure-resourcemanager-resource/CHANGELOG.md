@@ -2,4 +2,4 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- TODO
+- Azure Resource Manager Resource client library for Java. This package contains Microsoft Azure SDK for Resource Management SDK. Provides operations for working with resources and resource groups. Package tag package-resources-2020-06.
