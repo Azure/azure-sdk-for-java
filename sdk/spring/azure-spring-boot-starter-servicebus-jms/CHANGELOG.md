@@ -1,5 +1,8 @@
 # Release History
 
+## 2.3.6-beta.2 (Unreleased)
+
+
 ## 2.3.6-beta.1 (2020-10-14)
 _Improved_ 
 - upgrade jms underlying library with azure-servicebus-jms
