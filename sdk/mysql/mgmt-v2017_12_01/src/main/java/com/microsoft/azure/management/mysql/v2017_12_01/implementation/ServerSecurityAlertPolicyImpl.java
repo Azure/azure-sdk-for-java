@@ -15,11 +15,11 @@ import com.microsoft.azure.management.mysql.v2017_12_01.ServerSecurityAlertPolic
 import java.util.List;
 
 class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyImpl> implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
     private String resourceGroupName;
     private String serverName;
 
-    ServerSecurityAlertPolicyImpl(String name, MySQLManager manager) {
+    ServerSecurityAlertPolicyImpl(String name, DBForMySQLManager manager) {
         super(name, new ServerSecurityAlertPolicyInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
         //
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, MySQLManager manager) {
+    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, DBForMySQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 

@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.mysql.v2017_12_01.OperationListResult;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
 
-    OperationsImpl(MySQLManager manager) {
+    OperationsImpl(DBForMySQLManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 

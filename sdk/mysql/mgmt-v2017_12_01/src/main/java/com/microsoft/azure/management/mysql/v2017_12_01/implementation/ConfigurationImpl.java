@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, ConfigurationInner, ConfigurationImpl> implements Configuration, Configuration.Definition, Configuration.Update {
-    private final MySQLManager manager;
+    private final DBForMySQLManager manager;
     private String resourceGroupName;
     private String serverName;
     private String configurationName;
 
-    ConfigurationImpl(String name, MySQLManager manager) {
+    ConfigurationImpl(String name, DBForMySQLManager manager) {
         super(name, new ConfigurationInner());
         this.manager = manager;
         // Set resource name
@@ -26,7 +26,7 @@ class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, Configurat
         //
     }
 
-    ConfigurationImpl(ConfigurationInner inner, MySQLManager manager) {
+    ConfigurationImpl(ConfigurationInner inner, DBForMySQLManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -39,7 +39,7 @@ class ConfigurationImpl extends CreatableUpdatableImpl<Configuration, Configurat
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 

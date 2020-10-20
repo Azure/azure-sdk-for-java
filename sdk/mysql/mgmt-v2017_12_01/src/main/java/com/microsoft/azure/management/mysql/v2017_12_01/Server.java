@@ -17,18 +17,24 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.mysql.v2017_12_01.implementation.MySQLManager;
+import com.microsoft.azure.management.mysql.v2017_12_01.implementation.DBForMySQLManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01.implementation.ServerInner;
 
 /**
  * Type representing Server.
  */
-public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<MySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<MySQLManager> {
+public interface Server extends HasInner<ServerInner>, Resource, GroupableResourceCore<DBForMySQLManager, ServerInner>, HasResourceGroup, Refreshable<Server>, Updatable<Server.Update>, HasManager<DBForMySQLManager> {
     /**
      * @return the administratorLogin value.
      */
     String administratorLogin();
+
+    /**
+     * @return the byokEnforcement value.
+     */
+    String byokEnforcement();
 
     /**
      * @return the earliestRestoreDate value.
@@ -41,9 +47,34 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     String fullyQualifiedDomainName();
 
     /**
+     * @return the identity value.
+     */
+    ResourceIdentity identity();
+
+    /**
+     * @return the infrastructureEncryption value.
+     */
+    InfrastructureEncryption infrastructureEncryption();
+
+    /**
      * @return the masterServerId value.
      */
     String masterServerId();
+
+    /**
+     * @return the minimalTlsVersion value.
+     */
+    MinimalTlsVersionEnum minimalTlsVersion();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<ServerPrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccessEnum publicNetworkAccess();
 
     /**
      * @return the replicaCapacity value.
@@ -115,6 +146,18 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
         }
 
         /**
+         * The stage of the server definition allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity The Azure Active Directory identity of the server
+             * @return the next definition stage
+             */
+            WithCreate withIdentity(ResourceIdentity identity);
+        }
+
+        /**
          * The stage of the server definition allowing to specify Sku.
          */
         interface WithSku {
@@ -131,13 +174,13 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Server>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<Server>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIdentity, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a Server update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
+    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithIdentity, UpdateStages.WithMinimalTlsVersion, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
     }
 
     /**
@@ -154,6 +197,42 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
              * @return the next update stage
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+
+        /**
+         * The stage of the server update allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity The Azure Active Directory identity of the server
+             * @return the next update stage
+             */
+            Update withIdentity(ResourceIdentity identity);
+        }
+
+        /**
+         * The stage of the server update allowing to specify MinimalTlsVersion.
+         */
+        interface WithMinimalTlsVersion {
+            /**
+             * Specifies minimalTlsVersion.
+             * @param minimalTlsVersion Enforce a minimal Tls version for the server. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'
+             * @return the next update stage
+             */
+            Update withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion);
+        }
+
+        /**
+         * The stage of the server update allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess);
         }
 
         /**
@@ -210,7 +289,7 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
         interface WithVersion {
             /**
              * Specifies version.
-             * @param version The version of a server. Possible values include: '5.6', '5.7'
+             * @param version The version of a server. Possible values include: '5.6', '5.7', '8.0'
              * @return the next update stage
              */
             Update withVersion(ServerVersion version);

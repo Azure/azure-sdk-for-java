@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
 class OperationListResultImpl extends WrapperImpl<OperationListResultInner> implements OperationListResult {
-    private final MySQLManager manager;
-    OperationListResultImpl(OperationListResultInner inner, MySQLManager manager) {
+    private final DBForMySQLManager manager;
+    OperationListResultImpl(OperationListResultInner inner, DBForMySQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public MySQLManager manager() {
+    public DBForMySQLManager manager() {
         return this.manager;
     }
 
