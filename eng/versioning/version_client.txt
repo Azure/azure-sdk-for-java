@@ -92,11 +92,11 @@ com.azure.spring:azure-spring-integration-servicebus;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-storage-queue;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-starter-storage;2.0.0-beta.1;2.0.0-beta.1
-com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-azure-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-azure-feature-management;1.2.8-beta.1;1.2.8-beta.1
-com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-feature-management;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-core;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
@@ -104,7 +104,7 @@ com.azure.spring:azure-spring-boot-test-keyvault;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
-com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config-test;1.2.8-beta.1;1.2.8-beta.1
+com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
 com.azure:opentelemetry-exporters-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager;2.0.0-beta.4;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.0.0-beta.5;2.0.0-beta.6

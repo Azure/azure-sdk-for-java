@@ -612,7 +612,11 @@
   <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
   <suppress checks="PackageName" files="com.azure.spring.data.cosmos.multidatasource.*\.java"/>
   <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
-  
+
+  <!-- Checkstyle suppressions for com.microsoft.azure.spring package,
+  if you change the package name to com.azure.spring, please remove the configuration here. -->
+  <suppress checks="ConstantName|VisibilityModifier" files="src[/\\]test[/\\]java[/\\]com[/\\]microsoft[/\\]azure[/\\]spring[/\\]cloud[/\\]config|properties.*.java"/>
+
   <!-- ### end: Spring related suppression -->
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->

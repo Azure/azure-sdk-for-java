@@ -1,4 +1,4 @@
-# Azure Spring Boot Integration tests client library for Java
+# Azure Spring cloud appconfiguration config tests client library for Java
 
 ## Key concepts
 ## Getting started
