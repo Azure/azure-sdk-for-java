@@ -4,4 +4,4 @@
 /**
  * Package containing JSON Patch classes.
  */
-package com.azure.core.experimental.jsonpatch;
+package com.azure.core.util.jsonpatch;

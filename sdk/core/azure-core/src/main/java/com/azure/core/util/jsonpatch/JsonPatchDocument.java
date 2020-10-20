@@ -1,33 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.jsonpatch;
+package com.azure.core.util.jsonpatch;
 
+import com.azure.core.util.Option;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * Represents a JSON Patch document.
  */
+//@JsonSerialize(using = JsonPatchDocumentSerializer.class)
 public class JsonPatchDocument {
-    private static final ObjectMapper MAPPER = ((JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter())
-        .serializer();
+    private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
+    private static volatile JsonSerializer defaultSerializer;
 
+    @JsonIgnore
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
 
+    @JsonValue
     private final List<JsonPatchOperation> operations;
+
+    @JsonIgnore
     private final JsonSerializer serializer;
 
     /**
@@ -49,13 +54,8 @@ public class JsonPatchDocument {
         this.serializer = serializer;
     }
 
-    /**
-     * Gets an unmodifiable list of JSON Patch operations in this document.
-     *
-     * @return An unmodifiable list of JSON Patch operations in this document.
-     */
-    public List<JsonPatchOperation> getJsonPatchOperations() {
-        return Collections.unmodifiableList(operations);
+    List<JsonPatchOperation> getOperations() {
+        return new ArrayList<>(operations);
     }
 
     /**
@@ -68,7 +68,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAdd#String-Object}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendAdd#String-Object}
      *
      * @param path The path to apply the addition.
      * @param value The value that will be serialized and added to the path.
@@ -76,7 +76,7 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendAdd(String path, Object value) {
-        return appendAddInternal(path, () -> serializeValue(value));
+        return appendAddInternal(path, serializeValue(value));
     }
 
     /**
@@ -89,7 +89,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendAddRaw#String-String}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendAddRaw#String-String}
      *
      * @param path The path to apply the addition.
      * @param rawJson The raw JSON value that will be added to the path.
@@ -97,13 +97,13 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendAddRaw(String path, String rawJson) {
-        return appendAddInternal(path, () -> Optional.ofNullable(rawJson));
+        return appendAddInternal(path, Option.of(rawJson));
     }
 
-    private JsonPatchDocument appendAddInternal(String path, Supplier<Optional<String>> jsonSupplier) {
+    private JsonPatchDocument appendAddInternal(String path, Option<String> rawJsonOption) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.ADD, null, path, jsonSupplier.get());
+        return appendOperation(JsonPatchOperationKind.ADD, null, path, rawJsonOption);
     }
 
     /**
@@ -113,7 +113,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplace#String-Object}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendReplace#String-Object}
      *
      * @param path The path to replace.
      * @param value The value will be serialized and used as the replacement.
@@ -121,7 +121,7 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendReplace(String path, Object value) {
-        return appendReplaceInternal(path, () -> serializeValue(value));
+        return appendReplaceInternal(path, serializeValue(value));
     }
 
     /**
@@ -131,7 +131,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendReplaceRaw#String-String}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendReplaceRaw#String-String}
      *
      * @param path The path to replace.
      * @param rawJson The raw JSON value that will be used as the replacement.
@@ -139,13 +139,13 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendReplaceRaw(String path, String rawJson) {
-        return appendReplaceInternal(path, () -> Optional.ofNullable(rawJson));
+        return appendReplaceInternal(path, Option.of(rawJson));
     }
 
-    private JsonPatchDocument appendReplaceInternal(String path, Supplier<Optional<String>> jsonSupplier) {
+    private JsonPatchDocument appendReplaceInternal(String path, Option<String> rawJsonOption) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, jsonSupplier.get());
+        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, rawJsonOption);
     }
 
     /**
@@ -155,7 +155,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendCopy#String-String}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendCopy#String-String}
      *
      * @param from The path to copy from.
      * @param path The path to copy to.
@@ -166,7 +166,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.COPY, from, path, null);
+        return appendOperation(JsonPatchOperationKind.COPY, from, path, Option.uninitialized());
     }
 
     /**
@@ -178,7 +178,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendMove#String-String}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendMove#String-String}
      *
      * @param from The path to move from.
      * @param path The path to move to.
@@ -189,7 +189,7 @@ public class JsonPatchDocument {
         Objects.requireNonNull(from, "'from' cannot be null.");
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.MOVE, from, path, null);
+        return appendOperation(JsonPatchOperationKind.MOVE, from, path, Option.uninitialized());
     }
 
     /**
@@ -199,7 +199,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendRemove#String}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendRemove#String}
      *
      * @param path The path to remove.
      * @return The updated JsonPatchDocument object.
@@ -208,7 +208,7 @@ public class JsonPatchDocument {
     public JsonPatchDocument appendRemove(String path) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.REMOVE, null, path, null);
+        return appendOperation(JsonPatchOperationKind.REMOVE, null, path, Option.uninitialized());
     }
 
     /**
@@ -218,7 +218,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTest#String-Object}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendTest#String-Object}
      *
      * @param path The path to test.
      * @param value The value that will be serialized and used to test against.
@@ -226,7 +226,7 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendTest(String path, Object value) {
-        return appendTestInternal(path, () -> serializeValue(value));
+        return appendTestInternal(path, serializeValue(value));
     }
 
     /**
@@ -236,7 +236,7 @@ public class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.experimental.jsonpatch.JsonPatchDocument.appendTestRaw#String-String}
+     * {@codesnippet com.azure.core.util.jsonpatch.JsonPatchDocument.appendTestRaw#String-String}
      *
      * @param path The path to test.
      * @param rawJson The raw JSON value that will be used to test against.
@@ -244,38 +244,48 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendTestRaw(String path, String rawJson) {
-        return appendTestInternal(path, () -> Optional.ofNullable(rawJson));
+        return appendTestInternal(path, Option.of(rawJson));
     }
 
-    private JsonPatchDocument appendTestInternal(String path, Supplier<Optional<String>> jsonSupplier) {
+    private JsonPatchDocument appendTestInternal(String path, Option<String> rawJsonOption) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.TEST, null, path, jsonSupplier.get());
+        return appendOperation(JsonPatchOperationKind.TEST, null, path, rawJsonOption);
     }
 
-    private Optional<String> serializeValue(Object value) {
+    private Option<String> serializeValue(Object value) {
         if (value == null) {
-            return Optional.empty();
+            return Option.empty();
         }
 
         String rawValue;
         try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
             if (serializer == null) {
-                rawValue = MAPPER.writeValueAsString(value);
+                if (defaultSerializer == null) {
+                    synchronized (SERIALIZER_INSTANTIATION_SYNCHRONIZER) {
+                        if (defaultSerializer == null) {
+                            defaultSerializer = JsonSerializerProviders.createInstance();
+                        }
+                    }
+                }
+
+                defaultSerializer.serialize(outputStream, value);
             } else {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 serializer.serialize(outputStream, value);
-                rawValue = outputStream.toString("UTF-8");
             }
+
+            rawValue = outputStream.toString("UTF-8");
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
 
-        return Optional.of(rawValue);
+        return Option.of(rawValue);
     }
 
     private JsonPatchDocument appendOperation(JsonPatchOperationKind operationKind, String from, String path,
-        Optional<String> optionalValue) {
+        Option<String> optionalValue) {
         operations.add(new JsonPatchOperation(operationKind, from, path, optionalValue));
         return this;
     }

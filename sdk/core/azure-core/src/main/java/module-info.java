@@ -22,6 +22,7 @@ module com.azure.core {
     exports com.azure.core.http.policy;
     exports com.azure.core.http.rest;
     exports com.azure.core.util;
+    exports com.azure.core.util.jsonpatch;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.paging;
     exports com.azure.core.util.polling;
@@ -31,6 +32,7 @@ module com.azure.core {
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
+    opens com.azure.core.util.jsonpatch to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
