@@ -238,8 +238,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
             .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
             .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
                 ? null : finalDataFeedOptions.getAccessMode().toString()))
-            .setViewers(finalDataFeedOptions.getViewers())
-            .setAdmins(finalDataFeedOptions.getAdmins())
+            .setViewers(finalDataFeedOptions.getViewerEmails())
+            .setAdmins(finalDataFeedOptions.getAdminEmails())
             .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(createDataFeedResponse -> {
                 final String dataFeedId =
@@ -365,8 +365,8 @@ public class MetricsAdvisorAdministrationAsyncClient {
                 .setFillMissingPointForAdValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
                 .setViewMode(DataFeedDetailPatchViewMode.fromString(dataFeedOptions.getAccessMode() == null
                     ? null : dataFeedOptions.getAccessMode().toString()))
-                .setViewers(dataFeedOptions.getViewers())
-                .setAdmins(dataFeedOptions.getAdmins())
+                .setViewers(dataFeedOptions.getViewerEmails())
+                .setAdmins(dataFeedOptions.getAdminEmails())
                 .setStatus(DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString()))
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));

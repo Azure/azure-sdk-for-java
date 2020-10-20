@@ -82,8 +82,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
             .forEach(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertEquals(SERIES_KEY_FILTER, metricSeriesData.getSeriesKey().asMap());
-                assertNotNull(metricSeriesData.getTimestampList());
-                assertNotNull(metricSeriesData.getValueList());
+                assertNotNull(metricSeriesData.getTimestamps());
+                assertNotNull(metricSeriesData.getMetricValues());
             });
     }
 

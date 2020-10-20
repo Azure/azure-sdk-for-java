@@ -21,7 +21,7 @@ import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
-import com.azure.ai.metricsadvisor.models.ListValuesOfDimensionWithAnomaliesOptions;
+import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricSeriesData;
@@ -425,7 +425,7 @@ public class MetricsAdvisorClient {
      * Fetch the values of a dimension that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listDimensionValuesWithAnomalies#String-String-ListDimensionValuesWithAnomaliesOptions}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
@@ -438,11 +438,11 @@ public class MetricsAdvisorClient {
      * or {@code options} or {@code options.startTime} or {@code options.endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listValuesOfDimensionWithAnomalies(
+    public PagedIterable<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options) {
-        return listValuesOfDimensionWithAnomalies(detectionConfigurationId,
+        ListDimensionValuesWithAnomaliesOptions options) {
+        return listDimensionValuesWithAnomalies(detectionConfigurationId,
             dimensionName, options, Context.NONE);
     }
 
@@ -450,7 +450,7 @@ public class MetricsAdvisorClient {
      * Fetch the values of a dimension that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listDimensionValuesWithAnomalies#String-String-ListDimensionValuesWithAnomaliesOptions-Context}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
@@ -464,11 +464,11 @@ public class MetricsAdvisorClient {
      * or {@code options} or {@code options.startTime} or {@code options.endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listValuesOfDimensionWithAnomalies(
+    public PagedIterable<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options, Context context) {
-        return new PagedIterable<>(client.listValuesOfDimensionWithAnomalies(detectionConfigurationId,
+        ListDimensionValuesWithAnomaliesOptions options, Context context) {
+        return new PagedIterable<>(client.listDimensionValuesWithAnomalies(detectionConfigurationId,
             dimensionName, options, context == null ? Context.NONE : context));
     }
 

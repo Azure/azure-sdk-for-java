@@ -16,10 +16,10 @@ import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataSourceMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.Dimension;
 import com.azure.ai.metricsadvisor.models.EmailHook;
@@ -104,7 +104,7 @@ public class ReadmeSamples {
                         .setAutoRollup(DataFeedAutoRollUpMethod.SUM, Arrays.asList("cost"), "__CUSTOM_SUM__"))
                 .setMissingDataPointFillSettings(
                     new DataFeedMissingDataPointFillSettings()
-                        .setFillType(DataSourceMissingDataPointFillType.SMART_FILLING))
+                        .setFillType(DataFeedMissingDataPointFillType.SMART_FILLING))
                 .setAccessMode(DataFeedAccessMode.PUBLIC));
 
         System.out.printf("Data feed Id : %s%n", createdSqlDataFeed.getId());
@@ -219,7 +219,7 @@ public class ReadmeSamples {
                             new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
                                 MetricAnomalyAlertScope.forWholeSeries())
                                 .setAlertConditions(new MetricAnomalyAlertConditions()
-                                    .setSeverityCondition(new SeverityCondition()
+                                    .setSeverityRangeCondition(new SeverityCondition()
                                         .setMaxAlertSeverity(Severity.HIGH)))
                         ))
                     .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)

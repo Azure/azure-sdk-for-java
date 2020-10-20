@@ -52,7 +52,7 @@ public final class MetricAnomalyAlertConditions {
      * @return The MetricAnomalyAlertConditions object itself.
      */
     public MetricAnomalyAlertConditions setSeverityCondition(Severity min, Severity max) {
-        return setSeverityCondition(new SeverityCondition()
+        return setSeverityRangeCondition(new SeverityCondition()
             .setMinAlertSeverity(min)
             .setMaxAlertSeverity(max));
     }
@@ -64,7 +64,7 @@ public final class MetricAnomalyAlertConditions {
      * @param severityCondition The condition based on severity of anomalies.
      * @return The MetricAnomalyAlertConditions object itself.
      */
-    public MetricAnomalyAlertConditions setSeverityCondition(SeverityCondition severityCondition) {
+    public MetricAnomalyAlertConditions setSeverityRangeCondition(SeverityCondition severityCondition) {
         this.severityCondition = severityCondition;
         return this;
     }

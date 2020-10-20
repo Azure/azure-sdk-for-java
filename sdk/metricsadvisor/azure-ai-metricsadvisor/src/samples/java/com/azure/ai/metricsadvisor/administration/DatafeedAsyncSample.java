@@ -85,14 +85,14 @@ public class DatafeedAsyncSample {
         Mono<DataFeed> updateDataFeedMono = fetchDataFeedMono
             .flatMap(dataFeed -> {
                 return advisorAdministrationAsyncClient.updateDataFeed(dataFeed
-                    .setOptions(new DataFeedOptions().setAdmins(Arrays.asList("admin1@admin.com"))))
+                    .setOptions(new DataFeedOptions().setAdminEmails(Arrays.asList("admin1@admin.com"))))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating data feed: %s%n", dataFeed.getId()))
                     .doOnSuccess(config -> {
 
 
                         System.out.printf("Updated data feed%n");
-                        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdmins());
+                        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
                     });
             });
 

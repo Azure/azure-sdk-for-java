@@ -223,7 +223,7 @@ public final class AlertConfigurationTransforms {
                     || innerMetricAlertConfiguration.getValueFilter() != null) {
                     MetricAnomalyAlertConditions alertConditions = new MetricAnomalyAlertConditions();
                     // Set severity based condition.
-                    alertConditions.setSeverityCondition(innerMetricAlertConfiguration.getSeverityFilter());
+                    alertConditions.setSeverityRangeCondition(innerMetricAlertConfiguration.getSeverityFilter());
                     // Set boundary based condition.
                     ValueCondition innerValueCondition = innerMetricAlertConfiguration.getValueFilter();
                     if (innerValueCondition != null) {

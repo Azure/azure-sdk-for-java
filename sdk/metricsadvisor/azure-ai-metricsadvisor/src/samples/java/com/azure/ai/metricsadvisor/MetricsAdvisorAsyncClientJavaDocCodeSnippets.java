@@ -11,6 +11,7 @@ import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
+import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
@@ -19,7 +20,6 @@ import com.azure.ai.metricsadvisor.models.ListMetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
-import com.azure.ai.metricsadvisor.models.ListValuesOfDimensionWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 import com.azure.ai.metricsadvisor.models.MetricChangePointFeedback;
 import com.azure.ai.metricsadvisor.models.MetricCommentFeedback;
@@ -124,9 +124,9 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         metricAdvisorAsyncClient.listMetricSeriesData(metricId, seriesKeyFilter, options)
             .subscribe(metricSeriesData -> {
                 System.out.println("List of data points for this series:");
-                System.out.println(metricSeriesData.getValueList());
+                System.out.println(metricSeriesData.getMetricValues());
                 System.out.println("Timestamps of the data related to this time series:");
-                System.out.println(metricSeriesData.getTimestampList());
+                System.out.println(metricSeriesData.getTimestamps());
                 System.out.printf("Series Key:");
                 System.out.println(metricSeriesData.getSeriesKey().asMap());
             });
@@ -263,25 +263,25 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listValuesOfDimensionWithAnomalies(String, String, ListValuesOfDimensionWithAnomaliesOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listDimensionValuesWithAnomalies(String, String, ListDimensionValuesWithAnomaliesOptions)}.
      */
     public void listValuesOfDimensionWithAnomalies() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-ListDimensionValuesWithAnomaliesOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final String dimensionName = "Dim1";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final ListValuesOfDimensionWithAnomaliesOptions options
-            = new ListValuesOfDimensionWithAnomaliesOptions(startTime, endTime)
+        final ListDimensionValuesWithAnomaliesOptions options
+            = new ListDimensionValuesWithAnomaliesOptions(startTime, endTime)
             .setTop(10);
 
-        metricAdvisorAsyncClient.listValuesOfDimensionWithAnomalies(detectionConfigurationId,
+        metricAdvisorAsyncClient.listDimensionValuesWithAnomalies(detectionConfigurationId,
             dimensionName,
             options)
             .subscribe(dimensionValue -> {
                 System.out.printf("Dimension Value: %s%n", dimensionValue);
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-ListDimensionValuesWithAnomaliesOptions
     }
 
     /**
@@ -610,15 +610,15 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         enrichedDataFlux.subscribe(enrichedData -> {
             System.out.printf("Series Key %s%n:", enrichedData.getSeriesKey().asMap());
             System.out.println("List of data points for this series");
-            System.out.println(enrichedData.getValueList());
+            System.out.println(enrichedData.getMetricValues());
             System.out.println("Timestamps of the data related to this time series:");
-            System.out.println(enrichedData.getTimestampList());
+            System.out.println(enrichedData.getTimestamps());
             System.out.println("The expected values of the data points calculated by the smart detector:");
-            System.out.println(enrichedData.getExpectedValueList());
+            System.out.println(enrichedData.getExpectedMetricValues());
             System.out.println("The lower boundary values of the data points calculated by smart detector:");
-            System.out.println(enrichedData.getLowerBoundaryList());
+            System.out.println(enrichedData.getLowerBoundaryValues());
             System.out.println("the periods calculated for the data points in the time series:");
-            System.out.println(enrichedData.getPeriodList());
+            System.out.println(enrichedData.getPeriods());
         });
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime
     }

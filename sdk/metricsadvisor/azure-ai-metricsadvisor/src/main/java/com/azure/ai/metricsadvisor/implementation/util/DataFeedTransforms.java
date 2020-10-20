@@ -61,7 +61,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.DataSourceMissingDataPointFillType;
+import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
 import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
 import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
@@ -110,17 +110,17 @@ public final class DataFeedTransforms {
                 .setDescription(dataFeedDetail.getDataFeedDescription())
                 .setMissingDataPointFillSettings(new DataFeedMissingDataPointFillSettings()
                     .setCustomFillValue(dataFeedDetail.getFillMissingPointValue())
-                    .setFillType(DataSourceMissingDataPointFillType.fromString(
+                    .setFillType(DataFeedMissingDataPointFillType.fromString(
                         dataFeedDetail.getFillMissingPointType().toString())))
                 .setAccessMode(DataFeedAccessMode.fromString(dataFeedDetail.getViewMode().toString()))
-                .setAdmins(dataFeedDetail.getAdmins())
+                .setAdminEmails(dataFeedDetail.getAdmins())
                 .setRollupSettings(new DataFeedRollupSettings()
                     .setAlreadyRollup(dataFeedDetail.getAllUpIdentification())
                     .setAutoRollup(DataFeedAutoRollUpMethod.fromString(dataFeedDetail.getRollUpMethod().toString()),
                         dataFeedDetail.getRollUpColumns())
                     .setRollupType(DataFeedRollupType.fromString(dataFeedDetail.getNeedRollup().toString())))
                 .setActionLinkTemplate(dataFeedDetail.getActionLinkTemplate())
-                .setViewers(dataFeedDetail.getViewers()));
+                .setViewerEmails(dataFeedDetail.getViewers()));
 
         DataFeedHelper.setId(dataFeed, dataFeedDetail.getDataFeedId().toString());
         DataFeedHelper.setCreatedTime(dataFeed, dataFeedDetail.getCreatedTime());

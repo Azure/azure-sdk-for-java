@@ -20,7 +20,7 @@ public final class ValuesOfDimensionWithAnomaliesTest extends ValuesOfDimensionW
                                                    MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
-        PagedIterable<String> dimensionValuesIterable = client.listValuesOfDimensionWithAnomalies(
+        PagedIterable<String> dimensionValuesIterable = client.listDimensionValuesWithAnomalies(
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.detectionConfigurationId,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.dimensionName,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options);

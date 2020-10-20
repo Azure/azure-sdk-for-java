@@ -29,9 +29,9 @@ public class ListSeriesDataForMetricAsyncSample {
             new ListMetricSeriesDataOptions(startTime, endTime))
             .doOnNext(metricSeriesData -> {
                 System.out.println("List of data points for this series:");
-                System.out.println(metricSeriesData.getValueList());
+                System.out.println(metricSeriesData.getMetricValues());
                 System.out.println("Timestamps of the data related to this time series:");
-                System.out.println(metricSeriesData.getTimestampList());
+                System.out.println(metricSeriesData.getTimestamps());
                 System.out.printf("Series Key: %s%n", metricSeriesData.getSeriesKey().asMap());
             }).blockLast();
             /*

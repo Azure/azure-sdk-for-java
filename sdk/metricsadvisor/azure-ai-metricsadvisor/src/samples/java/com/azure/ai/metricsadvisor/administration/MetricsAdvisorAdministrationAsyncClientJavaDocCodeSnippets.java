@@ -491,7 +491,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Hook Description: %s%n", emailHook.getDescription());
                         System.out.printf("Hook External Link: %s%n", emailHook.getExternalLink());
                         System.out.printf("Hook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
-                        System.out.printf("Hook Admins: %s%n", String.join(",", emailHook.getAdmins()));
+                        System.out.printf("Hook Admins: %s%n", String.join(",", emailHook.getAdminEmails()));
                     } else if (hook instanceof WebHook) {
                         WebHook webHook = (WebHook) hook;
                         System.out.printf("Hook Id: %s%n", webHook.getId());
@@ -500,7 +500,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Hook External Link: %s%n", webHook.getExternalLink());
                         System.out.printf("Hook Endpoint: %s%n", webHook.getEndpoint());
                         System.out.printf("Hook Headers: %s%n", webHook.getHttpHeaders());
-                        System.out.printf("Hook Admins: %s%n", String.join(",", webHook.getAdmins()));
+                        System.out.printf("Hook Admins: %s%n", String.join(",", webHook.getAdminEmails()));
                     }
                 }
             });
@@ -1155,7 +1155,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityCondition(new SeverityCondition().setMaxAlertSeverity(Severity.HIGH)))))
+                            .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(Severity.HIGH)))))
                 .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
                 .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)))
             .subscribe(anomalyAlertConfiguration -> {
@@ -1190,7 +1190,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityCondition(new SeverityCondition().setMaxAlertSeverity(Severity.HIGH)))))
+                            .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(Severity.HIGH)))))
                 .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
                 .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)))
             .subscribe(alertConfigurationResponse -> {

@@ -48,21 +48,22 @@ public final class ListAnomaliesDetectedFilter {
      * @param max The maximum severity.
      * @return The ListAnomaliesDetectedFilter object itself.
      */
-    public ListAnomaliesDetectedFilter setSeverity(Severity min, Severity max) {
+    public ListAnomaliesDetectedFilter setSeverityRange(Severity min, Severity max) {
         this.minSeverity = min;
         this.maxSeverity = max;
         return this;
     }
 
     /**
-     * Sets the time series keys, indicating that retrieve the anomalies occurred
-     * in these time series.
+     * Sets the severity range to be the equal and over the specified severity for the
+     * anomalies to be retrieved.
      *
-     * @param seriesKeys The series keys.
+     * @param minSeverity The minimum severity.
      * @return The ListAnomaliesDetectedFilter object itself.
      */
-    public ListAnomaliesDetectedFilter setSeriesKeys(List<DimensionKey> seriesKeys) {
-        this.seriesKeys = seriesKeys;
+    public ListAnomaliesDetectedFilter setSeverity(Severity minSeverity) {
+        this.minSeverity = minSeverity;
+        this.maxSeverity = minSeverity;
         return this;
     }
 }

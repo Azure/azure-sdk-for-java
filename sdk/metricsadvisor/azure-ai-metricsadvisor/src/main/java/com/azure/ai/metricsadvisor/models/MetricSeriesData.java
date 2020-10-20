@@ -23,12 +23,12 @@ public final class MetricSeriesData {
     /*
      * timestamps of the data related to this time series
      */
-    private List<OffsetDateTime> timestampList;
+    private List<OffsetDateTime> timestamps;
 
     /*
      * values of the data related to this time series
      */
-    private List<Double> valueList;
+    private List<Double> metricValues;
 
     static {
         MetricSeriesDataHelper.setAccessor(new MetricSeriesDataHelper.MetricSeriesDataAccessor() {
@@ -55,7 +55,7 @@ public final class MetricSeriesData {
     }
 
     /**
-     * Get the metricId property: metric unique id.
+     * Get the metric unique id.
      *
      * @return the metricId value.
      */
@@ -76,21 +76,21 @@ public final class MetricSeriesData {
     }
 
     /**
-     * Get the timestampList property: timestamps of the data related to this time series.
+     * Get the timestamps of the data related to this time series.
      *
      * @return the timestampList value.
      */
-    public List<OffsetDateTime> getTimestampList() {
-        return this.timestampList;
+    public List<OffsetDateTime> getTimestamps() {
+        return this.timestamps;
     }
 
     /**
-     * Get the valueList property: values of the data related to this time series.
+     * Get the values of the data related to this time series.
      *
      * @return the valueList value.
      */
-    public List<Double> getValueList() {
-        return this.valueList;
+    public List<Double> getMetricValues() {
+        return this.metricValues;
     }
 
     void setMetricId(String metricId) {

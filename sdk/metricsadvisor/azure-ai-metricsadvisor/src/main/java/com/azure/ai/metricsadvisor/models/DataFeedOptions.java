@@ -5,6 +5,7 @@ package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,8 +17,8 @@ public final class DataFeedOptions {
     private DataFeedRollupSettings dataFeedRollupSettings;
     private DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings;
     private DataFeedAccessMode dataFeedAccessMode;
-    private List<String> admins;
-    private List<String> viewers;
+    private List<String> adminEmails;
+    private List<String> viewerEmails;
     private String actionLinkTemplate;
 
     /**
@@ -85,44 +86,44 @@ public final class DataFeedOptions {
     }
 
     /**
-     * Get the admins property: data feed administrator.
+     * Get the list of data feed administrator emails.
      *
-     * @return the admins value.
+     * @return the adminEmails value.
      */
-    public List<String> getAdmins() {
-        return this.admins;
+    public List<String> getAdminEmails() {
+        return Collections.unmodifiableList(this.adminEmails);
     }
 
     /**
-     * Set the admins property: data feed administrator.
+     * Set the list of data feed administrator emails.
      *
-     * @param admins the admins value to set.
+     * @param adminEmails the adminEmails value to set.
      *
      * @return the DataFeedOptions object itself.
      */
-    public DataFeedOptions setAdmins(List<String> admins) {
-        this.admins = admins;
+    public DataFeedOptions setAdminEmails(List<String> adminEmails) {
+        this.adminEmails = adminEmails;
         return this;
     }
 
     /**
-     * Get the viewers property: data feed viewer.
+     * Get the list of data feed viewer emails.
      *
-     * @return the viewers value.
+     * @return the viewerEmails value.
      */
-    public List<String> getViewers() {
-        return this.viewers;
+    public List<String> getViewerEmails() {
+        return Collections.unmodifiableList(this.viewerEmails);
     }
 
     /**
-     * Set the viewers property: data feed viewer.
+     * Set the list of data feed viewer emails.
      *
-     * @param viewers the viewers value to set.
+     * @param viewerEmails the viewerEmails value to set.
      *
      * @return the DataFeedOptions object itself.
      */
-    public DataFeedOptions setViewers(List<String> viewers) {
-        this.viewers = viewers;
+    public DataFeedOptions setViewerEmails(List<String> viewerEmails) {
+        this.viewerEmails = viewerEmails;
         return this;
     }
 

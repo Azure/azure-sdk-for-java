@@ -50,10 +50,10 @@ public final class DimensionKey {
      * Creates a new instance of DimensionKey that is initialized with
      * the provided map of dimension name-value pairs.
      *
-     * @param nameValueMap The map of dimension name values.
+     * @param dimensionNameValue The map of dimension name values.
      */
-    public DimensionKey(Map<String, String> nameValueMap) {
-        this.dimensions =  new HashMap<>(nameValueMap);
+    public DimensionKey(Map<String, String> dimensionNameValue) {
+        this.dimensions =  new HashMap<>(dimensionNameValue);
     }
 
     /**

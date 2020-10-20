@@ -46,6 +46,7 @@ import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
+import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.ListIncidentsDetectedOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
@@ -53,7 +54,6 @@ import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
-import com.azure.ai.metricsadvisor.models.ListValuesOfDimensionWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback;
 import com.azure.ai.metricsadvisor.models.MetricChangePointFeedback;
 import com.azure.ai.metricsadvisor.models.MetricCommentFeedback;
@@ -836,7 +836,7 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the values of a dimension that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listValuesOfDimensionWithAnomalies#String-String-ListValuesOfDimensionWithAnomaliesOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listDimensionValuesWithAnomalies#String-String-ListDimensionValuesWithAnomaliesOptions}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
@@ -848,10 +848,10 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code options} or {@code options.startTime} or {@code options.endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listValuesOfDimensionWithAnomalies(
+    public PagedFlux<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options) {
+        ListDimensionValuesWithAnomaliesOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
@@ -869,10 +869,10 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<String> listValuesOfDimensionWithAnomalies(
+    PagedFlux<String> listDimensionValuesWithAnomalies(
         String detectionConfigurationId,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options,
+        ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         return new PagedFlux<>(() ->
             listValuesOfDimensionWithAnomaliesSinglePageAsync(detectionConfigurationId,
@@ -889,7 +889,7 @@ public class MetricsAdvisorAsyncClient {
     private Mono<PagedResponse<String>> listValuesOfDimensionWithAnomaliesSinglePageAsync(
         String detectionConfigurationId,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options,
+        ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
         Objects.requireNonNull(dimensionName, "'dimensionName' is required.");
@@ -921,7 +921,7 @@ public class MetricsAdvisorAsyncClient {
     private Mono<PagedResponse<String>> listValuesOfDimensionWithAnomaliesNextPageAsync(
         String nextPageLink,
         String dimensionName,
-        ListValuesOfDimensionWithAnomaliesOptions options,
+        ListDimensionValuesWithAnomaliesOptions options,
         Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();

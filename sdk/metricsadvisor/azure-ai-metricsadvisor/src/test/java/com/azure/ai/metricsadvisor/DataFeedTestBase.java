@@ -20,7 +20,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
-import com.azure.ai.metricsadvisor.models.DataSourceMissingDataPointFillType;
+import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.Dimension;
 import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
 import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
@@ -335,8 +335,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         if (expectedOptions != null) {
             assertEquals(expectedOptions.getDescription(), actualOptions.getDescription());
             assertEquals(expectedOptions.getActionLinkTemplate(), actualOptions.getActionLinkTemplate());
-            assertIterableEquals(expectedOptions.getAdmins(), actualOptions.getAdmins());
-            assertIterableEquals(expectedOptions.getViewers(), actualOptions.getViewers());
+            assertIterableEquals(expectedOptions.getAdminEmails(), actualOptions.getAdminEmails());
+            assertIterableEquals(expectedOptions.getViewerEmails(), actualOptions.getViewerEmails());
             assertNotNull(actualOptions.getAccessMode());
             if (expectedOptions.getAccessMode() != null) {
                 assertEquals(expectedOptions.getAccessMode(), actualOptions.getAccessMode());
@@ -350,7 +350,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             validateRollUpSettings(new DataFeedRollupSettings().setRollupType(DataFeedRollupType.NO_ROLLUP),
                 actualOptions.getRollupSettings());
             validateFillSettings(new DataFeedMissingDataPointFillSettings()
-                    .setFillType(DataSourceMissingDataPointFillType.PREVIOUS_VALUE).setCustomFillValue(0.0),
+                    .setFillType(DataFeedMissingDataPointFillType.PREVIOUS_VALUE).setCustomFillValue(0.0),
                 actualOptions.getMissingDataPointFillSettings());
         }
     }

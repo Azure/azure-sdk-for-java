@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * Describes the additional parameters for the API to list values of a dimension that have anomalies.
  */
-public final class ListValuesOfDimensionWithAnomaliesOptions {
+public final class ListDimensionValuesWithAnomaliesOptions {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
     private Integer top;
@@ -16,12 +16,12 @@ public final class ListValuesOfDimensionWithAnomaliesOptions {
     private DimensionKey dimensionToFilter;
 
     /**
-     * Creates a new instance of ListValuesOfDimensionWithAnomaliesOptions.
+     * Creates a new instance of ListDimensionValuesWithAnomaliesOptions.
      *
      * @param startTime The start time of the time range within which the anomalies were identified.
      * @param endTime The end time of the time range within which the anomalies were identified.
      */
-    public ListValuesOfDimensionWithAnomaliesOptions(OffsetDateTime startTime,
+    public ListDimensionValuesWithAnomaliesOptions(OffsetDateTime startTime,
                                                      OffsetDateTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
@@ -77,9 +77,9 @@ public final class ListValuesOfDimensionWithAnomaliesOptions {
      * Sets limit indicating the number of items to be included in a service returned page.
      *
      * @param top The top value.
-     * @return The ListValuesOfDimensionWithAnomaliesOptions object itself.
+     * @return The ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListValuesOfDimensionWithAnomaliesOptions setTop(int top) {
+    public ListDimensionValuesWithAnomaliesOptions setTop(int top) {
         this.top = top;
         return this;
     }
@@ -89,9 +89,9 @@ public final class ListValuesOfDimensionWithAnomaliesOptions {
      * in the returned result.
      *
      * @param skip The skip value.
-     * @return ListValuesOfDimensionWithAnomaliesOptions object itself.
+     * @return ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListValuesOfDimensionWithAnomaliesOptions setSkip(int skip) {
+    public ListDimensionValuesWithAnomaliesOptions setSkip(int skip) {
         this.skip = skip;
         return this;
     }
@@ -107,9 +107,9 @@ public final class ListValuesOfDimensionWithAnomaliesOptions {
      *
      * @param dimensionToFilter The dimension filter.
      *
-     * @return ListValuesOfDimensionWithAnomaliesOptions object itself.
+     * @return ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListValuesOfDimensionWithAnomaliesOptions setDimensionToFilter(DimensionKey dimensionToFilter) {
+    public ListDimensionValuesWithAnomaliesOptions setDimensionToFilter(DimensionKey dimensionToFilter) {
         this.dimensionToFilter = dimensionToFilter;
         return this;
     }

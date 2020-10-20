@@ -16,13 +16,13 @@ import java.util.List;
  */
 public final class MetricEnrichedSeriesData {
     private DimensionKey seriesKey;
-    private List<OffsetDateTime> timestampList;
-    private List<Double> valueList;
-    private List<Boolean> isAnomalyList;
-    private List<Integer> periodList;
-    private List<Double> expectedValueList;
-    private List<Double> lowerBoundaryList;
-    private List<Double> upperBoundaryList;
+    private List<OffsetDateTime> timestamps;
+    private List<Double> metricValues;
+    private List<Boolean> isAnomaly;
+    private List<Integer> periods;
+    private List<Double> expectedMetricValues;
+    private List<Double> lowerBoundaryValues;
+    private List<Double> upperBoundaryValues;
 
     static {
         MetricEnrichedSeriesDataHelper
@@ -83,8 +83,8 @@ public final class MetricEnrichedSeriesData {
      *
      * @return The timestamps.
      */
-    public List<OffsetDateTime> getTimestampList() {
-        return Collections.unmodifiableList(this.timestampList);
+    public List<OffsetDateTime> getTimestamps() {
+        return Collections.unmodifiableList(this.timestamps);
     }
 
     /**
@@ -92,8 +92,8 @@ public final class MetricEnrichedSeriesData {
      *
      * @return The values.
      */
-    public List<Double> getValueList() {
-        return Collections.unmodifiableList(this.valueList);
+    public List<Double> getMetricValues() {
+        return Collections.unmodifiableList(this.metricValues);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class MetricEnrichedSeriesData {
      * @return The anomaly statuses.
      */
     public List<Boolean> isAnomalyList() {
-        return Collections.unmodifiableList(this.isAnomalyList);
+        return Collections.unmodifiableList(this.isAnomaly);
     }
 
     /**
@@ -110,8 +110,8 @@ public final class MetricEnrichedSeriesData {
      *
      * @return The periods.
      */
-    public List<Integer> getPeriodList() {
-        return Collections.unmodifiableList(this.periodList);
+    public List<Integer> getPeriods() {
+        return Collections.unmodifiableList(this.periods);
     }
 
     /**
@@ -119,8 +119,8 @@ public final class MetricEnrichedSeriesData {
      *
      * @return The expected values.
      */
-    public List<Double> getExpectedValueList() {
-        return Collections.unmodifiableList(this.expectedValueList);
+    public List<Double> getExpectedMetricValues() {
+        return Collections.unmodifiableList(this.expectedMetricValues);
     }
 
     /**
@@ -128,8 +128,8 @@ public final class MetricEnrichedSeriesData {
      *
      * @return The lower bound values.
      */
-    public List<Double> getLowerBoundaryList() {
-        return Collections.unmodifiableList(this.lowerBoundaryList);
+    public List<Double> getLowerBoundaryValues() {
+        return Collections.unmodifiableList(this.lowerBoundaryValues);
     }
 
     /**
@@ -137,8 +137,8 @@ public final class MetricEnrichedSeriesData {
      *
      * @return The upper bound values.
      */
-    public List<Double> getUpperBoundaryList() {
-        return Collections.unmodifiableList(this.upperBoundaryList);
+    public List<Double> getUpperBoundaryValues() {
+        return Collections.unmodifiableList(this.upperBoundaryValues);
     }
 
     void setSeriesKey(DimensionKey seriesKey) {

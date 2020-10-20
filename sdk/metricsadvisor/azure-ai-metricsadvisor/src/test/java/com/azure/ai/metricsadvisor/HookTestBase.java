@@ -41,7 +41,7 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
         Assertions.assertTrue(hook instanceof EmailHook);
         EmailHook emailHook = (EmailHook) hook;
         Assertions.assertNotNull(emailHook.getId());
-        Assertions.assertNotNull(emailHook.getAdmins());
+        Assertions.assertNotNull(emailHook.getAdminEmails());
         Assertions.assertNotNull(emailHook.getName());
         Assertions.assertEquals(CreateEmailHookInput.INSTANCE.description, emailHook.getDescription());
         Assertions.assertEquals(CreateEmailHookInput.INSTANCE.externalLink, emailHook.getExternalLink());
@@ -80,7 +80,7 @@ public abstract class HookTestBase extends MetricsAdvisorAdministrationClientTes
         Assertions.assertTrue(hook instanceof WebHook);
         WebHook webHook = (WebHook) hook;
         Assertions.assertNotNull(webHook.getId());
-        Assertions.assertNotNull(webHook.getAdmins());
+        Assertions.assertNotNull(webHook.getAdminEmails());
         Assertions.assertNotNull(webHook.getName());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.description, webHook.getDescription());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.externalLink, webHook.getExternalLink());

@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.ListValuesOfDimensionWithAnomaliesOptions;
+import com.azure.ai.metricsadvisor.models.ListDimensionValuesWithAnomaliesOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;

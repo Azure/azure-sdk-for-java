@@ -88,8 +88,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertNotNull(metricSeriesData.getSeriesKey());
                 assertEquals(SERIES_KEY_FILTER, metricSeriesData.getSeriesKey().asMap());
-                assertNotNull(metricSeriesData.getTimestampList());
-                assertNotNull(metricSeriesData.getValueList());
+                assertNotNull(metricSeriesData.getTimestamps());
+                assertNotNull(metricSeriesData.getMetricValues());
             })
             .verifyComplete();
     }
