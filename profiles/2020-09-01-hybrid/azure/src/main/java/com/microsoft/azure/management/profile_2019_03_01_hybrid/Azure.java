@@ -13,79 +13,22 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.appservice.v2016_03_01.BillingMeters;
-import com.microsoft.azure.management.appservice.v2018_02_01.Certificates;
-import com.microsoft.azure.management.appservice.v2018_02_01.DeletedWebApps;
-import com.microsoft.azure.management.appservice.v2018_02_01.Diagnostics;
-import com.microsoft.azure.management.appservice.v2018_02_01.ResourceHealthMetadatas;
-import com.microsoft.azure.management.appservice.v2018_02_01.WebApps;
-import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
-import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
-import com.microsoft.azure.management.compute.v2019_07_01.Disks;
-import com.microsoft.azure.management.compute.v2019_07_01.ResourceSkus;
-import com.microsoft.azure.management.compute.v2019_07_01.Snapshots;
-import com.microsoft.azure.management.compute.v2020_06_01.AvailabilitySets;
-import com.microsoft.azure.management.compute.v2020_06_01.Images;
-import com.microsoft.azure.management.compute.v2020_06_01.Usages;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtensionImages;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineExtensions;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineImages;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineRunCommands;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetExtensions;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetRollingUpgrades;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSetVMs;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineScaleSets;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachineSizes;
-import com.microsoft.azure.management.compute.v2020_06_01.VirtualMachines;
-import com.microsoft.azure.management.dns.v2016_04_01.RecordSets;
-import com.microsoft.azure.management.dns.v2016_04_01.Zones;
-import com.microsoft.azure.management.keyvault.v2019_09_01.Vaults;
-import com.microsoft.azure.management.locks.v2016_09_01.AuthorizationOperations;
-import com.microsoft.azure.management.locks.v2016_09_01.ManagementLocks;
-import com.microsoft.azure.management.monitor.v2015_04_01.EventCategories;
-import com.microsoft.azure.management.monitor.v2017_05_01_preview.DiagnosticSettings;
-import com.microsoft.azure.management.monitor.v2017_05_01_preview.DiagnosticSettingsCategorys;
-import com.microsoft.azure.management.monitor.v2018_01_01.MetricDefinitions;
-import com.microsoft.azure.management.monitor.v2018_01_01.Metrics;
-import com.microsoft.azure.management.network.v2018_11_01.ConnectionMonitors;
-import com.microsoft.azure.management.network.v2018_11_01.DefaultSecurityRules;
-import com.microsoft.azure.management.network.v2018_11_01.InboundNatRules;
-import com.microsoft.azure.management.network.v2018_11_01.LoadBalancerBackendAddressPools;
-import com.microsoft.azure.management.network.v2018_11_01.LoadBalancerFrontendIPConfigurations;
-import com.microsoft.azure.management.network.v2018_11_01.LoadBalancerLoadBalancingRules;
-import com.microsoft.azure.management.network.v2018_11_01.LoadBalancerNetworkInterfaces;
-import com.microsoft.azure.management.network.v2018_11_01.LoadBalancerProbes;
-import com.microsoft.azure.management.network.v2018_11_01.LoadBalancers;
-import com.microsoft.azure.management.network.v2018_11_01.LocalNetworkGateways;
-import com.microsoft.azure.management.network.v2018_11_01.NetworkInterfaceIPConfigurations;
-import com.microsoft.azure.management.network.v2018_11_01.NetworkInterfaceLoadBalancers;
-import com.microsoft.azure.management.network.v2018_11_01.NetworkInterfaces;
-import com.microsoft.azure.management.network.v2018_11_01.NetworkSecurityGroups;
-import com.microsoft.azure.management.network.v2018_11_01.PublicIPAddresses;
-import com.microsoft.azure.management.network.v2018_11_01.RouteFilterRules;
-import com.microsoft.azure.management.network.v2018_11_01.RouteFilters;
-import com.microsoft.azure.management.network.v2018_11_01.RouteTables;
-import com.microsoft.azure.management.network.v2018_11_01.Routes;
-import com.microsoft.azure.management.network.v2018_11_01.SecurityRules;
-import com.microsoft.azure.management.network.v2018_11_01.Subnets;
-import com.microsoft.azure.management.network.v2018_11_01.VirtualNetworkGatewayConnections;
-import com.microsoft.azure.management.network.v2018_11_01.VirtualNetworkGateways;
-import com.microsoft.azure.management.network.v2018_11_01.VirtualNetworkPeerings;
-import com.microsoft.azure.management.network.v2018_11_01.VirtualNetworks;
-import com.microsoft.azure.management.policy.v2016_12_01.PolicyAssignments;
-import com.microsoft.azure.management.policy.v2016_12_01.PolicyDefinitions;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.authorization.v2015_07_01.implementation.AuthorizationManager;
+import com.microsoft.azure.management.commerce.v2015_06_01_preview.implementation.CommerceManager;
+import com.microsoft.azure.management.compute.v2020_06_01.implementation.ComputeManager;
+import com.microsoft.azure.management.databoxedge.v2019_08_01.implementation.DataBoxEdgeManager;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.implementation.EventHubsManager;
+import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.keyvault.v2019_09_01.implementation.KeyVaultManager;
+import com.microsoft.azure.management.locks.v2016_09_01.implementation.LocksManager;
+import com.microsoft.azure.management.monitor.v2018_01_01.implementation.MonitorManager;
+import com.microsoft.azure.management.network.v2018_11_01.implementation.NetworkManager;
+import com.microsoft.azure.management.policy.v2016_12_01.implementation.PolicyManager;
 import com.microsoft.azure.management.resources.v2016_06_01.Subscription;
-import com.microsoft.azure.management.resources.v2016_06_01.Subscriptions;
-import com.microsoft.azure.management.resources.v2016_06_01.Tenants;
-import com.microsoft.azure.management.resources.v2019_10_01.DeploymentOperations;
-import com.microsoft.azure.management.resources.v2019_10_01.Deployments;
-import com.microsoft.azure.management.resources.v2019_10_01.Operations;
-import com.microsoft.azure.management.resources.v2019_10_01.Providers;
-import com.microsoft.azure.management.resources.v2019_10_01.ResourceGroups;
-import com.microsoft.azure.management.resources.v2019_10_01.Resources;
-import com.microsoft.azure.management.resources.v2019_10_01.TagOperations;
-import com.microsoft.azure.management.storage.v2019_06_01.Skus;
-import com.microsoft.azure.management.storage.v2019_06_01.StorageAccounts;
+import com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager;
+import com.microsoft.azure.management.resources.v2019_10_01.implementation.ResourcesManager;
+import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -174,18 +117,9 @@ public final class Azure {
      */
     public interface Authenticated {
         /**
-         * Entry point to subscription management APIs.
-         *
-         * @return Subscriptions interface providing access to subscription management
+         * @return Entry point to subscription manager.
          */
-        Subscriptions subscriptions();
-
-        /**
-         * Entry point to tenant management APIs.
-         *
-         * @return Tenants interface providing access to tenant management
-         */
-        Tenants tenants();
+        com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager subscriptionsManager();
 
         /**
          * Selects a specific subscription for the APIs to work with.
@@ -201,7 +135,7 @@ public final class Azure {
          * <p>
          * The default subscription can be specified inside the authentication file using {@link Azure#authenticate(AzureTokenCredentials)}.
          * If no default subscription has been previously provided, the first subscription as
-         * returned by {@link Authenticated#subscriptions()} will be selected.
+         * returned by {@link Authenticated#subscriptionsManager()} will be selected.
          * @return an authenticated Azure client configured to work with the default subscription
          * @throws CloudException exception thrown from Azure
          * @throws IOException exception thrown from serialization/deserialization
@@ -209,18 +143,9 @@ public final class Azure {
         Azure withDefaultSubscription() throws CloudException, IOException;
 
         /**
-         * Entry point to role definition management APIs.
-         *
-         * @return RoleDefinitions interface providing access to tenant management
+         * @return Entry point to authorization manager.
          */
-        RoleDefinitions roleDefinitions();
-
-        /**
-         * Entry point to role assignment management APIs.
-         *
-         * @return RoleAssignments interface providing access to tenant management
-         */
-        RoleAssignments roleAssignments();
+        AuthorizationManager authorizationManager();
     }
 
     /**
@@ -244,23 +169,13 @@ public final class Azure {
         }
 
         @Override
-        public Subscriptions subscriptions() {
-            return subscriptionManager20160601.subscriptions();
+        public com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager subscriptionsManager() {
+            return subscriptionManager20160601;
         }
 
         @Override
-        public Tenants tenants() {
-            return subscriptionManager20160601.tenants();
-        }
-
-        @Override
-        public RoleDefinitions roleDefinitions() {
-            return authorizationManager20150701.roleDefinitions();
-        }
-
-        @Override
-        public RoleAssignments roleAssignments() {
-            return authorizationManager20150701.roleAssignments();
+        public AuthorizationManager authorizationManager() {
+            return authorizationManager20150701;
         }
 
         @Override
@@ -273,7 +188,7 @@ public final class Azure {
             if (this.defaultSubscription != null) {
                 return withSubscription(this.defaultSubscription);
             } else {
-                PagedList<Subscription> subs = this.subscriptions().list();
+                PagedList<Subscription> subs = this.subscriptionsManager().subscriptions().list();
                 if (!subs.isEmpty()) {
                     return withSubscription(subs.get(0).subscriptionId());
                 } else {
@@ -284,504 +199,158 @@ public final class Azure {
     }
 
     /**
-     * @return Entry point to manage PolicyDefinitions.
+     * @return the subscription id.
      */
-    public PolicyDefinitions policyDefinitions() {
-        return this.policyManager20161201.policyDefinitions();
+    public String subscriptionId() {
+        return subscriptionId;
     }
 
     /**
-     * @return Entry point to manage PolicyAssignments.
+     * @return Entry point to locks manager.
      */
-    public PolicyAssignments policyAssignments() {
-        return this.policyManager20161201.policyAssignments();
+    public LocksManager locksManager() {
+        return this.locksManager20160901;
     }
 
     /**
-     * @return Entry point to manage Deployments.
+     * @return Entry point to policy manager.
      */
-    public Deployments deployments() {
-        return this.resourceManager20191001.deployments();
+    public PolicyManager policyManager() {
+        return this.policyManager20161201;
     }
 
     /**
-     * @return Entry point to manage Providers.
+     * @return Entry point to authorization manager.
      */
-    public Providers resourceProviders() {
-        return this.resourceManager20191001.providers();
+    public AuthorizationManager authorizationManager() {
+        return this.authenticated.authorizationManager();
     }
 
     /**
-     * @return Entry point to manage Resources.
+     * @return Entry point to commerce manager.
      */
-    public Resources resources() {
-        return this.resourceManager20191001.resources();
+    public CommerceManager commerceManager() {
+        return this.commerceManager20150601;
     }
 
     /**
-     * @return Entry point to manage ResourceGroups.
+     * @return Entry point to compute manager.
      */
-    public ResourceGroups resourceGroups() {
-        return this.resourceManager20191001.resourceGroups();
+    public ComputeManager computeManager() {
+        return this.computeManager20200601;
     }
 
     /**
-     * @return Entry point to manage Tags.
+     * @return Entry point to disk manager.
      */
-    public TagOperations tags() {
-        return this.resourceManager20191001.tagOperations();
+    public com.microsoft.azure.management.compute.v2019_07_01.implementation.ComputeManager diskManager() {
+        return this.computeManager20190701;
     }
 
     /**
-     * @return Entry point to manage DeploymentOperations.
+     * @return Entry point to data box edge manager.
      */
-    public DeploymentOperations deploymentOperations() {
-        return this.resourceManager20191001.deploymentOperations();
+    public DataBoxEdgeManager dataBoxEdgeManager() {
+        return this.dataBoxEdgeManager20190801;
     }
 
     /**
-     * @return Entry point to manage resource Operations.
+     * @return Entry point to iot hub manager.
      */
-    public Operations resourceOperations() { return this.resourceManager20191001.operations(); }
-
-    /**
-     * @return Entry point to manage AvailabilitySets.
-     */
-    public AvailabilitySets availabilitySets() {
-        return this.computeManager20200601.availabilitySets();
+    public IoTHubManager ioTHubManager() {
+        return this.ioTHubManager20190701;
     }
 
     /**
-     * @return Entry point to manage computer operations.
+     * @return Entry point to event hubs manager.
      */
-    public com.microsoft.azure.management.compute.v2020_06_01.Operations computerOperations() { return this.computeManager20200601.operations(); }
-
-    /**
-     * @return Entry point to manage VirtualMachineExtensionImages.
-     */
-    public VirtualMachineExtensionImages virtualMachineExtensionImages() {
-        return this.computeManager20200601.virtualMachineExtensionImages();
+    public EventHubsManager eventHubsManager() {
+        return this.eventHubsManager20180101;
     }
 
     /**
-     * @return Entry point to manage VirtualMachineExtensions.
+     * @return Entry point to metrics manager.
      */
-    public VirtualMachineExtensions virtualMachineExtensions() {
-        return this.computeManager20200601.virtualMachineExtensions();
+    public MonitorManager metricsManager() {
+        return this.monitorManager20180101;
     }
 
     /**
-     * @return Entry point to manage VirtualMachines.
+     * @return Entry point to diagnostics manager.
      */
-    public VirtualMachines virtualMachines() {
-        return this.computeManager20200601.virtualMachines();
+    public com.microsoft.azure.management.monitor.v2017_05_01_preview.implementation.MonitorManager diagnosticsManager() {
+        return this.monitorManager20170501preview;
     }
 
     /**
-     * @return Entry point to manage VirtualMachineImages.
+     * @return Entry point to event categories manager.
      */
-    public VirtualMachineImages virtualMachineImages() {
-        return this.computeManager20200601.virtualMachineImages();
+    public com.microsoft.azure.management.monitor.v2015_04_01.implementation.MonitorManager eventCategoriesManager() {
+        return this.monitorManager20150401;
     }
 
     /**
-     * @return Entry point to manage Usages.
+     * @return Entry point to key vault manager.
      */
-    public Usages ComputeUsages() {
-        return this.computeManager20200601.usages();
+    public KeyVaultManager keyVaultManager() {
+        return this.keyVaultManager20190901;
     }
 
     /**
-     * @return Entry point to manage VirtualMachineSizes.
+     * @return Entry point to network manager.
      */
-    public VirtualMachineSizes virtualMachineSizes() {
-        return this.computeManager20200601.virtualMachineSizes();
+    public NetworkManager networkManager() {
+        return this.networkManager20181101;
     }
 
     /**
-     * @return Entry point to manage Images.
+     * @return Entry point to dns manager.
      */
-    public Images images() {
-        return this.computeManager20200601.images();
+    public com.microsoft.azure.management.dns.v2016_04_01.implementation.NetworkManager dnsManager() {
+        return this.dnsManager20160401;
     }
 
     /**
-     * @return Entry point to manage ResourceSkus.
+     * @return Entry point to subscriptions manager.
      */
-    public ResourceSkus resourceSkus() {
-        return this.computeManager20190701.resourceSkus();
+    public Manager subscriptionsManager() {
+        return this.authenticated.subscriptionsManager();
     }
 
     /**
-     * @return Entry point to manage VirtualMachineScaleSets.
+     * @return Entry point to resource manager.
      */
-    public VirtualMachineScaleSets virtualMachineScaleSets() {
-        return this.computeManager20200601.virtualMachineScaleSets();
+    public ResourcesManager resourceManager() {
+        return this.resourceManager20191001;
     }
 
     /**
-     * @return Entry point to manage VirtualMachineScaleSetExtensions.
+     * @return Entry point to storage manager.
      */
-    public VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions() {
-        return this.computeManager20200601.virtualMachineScaleSetExtensions();
+    public StorageManager storageManager() {
+        return this.storageManager20190601;
     }
 
     /**
-     * @return Entry point to manage VirtualMachineScaleSetRollingUpgrades.
+     * @return Entry point to app service manager.
      */
-    public VirtualMachineScaleSetRollingUpgrades virtualMachineScaleSetRollingUpgrades() {
-        return this.computeManager20200601.virtualMachineScaleSetRollingUpgrades();
+    public AppServiceManager appServiceManager() {
+        return this.appServiceManager20180201;
     }
 
     /**
-     * @return Entry point to manage VirtualMachineScaleSetVMs.
+     * @return Entry point to app service plan manager.
      */
-    public VirtualMachineScaleSetVMs virtualMachineScaleSetVMs() {
-        return this.computeManager20200601.virtualMachineScaleSetVMs();
+    public com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager appServicePlanManager() {
+        return this.appServiceManager20160901;
     }
 
     /**
-     * @return Entry point to manage Disks.
+     * @return Entry point to app service provider manager.
      */
-    public Disks disks() {
-        return this.computeManager20190701.disks();
+    public com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager appServiceProviderManager() {
+        return this.appServiceManager20160301;
     }
-
-    /**
-     * @return Entry point to manage Snapshots.
-     */
-    public Snapshots snapshots() {
-        return this.computeManager20190701.snapshots();
-    }
-
-    /**
-     * @return Entry point to manage VirtualMachineRunCommands.
-     */
-    public VirtualMachineRunCommands virtualMachineRunCommands() {
-        return this.computeManager20200601.virtualMachineRunCommands();
-    }
-
-    /**
-     * @return Entry point to manage EventCategories.
-     */
-    public EventCategories eventCategories() { return this.monitorManager20150401.eventCategories(); }
-
-    /**
-     * @return Entry point to manage monitor Operations.
-     */
-    public com.microsoft.azure.management.monitor.v2015_04_01.Operations monitorOperations() { return this.monitorManager20150401.operations(); }
-
-    /**
-     * @return Entry point to manage DiagnosticSettings.
-     */
-    public DiagnosticSettings diagnosticSettings() { return this.monitorManager20170501preview.diagnosticSettings(); }
-
-    /**
-     * @return Entry point to manage DiagnosticSettingsCategories.
-     */
-    public DiagnosticSettingsCategorys diagnosticSettingsCategories() { return this.monitorManager20170501preview.diagnosticSettingsCategorys(); }
-
-    /**
-     * @return Entry point to manage MetricDefinitions.
-     */
-    public MetricDefinitions metricDefinitions() { return this.monitorManager20180101.metricDefinitions(); }
-
-    /**
-     * @return Entry point to manage Metrics.
-     */
-    public Metrics metrics() { return this.monitorManager20180101.metrics(); }
-
-    /**
-     * @return Entry point to manage AuthorizationOperations.
-     */
-    public AuthorizationOperations authorizationOperations() { return this.locksManager20160901.authorizationOperations(); }
-
-    /**
-     * @return Entry point to manage ManagementLocks.
-     */
-    public ManagementLocks managementLocks() { return this.locksManager20160901.managementLocks(); }
-
-    /**
-     * @return Entry point to manage LoadBalancers.
-     */
-    public LoadBalancers loadBalancers() {
-        return this.networkManager20181101.loadBalancers();
-    }
-
-    /**
-     * @return Entry point to manage LoadBalancerBackendAddressPools.
-     */
-    public LoadBalancerBackendAddressPools loadBalancerBackendAddressPools() {
-        return this.networkManager20181101.loadBalancerBackendAddressPools();
-    }
-
-    /**
-     * @return Entry point to manage LoadBalancerFrontendIPConfigurations.
-     */
-    public LoadBalancerFrontendIPConfigurations loadBalancerFrontendIPConfigurations() {
-        return this.networkManager20181101.loadBalancerFrontendIPConfigurations();
-    }
-
-    /**
-     * @return Entry point to manage InboundNatRules.
-     */
-    public InboundNatRules inboundNatRules() {
-        return this.networkManager20181101.inboundNatRules();
-    }
-
-    /**
-     * @return Entry point to manage LoadBalancerLoadBalancingRules.
-     */
-    public LoadBalancerLoadBalancingRules loadBalancerLoadBalancingRules() {
-        return this.networkManager20181101.loadBalancerLoadBalancingRules();
-    }
-
-    /**
-     * @return Entry point to manage LoadBalancerNetworkInterfaces.
-     */
-    public LoadBalancerNetworkInterfaces loadBalancerNetworkInterfaces() {
-        return this.networkManager20181101.loadBalancerNetworkInterfaces();
-    }
-
-    /**
-     * @return Entry point to manage LoadBalancerProbes.
-     */
-    public LoadBalancerProbes loadBalancerProbes() {
-        return this.networkManager20181101.loadBalancerProbes();
-    }
-
-    /**
-     * @return Entry point to manage NetworkInterfaces.
-     */
-    public NetworkInterfaces networkInterfaces() {
-        return this.networkManager20181101.networkInterfaces();
-    }
-
-    /**
-     * @return Entry point to manage NetworkInterfaceIPConfigurations.
-     */
-    public NetworkInterfaceIPConfigurations networkInterfaceIPConfigurations() {
-        return this.networkManager20181101.networkInterfaceIPConfigurations();
-    }
-
-    /**
-     * @return Entry point to manage NetworkInterfaceLoadBalancers.
-     */
-    public NetworkInterfaceLoadBalancers networkInterfaceLoadBalancers() {
-        return this.networkManager20181101.networkInterfaceLoadBalancers();
-    }
-
-    /**
-     * @return Entry point to manage NetworkSecurityGroups.
-     */
-    public NetworkSecurityGroups networkSecurityGroups() {
-        return this.networkManager20181101.networkSecurityGroups();
-    }
-
-    /**
-     * @return Entry point to manage SecurityRules.
-     */
-    public SecurityRules securityRules() {
-        return this.networkManager20181101.securityRules();
-    }
-
-    /**
-     * @return Entry point to manage DefaultSecurityRules.
-     */
-    public DefaultSecurityRules defaultSecurityRules() {
-        return this.networkManager20181101.defaultSecurityRules();
-    }
-
-    /**
-     * @return Entry point to manage ConnectionMonitors.
-     */
-    public ConnectionMonitors connectionMonitors() {
-        return this.networkManager20181101.connectionMonitors();
-    }
-
-    /**
-     * @return Entry point to manage Operations.
-     */
-    public com.microsoft.azure.management.network.v2018_11_01.Operations networkOperations() {
-        return this.networkManager20181101.operations();
-    }
-
-    /**
-     * @return Entry point to manage PublicIPAddresses.
-     */
-    public PublicIPAddresses publicIPAddresses() {
-        return this.networkManager20181101.publicIPAddresses();
-    }
-
-    /**
-     * @return Entry point to manage RouteFilters.
-     */
-    public RouteFilters routeFilters() {
-        return this.networkManager20181101.routeFilters();
-    }
-
-    /**
-     * @return Entry point to manage RouteFilterRules.
-     */
-    public RouteFilterRules routeFilterRules() {
-        return this.networkManager20181101.routeFilterRules();
-    }
-
-    /**
-     * @return Entry point to manage RouteTables.
-     */
-    public RouteTables routeTables() {
-        return this.networkManager20181101.routeTables();
-    }
-
-    /**
-     * @return Entry point to manage Routes.
-     */
-    public Routes routes() {
-        return this.networkManager20181101.routes();
-    }
-
-    /**
-     * @return Entry point to manage Usages.
-     */
-    public com.microsoft.azure.management.network.v2018_11_01.Usages networkUsages() {
-        return this.networkManager20181101.usages();
-    }
-
-    /**
-     * @return Entry point to manage VirtualNetworks.
-     */
-    public VirtualNetworks virtualNetworks() {
-        return this.networkManager20181101.virtualNetworks();
-    }
-
-    /**
-     * @return Entry point to manage Subnets.
-     */
-    public Subnets subnets() {
-        return this.networkManager20181101.subnets();
-    }
-
-    /**
-     * @return Entry point to manage VirtualNetworkPeerings.
-     */
-    public VirtualNetworkPeerings virtualNetworkPeerings() {
-        return this.networkManager20181101.virtualNetworkPeerings();
-    }
-
-    /**
-     * @return Entry point to manage VirtualNetworkGateways.
-     */
-    public VirtualNetworkGateways virtualNetworkGateways() {
-        return this.networkManager20181101.virtualNetworkGateways();
-    }
-
-    /**
-     * @return Entry point to manage VirtualNetworkGatewayConnections.
-     */
-    public VirtualNetworkGatewayConnections virtualNetworkGatewayConnections() {
-        return this.networkManager20181101.virtualNetworkGatewayConnections();
-    }
-
-    /**
-     * @return Entry point to manage LocalNetworkGateways.
-     */
-    public LocalNetworkGateways localNetworkGateways() {
-        return this.networkManager20181101.localNetworkGateways();
-    }
-
-    /**
-     * @return Entry point to manage RecordSets.
-     */
-    public RecordSets recordSets() {
-        return this.dnsManager20160401.recordSets();
-    }
-
-    /**
-     * @return Entry point to manage Zones.
-     */
-    public Zones zones() {
-        return this.dnsManager20160401.zones();
-    }
-
-    /**
-     * @return Entry point to manage StorageAccounts.
-     */
-    public StorageAccounts storageAccounts() {
-        return this.storageManager20190601.storageAccounts();
-    }
-
-    /**
-     * @return Entry point to manage Usages.
-     */
-    public com.microsoft.azure.management.storage.v2019_06_01.Usages storageUsages() {
-        return this.storageManager20190601.usages();
-    }
-
-    /**
-     * @return Entry point to manage storage Operations.
-     */
-    public com.microsoft.azure.management.storage.v2019_06_01.Operations storageOperations() { return this.storageManager20190601.operations(); }
-
-    /**
-     * @return Entry point to manage storage Skus.
-     */
-    public Skus storageSkus() { return this.storageManager20190601.skus(); }
-
-    /**
-     * @return Entry point to manage BillingMeters.
-     */
-    public BillingMeters billingMeters() {
-        return this.appServiceManager20160301.billingMeters();
-    }
-
-    /**
-     * @return Entry point to manage AppServicePlans.
-     */
-    public com.microsoft.azure.management.appservice.v2016_09_01.AppServicePlans appServicePlans() { return this.appServiceManager20160901.appServicePlans(); }
-
-    /**
-     * @return Entry point to manage Certificates.
-     */
-    public Certificates certificates() { return this.appServiceManager20180201.certificates(); }
-
-    /**
-     * @return Entry point to manage DeletedWebApps.
-     */
-    public DeletedWebApps deletedWebApps() { return this.appServiceManager20180201.deletedWebApps(); }
-
-    /**
-     * @return Entry point to manage Diagnostics.
-     */
-    public Diagnostics diagnostics() { return this.appServiceManager20180201.diagnostics(); }
-
-    /**
-     * @return Entry point to manage AppService Providers.
-     */
-    public com.microsoft.azure.management.appservice.v2018_02_01.Providers appServiceProviders() { return this.appServiceManager20180201.providers(); }
-
-    /**
-     * @return Entry point to manage ResourceHealthMetadatas.
-     */
-    public ResourceHealthMetadatas resourceHealthMetadatas() { return this.appServiceManager20180201.resourceHealthMetadatas(); }
-
-    /**
-     * @return Entry point to manage WebApps.
-     */
-    public WebApps webApps() { return this.appServiceManager20180201.webApps(); }
-
-    /**
-     * @return Entry point to manage key vaults.
-     */
-    public Vaults keyVaults() {
-        return this.keyVaultManager20190901.vaults();
-    }
-
-    /**
-     * @return Entry point to manage KeyVault Operations.
-     */
-    public com.microsoft.azure.management.keyvault.v2019_09_01.Operations keyVaultOperations() { return this.keyVaultManager20190901.operations(); }
-
 
     /**
      * The implementation for Configurable interface.
