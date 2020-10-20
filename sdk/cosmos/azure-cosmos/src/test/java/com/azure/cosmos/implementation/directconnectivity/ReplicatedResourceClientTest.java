@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -21,7 +21,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
-import static com.azure.cosmos.implementation.TestUtils.*;
+
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class ReplicatedResourceClientTest {
     protected static final int TIMEOUT = 60000;
