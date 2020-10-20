@@ -30,7 +30,10 @@ import java.util.Objects;
  * array. The data is collected from provided sources and stored into a byte array.
  * <p>
  * It also provides a way to serialize and deserialize an {@link Object} into {@link BinaryData} given an
- * {@link ObjectSerializer}. Code samples are explained below.
+ * {@link ObjectSerializer}.
+ * <p>
+ * It provides API to use default json serializer which is available in classpath. The serializer must implement
+ * {@link JsonSerializer} interface.Code samples are explained below.
  *
  * <p><strong>Create an instance from Bytes</strong></p>
  * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
