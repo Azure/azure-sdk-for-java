@@ -17,7 +17,6 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * Represents a JSON Patch document.
@@ -25,7 +24,7 @@ import java.util.function.Supplier;
 //@JsonSerialize(using = JsonPatchDocumentSerializer.class)
 public class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
-    private static JsonSerializer DEFAULT_SERIALIZER;
+    private static volatile JsonSerializer defaultSerializer;
 
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
@@ -77,7 +76,7 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendAdd(String path, Object value) {
-        return appendAddInternal(path, () -> serializeValue(value));
+        return appendAddInternal(path, serializeValue(value));
     }
 
     /**
@@ -98,13 +97,13 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendAddRaw(String path, String rawJson) {
-        return appendAddInternal(path, () -> Option.of(rawJson));
+        return appendAddInternal(path, Option.of(rawJson));
     }
 
-    private JsonPatchDocument appendAddInternal(String path, Supplier<Option<String>> jsonSupplier) {
+    private JsonPatchDocument appendAddInternal(String path, Option<String> rawJsonOption) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.ADD, null, path, jsonSupplier.get());
+        return appendOperation(JsonPatchOperationKind.ADD, null, path, rawJsonOption);
     }
 
     /**
@@ -122,7 +121,7 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendReplace(String path, Object value) {
-        return appendReplaceInternal(path, () -> serializeValue(value));
+        return appendReplaceInternal(path, serializeValue(value));
     }
 
     /**
@@ -140,13 +139,13 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendReplaceRaw(String path, String rawJson) {
-        return appendReplaceInternal(path, () -> Option.of(rawJson));
+        return appendReplaceInternal(path, Option.of(rawJson));
     }
 
-    private JsonPatchDocument appendReplaceInternal(String path, Supplier<Option<String>> jsonSupplier) {
+    private JsonPatchDocument appendReplaceInternal(String path, Option<String> rawJsonOption) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, jsonSupplier.get());
+        return appendOperation(JsonPatchOperationKind.REPLACE, null, path, rawJsonOption);
     }
 
     /**
@@ -227,7 +226,7 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendTest(String path, Object value) {
-        return appendTestInternal(path, () -> serializeValue(value));
+        return appendTestInternal(path, serializeValue(value));
     }
 
     /**
@@ -245,13 +244,13 @@ public class JsonPatchDocument {
      * @throws NullPointerException If {@code path} is null.
      */
     public JsonPatchDocument appendTestRaw(String path, String rawJson) {
-        return appendTestInternal(path, () -> Option.of(rawJson));
+        return appendTestInternal(path, Option.of(rawJson));
     }
 
-    private JsonPatchDocument appendTestInternal(String path, Supplier<Option<String>> jsonSupplier) {
+    private JsonPatchDocument appendTestInternal(String path, Option<String> rawJsonOption) {
         Objects.requireNonNull(path, "'path' cannot be null.");
 
-        return appendOperation(JsonPatchOperationKind.TEST, null, path, jsonSupplier.get());
+        return appendOperation(JsonPatchOperationKind.TEST, null, path, rawJsonOption);
     }
 
     private Option<String> serializeValue(Object value) {
@@ -264,15 +263,15 @@ public class JsonPatchDocument {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
             if (serializer == null) {
-                if (DEFAULT_SERIALIZER == null) {
+                if (defaultSerializer == null) {
                     synchronized (SERIALIZER_INSTANTIATION_SYNCHRONIZER) {
-                        if (DEFAULT_SERIALIZER == null) {
-                            DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance();
+                        if (defaultSerializer == null) {
+                            defaultSerializer = JsonSerializerProviders.createInstance();
                         }
                     }
                 }
 
-                DEFAULT_SERIALIZER.serialize(outputStream, value);
+                defaultSerializer.serialize(outputStream, value);
             } else {
                 serializer.serialize(outputStream, value);
             }

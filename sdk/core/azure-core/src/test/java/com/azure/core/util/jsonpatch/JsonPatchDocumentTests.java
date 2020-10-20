@@ -3,16 +3,20 @@
 
 package com.azure.core.util.jsonpatch;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -24,10 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class JsonPatchDocumentTests {
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
-
-    private static final JsonSerializer JSON_SERIALIZER = new JacksonJsonSerializerBuilder()
-        .serializer(new JacksonAdapter().serializer())
-        .build();
+    private static final JsonSerializer JSON_SERIALIZER = new JacksonAdapterJsonSerializer(new JacksonAdapter());
 
     @ParameterizedTest
     @MethodSource("formattingSupplier")
@@ -45,7 +46,7 @@ public class JsonPatchDocumentTests {
         JsonPatchDocument complexDocument = newDocument()
             .appendTest("/a/b/c", "foo")
             .appendRemove("/a/b/c")
-            .appendAdd("/a/b/c", new String[] {"foo", "bar"})
+            .appendAdd("/a/b/c", new String[]{"foo", "bar"})
             .appendReplace("/a/b/c", 42)
             .appendMove("/a/b/c", "/a/b/d")
             .appendCopy("/a/b/d", "/a/b/e");
@@ -78,7 +79,7 @@ public class JsonPatchDocumentTests {
                 Collections.singletonMap("grandchild", Collections.emptyMap())),
                 constructExpectedOperation("add", null, "/child", "{\"grandchild\":{}}", false)),
 
-            Arguments.of(newDocument().appendAdd("/foo/-", new String[] {"abc", "def"}),
+            Arguments.of(newDocument().appendAdd("/foo/-", new String[]{"abc", "def"}),
                 constructExpectedOperation("add", null, "/foo/-", "[\"abc\",\"def\"]", false)),
 
             Arguments.of(newDocument().appendAddRaw("/baz", "\"qux\""),
@@ -96,7 +97,7 @@ public class JsonPatchDocumentTests {
             Arguments.of(newDocument().appendReplace("/bar", "foo"),
                 constructExpectedOperation("replace", null, "/bar", "foo")),
 
-            Arguments.of(newDocument().appendReplace("/foo", new String[] {"fizz", "buzz", "fizzbuzz"}),
+            Arguments.of(newDocument().appendReplace("/foo", new String[]{"fizz", "buzz", "fizzbuzz"}),
                 constructExpectedOperation("replace", null, "/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]", false)),
 
             Arguments.of(newDocument().appendReplace("/baz", "foo"),
@@ -216,5 +217,41 @@ public class JsonPatchDocumentTests {
 
     private static JsonPatchDocument newDocument() {
         return new JsonPatchDocument(JSON_SERIALIZER);
+    }
+
+    private static final class JacksonAdapterJsonSerializer implements JsonSerializer {
+        private final JacksonAdapter jacksonAdapter;
+
+        private JacksonAdapterJsonSerializer(JacksonAdapter jacksonAdapter) {
+            this.jacksonAdapter = jacksonAdapter;
+        }
+
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            try {
+                return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            return Mono.fromCallable(() -> deserialize(stream, typeReference));
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
     }
 }
