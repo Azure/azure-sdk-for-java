@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.profile_2019_03_01_hybrid;
+package com.microsoft.azure.management.profile_2020_09_01_hybrid;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
