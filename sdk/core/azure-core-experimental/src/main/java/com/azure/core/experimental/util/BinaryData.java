@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This class is an abstraction over many different ways that binary data can be represented. The data representated by
+ * This class is an abstraction over many different ways that binary data can be represented. The data represented by
  * {@link BinaryData} is immutable. The {@link BinaryData} can be created from {@link InputStream}, {@link Flux} of
  * {@link ByteBuffer}, {@link String}, {@link Object} and byte array. This type internally store given data in byte
  * array.
@@ -64,9 +64,11 @@ public final class  BinaryData {
     private static final byte[] EMPTY_BYTES = new byte[0];
     private static final BinaryData EMPTY_DATA = new BinaryData(new byte[0]);
 
-    private static JsonSerializer defaultJsonSerializer;
+    private static final Object LOCK = new Object();
 
     private final byte[] data;
+
+    private static volatile JsonSerializer defaultJsonSerializer;
 
     /**
      * Create an instance of {@link BinaryData} from  the given data. If {@code null} value is provided , it will be
@@ -331,9 +333,14 @@ public final class  BinaryData {
         return Mono.fromCallable(() -> toObject(clazz));
     }
 
+    /* This will ensure lazy instantiation to avoid hard dependency on Json Serializer. */
     private static JsonSerializer getDefaultSerializer() {
         if (defaultJsonSerializer ==  null) {
-            defaultJsonSerializer = JsonSerializerProviders.createInstance();
+            synchronized (LOCK) {
+                if (defaultJsonSerializer == null) {
+                    defaultJsonSerializer = JsonSerializerProviders.createInstance();
+                }
+            }
         }
         return defaultJsonSerializer;
     }
