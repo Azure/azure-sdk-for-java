@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.administration;
-
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.CreateSearchOptions;
@@ -25,9 +24,10 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.polling.SyncPoller;
 
 public class ReadmeSamples {
-
+    
     /**
      * Sample code for creating a sync Communication Identity Client.
      *
@@ -345,5 +345,36 @@ public class ReadmeSamples {
         pstnConfiguration.setCallbackUrl("CALLBACK_URL");
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
         phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
+    }
+
+    /**
+     * Sample code to create a search as a long running operation
+     */
+    public void beginCreateSearch() {
+        String phonePlanId = "PHONE_PLAN_ID";
+
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add(phonePlanId);
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode("AREA_CODE_FOR_SEARCH")
+            .setDescription("DESCRIPTION_FOR_SEARCH")
+            .setDisplayName("NAME_FOR_SEARCH")
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+        
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        res.waitForCompletion();
+        PhoneNumberSearch result = res.getFinalResult();
+
+        System.out.println("Search Id: " + result.getSearchId());
+        for (String phoneNumber: result.getPhoneNumbers()) {
+            System.out.println("Phone Number: " + phoneNumber);
+        }
     }
 }
