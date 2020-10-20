@@ -99,8 +99,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount);
                     logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
-                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                        .delaySubscription(delayDuration);
+                    return httpResponse.getBody()
+                        .ignoreElements()
+                        .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                            .delaySubscription(delayDuration));
                 } else {
                     return Mono.just(httpResponse);
                 }
