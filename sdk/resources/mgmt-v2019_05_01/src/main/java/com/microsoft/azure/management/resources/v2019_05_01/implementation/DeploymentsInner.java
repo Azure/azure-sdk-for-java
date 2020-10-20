@@ -186,6 +186,10 @@ public class DeploymentsInner implements InnerSupportsGet<DeploymentExtendedInne
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2019_05_01.Deployments calculateTemplateHash" })
+        @POST("providers/Microsoft.Resources/calculateTemplateHash")
+        Observable<Response<ResponseBody>> calculateTemplateHash(@Query("api-version") String apiVersion, @Body Object template, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2019_05_01.Deployments listAtManagementGroupScopeNext" })
         @GET
         Observable<Response<ResponseBody>> listAtManagementGroupScopeNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -3144,6 +3148,82 @@ public class DeploymentsInner implements InnerSupportsGet<DeploymentExtendedInne
     private ServiceResponse<PageImpl<DeploymentExtendedInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<DeploymentExtendedInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DeploymentExtendedInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TemplateHashResultInner object if successful.
+     */
+    public TemplateHashResultInner calculateTemplateHash(Object template) {
+        return calculateTemplateHashWithServiceResponseAsync(template).toBlocking().single().body();
+    }
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TemplateHashResultInner> calculateTemplateHashAsync(Object template, final ServiceCallback<TemplateHashResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(calculateTemplateHashWithServiceResponseAsync(template), serviceCallback);
+    }
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TemplateHashResultInner object
+     */
+    public Observable<TemplateHashResultInner> calculateTemplateHashAsync(Object template) {
+        return calculateTemplateHashWithServiceResponseAsync(template).map(new Func1<ServiceResponse<TemplateHashResultInner>, TemplateHashResultInner>() {
+            @Override
+            public TemplateHashResultInner call(ServiceResponse<TemplateHashResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TemplateHashResultInner object
+     */
+    public Observable<ServiceResponse<TemplateHashResultInner>> calculateTemplateHashWithServiceResponseAsync(Object template) {
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (template == null) {
+            throw new IllegalArgumentException("Parameter template is required and cannot be null.");
+        }
+        return service.calculateTemplateHash(this.client.apiVersion(), template, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TemplateHashResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TemplateHashResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TemplateHashResultInner> clientResponse = calculateTemplateHashDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TemplateHashResultInner> calculateTemplateHashDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TemplateHashResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TemplateHashResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
